@@ -307,7 +307,7 @@ class QueueAPITests extends APISpec {
         queueClient.enqueueMessage(expectMsg1)
         queueClient.enqueueMessage(expectMsg2)
         when:
-        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1)).iterator()
+        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
         then:
         expectMsg1.equals(peekMsgIter.next().messageText())
         expectMsg2.equals(peekMsgIter.next().messageText())
@@ -318,7 +318,7 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         when:
-        queueClient.peekMessages(33, null).iterator().next()
+        queueClient.peekMessages(33, null, null).iterator().next()
         then:
         def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)

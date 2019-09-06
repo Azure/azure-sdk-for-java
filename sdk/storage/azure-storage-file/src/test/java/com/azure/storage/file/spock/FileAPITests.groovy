@@ -437,7 +437,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadFromFile(uploadFile)
 
         expect:
-        primaryFileClient.listRanges(new FileRange(0, 511L), null).each {
+        primaryFileClient.listRanges(new FileRange(0, 511L), null, null).each {
             assert it.start() == 0
             assert it.end() == 511
         }
@@ -459,7 +459,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         expect:
-        primaryFileClient.listHandles(2, null).size() == 0
+        primaryFileClient.listHandles(2, null, null).size() == 0
     }
 
     @Ignore

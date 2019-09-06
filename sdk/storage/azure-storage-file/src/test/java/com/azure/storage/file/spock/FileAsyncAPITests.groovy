@@ -477,7 +477,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.uploadFromFile(uploadFile).block()
 
         expect:
-        StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L), null))
+        StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))
             .assertNext {
                 assert it.start() == 0
                 assert it.end() == 511
@@ -501,7 +501,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         expect:
-        StepVerifier.create(primaryFileAsyncClient.listHandles(2, Duration.ofSeconds(30)))
+        StepVerifier.create(primaryFileAsyncClient.listHandles(2))
             .verifyComplete()
     }
 

@@ -210,7 +210,7 @@ public class DirectoryClient {
      * {@codesnippet com.azure.storage.file.directoryClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>Clear the metadata of the directory</p>
-     * {@codesnippet com.azure.storage.file.DirectoryClient.setMetadataWithResponse#Map-duration-context.clearMetadata}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata}
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
      *
@@ -236,14 +236,14 @@ public class DirectoryClient {
      * @return {@link FileRef File info} in the storage directory
      */
     public PagedIterable<FileRef> listFilesAndDirectories() {
-        return listFilesAndDirectories(null, null, null);
+        return listFilesAndDirectories(null, null, null, Context.NONE);
     }
 
     /**
      * Lists all sub-directories and files in this directory with their prefix or snapshots.
      * <p><strong>Code Samples</strong></p>
      * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the account</p>
-     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration}
+     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context}
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
      *
@@ -251,31 +251,33 @@ public class DirectoryClient {
      * @param maxResults Optional maximum number of files and/or directories to return per page.
      * If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
-    public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout) {
-        return new PagedIterable<>(directoryAsyncClient.listFilesAndDirectories(prefix, maxResults, timeout));
+    public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout, Context context) {
+        return new PagedIterable<>(directoryAsyncClient.listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, timeout, context));
     }
 
     /**
      * List of open handles on a directory or a file.
      * <p><strong>Code Samples</strong></p>
      * <p>Get 10 handles with recursive call.</p>
-     * {@codesnippet com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration}
+     * {@codesnippet com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context}
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
      * @param maxResult Optional maximum number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public PagedIterable<HandleItem> listHandles(Integer maxResult, boolean recursive, Duration timeout) {
-        return new PagedIterable<>(directoryAsyncClient.listHandles(maxResult, recursive, timeout));
+    public PagedIterable<HandleItem> listHandles(Integer maxResult, boolean recursive, Duration timeout, Context context) {
+        return new PagedIterable<>(directoryAsyncClient.listHandlesWithOptionalTimeout(maxResult, recursive, timeout, context));
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryClient#listHandles(Integer, boolean, Duration)} .
+     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryClient#listHandles(Integer, boolean, Duration, Context)} .
      * <p><strong>Code Samples</strong></p>
      * <p>Force close handles with handles returned by get handles in recursive.</p>
      * {@codesnippet com.azure.storage.file.directoryClient.forceCloseHandles}
@@ -287,10 +289,10 @@ public class DirectoryClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The counts of number of handles closed.
      */
-    public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout, Context context) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return new PagedIterable<>(directoryAsyncClient.forceCloseHandles(handleId, recursive, timeout));
+        return new PagedIterable<>(directoryAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, recursive, timeout, context));
     }
 
     /**

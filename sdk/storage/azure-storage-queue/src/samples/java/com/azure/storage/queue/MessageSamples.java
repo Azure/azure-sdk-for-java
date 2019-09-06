@@ -35,14 +35,14 @@ public class MessageSamples {
         int count = queueClient.getProperties().approximateMessagesCount();
 
         // Peek all messages in queue. It is supposed to print "Hello World" 3 times.
-        queueClient.peekMessages(count, null).forEach(
+        queueClient.peekMessages(count, null, null).forEach(
             peekedMessage -> {
                 System.out.println("Here is the msg: " + peekedMessage.messageText());
             }
         );
 
         // Dequeue all messages in queue and update the message "Hello World" to Hello, world!"
-        queueClient.dequeueMessages(count, Duration.ofSeconds(30), Duration.ZERO).forEach(
+        queueClient.dequeueMessages(count, Duration.ofSeconds(30), Duration.ofSeconds(50), null).forEach(
             queueMessage -> {
                 String msgToReplace = String.format("Hello, world!");
                 queueClient.updateMessage(queueMessage.messageId(), msgToReplace, queueMessage.popReceipt(), Duration.ZERO);

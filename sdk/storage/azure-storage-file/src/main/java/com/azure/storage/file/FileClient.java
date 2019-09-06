@@ -627,7 +627,7 @@ public class FileClient {
      * @return {@link FileRange ranges} in the files.
      */
     public PagedIterable<FileRange> listRanges() {
-        return listRanges(null, null);
+        return listRanges(null, null, null);
     }
 
     /**
@@ -637,17 +637,18 @@ public class FileClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.listRanges#filerange-duration}
+     * {@codesnippet com.azure.storage.file.fileClient.listRanges#filerange-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
-    public PagedIterable<FileRange> listRanges(FileRange range, Duration timeout) {
-        return new PagedIterable<>(fileAsyncClient.listRanges(range, timeout));
+    public PagedIterable<FileRange> listRanges(FileRange range, Duration timeout, Context context) {
+        return new PagedIterable<>(fileAsyncClient.listRangesWithOptionalTimeout(range, timeout, context));
     }
 
     /**
@@ -665,7 +666,7 @@ public class FileClient {
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
     public PagedIterable<HandleItem> listHandles() {
-        return listHandles(null, null);
+        return listHandles(null, null, Context.NONE);
     }
 
     /**
@@ -675,17 +676,18 @@ public class FileClient {
      *
      * <p>List 10 handles for the file client.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.listHandles#integer-duration}
+     * {@codesnippet com.azure.storage.file.fileClient.listHandles#integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
      * @param maxResults Optional max number of results returned per page
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
-    public PagedIterable<HandleItem> listHandles(Integer maxResults, Duration timeout) {
-        return new PagedIterable<>(fileAsyncClient.listHandles(maxResults, timeout));
+    public PagedIterable<HandleItem> listHandles(Integer maxResults, Duration timeout, Context context) {
+        return new PagedIterable<>(fileAsyncClient.listHandlesWithOptionalTimeout(maxResults, timeout, context));
     }
 
     /**
@@ -702,12 +704,13 @@ public class FileClient {
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The counts of number of handles closed
      */
-    public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return new PagedIterable<>(fileAsyncClient.forceCloseHandles(handleId, timeout));
+        return new PagedIterable<>(fileAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, timeout, context));
     }
 
     /**

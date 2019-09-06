@@ -129,7 +129,7 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public PagedFlux<ShareItem> listShares() {
-        return listShares(null, null);
+        return listShares(null);
     }
 
     /**
@@ -148,21 +148,20 @@ public final class FileServiceAsyncClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix-duration}
+     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot-duration}
+     * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
-     * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public PagedFlux<ShareItem> listShares(ListSharesOptions options, Duration timeout) {
-        return listShares(null, options, timeout);
+    public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
+        return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
     }
 
     /**
@@ -170,10 +169,10 @@ public final class FileServiceAsyncClient {
      *
      * @param marker Starting point to list the shares
      * @param options Options for listing shares
-     * @param timeout An optional timeout to be applied to the network asynchronous operations.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    private PagedFlux<ShareItem> listShares(String marker, ListSharesOptions options, Duration timeout) {
+     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout, Context context) {
         final String prefix = (options != null) ? options.prefix() : null;
         final Integer maxResults = (options != null) ? options.maxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
@@ -190,7 +189,7 @@ public final class FileServiceAsyncClient {
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, Context.NONE), timeout)
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
             .map(response -> new PagedResponseBase<>(response.request(),
                 response.statusCode(),
                 response.headers(),

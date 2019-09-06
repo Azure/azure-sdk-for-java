@@ -420,7 +420,7 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist
      */
     public PagedIterable<DequeuedMessage> dequeueMessages() {
-        return dequeueMessages(1, Duration.ofSeconds(30), null);
+        return dequeueMessages(1, Duration.ofSeconds(30), null, Context.NONE);
     }
 
     /**
@@ -444,7 +444,7 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedIterable<DequeuedMessage> dequeueMessages(Integer maxMessages) {
-        return dequeueMessages(maxMessages, Duration.ofSeconds(30), null);
+        return dequeueMessages(maxMessages, Duration.ofSeconds(30), null, Context.NONE);
     }
 
     /**
@@ -455,7 +455,7 @@ public final class QueueClient {
      *
      * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration}
+     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -466,14 +466,15 @@ public final class QueueClient {
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
      * If left empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage contains
      * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
-    public PagedIterable<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout, Duration timeout) {
-        return new PagedIterable<>(client.dequeueMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout));
+    public PagedIterable<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout, Duration timeout, Context context) {
+        return new PagedIterable<>(client.dequeueMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context));
     }
 
     /**
@@ -494,7 +495,7 @@ public final class QueueClient {
      * @return A {@link PeekedMessage} that contains metadata about the message.
      */
     public PagedIterable<PeekedMessage> peekMessages() {
-        return peekMessages(null, null);
+        return peekMessages(null, null, Context.NONE);
     }
 
     /**
@@ -507,7 +508,7 @@ public final class QueueClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer-duration}
+     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
@@ -515,13 +516,14 @@ public final class QueueClient {
      * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue than requested
      * all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is 1 to 32
      * messages.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Up to {@code maxMessages} {@link PeekedMessage PeekedMessages} from the queue. Each PeekedMessage contains
      * metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public PagedIterable<PeekedMessage> peekMessages(Integer maxMessages, Duration timeout) {
-        return new PagedIterable<>(client.peekMessages(maxMessages, null));
+    public PagedIterable<PeekedMessage> peekMessages(Integer maxMessages, Duration timeout, Context context) {
+        return new PagedIterable<>(client.peekMessagesWithOptionalTimeout(maxMessages, timeout, context));
     }
 
     /**

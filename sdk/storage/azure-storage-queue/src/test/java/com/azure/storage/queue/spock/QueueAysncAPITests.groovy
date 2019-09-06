@@ -357,7 +357,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.enqueueMessage(expectMsg1).block()
         queueAsyncClient.enqueueMessage(expectMsg2).block()
         when:
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(2, Duration.ofSeconds(30)))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(2))
         then:
         peekMsgVerifier.assertNext {
             assert expectMsg1.equals(it.messageText())
@@ -370,7 +370,7 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         when:
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(33, Duration.ofSeconds(30)))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(33))
         then:
         peekMsgVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)

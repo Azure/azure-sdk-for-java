@@ -175,17 +175,17 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#dequeueMessages(Integer, Duration, Duration)}
+     * Generates a code sample for using {@link QueueClient#dequeueMessages(Integer, Duration, Duration, Context)}
      */
     public void dequeueMessageMaxOverload() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration
+        // BEGIN: com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration-context
         for (DequeuedMessage dequeuedMessage : client.dequeueMessages(5, Duration.ofSeconds(60),
-            Duration.ofSeconds(1))) {
+            Duration.ofSeconds(1), new Context(key1, value1))) {
             System.out.printf("Dequeued %s and it becomes visible at %s",
                 dequeuedMessage.messageId(), dequeuedMessage.timeNextVisible());
         }
-        // END: com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration
+        // END: com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration-context
     }
 
     /**
@@ -203,16 +203,16 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#peekMessages(Integer, Duration)}
+     * Generates a code sample for using {@link QueueClient#peekMessages(Integer, Duration, Context)}
      */
     public void peekMessageMaxOverload() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.peekMessages#integer-duration
-        client.peekMessages(5, Duration.ofSeconds(1)).forEach(
+        // BEGIN: com.azure.storage.queue.queueClient.peekMessages#integer-duration-context
+        client.peekMessages(5, Duration.ofSeconds(1), new Context(key1, value1)).forEach(
             peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
                 peekMessage.messageId(), peekMessage.dequeueCount())
         );
-        // END: com.azure.storage.queue.queueClient.peekMessages#integer-duration
+        // END: com.azure.storage.queue.queueClient.peekMessages#integer-duration-context
     }
 
     /**

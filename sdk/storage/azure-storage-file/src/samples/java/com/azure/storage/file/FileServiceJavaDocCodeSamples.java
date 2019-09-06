@@ -136,29 +136,30 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceClient#listShares(ListSharesOptions, Duration)} of prefix.
+     * Generates a code sample for using {@link FileServiceClient#listShares(ListSharesOptions, Duration, Context)} of prefix.
      */
     public void listSharesWithPrefix() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration
-        fileServiceClient.listShares(new ListSharesOptions().prefix("azure"), Duration.ofSeconds(1)).forEach(
+        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration-context
+        fileServiceClient.listShares(new ListSharesOptions().prefix("azure"), Duration.ofSeconds(1),
+            new Context(key1, value1)).forEach(
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
-        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration
+        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration-context
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceClient#listShares(ListSharesOptions, Duration)}
+     * Generates a code sample for using {@link FileServiceClient#listShares(ListSharesOptions, Duration, Context)}
      * of metadata and snapshot.
      */
     public void listSharesWithMetadataAndSnapshot() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration
+        // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration-context
         fileServiceClient.listShares(new ListSharesOptions().includeMetadata(true)
-            .includeSnapshots(true), Duration.ofSeconds(1)).forEach(
+            .includeSnapshots(true), Duration.ofSeconds(1), new Context(key1, value1)).forEach(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
-        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration
+        // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration-context
     }
 
     /**

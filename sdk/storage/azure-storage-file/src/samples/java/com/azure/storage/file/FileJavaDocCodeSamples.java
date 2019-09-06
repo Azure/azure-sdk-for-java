@@ -479,15 +479,16 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#listRanges(FileRange, Duration)}
+     * Generates a code sample for using {@link FileClient#listRanges(FileRange, Duration, Context)}
      */
     public void listRangesMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.listRanges#filerange-duration
-        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1));
+        // BEGIN: com.azure.storage.file.fileClient.listRanges#filerange-duration-context
+        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L), Duration.ofSeconds(1),
+            new Context(key1, value1));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
-        // END: com.azure.storage.file.fileClient.listRanges#filerange-duration
+        // END: com.azure.storage.file.fileClient.listRanges#filerange-duration-context
     }
 
     /**
@@ -503,29 +504,30 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#listHandles(Integer, Duration)}
+     * Generates a code sample for using {@link FileClient#listHandles(Integer, Duration, Context)}
      */
     public void listHandlesWithOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.listHandles#integer-duration
-        fileClient.listHandles(10, Duration.ofSeconds(1))
+        // BEGIN: com.azure.storage.file.fileClient.listHandles#integer-duration-context
+        fileClient.listHandles(10, Duration.ofSeconds(1), new Context(key1, value1))
             .forEach(handleItem -> System.out.printf("List handles completed with handleId %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.fileClient.listHandles#integer-duration
+        // END: com.azure.storage.file.fileClient.listHandles#integer-duration-context
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#forceCloseHandles(String, Duration)}
+     * Generates a code sample for using {@link FileClient#forceCloseHandles(String, Duration, Context)}
      */
     public void forceCloseHandles() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string-duration
-        fileClient.listHandles(10, Duration.ofSeconds(1))
+        // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context
+        fileClient.listHandles(10, Duration.ofSeconds(1), new Context(key1, value1))
             .forEach(result ->
-                fileClient.forceCloseHandles(result.handleId(), Duration.ofSeconds(1)).forEach(numOfClosedHandles ->
+                fileClient.forceCloseHandles(result.handleId(), Duration.ofSeconds(1),
+                    new Context(key1, value1)).forEach(numOfClosedHandles ->
                     System.out.printf("Close %d handles.", numOfClosedHandles)
                 ));
-        // END: com.azure.storage.file.fileClient.forceCloseHandles#string-duration
+        // END: com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context
     }
 
     /**

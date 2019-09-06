@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -177,18 +178,18 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#listFilesAndDirectories(String, Integer, Duration)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#listFilesAndDirectories(String, Integer)}
      */
     public void listDirectoriesAndFilesAsyncMaxOverload() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer-duration
-        directoryAsyncClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1)).subscribe(
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
+        directoryAsyncClient.listFilesAndDirectories("subdir", 10).subscribe(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
                 fileRef.isDirectory(), fileRef.name()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed listing the directories and files.")
         );
-        // END: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer-duration
+        // END: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
     }
 
     /**
@@ -345,26 +346,25 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#listHandles(Integer, boolean, Duration)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#listHandles(Integer, boolean)}
      */
     public void listHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean-duration
-        directoryAsyncClient.listHandles(10, true, Duration.ofSeconds(1))
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
+        directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
                 handleItem.handleId()));
-        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean-duration
+        // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#forceCloseHandles(String, boolean, Duration)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#forceCloseHandles(String, boolean)}
      */
     public void forceCloseHandlesAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.listHandles(10, true, Duration.ofSeconds(1))
-            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true,
-                Duration.ofSeconds(1))
+        directoryAsyncClient.listHandles(10, true)
+            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
                 .subscribe(numOfClosedHandles -> System.out.printf("Closed %d handles.", numOfClosedHandles)));
         // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
     }

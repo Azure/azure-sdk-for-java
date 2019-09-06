@@ -138,7 +138,7 @@ class FileServiceAsyncAPITests extends APISpec {
         }
 
         when:
-        def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options, null))
+        def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
 
         then:
         sharesVerifier.thenConsumeWhile {
@@ -179,7 +179,7 @@ class FileServiceAsyncAPITests extends APISpec {
         }
 
         when:
-        def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options, null))
+        def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
 
         then:
         sharesVerifier.assertNext {

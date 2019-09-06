@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.util.Context
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.DirectoryAsyncClient
 import com.azure.storage.file.FileAsyncClient
@@ -228,7 +229,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         when:
         def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix,
-            maxResults, Duration.ofSeconds(30)))
+            maxResults))
 
         then:
         listFileAndDirVerifier.thenConsumeWhile {
@@ -250,8 +251,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.listHandles(maxResult, recursive,
-            Duration.ofSeconds(30))).verifyComplete()
+        StepVerifier.create(primaryDirectoryAsyncClient.listHandles(maxResult, recursive)).verifyComplete()
         where:
         maxResult | recursive
         2         | true
@@ -260,8 +260,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        def listHandlesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null,
-            true, Duration.ofSeconds(30)))
+        def listHandlesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listHandles(null, true))
         then:
         listHandlesVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
@@ -277,7 +276,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def forceCloseHandlesErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandles("handleId", true, null))
+        def forceCloseHandlesErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.forceCloseHandles("handleId", true))
         then:
         forceCloseHandlesErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.INVALID_HEADER_VALUE)

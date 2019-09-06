@@ -139,33 +139,32 @@ public class FileServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#listShares(ListSharesOptions, Duration)} of prefix.
+     * Generates a code sample for using {@link FileServiceAsyncClient#listShares(ListSharesOptions)} of prefix.
      */
     public void listSharesAsyncWithPrefix() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix-duration
-        fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure"),
-                Duration.ofSeconds(1)).subscribe(
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
+        fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure")).subscribe(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
         );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix-duration
+        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#listShares(ListSharesOptions, Duration)} of metadata and snapshot.
+     * Generates a code sample for using {@link FileServiceAsyncClient#listShares(ListSharesOptions)} of metadata and snapshot.
      */
     public void listSharesAsyncWithOverload() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot-duration
-        fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true)
-            .includeSnapshots(true), Duration.ofSeconds(1)).subscribe(
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
+        fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true).includeSnapshots(true))
+            .subscribe(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
         );
-        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot-duration
+        // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
     }
 
     /**

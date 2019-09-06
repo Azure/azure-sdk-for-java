@@ -192,19 +192,18 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessagesWithOptionalTimeout(Integer, Duration,
-     * Duration)}
+     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages(Integer, Duration)}
      */
     public void dequeueMessageAsyncMaxOverload() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration-duration
-        client.dequeueMessagesWithOptionalTimeout(5, Duration.ofSeconds(60), Duration.ofSeconds(1))
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
+        client.dequeueMessages(5, Duration.ofSeconds(60))
             .subscribe(
             dequeuedMessage -> System.out.println("The message got from dequeue operation: "
                 + dequeuedMessage.messageText()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete dequeuing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration-duration
+        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
     }
 
 
@@ -222,17 +221,17 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#peekMessages(Integer, Duration)}
+     * Generates a code sample for using {@link QueueAsyncClient#peekMessages(Integer)}
      */
     public void peekMessageAsyncMaxOverload() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer-duration
-        client.peekMessages(5, Duration.ofSeconds(1)).subscribe(
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
+        client.peekMessages(5).subscribe(
             peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
                 peekMessage.messageId(), peekMessage.dequeueCount()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete peeking the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.peekMessages#integer-duration
+        // END: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
     }
 
     /**

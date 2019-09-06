@@ -219,7 +219,7 @@ class DirectoryAPITests extends APISpec {
         }
 
         when:
-        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(prefix, maxResults, null).iterator()
+        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(prefix, maxResults, null, null).iterator()
 
         then:
         for (int i = 0; i < numOfResults; i++) {
@@ -240,7 +240,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         expect:
-        primaryDirectoryClient.listHandles(maxResult, recursive, null).size() == 0
+        primaryDirectoryClient.listHandles(maxResult, recursive, null, null).size() == 0
 
         where:
         maxResult | recursive
@@ -250,7 +250,7 @@ class DirectoryAPITests extends APISpec {
 
     def "List handles error"() {
         when:
-        primaryDirectoryClient.listHandles(null, true, null).iterator().hasNext()
+        primaryDirectoryClient.listHandles(null, true, null, null).iterator().hasNext()
 
         then:
         def e = thrown(StorageException)
@@ -267,7 +267,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.forceCloseHandles("handleId", true, null).iterator().hasNext()
+        primaryDirectoryClient.forceCloseHandles("handleId", true, null, null).iterator().hasNext()
 
         then:
         def e = thrown(StorageException)

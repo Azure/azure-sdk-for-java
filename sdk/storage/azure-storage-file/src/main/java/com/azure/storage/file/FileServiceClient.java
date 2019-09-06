@@ -93,7 +93,7 @@ public final class FileServiceClient {
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public PagedIterable<ShareItem> listShares() {
-        return listShares(null, null);
+        return listShares(null, null, null);
     }
 
     /**
@@ -112,21 +112,22 @@ public final class FileServiceClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix-duration-context}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public PagedIterable<ShareItem> listShares(ListSharesOptions options, Duration timeout) {
-        return new PagedIterable<>(fileServiceAsyncClient.listShares(options, timeout));
+    public PagedIterable<ShareItem> listShares(ListSharesOptions options, Duration timeout, Context context) {
+        return new PagedIterable<>(fileServiceAsyncClient.listSharesWithOptionalTimeout(null, options, timeout, context));
     }
 
     /**

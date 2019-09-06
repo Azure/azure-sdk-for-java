@@ -176,16 +176,17 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#listFilesAndDirectories(String, Integer, Duration)}
+     * Generates a code sample for using {@link DirectoryClient#listFilesAndDirectories(String, Integer, Duration, Context)}
      */
     public void listDirectoriesAndFilesMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration
-        directoryClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1)).forEach(
+        // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
+        directoryClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1),
+            new Context(key1, value1)).forEach(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
                 fileRef.isDirectory(), fileRef.name())
         );
-        // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration
+        // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
     }
 
     /**
@@ -193,10 +194,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void deleteFile() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.DirectoryClient.deleteFile#string
+        // BEGIN: com.azure.storage.file.directoryClient.deleteFile#string
         directoryClient.deleteFile("myfile");
         System.out.println("Completed deleting the file.");
-        // END: com.azure.storage.file.DirectoryClient.deleteFile#string
+        // END: com.azure.storage.file.directoryClient.deleteFile#string
     }
 
     /**
@@ -328,25 +329,28 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#listHandles(Integer, boolean, Duration)}
+     * Generates a code sample for using {@link DirectoryClient#listHandles(Integer, boolean, Duration, Context)}
      */
     public void listHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration
-        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1));
+        // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context
+        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
+            new Context(key1, value1));
         System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-        // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration
+        // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#forceCloseHandles(String, boolean, Duration)}
+     * Generates a code sample for using {@link DirectoryClient#forceCloseHandles(String, boolean, Duration, Context)}
      */
     public void forceCloseHandles() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
-        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1));
+        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
+            new Context(key1, value1));
         result.forEach(handleItem ->  {
-            directoryClient.forceCloseHandles(handleItem.handleId(), true, Duration.ofSeconds(1))
+            directoryClient.forceCloseHandles(handleItem.handleId(), true, Duration.ofSeconds(1),
+                new Context(key1, value1))
                 .forEach(numOfClosedHandles ->
                 System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
         });

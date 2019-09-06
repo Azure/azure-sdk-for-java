@@ -121,7 +121,7 @@ class FileServiceAPITests extends APISpec {
         }
 
         when:
-        def shares = primaryFileServiceClient.listShares(options, null).iterator()
+        def shares = primaryFileServiceClient.listShares(options, null, null).iterator()
 
         then:
         for (int i = 0; i < limits; i++) {
@@ -154,7 +154,7 @@ class FileServiceAPITests extends APISpec {
         }
 
         when:
-        def shares = primaryFileServiceClient.listShares(options, null).iterator()
+        def shares = primaryFileServiceClient.listShares(options, null, null).iterator()
 
         then:
         for (int i = 0; i < limits; i++) {
