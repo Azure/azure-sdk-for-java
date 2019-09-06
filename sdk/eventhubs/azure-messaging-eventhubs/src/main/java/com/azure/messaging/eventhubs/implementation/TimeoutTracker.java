@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
-
 import java.time.Duration;
 import java.time.Instant;
 

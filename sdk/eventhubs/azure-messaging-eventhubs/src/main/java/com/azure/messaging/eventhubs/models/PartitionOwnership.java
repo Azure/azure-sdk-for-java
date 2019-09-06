@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 
 import java.util.Objects;
 

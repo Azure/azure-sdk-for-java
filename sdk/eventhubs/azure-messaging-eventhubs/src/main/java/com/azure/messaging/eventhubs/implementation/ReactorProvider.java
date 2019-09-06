@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.implementation.handler.CustomIOHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReactorHandler;
 import org.apache.qpid.proton.Proton;

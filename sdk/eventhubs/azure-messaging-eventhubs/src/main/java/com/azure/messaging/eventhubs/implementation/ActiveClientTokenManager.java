@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;

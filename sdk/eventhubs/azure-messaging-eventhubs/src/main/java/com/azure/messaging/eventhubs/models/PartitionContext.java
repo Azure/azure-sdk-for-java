@@ -7,7 +7,6 @@ import com.azure.core.implementation.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.PartitionProcessor;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,10 +43,13 @@ public class PartitionContext {
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
         this.eventHubName = Objects.requireNonNull(eventHubName,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
-        this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null");
-        this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
+        this.consumerGroup = Objects.requireNonNull(consumerGroup,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_NULL));
+        this.ownerId = Objects.requireNonNull(ownerId,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OWNER_ID_CANNOT_NULL));
         this.eTag = new AtomicReference<>(eTag);
-        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null");
+        this.partitionManager = Objects.requireNonNull(partitionManager,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_MANAGER_CANNOT_NULL));
     }
 
     /**

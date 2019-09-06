@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;

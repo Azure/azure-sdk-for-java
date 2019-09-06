@@ -11,7 +11,6 @@ import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;

@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 
 import java.util.Locale;
 import java.util.Objects;

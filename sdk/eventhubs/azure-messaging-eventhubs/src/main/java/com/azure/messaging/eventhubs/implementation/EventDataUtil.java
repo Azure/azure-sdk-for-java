@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;

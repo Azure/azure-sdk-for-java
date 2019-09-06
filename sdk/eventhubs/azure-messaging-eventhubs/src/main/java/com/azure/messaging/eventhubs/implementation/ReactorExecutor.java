@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.scheduler.Scheduler;

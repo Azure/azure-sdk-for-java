@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 
 import java.net.PasswordAuthentication;
 import java.net.Proxy;

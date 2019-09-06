@@ -63,7 +63,7 @@ public class EventProcessor {
         Objects.requireNonNull(eventHubAsyncClient,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL));
         Objects.requireNonNull(consumerGroup,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_NULL));
         Objects.requireNonNull(partitionProcessorFactory,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL));
         Objects.requireNonNull(initialEventPosition,

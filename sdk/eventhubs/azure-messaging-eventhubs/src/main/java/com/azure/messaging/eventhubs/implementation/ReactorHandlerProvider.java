@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubErrorCodeStrings;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
