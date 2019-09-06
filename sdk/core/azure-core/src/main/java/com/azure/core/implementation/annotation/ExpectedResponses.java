@@ -16,8 +16,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}ExpectedResponses({200, 201})
- * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
- *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);</pre>
+ * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
+ * .CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
+ *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String
+ *  hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);</pre>
  */
 @Retention(RUNTIME)
 @Target(METHOD)

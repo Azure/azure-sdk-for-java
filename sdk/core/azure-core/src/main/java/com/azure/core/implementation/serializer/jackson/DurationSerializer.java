@@ -28,7 +28,8 @@ final class DurationSerializer extends JsonSerializer<Duration> {
     }
 
     @Override
-    public void serialize(Duration duration, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(Duration duration, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+        throws IOException {
         jsonGenerator.writeString(DurationSerializer.toString(duration));
     }
 

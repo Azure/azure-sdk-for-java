@@ -19,7 +19,8 @@ class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
     static final Base64 BASE64 = new Base64(-1, null, true);
 
     @Override
-    public void serialize(byte[] value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(byte[] value, JsonGenerator jgen, SerializerProvider provider)
+        throws IOException, JsonProcessingException {
         String text;
         if (value == null) {
             text = null;

@@ -21,8 +21,10 @@ import java.util.Queue;
 /**
  * Codesnippet description should match naming pattern requirement below:
  * <ol>
- * <li>Package, class, and method names should be concatenated with a dot '.'. Ex., packageName.className.methodName</li>
- * <li>Methods arguments should be concatenated with a dash '-'. Ex. String-String  for methodName(String s, String s2)</li>
+ * <li>Package, class, and method names should be concatenated with a dot '.'. Ex., packageName.className
+ * .methodName</li>
+ * <li>Methods arguments should be concatenated with a dash '-'. Ex. String-String  for methodName(String s, String
+ * s2)</li>
  * <li>Use '#' to concatenate 1) and 2), ex packageName.className.methodName#String-String</li>
  * <li>Ignore identifier after method arguments</li>
  * </ol>
@@ -150,7 +152,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             // Check for CodeSnippet naming pattern matching
             if (customDescription == null || customDescription.isEmpty()
                 || !isNamingMatched(customDescription.toLowerCase(Locale.ROOT),
-                    fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
+                fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
                 log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codesnippet description "
                     + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }
