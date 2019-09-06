@@ -25,6 +25,7 @@ import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -262,7 +263,7 @@ public class PartitionBasedLoadBalancerTest {
         TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
 
-        when(partitionProcessor.processEvent(any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
+        when(partitionProcessor.processEvent(any(PartitionContext.class), any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         when(eventHubAsyncClient.createConsumer(anyString(), anyString(), any(EventPosition.class), any(
@@ -270,15 +271,15 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubConsumer.receive()).thenReturn(Flux.error(new IllegalStateException()));
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(),
+            () -> partitionProcessor, EventPosition.earliest(),
             eventHubAsyncClient, tracerProvider);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(partitionManager,
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager);
         loadBalancer.loadBalance();
         sleep(2);
-        verify(partitionProcessor, never()).processEvent(any(EventData.class));
-        verify(partitionProcessor, times(1)).processError(any(IllegalStateException.class));
+        verify(partitionProcessor, never()).processEvent(any(PartitionContext.class), any(EventData.class));
+        verify(partitionProcessor, times(1)).processError(any(PartitionContext.class), any(IllegalStateException.class));
         verify(eventHubConsumer, times(1)).close();
     }
 
@@ -290,11 +291,11 @@ public class PartitionBasedLoadBalancerTest {
         PartitionManager partitionManager = mock(PartitionManager.class);
         when(partitionManager.listOwnership(any(), any())).thenReturn(Flux.error(new Exception("Listing failed")));
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
-        when(partitionProcessor.processEvent(any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
+        when(partitionProcessor.processEvent(any(PartitionContext.class), any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(),
+            () -> partitionProcessor, EventPosition.earliest(),
             eventHubAsyncClient, tracerProvider);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(partitionManager,
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -304,8 +305,8 @@ public class PartitionBasedLoadBalancerTest {
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(any(), any(), any());
         verify(eventHubConsumer, never()).receive();
-        verify(partitionProcessor, never()).processEvent(any(EventData.class));
-        verify(partitionProcessor, never()).processError(any(IllegalStateException.class));
+        verify(partitionProcessor, never()).processEvent(any(PartitionContext.class), any(EventData.class));
+        verify(partitionProcessor, never()).processError(any(PartitionContext.class), any(IllegalStateException.class));
         verify(eventHubConsumer, never()).close();
     }
 
@@ -315,11 +316,11 @@ public class PartitionBasedLoadBalancerTest {
         final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         PartitionProcessor partitionProcessor = mock(PartitionProcessor.class);
-        when(partitionProcessor.processEvent(any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
+        when(partitionProcessor.processEvent(any(PartitionContext.class), any(EventData.class))).thenReturn(Mono.error(new IllegalStateException()));
         List<String> partitionIds = new ArrayList<>();
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(partitionManager,
-            (partitionContext, checkpointManager) -> partitionProcessor, EventPosition.earliest(),
+            () -> partitionProcessor, EventPosition.earliest(),
             eventHubAsyncClient, tracerProvider);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(partitionManager,
             eventHubAsyncClient, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -329,8 +330,8 @@ public class PartitionBasedLoadBalancerTest {
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
         verify(eventHubAsyncClient, never()).createConsumer(any(), any(), any());
         verify(eventHubConsumer, never()).receive();
-        verify(partitionProcessor, never()).processEvent(any(EventData.class));
-        verify(partitionProcessor, never()).processError(any(IllegalStateException.class));
+        verify(partitionProcessor, never()).processEvent(any(PartitionContext.class), any(EventData.class));
+        verify(partitionProcessor, never()).processError(any(PartitionContext.class), any(IllegalStateException.class));
         verify(eventHubConsumer, never()).close();
     }
 

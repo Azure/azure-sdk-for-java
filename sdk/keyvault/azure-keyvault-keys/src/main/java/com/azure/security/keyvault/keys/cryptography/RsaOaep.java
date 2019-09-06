@@ -18,7 +18,8 @@ class RsaOaep extends RsaEncryption {
 
         private final Cipher cipher;
 
-        RsaOaepDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        RsaOaepDecryptor(KeyPair keyPair, Provider provider)
+            throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
             // Create a cipher object using the provider, if specified
             if (provider == null) {
@@ -43,7 +44,8 @@ class RsaOaep extends RsaEncryption {
 
         private final Cipher cipher;
 
-        RsaOaepEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        RsaOaepEncryptor(KeyPair keyPair, Provider provider)
+            throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
             // Create a cipher object using the provider, if specified
             if (provider == null) {
@@ -73,23 +75,27 @@ class RsaOaep extends RsaEncryption {
     }
 
     @Override
-    public ICryptoTransform createEncryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createEncryptor(KeyPair keyPair)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
         return createEncryptor(keyPair, null);
     }
 
     @Override
-    public ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
         return new RsaOaepEncryptor(keyPair, provider);
     }
 
     @Override
-    public ICryptoTransform createDecryptor(KeyPair keyPair) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createDecryptor(KeyPair keyPair)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
         return createDecryptor(keyPair, null);
     }
 
     @Override
-    public ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
         return new RsaOaepDecryptor(keyPair, provider);
     }

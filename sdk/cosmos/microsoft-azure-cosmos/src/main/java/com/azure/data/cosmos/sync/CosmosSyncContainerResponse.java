@@ -14,12 +14,13 @@ import com.azure.data.cosmos.internal.ResourceResponse;
 /**
  * The synchronous cosmos container response
  */
-public class CosmosSyncContainerResponse {
+public class CosmosSyncContainerResponse extends CosmosSyncResponse {
 
     private final CosmosContainerResponse responseWrapper;
     private final CosmosSyncContainer container;
 
     CosmosSyncContainerResponse(CosmosContainerResponse response, CosmosSyncDatabase database, CosmosSyncClient client) {
+        super(response);
         this.responseWrapper = response;
         if (responseWrapper.container() != null) {
             this.container = new CosmosSyncContainer(responseWrapper.container().id(), database, responseWrapper.container());

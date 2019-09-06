@@ -82,7 +82,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
-        tokenResourceProvider = new TokenResourceProvider(connectionOptions.authorizationType(), connectionOptions.host());
+        tokenResourceProvider =
+            new TokenResourceProvider(connectionOptions.authorizationType(), connectionOptions.host());
 
         this.managementChannelMono = connectionMono.then(
             Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,

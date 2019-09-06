@@ -45,5 +45,6 @@ public enum EncryptionAlgorithm {
      * All the JWK encryption implementation.
      */
     public static final List<EncryptionAlgorithm> ALL_ALGORITHMS = Collections
-            .unmodifiableList(Arrays.asList(RSA_OAEP, RSA1_5, RSA_OAEP_256, A256CBC_HS512, A128CBC_HS256, A192CBC_HS384, A256CBC, A192CBC, A128CBC));
+        .unmodifiableList(Arrays.asList(RSA_OAEP, RSA1_5, RSA_OAEP_256, A256CBC_HS512, A128CBC_HS256, A192CBC_HS384,
+            A256CBC, A192CBC, A128CBC));
 }
