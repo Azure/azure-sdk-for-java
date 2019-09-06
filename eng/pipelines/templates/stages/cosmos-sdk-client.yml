@@ -72,7 +72,7 @@ stages:
 
         - powershell: |
             Write-Host "Starting Comsos DB Emulator"
-            Start-Process "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong" -Verb RunAs
+            Start-Process "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong /overrides=eseLogFileSize:1024;" -Verb RunAs
           displayName: 'Run Public Cosmos DB Emulator'
 
         - powershell: |
