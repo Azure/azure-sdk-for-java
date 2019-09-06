@@ -91,8 +91,7 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
 
     /**
      * Check to see if the JAVADOC_INLINE_TAG node is {@literal @code} tag. If it is, check if the tag contains a new
-     * line
-     * or a leading asterisk, which implies the tag has spanned in multiple lines.
+     * line or a leading asterisk, which implies the tag has spanned in multiple lines.
      *
      * @param inlineTagNode JAVADOC_INLINE_TAG javadoc node
      */
