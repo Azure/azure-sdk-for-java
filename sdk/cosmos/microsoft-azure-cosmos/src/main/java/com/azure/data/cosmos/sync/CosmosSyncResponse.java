@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.Map;
 
 public class CosmosSyncResponse {
-    CosmosResponse resourceResponseWrapper;
+    private final CosmosResponse resourceResponseWrapper;
 
     CosmosSyncResponse(CosmosResponse resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;

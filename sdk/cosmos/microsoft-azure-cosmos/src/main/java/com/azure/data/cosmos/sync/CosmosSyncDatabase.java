@@ -454,7 +454,7 @@ public class CosmosSyncDatabase {
         }
     }
 
-    CosmosSyncUserResponse convertUserResponse(CosmosUserResponse response) {
+    private CosmosSyncUserResponse convertUserResponse(CosmosUserResponse response) {
         return new CosmosSyncUserResponse(response, this);
     }
 
@@ -479,7 +479,7 @@ public class CosmosSyncDatabase {
         return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
-    Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
+    private static Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
         try {
             return throughputResponse.block();
         } catch (Exception ex) {
