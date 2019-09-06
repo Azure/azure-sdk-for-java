@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -148,8 +149,9 @@ public class BlobPartitionManager implements PartitionManager {
     @Override
     public Mono<String> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint.sequenceNumber() == null && checkpoint.offset() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Both sequence number and offset cannot be null when updating a checkpoint"));
+            throw logger.logExceptionAsWarning(Exceptions
+                .propagate(new IllegalStateException(
+                    "Both sequence number and offset cannot be null when updating a checkpoint")));
         }
 
         String partitionId = checkpoint.partitionId();
