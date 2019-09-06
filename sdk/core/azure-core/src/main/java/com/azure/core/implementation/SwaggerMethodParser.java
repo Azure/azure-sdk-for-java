@@ -77,9 +77,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
      *
      * @param swaggerMethod the Swagger method to parse.
-     * @param rawHost the raw host value from the @Host annotation. Before this can be used as the
-     *     host value in an HTTP request, it must be processed through the possible host
-     *     substitutions.
+     * @param rawHost the raw host value from the @Host annotation. Before this can be used as the host value in an HTTP
+     *     request, it must be processed through the possible host substitutions.
      */
     SwaggerMethodParser(Method swaggerMethod, String rawHost) {
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
@@ -208,12 +207,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the HTTP response status codes that are expected when a request is sent out for this
-     * Swagger method. If the returned int[] is null, then all status codes less than 400 are
-     * allowed.
+     * Get the HTTP response status codes that are expected when a request is sent out for this Swagger method. If the
+     * returned int[] is null, then all status codes less than 400 are allowed.
      *
-     * @return the expected HTTP response status codes for this Swagger method or null if all status
-     *     codes less than 400 are allowed.
+     * @return the expected HTTP response status codes for this Swagger method or null if all status codes less than 400
+     *     are allowed.
      */
     @Override
     public int[] expectedStatusCodes() {
@@ -260,8 +258,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the encoded query parameters that have been added to this value based on the provided
      * method arguments.
      *
-     * @param swaggerMethodArguments the arguments that will be used to create the query parameters'
-     *     values
+     * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
      * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
@@ -272,8 +269,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the encoded form parameters that have been added to this value based on the provided
      * method arguments.
      *
-     * @param swaggerMethodArguments the arguments that will be used to create the form parameters'
-     *     values
+     * @param swaggerMethodArguments the arguments that will be used to create the form parameters' values
      * @return an Iterable with the encoded form parameters
      */
     public Iterable<EncodedParameter> encodedFormParameters(Object[] swaggerMethodArguments) {
@@ -354,11 +350,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * this Swagger method.
      *
      * @param responseStatusCode the status code that was returned in the HTTP response
-     * @param additionalAllowedStatusCodes an additional set of allowed status codes that will be
-     *     merged with the existing set of allowed status codes for
-     *     this query
-     * @return whether or not the provided response status code is one of the expected status codes
-     *     for this Swagger method
+     * @param additionalAllowedStatusCodes an additional set of allowed status codes that will be merged with the
+     *     existing set of allowed status codes for this query
+     * @return whether or not the provided response status code is one of the expected status codes for this Swagger
+     *     method
      */
     public boolean isExpectedResponseStatusCode(int responseStatusCode, int[] additionalAllowedStatusCodes) {
         boolean result;
@@ -390,8 +385,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response
-     * status
-     * code is not one of the expected status codes.
+     * status code is not one of the expected status codes.
      *
      * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation
      * will be returned.
@@ -486,8 +480,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             result = false;
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
-            Flux.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
@@ -509,8 +503,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * request.
      *
      * @param httpMethod the HTTP method that will be used to complete the Swagger method's request
-     * @param relativePath the path in the URL that will be used to complete the Swagger method's
-     *     request
+     * @param relativePath the path in the URL that will be used to complete the Swagger method's request
      */
     private void setHttpMethodAndRelativePath(HttpMethod httpMethod, String relativePath) {
         this.httpMethod = httpMethod;

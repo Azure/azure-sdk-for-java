@@ -269,11 +269,8 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleResumeOperation(final HttpRequest httpRequest,
-                                           OperationDescription operationDescription,
-                                           final SwaggerMethodParser methodParser,
-                                           Type returnType,
-                                           Context context) {
+    protected Object handleResumeOperation(final HttpRequest httpRequest, OperationDescription operationDescription,
+                                           final SwaggerMethodParser methodParser, Type returnType, Context context) {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
         if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
             throw logger.logExceptionAsError(new InvalidReturnTypeException("AzureProxy only supports swagger "
@@ -288,8 +285,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     private Mono<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest,
-                                                  final Mono<HttpDecodedResponse> asyncOriginalHttpDecodedResponse,
-                                                  final SwaggerMethodParser methodParser) {
+            final Mono<HttpDecodedResponse> asyncOriginalHttpDecodedResponse, final SwaggerMethodParser methodParser) {
         return asyncOriginalHttpDecodedResponse
             .flatMap((Function<HttpDecodedResponse, Mono<PollStrategy>>) originalHttpDecodedResponse -> {
                 final int httpStatusCode = originalHttpDecodedResponse.sourceResponse().statusCode();
@@ -376,9 +372,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     private Mono<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest,
-                                                                              HttpResponse httpResponse,
-                                                                              final SwaggerMethodParser methodParser,
-                                                                              final long delayInMilliseconds) {
+            HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
         Mono<PollStrategy> pollStrategyMono;
 
         final HttpMethod httpRequestMethod = httpRequest.httpMethod();
