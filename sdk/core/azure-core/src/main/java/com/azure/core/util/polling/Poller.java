@@ -44,8 +44,7 @@ import java.util.function.Function;
  * manual polling is triggered by calling {@link Poller#poll()} function.
  *
  * <p>The {@link Poller} will stop polling when the long-running operation is complete or it is disabled. The polling
- * is considered complete
- * based on status defined in {@link OperationStatus}.
+ * is considered complete based on status defined in {@link OperationStatus}.
  *
  * <p><strong>Code Samples</strong></p>
  *
@@ -66,8 +65,8 @@ public class Poller<T> {
 
     private final ClientLogger logger = new ClientLogger(Poller.class);
     /*
-     * poll operation is a function that takes the previous PollResponse, and
-     * returns a new Mono of PollResponse to represent the current state
+     * poll operation is a function that takes the previous PollResponse, and returns a new Mono of PollResponse to
+     * represent the current state
      */
     private final Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation;
 
@@ -101,30 +100,26 @@ public class Poller<T> {
     private final Flux<PollResponse<T>> fluxHandle;
 
     /*
-     * Since constructor create a subscriber and start auto polling.
-     * This handle will be used to dispose the subscriber when
-     * client disable auto polling.
+     * Since constructor create a subscriber and start auto polling. This handle will be used to dispose the subscriber
+     * when client disable auto polling.
      */
     private Disposable fluxDisposable;
 
     /**
      * Create a {@link Poller} instance with poll interval and poll operation. The polling starts immediately by
-     * invoking {@code pollOperation}.
-     * The next poll cycle will be defined by {@code retryAfter} value in {@link PollResponse}.
-     * In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
+     * invoking {@code pollOperation}. The next poll cycle will be defined by {@code retryAfter} value in
+     * {@link PollResponse}. In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
      *
      * <p><strong>Code Sample - Create poller object</strong></p>
      * {@codesnippet com.azure.core.util.polling.poller.initialize.interval.polloperation}
      *
      * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback
-     *     into the client library,
-     *     which must never return {@code null}, and which must always have a non-null {@link OperationStatus}.
-     *     {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected
-     *     scenario happens in poll operation,
-     *     it should be handled by client library and return a valid {@link PollResponse}. However if poll operation
-     *     returns {@link Mono#error(Throwable)},
-     *     the {@link Poller} will disregard that and continue to poll.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into
+     *     the client library, which must never return {@code null}, and which must always have a non-null
+     *     {@link OperationStatus}. {@link Mono} returned from poll operation should never return
+     *     {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should be handled by
+     *     client library and return a valid {@link PollResponse}. However if poll operation returns
+     *     {@link Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
      *     {@code pollInterval} or {@code pollOperation} are {@code null}
      */
@@ -134,34 +129,31 @@ public class Poller<T> {
 
     /**
      * Create a {@link Poller} instance with poll interval, poll operation and cancel operation. The polling starts
-     * immediately by invoking {@code pollOperation}.
-     * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
-     * In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use {@code pollInterval}.
+     * immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value in
+     * {@link PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use
+     * {@code pollInterval}.
      *
      * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback
-     *     into the client library,
-     *     which must never return {@code null}, and which must always have a non-null {@link OperationStatus}.
-     *     {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected
-     *     scenario happens in poll operation,
-     *     it should handle it and return a valid {@link PollResponse}. However if poll operation returns
-     *     {@link Mono#error(Throwable)},
-     *     the {@link Poller} will disregard that and continue to poll.
-     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}
-     *     which will indicate to the {@link Poller}
-     *     that cancel operation is not supported by Azure service.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into
+     *     the client library, which must never return {@code null}, and which must always have a non-null
+     *     {@link OperationStatus}. {@link Mono} returned from poll operation should never return
+     *     {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should handle it and
+     *     return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)}, the
+     *     {@link Poller} will disregard that and continue to poll.
+     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which
+     *     will indicate to the {@link Poller} that cancel operation is not supported by Azure service.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
      *     {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                   Consumer<Poller<T>> cancelOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null, negative or zero value for poll "
-                + "interval is not allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                "Null, negative or zero value for poll interval is not allowed."));
         }
         if (pollOperation == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Null value for poll operation is not "
-                + "allowed."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                "Null value for poll operation is not allowed."));
         }
 
         this.pollInterval = pollInterval;
@@ -182,8 +174,7 @@ public class Poller<T> {
 
     /**
      * Attempts to cancel the long-running operation that this {@link Poller} represents. This is possible only if the
-     * service supports it,
-     * otherwise an {@code UnsupportedOperationException} will be thrown.
+     * service supports it, otherwise an {@code UnsupportedOperationException} will be thrown.
      * <p>
      * It will call cancelOperation if status is {@link OperationStatus#IN_PROGRESS} otherwise it does nothing.
      *
@@ -226,8 +217,7 @@ public class Poller<T> {
      * {@codesnippet com.azure.core.util.polling.poller.poll-indepth}
      *
      * @return a Mono of {@link PollResponse} This will call poll operation once. The {@link Mono} returned here could
-     *     be subscribed
-     *     for receiving {@link PollResponse} in async manner.
+     *     be subscribed for receiving {@link PollResponse} in async manner.
      */
     public Mono<PollResponse<T>> poll() {
         return this.pollOperation.apply(this.pollResponse)

@@ -173,8 +173,7 @@ public final class TypeUtil {
 
     /**
      * Returns whether the rest response expects to have any body (by checking if the body parameter type is set to
-     * Void,
-     * in which case no body is expected).
+     * Void, in which case no body is expected).
      *
      * @param restResponseReturnType The RestResponse subtype containing the type arguments we are inspecting.
      * @return True if a body is expected, false if a Void body is expected.

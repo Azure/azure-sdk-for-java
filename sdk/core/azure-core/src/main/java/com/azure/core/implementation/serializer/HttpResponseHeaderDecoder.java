@@ -63,8 +63,7 @@ final class HttpResponseHeaderDecoder {
      * 2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the entity.
      *
      * When needed, the 'header entity' types must be declared as first generic argument of {@link ResponseBase}
-     * returned
-     * by java proxy method corresponding to the REST API.
+     * returned by java proxy method corresponding to the REST API.
      * e.g.
      * {@code Mono<RestResponseBase<FooMetadataHeaders, Void>> getMetadata(args);}
      * {@code

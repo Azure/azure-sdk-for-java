@@ -11,10 +11,8 @@ import java.util.Objects;
 
 /**
  * PollResponse represents a single response from a service for a long-running polling operation. It provides
- * information such as
- * the current {@link OperationStatus status} of the long-running operation, any {@link #getValue value} returned in the
- * poll, as well
- * as other useful information provided by the service.
+ * information such as the current {@link OperationStatus status} of the long-running operation, any
+ * {@link #getValue value} returned in the poll, as well as other useful information provided by the service.
  *
  * <p><strong>Code Sample Creating PollResponse Object</strong></p>
  * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
@@ -78,11 +76,10 @@ public final class PollResponse<T> {
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties}
      *
      * @param status Mandatory operation status as defined in {@link OperationStatus}.
-     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is
-     *     also valid.
-     * @param retryAfter Represents the delay the service has requested until the next polling operation is
-     *     performed.
-     *     A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
+     *     valid.
+     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed. A
+     *     {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its
      *     own when the next poll operation is to occur.
      * @param properties A map of properties provided by the service that will be made available into the next poll
      *     operation.
@@ -103,11 +100,10 @@ public final class PollResponse<T> {
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter}
      *
      * @param status Mandatory operation status as defined in {@link OperationStatus}.
-     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is
-     *     also valid.
-     * @param retryAfter Represents the delay the service has requested until the next polling operation is
-     *     performed.
-     *     A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
+     *     valid.
+     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed. A
+     *     {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its
      *     own when the next poll operation is to occur.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
@@ -122,8 +118,8 @@ public final class PollResponse<T> {
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
      *
      * @param status Mandatory operation status as defined in {@link OperationStatus}.
-     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is
-     *     also valid.
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
+     *     valid.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(OperationStatus status, T value) {
@@ -150,8 +146,8 @@ public final class PollResponse<T> {
 
     /**
      * Returns the delay the service has requested until the next polling operation is performed. A null or negative
-     * value will be
-     * taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
+     * value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is
+     * to occur.
      * @return Duration How long to wait before next retry.
      */
     public Duration getRetryAfter() {

@@ -79,8 +79,7 @@ public interface HttpResponseDecodeData {
 
     /**
      * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response
-     * status
-     * code is not one of the expected status codes.
+     * status code is not one of the expected status codes.
      *
      * @param code Exception HTTP status code return from a REST API.
      * @return the UnexpectedExceptionInformation to generate an exception to throw or return.

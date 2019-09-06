@@ -17,8 +17,7 @@ import java.util.Objects;
  *
  * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a throwable is the last
  * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose}
- * logging the
- * stack trace for the throwable will be included in the log message.</p>
+ * logging the stack trace for the throwable will be included in the log message.</p>
  *
  * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
  * environment configuration, by default logging is disabled.</p>
