@@ -157,7 +157,11 @@ public class EventDataUtil {
                         message.setReplyToGroupId((String) value);
                         break;
                     default:
-                        throw new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key));
+                        throw new IllegalArgumentException(
+                            String.format(
+                                Locale.US,
+                                "Property is not a recognized reserved property name: %s",
+                                key));
                 }
             } else {
                 final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
@@ -234,7 +238,8 @@ public class EventDataUtil {
             return Double.BYTES;
         }
 
-        throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));
+        throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported",
+            obj.getClass()));
     }
 
     private EventDataUtil() {

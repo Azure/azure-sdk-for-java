@@ -5,6 +5,7 @@ package com.azure.storage.file.spock
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.models.CorsRule
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.Metrics
@@ -21,6 +22,7 @@ import java.security.NoSuchAlgorithmException
 import java.time.Duration
 
 class FileTestHelper {
+    private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
 
     static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
         return expectedStatusCode == response.statusCode()
@@ -175,10 +177,14 @@ class FileTestHelper {
 
     static String createRandomFileWithLength(int size, String folder, String fileName) {
         def path = Paths.get(folder)
+        if (path == null) {
+            throw logger.logExceptionAsError(new RuntimeException("The folder path does not exist."))
+        }
+
         if (!Files.exists(path)) {
             Files.createDirectory(path)
         }
-        def randomFile = new File(folder + "/" + fileName)
+        def randomFile = new File(folder, fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
         raf.close()

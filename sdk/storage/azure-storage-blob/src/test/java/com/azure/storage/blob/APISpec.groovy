@@ -101,7 +101,7 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"

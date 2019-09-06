@@ -20,8 +20,8 @@ public class EventHubProducerOptions implements Cloneable {
     private RetryOptions retryOptions;
 
     /**
-     * Sets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting it to
-     * sending events to only that partition.
+     * Sets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to,
+     * limiting it to sending events to only that partition.
      *
      * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
      * to an available partition.

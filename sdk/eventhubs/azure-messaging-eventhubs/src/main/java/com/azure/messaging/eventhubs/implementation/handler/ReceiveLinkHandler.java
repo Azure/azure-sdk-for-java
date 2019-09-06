@@ -78,14 +78,16 @@ public class ReceiveLinkHandler extends LinkHandler {
         // all until "last-1" deliveries will be partial
         // reactor will raise onDelivery event for all of these - we only need the last one
         if (!delivery.isPartial()) {
-            // One of our customers hit an issue - where duplicate 'Delivery' events are raised to Reactor in proton-j layer
+            // One of our customers hit an issue - where duplicate 'Delivery' events are raised to Reactor in
+            // proton-j layer
             // While processing the duplicate event - reactor hits an IllegalStateException in proton-j layer
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
             if (delivery.isSettled()) {
                 if (link != null) {
                     logger.info("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
                             + "remoteCondition[{}], delivery.isSettled[{}]",
-                        receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(), delivery.isSettled());
+                        receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(),
+                        link.getRemoteCondition(), delivery.isSettled());
                 } else {
                     logger.warning("delivery.isSettled[{}]", delivery.isSettled());
                 }
@@ -97,7 +99,8 @@ public class ReceiveLinkHandler extends LinkHandler {
         if (link != null) {
             logger.verbose("onDelivery receiverName[{}], linkName[{}], updatedLinkCredit[{}], remoteCredit[{}], "
                     + "remoteCondition[{}], delivery.isPartial[{}]",
-                receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(), delivery.isPartial());
+                receiverName, link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(),
+                delivery.isPartial());
         }
     }
 }

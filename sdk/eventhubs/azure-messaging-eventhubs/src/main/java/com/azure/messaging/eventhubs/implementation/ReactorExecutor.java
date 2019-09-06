@@ -98,9 +98,11 @@ class ReactorExecutor implements Closeable {
                     rescheduledReactor = true;
                 } catch (RejectedExecutionException exception) {
                     logger.warning(LOG_MESSAGE, connectionId,
-                        StringUtil.toStackTraceString(exception, "Scheduling reactor failed because the executor has been shut down"));
+                        StringUtil.toStackTraceString(exception,
+                            "Scheduling reactor failed because the executor has been shut down"));
 
-                    this.reactor.attachments().set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
+                    this.reactor.attachments()
+                        .set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
                 }
             }
         } catch (HandlerException handlerException) {
@@ -122,7 +124,8 @@ class ReactorExecutor implements Closeable {
 
             if (cause instanceof UnresolvedAddressException) {
                 exception = new AmqpException(true,
-                    String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network configuration. Check correctness of namespace information. %s",
+                    String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network "
+                            + "configuration. Check correctness of namespace information. %s",
                         message, StringUtil.getTrackingIDAndTimeToLog()),
                     cause, errorContext);
             } else {
@@ -137,7 +140,9 @@ class ReactorExecutor implements Closeable {
                 if (hasStarted.get()) {
                     scheduleCompletePendingTasks();
                 } else {
-                    final String reason = "Stopping the reactor because thread was interrupted or the reactor has no more events to process.";
+                    final String reason =
+                        "Stopping the reactor because thread was interrupted or the reactor has no more events to "
+                            + "process.";
 
                     logger.info(LOG_MESSAGE, connectionId, reason);
                     close(false, reason);
@@ -156,7 +161,8 @@ class ReactorExecutor implements Closeable {
                 reactor.process();
             } catch (HandlerException e) {
                 logger.warning(LOG_MESSAGE, connectionId,
-                    StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while processing events."));
+                    StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while "
+                        + "processing events."));
             } finally {
                 reactor.free();
             }
