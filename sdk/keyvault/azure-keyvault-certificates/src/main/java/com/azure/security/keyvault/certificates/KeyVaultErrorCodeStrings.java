@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import java.util.Properties;
 class KeyVaultErrorCodeStrings {
     static final String ERROR_STRINGS_FILE_NAME = "kvErrorStrings.properties";
     private static Properties errorStrings;
-    private static HashMap<String, String> errorStringsDefault;
+    private static final ClientLogger logger = new ClientLogger(KeyVaultErrorCodeStrings.class);
 
     /**
      * The property name of Azure Key Vault Credentials required error string.
@@ -43,7 +45,7 @@ class KeyVaultErrorCodeStrings {
             errorStrings = new Properties();
             errorStrings.load(fileInputStream);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.error("Cannot locate/read Error Strings file - %s", ERROR_STRINGS_FILE_NAME);
         }
     }
 }

@@ -24,13 +24,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      * @return sync CertificateClient
      */
     private CertificateClient getCertificateClient() {
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.instantiation
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.instantiation
         CertificateClient certificateClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://myvault.vault.azure.net/")
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildClient();
-        // END: com.azure.security.keyvault.certificates.certificateclient.instantiation
+        // END: com.azure.security.keyvault.certificates.certificateClient.instantiation
         return certificateClient;
     }
     
@@ -40,13 +40,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void getCertiificatePolicyCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificatePolicy#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificatePolicy#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificatePolicy#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificatePolicy#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificatePolicyWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificatePolicyWithResponse#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificatePolicyWithResponse#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificatePolicyWithResponse#string
     }
 
 
@@ -56,21 +56,21 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void getCertificateWithResponseCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificateWithPolicy
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificateWithPolicy
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificateWithPolicy
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificateWithPolicy
 
         // BEGIN: com.azure.security.keyvault.certificates.async.certificateclient.getCertificateWithResponse
 
         // END: com.azure.security.keyvault.certificates.async.certificateclient.getCertificateWithResponse
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificate
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificate
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificate
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificate
 
-        //BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificate#CertificateBase
+        //BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificate#CertificateBase
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificate#CertificateBase
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificate#CertificateBase
     }
 
     /**
@@ -78,21 +78,21 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void createCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificate#tags-timeout
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificate#tags-timeout
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificate#tags-timeout
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificate#tags-timeout
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificate#tags
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificate#tags
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificate#tags        
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificate#tags        
         
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificate#timeout
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificate#timeout
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificate#timeout      
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificate#timeout      
         
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificate
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificate
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificate
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificate
     }
 
     /**
@@ -100,17 +100,17 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void createCertificateIssuerCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificateIssuer
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificateIssuer
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificateIssuer
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificateIssuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificateIssuer#issuer
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificateIssuer#issuer
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificateIssuer#issuer
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificateIssuer#issuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.createCertificateIssuerWithResponse#issuer
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.createCertificateIssuerWithResponse#issuer
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.createCertificateIssuerWithResponse#issuer
+        // END: com.azure.security.keyvault.certificates.certificateClient.createCertificateIssuerWithResponse#issuer
     }
 
     /**
@@ -118,23 +118,23 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void getCertificateIssuerCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuer#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuer#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuer#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuer#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuerWithResponse#string-context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuerWithResponse#string-context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuerWithResponse#string-context
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuerWithResponse#string-context
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuerWithResponse#string-context
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuerWithResponse#string-context
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuer#issuerBase
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuer#issuerBase
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuer#issuerBase
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuer#issuerBase
 
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuerWithResponse#issuerBase-context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuerWithResponse#issuerBase-context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getCertificateIssuerWithResponse#issuerBase-context
+        // END: com.azure.security.keyvault.certificates.certificateClient.getCertificateIssuerWithResponse#issuerBase-context
     }
 
     /**
@@ -142,13 +142,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void updateCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificate#CertificateBase
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificate#CertificateBase
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificate#CertificateBase
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificate#CertificateBase
         
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificateWithResponse#CertificateBase
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificateWithResponse#CertificateBase
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificateWithResponse#CertificateBase
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificateWithResponse#CertificateBase
     }
 
     /**
@@ -156,13 +156,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void updateCertificateIssuerCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificateIssuer#issuer
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificateIssuer#issuer
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificateIssuer#issuer
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificateIssuer#issuer
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificateIssuerWithResponse#issuer
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificateIssuerWithResponse#issuer
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificateIssuerWithResponse#issuer
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificateIssuerWithResponse#issuer
     }
 
     /**
@@ -170,13 +170,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void updateCertificatePolicyCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificatePolicy#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificatePolicy#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificatePolicy#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificatePolicy#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificatePolicyWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificatePolicyWithResponse#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificatePolicyWithResponse#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificatePolicyWithResponse#string
     }
 
     /**
@@ -184,9 +184,9 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void updateCertificateWithResponseCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.updateCertificateWithResponse#CertificateBase
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.updateCertificateWithResponse#CertificateBase
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.updateCertificateWithResponse#CertificateBase
+        // END: com.azure.security.keyvault.certificates.certificateClient.updateCertificateWithResponse#CertificateBase
     }
 
     /**
@@ -194,13 +194,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void deleteCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificate#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificate#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificate#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateWithResponse#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateWithResponse#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateWithResponse#string
     }
 
     /**
@@ -208,13 +208,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void deleteCertificateIssuerCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateIssuerWithResponse#string-context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateIssuerWithResponse#string-context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateIssuerWithResponse#string-context
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateIssuerWithResponse#string-context
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateIssuer#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateIssuer#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateIssuer#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateIssuer#string
     }
 
     /**
@@ -226,9 +226,9 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // END: com.azure.security.keyvault.certificates.async.certificateclient.getDeletedCertificate#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.getDeletedCertificateWithResponse#string}
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.getDeletedCertificateWithResponse#string}
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.getDeletedCertificateWithResponse#string}
+        // END: com.azure.security.keyvault.certificates.certificateClient.getDeletedCertificateWithResponse#string}
     }
 
     /**
@@ -250,13 +250,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.certificateclient.recoverDeletedCertificate#string
+        // BEGIN: com.azure.security.certificatevault.certificates.certificateClient.recoverDeletedCertificate#string
 
-        // END: com.azure.security.certificatevault.certificates.certificateclient.recoverDeletedCertificate#string
+        // END: com.azure.security.certificatevault.certificates.certificateClient.recoverDeletedCertificate#string
 
-        // BEGIN: com.azure.security.certificatevault.certificates.certificateclient.recoverDeletedCertificateWithResponse#string
+        // BEGIN: com.azure.security.certificatevault.certificates.certificateClient.recoverDeletedCertificateWithResponse#string
 
-        // END: com.azure.security.certificatevault.certificates.certificateclient.recoverDeletedCertificateWithResponse#string
+        // END: com.azure.security.certificatevault.certificates.certificateClient.recoverDeletedCertificateWithResponse#string
     }
 
     /**
@@ -264,13 +264,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void backupCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.backupCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.backupCertificate#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.backupCertificate#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.backupCertificate#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.backupCertificateWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.backupCertificateWithResponse#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.backupCertificateWithResponse#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.backupCertificateWithResponse#string
     }
 
     /**
@@ -278,13 +278,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void restoreCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.restoreCertificate#byte
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.restoreCertificate#byte
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.restoreCertificate#byte
+        // END: com.azure.security.keyvault.certificates.certificateClient.restoreCertificate#byte
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.restoreCertificateWithResponse#byte
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.restoreCertificateWithResponse#byte
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.restoreCertificateWithResponse#byte
+        // END: com.azure.security.keyvault.certificates.certificateClient.restoreCertificateWithResponse#byte
     }
 
     /**
@@ -292,13 +292,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void listCertificatesCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificates
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificates
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificates
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificates
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificates#context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificates#context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificates#context
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificates#context
     }
 
     /**
@@ -306,13 +306,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void listCertificateIssuersCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificateIssuers
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificateIssuers
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificateIssuers
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificateIssuers
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificateIssuers#context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificateIssuers#context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificateIssuers#context
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificateIssuers#context
     }
 
     /**
@@ -320,13 +320,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void listDeletedCertificatesCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listDeletedCertificates
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listDeletedCertificates
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listDeletedCertificates
+        // END: com.azure.security.keyvault.certificates.certificateClient.listDeletedCertificates
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listDeletedCertificates#context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listDeletedCertificates#context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listDeletedCertificates#context
+        // END: com.azure.security.keyvault.certificates.certificateClient.listDeletedCertificates#context
     }
 
     /**
@@ -334,13 +334,13 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void listCertificateVersionsCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificateVersions
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificateVersions
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificateVersions
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificateVersions
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificateVersions#context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificateVersions#context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificateVersions#context
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificateVersions#context
     }
 
     /**
@@ -348,29 +348,29 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void contactsOperationsCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.setCertificateContacts#contacts
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.setCertificateContacts#contacts
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.setCertificateContacts#contacts
+        // END: com.azure.security.keyvault.certificates.certificateClient.setCertificateContacts#contacts
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.setCertificateContacts#contacts-context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.setCertificateContacts#contacts-context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.setCertificateContacts#contacts-context
+        // END: com.azure.security.keyvault.certificates.certificateClient.setCertificateContacts#contacts-context
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificateContacts
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificateContacts
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificateContacts
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificateContacts
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.listCertificateContacts#context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.listCertificateContacts#context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.listCertificateContacts#context
+        // END: com.azure.security.keyvault.certificates.certificateClient.listCertificateContacts#context
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateContacts
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateContacts
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateContacts
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateContacts
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateContacts#context
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateContacts#context
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateContacts#context
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateContacts#context
     }
 
     /**
@@ -379,21 +379,21 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void certificateOperationCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.cancelCertificateOperation#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.cancelCertificateOperation#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.cancelCertificateOperation#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.cancelCertificateOperation#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.cancelCertificateOperationWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.cancelCertificateOperationWithResponse#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.cancelCertificateOperationWithResponse#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.cancelCertificateOperationWithResponse#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateOperationWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateOperationWithResponse#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateOperationWithResponse#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateOperationWithResponse#string
 
-        // BEGIN: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateOperation#string
+        // BEGIN: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateOperation#string
 
-        // END: com.azure.security.keyvault.certificates.certificateclient.deleteCertificateOperation#string
+        // END: com.azure.security.keyvault.certificates.certificateClient.deleteCertificateOperation#string
     }
 
 

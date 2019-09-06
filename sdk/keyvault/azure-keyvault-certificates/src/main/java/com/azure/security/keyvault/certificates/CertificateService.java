@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -59,7 +58,9 @@ interface CertificateService {
                                           @QueryParam("api-version") String apiVersion,
                                           @HeaderParam("accept-language") String acceptLanguage,
                                           @BodyParam("body") CertificateRequestParameters parameters,
-                                          @HeaderParam("Content-Type") String type);
+                                          @HeaderParam("Content-Type") String type,
+                                          Context context);
+
     @Get("certificates/{certificate-name}/pending")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
@@ -68,7 +69,8 @@ interface CertificateService {
                                                                  @PathParam("certificate-name") String certificateName,
                                                                  @QueryParam("api-version") String apiVersion,
                                                                  @HeaderParam("accept-language") String acceptLanguage,
-                                                                 @HeaderParam("Content-Type") String type);
+                                                                 @HeaderParam("Content-Type") String type,
+                                                                 Context context);
 
     @Patch("certificates/{certificate-name}/pending")
     @ExpectedResponses({200})

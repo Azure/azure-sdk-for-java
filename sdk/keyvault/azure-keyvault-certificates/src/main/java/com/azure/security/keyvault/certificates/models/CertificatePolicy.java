@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The Certificate Management policy for the {@link Certificate certificate}.
+ */
 public final class CertificatePolicy {
 
     /**
@@ -283,7 +286,7 @@ public final class CertificatePolicy {
     }
 
     /**
-     * Get the name value.
+     * Get the  issuer name.
      *
      * @return the Issuer name.
      */

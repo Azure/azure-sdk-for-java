@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link CertificateAsyncClient secret async client} and {@link CertificateClient secret sync client},
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link CertificateAsyncClient certificate async client} and {@link CertificateClient certificate sync client},
  * by calling {@link CertificateClientBuilder#buildAsyncClient() buildAsyncClient} and {@link CertificateClientBuilder#buildClient() buildClient} respectively
  * It constructs an instance of the desired client.
  *
@@ -45,7 +45,7 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.security.keyvault.certificates.async.certificateclient.pipeline.instantiation}
  *
- * <p> The minimal configuration options required by {@link CertificateClientBuilder secretClientBuilder} to build {@link CertificateClient}
+ * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build {@link CertificateClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.security.keyvault.certificates.certificateclient.instantiation}
@@ -53,8 +53,8 @@ import java.util.Objects;
  * @see CertificateAsyncClient
  * @see CertificateClient
  */
-@ServiceClientBuilder(serviceClients = CertificateClient.class)
-public final class CertificateClientBuilder {
+@ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
+    public final class CertificateClientBuilder {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
 
     private final List<HttpPipelinePolicy> policies;
@@ -165,7 +165,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public CertificateClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential);
+        Objects.requireNonNull(credential, "Token credential cannot be null");
         this.credential = credential;
         return this;
     }
@@ -180,7 +180,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public CertificateClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        Objects.requireNonNull(logLevel);
+        Objects.requireNonNull(logLevel, "Http log detail level cannot be null.");
         httpLogDetailLevel = logLevel;
         return this;
     }
@@ -193,7 +193,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public CertificateClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
+        Objects.requireNonNull(policy, "Http pipeline policy cannot be null");
         policies.add(policy);
         return this;
     }
@@ -206,7 +206,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CertificateClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
+        Objects.requireNonNull(client, "Http client cannot be null.");
         this.httpClient = client;
         return this;
     }
@@ -221,7 +221,7 @@ public final class CertificateClientBuilder {
      * @return the updated {@link CertificateClientBuilder} object.
      */
     public CertificateClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
+        Objects.requireNonNull(pipeline, "Http Pipeline cannot be null.");
         this.pipeline = pipeline;
         return this;
     }

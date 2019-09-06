@@ -14,8 +14,9 @@
     <artifactId>azure-keyvault-certificates</artifactId>
     <version>4.0.0-preview.3</version>
 
-    <name>azure-keyvault-certificates</name>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <name>Microsoft Azure client library for KeyVault Certificates</name>
+  <description>This module contains client library for Microsoft Azure KeyVault Certificates.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <distributionManagement>
         <site>
@@ -66,6 +67,7 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
           <version>1.0.0-preview.3</version>
+          <scope>test</scope>
         </dependency>
 
        <dependency>
