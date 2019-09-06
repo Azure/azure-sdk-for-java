@@ -36,13 +36,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.ContentType;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
+import java.nio.charset.StandardCharsets;
 import org.junit.Assert;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,6 +61,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.test.StepVerifier;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -73,6 +78,9 @@ public abstract class RestProxyTests {
      * @return The HTTP client to use for each test.
      */
     protected abstract HttpClient createHttpClient();
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Host("http://httpbin.org")
     @ServiceInterface(name = "Service1")
@@ -431,6 +439,16 @@ public abstract class RestProxyTests {
         Mono<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @Put("put")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        HttpBinJSON putBodyAndContentLength(@BodyParam("application/octet-stream") ByteBuffer body, @HeaderParam("Content-Length") long contentLength);
+
+        @Put("put")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        Mono<HttpBinJSON> putAsyncBodyAndContentLength(@BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength);
+
+        @Put("put")
         @ExpectedResponses({201})
         HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
@@ -498,6 +516,79 @@ public abstract class RestProxyTests {
                 .block();
         assertEquals(String.class, json.data().getClass());
         assertEquals("42", json.data());
+    }
+
+    // Test all scenarios for the body length and content length comparison for sync API
+    @Test
+    public void syncPutRequestWithBodyAndEqualContentLength() {
+        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
+        final HttpBinJSON json = createService(Service9.class)
+            .putBodyAndContentLength(body, 4L);
+        assertEquals("test", json.data());
+        assertEquals("application/octet-stream", json.headers().get(("Content-Type")));
+        assertEquals("4", json.headers().get(("Content-Length")));
+        body.clear();
+    }
+
+    @Test
+    public void syncPutRequestWithBodyLessThanContentLength() {
+        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
+        thrown.expect(UnexpectedLengthException.class);
+        thrown.expectMessage("less than");
+        createService(Service9.class)
+            .putBodyAndContentLength(body, 5L);
+        body.clear();
+    }
+
+    @Test
+    public void syncPutRequestWithBodyMoreThanContentLength() {
+        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
+        thrown.expect(UnexpectedLengthException.class);
+        thrown.expectMessage("more than");
+        createService(Service9.class)
+            .putBodyAndContentLength(body, 3L);
+        body.clear();
+    }
+
+    // Test all scenarios for the body length and content length comparison for Async API
+    @Test
+    public void asyncPutRequestWithBodyAndEqualContentLength() {
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
+        StepVerifier.create(createService(Service9.class)
+            .putAsyncBodyAndContentLength(body, 4L))
+            .assertNext(
+                json -> {
+                    assertEquals("test", json.data());
+                    assertEquals("application/octet-stream", json.headers().get(("Content-Type")));
+                    assertEquals("4", json.headers().get(("Content-Length")));
+                }
+            ).verifyComplete();
+    }
+
+    @Test
+    public void asyncPutRequestWithBodyAndLessThanContentLength() {
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
+        StepVerifier.create(createService(Service9.class)
+            .putAsyncBodyAndContentLength(body, 5L))
+            .verifyErrorSatisfies(
+                exception -> {
+                    assertTrue(exception instanceof UnexpectedLengthException);
+                    assertTrue(exception.getMessage().contains("less than"));
+                }
+            );
+    }
+
+    @Test
+    public void asyncPutRequestWithBodyAndMoreThanContentLength() {
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
+        StepVerifier.create(createService(Service9.class)
+            .putAsyncBodyAndContentLength(body, 3L))
+            .verifyErrorSatisfies(
+                exception -> {
+                    assertTrue(exception instanceof UnexpectedLengthException);
+                    assertTrue(exception.getMessage().contains("more than"));
+                }
+            );
     }
 
     @Test

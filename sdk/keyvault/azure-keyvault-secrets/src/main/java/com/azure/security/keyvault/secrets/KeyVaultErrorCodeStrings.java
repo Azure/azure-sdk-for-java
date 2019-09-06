@@ -34,7 +34,8 @@ class KeyVaultErrorCodeStrings {
 
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
-            try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+            try (InputStream fileInputStream =
+                KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
                 errorStrings = new Properties();
                 errorStrings.load(fileInputStream);
             } catch (IOException ex) {

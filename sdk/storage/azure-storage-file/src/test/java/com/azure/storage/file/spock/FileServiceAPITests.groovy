@@ -37,8 +37,8 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl().toString()
         then:
@@ -121,7 +121,7 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter")                        | 3      | false           | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 2      | true            | true
+        new ListSharesOptions().prefix("fileserviceapitestslistshareswithfilter").maxResults(2)          | 3      | false           | true
     }
 
     @Unroll

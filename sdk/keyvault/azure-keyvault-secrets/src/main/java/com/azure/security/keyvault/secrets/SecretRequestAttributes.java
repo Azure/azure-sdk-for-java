@@ -16,8 +16,8 @@ import java.time.ZoneOffset;
 class SecretRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads secretBase.notBefore, secretBase.expires and secretBase.enabled fields
-     * from {@code secretBase}
+     * Creates an instance of SecretRequestAttributes. Reads secretBase.notBefore, secretBase.expires and
+     * secretBase.enabled fields from {@code secretBase}
      * @param secretBase the {@link SecretBase} object with populated attributes
      */
     SecretRequestAttributes(SecretBase secretBase) {

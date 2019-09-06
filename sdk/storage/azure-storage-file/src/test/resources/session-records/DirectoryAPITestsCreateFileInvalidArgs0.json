@@ -1,58 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs079530af08d522?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefileinvalidargs054794117e0623?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "f60fc61f-6e3a-4514-b2a4-d607b705393b"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72C185337FBC7\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 00:32:08 GMT",
+      "ETag" : "\"0x8D7325B87AF109E\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:48:19 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "af687348-701a-0076-4101-5eb4ca000000",
-      "Date" : "Thu, 29 Aug 2019 00:32:08 GMT",
-      "x-ms-client-request-id" : "99027ed3-0f65-4548-a743-e2f89a086833"
+      "x-ms-request-id" : "07339cb5-301a-000d-3344-645aef000000",
+      "Date" : "Thu, 05 Sep 2019 23:48:18 GMT",
+      "x-ms-client-request-id" : "f60fc61f-6e3a-4514-b2a4-d607b705393b"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs079530af08d522/directoryapitestscreatefileinvalidargs071765336dd413?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefileinvalidargs054794117e0623/directoryapitestscreatefileinvalidargs05333882458988?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "94a6337a-8a96-483d-a8be-a5608557531f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-08-29T00:32:08.9907000Z",
-      "Last-Modified" : "Thu, 29 Aug 2019 00:32:08 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T23:48:19.7079840Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:48:19 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 29 Aug 2019 00:32:08 GMT",
-      "ETag" : "\"0x8D72C18539DDF38\"",
+      "Date" : "Thu, 05 Sep 2019 23:48:19 GMT",
+      "ETag" : "\"0x8D7325B87BF2B20\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-08-29T00:32:08.9907000Z",
+      "x-ms-file-change-time" : "2019-09-05T23:48:19.7079840Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "af687359-701a-0076-4f01-5eb4ca000000",
-      "x-ms-client-request-id" : "8d92c684-3910-446e-96d9-f5259a5949f1",
-      "x-ms-file-last-write-time" : "2019-08-29T00:32:08.9907000Z"
+      "x-ms-request-id" : "07339cb7-301a-000d-3444-645aef000000",
+      "x-ms-client-request-id" : "94a6337a-8a96-483d-a8be-a5608557531f",
+      "x-ms-file-last-write-time" : "2019-09-05T23:48:19.7079840Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestscreatefileinvalidargs079530af08d522/directoryapitestscreatefileinvalidargs071765336dd413%2ftestfile:",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestscreatefileinvalidargs054794117e0623/directoryapitestscreatefileinvalidargs05333882458988%2ftestfile:",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "22df1815-9f92-46c6-89ce-7888dce92450"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -61,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "af68735f-701a-0076-5501-5eb4ca000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:af68735f-701a-0076-5501-5eb4ca000000\nTime:2019-08-29T00:32:09.3749537Z</Message></Error>",
-      "Date" : "Thu, 29 Aug 2019 00:32:09 GMT",
-      "x-ms-client-request-id" : "d3bc39b3-8887-4b5a-890d-0ef92e863aac",
+      "x-ms-request-id" : "07339cba-301a-000d-3544-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:07339cba-301a-000d-3544-645aef000000\nTime:2019-09-05T23:48:19.8044500Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:48:19 GMT",
+      "x-ms-client-request-id" : "22df1815-9f92-46c6-89ce-7888dce92450",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestscreatefileinvalidargs079530af08d522", "directoryapitestscreatefileinvalidargs071765336dd413" ]
+  "variables" : [ "directoryapitestscreatefileinvalidargs054794117e0623", "directoryapitestscreatefileinvalidargs05333882458988" ]
 }

@@ -73,7 +73,8 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
         if (!isValidChallenge(authenticateHeader, authChallengePrefix)) {
             return null;
         }
-        authenticateHeader = authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+        authenticateHeader =
+            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
 
         String[] challenges = authenticateHeader.split(", ");
         Map<String, String> challengeMap = new HashMap<>();

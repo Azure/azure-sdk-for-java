@@ -23,7 +23,8 @@ public class DeviceCodeChallenge {
      * @param interval interval at which the STS should be polled at
      * @param message message which should be displayed to the user
      */
-    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUri, long expiresIn, long interval, String message) {
+    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUri, long expiresIn,
+                               long interval, String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUri = verificationUri;

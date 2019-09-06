@@ -5,6 +5,7 @@ package com.azure.storage.file.spock
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
@@ -183,12 +184,9 @@ class APISpec extends Specification {
 
     static HttpClient getHttpClient() {
         if (enableDebugging) {
-            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
-                @Override
-                ProxyOptions get() {
-                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
-                }
-            })
+            def builder = new NettyAsyncHttpClientBuilder()
+            builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            return builder.build()
         } else {
             return HttpClient.createDefault()
         }

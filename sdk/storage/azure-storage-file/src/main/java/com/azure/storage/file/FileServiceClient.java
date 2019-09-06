@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -88,7 +89,7 @@ public final class FileServiceClient {
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
-    public Iterable<ShareItem> listShares() {
+    public PagedIterable<ShareItem> listShares() {
         return listShares(null);
     }
 
@@ -120,8 +121,8 @@ public final class FileServiceClient {
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public Iterable<ShareItem> listShares(ListSharesOptions options) {
-        return fileServiceAsyncClient.listShares(options).toIterable();
+    public PagedIterable<ShareItem> listShares(ListSharesOptions options) {
+        return new PagedIterable<>(fileServiceAsyncClient.listShares(options));
     }
 
     /**
@@ -344,6 +345,13 @@ public final class FileServiceClient {
 
     /**
      * Generates an account SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.FileServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
      *
      * @param accountSASService The {@code AccountSASService} services for the account SAS
      * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS

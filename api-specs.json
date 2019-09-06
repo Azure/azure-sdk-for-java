@@ -276,6 +276,10 @@
     "source": "specification/storage/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "storagecache/resource-manager": {
+    "source": "specification/storagecache/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "storageimportexport/resource-manager": {
     "source": "specification/storageimportexport/resource-manager/readme.md",
     "args": "--multiapi --fluent"

@@ -3,11 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -23,9 +24,9 @@ import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
-import java.time.OffsetDateTime;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -81,7 +82,7 @@ public class FileClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -89,23 +90,25 @@ public class FileClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Create the file with length of 1024 bytes, some headers and metadata.</p>
+     * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-map-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param httpHeaders Additional parameters for the operation.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
-        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context).block();
+    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
+        return fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context).block();
     }
 
     /**
@@ -358,22 +361,25 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string}
      *
-     * <p>Clear the httpHeaders of the file</p>
+     * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders}
+     * {@codesnippet com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public FileInfo setHttpHeaders(long newFileSize, FileHTTPHeaders httpHeaders) {
-        return setHttpHeadersWithResponse(newFileSize, httpHeaders, Context.NONE).value();
+    public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+        String filePermission) {
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, Context.NONE).value();
     }
 
     /**
@@ -385,23 +391,26 @@ public class FileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-Context}
      *
-     * <p>Clear the httpHeaders of the file</p>
+     * <p>Clear the httpHeaders of the file and preserve the SMB properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.setHttpHeadersWithResponse#long-filehttpheaders-Context.clearHttpHeaders}
+     * {@codesnippet com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-Context.clearHttpHeaderspreserveSMBProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
      *
      * @param newFileSize New file size of the file
-     * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Response<FileInfo> setHttpHeadersWithResponse(long newFileSize, FileHTTPHeaders httpHeaders, Context context) {
-        return fileAsyncClient.setHttpHeadersWithResponse(newFileSize, httpHeaders, context).block();
+    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Context context) {
+        return fileAsyncClient.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context).block();
     }
 
     /**
@@ -597,8 +606,8 @@ public class FileClient {
      *
      * @return {@link FileRange ranges} in the files.
      */
-    public Iterable<FileRange> listRanges() {
-        return fileAsyncClient.listRanges(null).toIterable();
+    public PagedIterable<FileRange> listRanges() {
+        return listRanges(null);
     }
 
     /**
@@ -616,8 +625,8 @@ public class FileClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
-    public Iterable<FileRange> listRanges(FileRange range) {
-        return fileAsyncClient.listRanges(range).toIterable();
+    public PagedIterable<FileRange> listRanges(FileRange range) {
+        return new PagedIterable<>(fileAsyncClient.listRanges(range));
     }
 
     /**
@@ -634,7 +643,7 @@ public class FileClient {
      *
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles() {
+    public PagedIterable<HandleItem> listHandles() {
         return listHandles(null);
     }
 
@@ -653,8 +662,8 @@ public class FileClient {
      * @param maxResults Optional max number of results returned per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles(Integer maxResults) {
-        return fileAsyncClient.listHandles(maxResults).toIterable();
+    public PagedIterable<HandleItem> listHandles(Integer maxResults) {
+        return new PagedIterable<>(fileAsyncClient.listHandles(maxResults));
     }
 
     /**
@@ -672,10 +681,10 @@ public class FileClient {
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed
      */
-    public Iterable<Integer> forceCloseHandles(String handleId) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return fileAsyncClient.forceCloseHandles(handleId).toIterable();
+        return new PagedIterable<>(fileAsyncClient.forceCloseHandles(handleId));
     }
 
     /**
@@ -735,6 +744,13 @@ public class FileClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.FileClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @param permissions The {@code FileSASPermission} permission for the SAS
