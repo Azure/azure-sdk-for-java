@@ -21,7 +21,6 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.resources.ConnectionProvider;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
