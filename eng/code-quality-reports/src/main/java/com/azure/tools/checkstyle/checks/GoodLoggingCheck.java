@@ -23,7 +23,7 @@ import java.util.Set;
  * <li>ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
  *     as public and that do not exist in an implementation package or subpackage.</li>
  * <li>Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are
- * allowed.</li>
+ *     allowed.</li>
  * <li>'System.out' and 'System.err' is not allowed as well.</li>
  * </ol>
  */

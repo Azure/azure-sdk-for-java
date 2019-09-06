@@ -86,8 +86,7 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         if (!serviceNamePattern.matcher(nameValue).find()) {
             log(serviceInterfaceAnnotationNode, String.format(
                 "The ''name'' property of @ServiceInterface, ''%s'' should be non-empty, alphanumeric and not more "
-                    + "than 10 characters",
-                nameValue));
+                    + "than 10 characters", nameValue));
         }
     }
 

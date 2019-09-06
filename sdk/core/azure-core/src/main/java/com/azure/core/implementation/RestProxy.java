@@ -355,9 +355,7 @@ public class RestProxy implements InvocationHandler {
     }
 
     private static Exception instantiateUnexpectedException(UnexpectedExceptionInformation exception,
-                                                            HttpResponse httpResponse,
-                                                            String responseContent,
-                                                            Object responseDecodedContent) {
+                HttpResponse httpResponse, String responseContent, Object responseDecodedContent) {
         final int responseStatusCode = httpResponse.statusCode();
         String contentType = httpResponse.headerValue("Content-Type");
         String bodyRepresentation;
@@ -400,8 +398,7 @@ public class RestProxy implements InvocationHandler {
      * @return An async-version of the provided decodedResponse.
      */
     public Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-                                                          final SwaggerMethodParser methodParser,
-                                                          int[] additionalAllowedStatusCodes) {
+                final SwaggerMethodParser methodParser, int[] additionalAllowedStatusCodes) {
         final int responseStatusCode = decodedResponse.sourceResponse().statusCode();
         final Mono<HttpDecodedResponse> asyncResult;
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
@@ -541,7 +538,7 @@ public class RestProxy implements InvocationHandler {
     }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
-                                                 final SwaggerMethodParser methodParser, final Type entityType) {
+                final SwaggerMethodParser methodParser, final Type entityType) {
         final int responseStatusCode = response.sourceResponse().statusCode();
         final HttpMethod httpMethod = methodParser.httpMethod();
         final Type returnValueWireType = methodParser.returnValueWireType();
@@ -572,8 +569,8 @@ public class RestProxy implements InvocationHandler {
     }
 
     protected Object handleHttpResponse(final HttpRequest httpRequest,
-                                        Mono<HttpDecodedResponse> asyncDecodedHttpResponse,
-                                        SwaggerMethodParser methodParser, Type returnType, Context context) {
+            Mono<HttpDecodedResponse> asyncDecodedHttpResponse, SwaggerMethodParser methodParser, Type returnType,
+            Context context) {
         return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType, context);
     }
 
@@ -593,8 +590,7 @@ public class RestProxy implements InvocationHandler {
      * @return the deserialized result
      */
     public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse,
-                                             final SwaggerMethodParser methodParser, final Type returnType,
-                                             Context context) {
+                final SwaggerMethodParser methodParser, final Type returnType, Context context) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
                 .doOnEach(RestProxy::endTracingSpan)
