@@ -7,10 +7,6 @@ import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
-<<<<<<< HEAD
-=======
-import com.azure.security.keyvault.secrets.models.SecretBase;
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
 import io.opencensus.common.Scope;
 import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
 import io.opencensus.trace.Tracer;
@@ -29,19 +25,11 @@ import static com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
  */
 public class ListOperationsAsync {
     /**
-<<<<<<< HEAD
      * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key
      * vault with trace spans exported to zipkin.
      *
      * Please refer to the  <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
      * using a zipkin exporter.
-=======
-     * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key vault
-     * with trace spans exported to zipkin.
-     *
-     * Please refer to the  <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a>
-     * for more documentation on using a zipkin exporter.
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -63,7 +51,6 @@ public class ListOperationsAsync {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-<<<<<<< HEAD
         Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan();
         try {
             Context traceContext = Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
@@ -72,16 +59,6 @@ public class ListOperationsAsync {
             client.setSecret(new Secret("StorageAccountPassword", "password")
                 .expires(OffsetDateTime.now().plusYears(1)))
                 .then(client.setSecret(new Secret("BankAccountPassword", "password")
-=======
-        try (Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan()) {
-
-            Context traceContext = Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
-            // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
-            // already exists in the key vault, then a new version of the secret is created.
-            client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-                .expires(OffsetDateTime.now().plusYears(1)))
-                .then(client.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
                     .expires(OffsetDateTime.now().plusYears(1))))
                 .subscriberContext(traceContext)
                 .block();
@@ -97,11 +74,7 @@ public class ListOperationsAsync {
 
             // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
             // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
-<<<<<<< HEAD
             client.setSecret("BankAccountPassword", "new password")
-=======
-            client.setSecret(, "sskdjfsdasdjsd")
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
                 .subscriberContext(traceContext)
                 .block();
 
@@ -111,11 +84,8 @@ public class ListOperationsAsync {
                 .subscriberContext(traceContext)
                 .subscribe(secretBase -> System.out.printf("Received secret's version with name %s%n",
                     secretBase.name()));
-<<<<<<< HEAD
         } finally {
             scope.close();
-=======
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
         }
 
         Tracing.getExportComponent().shutdown();
