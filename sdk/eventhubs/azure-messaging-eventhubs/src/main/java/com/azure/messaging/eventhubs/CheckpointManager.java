@@ -50,7 +50,7 @@ public class CheckpointManager {
     public Mono<Void> updateCheckpoint(EventData eventData) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
-            .consumerGroupName(partitionContext.consumerGroupName())
+            .consumerGroupName(partitionContext.consumerGroup())
             .eventHubName(partitionContext.eventHubName())
             .ownerId(ownerId)
             .partitionId(partitionContext.partitionId())
@@ -73,7 +73,7 @@ public class CheckpointManager {
     public Mono<Void> updateCheckpoint(long sequenceNumber, Long offset) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
-            .consumerGroupName(partitionContext.consumerGroupName())
+            .consumerGroupName(partitionContext.consumerGroup())
             .eventHubName(partitionContext.eventHubName())
             .ownerId(ownerId)
             .partitionId(partitionContext.partitionId())

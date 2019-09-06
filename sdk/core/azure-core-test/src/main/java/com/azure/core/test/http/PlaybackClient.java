@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
  */
 public final class PlaybackClient implements HttpClient {
+    private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
@@ -71,6 +72,11 @@ public final class PlaybackClient implements HttpClient {
 
         if (networkCallRecord.exception() != null) {
             throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.exception().get()));
+        }
+
+        // Overwrite the request header if any.
+        if (networkCallRecord.headers().containsKey(X_MS_CLIENT_REQUEST_ID)) {
+            request.header(X_MS_CLIENT_REQUEST_ID, networkCallRecord.headers().get(X_MS_CLIENT_REQUEST_ID));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));

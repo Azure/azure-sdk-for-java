@@ -80,7 +80,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param proxyOptions The proxy configuration to use.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
+    public NettyAsyncHttpClientBuilder setProxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -91,7 +91,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param enableWiretap Flag indicating wiretap status
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder wiretap(boolean enableWiretap) {
+    public NettyAsyncHttpClientBuilder setWiretap(boolean enableWiretap) {
         this.enableWiretap = enableWiretap;
         return this;
     }
@@ -102,7 +102,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param port The port to connect to.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder port(int port) {
+    public NettyAsyncHttpClientBuilder setPort(int port) {
         this.port = port;
         return this;
     }
@@ -116,7 +116,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+    public NettyAsyncHttpClientBuilder setNioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
         return this;
     }

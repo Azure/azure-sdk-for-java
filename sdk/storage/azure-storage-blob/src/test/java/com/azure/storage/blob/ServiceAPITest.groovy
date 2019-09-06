@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
+import spock.lang.Ignore
 
 import java.time.Duration
 import java.time.OffsetDateTime

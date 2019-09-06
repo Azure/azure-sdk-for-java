@@ -1,30 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetpropertieserror79652d8a71ae2f7?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetpropertieserror99691e7c3de47ed?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "c8bffbef-0657-4f71-a7f4-5640a158f48d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72829D7DD8630\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:27:27 GMT",
+      "ETag" : "\"0x8D730D96AA67E9E\"",
+      "Last-Modified" : "Wed, 04 Sep 2019 01:44:25 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "42bce48a-801a-010a-7112-5a6faa000000",
-      "Date" : "Sat, 24 Aug 2019 00:27:27 GMT",
-      "x-ms-client-request-id" : "f228a626-3874-42d2-86c8-bf8ac48fa1c1"
+      "x-ms-request-id" : "e7c18c3b-101a-0044-55c2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:44:25 GMT",
+      "x-ms-client-request-id" : "c8bffbef-0657-4f71-a7f4-5640a158f48d"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetpropertieserror79652d8a71ae2f7/fileasyncapitestsgetpropertieserror204176decfba0b1",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsgetpropertieserror99691e7c3de47ed/fileasyncapitestsgetpropertieserror78973e95bb0ce73",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "98274f38-f9cd-400d-a064-7d3d54e13a9f"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -32,11 +34,11 @@
       "x-ms-error-code" : "ResourceNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "42bce48c-801a-010a-7212-5a6faa000000",
-      "Date" : "Sat, 24 Aug 2019 00:27:27 GMT",
-      "x-ms-client-request-id" : "00e8c72e-8db2-47ac-b2a2-61ac93b458a8"
+      "x-ms-request-id" : "e7c18c3d-101a-0044-56c2-62ec1a000000",
+      "Date" : "Wed, 04 Sep 2019 01:44:25 GMT",
+      "x-ms-client-request-id" : "98274f38-f9cd-400d-a064-7d3d54e13a9f"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileasyncapitestsgetpropertieserror79652d8a71ae2f7", "fileasyncapitestsgetpropertieserror204176decfba0b1" ]
+  "variables" : [ "fileasyncapitestsgetpropertieserror99691e7c3de47ed", "fileasyncapitestsgetpropertieserror78973e95bb0ce73" ]
 }
