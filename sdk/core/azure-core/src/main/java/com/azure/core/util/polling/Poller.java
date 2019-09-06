@@ -183,25 +183,6 @@ public class Poller<T> {
     }
 
     /**
-     * Create a {@link Poller} instance with poll interval, poll operation and cancel operation. The polling starts immediately by invoking {@code pollOperation}.
-     * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
-     * In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use {@code pollInterval}.
-     *
-     * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link OperationStatus}.
-     * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
-     * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
-     * the {@link Poller} will disregard that and continue to poll.
-     * @param activationOperation The activation operation to be called by the {@link Poller} instance before calling {@code pollOperation}. It can
-     * be {@code null} which will indicate to the {@link Poller} that {@code pollOperation} can be called straight away.
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
-     */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation) {
-        this(pollInterval, pollOperation, activationOperation, null);
-    }
-
-    /**
      * Attempts to cancel the long-running operation that this {@link Poller} represents. This is possible only if the service supports it,
      * otherwise an {@code UnsupportedOperationException} will be thrown.
      * <p>
