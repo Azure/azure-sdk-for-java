@@ -125,6 +125,7 @@ public final class FileServiceClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<ShareItem> listShares(ListSharesOptions options, Duration timeout, Context context) {
         return new PagedIterable<>(fileServiceAsyncClient.listSharesWithOptionalTimeout(null, options, timeout, context));
@@ -165,6 +166,7 @@ public final class FileServiceClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the Storage account {@link FileServiceProperties File service properties} with headers and response status code
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<FileServiceProperties>> response = fileServiceAsyncClient.getPropertiesWithResponse(context);
@@ -243,6 +245,7 @@ public final class FileServiceClient {
      *     </li>
      *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse setPropertiesWithResponse(FileServiceProperties properties, Duration timeout, Context context) {
         Mono<VoidResponse> response = fileServiceAsyncClient.setPropertiesWithResponse(properties, context);
@@ -291,6 +294,7 @@ public final class FileServiceClient {
      * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
      * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareClient> createShareWithResponse(String shareName, Map<String, String> metadata,
                                                          Integer quotaInGB, Duration timeout, Context context) {
@@ -336,6 +340,7 @@ public final class FileServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteShareWithResponse(String shareName, String snapshot, Duration timeout, Context context) {
         Mono<VoidResponse> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);

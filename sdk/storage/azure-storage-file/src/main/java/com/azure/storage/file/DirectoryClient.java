@@ -112,6 +112,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectoryInfo> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<DirectoryInfo>> response = directoryAsyncClient.createWithResponse(metadata, context);
@@ -144,6 +145,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteWithResponse(Duration timeout, Context context) {
         Mono<VoidResponse> response = directoryAsyncClient.deleteWithResponse(context);
@@ -177,6 +179,7 @@ public class DirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the storage directory properties with response status code and headers
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<DirectoryProperties>> response = directoryAsyncClient.getPropertiesWithResponse(context);
@@ -219,6 +222,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the information about the directory and response status code
      * @throws StorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<DirectorySetMetadataInfo>> response = directoryAsyncClient.setMetadataWithResponse(metadata, context);
@@ -253,6 +257,7 @@ public class DirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout, Context context) {
         return new PagedIterable<>(directoryAsyncClient.listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, timeout, context));
@@ -271,6 +276,7 @@ public class DirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<HandleItem> listHandles(Integer maxResult, boolean recursive, Duration timeout, Context context) {
         return new PagedIterable<>(directoryAsyncClient.listHandlesWithOptionalTimeout(maxResult, recursive, timeout, context));
@@ -289,6 +295,7 @@ public class DirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The counts of number of handles closed.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout, Context context) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
@@ -326,6 +333,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata,
                                                                     Duration timeout, Context context) {
@@ -361,6 +369,7 @@ public class DirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteSubDirectoryWithResponse(String subDirectoryName, Duration timeout, Context context) {
         Mono<VoidResponse> response = directoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName, context);
@@ -400,6 +409,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
                                                        Map<String, String> metadata, Duration timeout, Context context) {
@@ -436,6 +446,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteFileWithResponse(String fileName, Duration timeout, Context context) {
         Mono<VoidResponse> response = directoryAsyncClient.deleteFileWithResponse(fileName, context);

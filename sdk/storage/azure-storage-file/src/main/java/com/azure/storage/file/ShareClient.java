@@ -140,6 +140,7 @@ public class ShareClient {
      * @return A response containing the {@link ShareInfo information about the share} and the status its creation.
      * @throws StorageException If the share already exists with different metadata or {@code quotaInGB} is outside the
      * allowed range.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout, Context context) {
         Mono<Response<ShareInfo>> response = client.createWithResponse(metadata, quotaInGB, context);
@@ -185,6 +186,7 @@ public class ShareClient {
      * @return A response containing the {@link ShareSnapshotInfo information about snapshot of the share} and status of creation.
      * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
      * in progress for the share
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<ShareSnapshotInfo>> response = client.createSnapshotWithResponse(metadata, context);
@@ -225,6 +227,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteWithResponse(Duration timeout, Context context) {
         Mono<VoidResponse> response = client.deleteWithResponse(context);
@@ -268,6 +271,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
      * @throws StorageException If the share doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<ShareProperties>> response = client.getPropertiesWithResponse(context);
@@ -311,6 +315,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
      * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> setQuotaWithResponse(int quotaInGB, Duration timeout, Context context) {
         Mono<Response<ShareInfo>> response = client.setQuotaWithResponse(quotaInGB, context);
@@ -362,6 +367,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
      * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(metadata, context);
@@ -426,6 +432,7 @@ public class ShareClient {
      * @return A response containing the {@link ShareInfo information of the share} with headers and response status code
      * @throws StorageException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the share will have more than five policies.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout, Context context) {
         Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(permissions, context);
@@ -465,6 +472,7 @@ public class ShareClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareStatistics statistics of the share}
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(context);
@@ -513,6 +521,7 @@ public class ShareClient {
      * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal
      * key name
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectoryClient> createDirectoryWithResponse(String directoryName, Map<String, String> metadata, Duration timeout, Context context) {
         DirectoryClient directoryClient = getDirectoryClient(directoryName);
@@ -577,6 +586,7 @@ public class ShareClient {
      *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
      *     </li>
      * </ul>
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Duration timeout, Context context) {
         FileClient fileClient = getFileClient(fileName);
@@ -620,6 +630,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist or the directory isn't empty
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
         Mono<VoidResponse> response = client.deleteDirectoryWithResponse(directoryName, context);
@@ -662,6 +673,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share or the file doesn't exist.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteFileWithResponse(String fileName, Duration timeout, Context context) {
         Mono<VoidResponse> response = client.deleteFileWithResponse(fileName, context);

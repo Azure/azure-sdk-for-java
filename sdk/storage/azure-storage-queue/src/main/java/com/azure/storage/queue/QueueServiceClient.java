@@ -107,6 +107,7 @@ public final class QueueServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
      * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
                                                          Duration timeout, Context context) {
@@ -146,6 +147,7 @@ public final class QueueServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
      * @throws StorageException If the queue doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
         Mono<VoidResponse> response = client.deleteQueueWithResponse(queueName, context);
@@ -189,6 +191,7 @@ public final class QueueServiceClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options, Duration timeout, Context context) {
         return listQueues(null, options, timeout, context);
@@ -204,6 +207,7 @@ public final class QueueServiceClient {
      * @param options Options for listing queues
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Duration timeout, Context context) {
         return new PagedIterable<>(client.listQueuesWithOptionalTimeout(marker, options, timeout, context));
@@ -244,6 +248,7 @@ public final class QueueServiceClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the Storage account Queue service properties
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<StorageServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageServiceProperties>> response = client.getPropertiesWithResponse(context);
@@ -322,6 +327,7 @@ public final class QueueServiceClient {
      *     </li>
      *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout, Context context) {
         Mono<VoidResponse> response = client.setPropertiesWithResponse(properties, context);
@@ -361,6 +367,7 @@ public final class QueueServiceClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the geo replication information about the Queue service
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<StorageServiceStats> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageServiceStats>> response = client.getStatisticsWithResponse(context);

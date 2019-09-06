@@ -109,6 +109,7 @@ public class FileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, Map<String,
         String> metadata, Duration timeout, Context context) {
@@ -155,6 +156,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileCopyInfo file copy info} and the status of copying the file.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileCopyInfo> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
                                                         Duration timeout, Context context) {
@@ -196,6 +198,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of aborting copy the file.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse abortCopyWithResponse(String copyId, Duration timeout, Context context) {
         Mono<VoidResponse> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
@@ -280,6 +283,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileDownloadInfo file download info} headers and response status code
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileDownloadInfo> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5, Duration timeout, Context context) {
         Mono<Response<FileDownloadInfo>> response = fileAsyncClient.downloadWithPropertiesWithResponse(range, rangeGetContentMD5, context);
@@ -321,6 +325,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public VoidResponse deleteWithResponse(Duration timeout, Context context) {
         Mono<VoidResponse> response = fileAsyncClient.deleteWithResponse(context);
@@ -362,6 +367,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileProperties Storage file properties} with headers and status code
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<FileProperties>> response = fileAsyncClient.getPropertiesWithResponse(context);
@@ -419,6 +425,7 @@ public class FileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileInfo> setHttpHeadersWithResponse(long newFileSize, FileHTTPHeaders httpHeaders, Duration timeout, Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient.setHttpHeadersWithResponse(newFileSize, httpHeaders, context);
@@ -474,6 +481,7 @@ public class FileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileMetadataInfo file meta info} with headers and status code
      * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<FileMetadataInfo>> response = fileAsyncClient.setMetadataWithResponse(metadata, context);
@@ -519,6 +527,7 @@ public class FileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Duration timeout, Context context) {
         Mono<Response<FileUploadInfo>> response = fileAsyncClient.uploadWithResponse(Flux.just(data), length, context);
@@ -544,6 +553,7 @@ public class FileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Duration timeout, Context context) {
         Mono<Response<FileUploadInfo>> response = fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, context);
@@ -586,6 +596,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileUploadInfo> clearRangeWithResponse(long length, long offset, Duration timeout, Context context) {
         Mono<Response<FileUploadInfo>> response = fileAsyncClient.clearRangeWithResponse(length, offset, context);
@@ -646,6 +657,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<FileRange> listRanges(FileRange range, Duration timeout, Context context) {
         return new PagedIterable<>(fileAsyncClient.listRangesWithOptionalTimeout(range, timeout, context));
@@ -685,6 +697,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the file that satisfy the requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<HandleItem> listHandles(Integer maxResults, Duration timeout, Context context) {
         return new PagedIterable<>(fileAsyncClient.listHandlesWithOptionalTimeout(maxResults, timeout, context));
@@ -706,6 +719,7 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The counts of number of handles closed
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
