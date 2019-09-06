@@ -154,9 +154,9 @@ public class BlobPartitionManagerTest {
 
     private Metadata getMetadata(String owner, String sequenceNumber, String offset) {
         Metadata metadata = new Metadata();
-        metadata.put("ownerId", owner);
-        metadata.put("sequenceNumber", sequenceNumber);
-        metadata.put("offset", offset);
+        metadata.put("OwnerId", owner);
+        metadata.put("SequenceNumber", sequenceNumber);
+        metadata.put("Offset", offset);
         return metadata;
     }
 }

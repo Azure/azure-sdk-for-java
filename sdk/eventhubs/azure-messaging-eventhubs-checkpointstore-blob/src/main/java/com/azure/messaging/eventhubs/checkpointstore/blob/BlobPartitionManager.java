@@ -38,9 +38,9 @@ import reactor.core.publisher.Mono;
 public class BlobPartitionManager implements PartitionManager {
 
     // All languages should use the same key for metadata. Discuss name for these.
-    private static final String SEQUENCE_NUMBER = "sequenceNumber";
-    private static final String OFFSET = "offset";
-    private static final String OWNER_ID = "ownerId";
+    private static final String SEQUENCE_NUMBER = "SequenceNumber";
+    private static final String OFFSET = "Offset";
+    private static final String OWNER_ID = "OwnerId";
     private static final String ETAG = "eTag";
 
     private static final String BLOB_PATH_SEPARATOR = "/";
