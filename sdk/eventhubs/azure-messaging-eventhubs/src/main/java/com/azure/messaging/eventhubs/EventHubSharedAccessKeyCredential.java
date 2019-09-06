@@ -31,11 +31,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * <p>
  * The shared access key can be obtained by creating a <i>shared access policy</i> for the Event Hubs namespace or for
- * a
- * specific Event Hub instance. See
+ * a specific Event Hub instance. See
  * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/
- * authorize-access-shared-access-signature#shared-access-authorization-policies">
- * Shared access authorization policies</a> for more information.
+ * authorize-access-shared-access-signature#shared-access-authorization-policies">Shared access authorization policies
+ * </a> for more information.
  * </p>
  *
  * @see <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature">Authorize
