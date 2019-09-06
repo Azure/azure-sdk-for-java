@@ -29,17 +29,17 @@ import java.util.function.Function;
  *
  * <p><strong>Auto Polling</strong></p>
  * Auto-polling is enabled by-default. It means that the {@link Poller} starts polling as soon as its instance is
- * created. The {@link Poller} will transparently call the poll operation every polling cycle
- * and track the state of the long-running operation. Azure services can return {@link PollResponse#getRetryAfter()}
- * to override the {@code Poller.pollInterval} defined in the {@link Poller}.
- * The {@link Poller#getStatus()} represents the status returned by the successful long-running operation at the time
- * the last auto-polling or last manual polling, whichever happened most recently.
+ * created. The {@link Poller} will transparently call the poll operation every polling cycle and track the state of
+ * the long-running operation. Azure services can return {@link PollResponse#getRetryAfter()} to override the
+ * {@code Poller.pollInterval} defined in the {@link Poller}. The {@link Poller#getStatus()} represents the status
+ * returned by the successful long-running operation at the time the last auto-polling or last manual polling, whichever
+ * happened most recently.
  *
  * <p><strong>Disable Auto Polling</strong></p>
  * For those scenarios which require manual control of the polling cycle, disable auto-poling by calling
- * {@code setAutoPollingEnabled#false} and perform manual poll
- * by invoking {@link Poller#poll()} function. It will call poll operation once and update the {@link Poller} with
- * the latest status.
+ * {@code setAutoPollingEnabled#false} and perform manual poll by invoking {@link Poller#poll()} function. It will call
+ * poll operation once and update the {@link Poller} with the latest status.
+ *
  * <p>When auto-polling is disabled, the {@link Poller} will not update its status or other information, unless
  * manual polling is triggered by calling {@link Poller#poll()} function.
  *
@@ -287,7 +287,7 @@ public class Poller<T> {
     }
 
     /*
-     * Indicate that the @{link PollResponse} matches with the status to block for.
+     * Indicate that the {@link PollResponse} matches with the status to block for.
      * @param currentPollResponse The poll response which we have received from the flux.
      * @param statusToBlockFor The {@link OperationStatus} to block and it can be any valid {@link OperationStatus}
      * value.
@@ -306,7 +306,7 @@ public class Poller<T> {
 
     /*
      * This function will apply delay and call poll operation function async.
-     * We expect Mono from pollOperation should never return Mono.error() . If any unexpected
+     * We expect Mono from pollOperation should never return Mono.error(). If any unexpected
      * scenario happens in pollOperation, it should catch it and return a valid PollResponse.
      * This is because poller does not know what to do in case on Mono.error.
      * This function will return empty mono in case of Mono.error() returned by poll operation.
