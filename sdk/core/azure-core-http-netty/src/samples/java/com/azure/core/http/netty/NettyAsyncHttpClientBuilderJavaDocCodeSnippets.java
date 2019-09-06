@@ -5,6 +5,10 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import io.netty.channel.nio.NioEventLoopGroup;
+import reactor.core.publisher.Mono;
+import reactor.netty.tcp.ProxyProvider.Proxy;
+
+import java.net.InetSocketAddress;
 
 /**
  * Code snippets for {@link NettyAsyncHttpClientBuilder}
@@ -35,6 +39,22 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .nioEventLoopGroup(new NioEventLoopGroup(threadCount))
             .build();
         // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup
+    }
+
+    public void reactorNettyRawConfigurations() {
+        // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#reactorNettyConfiguration
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .reactorNettyConfiguration(rawClient -> rawClient
+                .secure()
+                .wiretap(true)
+                .tcpConfiguration(tcpClient -> tcpClient
+                    .proxy(typeSpec -> typeSpec
+                        .type(Proxy.HTTP)
+                        .address(new InetSocketAddress("localhost", 8888)))
+                    .handle((in, out) -> Mono.empty()))
+                .doOnRequestError((req, e) -> System.err.println(e.getMessage())))
+            .build();
+        // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#reactorNettyConfiguration
     }
 
 }

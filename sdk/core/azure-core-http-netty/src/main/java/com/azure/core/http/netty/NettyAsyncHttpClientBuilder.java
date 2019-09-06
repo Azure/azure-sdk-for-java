@@ -10,6 +10,8 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
+import java.util.function.Function;
+
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
  *
@@ -28,6 +30,7 @@ public class NettyAsyncHttpClientBuilder {
     private int port = 80;
     private NioEventLoopGroup nioEventLoopGroup;
     private ConnectionProvider connectionProvider;
+    private Function<HttpClient, HttpClient> rawConfiguration;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of
@@ -45,9 +48,13 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClient build() {
         if (connectionProvider == null) {
-            connectionProvider = ConnectionProvider.fixed("pool", 12);
+            connectionProvider = ConnectionProvider.fixed("pool");
         }
-        HttpClient nettyHttpClient = HttpClient.create(connectionProvider)
+        HttpClient nettyHttpClient = HttpClient.create(connectionProvider);
+        if (rawConfiguration != null) {
+            nettyHttpClient = rawConfiguration.apply(nettyHttpClient);
+        }
+        nettyHttpClient = nettyHttpClient
             .port(port)
             .wiretap(enableWiretap)
             .tcpConfiguration(tcpConfig -> {
@@ -134,6 +141,21 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder connectionProvider(ConnectionProvider connectionProvider) {
         this.connectionProvider = connectionProvider;
+        return this;
+    }
+
+    /**
+     * Sets custom configurations for the reactor netty client directly on the reactor netty {@link HttpClient}. The
+     * provided configurations in this method is applied first, before the other convenience methods, thus having the
+     * least priority and may be overwritten. For example, you can set raw configurations as shown below:
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#reactorNettyConfiguration}
+     *
+     * @param rawConfiguration configurations on the raw reactor netty {@link HttpClient}
+     * @return the updated NettyAsyncHttpClientBuilder object
+     */
+    public NettyAsyncHttpClientBuilder reactorNettyConfiguration(Function<HttpClient, HttpClient> rawConfiguration) {
+        this.rawConfiguration = rawConfiguration;
         return this;
     }
 }

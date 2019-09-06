@@ -3,28 +3,20 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.netty.NettyAsyncHttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.nio.NioEventLoopGroup;
 import org.apache.commons.lang3.time.StopWatch;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Random;
@@ -71,7 +63,7 @@ public class FileTransferPerfMeasure {
          * Now you can use the storageClient to perform various container and blob operations.
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder()
-            .httpClient(new NettyAsyncHttpClientBuilder().connectionProvider(ConnectionProvider.fixed("pool")).build())
+            .httpClient(new NettyAsyncHttpClientBuilder().build())
             .retryOptions(new RequestRetryOptions(null, null, 600, null, null, null))
             .endpoint(endPoint).credential(credential).buildClient();
 
@@ -97,7 +89,7 @@ public class FileTransferPerfMeasure {
         /*
          * Generate random things to uploadFile, which makes the file with size of 100MB.
          */
-        long fileSize = 1 * GB;
+        long fileSize = 2 * GB;
         File largeFile = createTempRandomFile(filename, fileSize);
         File downloadFile = createTempEmptyFile("downloaded.bin");
 

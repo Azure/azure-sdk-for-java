@@ -112,8 +112,8 @@
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.6</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
-    <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
-    <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
+    <reactor-core.version>3.2.12.RELEASE</reactor-core.version>
+    <reactor-netty.version>0.8.11.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
@@ -148,7 +148,7 @@
     <spock-core.version>1.3-groovy-2.5</spock-core.version>
     <cglib-nodep.version>3.2.7</cglib-nodep.version>
     <slf4j-test.version>1.2.0</slf4j-test.version>
-    <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
+    <reactor-test.version>3.2.12.RELEASE</reactor-test.version>
     <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
     <jetty-http.version>9.4.11.v20180605</jetty-http.version>
     <jetty-server.version>9.4.11.v20180605</jetty-server.version>
