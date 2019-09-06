@@ -110,16 +110,15 @@ public class IdentityClient {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication
-                    .builder(clientId, ClientCredentialFactory.create(clientSecret))
+                ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
                     .authority(authorityUrl);
             if (options.proxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
             }
             ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono
-                .fromFuture(application.acquireToken(ClientCredentialParameters.builder(
-                    new HashSet<>(Arrays.asList(scopes))).build()))
+            return Mono.fromFuture(application.acquireToken(
+                ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes)))
+                    .build()))
                 .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
                     ZoneOffset.UTC)));
         } catch (MalformedURLException e) {
@@ -140,18 +139,16 @@ public class IdentityClient {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(
-                    clientId,
-                    ClientCredentialFactory
-                        .create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
+                ConfidentialClientApplication.builder(clientId,
+                    ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
                     .authority(authorityUrl);
             if (options.proxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
             }
             ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono
-                .fromFuture(application.acquireToken(ClientCredentialParameters.builder(
-                    new HashSet<>(Arrays.asList(scopes))).build()))
+            return Mono.fromFuture(application.acquireToken(
+                ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes)))
+                    .build()))
                 .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
                     ZoneOffset.UTC)));
         } catch (CertificateException
@@ -183,9 +180,9 @@ public class IdentityClient {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
             }
             ConfidentialClientApplication application = applicationBuilder.build();
-            return Mono
-                .fromFuture(application.acquireToken(ClientCredentialParameters.builder(
-                    new HashSet<>(Arrays.asList(scopes))).build()))
+            return Mono.fromFuture(application.acquireToken(
+                ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes)))
+                    .build()))
                 .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
                     ZoneOffset.UTC)));
         } catch (IOException e) {
@@ -202,9 +199,9 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithUsernamePassword(String[] scopes, String username, String password) {
-        return Mono
-            .fromFuture(publicClientApplication.acquireToken(UserNamePasswordParameters.builder(
-                new HashSet<>(Arrays.asList(scopes)), username, password.toCharArray()).build()))
+        return Mono.fromFuture(publicClientApplication.acquireToken(
+            UserNamePasswordParameters.builder(new HashSet<>(Arrays.asList(scopes)), username, password.toCharArray())
+                .build()))
             .map(MsalToken::new);
     }
 
@@ -260,9 +257,8 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(String[] scopes, String authorizationCode,
                                                              URI redirectUri) {
-        return Mono
-            .fromFuture(() -> publicClientApplication.acquireToken(AuthorizationCodeParameters
-                .builder(authorizationCode, redirectUri)
+        return Mono.fromFuture(() -> publicClientApplication.acquireToken(
+            AuthorizationCodeParameters.builder(authorizationCode, redirectUri)
                 .scopes(new HashSet<>(Arrays.asList(scopes)))
                 .build()))
             .map(MsalToken::new);

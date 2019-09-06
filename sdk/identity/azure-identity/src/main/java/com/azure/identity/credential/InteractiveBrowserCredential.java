@@ -39,11 +39,11 @@ public class InteractiveBrowserCredential implements TokenCredential {
      */
     InteractiveBrowserCredential(String clientId, int port, IdentityClientOptions identityClientOptions) {
         this.port = port;
-        identityClient =
-            new IdentityClientBuilder().tenantId("common")
-                .clientId(clientId)
-                .identityClientOptions(identityClientOptions)
-                .build();
+        identityClient = new IdentityClientBuilder()
+            .tenantId("common")
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         cachedToken = new AtomicReference<>();
     }
 
@@ -51,8 +51,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public Mono<AccessToken> getToken(String... scopes) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient
-                    .authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }

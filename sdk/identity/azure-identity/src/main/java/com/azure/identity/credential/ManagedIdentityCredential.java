@@ -28,8 +28,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
-        IdentityClient identityClient =
-            new IdentityClientBuilder().clientId(clientId).identityClientOptions(identityClientOptions).build();
+        IdentityClient identityClient = new IdentityClientBuilder()
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             appServiceMSICredential = new AppServiceMSICredential(clientId, identityClient);
@@ -44,7 +46,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @return the client id of user assigned or system assigned identity.
      */
     public String clientId() {
-        return this.appServiceMSICredential != null ? this.appServiceMSICredential.clientId()
+        return this.appServiceMSICredential != null
+            ? this.appServiceMSICredential.clientId()
             : this.virtualMachineMSICredential.clientId();
     }
 

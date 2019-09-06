@@ -35,12 +35,11 @@ public class DeviceCodeCredential implements TokenCredential {
     DeviceCodeCredential(String clientId, Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer,
                          IdentityClientOptions identityClientOptions) {
         this.deviceCodeChallengeConsumer = deviceCodeChallengeConsumer;
-        identityClient =
-            new IdentityClientBuilder()
-                .tenantId("common")
-                .clientId(clientId)
-                .identityClientOptions(identityClientOptions)
-                .build();
+        identityClient = new IdentityClientBuilder()
+            .tenantId("common")
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         this.cachedToken = new AtomicReference<>();
     }
 
@@ -48,13 +47,13 @@ public class DeviceCodeCredential implements TokenCredential {
     public Mono<AccessToken> getToken(String... scopes) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient
-                    .authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient
-            .authenticateWithDeviceCode(scopes, deviceCodeChallengeConsumer)))
+        }).switchIfEmpty(
+            Mono.defer(() -> identityClient.authenticateWithDeviceCode(scopes, deviceCodeChallengeConsumer)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

@@ -40,12 +40,11 @@ public class ClientSecretCredential implements TokenCredential {
                            IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(clientSecret);
         Objects.requireNonNull(identityClientOptions);
-        identityClient =
-            new IdentityClientBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .identityClientOptions(identityClientOptions)
-                .build();
+        identityClient = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         this.clientSecret = clientSecret;
     }
 

@@ -18,8 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
  * turned on will not be able to use this credential. Please use {@link DeviceCodeCredential} or {@link
- * InteractiveBrowserCredential}
- * instead, or create a service principal if you want to authenticate silently.
+ * InteractiveBrowserCredential} instead, or create a service principal if you want to authenticate silently.
  */
 @Immutable
 public class UsernamePasswordCredential implements TokenCredential {
@@ -55,8 +54,8 @@ public class UsernamePasswordCredential implements TokenCredential {
     public Mono<AccessToken> getToken(String... scopes) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient
-                    .authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
