@@ -432,7 +432,6 @@
               <additionalOption>-maxLineLength 120</additionalOption>
               <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
             </additionalOptions>
-            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
             <doclint>all</doclint>
