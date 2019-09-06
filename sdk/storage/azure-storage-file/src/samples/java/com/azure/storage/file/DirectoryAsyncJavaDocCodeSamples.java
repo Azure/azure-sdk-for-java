@@ -131,10 +131,10 @@ public class DirectoryAsyncJavaDocCodeSamples {
         String filePermission = "filePermission";
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
         directoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
-                response ->
-                    System.out.println("Successfully creating the subdirectory with status code: "
-                        + response.statusCode()),
-                error -> System.err.println(error.toString())
+            response ->
+                System.out.println("Successfully creating the subdirectory with status code: "
+                    + response.statusCode()),
+            error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
     }
