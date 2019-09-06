@@ -10,11 +10,11 @@ import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
-import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -390,6 +390,8 @@ class ShareAPITests extends APISpec {
             primaryShareClient.createPermissionWithResponse(filePermission, null), 201)
     }
 
+    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+    @Ignore
     def "Create and get permission"() {
         given:
         primaryShareClient.create()

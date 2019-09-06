@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesnapshotmetadataerror40342ad12fc4?restype=share&comp=snapshot",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesnapshotmetadataerror152119f414a6?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "43d6702a-eac8-4490-a4f5-a8b4fbafc108"
+      "x-ms-client-request-id" : "e3b6ef7b-6785-4adc-88bc-3d143ee93587"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "51ddbfb3-b01a-002c-5a3e-647e94000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:51ddbfb3-b01a-002c-5a3e-647e94000000\nTime:2019-09-05T23:08:53.8177788Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Thu, 05 Sep 2019 23:08:52 GMT",
-      "x-ms-client-request-id" : "43d6702a-eac8-4490-a4f5-a8b4fbafc108",
+      "x-ms-request-id" : "07339a79-301a-000d-6544-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:07339a79-301a-000d-6544-645aef000000\nTime:2019-09-05T23:47:45.4382130Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:47:44 GMT",
+      "x-ms-client-request-id" : "e3b6ef7b-6785-4adc-88bc-3d143ee93587",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesnapshotmetadataerror40342ad12fc4" ]
+  "variables" : [ "shareapitestscreatesnapshotmetadataerror152119f414a6" ]
 }

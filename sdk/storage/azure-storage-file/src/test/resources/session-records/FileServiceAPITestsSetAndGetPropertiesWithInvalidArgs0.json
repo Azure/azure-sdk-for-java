@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "e1b84b75-e249-4722-aa8a-9597bbc22d9e",
+      "x-ms-client-request-id" : "bb51b844-f88d-4fe5-8622-31a2a67b243c",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -15,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a60ab727-101a-0035-2539-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:a60ab727-101a-0035-2539-64fe2f000000\nTime:2019-09-05T22:30:34.0319626Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:30:33 GMT",
-      "x-ms-client-request-id" : "e1b84b75-e249-4722-aa8a-9597bbc22d9e",
+      "x-ms-request-id" : "36c45ac3-601a-0000-4c44-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:36c45ac3-601a-0000-4c44-64923b000000\nTime:2019-09-05T23:49:06.8331309Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:49:06 GMT",
+      "x-ms-client-request-id" : "bb51b844-f88d-4fe5-8622-31a2a67b243c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs090320" ]
+  "variables" : [ "fileserviceapitestssetandgetpropertieswithinvalidargs033823" ]
 }

@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror71062cd7d1?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror76142cf910?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "f6888337-1b26-4d88-9115-082f7195a266"
+      "x-ms-client-request-id" : "00532ccd-8d14-45ac-806e-0a5228cc6b25"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73250B4915E91\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:30:50 GMT",
+      "ETag" : "\"0x8D7325BAD464B81\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:49:22 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab7fd-101a-0035-5039-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:30:49 GMT",
-      "x-ms-client-request-id" : "f6888337-1b26-4d88-9115-082f7195a266"
+      "x-ms-request-id" : "36c45d90-601a-0000-6744-64923b000000",
+      "Date" : "Thu, 05 Sep 2019 23:49:21 GMT",
+      "x-ms-client-request-id" : "00532ccd-8d14-45ac-806e-0a5228cc6b25"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror71062cd7d1/directoryasyncapitestsforceclosehandleserror786549a591?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror76142cf910/directoryasyncapitestsforceclosehandleserror37920dfcaf?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "c030d472-2166-4f81-92b9-539361c6776d"
+      "x-ms-client-request-id" : "5d14938f-c7bf-4a6f-b058-ac640d3ad1ae"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-05T22:30:50.5466930Z",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:30:50 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T23:49:22.7746281Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:49:22 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 05 Sep 2019 22:30:49 GMT",
-      "ETag" : "\"0x8D73250B4A17432\"",
+      "Date" : "Thu, 05 Sep 2019 23:49:21 GMT",
+      "ETag" : "\"0x8D7325BAD565FE9\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-05T22:30:50.5466930Z",
+      "x-ms-file-change-time" : "2019-09-05T23:49:22.7746281Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "a60ab7ff-101a-0035-5139-64fe2f000000",
-      "x-ms-client-request-id" : "c030d472-2166-4f81-92b9-539361c6776d",
-      "x-ms-file-last-write-time" : "2019-09-05T22:30:50.5466930Z"
+      "x-ms-request-id" : "36c45d97-601a-0000-6d44-64923b000000",
+      "x-ms-client-request-id" : "5d14938f-c7bf-4a6f-b058-ac640d3ad1ae",
+      "x-ms-file-last-write-time" : "2019-09-05T23:49:22.7746281Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror71062cd7d1/directoryasyncapitestsforceclosehandleserror786549a591?comp=forceclosehandles",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror76142cf910/directoryasyncapitestsforceclosehandleserror37920dfcaf?comp=forceclosehandles",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "2cb6cdf5-729e-4f00-9d96-54c895ac41a5"
+      "x-ms-client-request-id" : "5617c016-1f9e-4dd5-872c-f9df55e02196"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "328",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a60ab800-101a-0035-5239-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a60ab800-101a-0035-5239-64fe2f000000\nTime:2019-09-05T22:30:50.6422850Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:30:49 GMT",
-      "x-ms-client-request-id" : "2cb6cdf5-729e-4f00-9d96-54c895ac41a5",
+      "x-ms-request-id" : "36c45d9c-601a-0000-7144-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:36c45d9c-601a-0000-7144-64923b000000\nTime:2019-09-05T23:49:22.8742494Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:49:22 GMT",
+      "x-ms-client-request-id" : "5617c016-1f9e-4dd5-872c-f9df55e02196",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestsforceclosehandleserror71062cd7d1", "directoryasyncapitestsforceclosehandleserror786549a591" ]
+  "variables" : [ "directoryasyncapitestsforceclosehandleserror76142cf910", "directoryasyncapitestsforceclosehandleserror37920dfcaf" ]
 }

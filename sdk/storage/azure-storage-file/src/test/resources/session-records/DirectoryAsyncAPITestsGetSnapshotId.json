@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsgetsnapshotid07615e511c73c3b?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsgetsnapshotid1934158eac63c13?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "367b1a89-9aca-41fa-9524-5265425367f0"
+      "x-ms-client-request-id" : "18f37495-db6f-424c-b176-5e4ff1871e6e"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73250BA02D441\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:30:59 GMT",
+      "ETag" : "\"0x8D7325BB30250D7\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:49:32 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab889-101a-0035-3739-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:30:58 GMT",
-      "x-ms-client-request-id" : "367b1a89-9aca-41fa-9524-5265425367f0"
+      "x-ms-request-id" : "cac51fc1-301a-001d-5944-649f87000000",
+      "Date" : "Thu, 05 Sep 2019 23:49:31 GMT",
+      "x-ms-client-request-id" : "18f37495-db6f-424c-b176-5e4ff1871e6e"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestsgetsnapshotid07615e511c73c3b", "directoryasyncapitestsgetsnapshotid16640b2f6b7f67d" ]
+  "variables" : [ "directoryasyncapitestsgetsnapshotid1934158eac63c13", "directoryasyncapitestsgetsnapshotid81404ca755d0b19" ]
 }

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerror0920209cd7a?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerror43330167f9a?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "d130b557-0a69-45fd-9419-71c6c44d0eb1"
+      "x-ms-client-request-id" : "b40c898a-d363-49dc-bbc8-cdc3d2a89e45"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73250AC650B20\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:30:36 GMT",
+      "ETag" : "\"0x8D7325BA51EB978\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:49:08 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab745-101a-0035-3c39-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:30:35 GMT",
-      "x-ms-client-request-id" : "d130b557-0a69-45fd-9419-71c6c44d0eb1"
+      "x-ms-request-id" : "36c45b0b-601a-0000-0f44-64923b000000",
+      "Date" : "Thu, 05 Sep 2019 23:49:08 GMT",
+      "x-ms-client-request-id" : "b40c898a-d363-49dc-bbc8-cdc3d2a89e45"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerror54027cd2cd7/directoryasyncapitestscreatedirectoryerror9291826000e?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestscreatedirectoryerror284317b123d/directoryasyncapitestscreatedirectoryerror67151e583c5?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "aab34e82-20e9-42a4-a925-a4304ed82872"
+      "x-ms-client-request-id" : "0ccb6f23-4368-4e37-9c9b-64cf68b79f29"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -35,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "a60ab747-101a-0035-3d39-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a60ab747-101a-0035-3d39-64fe2f000000\nTime:2019-09-05T22:30:36.8370179Z</Message></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:30:36 GMT",
-      "x-ms-client-request-id" : "aab34e82-20e9-42a4-a925-a4304ed82872",
+      "x-ms-request-id" : "36c45b0f-601a-0000-1244-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:36c45b0f-601a-0000-1244-64923b000000\nTime:2019-09-05T23:49:09.1391462Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:49:08 GMT",
+      "x-ms-client-request-id" : "0ccb6f23-4368-4e37-9c9b-64cf68b79f29",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestscreatedirectoryerror0920209cd7a", "directoryasyncapitestscreatedirectoryerror9291826000e", "directoryasyncapitestscreatedirectoryerror54027cd2cd7" ]
+  "variables" : [ "directoryasyncapitestscreatedirectoryerror43330167f9a", "directoryasyncapitestscreatedirectoryerror67151e583c5", "directoryasyncapitestscreatedirectoryerror284317b123d" ]
 }

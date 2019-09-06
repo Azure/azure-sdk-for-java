@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsdownloaddataerror23959cefd2d983b764?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsdownloaddataerror62953b7a34560d5104?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "f0bd9313-5ed6-4b10-a36d-ccb803ce75ce"
+      "x-ms-client-request-id" : "1423ba53-a189-4b25-b84b-a0d757225c1c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73250709F3B33\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:28:56 GMT",
+      "ETag" : "\"0x8D7325B6881BF78\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:47:27 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab1a0-101a-0035-7b39-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:28:55 GMT",
-      "x-ms-client-request-id" : "f0bd9313-5ed6-4b10-a36d-ccb803ce75ce"
+      "x-ms-request-id" : "0733994a-301a-000d-6f44-645aef000000",
+      "Date" : "Thu, 05 Sep 2019 23:47:26 GMT",
+      "x-ms-client-request-id" : "1423ba53-a189-4b25-b84b-a0d757225c1c"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsdownloaddataerror23959cefd2d983b764/fileapitestsdownloaddataerror361541f616c72eff64",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsdownloaddataerror62953b7a34560d5104/fileapitestsdownloaddataerror93308916f8f61097f4",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "cbab4c19-2653-4e4a-8df7-f17ad5a69449"
+      "x-ms-client-request-id" : "df951654-2826-4a3b-8bd9-b7350d7e6f5c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -35,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "a60ab1a2-101a-0035-7c39-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:a60ab1a2-101a-0035-7c39-64fe2f000000\nTime:2019-09-05T22:28:56.5490693Z</Message></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:28:55 GMT",
-      "x-ms-client-request-id" : "cbab4c19-2653-4e4a-8df7-f17ad5a69449",
+      "x-ms-request-id" : "0733994c-301a-000d-7044-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:0733994c-301a-000d-7044-645aef000000\nTime:2019-09-05T23:47:27.3970933Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:47:26 GMT",
+      "x-ms-client-request-id" : "df951654-2826-4a3b-8bd9-b7350d7e6f5c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileapitestsdownloaddataerror23959cefd2d983b764", "fileapitestsdownloaddataerror361541f616c72eff64" ]
+  "variables" : [ "fileapitestsdownloaddataerror62953b7a34560d5104", "fileapitestsdownloaddataerror93308916f8f61097f4" ]
 }

@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "69f273eb-6022-4c2f-9faf-f90d550ef15b",
+      "x-ms-client-request-id" : "c0932b50-0bdd-4453-80b0-9e7939781458",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -15,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a60ab939-101a-0035-2f39-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:a60ab939-101a-0035-2f39-64fe2f000000\nTime:2019-09-05T22:31:08.0395203Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:31:07 GMT",
-      "x-ms-client-request-id" : "69f273eb-6022-4c2f-9faf-f90d550ef15b",
+      "x-ms-request-id" : "cac52051-301a-001d-4544-649f87000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:cac52051-301a-001d-4544-649f87000000\nTime:2019-09-05T23:49:40.9861252Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:49:40 GMT",
+      "x-ms-client-request-id" : "c0932b50-0bdd-4453-80b0-9e7939781458",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "0c06caba21184cca9dd9d5ff59d731a7825fbb9c935a4ddf955d27bd7656d954" ]
+  "variables" : [ "00bb0c7a7a1a45f0ab9d2f23dd6c3a84435060c054384b9e8b9914e0d48d0876" ]
 }

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileasyncapitestscreatefilewithargserror191826d86e073?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileasyncapitestscreatefilewithargserror1711601ce812e?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "864ee311-5962-4c31-a9cd-1c5f9985658c"
+      "x-ms-client-request-id" : "1fd77cdf-c993-4183-bf98-9827e2b8fc96"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7325092E1D963\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:29:53 GMT",
+      "ETag" : "\"0x8D7325B8BD319D9\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:48:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a60ab4d5-101a-0035-7039-64fe2f000000",
-      "Date" : "Thu, 05 Sep 2019 22:29:53 GMT",
-      "x-ms-client-request-id" : "864ee311-5962-4c31-a9cd-1c5f9985658c"
+      "x-ms-request-id" : "07339d2f-301a-000d-1444-645aef000000",
+      "Date" : "Thu, 05 Sep 2019 23:48:25 GMT",
+      "x-ms-client-request-id" : "1fd77cdf-c993-4183-bf98-9827e2b8fc96"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/fileasyncapitestscreatefilewithargserror191826d86e073/fileasyncapitestscreatefilewithargserror1262296f15f63",
+    "Uri" : "https://gapradev.file.core.windows.net/fileasyncapitestscreatefilewithargserror1711601ce812e/fileasyncapitestscreatefilewithargserror10218680d5cd4",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "3140cb1c-170b-4d7b-afc3-363ef7602701"
+      "x-ms-client-request-id" : "3fbc2f45-0e75-4a05-9a21-545eab341063"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -34,12 +34,12 @@
       "retry-after" : "0",
       "Content-Length" : "973",
       "StatusCode" : "403",
-      "x-ms-request-id" : "a60ab4d7-101a-0035-7139-64fe2f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:a60ab4d7-101a-0035-7139-64fe2f000000\nTime:2019-09-05T22:29:54.0241811Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'c9lORnRIrrAQ/jBnZj0+Mtg07NGhW4OAfrhlIq9H7Vs=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 05 Sep 2019 22:29:53 GMT\n\n\n\n\n\nx-ms-client-request-id:3140cb1c-170b-4d7b-afc3-363ef7602701\nx-ms-content-length:1024\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-type:file\nx-ms-version:2019-02-02\n/gapradev/fileasyncapitestscreatefilewithargserror191826d86e073/fileasyncapitestscreatefilewithargserror1262296f15f63'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Thu, 05 Sep 2019 22:29:53 GMT",
+      "x-ms-request-id" : "07339d31-301a-000d-1544-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:07339d31-301a-000d-1544-645aef000000\nTime:2019-09-05T23:48:26.6395010Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'ZEAECUEBpWwJ8CsMcKmiXX+XasmxDV3dNXusdXwasqM=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 05 Sep 2019 23:48:26 GMT\n\n\n\n\n\nx-ms-client-request-id:3fbc2f45-0e75-4a05-9a21-545eab341063\nx-ms-content-length:1024\nx-ms-file-attributes:None\nx-ms-file-creation-time:Now\nx-ms-file-last-write-time:Now\nx-ms-file-permission:Inherit\nx-ms-meta-testmeta:value\nx-ms-type:file\nx-ms-version:2019-02-02\n/gapradev/fileasyncapitestscreatefilewithargserror1711601ce812e/fileasyncapitestscreatefilewithargserror10218680d5cd4'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:48:26 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileasyncapitestscreatefilewithargserror191826d86e073", "fileasyncapitestscreatefilewithargserror1262296f15f63" ]
+  "variables" : [ "fileasyncapitestscreatefilewithargserror1711601ce812e", "fileasyncapitestscreatefilewithargserror10218680d5cd4" ]
 }
