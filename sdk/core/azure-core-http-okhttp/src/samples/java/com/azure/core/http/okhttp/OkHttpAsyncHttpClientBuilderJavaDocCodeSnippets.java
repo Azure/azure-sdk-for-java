@@ -24,7 +24,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
         // END: com.azure.core.http.okhttp.instantiation-simple
     }
 
-    private void ProxySample() {
+    private void proxySample() {
 
         // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setProxy
         final String proxyHost = "<proxy-host>"; // e.g. localhost
@@ -37,7 +37,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     }
 
-    private void ProxyBasicAuthenticationSample() {
+    private void proxyBasicAuthenticationSample() {
 
         // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setProxyAuthenticator
         final String proxyHost = "<proxy-host>"; // e.g. localhost
@@ -59,7 +59,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     }
 
-    private void ConnectionTimeoutSample() {
+    private void connectionTimeoutSample() {
 
         // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
         final Duration connectionTimeout = Duration.ofSeconds(250); // connection timeout of 250 seconds
@@ -70,7 +70,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     }
 
-    private void ReadtimeoutTimeoutSample() {
+    private void readTimeoutTimeoutSample() {
 
         // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
         final Duration readTimeout = Duration.ofSeconds(100); // read timeout of 100 seconds
@@ -81,7 +81,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     }
 
-    private void UsingExistingHttpClientSample() {
+    private void usingExistingHttpClientSample() {
 
         // BEGIN: com.azure.core.http.okhttp.using-existing-okhttp
         // Create an OkHttpClient with connection timeout of 250 seconds.
