@@ -273,8 +273,8 @@ public class ServiceClientCheck extends AbstractCheck {
         // prefix of method name that contains all lower letters
         final String prefix = methodName.split("[A-Z]", 2)[0];
         if (!methodName.endsWith("Exists") && !COMMON_NAMING_PREFIX_SET.contains(prefix)) {
-            log(methodDefToken, String.format("Method name ''%s'' should follow a common vocabulary. Refer to Java "
-                    + "Spec: %s.",
+            log(methodDefToken, String.format(
+                "Method name ''%s'' should follow a common vocabulary. Refer to Java Spec: %s.",
                 methodName, JAVA_SPEC_LINK));
         }
 

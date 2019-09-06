@@ -254,15 +254,8 @@ public final class ConfigurationAsyncClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
-        return service
-            .setKey(
-                serviceEndpoint,
-                setting.key(),
-                setting.label(),
-                setting,
-                getETagValue(setting.etag()),
-                null,
-                context)
+        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()),
+            null, context)
             .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.value()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
@@ -357,15 +350,8 @@ public final class ConfigurationAsyncClient {
 
         String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
-        return service
-            .setKey(
-                serviceEndpoint,
-                setting.key(),
-                setting.label(),
-                setting,
-                getETagValue(etag),
-                null,
-                context)
+        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag),
+            null, context)
             .doOnRequest(ignoredValue -> logger.info("Updating ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.value()))
             .doOnError(error -> logger.warning("Failed to update ConfigurationSetting - {}", setting, error));
@@ -518,10 +504,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The ConfigurationSetting to delete.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
-     *     is also returned if
-     *     the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match
-     *     the
-     *     current etag (which will also throw HttpResponseException described below).
+     *     is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set
+     *     but does not match the current etag (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
@@ -538,14 +522,8 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service
-            .delete(
-                serviceEndpoint,
-                setting.key(),
-                setting.label(),
-                getETagValue(setting.etag()),
-                null,
-                context)
+        return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()),
+            null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.value()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
@@ -641,8 +619,7 @@ public final class ConfigurationAsyncClient {
             String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
 
             result =
-                service
-                    .listKeyValueRevisions(
+                service.listKeyValueRevisions(
                         serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
