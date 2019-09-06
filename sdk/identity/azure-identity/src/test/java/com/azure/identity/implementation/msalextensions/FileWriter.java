@@ -22,7 +22,8 @@ public class FileWriter {
         CacheLock lock = new CacheLock(lockfile);
 
         int retries = 3;
-        while (retries -- > 0) {
+        boolean succeeded = false;
+        while (retries -- > 0 && !succeeded) {
             try {
                 lock.lock();
 
@@ -36,7 +37,7 @@ public class FileWriter {
                 os.write(("> " + args[0] + "\n").getBytes());
 
                 os.close();
-
+                succeeded = true;
             } finally {
                 lock.unlock();
             }
