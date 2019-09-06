@@ -54,8 +54,6 @@ public final class CachePersister {
 
         private String cacheLocation;
         private String lockfileLocation;
-        private String serviceName;
-        private String accountName;
 
         /**
          * Default builder based on platform for cache file, and default service and account names
@@ -69,9 +67,9 @@ public final class CachePersister {
                 cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"), "msal.cache").toString();
             }
             lockfileLocation = cacheLocation + ".lockfile";
-
-            serviceName = "Microsoft.Developer.IdentityService";
-            accountName = "MSALCache";
+//
+//            serviceName = "Microsoft.Developer.IdentityService";
+//            accountName = "MSALCache";
         }
 
         /**
@@ -88,22 +86,6 @@ public final class CachePersister {
          * */
         public Builder lockfileLocation(String lockfileLocation) {
             this.lockfileLocation = lockfileLocation;
-            return this;
-        }
-
-        /**
-         * @return Builder with updated serviceName
-         * */
-        public Builder serviceName(String serviceName) {
-            this.serviceName = serviceName;
-            return this;
-        }
-
-        /**
-         * @return Builder with updated accountName
-         * */
-        public Builder accountName(String accountName) {
-            this.accountName = accountName;
             return this;
         }
 
