@@ -5,10 +5,11 @@ package com.azure.identity.implementation.msalextensions;
 
 import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
 import com.sun.jna.Platform;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MsalCacheStorageTest {
 
@@ -17,7 +18,8 @@ public class MsalCacheStorageTest {
 
     @Before
     public void setup() throws Exception {
-        Assume.assumeTrue(Platform.isWindows());
+        org.junit.Assume.assumeTrue("Record".equalsIgnoreCase(System.getenv("AZURE_TEST_MODE")));
+        org.junit.Assume.assumeTrue(!Platform.isWindows());
         cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"), "test.cache").toString();
         cachePersister = new CachePersister.Builder()
                 .cacheLocation(cacheLocation)
@@ -25,24 +27,22 @@ public class MsalCacheStorageTest {
                 .build();
     }
 
-    @After
-    public void cleanup() {
-        Assume.assumeTrue(Platform.isWindows());
-        cachePersister.deleteCache();
-    }
-
     @Test
-    public void writesReadsCacheData() throws IOException {
-        File f = new File(cacheLocation);
+    public void writesReadsCacheData() {
+        try {
+            File f = new File(cacheLocation);
 
-        String testString = "hello world";
+            String testString = "hello world";
 
-        cachePersister.writeCache(testString.getBytes());
-        String receivedString = new String(cachePersister.readCache());
+            cachePersister.writeCache(testString.getBytes());
+            String receivedString = new String(cachePersister.readCache());
 
-        Assert.assertEquals(receivedString, testString);
+            Assert.assertEquals(receivedString, testString);
 
-        cachePersister.deleteCache();
+            cachePersister.deleteCache();
+        } finally {
+            cachePersister.deleteCache();
+        }
     }
 
 }
