@@ -15,8 +15,13 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     private static final String COM_AZURE = "com.azure";
     private static final String DOT_IMPLEMENTATION = ".implementation";
-    private static final String PARAM_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. Alternatively, it can be removed from the implementation package and made public API, after appropriate API review.";
-    private static final String RETURN_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be a return type from public API. Alternatively, it can be removed from the implementation package and made public API.";
+    private static final String PARAM_TYPE_ERROR =
+        "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. "
+            + "Alternatively, it can be removed from the implementation package and made public API, after "
+            + "appropriate API review.";
+    private static final String RETURN_TYPE_ERROR =
+        "\"%s\" class is in an implementation package, and it should not be a return type from public API. "
+            + "Alternatively, it can be removed from the implementation package and made public API.";
 
     private Set<String> implementationClassSet = new HashSet<>();
 
@@ -32,7 +37,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[] {
+        return new int[]{
             TokenTypes.PACKAGE_DEF,
             TokenTypes.IMPORT,
             TokenTypes.METHOD_DEF

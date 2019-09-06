@@ -24,8 +24,8 @@ public final class HttpPipeline {
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
      * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
-     *                                  be made hence changing the original array after the creation of pipeline
-     *                                  will not  mutate the pipeline
+     *     be made hence changing the original array after the creation of pipeline
+     *     will not  mutate the pipeline
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient);
@@ -64,7 +64,8 @@ public final class HttpPipeline {
      * Wraps the request in a context and send it through pipeline.
      *
      * @param request the request
-     * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
+     * @return a publisher upon subscription flows the context through policies, sends the request and emits response
+     *     upon completion
      */
     public Mono<HttpResponse> send(HttpRequest request) {
         return this.send(new HttpPipelineCallContext(request));
@@ -74,7 +75,8 @@ public final class HttpPipeline {
      * Wraps the request in a context with additional metadata and sends it through the pipeline.
      * @param request the request
      * @param data additional metadata to pass along in the request
-     * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
+     * @return a publisher upon subscription flows the context through policies, sends the request and emits response
+     *     upon completion
      */
     public Mono<HttpResponse> send(HttpRequest request, Context data) {
         return this.send(new HttpPipelineCallContext(request, data));
@@ -84,7 +86,8 @@ public final class HttpPipeline {
      * Sends the context (containing request) through pipeline.
      *
      * @param context the request context
-     * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
+     * @return a publisher upon subscription flows the context through policies, sends the request and emits response
+     *     upon completion
      */
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.

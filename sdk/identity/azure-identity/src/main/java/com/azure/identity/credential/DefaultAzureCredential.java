@@ -23,6 +23,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      * @param identityClientOptions the options to configure the IdentityClient
      */
     DefaultAzureCredential(IdentityClientOptions identityClientOptions) {
-        super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions), new ManagedIdentityCredential(null, identityClientOptions))));
+        super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions),
+            new ManagedIdentityCredential(null, identityClientOptions))));
     }
 }
