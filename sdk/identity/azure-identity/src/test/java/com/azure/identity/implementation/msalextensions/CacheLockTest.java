@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation.msalextensions;
 
+import com.sun.jna.Platform;
 import org.junit.*;
 
 import java.io.*;
@@ -21,13 +22,16 @@ public class CacheLockTest {
         String home = System.getProperty("user.home");
 
         java.nio.file.Path classes = java.nio.file.Paths.get(currDir, "target", "classes");
-        System.out.println(classes);
         java.nio.file.Path tests = java.nio.file.Paths.get(currDir, "target", "test-classes");
 
         testerFilename = java.nio.file.Paths.get(home, "Desktop", "tester.txt").toString();
         lockfile = java.nio.file.Paths.get(home, "Desktop", "testlock.lockfile").toString();
 
-        folder = classes.toString() + ";" + tests;  // TODO: ; for windows, but : for mac?
+        String delimiter = ":";
+        if (Platform.isWindows()) {
+            delimiter = ";";
+        }
+        folder = classes.toString() + delimiter + tests;
     }
 
     @Test
@@ -105,7 +109,6 @@ public class CacheLockTest {
 
     @Test
     public void tenProcessesWritingToFile() throws IOException, InterruptedException {
-
         // make sure tester.json file doesn't already exist
         File tester = new File(testerFilename);
         tester.delete();
@@ -114,16 +117,17 @@ public class CacheLockTest {
         File lock = new File(lockfile);
         lock.delete();
 
-        Process process1 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(1), lockfile, testerFilename}).start();
-        Process process2 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(2), lockfile, testerFilename}).start();
-        Process process3 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(3), lockfile, testerFilename}).start();
-        Process process4 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(4), lockfile, testerFilename}).start();
-        Process process5 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(5), lockfile, testerFilename}).start();
-        Process process6 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(6), lockfile, testerFilename}).start();
-        Process process7 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(7), lockfile, testerFilename}).start();
-        Process process8 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(8), lockfile, testerFilename}).start();
-        Process process9 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(9), lockfile, testerFilename}).start();
-        Process process10 = new ProcessBuilder(new String[]{"java", "-cp", folder, "FileWriter", Integer.toString(10), lockfile, testerFilename}).start();
+        String mainClass = com.azure.identity.implementation.msalextensions.FileWriter.class.getName();
+        Process process1 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(1), lockfile, testerFilename}).start();
+        Process process2 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(2), lockfile, testerFilename}).start();
+        Process process3 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(3), lockfile, testerFilename}).start();
+        Process process4 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(4), lockfile, testerFilename}).start();
+        Process process5 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(5), lockfile, testerFilename}).start();
+        Process process6 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(6), lockfile, testerFilename}).start();
+        Process process7 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(7), lockfile, testerFilename}).start();
+        Process process8 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(8), lockfile, testerFilename}).start();
+        Process process9 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(9), lockfile, testerFilename}).start();
+        Process process10 = new ProcessBuilder(new String[]{"java", "-cp", folder, mainClass, Integer.toString(10), lockfile, testerFilename}).start();
 
         process1.waitFor();
         process2.waitFor();

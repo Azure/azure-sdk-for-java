@@ -81,7 +81,7 @@ public class CacheLock {
 
                         try {
                             channel = new RandomAccessFile(lockFile, "rw").getChannel();
-                            lock = channel.tryLock();
+                            lock = channel.lock();
 
                             printToFileIfDebug("Locked!\n");
                             return; //success
@@ -133,7 +133,7 @@ public class CacheLock {
 
             return true;
         } catch (IOException e) {
-            printToFileIfDebug("not unlocked... IOException\n");
+            printToFileIfDebug("not unlocked... IOException: " + e.getMessage());
             return false;
         }
     }

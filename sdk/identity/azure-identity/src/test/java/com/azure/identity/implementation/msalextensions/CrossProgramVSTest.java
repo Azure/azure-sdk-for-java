@@ -38,6 +38,7 @@ public class CrossProgramVSTest {
 
     @Before
     public void setup() throws Exception {
+        org.junit.Assume.assumeTrue("Record".equalsIgnoreCase("AZURE_TEST_MODE"));
         //using the default cachepersister and accessAspect objects
         cachePersister = new CachePersister.Builder().build();
         accessAspect = new PersistentTokenCacheAccessAspect();

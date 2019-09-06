@@ -73,21 +73,22 @@ public class SharedTokenCacheCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
 
-        if (username == null) {
-            return Mono.error(new RuntimeException("No username provided"));
-        }
-
         IAccount requestedAccount = null;
 
         // find if the Public Client app with the requested username exists
         Collection<IAccount> accounts = pubClient.getAccounts().join();
         Iterator<IAccount> iter = accounts.iterator();
 
-        while (iter.hasNext()) {
-            IAccount account =  iter.next();
-            if (account.username().equals(username)) {
-                requestedAccount = account;
-                break;
+
+        if (username == null && iter.hasNext()) {
+            requestedAccount = iter.next();
+        } else {
+            while (iter.hasNext()) {
+                IAccount account = iter.next();
+                if (account.username().equals(username)) {
+                    requestedAccount = account;
+                    break;
+                }
             }
         }
 

@@ -19,7 +19,7 @@ public class FileWriter {
             System.out.println("wrong number of args lol????");
             return;
         }
-        CacheLock lock = new CacheLock(lockfile);
+        CacheLock lock = new CacheLock(lockfile, args[0]);
 
         try {
             lock.lock();
@@ -35,8 +35,6 @@ public class FileWriter {
 
             os.close();
 
-        } catch (Exception e) {
-            throw e;
         } finally {
             lock.unlock();
         }
