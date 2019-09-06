@@ -23,7 +23,7 @@ public class FileWriter {
 
         int retries = 3;
         boolean succeeded = false;
-        while (retries -- > 0 && !succeeded) {
+        while (retries-- > 0 && !succeeded) {
             try {
                 lock.lock();
 

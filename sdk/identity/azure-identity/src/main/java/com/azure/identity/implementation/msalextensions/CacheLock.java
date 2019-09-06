@@ -31,7 +31,8 @@ public class CacheLock {
     private FileLock lock = null;
 
     private File debugFile;
-    private String debugFilename = java.nio.file.Paths.get(System.getProperty("user.dir"), "target", "debug").toString();
+    private String debugFilename = java.nio.file.Paths.get(
+        System.getProperty("user.dir"), "target", "debug").toString();
     private final boolean debugFlag;
 
     /**

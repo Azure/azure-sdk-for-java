@@ -30,7 +30,6 @@ import java.util.concurrent.CompletableFuture;
  * Requires a username and client ID. If a username is not provided, then the AZURE_USERNAME
  * environment variable will be used
  */
-@Immutable
 public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientID;
@@ -96,7 +95,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
         }
 
         // if it does, then request the token
-        SilentParameters params = SilentParameters.builder(new HashSet<>(Arrays.asList(scopes)), requestedAccount).build();
+        SilentParameters params = SilentParameters.builder(
+            new HashSet<>(Arrays.asList(scopes)), requestedAccount).build();
 
         CompletableFuture<IAuthenticationResult> future;
         try {

@@ -62,9 +62,11 @@ public final class CachePersister {
 
             // determine platform and create cache file location
             if (Platform.isWindows()) {
-                cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService", "msal.cache").toString();
+                cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"),
+                    "AppData", "Local", ".IdentityService", "msal.cache").toString();
             } else {
-                cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"), "msal.cache").toString();
+                cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"),
+                    "msal.cache").toString();
             }
             lockfileLocation = cacheLocation + ".lockfile";
 //
