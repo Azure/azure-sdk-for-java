@@ -82,49 +82,28 @@ public enum NtfsFileAttributes {
 
         final StringBuilder builder = new StringBuilder();
 
-        if (ntfsAttributes.contains(NtfsFileAttributes.READ_ONLY)) {
-            builder.append("ReadOnly|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.HIDDEN)) {
-            builder.append("Hidden|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.SYSTEM)) {
-            builder.append("System|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.NORMAL)) {
-            builder.append("None|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.DIRECTORY)) {
-            builder.append("Directory|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.ARCHIVE)) {
-            builder.append("Archive|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.TEMPORARY)) {
-            builder.append("Temporary|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.OFFLINE)) {
-            builder.append("Offline|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.NOT_CONTENT_INDEXED)) {
-            builder.append("NotContentIndexed|");
-        }
-
-        if (ntfsAttributes.contains(NtfsFileAttributes.NO_SCRUB_DATA)) {
-            builder.append("NoScrubData|");
-        }
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "ReadOnly|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "ReadOnly|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "Hidden|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.SYSTEM, "System|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NORMAL, "None|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.DIRECTORY, "Directory|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.ARCHIVE, "Archive|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.TEMPORARY, "Temporary|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.OFFLINE, "Offline|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NOT_CONTENT_INDEXED, "NotContentIndexed|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NO_SCRUB_DATA, "NoScrubData|");
 
         builder.deleteCharAt(builder.lastIndexOf("|"));
 
         return builder.toString();
+    }
+
+    private static void toStringHelper(StringBuilder sb, EnumSet<NtfsFileAttributes> ntfsAttributes,
+        NtfsFileAttributes attributes, String toAdd) {
+        if (ntfsAttributes.contains(attributes)) {
+            sb.append(toAdd);
+        }
     }
 
     /**
@@ -178,6 +157,8 @@ public enum NtfsFileAttributes {
 
         return attributes;
     }
+
+
 
 }
 

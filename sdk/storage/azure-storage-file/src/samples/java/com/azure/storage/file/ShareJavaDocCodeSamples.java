@@ -445,10 +445,10 @@ public class ShareJavaDocCodeSamples {
      */
     public void createPermissionAsync() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.createPermission#string
+        // BEGIN: com.azure.storage.file.shareClient.createPermission#string
         String response = shareClient.createPermission("filePermission");
         System.out.printf("The file permission key is %s", response);
-        // END: com.azure.storage.file.shareAsyncClient.createPermission#string
+        // END: com.azure.storage.file.shareClient.createPermission#string
     }
 
     /**
