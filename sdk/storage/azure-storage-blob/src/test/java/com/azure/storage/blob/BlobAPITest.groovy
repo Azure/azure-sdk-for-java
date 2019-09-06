@@ -281,37 +281,38 @@ class BlobAPITest extends APISpec {
         when:
         def response = bc.getPropertiesWithResponse(null, null, null)
         def headers = response.headers()
+        def properties = response.value()
 
         then:
         validateBasicHeaders(headers)
-        ImplUtils.isNullOrEmpty(response.value().metadata())
-        headers.value("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
-        headers.value("x-ms-copy-completion-time") == null // tested in "copy"
-        headers.value("x-ms-copy-status-description") == null // only returned when the service has errors; cannot validate.
-        headers.value("x-ms-copy-id") == null // tested in "abort copy"
-        headers.value("x-ms-copy-progress") == null // tested in "copy"
-        headers.value("x-ms-copy-source") == null // tested in "copy"
-        headers.value("x-ms-copy-status") == null // tested in "copy"
-        headers.value("x-ms-incremental-copy") == null // tested in PageBlob."start incremental copy"
-        headers.value("x-ms-copy-destination-snapshot") == null // tested in PageBlob."start incremental copy"
-        headers.value("x-ms-lease-duration") == null // tested in "acquire lease"
-        headers.value("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
-        headers.value("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
-        headers.value("Content-Length") != null
-        headers.value("Content-Type") != null
-        headers.value("Content-MD5") != null
-        headers.value("Content-Encoding") == null // tested in "set HTTP headers"
-        headers.value("Content-Disposition") == null // tested in "set HTTP headers"
-        headers.value("Content-Language") == null // tested in "set HTTP headers"
-        headers.value("Cache-Control") == null // tested in "set HTTP headers"
-        headers.value("x-ms-blob-sequence-number") == null // tested in PageBlob."create sequence number"
+        ImplUtils.isNullOrEmpty(properties.metadata())
+        properties.blobType() == BlobType.BLOCK_BLOB
+        properties.copyCompletionTime() == null // tested in "copy"
+        properties.copyStatusDescription() == null // only returned when the service has errors; cannot validate.
+        properties.copyId() == null // tested in "abort copy"
+        properties.copyProgress() == null // tested in "copy"
+        properties.copySource() == null // tested in "copy"
+        properties.copyStatus() == null // tested in "copy"
+        !properties.isIncrementalCopy() // tested in PageBlob."start incremental copy"
+        properties.copyDestinationSnapshot() == null // tested in PageBlob."start incremental copy"
+        properties.leaseDuration() == null // tested in "acquire lease"
+        properties.leaseState() == LeaseStateType.AVAILABLE
+        properties.leaseStatus() == LeaseStatusType.UNLOCKED
+        properties.blobSize() >= 0
+        properties.contentType() != null
+        properties.contentMD5() != null
+        properties.contentEncoding() == null // tested in "set HTTP headers"
+        properties.contentDisposition() == null // tested in "set HTTP headers"
+        properties.contentLanguage() == null // tested in "set HTTP headers"
+        properties.cacheControl() == null // tested in "set HTTP headers"
+        properties.blobSequenceNumber() == null // tested in PageBlob."create sequence number"
         headers.value("Accept-Ranges") == "bytes"
-        headers.value("x-ms-blob-committed-block-count") == null // tested in AppendBlob."append block"
-        Boolean.parseBoolean(headers.value("x-ms-server-encrypted"))
-        headers.value("x-ms-access-tier") == AccessTier.HOT.toString()
-        Boolean.parseBoolean(headers.value("x-ms-access-tier-inferred"))
-        headers.value("x-ms-archive-status") == null
-        headers.value("x-ms-creation-time") != null
+        properties.committedBlockCount() == null // tested in AppendBlob."append block"
+        properties.isServerEncrypted()
+        properties.accessTier() == AccessTier.HOT
+        properties.isAccessTierInferred()
+        properties.archiveStatus() == null
+        properties.creationTime() != null
     }
 
     def "Get properties min"() {
@@ -403,7 +404,7 @@ class BlobAPITest extends APISpec {
         bc.setHTTPHeaders(headers)
 
         expect:
-        bc.getPropertiesWithResponse(null, null, null).headers().value("Content-Type") == "type"
+        bc.getProperties().contentType() == "type"
     }
 
     @Unroll
@@ -531,7 +532,7 @@ class BlobAPITest extends APISpec {
 
         expect:
         bc.setMetadataWithResponse(metadata, null, null, null).statusCode() == statusCode
-        bc.getPropertiesWithResponse(null, null, null).value().metadata() == metadata
+        bc.getProperties().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2 || statusCode
@@ -614,11 +615,13 @@ class BlobAPITest extends APISpec {
         leaseId != null
 
         when:
-        def headers = bc.getPropertiesWithResponse(null, null, null).headers()
+        def response = bc.getPropertiesWithResponse(null, null, null)
+        def properties = response.value()
+        def headers = response.headers()
 
         then:
-        headers.value("x-ms-lease-state") == leaseState.toString()
-        headers.value("x-ms-lease-duration") == leaseDuration.toString()
+        properties.leaseState() == leaseState
+        properties.leaseDuration() == leaseDuration
         validateBasicHeaders(headers)
 
         where:
@@ -699,7 +702,7 @@ class BlobAPITest extends APISpec {
         Response<String> renewLeaseResponse = bc.renewLeaseWithResponse(leaseID, null, null, null)
 
         expect:
-        bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state") == LeaseStateType.LEASED.toString()
+        bc.getProperties().leaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.headers())
         renewLeaseResponse.value() != null
     }
@@ -776,7 +779,7 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = bc.releaseLeaseWithResponse(leaseID, null, null, null).headers()
 
         expect:
-        bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
+        bc.getProperties().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
     }
 
@@ -853,10 +856,10 @@ class BlobAPITest extends APISpec {
         bc.acquireLeaseWithResponse(getRandomUUID(), leaseTime, null, null, null)
 
         Response<Integer> breakLeaseResponse = bc.breakLeaseWithResponse(breakPeriod, null, null, null)
-        String leaseState = bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state")
+        def leaseState = bc.getProperties().leaseState()
 
         expect:
-        leaseState == LeaseStateType.BROKEN.toString() || leaseState == LeaseStateType.BREAKING.toString()
+        leaseState == LeaseStateType.BROKEN || leaseState == LeaseStateType.BREAKING
         breakLeaseResponse.value() <= remainingTime
         validateBasicHeaders(breakLeaseResponse.headers())
 
@@ -1121,16 +1124,16 @@ class BlobAPITest extends APISpec {
             copyDestBlob.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null).headers()
 
         when:
-        while (copyDestBlob.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status") == CopyStatusType.PENDING.toString()) {
+        while (copyDestBlob.getProperties().copyStatus() == CopyStatusType.PENDING) {
             sleepIfRecord(1000)
         }
-        def headers2 = copyDestBlob.getPropertiesWithResponse(null, null, null).headers()
+        def properties = copyDestBlob.getProperties()
 
         then:
-        headers2.value("x-ms-copy-status") == CopyStatusType.SUCCESS.toString()
-        headers2.value("x-ms-copy-completion-time") != null
-        headers2.value("x-ms-copy-progress") != null
-        headers2.value("x-ms-copy-source") != null
+        properties.copyStatus() == CopyStatusType.SUCCESS
+        properties.copyCompletionTime() != null
+        properties.copyProgress() != null
+        properties.copySource() != null
         validateBasicHeaders(headers)
         headers.value("x-ms-copy-id") != null
     }
@@ -1685,7 +1688,7 @@ class BlobAPITest extends APISpec {
         initialResponse.statusCode() == 200 || initialResponse.statusCode() == 202
         headers.value("x-ms-version") != null
         headers.value("x-ms-request-id") != null
-        bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier") == tier.toString()
+        bc.getProperties().accessTier() == tier
         cc.listBlobsFlat().iterator().next().properties().accessTier() == tier
 
         cleanup:
@@ -1707,10 +1710,10 @@ class BlobAPITest extends APISpec {
         bc.create(512)
 
         when:
-        bc.setTierWithResponse(tier, null, null, null)
+        bc.setTier(tier)
 
         then:
-        bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier") == tier.toString()
+        bc.getProperties().accessTier() == tier
         cc.listBlobsFlat().iterator().next().properties().accessTier() == tier
 
         cleanup:
@@ -1750,12 +1753,12 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        boolean inferred1 = Boolean.parseBoolean(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier-inferred"))
+        boolean inferred1 = bc.getProperties().isAccessTierInferred()
         Boolean inferredList1 = cc.listBlobsFlat().iterator().next().properties().accessTierInferred()
 
         bc.setTier(AccessTier.HOT)
 
-        boolean inferred2 = Boolean.parseBoolean(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier-inferred"))
+        boolean inferred2 = bc.getProperties().isAccessTierInferred()
         Boolean inferredList2 = cc.listBlobsFlat().iterator().next().properties().accessTierInferred()
 
         then:
@@ -1777,7 +1780,7 @@ class BlobAPITest extends APISpec {
         bc.setTier(destTier)
 
         then:
-        bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-archive-status") == status.toString()
+        bc.getProperties().archiveStatus() == status
         cc.listBlobsFlat().iterator().next().properties().archiveStatus() == status
 
         where:

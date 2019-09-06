@@ -90,7 +90,7 @@ class ContainerAPITest extends APISpec {
         def access = cc.getProperties().blobPublicAccess()
 
         then:
-        access.toString() == publicAccess.toString()
+        access == publicAccess
 
         where:
         publicAccess               | _
@@ -621,30 +621,31 @@ class ContainerAPITest extends APISpec {
     }
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
-        PageBlobClient normal = cc.getPageBlobClient(normalName)
+        def normal = cc.getPageBlobClient(normalName)
         normal.create(512)
 
-        PageBlobClient copyBlob = cc.getPageBlobClient(copyName)
+        def copyBlob = cc.getPageBlobClient(copyName)
 
-        String status = copyBlob.startCopyFromURL(normal.getBlobUrl())
-        OffsetDateTime start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS.toString()) {
-            status = copyBlob.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
+        copyBlob.startCopyFromURL(normal.getBlobUrl())
+        def start = OffsetDateTime.now()
+        def status = CopyStatusType.PENDING
+        while (status != CopyStatusType.SUCCESS) {
+            status = copyBlob.getProperties().copyStatus()
             OffsetDateTime currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
             sleepIfRecord(1000)
         }
 
-        PageBlobClient metadataBlob = cc.getPageBlobClient(metadataName)
-        Metadata values = new Metadata()
+        def metadataBlob = cc.getPageBlobClient(metadataName)
+        def values = new Metadata()
         values.put("foo", "bar")
         metadataBlob.createWithResponse(512, null, null, values, null, null, null)
 
-        String snapshotTime = normal.createSnapshot().getSnapshotId()
+        def snapshotTime = normal.createSnapshot().getSnapshotId()
 
-        BlockBlobClient uncommittedBlob = cc.getBlockBlobClient(uncommittedName)
+        def uncommittedBlob = cc.getBlockBlobClient(uncommittedName)
 
         uncommittedBlob.stageBlock("0000", defaultInputStream.get(), defaultData.remaining())
 
@@ -1129,13 +1130,13 @@ class ContainerAPITest extends APISpec {
         def leaseResponse = cc.acquireLeaseWithResponse(proposedID, leaseTime, null, null, null)
 
         when:
-        def propertiesResponse = cc.getPropertiesWithResponse(null, null, null)
+        def properties = cc.getProperties()
 
         then:
         leaseResponse.value() != null
         validateBasicHeaders(leaseResponse.headers())
-        propertiesResponse.headers().value("x-ms-lease-state") == leaseState.toString()
-        propertiesResponse.headers().value("x-ms-lease-duration") == leaseDuration.toString()
+        properties.leaseState() == leaseState
+        properties.leaseDuration() == leaseDuration
 
         where:
         proposedID                   | leaseTime || leaseState            | leaseDuration
@@ -1218,7 +1219,7 @@ class ContainerAPITest extends APISpec {
         def renewLeaseResponse = cc.renewLeaseWithResponse(leaseID, null, null, null)
 
         expect:
-        cc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state") == LeaseStateType.LEASED.toString()
+        cc.getProperties().leaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.headers())
     }
 
@@ -1299,7 +1300,7 @@ class ContainerAPITest extends APISpec {
         def releaseLeaseResponse = cc.releaseLeaseWithResponse(leaseID, null, null, null)
 
         expect:
-        cc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
+        cc.getProperties().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(releaseLeaseResponse.headers())
     }
 
@@ -1379,7 +1380,7 @@ class ContainerAPITest extends APISpec {
         cc.acquireLease(getRandomUUID(), leaseTime)
 
         def breakLeaseResponse = cc.breakLeaseWithResponse(breakPeriod, null, null, null)
-        def state = LeaseStateType.fromString(cc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-lease-state"))
+        def state = cc.getProperties().leaseState()
 
         expect:
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
