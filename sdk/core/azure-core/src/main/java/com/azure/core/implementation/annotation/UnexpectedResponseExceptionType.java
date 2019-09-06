@@ -22,17 +22,18 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}UnexpectedResponseExceptionType(MyCustomException.class)
- * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
- * .CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
- *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String
- *  hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
+ * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft"
+ *     + ".CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
+ * void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName,
+ *         @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId,
+ *         @Body GetImageUploadUrlInputInner parameters);
  *
  * {@literal @}UnexpectedResponseExceptionType(code = {404}, value = NotFoundException.class)
  * {@literal @}UnexpectedResponseExceptionType(DefaultException.class)
- * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
- * .CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
- *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String
- *  hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
+ * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft"
+ *     + ".CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
+ * void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName,
+ *         @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
  * </pre>
  *
  * If multiple annotations share the same HTTP status code or there is multiple default annotations the exception

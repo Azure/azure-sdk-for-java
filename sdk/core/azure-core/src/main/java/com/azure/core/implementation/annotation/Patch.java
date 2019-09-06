@@ -17,18 +17,20 @@ import java.lang.annotation.Target;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <pre>
- * {@literal @}Patch("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/
- * Microsoft.Compute/virtualMachines/{vmName}")
- *  VirtualMachine patch(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String
- *  vmName, @PathParam("subscriptionId") String subscriptionId, @BodyParam VirtualMachineUpdateParameters
- *  updateParameters); </pre>
+ * {@literal @}Patch("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/"
+ *     + "Microsoft.Compute/virtualMachines/{vmName}")
+ * VirtualMachine patch(@PathParam("resourceGroupName") String rgName,
+ *         @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId,
+ *         @BodyParam VirtualMachineUpdateParameters updateParameters);
+ * </pre>
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <pre>
  * {@literal @}Patch({vaultBaseUrl}/secrets/{secretName})
- *  Secret patch(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String
- *  secretName, @BodyParam SecretUpdateParameters updateParameters); </pre>
+ * Secret patch(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl,
+ *         @PathParam("secretName") String secretName, @BodyParam SecretUpdateParameters updateParameters);
+ * </pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

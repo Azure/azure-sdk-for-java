@@ -21,9 +21,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <pre>
  * {@literal @}Host("{accountName}.{suffix}")
  *  interface DatalakeService {
- *   {@literal @}GET("jobs/{jobIdentity}")
- *    Job getJob(@HostParam("accountName") String accountName, @HostParam("suffix") String suffix, @PathParam
- *    ("jobIdentity") jobIdentity);
+ *      {@literal @}GET("jobs/{jobIdentity}")
+ *      Job getJob(@HostParam("accountName") String accountName, @HostParam("suffix") String suffix,
+ *          @PathParam("jobIdentity") jobIdentity);
  *  }</pre>
  *
  * <p><strong>Example 2: Unnamed parameter</strong></p>

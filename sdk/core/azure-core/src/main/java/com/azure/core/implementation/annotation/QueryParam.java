@@ -16,14 +16,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
- * {@literal Single<RestResponseBase<Headers, Body>>} listByResourceGroup(@PathParam("resourceGroupName") String
- * resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String
- * filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String
- * apiVersion);</pre>
+ * {@literal Single<RestResponseBase<Headers, Body>>} listByResourceGroup(
+ *         @PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId,
+ *         @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top,
+ * @QueryParam("api-version") String apiVersion);
+ * </pre>
  *
  * <p>The value of parameters filter, expand, top, apiVersion will be encoded and encoded value will be used to replace
- * the corresponding path segment {$filter},
- * {$expand}, {$top}, {api-version} respectively.</p>
+ * the corresponding path segment {$filter}, {$expand}, {$top}, {api-version} respectively.</p>
  *
  * <p><strong>Example 2:</strong> (A use case where PathParam.encoded=true will be used)</p>
  *
@@ -31,7 +31,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}GET("http://wq.com/foo/{subpath}/values")
- *  String getValues(@PathParam("subpath") String param, @QueryParam("connectionString") String connectionString);</pre>
+ * String getValues(@PathParam("subpath") String param, @QueryParam("connectionString") String connectionString);</pre>
  *
  * <p>In this case, if consumer pass "a=b" as the value for query then the resolved url looks like:
  * "<code>http://wq.com/foo/paramblah/values?connectionString=a%3Db</code>"</p>
@@ -40,7 +40,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}GET("http://wq.com/foo/{subpath}/values")
- *  String getValues(@PathParam("subpath") String param, @QueryParam("query", encoded = true) String query);</pre>
+ * String getValues(@PathParam("subpath") String param, @QueryParam("query", encoded = true) String query);</pre>
  *
  * <p>In this case, if consumer pass "a=b" as the value for param1 then the resolved url looks as expected:
  * "<code>http://wq.com/foo/paramblah/values?connectionString=a=b</code>"</p>
