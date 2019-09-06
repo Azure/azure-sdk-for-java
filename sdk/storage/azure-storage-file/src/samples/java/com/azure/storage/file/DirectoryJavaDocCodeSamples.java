@@ -12,7 +12,6 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
