@@ -793,6 +793,10 @@ public class ShareAsyncClient {
      * Creates a permission a the share level. If a permission already exists, it returns the key of it,
      * else creates a new permission and returns the key.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createPermission#string}
+     *
      * @param filePermission The file permission to get/create.
      * @return The file permission key associated with the file permission.
      */
@@ -803,6 +807,10 @@ public class ShareAsyncClient {
     /**
      * Creates a permission a the share level. If a permission already exists, it returns the key of it,
      * else creates a new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string}
      *
      * @param filePermission The file permission to get/create.
      * @return A response that contains the file permission key associated with the file permission.
@@ -821,6 +829,10 @@ public class ShareAsyncClient {
     /**
      * Gets a permission for a given key.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getPermission#string}
+     *
      * @param filePermissionKey The file permission key.
      * @return The file permission associated with the file permission key.
      */
@@ -830,6 +842,10 @@ public class ShareAsyncClient {
 
     /**
      * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string}
      *
      * @param filePermissionKey The file permission key.
      * @return A response that contains th file permission associated with the file permission key.

@@ -654,6 +654,10 @@ public class ShareClient {
      * Creates a permission a the share level. If a permission already exists, it returns the key of it,
      * else creates a new permission and returns the key.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.createPermission#string}
+     *
      * @param filePermission The file permission to get/create.
      * @return The file permission key associated with the file permission.
      */
@@ -665,6 +669,10 @@ public class ShareClient {
      * Creates a permission a the share level. If a permission already exists, it returns the key of it,
      * else creates a new permission and returns the key.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.createPermissionWithResponse#string-context}
+     *
      * @param filePermission The file permission to get/create.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that contains the file permission key associated with the file permission.
@@ -674,7 +682,11 @@ public class ShareClient {
     }
 
     /**
-     * Gets a permission for a given key.
+     * Gets a permission for a given key
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getPermission#string}
      *
      * @param filePermissionKey The file permission key.
      * @return The file permission associated with the file permission key.
@@ -685,6 +697,10 @@ public class ShareClient {
 
     /**
      * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getPermissionWithResponse#string-context}
      *
      * @param filePermissionKey The file permission key.
      * @param context Additional context that is passed through the Http pipeline during the service call.

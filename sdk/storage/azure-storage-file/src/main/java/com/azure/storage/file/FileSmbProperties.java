@@ -3,6 +3,8 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.storage.file.models.DirectorysCreateResponse;
 import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
@@ -183,100 +185,16 @@ public class FileSmbProperties {
     }
 
     /**
-     * Creates a new {@link FileSmbProperties} from a {@link FilesCreateResponse}.
-     * @param response The {@link FilesCreateResponse}.
+     * Creates a new FileSmbProperties object from HttpHeaders
+     * @param httpHeaders The headers to construct FileSmbProperties from
      */
-    FileSmbProperties(FilesCreateResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
-    }
-
-    /**
-     * Creates a new {@link FileSmbProperties} from a {@link DirectorysCreateResponse}.
-     * @param response The {@link DirectorysCreateResponse}.
-     */
-    FileSmbProperties(DirectorysCreateResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
-    }
-
-    /**
-     * Creates a new {@link FileSmbProperties} from a {@link FilesSetHTTPHeadersResponse}.
-     * @param response The {@link FilesSetHTTPHeadersResponse}.
-     */
-    FileSmbProperties(FilesSetHTTPHeadersResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
-    }
-
-    /**
-     * Creates a new {@link FileSmbProperties} from a {@link DirectorysSetPropertiesResponse}.
-     * @param response The {@link DirectorysSetPropertiesResponse}.
-     */
-    FileSmbProperties(DirectorysSetPropertiesResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
-    }
-
-    /**
-     * Creates a new {@link FileSmbProperties} from a {@link FilesGetPropertiesResponse}.
-     * @param response The {@link FilesGetPropertiesResponse}.
-     */
-    FileSmbProperties(FilesGetPropertiesResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
-    }
-
-    /**
-     * Creates a new {@link FileSmbProperties} from a {@link DirectorysGetPropertiesResponse}.
-     * @param response The {@link DirectorysGetPropertiesResponse}.
-     */
-    FileSmbProperties(DirectorysGetPropertiesResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
-    }
-
-    /**
-     * Creates a new {@link FileSmbProperties} from a {@link FilesDownloadResponse}.
-     * @param response The {@link FilesDownloadResponse}.
-     */
-    FileSmbProperties(FilesDownloadResponse response) {
-        this.filePermissionKey = response.deserializedHeaders().filePermissionKey();
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(response.deserializedHeaders().fileAttributes());
-        this.fileCreationTime = response.deserializedHeaders().fileCreationTime();
-        this.fileLastWriteTime = response.deserializedHeaders().fileLastWriteTime();
-        this.fileChangeTime = response.deserializedHeaders().fileChangeTime();
-        this.fileId = response.deserializedHeaders().fileId();
-        this.parentId = response.deserializedHeaders().fileParentId();
+    FileSmbProperties(HttpHeaders httpHeaders) {
+        this.filePermissionKey = httpHeaders.value(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
+        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(httpHeaders.value(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
+        this.fileCreationTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_CREATION_TIME));
+        this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
+        this.fileChangeTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_CHANGE_TIME));
+        this.fileId = httpHeaders.value(FileConstants.HeaderConstants.FILE_ID);
+        this.parentId = httpHeaders.value(FileConstants.HeaderConstants.FILE_PARENT_ID);
     }
 }

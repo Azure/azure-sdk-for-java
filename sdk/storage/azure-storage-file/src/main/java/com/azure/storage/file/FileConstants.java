@@ -32,6 +32,46 @@ public final class FileConstants {
      */
     public static final String SMB_DATE_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'";
 
+    static final class HeaderConstants {
+        /**
+         * Header that specifies file permission key.
+         */
+        public static final String FILE_PERMISSION_KEY = "x-ms-file-permission-key";
+
+        /**
+         * Header that specifies file attributes.
+         */
+        public static final String FILE_ATTRIBUTES = "x-ms-file-attributes";
+
+        /**
+         * Header that specifies file creation time.
+         */
+        public static final String FILE_CREATION_TIME = "x-ms-file-creation-time";
+
+        /**
+         *  Header that specifies file last write time.
+         */
+        public static final String FILE_LAST_WRITE_TIME = "x-ms-file-last-write-time";
+
+        /**
+         *  Header that specifies file change time.
+         */
+        public static final String FILE_CHANGE_TIME = "x-ms-file-change-time";
+
+        /**
+         * Header that specifies file id.
+         */
+        public static final String FILE_ID = "x-ms-file-id";
+
+        /**
+         * Header that spcifies file parent id.
+         */
+        public static final String FILE_PARENT_ID = "x-ms-file-parent-id";
+
+        private HeaderConstants() {
+        }
+    }
+
     static final class MessageConstants {
         public static final String FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID = "File permission and file permission key cannot both be set";
 

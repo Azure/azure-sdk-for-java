@@ -1097,7 +1097,7 @@ public class FileAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
     }
@@ -1115,7 +1115,7 @@ public class FileAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
     }
@@ -1128,7 +1128,7 @@ public class FileAsyncClient {
         String contentType = response.deserializedHeaders().contentType();
         String contentRange = response.deserializedHeaders().contentRange();
         Flux<ByteBuffer> body = response.value();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body, smbProperties);
         return new SimpleResponse<>(response, fileDownloadInfo);
     }
@@ -1157,7 +1157,7 @@ public class FileAsyncClient {
         String copySource = headers.copySource();
         CopyStatusType copyStatus = headers.copyStatus();
         Boolean isServerEncrpted = headers.isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         FileProperties fileProperties = new FileProperties(eTag, lastModified, metadata, fileType, contentLength,
             contentType, contentMD5, contentEncoding, cacheControl, contentDisposition, copyCompletionTime, copyStatusDescription,
             copyId, copyProgress, copySource, copyStatus, isServerEncrpted, smbProperties);

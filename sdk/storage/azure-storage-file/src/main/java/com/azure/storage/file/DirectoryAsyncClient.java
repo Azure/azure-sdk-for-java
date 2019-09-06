@@ -733,7 +733,7 @@ public class DirectoryAsyncClient {
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
@@ -743,7 +743,7 @@ public class DirectoryAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime offsetDateTime = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
     }
@@ -751,7 +751,7 @@ public class DirectoryAsyncClient {
     private Response<DirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        FileSmbProperties smbProperties = new FileSmbProperties(response);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
