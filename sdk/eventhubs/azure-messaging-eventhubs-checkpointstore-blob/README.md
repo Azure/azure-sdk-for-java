@@ -1,4 +1,4 @@
-# Azure library for Partition Manager using Storage Blobs.
+# Azure client library for Java that implements Partition Manager using Storage Blobs.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
