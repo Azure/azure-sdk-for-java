@@ -78,8 +78,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key
-     *     is an invalid value (which will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     *     value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -127,8 +127,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The setting to add to the configuration service.
      * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
-     *     or the key
-     *     is an invalid value (which will also throw HttpResponseException described below).
+     *     or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
@@ -171,8 +170,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid
-     *     value (which will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value (which will
+     *     also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -199,15 +198,14 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
-     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid
-     *     value, the setting is locked, or an etag was provided but does not match the service's current etag value
-     *     (which
-     *     will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value, the setting
+     *     is locked, or an etag was provided but does not match the service's current etag value (which will also throw
+     *     HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
-     *     wildcard character, and the current configuration value's etag does not match, or the
-     *     setting exists and is locked.
+     *     wildcard character, and the current configuration value's etag does not match, or the setting exists and is
+     *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -232,15 +230,13 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The configuration setting to create or update.
      * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an
-     *     invalid
-     *     value, the setting is locked, or an etag was provided but does not match the service's current etag value
-     *     (which
-     *     will also throw HttpResponseException described below).
+     *     invalid value, the setting is locked, or an etag was provided but does not match the service's current etag
+     *     value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
-     *     wildcard character, and the current configuration value's etag does not match, or the
-     *     setting exists and is locked.
+     *     wildcard character, and the current configuration value's etag does not match, or the setting exists and is
+     *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -275,8 +271,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Updates an existing configuration value in the service with the given key. The setting must already exist.
      *
-     *
-     * ><strong>Code Samples</strong></p>
+     * <strong>Code Samples</strong></p>
      *
      * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
      *
@@ -284,13 +279,11 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not
-     *     exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
-     *     below).
+     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not exist, is locked,
+     *     or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration
-     *     value
-     *     is locked.
+     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration value is
+     *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -314,14 +307,13 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
-     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not
-     *     exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
-     *     below).
+     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not exist, is locked,
+     *     or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
-     *     exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
-     *     the current value.
+     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
+     *     setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match the current
+     *     value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -345,9 +337,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The setting to add or update in the service.
      * @return A REST response containing the {@link ConfigurationSetting} that was updated, if the configuration value
-     *     does not
-     *     exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
-     *     below).
+     *     does not exist, is locked, or the key is an invalid value (which will also throw HttpResponseException
+     *     described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
