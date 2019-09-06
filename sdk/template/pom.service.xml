@@ -10,6 +10,6 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>../core/azure-core</module>
-    <module>azure-sdk-template</module>
+    <module>azure-core-tracing-opencensus</module>
   </modules>
 </project>

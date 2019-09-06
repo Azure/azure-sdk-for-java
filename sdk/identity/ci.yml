@@ -41,3 +41,7 @@ stages:
         - name: azure-identity
           safeName: azureidentity
           stagingProfileId: 88192f04117501
+<<<<<<< HEAD:sdk/identity/ci.yml
+=======
+          
+>>>>>>> Updating everything to use OpenCensus as that is what the package uses:sdk/tracing/ci.yml

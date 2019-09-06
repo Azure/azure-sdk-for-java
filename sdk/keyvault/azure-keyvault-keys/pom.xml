@@ -68,6 +68,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+<<<<<<< HEAD:sdk/keyvault/azure-keyvault-keys/pom.xml
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.5</version>
@@ -78,6 +79,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.0.0-preview.4</version>
+=======
+      <groupId>io.opencensus</groupId>
+      <artifactId>opencensus-exporter-trace-zipkin</artifactId>
+      <version>${opencensus.version}</version>
+>>>>>>> Updating everything to use OpenCensus as that is what the package uses:sdk/tracing/azure-core-tracing-opencensus/pom.xml
       <scope>test</scope>
     </dependency>
 

@@ -879,7 +879,7 @@
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
-    <module>./sdk/tracing/azure-core-tracing</module>
+    <module>./sdk/tracing/azure-core-tracing-opencensus</module>
     <module>./sdk/identity/azure-identity</module>
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-common</module>
