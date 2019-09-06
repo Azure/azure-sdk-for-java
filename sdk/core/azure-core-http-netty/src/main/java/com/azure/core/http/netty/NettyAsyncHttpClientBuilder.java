@@ -7,6 +7,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 /**
@@ -26,6 +27,7 @@ public class NettyAsyncHttpClientBuilder {
     private boolean enableWiretap;
     private int port = 80;
     private NioEventLoopGroup nioEventLoopGroup;
+    private ConnectionProvider connectionProvider;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of
@@ -42,7 +44,10 @@ public class NettyAsyncHttpClientBuilder {
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
     public NettyAsyncHttpClient build() {
-        HttpClient nettyHttpClient = HttpClient.create()
+        if (connectionProvider == null) {
+            connectionProvider = ConnectionProvider.fixed("pool", 12);
+        }
+        HttpClient nettyHttpClient = HttpClient.create(connectionProvider)
             .port(port)
             .wiretap(enableWiretap)
             .tcpConfiguration(tcpConfig -> {
@@ -118,6 +123,17 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
+        return this;
+    }
+
+    /**
+     * Sets the connection pool strategy the client should use, which by default will be set to a fixed pool with
+     * maximum number of connections equal to {@code max(logical processor count, 8) * 2}.
+     * @param connectionProvider the connection provider defining the connection pool strategy
+     * @return the updated NettyAsyncHttpClientBuilder object
+     */
+    public NettyAsyncHttpClientBuilder connectionProvider(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
         return this;
     }
 }
