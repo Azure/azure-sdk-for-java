@@ -2,22 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.AccessConditionType;
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.ChangeFeedOptions;
-import com.azure.data.cosmos.ConnectionMode;
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.CosmosKeyCredential;
-import com.azure.data.cosmos.CosmosResourceType;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.JsonSerializable;
-import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.TokenResolver;
+import com.azure.data.cosmos.*;
 import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;

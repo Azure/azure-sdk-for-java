@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.cosmos.internal;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.ConsistencyPolicy;
-import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.ReplicationPolicy;
+import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.data.cosmos.BridgeInternal.setProperty;
-import static com.azure.data.cosmos.BridgeInternal.setResourceSelfLink;
-import static com.azure.data.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
+import static com.azure.data.cosmos.BridgeInternal.*;
 
 /**
  * Represents a database account in the Azure Cosmos DB database service.
@@ -50,7 +49,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the databases link.
      */
-    public String getDatabasesLink() {
+    String getDatabasesLink() {
         return super.getString(Constants.Properties.DATABASES_LINK);
     }
 
@@ -59,7 +58,7 @@ public class DatabaseAccount extends Resource {
      *
      * @param databasesLink the databases link.
      */
-    public void setDatabasesLink(String databasesLink) {
+    void setDatabasesLink(String databasesLink) {
         setProperty(this, Constants.Properties.DATABASES_LINK, databasesLink);
     }
 
@@ -68,7 +67,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the media link.
      */
-    public String getMediaLink() {
+    String getMediaLink() {
         return super.getString(Constants.Properties.MEDIA_LINK);
     }
 
@@ -77,7 +76,7 @@ public class DatabaseAccount extends Resource {
      *
      * @param medialink the media link.
      */
-    public void setMediaLink(String medialink) {
+    void setMediaLink(String medialink) {
         setProperty(this, Constants.Properties.MEDIA_LINK, medialink);
     }
 
@@ -86,7 +85,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the addresses link.
      */
-    public String getAddressesLink() {
+    String getAddressesLink() {
         return super.getString(Constants.Properties.ADDRESS_LINK);
     }
 
@@ -95,7 +94,7 @@ public class DatabaseAccount extends Resource {
      *
      * @param addresseslink the addresses link.
      */
-    public void setAddressesLink(String addresseslink) {
+    void setAddressesLink(String addresseslink) {
         setProperty(this, Constants.Properties.ADDRESS_LINK, addresseslink);
     }
 
@@ -104,11 +103,11 @@ public class DatabaseAccount extends Resource {
      *
      * @return the max media storage usage in MB.
      */
-    public long getMaxMediaStorageUsageInMB() {
+    long getMaxMediaStorageUsageInMB() {
         return this.maxMediaStorageUsageInMB;
     }
 
-    public void setMaxMediaStorageUsageInMB(long value) {
+    void setMaxMediaStorageUsageInMB(long value) {
         this.maxMediaStorageUsageInMB = value;
     }
 
@@ -120,11 +119,11 @@ public class DatabaseAccount extends Resource {
      *
      * @return the media storage usage in MB.
      */
-    public long getMediaStorageUsageInMB() {
+    long getMediaStorageUsageInMB() {
         return this.mediaStorageUsageInMB;
     }
 
-    public void setMediaStorageUsageInMB(long value) {
+    void setMediaStorageUsageInMB(long value) {
         this.mediaStorageUsageInMB = value;
     }
 
@@ -133,7 +132,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the consistency policy.
      */
-    public ConsistencyPolicy getConsistencyPolicy() {
+    ConsistencyPolicy getConsistencyPolicy() {
         if (this.consistencyPolicy == null) {
             this.consistencyPolicy = super.getObject(Constants.Properties.USER_CONSISTENCY_POLICY,
                     ConsistencyPolicy.class);
@@ -150,7 +149,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the replication policy.
      */
-    public ReplicationPolicy getReplicationPolicy() {
+    ReplicationPolicy getReplicationPolicy() {
         if (this.replicationPolicy == null) {
             this.replicationPolicy = super.getObject(Constants.Properties.USER_REPLICATION_POLICY,
                     ReplicationPolicy.class);
@@ -168,7 +167,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the system replication policy.
      */
-    public ReplicationPolicy getSystemReplicationPolicy() {
+    ReplicationPolicy getSystemReplicationPolicy() {
         if (this.systemReplicationPolicy == null) {
             this.systemReplicationPolicy = super.getObject(Constants.Properties.SYSTEM_REPLICATION_POLICY,
                     ReplicationPolicy.class);
@@ -186,7 +185,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the query engine configuration.
      */
-    public Map<String, Object> getQueryEngineConfiuration() {
+    Map<String, Object> getQueryEngineConfiguration() {
         if (this.queryEngineConfiguration == null) {
             String queryEngineConfigurationJsonString = super.getObject(Constants.Properties.QUERY_ENGINE_CONFIGURATION,
                     String.class);
@@ -213,7 +212,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the list of writable locations.
      */
-    public Iterable<DatabaseAccountLocation> getWritableLocations() {
+    public Iterable<DatabaseAccountLocation> writableLocations() {
         return super.getCollection(Constants.Properties.WRITABLE_LOCATIONS, DatabaseAccountLocation.class);
     }
 
@@ -224,7 +223,7 @@ public class DatabaseAccount extends Resource {
      *
      * @param locations the list of writable locations.
      */
-    public void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
+    void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
         setProperty(this, Constants.Properties.WRITABLE_LOCATIONS, locations);
     }
 
@@ -233,7 +232,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the list of readable locations.
      */
-    public Iterable<DatabaseAccountLocation> getReadableLocations() {
+    public Iterable<DatabaseAccountLocation> readableLocations() {
         return super.getCollection(Constants.Properties.READABLE_LOCATIONS, DatabaseAccountLocation.class);
     }
 
@@ -244,19 +243,19 @@ public class DatabaseAccount extends Resource {
      *
      * @param locations the list of readable locations.
      */
-    public void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
+    void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
         setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
-    public boolean isEnableMultipleWriteLocations() {
+    public boolean enableMultipleWriteLocations() {
         return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS), false);
     }
 
-    public void setEnableMultipleWriteLocations(boolean value) {
+    void setEnableMultipleWriteLocations(boolean value) {
         setProperty(this, Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
-    public void populatePropertyBag() {
+    void populatePropertyBag() {
         if (this.consistencyPolicy != null) {
             populatePropertyBagJsonSerializable(this.consistencyPolicy);
             setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
