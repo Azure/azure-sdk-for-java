@@ -19,10 +19,12 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
+import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
@@ -530,6 +532,57 @@ public class FileClient {
      */
     public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Context context) {
         return fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, context).block();
+    }
+
+    /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri}
+     *
+     * <p>For more information, see the
+     * // TODO: Fix link
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param destinationOffset Starting point of the upload range on the destination.
+     * @param sourceOffset Starting point of the upload range on the source.
+     * @param sourceURI Specifies the URL of the source file.
+     * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
+     */
+    public FileUploadRangeFromURLInfo uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
+        URI sourceURI) {
+        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, Context.NONE).value();
+    }
+
+    /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-context}
+     *
+     * <p>For more information, see the
+     * // TODO: Fix link
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param destinationOffset Starting point of the upload range on the destination.
+     * @param sourceOffset Starting point of the upload range on the source.
+     * @param sourceURI Specifies the URL of the source file.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
+     * and response status code.
+     */
+    public Response<FileUploadRangeFromURLInfo> uploadRangeFromURLWithResponse(long length, long destinationOffset,
+        long sourceOffset, URI sourceURI, Context context) {
+        return fileAsyncClient.uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI,
+            context).block();
     }
 
     /**
