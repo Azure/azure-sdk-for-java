@@ -30,6 +30,7 @@ public final class BlobProperties {
 
     private final OffsetDateTime lastModified;
 
+    private final String eTag;
 
     BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
         this.blobType = generatedHeaders.blobType();
@@ -41,8 +42,8 @@ public final class BlobProperties {
         this.contentLanguage = generatedHeaders.contentLanguage();
         this.cacheControl = generatedHeaders.cacheControl();
         this.lastModified = generatedHeaders.lastModified();
+        this.eTag = generatedHeaders.eTag();
     }
-
 
     /**
      * @return the blob type
@@ -105,5 +106,12 @@ public final class BlobProperties {
      */
     public OffsetDateTime lastModified() {
         return lastModified;
+    }
+
+    /**
+     * @return the Etag associated with the last update to the blob
+     */
+    public String eTag() {
+        return eTag;
     }
 }
