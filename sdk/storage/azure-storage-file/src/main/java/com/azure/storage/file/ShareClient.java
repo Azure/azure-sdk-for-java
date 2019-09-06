@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -367,8 +368,8 @@ public class ShareClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageException If the share doesn't exist
      */
-    public Iterable<SignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy().toIterable();
+    public PagedIterable<SignedIdentifier> getAccessPolicy() {
+        return new PagedIterable<>(client.getAccessPolicy());
     }
 
     /**

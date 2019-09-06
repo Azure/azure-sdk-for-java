@@ -4,6 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.exception.HttpResponseException
+import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
@@ -36,7 +37,7 @@ class FileAsyncAPITests extends APISpec {
         filePath = testResourceName.randomName(methodName, 60)
         def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
-        primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildAsyncClient()
+        primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         httpHeaders = new FileHTTPHeaders().fileContentLanguage("en")
             .fileContentType("application/octet-stream")
@@ -140,6 +141,26 @@ class FileAsyncAPITests extends APISpec {
         }
         cleanup:
         defaultData.clear()
+    }
+
+    @Unroll
+    def "Upload data length mismatch"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        when:
+        def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
+            size, 0))
+        then:
+        uploadErrorVerifier.verifyErrorSatisfies {
+            assert it instanceof UnexpectedLengthException
+            assert it.getMessage().contains(errMsg)
+        }
+        cleanup:
+        defaultData.clear()
+        where:
+        size | errMsg
+        6 | "more than"
+        8 | "less than"
     }
 
     def "Download data error"() {
@@ -469,7 +490,7 @@ class FileAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = fileBuilderHelper(interceptorManager, shareName, filePath).snapshot(snapshot).buildAsyncClient()
+        def shareSnapshotClient = fileBuilderHelper(interceptorManager, shareName, filePath).snapshot(snapshot).buildFileAsyncClient()
         then:
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }

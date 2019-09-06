@@ -31,6 +31,7 @@ import java.time.Duration;
  * For the actual creation of lease manager instance, delegates to lease manager factory.
  */
 public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
+    private final String LEASE_STORE_MANAGER_LEASE_SUFFIX = "..";
 
     private final Logger logger = LoggerFactory.getLogger(LeaseStoreManagerImpl.class);
     private LeaseStoreManagerSettings settings;
@@ -435,7 +436,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.requestOptionsFactory.createFeedOptions());
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.results()))
-            .map( ServiceItemLease::fromDocument);
+            .map(ServiceItemLease::fromDocument);
     }
 
     private String getDocumentId(String leaseToken)
@@ -443,9 +444,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.getPartitionLeasePrefix() + leaseToken;
     }
 
-    private String getPartitionLeasePrefix()
-    {
-        return this.settings.getContainerNamePrefix() + "..";
+    private String getPartitionLeasePrefix() {
+        return this.settings.getContainerNamePrefix() + LEASE_STORE_MANAGER_LEASE_SUFFIX;
     }
 
     private CosmosItem createItemForLease(String leaseId) {

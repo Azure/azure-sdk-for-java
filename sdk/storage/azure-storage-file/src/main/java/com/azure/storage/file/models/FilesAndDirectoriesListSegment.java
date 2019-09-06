@@ -6,6 +6,7 @@ package com.azure.storage.file.models;
 
 import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "Entries")
 @Fluent
+@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)
 public final class FilesAndDirectoriesListSegment {
     /*
      * The directoryItems property.

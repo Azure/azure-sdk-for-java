@@ -23,6 +23,16 @@ public final class FileRange {
     }
 
     /**
+     * Creates an instance of the range of a file from the passed {@link Range}.
+     *
+     * @param range Range object containing start and end of the file.
+     */
+    public FileRange(final Range range) {
+        this.start = range.start();
+        this.end = range.end();
+    }
+
+    /**
      * @return The start of bytes to be written.
      */
     public long start() {

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
@@ -10,6 +11,7 @@ import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -21,11 +23,18 @@ import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -55,8 +64,9 @@ public class BackCompatTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
@@ -88,10 +98,15 @@ public class BackCompatTest extends ApiTestBase {
         // We want to ensure that we fetch the event data corresponding to this test and not some other test case.
         applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
 
+        final Map<Symbol, Object> systemProperties = new HashMap<>();
+        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), "100");
+        systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), Date.from(Instant.now()));
+        systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), 15L);
+
         final Message message = Proton.message();
         message.setApplicationProperties(new ApplicationProperties(applicationProperties));
         message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes(UTF_8)))));
-        message.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
+        message.setMessageAnnotations(new MessageAnnotations(systemProperties));
 
         final EventData eventData = new EventData(message);
 

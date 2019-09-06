@@ -33,4 +33,9 @@ class PartitionManagerImpl implements PartitionManager {
     public Mono<Void> stop() {
         return this.partitionLoadBalancer.stop();
     }
+
+    @Override
+    public boolean isRunning() {
+        return this.partitionLoadBalancer.isRunning();
+    }
 }

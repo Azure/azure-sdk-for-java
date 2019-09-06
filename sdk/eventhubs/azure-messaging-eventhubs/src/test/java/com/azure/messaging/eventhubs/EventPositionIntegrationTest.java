@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
@@ -65,7 +66,9 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
 
         setupEventTestData(client);
     }

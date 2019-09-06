@@ -34,6 +34,6 @@ stages:
     parameters:
       ServiceDirectory: authorization
       Artifacts:
-        - name: microsoft-azure-authentication-msi-token-provider
-          safeName: microsoftazureauthenticationmsitokenprovider
+        - name: azure-authentication-msi-token-provider
+          safeName: azureauthenticationmsitokenprovider
           stagingProfileId: 534d15ee3800f4
