@@ -17,5 +17,11 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void countingDocsOfNewIndexGivesZero();
 
+    @Test
+    public abstract void dynamicDocumentDateTimesRoundTripAsUtc();
+
+    @Test
+    public abstract void staticallyTypedDateTimesRoundTripAsUtc();
+
     protected abstract void initializeClient();
 }

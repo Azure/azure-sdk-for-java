@@ -16,6 +16,16 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
+    public void dynamicDocumentDateTimesRoundTripAsUtc() {
+
+    }
+
+    @Override
+    public void staticallyTypedDateTimesRoundTripAsUtc() {
+
+    }
+
+    @Override
     protected void initializeClient() {
         client = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
     }
