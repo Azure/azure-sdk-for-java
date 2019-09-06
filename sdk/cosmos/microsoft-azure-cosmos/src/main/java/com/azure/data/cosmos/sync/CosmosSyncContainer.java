@@ -119,6 +119,27 @@ public class CosmosSyncContainer {
         return database.mapContainerResponseAndBlock(this.containerWrapper.replace(containerProperties, options));
     }
 
+    /**
+     * Read provisioned throughput integer.
+     *
+     * @return the integer. null response indicates database doesn't have any provisioned RUs
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public Integer readProvisionedThroughput() throws CosmosClientException {
+        return CosmosSyncDatabase.throughputResponseToBlock(this.containerWrapper.readProvisionedThroughput());
+    }
+
+    /**
+     * Replace provisioned throughput integer.
+     *
+     * @param requestUnitsPerSecond the request units per second
+     * @return the integer
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public Integer replaceProvisionedThroughput(int requestUnitsPerSecond) throws CosmosClientException {
+        return CosmosSyncDatabase.throughputResponseToBlock(this.containerWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
+    }
+
 
     /* CosmosItem operations */
 
@@ -266,7 +287,7 @@ public class CosmosSyncContainer {
      * @param response the cosmos item response
      * @return the cosmos sync item response
      */
-    CosmosSyncItemResponse convertResponse(CosmosItemResponse response) {
+    private CosmosSyncItemResponse convertResponse(CosmosItemResponse response) {
         return new CosmosSyncItemResponse(response, null, this);
     }
 

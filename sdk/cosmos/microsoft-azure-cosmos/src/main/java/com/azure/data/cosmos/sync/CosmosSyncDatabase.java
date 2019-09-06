@@ -461,7 +461,7 @@ public class CosmosSyncDatabase {
     /**
      * Read provisioned throughput integer.
      *
-     * @return the integer
+     * @return the integer. null response indicates database doesn't have any provisioned RUs
      * @throws CosmosClientException the cosmos client exception
      */
     public Integer readProvisionedThroughput() throws CosmosClientException {
@@ -479,7 +479,7 @@ public class CosmosSyncDatabase {
         return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
-    private static Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
+    static Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
         try {
             return throughputResponse.block();
         } catch (Exception ex) {
