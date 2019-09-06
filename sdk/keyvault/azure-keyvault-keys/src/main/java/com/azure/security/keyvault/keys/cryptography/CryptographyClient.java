@@ -77,18 +77,16 @@ public final class CryptographyClient {
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
-     * a
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
      * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
-     * The encrypt
-     * operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public portion of
-     * the key is used
-     * for encryption. This operation requires the keys/encrypt permission.
+     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public
+     * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values
-     * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP
-     * RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * specified encrypted content. Possible values for assymetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
      * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link
@@ -113,22 +111,21 @@ public final class CryptographyClient {
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
-     * a
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
      * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
-     * The encrypt
-     * operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public portion of
-     * the key is used
+     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public
+     * portion of the key is used
      * for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values
-     * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP
-     * RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * specified encrypted content. Possible values for assymetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
-     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link
-     * EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
+     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -151,13 +148,10 @@ public final class CryptographyClient {
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
-     * a
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
      * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
-     * The encrypt
-     * operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public portion of
-     * the key is used
-     * for encryption. This operation requires the keys/encrypt permission.
+     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public
+     * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
      * specified encrypted content. Possible values
@@ -186,10 +180,9 @@ public final class CryptographyClient {
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be
-     * decrypted, the size of this block is dependent on the target key and the algorithm to be used. The decrypt
-     * operation
-     * is supported for both asymmetric and symmetric keys. This operation requires the keys/decrypt permission.
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires the
+     * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
      * specified encrypted content. Possible values
@@ -221,10 +214,9 @@ public final class CryptographyClient {
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be
-     * decrypted, the size of this block is dependent on the target key and the algorithm to be used. The decrypt
-     * operation
-     * is supported for both asymmetric and symmetric keys. This operation requires the keys/decrypt permission.
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires the
+     * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
      * specified encrypted content. Possible values
@@ -257,10 +249,9 @@ public final class CryptographyClient {
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be
-     * decrypted, the size of this block is dependent on the target key and the algorithm to be used. The decrypt
-     * operation
-     * is supported for both asymmetric and symmetric keys. This operation requires the keys/decrypt permission.
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires the
+     * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
      * specified encrypted content. Possible values
@@ -292,13 +283,11 @@ public final class CryptographyClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -322,13 +311,11 @@ public final class CryptographyClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -351,15 +338,13 @@ public final class CryptographyClient {
      * In case of asymmetric keys public portion of the key is used to verify the signature . This operation requires
      * the keys/verify permission.
      *
-     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
+     * signature from the digest. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -383,15 +368,13 @@ public final class CryptographyClient {
      * In case of asymmetric keys public portion of the key is used to verify the signature . This operation requires
      * the keys/verify permission.
      *
-     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
+     * signature from the digest. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -520,18 +503,15 @@ public final class CryptographyClient {
 
     /**
      * Creates a signature from the raw data using the configured key. The sign data operation supports both asymmetric
-     * and
-     * symmetric keys. This operation requires the keys/sign permission.
+     * and symmetric keys. This operation requires the keys/sign permission.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -555,13 +535,11 @@ public final class CryptographyClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -585,15 +563,13 @@ public final class CryptographyClient {
      * In case of asymmetric keys public portion of the key is used to verify the signature . This operation requires
      * the keys/verify permission.
      *
-     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
+     * signature from the digest. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
@@ -617,15 +593,13 @@ public final class CryptographyClient {
      * In case of asymmetric keys public portion of the key is used to verify the signature . This operation requires
      * the keys/verify permission.
      *
-     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512
-     * ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384
-     * RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384
-     * RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
+     * signature from the digest. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the

@@ -62,8 +62,7 @@ public final class DeletedKey extends KeyBase {
 
     /**
      * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
-     * OffsetDateTime and updates the
-     * value of class variable scheduledPurgeDate.
+     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
      */
     @JsonProperty("scheduledPurgeDate")
     private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
@@ -73,8 +72,7 @@ public final class DeletedKey extends KeyBase {
 
     /**
      * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
-     * and updates the
-     * value of class variable deletedDate.
+     * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
     private void unpackDeletedDate(Long deletedDate) {

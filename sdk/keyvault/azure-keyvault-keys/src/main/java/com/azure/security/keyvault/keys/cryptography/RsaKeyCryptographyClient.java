@@ -101,8 +101,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (iv != null || authenticationData != null || authenticationTag != null) {
             return Mono.error(new IllegalArgumentException(
-                "iv, "
-                + "authenticationData and authenticationTag parameters are not supported for Rsa decrypt operation"));
+                "iv, authenticationData and authenticationTag parameters are not supported for Rsa decrypt operation"));
         }
 
         keyPair = getKeyPair(jsonWebKey);
