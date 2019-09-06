@@ -29,7 +29,7 @@ public class MultithreadedTokenCacheTest {
 
     @Before
     public void setup() throws Exception {
-        org.junit.Assume.assumeTrue("Record".equalsIgnoreCase("AZURE_TEST_MODE"));
+        org.junit.Assume.assumeTrue("Record".equalsIgnoreCase(System.getenv("AZURE_TEST_MODE")));
         // custom MsalCacheStorage for testing purposes so we don't overwrite the real one
         cachePersister = new CachePersister.Builder()
                 .cacheLocation(java.nio.file.Paths.get(System.getProperty("user.home"), "test.cache").toString())

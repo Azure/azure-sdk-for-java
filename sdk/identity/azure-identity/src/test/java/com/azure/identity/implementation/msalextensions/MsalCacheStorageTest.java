@@ -27,6 +27,7 @@ public class MsalCacheStorageTest {
 
     @After
     public void cleanup() {
+        Assume.assumeTrue(Platform.isWindows());
         cachePersister.deleteCache();
     }
 
