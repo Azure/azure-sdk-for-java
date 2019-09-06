@@ -42,7 +42,8 @@ public class SessionHandler extends Handler {
     public void onSessionLocalOpen(Event e) {
         logger.verbose("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
             getConnectionId(), this.entityName,
-            e.getSession().getCondition() == null ? ClientConstants.NOT_APPLICABLE
+            e.getSession().getCondition() == null
+                ? ClientConstants.NOT_APPLICABLE
                 : e.getSession().getCondition().toString());
 
         final Session session = e.getSession();
@@ -57,8 +58,8 @@ public class SessionHandler extends Handler {
             session.close();
 
             final String message =
-                String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of "
-                        + "reactorDispatcher faulted with error: %s",
+                String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of"
+                        + " reactorDispatcher faulted with error: %s",
                     getConnectionId(), this.entityName, ioException.getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
@@ -97,15 +98,15 @@ public class SessionHandler extends Handler {
         logger.info("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
             entityName,
             getConnectionId(),
-            session == null || session.getRemoteCondition() == null ? ClientConstants.NOT_APPLICABLE
+            session == null || session.getRemoteCondition() == null
+                ? ClientConstants.NOT_APPLICABLE
                 : session.getRemoteCondition().toString());
 
         ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            logger.info(
-                "onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], condition[{}], "
-                    + "description[{}]",
+            logger.info("onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], "
+                    + "condition[{}], description[{}]",
                 getConnectionId(), entityName,
                 condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
                 condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
@@ -118,8 +119,8 @@ public class SessionHandler extends Handler {
 
         if (condition != null) {
             final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", getConnectionId(),
-                    entityName),
+                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]",
+                    getConnectionId(), entityName),
                 getErrorContext());
 
             onNext(exception);

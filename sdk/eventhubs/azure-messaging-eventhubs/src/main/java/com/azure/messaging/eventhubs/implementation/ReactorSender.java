@@ -141,8 +141,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             encodedSize = message.encode(bytes, 0, allocationSize);
         } catch (BufferOverflowException exception) {
             final String errorMessage =
-                String.format(
-                    Locale.US,
+                String.format(Locale.US,
                     "Error sending. Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024);
             final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
@@ -189,8 +188,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
             } catch (BufferOverflowException exception) {
                 final String message =
-                    String.format(
-                        Locale.US,
+                    String.format(Locale.US,
                         "Size of the payload exceeded maximum message size: %s kb",
                         maxMessageSizeTemp / 1024);
                 final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
@@ -306,10 +304,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 if (deliveryTag != null) {
                     logger.verbose(
                         "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}]: sendData not found for this delivery.",
-                        handler.getConnectionId(),
-                        entityPath,
-                        getLinkName(),
-                        deliveryTag);
+                        handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
                 }
 
                 //TODO (conniey): Should we update to continue rather than break?
@@ -326,8 +321,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 delivery.setMessageFormat(workItem.messageFormat());
 
                 sentMsgSize = sender.send(workItem.message(), 0, workItem.encodedMessageSize());
-                assert sentMsgSize == workItem.encodedMessageSize() : "Contract of the ProtonJ library for Sender"
-                    + ".Send API changed";
+                assert sentMsgSize == workItem.encodedMessageSize()
+                    : "Contract of the ProtonJ library for Sender. Send API changed";
 
                 linkAdvance = sender.advance();
             } catch (Exception exception) {
@@ -353,10 +348,12 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
                 final ErrorContext context = handler.getErrorContext(sender);
                 final Throwable exception = sendException != null
-                    ? new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed. "
-                    + "Please see cause for more details", entityPath), sendException, context)
-                    : new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed "
-                    + "while advancing delivery(tag: %s).", entityPath, deliveryTag), context);
+                    ? new OperationCancelledException(String.format(Locale.US,
+                    "Entity(%s): send operation failed. Please see cause for more details", entityPath),
+                    sendException, context)
+                    : new OperationCancelledException(String.format(Locale.US,
+                    "Entity(%s): send operation failed while advancing delivery(tag: %s).",
+                    entityPath, deliveryTag), context);
 
                 workItem.sink().error(exception);
             }

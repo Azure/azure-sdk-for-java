@@ -140,8 +140,7 @@ public final class PartitionBasedLoadBalancer {
 
             /*
              * Remove all partitions' ownership that have not been modified for a configuration period of time. This
-             * means
-             * that the previous EventProcessor that owned the partition is probably down and the partition is now
+             * means that the previous EventProcessor that owned the partition is probably down and the partition is now
              * eligible to be claimed by other EventProcessors.
              */
             Map<String, PartitionOwnership> activePartitionOwnershipMap = removeInactivePartitionOwnerships(

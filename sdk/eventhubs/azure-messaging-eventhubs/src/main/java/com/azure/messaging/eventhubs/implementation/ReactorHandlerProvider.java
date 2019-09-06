@@ -47,10 +47,8 @@ public class ReactorHandlerProvider {
             case AMQP_WEB_SOCKETS:
                 return new WebSocketsConnectionHandler(connectionId, hostname);
             default:
-                throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(
-                    Locale.US,
-                    "This transport type '%s' is not supported.",
-                    transportType)));
+                throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
+                    "This transport type '%s' is not supported.", transportType)));
         }
     }
 

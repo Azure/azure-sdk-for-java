@@ -98,12 +98,10 @@ class ReactorExecutor implements Closeable {
                     rescheduledReactor = true;
                 } catch (RejectedExecutionException exception) {
                     logger.warning(LOG_MESSAGE, connectionId,
-                        StringUtil.toStackTraceString(
-                            exception,
+                        StringUtil.toStackTraceString(exception,
                             "Scheduling reactor failed because the executor has been shut down"));
 
-                    this.reactor
-                        .attachments()
+                    this.reactor.attachments()
                         .set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
                 }
             }

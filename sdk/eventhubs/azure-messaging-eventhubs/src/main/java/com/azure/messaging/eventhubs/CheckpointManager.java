@@ -26,13 +26,12 @@ public class CheckpointManager {
      *
      * @param ownerId The event processor identifier that is responsible for updating checkpoints.
      * @param partitionContext The partition context providing necessary partition and event hub information for
-     * updating checkpoints.
+     *     updating checkpoints.
      * @param partitionManager The {@link PartitionManager} implementation that will be store the checkpoint
      *     information.
      * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the  update
-     *     checkpoint
-     * is called from this CheckpointManager, this ETag will be used to provide
-     * <a href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic concurrency</a>.
+     *     checkpoint is called from this CheckpointManager, this ETag will be used to provide
+     *     <a href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic concurrency</a>.
      */
     public CheckpointManager(String ownerId, PartitionContext partitionContext, PartitionManager partitionManager,
                              String eTag) {
