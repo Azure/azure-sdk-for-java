@@ -1,7 +1,10 @@
 package com.azure.core.tracing.opencensus;
 
 import com.azure.core.util.Context;
-import com.azure.messaging.eventhubs.*;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubAsyncProducer;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import io.opencensus.common.Scope;
 import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
 import io.opencensus.trace.Tracer;
@@ -9,6 +12,8 @@ import io.opencensus.trace.Tracing;
 import io.opencensus.trace.config.TraceConfig;
 import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
+import reactor.core.publisher.Flux;
+
 import java.io.IOException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -69,7 +74,7 @@ public class PublishEvents {
             // Send those events. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
             // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
             // the event.
-            producer.send(eventData).block();
+            producer.send(testData).block();
             try {
                 producer.close();
             } catch (IOException e) {
