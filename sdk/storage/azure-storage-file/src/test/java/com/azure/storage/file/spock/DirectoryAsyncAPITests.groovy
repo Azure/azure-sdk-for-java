@@ -446,9 +446,10 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create sub directory file perm key"() {
         given:
+        def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
-        // TODO : Set file permission key
+            .filePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.create().block()
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null))
