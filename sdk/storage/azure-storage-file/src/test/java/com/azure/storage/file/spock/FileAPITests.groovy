@@ -7,6 +7,8 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.http.rest.Response
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.util.Context
+import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.ShareClient
@@ -222,7 +224,7 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(1024)
         when:
-        primaryFileClient.uploadWithResponse(defaultData, size, 0, null)
+        primaryFileClient.uploadWithResponse(defaultData, size, 0, null, Context.NONE)
         then:
         def e = thrown(UnexpectedLengthException)
         e.getMessage().contains(errMsg)
