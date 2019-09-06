@@ -22,11 +22,13 @@ class RetriableWorkItem {
     private boolean waitingForAck;
     private Exception lastKnownException;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink, Duration timeout) {
+    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
+                      Duration timeout) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout, false));
     }
 
-    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink, TimeoutTracker timeout) {
+    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
+                              TimeoutTracker timeout) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;

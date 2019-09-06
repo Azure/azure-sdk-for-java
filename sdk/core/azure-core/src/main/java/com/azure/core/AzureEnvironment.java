@@ -67,7 +67,8 @@ public final class AzureEnvironment {
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.chinacloudapi.cn");
             put("keyVaultDnsSuffix", ".vault.azure.cn");
-            // TODO: add dns suffixes for the china cloud for datalake store and datalake analytics once they are defined.
+            // TODO: add dns suffixes for the china cloud for datalake store and datalake analytics once they are
+            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
@@ -93,7 +94,8 @@ public final class AzureEnvironment {
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.usgovcloudapi.net");
             put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
-            // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are defined.
+            // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are
+            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
@@ -119,7 +121,8 @@ public final class AzureEnvironment {
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.cloudapi.de");
             put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
-            // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are defined.
+            // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are
+            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");

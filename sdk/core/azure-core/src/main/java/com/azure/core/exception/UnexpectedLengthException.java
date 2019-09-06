@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.core.exception;
 
 /**
  * This exception class represents an error when the specified input length doesn't match the data length.
@@ -10,7 +10,13 @@ public final class UnexpectedLengthException extends IllegalStateException {
     private final long bytesRead;
     private final long bytesExpected;
 
-    UnexpectedLengthException(String message, long bytesRead, long bytesExpected) {
+    /**
+     * Constructor of the UnexpectedLengthException.
+     * @param message The message for the exception.
+     * @param bytesRead The number of bytes read from resource.
+     * @param bytesExpected The number of bytes expected from the receiver.
+     */
+    public UnexpectedLengthException(String message, long bytesRead, long bytesExpected) {
         super(message);
         this.bytesRead = bytesRead;
         this.bytesExpected = bytesExpected;

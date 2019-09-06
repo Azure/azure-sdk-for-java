@@ -115,6 +115,15 @@
   <!-- Don't check for JavaDocPackage in samples or tests -->
   <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
+  <!-- Suppress LineLength for samples and tests -->
+  <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
+
+  <!-- Suppress LineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
+  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]"/>
+
+  <!-- Suppress LineLength for Track 1 libraries. -->
+  <suppress checks="LineLength" files=".*[/\\]com[/\\]microsoft[/\\]"/>
+
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
@@ -157,6 +166,9 @@
 
   <!-- ClientLogger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
+  <!-- Use the logger in Utility static method. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
+
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
   <!-- Class has static methods which using static logger instance, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5137-->

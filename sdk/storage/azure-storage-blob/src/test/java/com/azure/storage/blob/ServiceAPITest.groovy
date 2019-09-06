@@ -292,8 +292,6 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    // The eng sys account does not work as expected. Need to work with the account.
-    @Ignore
     def "Get UserDelegationKey"() {
         setup:
         def start = OffsetDateTime.now()
@@ -313,8 +311,6 @@ class ServiceAPITest extends APISpec {
         response.value().value() != null
     }
 
-    // The eng sys account does not work as expected. Need to work with the account.
-    @Ignore
     def "Get UserDelegationKey min"() {
         setup:
         def expiry = OffsetDateTime.now().plusDays(1)
