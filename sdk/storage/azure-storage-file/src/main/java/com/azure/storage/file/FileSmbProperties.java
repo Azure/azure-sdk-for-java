@@ -4,14 +4,6 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.storage.file.models.DirectorysCreateResponse;
-import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
-import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
-import com.azure.storage.file.models.FilesCreateResponse;
-import com.azure.storage.file.models.FilesDownloadResponse;
-import com.azure.storage.file.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
 import java.time.OffsetDateTime;
