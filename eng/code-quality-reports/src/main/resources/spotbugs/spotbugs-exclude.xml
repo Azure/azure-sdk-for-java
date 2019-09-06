@@ -567,4 +567,11 @@
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
+
+  <!-- FlatteningSerializer defines non-transient non-serializable instance field logger,
+  but logger is required for logging-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jackson.FlatteningSerializer"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
 </FindBugsFilter>

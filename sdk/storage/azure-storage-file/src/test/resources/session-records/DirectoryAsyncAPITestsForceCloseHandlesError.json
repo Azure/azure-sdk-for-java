@@ -1,58 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror2852811910?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror76142cf910?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "00532ccd-8d14-45ac-806e-0a5228cc6b25"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72829EB93B9CA\"",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:28:00 GMT",
+      "ETag" : "\"0x8D7325BAD464B81\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:49:22 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b02cf6b1-c01a-0046-2a12-5aeee0000000",
-      "Date" : "Sat, 24 Aug 2019 00:28:00 GMT",
-      "x-ms-client-request-id" : "e1275916-d62c-4f0b-9fdd-3864d049bdac"
+      "x-ms-request-id" : "36c45d90-601a-0000-6744-64923b000000",
+      "Date" : "Thu, 05 Sep 2019 23:49:21 GMT",
+      "x-ms-client-request-id" : "00532ccd-8d14-45ac-806e-0a5228cc6b25"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror2852811910/directoryasyncapitestsforceclosehandleserror2864445cf9?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror76142cf910/directoryasyncapitestsforceclosehandleserror37920dfcaf?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "5d14938f-c7bf-4a6f-b058-ac640d3ad1ae"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-08-24T00:28:00.7758138Z",
-      "Last-Modified" : "Sat, 24 Aug 2019 00:28:00 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T23:49:22.7746281Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:49:22 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Sat, 24 Aug 2019 00:28:00 GMT",
-      "ETag" : "\"0x8D72829EB9A893A\"",
+      "Date" : "Thu, 05 Sep 2019 23:49:21 GMT",
+      "ETag" : "\"0x8D7325BAD565FE9\"",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-08-24T00:28:00.7758138Z",
+      "x-ms-file-change-time" : "2019-09-05T23:49:22.7746281Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "b02cf6b4-c01a-0046-2c12-5aeee0000000",
-      "x-ms-client-request-id" : "7223e6f7-c828-4f50-a0a2-aa1ee0625183",
-      "x-ms-file-last-write-time" : "2019-08-24T00:28:00.7758138Z"
+      "x-ms-request-id" : "36c45d97-601a-0000-6d44-64923b000000",
+      "x-ms-client-request-id" : "5d14938f-c7bf-4a6f-b058-ac640d3ad1ae",
+      "x-ms-file-last-write-time" : "2019-09-05T23:49:22.7746281Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestsforceclosehandleserror2852811910/directoryasyncapitestsforceclosehandleserror2864445cf9?comp=forceclosehandles",
+    "Uri" : "https://gapradev.file.core.windows.net/directoryasyncapitestsforceclosehandleserror76142cf910/directoryasyncapitestsforceclosehandleserror37920dfcaf?comp=forceclosehandles",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "5617c016-1f9e-4dd5-872c-f9df55e02196"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -61,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "328",
       "StatusCode" : "400",
-      "x-ms-request-id" : "b02cf6b5-c01a-0046-2d12-5aeee0000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:b02cf6b5-c01a-0046-2d12-5aeee0000000\nTime:2019-08-24T00:28:01.1906198Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:28:01 GMT",
-      "x-ms-client-request-id" : "a8ce4c2e-ec02-4acb-b5ff-c00dd57da49c",
+      "x-ms-request-id" : "36c45d9c-601a-0000-7144-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:36c45d9c-601a-0000-7144-64923b000000\nTime:2019-09-05T23:49:22.8742494Z</Message><HeaderName>x-ms-handle-id</HeaderName><HeaderValue>handleId</HeaderValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:49:22 GMT",
+      "x-ms-client-request-id" : "5617c016-1f9e-4dd5-872c-f9df55e02196",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestsforceclosehandleserror2852811910", "directoryasyncapitestsforceclosehandleserror2864445cf9" ]
+  "variables" : [ "directoryasyncapitestsforceclosehandleserror76142cf910", "directoryasyncapitestsforceclosehandleserror37920dfcaf" ]
 }

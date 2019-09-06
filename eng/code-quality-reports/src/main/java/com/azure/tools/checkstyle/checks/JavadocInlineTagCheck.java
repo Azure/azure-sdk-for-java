@@ -48,7 +48,8 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
     public void visitJavadocToken(DetailNode token) {
         DetailAST blockCommentToken = getBlockCommentAst();
         //  Skip check on class-level Javadoc
-        if (!BlockCommentPosition.isOnMethod(blockCommentToken) && !BlockCommentPosition.isOnConstructor(blockCommentToken)) {
+        if (!BlockCommentPosition.isOnMethod(blockCommentToken)
+            && !BlockCommentPosition.isOnConstructor(blockCommentToken)) {
             return;
         }
 
@@ -66,13 +67,14 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
     }
 
     /**
-     * Use {@literal {@codesnippet ...}} instead of '<code>', '<pre>', or {@literal {@code ...}) if these tags span
-     * multiple lines. Inline code sample are fine as-is.
+     * Use {@literal {@codesnippet ...}} instead of {@literal <code>}, {@literal <pre>}, or {@literal {@code ...}}
+     * if these tags span multiple lines. Inline code sample are fine as-is.
      *
      * @param htmlElementStartNode HTML_ELEMENT_START node
      */
     private void checkHtmlElementStart(DetailNode htmlElementStartNode) {
-        final DetailNode tagNameNode = JavadocUtil.findFirstToken(htmlElementStartNode, JavadocTokenTypes.HTML_TAG_NAME);
+        final DetailNode tagNameNode =
+            JavadocUtil.findFirstToken(htmlElementStartNode, JavadocTokenTypes.HTML_TAG_NAME);
         // HTML tags are case-insensitive
         final String tagName = tagNameNode.getText().toLowerCase();
         if (!CHECK_TAGS.contains(tagName)) {
@@ -88,8 +90,8 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
     }
 
     /**
-     * Check to see if the JAVADOC_INLINE_TAG node is {@literal @code} tag. If it is, check if the tag contains a new line
-     * or a leading asterisk, which implies the tag has spanned in multiple lines.
+     * Check to see if the JAVADOC_INLINE_TAG node is {@literal @code} tag. If it is, check if the tag contains a new
+     * line or a leading asterisk, which implies the tag has spanned in multiple lines.
      *
      * @param inlineTagNode JAVADOC_INLINE_TAG javadoc node
      */

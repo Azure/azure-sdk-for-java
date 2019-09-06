@@ -30,9 +30,9 @@ import java.util.function.BiFunction;
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of
  * this class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API
- * for features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling},
- * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
- * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) proxy configuration}, and much more.
+ * for features such as {@link NettyAsyncHttpClientBuilder#setNioEventLoopGroup(NioEventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#setWiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#setProxy(ProxyOptions) setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
@@ -77,7 +77,8 @@ public class NettyAsyncHttpClient implements HttpClient {
      * @param restRequest the Rest request contains the body to be sent
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
-    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(final HttpRequest restRequest) {
+    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
+        final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader header : restRequest.headers()) {
                 if (header.value() != null) {
@@ -99,7 +100,8 @@ public class NettyAsyncHttpClient implements HttpClient {
      * @param restRequest the Rest request whose response this delegate handles
      * @return a delegate upon invocation setup Rest response object
      */
-    private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(final HttpRequest restRequest) {
+    private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
+        final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
             Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).request(restRequest));
     }

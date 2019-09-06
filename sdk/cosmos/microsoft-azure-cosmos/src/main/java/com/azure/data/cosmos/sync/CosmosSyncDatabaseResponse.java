@@ -6,11 +6,12 @@ package com.azure.data.cosmos.sync;
 import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
 
-public class CosmosSyncDatabaseResponse {
+public class CosmosSyncDatabaseResponse extends CosmosSyncResponse {
     private final CosmosDatabaseResponse responseWrapper;
     private final CosmosSyncDatabase database;
 
     CosmosSyncDatabaseResponse(CosmosDatabaseResponse response, CosmosSyncClient client) {
+        super(response);
         this.responseWrapper = response;
         if (responseWrapper.database() != null) {
             this.database = new CosmosSyncDatabase(responseWrapper.database().id(), client, responseWrapper.database());

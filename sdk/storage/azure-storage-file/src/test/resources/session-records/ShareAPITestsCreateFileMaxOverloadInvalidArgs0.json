@@ -1,30 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs039271b625?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs098747e07e?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "7d3d6580-b01e-4a28-80e2-d4eb9d1bd5e4"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D72C165CE57A5D\"",
-      "Last-Modified" : "Thu, 29 Aug 2019 00:18:05 GMT",
+      "ETag" : "\"0x8D7325B77DAC2BF\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:47:53 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f5828ad3-c01a-00ce-0cff-5d5639000000",
-      "Date" : "Thu, 29 Aug 2019 00:18:04 GMT",
-      "x-ms-client-request-id" : "67c3fb7f-b2bf-418e-baa7-c7cdf59e0f3a"
+      "x-ms-request-id" : "07339aff-301a-000d-5044-645aef000000",
+      "Date" : "Thu, 05 Sep 2019 23:47:52 GMT",
+      "x-ms-client-request-id" : "7d3d6580-b01e-4a28-80e2-d4eb9d1bd5e4"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs039271b625/testfile:",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatefilemaxoverloadinvalidargs098747e07e/testfile:",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "1a6e93f9-267f-46bb-a268-5e84989747da"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -33,13 +35,13 @@
       "retry-after" : "0",
       "Content-Length" : "243",
       "StatusCode" : "400",
-      "x-ms-request-id" : "f5828ae8-c01a-00ce-1aff-5d5639000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:f5828ae8-c01a-00ce-1aff-5d5639000000\nTime:2019-08-29T00:18:06.5089212Z</Message></Error>",
-      "Date" : "Thu, 29 Aug 2019 00:18:05 GMT",
-      "x-ms-client-request-id" : "c7a1e1c5-44f6-4544-9f60-3e0622fee808",
+      "x-ms-request-id" : "07339b01-301a-000d-5144-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:07339b01-301a-000d-5144-645aef000000\nTime:2019-09-05T23:47:53.1522725Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:47:52 GMT",
+      "x-ms-client-request-id" : "1a6e93f9-267f-46bb-a268-5e84989747da",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatefilemaxoverloadinvalidargs039271b625" ]
+  "variables" : [ "shareapitestscreatefilemaxoverloadinvalidargs098747e07e" ]
 }

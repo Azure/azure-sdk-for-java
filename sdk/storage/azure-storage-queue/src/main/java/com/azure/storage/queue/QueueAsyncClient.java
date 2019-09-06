@@ -3,9 +3,12 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -27,7 +30,6 @@ import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -38,6 +40,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.queue.PostProcessor.postProcessResponse;
@@ -295,9 +298,18 @@ public final class QueueAsyncClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageException If the queue doesn't exist
      */
-    public Flux<SignedIdentifier> getAccessPolicy() {
-        return postProcessResponse(client.queues().getAccessPolicyWithRestResponseAsync(queueName, Context.NONE))
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+    public PagedFlux<SignedIdentifier> getAccessPolicy() {
+        Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
+            marker -> postProcessResponse(this.client.queues()
+                .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value(),
+                null,
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -492,7 +504,7 @@ public final class QueueAsyncClient {
      * with the message, additionally it contains other metadata about the message.
      * @throws StorageException If the queue doesn't exist
      */
-    public Flux<DequeuedMessage> dequeueMessages() {
+    public PagedFlux<DequeuedMessage> dequeueMessages() {
         return dequeueMessages(1, null);
     }
 
@@ -516,7 +528,7 @@ public final class QueueAsyncClient {
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public Flux<DequeuedMessage> dequeueMessages(Integer maxMessages) {
+    public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages) {
         return dequeueMessages(maxMessages, null);
     }
 
@@ -544,11 +556,20 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
-    public Flux<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
+    public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
-        return postProcessResponse(client.messages()
-            .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds, null, null, Context.NONE))
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+        Function<String, Mono<PagedResponse<DequeuedMessage>>> retriever =
+            marker -> postProcessResponse(this.client.messages()
+                .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
+                    null, null, Context.NONE))
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value(),
+                    null,
+                    response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -568,7 +589,7 @@ public final class QueueAsyncClient {
      *
      * @return A {@link PeekedMessage} that contains metadata about the message.
      */
-    public Flux<PeekedMessage> peekMessages() {
+    public PagedFlux<PeekedMessage> peekMessages() {
         return peekMessages(null);
     }
 
@@ -594,10 +615,18 @@ public final class QueueAsyncClient {
      * metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public Flux<PeekedMessage> peekMessages(Integer maxMessages) {
-        return postProcessResponse(client.messages()
-            .peekWithRestResponseAsync(queueName, maxMessages, null, null, Context.NONE))
-            .flatMapMany(response -> Flux.fromIterable(response.value()));
+    public PagedFlux<PeekedMessage> peekMessages(Integer maxMessages) {
+        Function<String, Mono<PagedResponse<PeekedMessage>>> retriever =
+            marker -> postProcessResponse(this.client.messages()
+                .peekWithRestResponseAsync(queueName, maxMessages, null, null, Context.NONE))
+            .map(response -> new PagedResponseBase<>(response.request(),
+                response.statusCode(),
+                response.headers(),
+                response.value(),
+                null,
+                response.deserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -733,6 +762,13 @@ public final class QueueAsyncClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     *{@codesnippet com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
      *
      * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
      * @param permissions The {@code QueueSASPermission} permission for the SAS

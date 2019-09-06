@@ -87,12 +87,14 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
         final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // Public class check
         if (!accessModifier.equals(AccessModifier.PUBLIC)) {
-            log(modifiersToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class", className, HTTP_PIPELINE_POLICY));
+            log(modifiersToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class",
+                className, HTTP_PIPELINE_POLICY));
         }
 
         // Implementation and sub-package check
         if (isImplementationPackage) {
-            log(classDefToken, String.format("Class ''%s'' implementing ''%s'' and should not be a implementation package or sub-package of it", className, HTTP_PIPELINE_POLICY));
+            log(classDefToken, String.format("Class ''%s'' implementing ''%s'' and should not be a implementation "
+                + "package or sub-package of it", className, HTTP_PIPELINE_POLICY));
         }
     }
 }
