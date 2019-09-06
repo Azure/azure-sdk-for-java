@@ -20,29 +20,8 @@ public final class CachePersister {
     /**
      * Default constructor
      * */
-    private CachePersister() {
-    }
-
-    /**
-     * Creates a new cacheProtector depending on which OS is currently being used
-     *
-     * @param cacheLocation
-     * @param  lockfileLocation
-     * @param  serviceName
-     * @param  accountName
-     *
-     * @throws PlatformNotSupportedException if the current OS is not supported
-     * */
-    void createCacheProtector(String cacheLocation, String lockfileLocation, String serviceName, String accountName) throws RuntimeException {
-        if (Platform.isWindows()) {
-            try {
-                cacheProtector = new WindowsDPAPICacheProtector(cacheLocation, lockfileLocation);
-            } catch (IOException e) {
-                throw new RuntimeException("IO Exception in creating the WindowsDPAPICacheProtector");
-            }
-        } else {
-            throw new PlatformNotSupportedException("Platform is not supported");
-        }
+    private CachePersister(CacheProtectorBase cacheProtector) {
+        this.cacheProtector = cacheProtector;
     }
 
     /**
@@ -134,10 +113,15 @@ public final class CachePersister {
          * @return newly instantiated CachePersister
          * */
         public CachePersister build() throws RuntimeException {
-            CachePersister cachePersister = new CachePersister();
-            cachePersister.createCacheProtector(cacheLocation, lockfileLocation, serviceName, accountName);
-
-            return cachePersister;
+            if (Platform.isWindows()) {
+                try {
+                    return new CachePersister(new WindowsDPAPICacheProtector(cacheLocation, lockfileLocation));
+                } catch (IOException e) {
+                    throw new RuntimeException("IO Exception in creating the WindowsDPAPICacheProtector");
+                }
+            } else {
+                throw new PlatformNotSupportedException("Platform is not supported");
+            }
         }
     }
 }

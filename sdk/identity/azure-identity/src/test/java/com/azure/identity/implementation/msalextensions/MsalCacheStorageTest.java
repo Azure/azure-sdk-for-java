@@ -18,8 +18,7 @@ public class MsalCacheStorageTest {
 
     @Before
     public void setup() throws Exception {
-        org.junit.Assume.assumeTrue("Record".equalsIgnoreCase(System.getenv("AZURE_TEST_MODE")));
-        org.junit.Assume.assumeTrue(!Platform.isWindows());
+        org.junit.Assume.assumeTrue(Platform.isWindows());
         cacheLocation = java.nio.file.Paths.get(System.getProperty("user.home"), "test.cache").toString();
         cachePersister = new CachePersister.Builder()
                 .cacheLocation(cacheLocation)
