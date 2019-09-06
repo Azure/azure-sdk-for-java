@@ -24,8 +24,8 @@ public class CacheLockTest {
         java.nio.file.Path classes = java.nio.file.Paths.get(currDir, "target", "classes");
         java.nio.file.Path tests = java.nio.file.Paths.get(currDir, "target", "test-classes");
 
-        testerFilename = java.nio.file.Paths.get(home, "Desktop", "tester.txt").toString();
-        lockfile = java.nio.file.Paths.get(home, "Desktop", "testlock.lockfile").toString();
+        testerFilename = java.nio.file.Paths.get(currDir, "target", "tester.txt").toString();
+        lockfile = java.nio.file.Paths.get(currDir, "target", "testlock.lockfile").toString();
 
         String delimiter = ":";
         if (Platform.isWindows()) {

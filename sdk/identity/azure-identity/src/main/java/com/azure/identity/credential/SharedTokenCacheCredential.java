@@ -36,7 +36,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String clientID;
     private final Configuration configuration;
 
-    private final PublicClientApplication pubClient;
+    private PublicClientApplication pubClient;
 
     /**
      * Creates an instance of the Shared Token Cache Credential Provider.
@@ -59,12 +59,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
         }
 
         this.clientID = clientID;
-
-        PersistentTokenCacheAccessAspect accessAspect;
-
-        accessAspect = new PersistentTokenCacheAccessAspect();
-
-        pubClient = PublicClientApplication.builder(this.clientID).setTokenCacheAccessAspect(accessAspect).build();
     }
 
     /**
@@ -72,6 +66,11 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * */
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
+        // Initialize here so that the constructor doesn't throw
+        if (pubClient == null) {
+            PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
+            pubClient = PublicClientApplication.builder(this.clientID).setTokenCacheAccessAspect(accessAspect).build();
+        }
 
         IAccount requestedAccount = null;
 

@@ -19,26 +19,28 @@ public class FileWriter {
             System.out.println("wrong number of args lol????");
             return;
         }
-        CacheLock lock = new CacheLock(lockfile, args[0]);
+        CacheLock lock = new CacheLock(lockfile);
 
-        try {
-            lock.lock();
+        int retries = 3;
+        while (retries -- > 0) {
+            try {
+                lock.lock();
 
-            if (!file.exists()) {
-                file.createNewFile();
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                FileOutputStream os = new FileOutputStream(file, true);
+
+                os.write(("< " + args[0] + "\n").getBytes());
+                Thread.sleep(1000);
+                os.write(("> " + args[0] + "\n").getBytes());
+
+                os.close();
+
+            } finally {
+                lock.unlock();
             }
-            FileOutputStream os = new FileOutputStream(file, true);
-
-            os.write(("< " + args[0] + "\n").getBytes());
-            Thread.sleep(1000);
-            os.write(("> " + args[0] + "\n").getBytes());
-
-            os.close();
-
-        } finally {
-            lock.unlock();
         }
-
 
     }
 }
