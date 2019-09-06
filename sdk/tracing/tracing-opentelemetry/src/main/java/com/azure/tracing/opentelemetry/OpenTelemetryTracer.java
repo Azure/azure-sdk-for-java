@@ -201,8 +201,12 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     private static void addSpanRequestAttributes(Span span, Context context, String spanName) {
         if (context.getData(ENTITY_PATH).isPresent() && context.getData(HOST_NAME).isPresent()) {
             span.putAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
-            span.putAttribute(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(context.getData(ENTITY_PATH).get().toString()));
-            span.putAttribute(PEER_ENDPOINT, AttributeValue.stringAttributeValue(context.getData(HOST_NAME).get().toString()));
+            span.putAttribute(
+                MESSAGE_BUS_DESTINATION,
+                AttributeValue.stringAttributeValue(context.getData(ENTITY_PATH).get().toString()));
+            span.putAttribute(
+                PEER_ENDPOINT,
+                AttributeValue.stringAttributeValue(context.getData(HOST_NAME).get().toString()));
         }
     }
 

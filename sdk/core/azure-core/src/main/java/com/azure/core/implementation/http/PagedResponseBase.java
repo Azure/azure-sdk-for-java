@@ -25,11 +25,13 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
     private final List<T> items;
     private final String nextLink;
 
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page, H deserializedHeaders) {
+    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
+                             H deserializedHeaders) {
         this(request, statusCode, headers, page.items(), page.nextLink(), deserializedHeaders);
     }
 
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String nextLink, H deserializedHeaders) {
+    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String nextLink,
+                             H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
