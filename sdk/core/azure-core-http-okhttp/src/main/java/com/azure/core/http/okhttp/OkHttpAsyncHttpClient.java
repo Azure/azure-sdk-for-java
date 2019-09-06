@@ -179,14 +179,15 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 // innerResponse.body() getter will not return null for server returned responses.
                 // It can be null:
                 // [a]. if response is built manually with null body (e.g for mocking)
-                // [b]. for the cases described here [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
+                // [b]. for the cases described here
+                // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
                 //
                 this.responseBodyMono = Mono.empty();
             } else {
                 this.responseBodyMono = Mono.using(() -> innerResponse.body(),
                     rb -> Mono.just(rb),
                     // Resource cleanup
-                    // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
+                    // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
                     ResponseBody::close);
             }
             super.request(request);
