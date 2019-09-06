@@ -52,7 +52,7 @@ public class EventHubAsyncConsumer implements Closeable {
         AtomicReferenceFieldUpdater.newUpdater(EventHubAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
-    private static final int MINIMUM_REQUEST = 1;
+    private static final int MINIMUM_REQUEST = 0;
     private static final int MAXIMUM_REQUEST = 100;
 
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
