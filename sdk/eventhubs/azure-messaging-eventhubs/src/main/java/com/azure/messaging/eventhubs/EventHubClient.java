@@ -139,7 +139,7 @@ public class EventHubClient implements Closeable {
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
-        return new EventHubConsumer(consumer, defaultConsumerOptions);
+        return new EventHubConsumer(consumer, defaultConsumerOptions.retry().tryTimeout());
     }
 
     /**
@@ -175,7 +175,11 @@ public class EventHubClient implements Closeable {
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition, options);
-        return new EventHubConsumer(consumer, options);
+        final Duration timeout = options.retry() == null || options.retry().tryTimeout() == null
+            ? defaultConsumerOptions.retry().tryTimeout()
+            : options.retry().tryTimeout();
+
+        return new EventHubConsumer(consumer, timeout);
     }
 
     /**
