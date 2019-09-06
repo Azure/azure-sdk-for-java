@@ -1,8 +1,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PageRange
@@ -11,6 +9,9 @@ import com.azure.storage.common.Constants
 import java.time.OffsetDateTime
 
 class CPKTest extends APISpec {
+
+    def RECORDING_KEY_SEED = 1234567890
+
     CustomerProvidedKey key
     ContainerClient cpkContainer
     BlockBlobClient cpkBlockBlob
@@ -19,7 +20,7 @@ class CPKTest extends APISpec {
     BlobClient cpkExistingBlob
 
     def setup() {
-        key = new CustomerProvidedKey(getRandomKey())
+        key = new CustomerProvidedKey(getRandomKey(RECORDING_KEY_SEED))
         def builder = new ContainerClientBuilder()
             .endpoint(cc.getContainerUrl().toString())
             .customerProvidedKey(key)
@@ -218,13 +219,28 @@ class CPKTest extends APISpec {
         response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.keySHA256()
     }
 
-    def "Set blob tier with CPK"() {
+//    TODO unignore when swagger is resolved with service team
+//    def "Set blob tier with CPK"() {
+//        when:
+//        def response = cpkExistingBlob.setTierWithResponse(AccessTier.COOL, null, null, null)
+//
+//        then:
+//        response.statusCode() == 200
+//        Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.SERVER_ENCRYPTED))
+//        response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.keySHA256()
+//    }
+
+    def "Snapshot blob with CPK"() {
+        setup:
+        def metadata = new Metadata()
+        metadata.put("foo", "bar")
+
         when:
-        def response = cpkExistingBlob.setTierWithResponse(AccessTier.COOL, null, null, null)
+        def response = cpkExistingBlob.createSnapshotWithResponse(null, null, null, null)
 
         then:
-        response.statusCode() == 200
-        Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.SERVER_ENCRYPTED))
-        response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.keySHA256()
+        response.statusCode() == 201
     }
+
+    //TODO add tests for copy blob CPK tests once generated code supports it
 }

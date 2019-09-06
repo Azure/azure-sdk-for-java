@@ -52,11 +52,6 @@ public class ResponseValidationPolicyBuilder {
         return this;
     }
 
-    public ResponseValidationPolicyBuilder addCustomAssertion(BiConsumer<HttpResponse, ClientLogger> assertion) {
-        assertions.add(assertion);
-        return this;
-    }
-
     /**
      * Immutable policy for asserting validations on general responses.
      */
