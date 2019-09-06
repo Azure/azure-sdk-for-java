@@ -114,7 +114,7 @@
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <reactor-core.version>3.2.12.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.11.RELEASE</reactor-netty.version>
-    <netty.version>4.1.33.Final</netty.version>
+    <netty.version>4.1.39.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>

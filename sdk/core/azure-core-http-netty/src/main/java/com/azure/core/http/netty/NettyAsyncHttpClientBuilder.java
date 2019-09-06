@@ -5,9 +5,12 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.DefaultEventLoop;
+import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.resources.LoopResources;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.util.function.Function;
