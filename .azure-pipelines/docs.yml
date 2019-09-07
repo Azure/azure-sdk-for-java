@@ -11,7 +11,7 @@ jobs:
       skipComponentGovernanceDetection: true
     timeoutInMinutes: 120
     pool:
-      vmImage: 'vs2017-win2016'
+      vmImage: 'windows-2019'
 
     steps:
       - powershell: |
@@ -79,7 +79,7 @@ jobs:
       skipComponentGovernanceDetection: true
     timeoutInMinutes: 120
     pool:
-      vmImage: 'vs2017-win2016'
+      vmImage: 'windows-2019'
 
     steps:
       # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,

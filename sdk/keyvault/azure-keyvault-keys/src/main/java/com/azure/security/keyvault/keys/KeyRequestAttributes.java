@@ -29,7 +29,8 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.notBefore, KeyCreateOptions.expires and KeyCreateOptions.enabled fields
+     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.notBefore, KeyCreateOptions.expires and
+     * KeyCreateOptions.enabled fields
      * from {@code keyOptions}
      * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
      */
