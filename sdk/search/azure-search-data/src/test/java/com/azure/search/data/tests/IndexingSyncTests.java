@@ -25,7 +25,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void indexDoesNotThrowWhenAllActionsSucceed()  {
+    public void indexDoesNotThrowWhenAllActionsSucceed() {
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
 
@@ -34,20 +34,19 @@ public class IndexingSyncTests extends IndexingTestBase {
         Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
 
         indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
-        List<IndexingResult> result = indexDocuments(indexActions);
+        List<IndexingResult> result = indexDocumentsSync(indexActions);
 
         Assert.assertEquals(expectedHotelCount, client.countDocuments());
         this.AssertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
     }
 
-    @Override
-    protected List<IndexingResult> indexDocuments(List<IndexAction> indexActions) {
+    protected List<IndexingResult> indexDocumentsSync(List<IndexAction> indexActions) {
         IndexBatch indexBatch = new IndexBatch().actions(indexActions);
-        DocumentIndexResult indexResult =  client.index(indexBatch);
+        DocumentIndexResult indexResult = client.index(indexBatch);
 
         try {
             Thread.sleep(2000);
-        } catch(InterruptedException e){
+        } catch (InterruptedException e) {
             Assert.fail(e.getMessage());
         }
 
