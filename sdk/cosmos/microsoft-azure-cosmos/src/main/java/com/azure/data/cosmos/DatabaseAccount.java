@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.data.cosmos.BridgeInternal.*;
+import static com.azure.data.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
+import static com.azure.data.cosmos.BridgeInternal.setProperty;
+import static com.azure.data.cosmos.BridgeInternal.setResourceSelfLink;
 
 /**
  * Represents a database account in the Azure Cosmos DB database service.

@@ -2,7 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.ChangeFeedOptions;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosKeyCredential;
+import com.azure.data.cosmos.DatabaseAccount;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.TokenResolver;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 
