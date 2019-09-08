@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.identity.credential.SharedTokenCacheCredential;
 import com.azure.identity.credential.SharedTokenCacheCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
@@ -21,7 +19,9 @@ public class PersistentTokenCacheDemo {
     public static void main(String[] args) {
 
         // Wrote to AZURE_USERNAME env variable
-        SharedTokenCacheCredential defaultCredential = new SharedTokenCacheCredentialBuilder().clientId("04b07795-8ddb-461a-bbee-02f9e1bf7b46").build();
+        SharedTokenCacheCredential defaultCredential = new SharedTokenCacheCredentialBuilder()
+            .clientId("04b07795-8ddb-461a-bbee-02f9e1bf7b46")
+            .build();
 
         SecretClient client = new SecretClientBuilder()
             .endpoint("https://persistentcachedemo.vault.azure.net")
