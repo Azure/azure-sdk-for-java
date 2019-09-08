@@ -5,6 +5,7 @@
 package com.azure.search.data.generated.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import com.azure.search.data.customization.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public final class SearchResult {
      * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    private Document additionalProperties;
 
     /*
      * The relevance score of the document compared to other documents returned
@@ -41,7 +42,7 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    public Map<String, Object> additionalProperties() {
+    public Document additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -52,7 +53,7 @@ public final class SearchResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchResult object itself.
      */
-    public SearchResult additionalProperties(Map<String, Object> additionalProperties) {
+    public SearchResult additionalProperties(Document additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

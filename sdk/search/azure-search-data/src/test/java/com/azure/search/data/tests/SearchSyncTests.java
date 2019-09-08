@@ -8,6 +8,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.common.jsonwrapper.JsonWrapper;
+import com.azure.search.data.common.jsonwrapper.api.Config;
+import com.azure.search.data.common.jsonwrapper.api.JsonApi;
+import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.RangeFacetResult;
 import com.azure.search.data.customization.ValueFacetResult;
 import com.azure.search.data.generated.models.FacetResult;
@@ -17,10 +21,16 @@ import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
+import com.azure.search.data.models.Bucket;
+import com.azure.search.data.models.Hotel;
+import com.azure.search.data.models.NonNullableModel;
 import org.junit.Assert;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -60,13 +70,14 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchDynamicDocuments() {
-        PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
+    public void canSearchDynamicDocuments() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
 
+        PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
-        List<Map<String, Object>> searchResults = new ArrayList<>();
+        List<Map<String, Object>> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = (SearchPagedResponse) iterator.next();
             Assert.assertNull(result.count());
@@ -77,15 +88,95 @@ public class SearchSyncTests extends SearchTestBase {
             result.items().forEach(item -> {
                 Assert.assertEquals(1, item.score(), 0);
                 Assert.assertNull(item.highlights());
-                searchResults.add(item.additionalProperties());
+                actualResults.add(item.additionalProperties());
             });
         }
-        Assert.assertEquals(hotels.size(), searchResults.size());
-        Assert.assertTrue(compareResults(searchResults, hotels));
+        Assert.assertEquals(documents.size(), actualResults.size());
+        Assert.assertTrue(compareResults(actualResults, documents));
     }
 
     @Override
-    public void canSearchWithSelectedFields() {
+    public void canSearchStaticallyTypedDocuments() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
+        PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        List<Hotel> actualResults = new ArrayList<>();
+        while (iterator.hasNext()) {
+            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            Assert.assertNull(result.count());
+            Assert.assertNull(result.coverage());
+            Assert.assertNull(result.facets());
+            Assert.assertNotNull(result.items());
+
+            result.items().forEach(item -> {
+                Assert.assertEquals(1, item.score(), 0);
+                Assert.assertNull(item.highlights());
+                actualResults.add(item.additionalProperties().as(Hotel.class));
+            });
+        }
+
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        jsonApi.configureTimezone();
+        List<Hotel> hotels = documents.stream().map(hotel -> jsonApi.convertObjectToType(hotel, Hotel.class)).collect(Collectors.toList());
+
+        Assert.assertEquals(hotels.size(), actualResults.size());
+        Assert.assertEquals(hotels, actualResults);
+    }
+
+    @Override
+    public void canRoundTripNonNullableValueTypes() throws Exception {
+        NonNullableModel doc1 = new NonNullableModel()
+            .key("123")
+            .count(3)
+            .isEnabled(true)
+            .rating(5)
+            .ratio(3.14)
+            .startDate(DATE_FORMAT.parse("2010-06-01T00:00:00Z"))
+            .endDate(DATE_FORMAT.parse("2010-06-15T00:00:00Z"))
+            .topLevelBucket(new Bucket().bucketName("A").count(12))
+            .buckets(new Bucket[] {new Bucket().bucketName("B").count(20), new Bucket().bucketName("C").count(7)});
+
+        NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
+
+        client.setIndexName("non-nullable-index");
+        uploadDocuments(Arrays.asList(doc1, doc2));
+
+        PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        Assert.assertTrue(iterator.hasNext());
+
+        PagedResponse<SearchResult> result = iterator.next();
+        Assert.assertEquals(2, result.items().size());
+        Assert.assertEquals(doc1, result.items().get(0).additionalProperties().as(NonNullableModel.class));
+        Assert.assertEquals(doc2, result.items().get(1).additionalProperties().as(NonNullableModel.class));
+    }
+
+    @Override
+    public void canSearchWithDateInStaticModel() throws IOException, InterruptedException, ParseException {
+        // check if deserialization of Date type object is successful
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+        Date expected = DATE_FORMAT.parse("2010-06-27T00:00:00Z");
+
+        PagedIterable<SearchResult> results = client.search("Fancy", new SearchParameters(), new SearchRequestOptions());
+        Assert.assertNotNull(results);
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        Assert.assertTrue(iterator.hasNext());
+
+        PagedResponse<SearchResult> result = iterator.next();
+        Assert.assertEquals(1, result.items().size());
+        Date actual = result.items().get(0).additionalProperties().as(Hotel.class).lastRenovationDate();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Override
+    public void canSearchWithSelectedFields() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         // Ask JUST for the following two fields
         SearchParameters sp = new SearchParameters();
         sp.searchFields(new LinkedList<>(Arrays.asList("HotelName", "Category")));
@@ -126,7 +217,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canUseTopAndSkipForClientSidePaging() {
+    public void canUseTopAndSkipForClientSidePaging() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         List<String> orderBy = Stream.of("HotelId").collect(Collectors.toList());
         SearchParameters parameters = new SearchParameters().top(3).skip(0).orderBy(orderBy);
 
@@ -148,7 +241,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void searchWithoutOrderBySortsByScore() {
+    public void searchWithoutOrderBySortsByScore() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         Iterator<SearchResult> results = client
             .search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
         SearchResult firstResult = results.next();
@@ -157,7 +252,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void orderByProgressivelyBreaksTies() {
+    public void orderByProgressivelyBreaksTies() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         List<String> orderByValues = new ArrayList<>();
         orderByValues.add("Rating desc");
         orderByValues.add("LastRenovationDate asc");
@@ -171,7 +268,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canFilter() {
+    public void canFilter() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         SearchParameters searchParameters = new SearchParameters()
             .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
         PagedIterable<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
@@ -185,14 +284,16 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchWithRangeFacets() {
+    public void canSearchWithRangeFacets() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         PagedIterable<SearchResult> results = client.search("*", getSearchParametersForRangeFacets(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
         while (iterator.hasNext()) {
             SearchPagedResponse result = (SearchPagedResponse) iterator.next();
-            assertContainKeys(result.items());
+            assertContainKeys(documents, result.items());
             Assert.assertNotNull(result.facets());
             List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.facets(), "Rooms/BaseRate", 4);
             List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(result.facets(), "LastRenovationDate", 2);
@@ -201,14 +302,16 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchWithValueFacets() {
+    public void canSearchWithValueFacets() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         PagedIterable<SearchResult> results = client.search("*", getSearchParametersForValueFacets(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
         Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
         while (iterator.hasNext()) {
             SearchPagedResponse result = (SearchPagedResponse) iterator.next();
-            assertContainKeys(result.items());
+            assertContainKeys(documents, result.items());
             Map<String, List<FacetResult>> facets = result.facets();
             Assert.assertNotNull(facets);
 
@@ -254,7 +357,8 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchWithLuceneSyntax() {
+    public void canSearchWithLuceneSyntax() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("HotelName", "Roach Motel");
         expectedResult.put("Rating", 1);
@@ -269,7 +373,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canFilterNonNullableType() throws Exception {
+    public void canFilterNonNullableType() throws IOException, InterruptedException {
         List<Map<String, Object>> expectedDocsList = prepareDataForNonNullableTest();
         SearchParameters searchParameters = new SearchParameters()
             .filter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
@@ -284,37 +388,43 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchWithSearchModeAll() {
+    public void canSearchWithSearchModeAll() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         List<Map<String, Object>> response = getSearchResults(client
             .search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL),
                 new SearchRequestOptions()));
         Assert.assertEquals(1, response.size());
         Assert.assertEquals("2", response.get(0).get("HotelId"));
-
     }
 
     @Override
-    public void defaultSearchModeIsAny() {
+    public void defaultSearchModeIsAny() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
         Assert.assertEquals(7, response.size());
         Assert.assertEquals(
             Arrays.asList("2", "10", "3", "4", "5", "1", "9"),
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
-
     }
 
     @Override
-    public void canGetResultCountInSearch() {
+    public void canGetResultCountInSearch() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
         Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
 
-        Assert.assertEquals(hotels.size(), ((SearchPagedResponse) resultsIterator.next()).count().intValue());
+        Assert.assertEquals(documents.size(), ((SearchPagedResponse) resultsIterator.next()).count().intValue());
         Assert.assertFalse(resultsIterator.hasNext());
     }
 
     @Override
-    public void canSearchWithRegex() {
+    public void canSearchWithRegex() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         SearchParameters searchParameters = new SearchParameters()
             .queryType(QueryType.FULL)
             .select(Arrays.asList("HotelName", "Rating"));
@@ -334,7 +444,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchWithEscapedSpecialCharsInRegex() {
+    public void canSearchWithEscapedSpecialCharsInRegex() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL);
 
         PagedIterable<SearchResult> results = client
@@ -348,7 +460,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void searchWithScoringProfileBoostsScore() {
+    public void searchWithScoringProfileBoostsScore() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         SearchParameters searchParameters = new SearchParameters()
             .scoringProfile("nearest")
             .scoringParameters(Arrays.asList("myloc-'-122','49'"))
@@ -363,7 +477,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canSearchWithMinimumCoverage() {
+    public void canSearchWithMinimumCoverage() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         PagedIterable<SearchResult> results = client
             .search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -373,7 +489,9 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
-    public void canUseHitHighlighting() {
+    public void canUseHitHighlighting() throws IOException, InterruptedException {
+        documents = uploadDocuments(HOTELS_DATA_JSON);
+
         //arrange
         String description = "Description";
         String category = "Category";

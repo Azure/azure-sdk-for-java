@@ -24,6 +24,12 @@ java:
     clear-output-folder: false
     generate-client-interfaces: true
 directive:
+	- from: src/main/java/com/azure/search/azure-search-data/models/SearchResult.java
+	  where: $
+	  transform: >-
+		return $
+		.replace(/(package com.azure.search.data.generated.models;)/g, "$1\nimport com.azure.search.data.customization.Document;")
+		.replace(/(Map<String, Object>)/g, "Document")
 	- from: src/main/java/com/azure/search/azure-search-data/Documents.java
 	  where: $
 	  transform: >-
