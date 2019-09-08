@@ -89,7 +89,7 @@ public class CacheLock {
 
                         } catch (OverlappingFileLockException e) {
                             printToFileIfDebug("overlap error\n");
-                        } catch (Exception e) {
+                        } catch (RuntimeException e) {
                             printToFileIfDebug("something else went wrong.. general exception\n");
                         }
 

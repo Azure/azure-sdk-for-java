@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation.msalextensions.cachepersister.windows;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.msalextensions.cachepersister.CacheProtectorBase;
 import com.sun.jna.platform.win32.Crypt32Util;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
  * Cache Protector for Windows which uses Windows DPAPI to encrypt the cache
  * */
 public class WindowsDPAPICacheProtector extends CacheProtectorBase {
+
+    private final ClientLogger logger = new ClientLogger(WindowsDPAPICacheProtector.class);
 
     private final String cacheFilename;
     private File cacheFile;
@@ -78,18 +81,24 @@ public class WindowsDPAPICacheProtector extends CacheProtectorBase {
      * */
     private void makeSureFileExists() throws IOException {
         if (!cacheFile.exists()) {
-            cacheFile.createNewFile();
+            boolean success = cacheFile.createNewFile();
+            if (!success) {
+                logger.error("Cache file does not exist, and it was not possible to create it at '" + cacheFile + "'.");
+            }
             protect(" ".getBytes("UTF-8"));
         }
     }
 
     /**
      * Deletes the cache file if it exists
+     *
+     * @return If successful this will return true, otherwise false;
      * */
-    public void deleteCacheHelper() {
+    public boolean deleteCacheHelper() {
         if (cacheFile.exists()) {
-            cacheFile.delete();
+            return cacheFile.delete();
         }
+        return false;
     }
 
 }

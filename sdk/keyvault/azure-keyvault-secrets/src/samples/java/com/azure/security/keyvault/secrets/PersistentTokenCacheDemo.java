@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.identity.credential.SharedTokenCacheCredential;
 import com.azure.identity.credential.SharedTokenCacheCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;

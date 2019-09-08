@@ -123,6 +123,7 @@ public abstract class CacheProtectorBase {
     /**
      * Overwritten by subclasses; each OS handles differently
      * */
-    protected void deleteCacheHelper() {
+    protected boolean deleteCacheHelper() {
+        return false;
     }
 }
