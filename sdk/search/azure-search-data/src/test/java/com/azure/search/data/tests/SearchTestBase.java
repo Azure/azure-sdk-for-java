@@ -4,39 +4,27 @@
 package com.azure.search.data.tests;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.search.data.common.jsonwrapper.JsonWrapper;
-import com.azure.search.data.common.jsonwrapper.api.Config;
-import com.azure.search.data.common.jsonwrapper.api.JsonApi;
-import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
-import com.azure.search.data.customization.models.CoordinateSystem;
 import com.azure.search.data.customization.RangeFacetResult;
 import com.azure.search.data.customization.ValueFacetResult;
+import com.azure.search.data.customization.models.CoordinateSystem;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.FacetResult;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,14 +36,16 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
-    protected static final String INDEX_NAME = "hotels";
-    protected static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
-    protected static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
-    protected static final String MODEL_WITH_VALUE_TYPES_DOCS_JSON = "ModelWithValueTypesDocsData.json";
-    protected static final String SEARCH_SCORE_FIELD = "@search.score";
-    protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    static final String HOTELS_INDEX_NAME = "hotels";
+    static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
+    private static final String SEARCH_SCORE_FIELD = "@search.score";
+    private static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
+    static final String MODEL_WITH_VALUE_TYPES_DOCS_JSON = "ModelWithValueTypesDocsData.json";
+    static final String MODEL_WITH_INDEX_TYPES_INDEX_NAME = "testindex";
+    private static final String NON_NULLABLE_INDEX_JSON = "NonNullableIndexData.json";
+    static final String NON_NULLABLE_INDEX_NAME = "non-nullable-index";
 
-    protected List<Map<String, Object>> documents;
+    protected List<Map<String, Object>> hotels;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -66,29 +56,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         initializeClient();
     }
 
-    List<Map<String, Object>> uploadDocuments(String dataJson) throws IOException, InterruptedException {
-        Reader docsData = new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream(dataJson));
-
-        List<Map<String, Object>> documents = new ObjectMapper().readValue(docsData, List.class);
-        List<IndexAction> indexActions = new LinkedList<>();
-
-        documents.forEach(h -> {
-            HashMap<String, Object> hotel = new HashMap<String, Object>(h);
-            indexActions.add(new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(hotel));
-        });
-
-        indexDocuments(indexActions);
-
-        // Wait 2 secs to allow index request to finish
-        Thread.sleep(2000);
-
-        return documents;
-    }
-
-    List<Map<String, Object>> uploadHotels(int count) throws InterruptedException {
+    List<Map<String, Object>> createHotelsList(int count) {
         List<Map<String, Object>> documents = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             Map<String, Object> doc = new HashMap<>();
@@ -98,7 +66,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             doc.put("Description", "Desc" + i);
             doc.put("Description_fr", "Desc_fr" + i);
             doc.put("Category", "Catg" + i);
-            doc.put("Tags", Arrays.asList("tag" + i));
+            doc.put("Tags", Collections.singletonList("tag" + i));
             doc.put("ParkingIncluded", false);
             doc.put("SmokingAllowed", false);
             doc.put("LastRenovationDate", "2010-06-27T00:00:00Z");
@@ -106,39 +74,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
             documents.add(doc);
         }
-
-        List<IndexAction> indexActions = new LinkedList<>();
-
-        documents.forEach(h -> {
-            HashMap<String, Object> hotel = new HashMap<String, Object>(h);
-            indexActions.add(new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(hotel));
-        });
-
-        indexDocuments(indexActions);
-
-        // Wait 2 secs to allow index request to finish
-        Thread.sleep(2000);
-
         return documents;
-    }
-
-    protected <T> void uploadDocuments(List<T> uploadDoc) throws InterruptedException {
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        jsonApi.configureTimezone();
-        List<IndexAction> indexActions = new LinkedList<>();
-        uploadDoc.forEach(doc -> {
-            Map<String, Object> properties = jsonApi.convertObjectToType(doc, Map.class);
-            indexActions.add(new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(properties));
-        });
-
-        indexDocuments(indexActions);
-        // Wait 2 secs to allow index request to finish
-        Thread.sleep(2000);
     }
 
     /**
@@ -176,25 +112,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         return true;
     }
 
-    List<Map<String, Object>> prepareDataForNonNullableTest() throws IOException, InterruptedException {
-        /** TODO (Rabeea): This test is testing the case where a customer is using a model type with non-nullable (unboxed)
-         primitive types. When we support user data-structured serialization, we need to use that in this test.
-         **/
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKey);
-            searchIndexService.initialize();
-        }
-
-        setIndexName("testindex");
-
-        List<Map<String, Object>> docsList = uploadDocuments(MODEL_WITH_VALUE_TYPES_DOCS_JSON);
-        return docsList.stream().filter(d -> !d.get("Key").equals("789")).collect(
-            Collectors.toList());
-    }
-
-    protected void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
+    void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
         Assert.assertNull(baseRateFacets.get(0).from());
         Assert.assertEquals(5.0, baseRateFacets.get(0).to());
         Assert.assertEquals(5.0, baseRateFacets.get(1).from());
@@ -218,32 +136,36 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(2, lastRenovationDateFacets.get(1).count());
     }
 
-    protected List<RangeFacetResult> getRangeFacetsForField(Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
+    List<RangeFacetResult> getRangeFacetsForField(
+        Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
         return facetCollection.stream().map(facetResult -> new RangeFacetResult(facetResult)).collect(Collectors.toList());
     }
 
-    protected List<ValueFacetResult> getValueFacetsForField(Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
+    List<ValueFacetResult> getValueFacetsForField(
+        Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
         return facetCollection.stream().map(facetResult -> new ValueFacetResult(facetResult)).collect(Collectors.toList());
     }
 
-    protected List<FacetResult> getFacetsForField(Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
+    List<FacetResult> getFacetsForField(
+        Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         Assert.assertTrue(facets.containsKey(expectedField));
         List<FacetResult> results = facets.get(expectedField);
         Assert.assertEquals(expectedCount, results.size());
         return results;
     }
 
-    protected void assertContainKeys(List<Map<String, Object>> expected, List<SearchResult> actual) {
+    void assertContainKeys(List<Map<String, Object>> expected, List<SearchResult> actual) {
         Assert.assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId")).map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
-        List<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId")).map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
+            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
+            .map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expectedKeys, actualKeys);
     }
 
-
-    protected void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
+    void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
         Assert.assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
             Assert.assertEquals(expectedFacets.get(i).count(), actualFacets.get(i).count());
@@ -251,17 +173,17 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         }
     }
 
-    protected String getSearchResultId(SearchResult searchResult, String idFieldName) {
+    String getSearchResultId(SearchResult searchResult, String idFieldName) {
         return searchResult.additionalProperties().get(idFieldName).toString();
     }
 
-    protected SearchParameters getSearchParametersForRangeFacets() {
+    SearchParameters getSearchParametersForRangeFacets() {
         return new SearchParameters().facets(Arrays.asList(
             "Rooms/BaseRate,values:5|8|10",
             "LastRenovationDate,values:2000-01-01T00:00:00Z"));
     }
 
-    protected SearchParameters getSearchParametersForValueFacets() {
+    SearchParameters getSearchParametersForValueFacets() {
         return new SearchParameters().facets(Arrays.asList(
             "Rating,count:2,sort:-value",
             "SmokingAllowed,sort:count",
@@ -271,12 +193,29 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             "Tags,sort:value"));
     }
 
+    void createIndexForModelWithValueTypesTest() throws Exception {
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKey);
+            searchIndexService.initialize();
+        }
+    }
+
+    void createIndexForNonNullableTest() throws Exception {
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                NON_NULLABLE_INDEX_JSON, searchServiceName, apiKey);
+            searchIndexService.initialize();
+        }
+    }
+
     @Test
-    public void searchThrowsWhenRequestIsMalformed() throws Exception {
+    public void searchThrowsWhenRequestIsMalformed() {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
 
-        documents = uploadDocuments(HOTELS_DATA_JSON);
         SearchParameters invalidSearchParameters = new SearchParameters()
             .filter("This is not a valid filter.");
 
@@ -284,11 +223,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     @Test
-    public void searchThrowsWhenSpecialCharInRegexIsUnescaped() throws IOException, InterruptedException {
+    public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Failed to parse query string at line 1, column 8.");
 
-        documents = uploadDocuments(HOTELS_DATA_JSON);
         SearchParameters invalidSearchParameters = new SearchParameters()
             .queryType(QueryType.FULL);
 
@@ -296,71 +234,69 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     @Test
-    public abstract void canSearchDynamicDocuments() throws IOException, InterruptedException;
+    public abstract void canSearchDynamicDocuments();
 
     @Test
-    public abstract void canSearchWithSelectedFields() throws IOException, InterruptedException;
+    public abstract void canSearchWithSelectedFields();
 
     @Test
-    public abstract void canUseTopAndSkipForClientSidePaging() throws IOException, InterruptedException;
+    public abstract void canUseTopAndSkipForClientSidePaging();
 
     @Test
-    public abstract void canFilterNonNullableType() throws IOException, InterruptedException;
+    public abstract void canFilterNonNullableType() throws Exception;
 
     @Test
-    public abstract void searchWithoutOrderBySortsByScore() throws IOException, InterruptedException;
+    public abstract void searchWithoutOrderBySortsByScore();
 
     @Test
-    public abstract void orderByProgressivelyBreaksTies() throws IOException, InterruptedException;
+    public abstract void orderByProgressivelyBreaksTies();
 
     @Test
-    public abstract void canFilter() throws IOException, InterruptedException;
+    public abstract void canFilter();
 
     @Test
-    public abstract void canSearchWithRangeFacets() throws IOException, InterruptedException;
+    public abstract void canSearchWithRangeFacets();
 
     @Test
-    public abstract void canSearchWithLuceneSyntax() throws IOException, InterruptedException;
+    public abstract void canSearchWithLuceneSyntax();
 
     @Test
-    public abstract void canSearchWithValueFacets() throws IOException, InterruptedException;
+    public abstract void canSearchWithValueFacets();
 
     @Test
-    public abstract void canSearchWithSearchModeAll() throws IOException, InterruptedException;
+    public abstract void canSearchWithSearchModeAll();
 
     @Test
-    public abstract void defaultSearchModeIsAny() throws IOException, InterruptedException;
+    public abstract void defaultSearchModeIsAny();
 
     @Test
-    public abstract void canGetResultCountInSearch() throws IOException, InterruptedException;
+    public abstract void canGetResultCountInSearch();
 
     @Test
-    public abstract void canSearchWithRegex() throws IOException, InterruptedException;
+    public abstract void canSearchWithRegex();
 
     @Test
-    public abstract void canSearchWithEscapedSpecialCharsInRegex() throws IOException, InterruptedException;
+    public abstract void canSearchWithEscapedSpecialCharsInRegex();
 
     @Test
-    public abstract void canSearchWithMinimumCoverage() throws IOException, InterruptedException;
+    public abstract void canSearchWithMinimumCoverage();
 
     @Test
-    public abstract void searchWithScoringProfileBoostsScore() throws IOException, InterruptedException;
+    public abstract void searchWithScoringProfileBoostsScore();
 
     @Test
-    public abstract void canUseHitHighlighting() throws IOException, InterruptedException;
+    public abstract void canUseHitHighlighting();
 
     @Test
-    public abstract void canSearchStaticallyTypedDocuments() throws IOException, InterruptedException;
+    public abstract void canSearchStaticallyTypedDocuments();
 
     @Test
     public abstract void canRoundTripNonNullableValueTypes() throws Exception;
 
     @Test
-    public abstract void canSearchWithDateInStaticModel() throws IOException, InterruptedException, ParseException;
+    public abstract void canSearchWithDateInStaticModel() throws ParseException;
 
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
-
-    abstract void indexDocuments(List<IndexAction> indexActions);
 
     abstract void initializeClient();
 

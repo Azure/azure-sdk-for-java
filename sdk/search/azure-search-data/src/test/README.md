@@ -40,7 +40,6 @@ Before running the tests on PLAYBACK mode, you need to run them on RECORD mode t
 	* AZURE_DOMAIN_ID: *Azure domain ID*
     * AZURE_SUBSCRIPTION_ID: *Azure subscription ID*
 	* AZURE_TEST_MODE: **RECORD** *for recording* (**PLAYBACK** *for playback mode*)
-	* INDEX_FILE_NAME: *The json filename where the index configuration is stored (in the resources folder)*
 	
 2. Run the tests. 
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data.models;
 
+import com.azure.search.data.customization.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class Hotel {
     private Integer rating;
 
     @JsonProperty(value = "Location")
-    private GeographyPoint location;
+    private GeoPoint location;
 
     @JsonProperty(value = "Address")
     private HotelAddress address;
@@ -145,11 +146,11 @@ public class Hotel {
         return this;
     }
 
-    public GeographyPoint location() {
+    public GeoPoint location() {
         return this.location;
     }
 
-    public Hotel location(GeographyPoint location) {
+    public Hotel location(GeoPoint location) {
         this.location = location;
         return this;
     }

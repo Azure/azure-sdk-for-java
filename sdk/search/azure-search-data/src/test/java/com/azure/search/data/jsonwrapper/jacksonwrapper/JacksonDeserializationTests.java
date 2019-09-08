@@ -7,9 +7,9 @@ import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializ
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.Config;
 import com.azure.search.data.common.jsonwrapper.api.Type;
+import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.jsonwrapper.JsonDeserializationTests;
 import com.azure.search.data.models.Entry;
-import com.azure.search.data.models.GeographyPoint;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
 import com.azure.search.data.models.HotelRoom;
@@ -66,8 +66,7 @@ public class JacksonDeserializationTests extends JsonDeserializationTests {
             .smokingAllowed(false)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(5)
-            .location(
-                new GeographyPoint().type("Point").coordinates(Arrays.asList(-122.131577, 47.678581))));
+            .location(GeoPoint.create(-122.131577, 47.678581)));
 
         hotels.add(new Hotel().hotelId("2")
             .hotelName("Secret Point Motel")
@@ -86,8 +85,7 @@ public class JacksonDeserializationTests extends JsonDeserializationTests {
                 .stateProvince("NY")
                 .postalCode("10022")
                 .country("USA"))
-            .location(new GeographyPoint().type("Point").coordinates(Arrays.asList(-73.975403,
-                40.760586)))
+            .location(GeoPoint.create(-73.975403, 40.760586))
             .rooms(Arrays.asList(new HotelRoom().description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
                     .type("Budget Room")

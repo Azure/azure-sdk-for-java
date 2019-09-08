@@ -8,8 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class GeoPointUnitTests {
     @Test
@@ -37,23 +35,6 @@ public class GeoPointUnitTests {
         Assert.assertEquals("name", geoPoint.coordinateSystem().type());
         Assert.assertEquals(1, geoPoint.coordinateSystem().properties().size());
         Assert.assertTrue(geoPoint.coordinateSystem().properties().get("name").startsWith("EPSG"));
-    }
-
-    @Test
-    public void canCreateMap() {
-        GeoPoint geoPoint = GeoPoint.create(100.0, 1.0);
-        Map geoPointMap = geoPoint.createObjectMap();
-
-        Assert.assertNotNull(geoPointMap);
-        Assert.assertTrue(geoPointMap.containsKey("type"));
-        Assert.assertEquals("Point", geoPointMap.get("type"));
-
-        Assert.assertTrue(geoPointMap.containsKey("coordinates"));
-        Assert.assertTrue(geoPointMap.get("coordinates") instanceof List);
-        List<Double> coordinates = (List) geoPointMap.get("coordinates");
-        Assert.assertEquals(2, coordinates.size());
-        Assert.assertEquals(100.0, coordinates.get(0), 0.0);
-        Assert.assertEquals(1.0, coordinates.get(1), 0.0);
     }
 
     @Test

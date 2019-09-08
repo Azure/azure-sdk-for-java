@@ -26,7 +26,7 @@ public abstract class JsonDeserializationTests {
     protected JsonApi jsonApi;
 
     @Test
-    public void deserializeString() throws Exception {
+    public void deserializeString() {
         String json = "{ \"color\" : \"Black\", \"type\" : \"BMW\" }";
         Car car = jsonApi.readString(json, Car.class);
         Assert.assertNotNull(car);
@@ -35,7 +35,7 @@ public abstract class JsonDeserializationTests {
     }
 
     @Test
-    public void deserializeListString() throws Exception {
+    public void deserializeListString() {
         String json = "[{ \"color\" : \"Black\", \"type\" : \"BMW\" }, { \"color\" : \"Red\", \"type\" : \"FIAT\" }]";
         List<Car> cars = jsonApi.readStringToList(json, new Type<List<Car>>() { });
         Assert.assertNotNull(cars);
@@ -47,7 +47,7 @@ public abstract class JsonDeserializationTests {
     }
 
     @Test
-    public void whenDeserializingToSimpleObjectThenCorrect() throws Exception {
+    public void whenDeserializingToSimpleObjectThenCorrect() {
         String json = "{\"intValue\":1,\"stringValue\":\"one\"}";
 
         Foo targetObject = jsonApi.readString(json, Foo.class);
@@ -57,7 +57,7 @@ public abstract class JsonDeserializationTests {
     }
 
     @Test
-    public void whenDeserializingToGenericObjectThenCorrect() throws Exception {
+    public void whenDeserializingToGenericObjectThenCorrect() {
         String json = "{\"theValue\":1}";
 
         GenericFoo<Integer> targetObject = jsonApi.readString(json, new Type<GenericFoo<Integer>>() { });
