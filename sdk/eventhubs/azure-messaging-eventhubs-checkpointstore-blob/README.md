@@ -1,4 +1,4 @@
-# Azure client library for Java that implements Partition Manager using Storage Blobs.
+# Azure Partition Manager client library for Java using Storage Blobs.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
@@ -20,7 +20,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-messaging-eventhubs-blobpartitionmanager</artifactId>
+    <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
     <version>1.0.0-preview.1</version>
 </dependency>
 ```
@@ -37,11 +37,11 @@ specific consumer group. When an Event Hub is created, it provides a default con
 started.
 
 The [`EventProcessor`][source_eventprocessor] will delegate processing of events to a
-[`PartitionProcessor`][source_partition_processor] implementation that you provide, allowing your logic to focus on the
-logic needed to provide value while the processor holds responsibility for managing the underlying consumer operations.
+[`PartitionProcessor`][source_partition_processor] implementation that you provide, allowing your application to focus on the
+business logic needed to provide value while the processor holds responsibility for managing the underlying consumer operations.
 
-In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the built-in
-[`InMemoryPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
+In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the 
+[`BlobPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
 events received and errors to console.
 
 ```java
@@ -51,7 +51,7 @@ class Program {
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
             .consumerGroupName("<< CONSUMER GROUP NAME>>")
             .partitionProcessorFactory(SimplePartitionProcessor::new)
-            .partitionManager(new InMemoryPartitionManager())
+            .partitionManager(new BlobPartitionManager(containerAsyncClient))
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
@@ -62,29 +62,11 @@ class Program {
     }
 }
 
-class SimplePartitionProcessor implements PartitionProcessor {
-    SimplePartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
-    }
-
+class SimplePartitionProcessor extends PartitionProcessor {
     @Override
-    Mono<Void> initialize() {
-        return Mono.empty();
-    }
-
-    @Override
-    Mono<Void> processEvent(EventData eventData) {
+    Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
-        return Mono.empty();
-    }
-
-    @Override
-    void processError(Throwable throwable) {
-        System.err.println("Error received." + throwable.toString());
-    }
-
-    @Override
-    Mono<Void> close(CloseReason closeReason) {
-        return Mono.empty();
+        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```
@@ -123,8 +105,8 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [sample_consume_event]: ./src/samples/java/com/azure/messaging/eventhubs/ConsumeEvent.java
-[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/EventProcessorSample.java
-[sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
+[sample_event_processor]: ./src/samples/java/com/azure/messaging/eventhubs/EventProcessorBlobPartitionManagerSample.java
+[sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob
 [sample_get_event_hubs_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_publish_custom_metadata]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
 [sample_publish_event]: ./src/samples/java/com/azure/messaging/eventhubs/PublishEvent.java
@@ -140,7 +122,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_eventhubconsumer]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
 [source_eventhubproduceroptions]: ./src/main/java/com/azure/messaging/eventhubs/models/EventHubProducerOptions.java
 [source_eventprocessor]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessor.java
-[source_inmemorypartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/InMemoryPartitionManager.java
+[source_blobpartitionmanager]: ./src/main/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobPartitionManager.java
 [source_loglevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [source_partition_processor]: ./src/main/java/com/azure/messaging/eventhubs/PartitionProcessor.java
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
