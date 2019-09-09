@@ -33,8 +33,8 @@ import java.util.function.Supplier;
  * created. The {@link Poller} will transparently call the poll operation every polling cycle and track the state of
  * the long-running operation. Azure services can return {@link PollResponse#getRetryAfter()} to override the
  * {@code Poller.pollInterval} defined in the {@link Poller}. The {@link Poller#getStatus()} represents the status
- * returned by the successful long-running operation at the time the last auto-polling or last manual polling, whichever
- * happened most recently.
+ * returned by the successful long-running operation at the time the last auto-polling or last manual polling,
+ * whichever happened most recently.
  *
  * <p><strong>Disable Auto Polling</strong></p>
  * For those scenarios which require manual control of the polling cycle, disable auto-poling by calling
@@ -135,16 +135,19 @@ public class Poller<T> {
      * {@code pollInterval}.
      *
      * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link OperationStatus}.
-     *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
-     * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
-     * the {@link Poller} will disregard that and continue to poll.
-     * @param activationOperation The activation operation to be called by the {@link Poller} instance before calling {@code pollOperation}. It can
-     * be {@code null} which will indicate to the {@link Poller} that {@code pollOperation} can be called straight away.
-     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
-     * that cancel operation is not supported by Azure service.
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into
+     *     the client library, which must never return {@code null}, and which must always have a non-null
+     *     {@link OperationStatus}. {@link Mono} returned from poll operation should never return
+     *     {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should be handled by
+     *     client library and return a valid {@link PollResponse}. However if poll operation returns
+     *     {@link Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
+     * @param activationOperation The activation operation to be called by the {@link Poller} instance before
+     *     calling {@code pollOperation}. It can be {@code null} which will indicate to the {@link Poller} that
+     *     {@code pollOperation} can be called straight away.
+     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}
+     *      which will indicate to the {@link Poller} that cancel operation is not supported by Azure service.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
+     *      {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
@@ -175,19 +178,22 @@ public class Poller<T> {
 
 
     /**
-     * Create a {@link Poller} instance with poll interval, poll operation and cancel operation. The polling starts immediately by invoking {@code pollOperation}.
-     * The next poll cycle will be defined by retryAfter value in {@link PollResponse}.
-     * In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use {@code pollInterval}.
+     * Create a {@link Poller} instance with poll interval, poll operation and cancel operation. The polling starts
+     * immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value
+     * in {@link PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller}
+     * will use {@code pollInterval}.
      *
      * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link OperationStatus}.
-     *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
-     * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
-     * the {@link Poller} will disregard that and continue to poll.
-     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
-     * that cancel operation is not supported by Azure service.
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into
+     *     the client library, which must never return {@code null}, and which must always have a non-null
+     *     {@link OperationStatus}. {@link Mono} returned from poll operation should never return
+     *     {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should be handled by
+     *     client library and return a valid {@link PollResponse}. However if poll operation returns
+     *     {@link Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
+     * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}
+     *      which will indicate to the {@link Poller} that cancel operation is not supported by Azure service.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
+     * {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
         this(pollInterval, pollOperation, null, cancelOperation);
@@ -264,7 +270,8 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined in {@link OperationStatus}.
+     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined
+     * in {@link OperationStatus}.
      * <p>It will enable auto-polling if it was disable by user.
      *
      * @param timeout The duration for which execution is blocked and waits for polling to complete.
