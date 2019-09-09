@@ -16,6 +16,7 @@ demonstrate the new API.
 - Throw `UnexpectedLengthException` when the upload body length does not match the input length.
 - Added validation policy to check the equality of request client id between request and response.
 - Added `PageFlux` on async APIs and `PageIterable` on sync APIs.
+- Upgraded to use service version 2019-02-02 from 2018-11-09.
 
 ### Known issues
 
