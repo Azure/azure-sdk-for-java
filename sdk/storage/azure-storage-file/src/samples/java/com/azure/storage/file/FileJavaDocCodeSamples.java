@@ -353,16 +353,16 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#uploadRangeFromURLWithResponse(long, long, long, URI, Context)}
+     * Generates a code sample for using {@link FileClient#uploadRangeFromURLWithResponse(long, long, long, URI, Duration, Context)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-context
-        Response<FileUploadRangeFromURLInfo> response = fileClient.uploadRangeFromURLWithResponse(6, 8, 0,
-            new URI("filewithSAStoken"), Context.NONE);
+        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-duration-context
+        Response<FileUploadRangeFromURLInfo> response = fileClient.uploadRangeFromURLWithResponse(6,
+            8, 0, new URI("filewithSAStoken"), Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
-        // END: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-context
+        // END: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-duration-context
     }
 
     /**
