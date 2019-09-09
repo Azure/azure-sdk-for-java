@@ -1,4 +1,4 @@
-# Azure Partition Manager client library for Java using Storage Blobs.
+# Azure Checkpoint Store client library for Java using Storage Blobs.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
@@ -78,10 +78,6 @@ class SimplePartitionProcessor extends PartitionProcessor {
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
 be found here: [log levels][source_loglevels].
-
-### Common exceptions
-
-## Next steps
 
 ## Contributing
 
