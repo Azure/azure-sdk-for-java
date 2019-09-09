@@ -40,8 +40,6 @@ public class EventHubAsyncProducerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)

@@ -54,8 +54,6 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         super.beforeTest();
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())

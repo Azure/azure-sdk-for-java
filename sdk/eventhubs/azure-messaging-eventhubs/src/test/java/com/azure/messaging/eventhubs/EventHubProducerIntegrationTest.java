@@ -37,8 +37,6 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)

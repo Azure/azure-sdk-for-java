@@ -74,8 +74,6 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void sendSmallEventsFullBatch() {
-        skipIfNotRecordMode();
-
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
         int count = 0;
@@ -98,8 +96,6 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
-        skipIfNotRecordMode();
-
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
@@ -122,8 +118,6 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void sendBatchPartitionKeyValidate() throws InterruptedException {
-        skipIfNotRecordMode();
-
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
 
@@ -195,8 +189,6 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void sendEventsFullBatchWithPartitionKey() {
-        skipIfNotRecordMode();
-
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, PARTITION_KEY, contextProvider);

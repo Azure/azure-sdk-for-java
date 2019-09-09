@@ -63,8 +63,6 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);

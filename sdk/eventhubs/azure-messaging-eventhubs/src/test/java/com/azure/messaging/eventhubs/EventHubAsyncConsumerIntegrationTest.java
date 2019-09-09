@@ -70,8 +70,6 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
@@ -92,8 +90,6 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void parallelCreationOfReceivers() {
-        skipIfNotRecordMode();
-
         // Arrange
         final int numberOfEvents = 10;
         final List<String> partitionIds = client.getPartitionIds().collectList().block(TIMEOUT);

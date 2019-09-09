@@ -74,8 +74,6 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
@@ -119,8 +117,6 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @Ignore("Investigate. Only 2 of the 4 consumers get the events. The other two consumers do not.")
     @Test
     public void parallelEventHubClients() throws InterruptedException {
-        skipIfNotRecordMode();
-
         // Arrange
         final int numberOfClients = 4;
         final int numberOfEvents = 10;

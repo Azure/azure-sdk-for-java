@@ -84,8 +84,6 @@ public class BackCompatTest extends IntegrationTestBase {
      */
     @Test
     public void backCompatWithJavaSDKOlderThan0110() {
-        skipIfNotRecordMode();
-
         // Arrange
         final String messageTrackingValue = UUID.randomUUID().toString();
 

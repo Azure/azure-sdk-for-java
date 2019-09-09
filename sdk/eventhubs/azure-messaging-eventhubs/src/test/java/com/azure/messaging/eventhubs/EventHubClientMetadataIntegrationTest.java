@@ -51,8 +51,6 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         eventHubName = getConnectionOptions().eventHubName();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());

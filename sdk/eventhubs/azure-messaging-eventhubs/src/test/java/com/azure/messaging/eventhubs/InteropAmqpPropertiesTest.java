@@ -84,8 +84,6 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
      */
     @Test
     public void interoperableWithDirectProtonAmqpMessage() {
-        skipIfNotRecordMode();
-
         // Arrange
         final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
         final String messageTrackingValue = UUID.randomUUID().toString();

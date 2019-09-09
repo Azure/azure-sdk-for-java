@@ -93,8 +93,6 @@ public class CBSChannelTest extends IntegrationTestBase {
 
     @Test
     public void unsuccessfulAuthorize() {
-        skipIfNotRecordMode();
-
         // Arrange
         final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubName());
         final Duration duration = Duration.ofMinutes(10);
