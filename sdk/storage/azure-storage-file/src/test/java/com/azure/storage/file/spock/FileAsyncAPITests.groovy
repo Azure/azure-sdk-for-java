@@ -58,6 +58,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        
         when:
         def fileURL = primaryFileAsyncClient.getFileUrl().toString()
 
@@ -77,7 +78,6 @@ class FileAsyncAPITests extends APISpec {
         when:
         def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.create(-1))
 
-
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
@@ -90,6 +90,7 @@ class FileAsyncAPITests extends APISpec {
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
             .filePermissionKey(filePermissionKey)
+
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata))
             .assertNext {
@@ -110,6 +111,7 @@ class FileAsyncAPITests extends APISpec {
         setup:
         smbProperties.fileCreationTime(getUTCNow())
             .fileLastWriteTime(getUTCNow())
+
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata))
             .assertNext {
@@ -130,6 +132,7 @@ class FileAsyncAPITests extends APISpec {
     def "Create file with args error"() {
         when:
         def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, null, null, null, metadata))
+
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -210,16 +213,20 @@ class FileAsyncAPITests extends APISpec {
     def "Upload data length mismatch"() {
         given:
         primaryFileAsyncClient.create(1024).block()
+
         when:
         def uploadErrorVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData),
             size, 0))
+
         then:
         uploadErrorVerifier.verifyErrorSatisfies {
             assert it instanceof UnexpectedLengthException
             assert it.getMessage().contains(errMsg)
         }
+
         cleanup:
         defaultData.clear()
+
         where:
         size | errMsg
         6 | "more than"
@@ -543,8 +550,10 @@ class FileAsyncAPITests extends APISpec {
     def "Set httpHeaders error"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
+
         when:
         def setHttpHeaderVerifier = StepVerifier.create(primaryFileAsyncClient.setProperties(-1, null, null, null))
+
         then:
         setHttpHeaderVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
