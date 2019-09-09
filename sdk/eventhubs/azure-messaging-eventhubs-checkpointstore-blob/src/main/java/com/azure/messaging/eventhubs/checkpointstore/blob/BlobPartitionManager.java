@@ -43,7 +43,7 @@ public class BlobPartitionManager implements PartitionManager {
     private static final String ETAG = "eTag";
 
     private static final String BLOB_PATH_SEPARATOR = "/";
-    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
+    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("" .getBytes(UTF_8));
 
     private final ContainerAsyncClient containerAsyncClient;
     private final ClientLogger logger = new ClientLogger(BlobPartitionManager.class);
@@ -60,11 +60,12 @@ public class BlobPartitionManager implements PartitionManager {
     }
 
     /**
-     * {@inheritDoc}
+     * This method is called by the {@link EventProcessor} to get the list of all existing partition ownership from the
+     * Storage Blobs. Could return empty results if there are is no existing ownership information.
      *
      * @param eventHubName The Event Hub name to get ownership information.
-     * @param consumerGroupName The consumer group name to get ownership information.
-     * @return A {@link Flux} of current partition ownership information.
+     * @param consumerGroupName The consumer group name.
+     * @return A flux of partition ownership details of all the partitions that have/had an owner.
      */
     @Override
     public Flux<PartitionOwnership> listOwnership(String eventHubName, String consumerGroupName) {
@@ -79,10 +80,11 @@ public class BlobPartitionManager implements PartitionManager {
     }
 
     /**
-     * {@inheritDoc}
+     * This method is called by the {@link EventProcessor} to claim ownership of a list of partitions. This will return
+     * the list of partitions that were owned successfully.
      *
      * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
-     * @return A {@link Flux} of successfully claimed ownership of partitions.
+     * @return A flux of partitions this instance successfully claimed ownership.
      */
     @Override
     public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
@@ -118,10 +120,10 @@ public class BlobPartitionManager implements PartitionManager {
                             partitionOwnership.eTag(response.headers().get(ETAG).value());
                             return Mono.just(partitionOwnership);
                         }, error -> {
-                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                    error.getMessage());
-                                return Mono.empty();
-                            }, Mono::empty);
+                            logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
+                                error.getMessage());
+                            return Mono.empty();
+                        }, Mono::empty);
                 } else {
                     // update existing blob
                     blobAccessConditions.modifiedAccessConditions(new ModifiedAccessConditions()
@@ -131,20 +133,20 @@ public class BlobPartitionManager implements PartitionManager {
                             partitionOwnership.eTag(response.headers().get(ETAG).value());
                             return Mono.just(partitionOwnership);
                         }, error -> {
-                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                    error.getMessage());
-                                return Mono.empty();
-                            }, () -> Mono.empty());
+                            logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
+                                error.getMessage());
+                            return Mono.empty();
+                        }, () -> Mono.empty());
                 }
             }
         );
     }
 
     /**
-     * {@inheritDoc}
+     * Updates the checkpoint in Storage Blobs for a partition.
      *
      * @param checkpoint Checkpoint information containing sequence number and offset to be stored for this partition.
-     * @return A {@link Mono} containing the new ETag generated from a successful checkpoint update.
+     * @return The new ETag on successful update.
      */
     @Override
     public Mono<String> updateCheckpoint(Checkpoint checkpoint) {

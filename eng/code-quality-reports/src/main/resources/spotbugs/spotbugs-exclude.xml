@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
   <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
