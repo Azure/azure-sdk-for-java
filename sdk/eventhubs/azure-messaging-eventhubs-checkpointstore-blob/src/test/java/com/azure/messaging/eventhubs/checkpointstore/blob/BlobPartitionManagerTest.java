@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
+import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.ResponseBase;
@@ -25,6 +26,7 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -73,7 +75,7 @@ public class BlobPartitionManagerTest {
                 assertEquals("owner1", partitionOwnership.ownerId());
                 assertEquals("0", partitionOwnership.partitionId());
                 assertEquals(1, (long) partitionOwnership.sequenceNumber());
-                assertEquals("230", partitionOwnership.offset());
+                assertEquals(230, (long) partitionOwnership.offset());
                 assertEquals("eh", partitionOwnership.eventHubName());
                 assertEquals("cg", partitionOwnership.consumerGroupName());
                 assertEquals("etag", partitionOwnership.eTag());
@@ -128,6 +130,54 @@ public class BlobPartitionManagerTest {
                 assertNull(partitionOwnership.sequenceNumber());
                 assertNull(partitionOwnership.offset());
             }).verifyComplete();
+    }
+
+
+    @Test
+    public void testListOwnershipError() {
+        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
+        PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.error(new SocketTimeoutException()));
+        when(containerAsyncClient.listBlobsFlat(any(ListBlobsOptions.class))).thenReturn(response);
+
+        StepVerifier.create(blobPartitionManager.listOwnership("eh", "cg"))
+            .expectError(SocketTimeoutException.class).verify();
+    }
+
+    @Test
+    public void testUpdateCheckpointError() {
+        Checkpoint checkpoint = new Checkpoint()
+            .eventHubName("eh")
+            .consumerGroupName("cg")
+            .ownerId("owner1")
+            .partitionId("0")
+            .eTag("etag")
+            .sequenceNumber(2L)
+            .offset(100L);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("eTag", "etag2");
+        when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.setMetadataWithResponse(any(Metadata.class), any(BlobAccessConditions.class)))
+            .thenReturn(Mono.error(new SocketTimeoutException()));
+
+        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
+        StepVerifier.create(blobPartitionManager.updateCheckpoint(checkpoint))
+                .expectError(SocketTimeoutException.class).verify();
+    }
+
+    @Test
+    public void testFailedOwnershipClaim() {
+        PartitionOwnership po = createPartitionOwnership("eh", "cg", "0", "owner1");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("eTag", "etag2");
+
+        when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.asBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
+            isNull(), any(Metadata.class), any(BlobAccessConditions.class)))
+            .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
+        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
+        StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();
     }
 
     private PartitionOwnership createPartitionOwnership(String eventHubName, String consumerGroupName,
