@@ -44,7 +44,7 @@ stages:
           safeName: azurecorehttpnetty
           stagingProfileId: 88192f04117501
         - name: azure-core-http-okhttp
-          safeName: azurecoreokhttp
+          safeName: azurecorehttpokhttp
           stagingProfileId: 88192f04117501
         - name: azure-core-management
           safeName: azurecoremanagement
