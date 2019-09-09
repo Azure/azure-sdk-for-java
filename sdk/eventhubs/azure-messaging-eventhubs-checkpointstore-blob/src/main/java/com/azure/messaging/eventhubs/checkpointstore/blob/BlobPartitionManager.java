@@ -120,10 +120,10 @@ public class BlobPartitionManager implements PartitionManager {
                             partitionOwnership.eTag(response.headers().get(ETAG).value());
                             return Mono.just(partitionOwnership);
                         }, error -> {
-                            logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                error.getMessage());
-                            return Mono.empty();
-                        }, Mono::empty);
+                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
+                                    error.getMessage());
+                                return Mono.empty();
+                            }, Mono::empty);
                 } else {
                     // update existing blob
                     blobAccessConditions.modifiedAccessConditions(new ModifiedAccessConditions()
@@ -133,10 +133,10 @@ public class BlobPartitionManager implements PartitionManager {
                             partitionOwnership.eTag(response.headers().get(ETAG).value());
                             return Mono.just(partitionOwnership);
                         }, error -> {
-                            logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                error.getMessage());
-                            return Mono.empty();
-                        }, () -> Mono.empty());
+                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
+                                    error.getMessage());
+                                return Mono.empty();
+                            }, () -> Mono.empty());
                 }
             }
         );
