@@ -35,7 +35,7 @@ import java.nio.file.FileAlreadyExistsException
 import java.security.MessageDigest
 import java.time.OffsetDateTime
 
-class <BlobAPITest extends APISpec {
+class BlobAPITest extends APISpec {
     BlobClient bc
 
     def setup() {
@@ -1858,7 +1858,7 @@ class <BlobAPITest extends APISpec {
         bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().read(true))), null, tier2, null, null, null, null)
 
         then:
-        bcCopy.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier") == tier2.toString()
+        bcCopy.getProperties().accessTier() == tier2
 
         where:
         tier1           | tier2

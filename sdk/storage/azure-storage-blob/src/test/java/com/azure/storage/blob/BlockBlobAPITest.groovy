@@ -756,7 +756,7 @@ class BlockBlobAPITest extends APISpec {
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null)
 
         then:
-        AccessTier.fromString(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-access-tier")) == AccessTier.COOL
+        bc.getProperties().accessTier() == AccessTier.COOL
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
