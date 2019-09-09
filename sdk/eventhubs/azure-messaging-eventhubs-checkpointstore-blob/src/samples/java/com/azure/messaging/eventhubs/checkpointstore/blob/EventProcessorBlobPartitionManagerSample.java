@@ -26,13 +26,6 @@ public class EventProcessorBlobPartitionManagerSample {
     private static final String SAS_TOKEN_STRING = "";
     private static final String STORAGE_CONNECTION_STRING = "";
     public static final PartitionProcessor PARTITION_PROCESSOR = new PartitionProcessor() {
-        @Override
-        public Mono<Void> initialize(PartitionContext partitionContext) {
-            System.out
-                .printf("Initializing partition processor for partition id %s %n",
-                    partitionContext.partitionId());
-            return Mono.empty();
-        }
 
         @Override
         public Mono<Void> processEvent(
@@ -47,6 +40,12 @@ public class EventProcessorBlobPartitionManagerSample {
         }
     };
 
+    /**
+     * The main method to run the sample.
+     *
+     * @param args Unused arguments to the sample.
+     * @throws Exception if there are any errors while running the sample program.
+     */
     public static void main(String[] args) throws Exception {
         EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
@@ -55,13 +54,13 @@ public class EventProcessorBlobPartitionManagerSample {
         SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(SAS_TOKEN_STRING);
         ContainerAsyncClient containerAsyncClient = new ContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
-            .containerName("srnagartestcontainer")
+            .containerName("")
             .credential(sasTokenCredential)
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildAsyncClient();
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
-            .consumerGroup("myconsumer")
+            .consumerGroup("")
             .eventHubClient(eventHubAsyncClient)
             .partitionProcessorFactory(() -> PARTITION_PROCESSOR)
             .partitionManager(new BlobPartitionManager(containerAsyncClient));

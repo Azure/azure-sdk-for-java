@@ -18,8 +18,8 @@
   <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
   <version>1.0.0-preview.1</version>
 
-  <name>Microsoft Azure client library for Event Processor with Storage Blobs</name>
-  <description>Library for using Azure Event Processor with Storage Blob</description>
+  <name>Microsoft Azure client library for storing checkpoints in Storage Blobs</name>
+  <description>Library for using storing checkpoints in Storage Blobs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
