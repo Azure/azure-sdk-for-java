@@ -8,7 +8,7 @@ import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.internal.DatabaseAccount;
+import com.azure.data.cosmos.DatabaseAccount;
 import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.SpyClientUnderTestFactory;
 import com.azure.data.cosmos.internal.TestSuiteBase;
@@ -129,10 +129,10 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         testSubscriber.assertValueCount(1);
         DatabaseAccount databaseAccount = testSubscriber.values().get(0);
         assertThat(databaseAccount.id()).isEqualTo(expectedDatabaseAccount.id());
-        assertThat(databaseAccount.getAddressesLink())
-                .isEqualTo(expectedDatabaseAccount.getAddressesLink());
-        assertThat(databaseAccount.getWritableLocations().iterator().next().getEndpoint())
-                .isEqualTo(expectedDatabaseAccount.getWritableLocations().iterator().next().getEndpoint());
+        assertThat(BridgeInternal.getAddressesLink(databaseAccount))
+                .isEqualTo(BridgeInternal.getAddressesLink(expectedDatabaseAccount));
+        assertThat(databaseAccount.writableLocations().iterator().next().endpoint())
+                .isEqualTo(expectedDatabaseAccount.writableLocations().iterator().next().endpoint());
         assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount).getMaxReplicaSetSize())
                 .isEqualTo(BridgeInternal.getSystemReplicationPolicy(expectedDatabaseAccount).getMaxReplicaSetSize());
         assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount).getMaxReplicaSetSize())

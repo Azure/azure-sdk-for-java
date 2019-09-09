@@ -17,6 +17,7 @@ import com.azure.storage.queue.QueueServiceClientBuilder
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -69,7 +70,8 @@ class APISpec extends Specification {
             QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName.toLowerCase())).each {
+            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName.toLowerCase()),
+                Duration.ofSeconds(30)).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
             }
         }

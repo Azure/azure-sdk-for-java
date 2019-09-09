@@ -1563,7 +1563,7 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).statusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).statusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).statusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null).statusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).statusCode() == 201
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()
@@ -1605,9 +1605,7 @@ class ContainerAPITest extends APISpec {
             cc.create()
         }
 
-        AppendBlobClient bu = getBlobClient(primaryCredential,
-            String.format("http://%s.blob.core.windows.net/%s/rootblob", primaryCredential.accountName(), ContainerClient.ROOT_CONTAINER_NAME))
-            .asAppendBlobClient()
+        AppendBlobClient bu = cc.getAppendBlobClient("rootblob")
 
         when:
         Response<AppendBlobItem> createResponse = bu.createWithResponse(null, null, null, null, null)

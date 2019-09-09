@@ -41,7 +41,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
-    private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+    private static final String OPENTELEMETRY_SPAN_KEY =
+        com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -50,7 +51,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private static final String HTTP_STATUS_CODE = "http.status_code";
     private static final String REQUEST_ID = "x-ms-request-id";
 
-    // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http request
+    // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
+    // request
     private final TextFormat traceContextFormat = Tracing.getPropagationComponent().getTraceContextFormat();
 
     @Override

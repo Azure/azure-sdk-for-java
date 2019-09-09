@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatesharewithinvalidargs156369dcedd43?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatesharewithinvalidargs1300840c5640c?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "fb27e6d1-0869-46a7-87bc-7e4413af8fcb"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "b6343d32-cf7c-4ed4-9d24-c8d0f1667e02"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18a1a-101a-0044-1dc2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:e7c18a1a-101a-0044-1dc2-62ec1a000000\nTime:2019-09-04T01:44:02.0621474Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:02 GMT",
-      "x-ms-client-request-id" : "fb27e6d1-0869-46a7-87bc-7e4413af8fcb",
+      "x-ms-request-id" : "07339a59-301a-000d-4f44-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:07339a59-301a-000d-4f44-645aef000000\nTime:2019-09-05T23:47:44.0472109Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:47:43 GMT",
+      "x-ms-client-request-id" : "b6343d32-cf7c-4ed4-9d24-c8d0f1667e02",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesharewithinvalidargs156369dcedd43" ]
+  "variables" : [ "shareapitestscreatesharewithinvalidargs1300840c5640c" ]
 }

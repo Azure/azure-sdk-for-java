@@ -25,6 +25,7 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.ShareCreateSnapshotHeaders;
 import com.azure.storage.file.models.ShareGetPropertiesHeaders;
 import com.azure.storage.file.models.ShareInfo;
+import com.azure.storage.file.models.SharePermission;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
@@ -589,7 +590,7 @@ public class ShareAsyncClient {
      * being deleted, or the parent directory for the new directory doesn't exist
      */
     public Mono<DirectoryAsyncClient> createDirectory(String directoryName) {
-        return createDirectoryWithResponse(directoryName, null).flatMap(FluxUtil::toMono);
+        return createDirectoryWithResponse(directoryName, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -599,12 +600,14 @@ public class ShareAsyncClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-map}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
@@ -612,13 +615,15 @@ public class ShareAsyncClient {
      * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal
      * key name
      */
-    public Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName, Map<String, String> metadata) {
-        return withContext(context -> createDirectoryWithResponse(directoryName, metadata, context));
+    public Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName, Map<String, String> metadata, Context context) {
+    Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient directoryAsyncClient = getDirectoryClient(directoryName);
-        return postProcessResponse(directoryAsyncClient.createWithResponse(metadata))
+        return postProcessResponse(directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata))
             .map(response -> new SimpleResponse<>(response, directoryAsyncClient));
     }
 
@@ -648,25 +653,27 @@ public class ShareAsyncClient {
      * </ul>
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Creates the file in the share with the given name, file max size and associates the passed httpHeaders and metadata to it.
+     * Creates the file in the share with the given name, file max size and associates the passed properties to it.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Create the file "myfile" with length of 1024 bytes, some headers and metadata</p>
+     * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-map}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
-     * @param httpHeaders Additional parameters for the operation.
-     * @param metadata Optional metadata to associate with the file.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing a {@link FileAsyncClient} to interact with the created file and the
      * status of its creation.
      * @throws StorageException If one of the following cases happen:
@@ -679,14 +686,17 @@ public class ShareAsyncClient {
      *     </li>
      * </ul>
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, metadata, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context))
-            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context)).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
@@ -780,6 +790,76 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it,
+     * else creates a new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createPermission#string}
+     *
+     * @param filePermission The file permission to get/create.
+     * @return The file permission key associated with the file permission.
+     */
+    public Mono<String> createPermission(String filePermission) {
+        return createPermissionWithResponse(filePermission).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it,
+     * else creates a new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string}
+     *
+     * @param filePermission The file permission to get/create.
+     * @return A response that contains the file permission key associated with the file permission.
+     */
+    public Mono<Response<String>> createPermissionWithResponse(String filePermission) {
+        return withContext(context -> createPermissionWithResponse(filePermission, context));
+    }
+
+    Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
+        // NOTE: Should we check for null or empty?
+        SharePermission sharePermission = new SharePermission().permission(filePermission);
+        return postProcessResponse(azureFileStorageClient.shares().createPermissionWithRestResponseAsync(shareName, sharePermission, null, context))
+            .map(response -> new SimpleResponse<>(response, response.deserializedHeaders().filePermissionKey()));
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getPermission#string}
+     *
+     * @param filePermissionKey The file permission key.
+     * @return The file permission associated with the file permission key.
+     */
+    public Mono<String> getPermission(String filePermissionKey) {
+        return getPermissionWithResponse(filePermissionKey).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string}
+     *
+     * @param filePermissionKey The file permission key.
+     * @return A response that contains th file permission associated with the file permission key.
+     */
+    public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey) {
+        return withContext(context -> getPermissionWithResponse(filePermissionKey, context));
+    }
+
+    Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
+        return postProcessResponse(azureFileStorageClient.shares().getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context))
+            .map(response -> new SimpleResponse<>(response, response.value().permission()));
+    }
+
+    /**
      * Get snapshot id which attached to {@link ShareAsyncClient}.
      * Return {@code null} if no snapshot id attached.
      *
@@ -841,6 +921,13 @@ public class ShareAsyncClient {
 
     /**
      * Generates a SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @param permissions The {@code ShareSASPermission} permission for the SAS

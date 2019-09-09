@@ -15,8 +15,10 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -63,6 +65,10 @@ final class TestUtils {
      * Creates a mock message with the contents provided.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
+        return getMessage(contents, messageTrackingValue, Collections.emptyMap());
+    }
+
+    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), String.valueOf(OFFSET));
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);
@@ -80,6 +86,10 @@ final class TestUtils {
             applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
         }
 
+        if (additionalProperties != null) {
+            additionalProperties.forEach(applicationProperties::put);
+        }
+
         message.setApplicationProperties(new ApplicationProperties(applicationProperties));
         message.setBody(new Data(new Binary(contents)));
 
@@ -89,6 +99,10 @@ final class TestUtils {
     static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
         return Flux.range(0, numberOfEvents)
             .map(number -> getEvent("Event " + number, messageTrackingValue, number));
+    }
+
+    static List<EventData> getEventsAsList(int numberOfEvents, String messageTrackingValue) {
+        return getEvents(numberOfEvents, messageTrackingValue).collectList().block();
     }
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {

@@ -20,9 +20,14 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
      * ClientSecretCredential.
      *
+     * If these environment variables are not available, then this will use the Shared MSAL
+     * token cache.
+     *
      * @param identityClientOptions the options to configure the IdentityClient
      */
     DefaultAzureCredential(IdentityClientOptions identityClientOptions) {
-        super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions), new ManagedIdentityCredential(null, identityClientOptions))));
+        super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions),
+            new ManagedIdentityCredential(null, identityClientOptions),
+            new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46", identityClientOptions))));
     }
 }
