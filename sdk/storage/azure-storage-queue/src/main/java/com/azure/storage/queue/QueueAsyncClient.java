@@ -461,10 +461,10 @@ public final class QueueAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
      * If unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
-     * @param timeToLive Optional. How long the message will stay alive in the queue in seconds. If unset the value will
+     * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will
      * default to 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
      * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
      * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
@@ -505,7 +505,7 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist
      */
     public PagedFlux<DequeuedMessage> dequeueMessages() {
-        return dequeueMessages(1, null);
+        return dequeueMessagesWithOptionalTimeout(1, null, null, Context.NONE);
     }
 
     /**
@@ -529,7 +529,7 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages) {
-        return dequeueMessages(maxMessages, null);
+        return dequeueMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
     }
 
     /**
@@ -548,7 +548,7 @@ public final class QueueAsyncClient {
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
      * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
      * messages.
-     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
      * If left empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage contains
      * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
@@ -557,17 +557,36 @@ public final class QueueAsyncClient {
      * outside of the allowed bounds
      */
     public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
+        return dequeueMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * QueueClient. Applies the given timeout to each Mono<MessagesDequeueResponse> backing the
+     * PagedFlux.
+     *
+     * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
+     * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
+     * messages.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * If left empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @return A reactive response emitting the dequeued message, flattened.
+     */
+    PagedFlux<DequeuedMessage> dequeueMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
+                                                                  Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<DequeuedMessage>>> retriever =
-            marker -> postProcessResponse(this.client.messages()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
-                    null, null, Context.NONE))
+                    null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     response.value(),
                     null,
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -616,15 +635,31 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedFlux<PeekedMessage> peekMessages(Integer maxMessages) {
+        return peekMessagesWithOptionalTimeout(maxMessages, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * QueueClient. Applies the given timeout to each Mono<MessagesPeekResponse> backing the
+     * PagedFlux.
+     *
+     * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue than requested
+     * all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is 1 to 32
+     * messages.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the peeked message, flattened.
+     */
+    PagedFlux<PeekedMessage> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<PeekedMessage>>> retriever =
-            marker -> postProcessResponse(this.client.messages()
-                .peekWithRestResponseAsync(queueName, maxMessages, null, null, Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                response.value(),
-                null,
-                response.deserializedHeaders()));
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
+                .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value(),
+                    null,
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }

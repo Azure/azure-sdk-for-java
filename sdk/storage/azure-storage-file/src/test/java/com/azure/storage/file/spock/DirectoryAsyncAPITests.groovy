@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.spock
 
+import com.azure.core.util.Context
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.DirectoryAsyncClient
@@ -17,6 +18,7 @@ import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -338,7 +340,8 @@ class DirectoryAsyncAPITests extends APISpec {
         }
 
         when:
-        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix, maxResults))
+        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix,
+            maxResults))
 
         then:
         listFileAndDirVerifier.thenConsumeWhile {
