@@ -774,7 +774,6 @@ public class FileAsyncClient {
      * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri}
      *
      * <p>For more information, see the
-     * // TODO: Fix link
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
@@ -783,6 +782,7 @@ public class FileAsyncClient {
      * @param sourceURI Specifies the URL of the source file.
      * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
      */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<FileUploadRangeFromURLInfo> uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
         URI sourceURI) {
         return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI)
@@ -799,7 +799,6 @@ public class FileAsyncClient {
      * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri}
      *
      * <p>For more information, see the
-     * // TODO: Fix link
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
@@ -809,6 +808,7 @@ public class FileAsyncClient {
      * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
      * and response status code.
      */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length, long destinationOffset,
         long sourceOffset, URI sourceURI) {
         return withContext(context -> uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI,
