@@ -30,6 +30,7 @@ public final class BlobProperties {
 
     private final OffsetDateTime lastModified;
 
+
     BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
         this.blobType = generatedHeaders.blobType();
         this.metadata = new Metadata(generatedHeaders.metadata());
@@ -41,6 +42,7 @@ public final class BlobProperties {
         this.cacheControl = generatedHeaders.cacheControl();
         this.lastModified = generatedHeaders.lastModified();
     }
+
 
     /**
      * @return the blob type
