@@ -8,7 +8,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.CheckpointManager;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
@@ -57,8 +56,7 @@ public class PartitionPumpManager {
     /**
      * Creates an instance of partition pump manager.
      *
-     * @param partitionManager The partition manager that is used by {@link CheckpointManager} to update checkpoints of
-     * partitions.
+     * @param partitionManager The partition manager that is used to store and update checkpoints.
      * @param partitionProcessorFactory The partition processor factory that is used to create new instances of {@link
      * PartitionProcessor} when new partition pumps are started.
      * @param initialEventPosition The initial event position to use when a new partition pump is created and no

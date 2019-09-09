@@ -306,7 +306,7 @@ public abstract class BlobOutputStream extends OutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, this.accessConditions).block();
+            client.commitBlockListWithResponse(this.blockList, null, null, null, this.accessConditions).block();
         }
     }
 

@@ -51,7 +51,7 @@ class CPKTest extends APISpec {
     def "Put blob with CPK"() {
         when:
         def response = cpkBlockBlob.uploadWithResponse(defaultInputStream.get(), defaultDataSize,
-            null, null, null, null, null)
+            null, null, null, null, null, null)
 
         then:
         response.statusCode() == 201
@@ -105,7 +105,7 @@ class CPKTest extends APISpec {
         }
 
         when:
-        def response = cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null, null, null)
+        def response = cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null, null, null, null)
 
         then:
         response.statusCode() == 201
