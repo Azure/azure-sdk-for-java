@@ -1,35 +1,5 @@
 # Azure Event Hubs client library for Java
 
-- [Getting started](#getting-started)
-- [Prerequisites](#prerequisites)
-- [Adding the package to your product](#adding-the-package-to-your-product)
-- [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
-- [Create an Event Hub client using a connection string](#create-an-event-hub-client-using-a-connection-string)
-- [Create an Event Hub client using Microsoft identity platform (formerly Azure Active
-  Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
-  - [Authorizing with AAD application client secret](#authorizing-with-aad-application-client-secret)
-- [Key concepts](#key-concepts)
-- [Examples](#examples)
-- [Publish events to an Event Hub](#publish-events-to-an-event-hub)
-  - [Event Hub producer creation](#event-hub-producer-creation)
-  - [Partition identifier](#partition-identifier)
-  - [Partition key](#partition-key)
-- [Consume events from an Event Hub partition](#consume-events-from-an-event-hub-partition)
-  - [Consume events with EventHubAsyncConsumer](#consume-events-with-eventhubasyncconsumer)
-  - [Consume events with EventHubConsumer](#consume-events-with-eventhubconsumer)
-- [Consume events using an Event Processor](#consume-events-using-an-event-processor)
-- [Troubleshooting](#troubleshooting)
-- [Enable client logging](#enable-client-logging)
-- [Enable AMQP transport logging](#enable-amqp-transport-logging)
-  - [Sample "logging.config" file](#sample-loggingconfig-file)
-- [Common exceptions](#common-exceptions)
-  - [AMQP exception](#amqp-exception)
-  - [Operation cancelled exception](#operation-cancelled-exception)
-  - [Message size exceeded](#message-size-exceeded)
-- [Other exceptions](#other-exceptions)
-- [Next steps](#next-steps)
-- [Contributing](#contributing)
-
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream
 them to multiple consumers. This lets you process and analyze the massive amounts of data produced by your connected
 devices and applications. Once Event Hubs has collected the data, you can retrieve, transform, and store it by using any
@@ -48,6 +18,28 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
+
+## Table of contents
+
+- [Table of contents](#table-of-contents)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Adding the package to your product](#adding-the-package-to-your-product)
+  - [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
+  - [Create an Event Hub client using a connection string](#create-an-event-hub-client-using-a-connection-string)
+  - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
+- [Key concepts](#key-concepts)
+- [Examples](#examples)
+  - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
+  - [Consume events from an Event Hub partition](#consume-events-from-an-event-hub-partition)
+  - [Consume events using an Event Processor](#consume-events-using-an-event-processor)
+- [Troubleshooting](#troubleshooting)
+  - [Enable client logging](#enable-client-logging)
+  - [Enable AMQP transport logging](#enable-amqp-transport-logging)
+  - [Common exceptions](#common-exceptions)
+  - [Other exceptions](#other-exceptions)
+- [Next steps](#next-steps)
+- [Contributing](#contributing)
 
 ## Getting started
 
@@ -251,7 +243,7 @@ consumer.receive().subscribe(event -> {
 #### Consume events with EventHubConsumer
 
 Developers can create a synchronous consumer that returns events in batches using an `EventHubClient`. In the snippet
-below, a consumer is created that starts reading events from the beginning of the partition's event stream. 
+below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
 ```java
 EventHubClient client = new EventHubClientBuilder()
@@ -262,7 +254,7 @@ String partitionId = "<< EVENT HUB PARTITION ID >>";
 EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
     EventPosition.earliest());
 
-// Get the first 15 events in the stream, or as many events as can be received within 40 seconds. 
+// Get the first 15 events in the stream, or as many events as can be received within 40 seconds.
 IterableStream<EventData> events = consumer.receive(15, Duration.ofSeconds(40));
 for (EventData event : events) {
     // Process each event
