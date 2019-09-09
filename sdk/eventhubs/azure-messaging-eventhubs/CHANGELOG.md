@@ -5,7 +5,7 @@
 - Added synchronous `EventHubConsumer` and `EventHubProducer`.
 - Added support for balancing partitions across multiple instances of `EventProcessor`.
 - Added `EventProcessorBuilder` to create `EventProcessor` and removed that functionality from `EventHubClientBuilder`.
-- Removed `CheckpointManager`. Checkpointing is done using the `PartitionContext` exposed in `EventProcessor` methods.
+- Removed `CheckpointManager`. Checkpointing is done using the `PartitionContext` exposed in `PartitionProcessor` methods.
 - Changed `PartitionProcessor` from an interface to an abstract base class.
 - Changed `EventData.systemProperties` to exclude already exposed properties (ie. sequence number, enqueued time) from
   the map.
