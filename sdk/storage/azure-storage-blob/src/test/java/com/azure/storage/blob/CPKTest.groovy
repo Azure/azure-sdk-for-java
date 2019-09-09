@@ -10,8 +10,6 @@ import java.time.OffsetDateTime
 
 class CPKTest extends APISpec {
 
-    def RECORDING_KEY_SEED = 1234567890
-
     CustomerProvidedKey key
     ContainerClient cpkContainer
     BlockBlobClient cpkBlockBlob
@@ -20,7 +18,7 @@ class CPKTest extends APISpec {
     BlobClient cpkExistingBlob
 
     def setup() {
-        key = new CustomerProvidedKey(getRandomKey(RECORDING_KEY_SEED))
+        key = new CustomerProvidedKey(getRandomKey())
         def builder = new ContainerClientBuilder()
             .endpoint(cc.getContainerUrl().toString())
             .customerProvidedKey(key)
