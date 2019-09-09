@@ -250,25 +250,25 @@ consumer.receive().subscribe(event -> {
 
 #### Consume events with EventHubConsumer
 
-Developers can create a synchronous consumer that returns events in batches using an `EventHubClient`.
+Developers can create a synchronous consumer that returns events in batches using an `EventHubClient`. In the snippet
+below, a consumer is created that starts reading events from the beginning of the partition's event stream. 
 
 ```java
 EventHubClient client = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildClient();
 
-String partitionId = "<< EVENT HUB PARTITION ID >>"
-
+String partitionId = "<< EVENT HUB PARTITION ID >>";
 EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-    EventPosition.fromEnqueuedTime());
+    EventPosition.earliest());
 
+// Get the first 15 events in the stream, or as many events as can be received within 40 seconds. 
 IterableStream<EventData> events = consumer.receive(15, Duration.ofSeconds(40));
-
 for (EventData event : events) {
     // Process each event
 }
 
-// Calling
+// Calling receive again returns the next 15 events in the stream, or as many as possible in 40 seconds.
 IterableStream<EventData> nextEvents = consumer.receive(15, Duration.ofSeconds(40));
 ```
 
