@@ -58,7 +58,7 @@ class FileAsyncAPITests extends APISpec {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
-        
+
         when:
         def fileURL = primaryFileAsyncClient.getFileUrl().toString()
 
