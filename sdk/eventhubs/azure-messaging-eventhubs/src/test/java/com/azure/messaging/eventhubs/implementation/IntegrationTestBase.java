@@ -32,9 +32,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Test base for running live and offline tests.
+ * Test base for running integration tests.
  */
-public abstract class ApiTestBase extends TestBase {
+public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
     protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().tryTimeout(TIMEOUT);
     protected final ClientLogger logger;
@@ -50,7 +50,7 @@ public abstract class ApiTestBase extends TestBase {
     private ConnectionOptions connectionOptions;
     private TransportType transportType;
 
-    protected ApiTestBase(ClientLogger logger) {
+    protected IntegrationTestBase(ClientLogger logger) {
         this.transportType = TransportType.AMQP;
         this.logger = logger;
     }

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-public class CBSChannelTest extends ApiTestBase {
+public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
     @Mock

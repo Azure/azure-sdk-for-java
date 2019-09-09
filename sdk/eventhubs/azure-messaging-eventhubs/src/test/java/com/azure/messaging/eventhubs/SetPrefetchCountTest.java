@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -32,7 +32,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
  * Verifies we can use various prefetch options with {@link EventHubAsyncConsumer}.
  */
 @Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
-public class SetPrefetchCountTest extends ApiTestBase {
+public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.
     private static final int DEFAULT_PREFETCH_COUNT = 500;

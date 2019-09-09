@@ -15,7 +15,7 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-public class ReactorConnectionIntegrationTest extends ApiTestBase {
+public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     private ReactorHandlerProvider handlerProvider;
 
     @Mock

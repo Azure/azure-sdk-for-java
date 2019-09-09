@@ -7,9 +7,9 @@ import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -48,7 +48,7 @@ import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
  */
-public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
+public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     // The maximum number of receivers on a partition + consumer group is 5.
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
