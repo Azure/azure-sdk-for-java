@@ -162,8 +162,9 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-duration-context
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents", smbProperties,
-            filePermission, Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
+        Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents",
+            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the directory completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-duration-context
     }
@@ -222,8 +223,8 @@ public class ShareJavaDocCodeSamples {
             .filePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
-        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties,
-            filePermission, Collections.singletonMap("directory", "metadata"),
+        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024,
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-duration-context

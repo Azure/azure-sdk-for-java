@@ -200,7 +200,7 @@ class DirectoryAPITests extends APISpec {
     def "Set properties file permission"() {
         given:
         primaryDirectoryClient.create()
-        def resp = primaryDirectoryClient.setPropertiesWithResponse(null, filePermission, null)
+        def resp = primaryDirectoryClient.setPropertiesWithResponse(null, filePermission, null, null)
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
         resp.value().smbProperties()
@@ -220,7 +220,8 @@ class DirectoryAPITests extends APISpec {
             .fileLastWriteTime(getUTCNow())
             .filePermissionKey(filePermissionKey)
         primaryDirectoryClient.create()
-        def resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null)
+        def resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null, null)
+
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
         resp.value().smbProperties()
@@ -238,9 +239,11 @@ class DirectoryAPITests extends APISpec {
         when:
         FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
         primaryDirectoryClient.create()
-        primaryDirectoryClient.setPropertiesWithResponse(properties, permission, null)
+        primaryDirectoryClient.setPropertiesWithResponse(properties, permission, null, null)
+
         then:
         thrown(IllegalArgumentException)
+
         where:
         filePermissionKey   | permission
         "filePermissionKey" | filePermission

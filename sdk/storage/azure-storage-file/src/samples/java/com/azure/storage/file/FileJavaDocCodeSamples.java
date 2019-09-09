@@ -499,7 +499,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-duration-Context.clearHttpHeaderspreserveSMBProperties
         Response<FileInfo> response = fileClient.setPropertiesWithResponse(1024, null, null, null,
-           Duration.ofSeconds(1), new Context(key1, value1));
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode());
         // END: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-duration-Context.clearHttpHeaderspreserveSMBProperties
     }

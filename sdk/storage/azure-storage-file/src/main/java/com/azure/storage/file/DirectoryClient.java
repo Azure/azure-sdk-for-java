@@ -202,7 +202,7 @@ public class DirectoryClient {
      *
      * <p>Retrieve directory properties</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.getPropertiesWithResponse#duraion-Context}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-directory-properties">Azure Docs</a>.</p>
@@ -342,7 +342,7 @@ public class DirectoryClient {
      *
      * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer}
+     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
@@ -559,7 +559,7 @@ public class DirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.deleteFileWithResponse#string}
+     * {@codesnippet com.azure.storage.file.directoryClient.deleteFile#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>

@@ -578,12 +578,10 @@ public class ShareClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
-     * @param metadata Optional metadata to associate with the file.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
-     * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
      * @param metadata Optional name-value pairs associated with the file as metadata.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link FileClient} to interact with the created file and the
      * status of its creation.
