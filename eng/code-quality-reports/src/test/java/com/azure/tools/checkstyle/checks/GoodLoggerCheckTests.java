@@ -6,6 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests for Good logging practices, GoodLoggerCheck.
+ */
 public class GoodLoggerCheckTests extends AbstractModuleTestSupport {
     private static final String INCONSISTENCY_NAMING_MESSAGE = "ClientLogger instance naming: use 'logger'"
         + " instead of 'LOGGER' for consistency.";
@@ -31,7 +34,6 @@ public class GoodLoggerCheckTests extends AbstractModuleTestSupport {
     protected String getPackageLocation() {
         return "com/azure/tools/checkstyle/checks/GoodLoggerCheck";
     }
-
 
     @Test
     public void invalidExternalLoggers() throws Exception {
@@ -67,7 +69,6 @@ public class GoodLoggerCheckTests extends AbstractModuleTestSupport {
         };
         verify(checker, getPath("WrongClassInLoggerConstructor.java"), expected);
     }
-
 
     private String expectedErrorMessage(int line, int column, String errorMessage) {
         return String.format("%d:%d: %s", line, column, errorMessage);
