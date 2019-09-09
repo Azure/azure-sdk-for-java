@@ -16,6 +16,11 @@ import java.time.Instant;
 public class EventHubConsumerJavaDocCodeSamples {
     private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").buildClient();
 
+    /**
+     * Code snippet for creating an EventHubConsumer
+     *
+     * @throws IOException IO exception when the consumer cannot be disposed of.
+     */
     public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.instantiation
         EventHubClient client = new EventHubClientBuilder()
@@ -35,7 +40,7 @@ public class EventHubConsumerJavaDocCodeSamples {
      */
     public void receive() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration
-        // Obtain partitionId from EventHubClient.getPartitionIds()
+        // Obtain partitionId from EventHubClient.getPartitionIds().
         String partitionId = "0";
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
         EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
@@ -51,5 +56,10 @@ public class EventHubConsumerJavaDocCodeSamples {
         // Gets the next set of events to consume and process.
         IterableStream<EventData> nextEvents = consumer.receive(100, Duration.ofSeconds(30));
         // END: com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration
+
+        for (EventData event : nextEvents) {
+            // For each event, perform some sort of processing.
+            System.out.print("Event received: " + event.sequenceNumber());
+        }
     }
 }
