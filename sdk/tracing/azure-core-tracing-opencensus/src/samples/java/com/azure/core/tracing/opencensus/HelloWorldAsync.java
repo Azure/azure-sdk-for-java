@@ -14,7 +14,7 @@ import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
 import reactor.util.context.Context;
 
-import static com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
 /*
  *  This example shows tracing support in azure-storage-queue sdk using azure-core-tracing plugin package.
@@ -59,11 +59,8 @@ public class HelloWorldAsync {
                     err -> System.out.printf("Error thrown when enqueue the message. Error message: %s%n",
                         err.getMessage()),
                     () -> System.out.println("The enqueue has been completed."));
-<<<<<<< HEAD:sdk/tracing/azure-core-tracing-opencensus/src/samples/java/com/azure/core/tracing/opencensus/HelloWorldAsync.java
         } finally {
             scope.close();
-=======
->>>>>>> Updating everything to use OpenCensus as that is what the package uses:sdk/tracing/azure-core-tracing-opencensus/src/samples/java/com/azure/core/tracing/opencensus/HelloWorldAsync.java
         }
 
         Tracing.getExportComponent().shutdown();

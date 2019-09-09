@@ -14,7 +14,7 @@ import io.opencensus.trace.config.TraceConfig;
 import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
 
-import static com.azure.core.implementation.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
 /*
  *  This example shows tracing support in azure-storage-queue sdk using azure-core-tracing plugin package.
@@ -25,20 +25,12 @@ public class HelloWorld {
     private static final String QUEUE_NAME = "queue_name";
 
     /**
-<<<<<<< HEAD
      * The main method shows how we do the basic operations of enqueueing and dequeueing messages on async queue client
      * with tracing enabled support. This example relies on user the having started a zipkin exporter localhost on port
      * 9411.
      *
      * Please refer to the  <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
      * using a zipkin exporter.
-=======
-     * The main method shows how we do the basic operations of enqueueing and dequeueing messages on async queue client with tracing enabled support.
-     * This example relies on user the having started a zipkin exporter localhost on port 9411.
-     *
-     * Please refer to the  <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a>
-     * for more documentation on using a zipkin exporter.
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
      *
      * @param args No args needed for main method.
      */
@@ -51,12 +43,8 @@ public class HelloWorld {
 
         Tracer tracer = Tracing.getTracer();
 
-<<<<<<< HEAD
         Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan();
         try {
-=======
-        try (Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan()) {
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
             QueueClient queueClient = new QueueClientBuilder()
                 .endpoint(String.format("https://%s.queue.core.windows.net/%s%s", ACCOUNT_NAME, QUEUE_NAME, SAS_TOKEN))
                 .buildClient();
@@ -67,11 +55,8 @@ public class HelloWorld {
             queueClient.enqueueMessageWithResponse("This is message 1", null, null, tracingContext);
             queueClient.enqueueMessageWithResponse("This is message 2", null, null, tracingContext);
             System.out.println("Enqueuing of messages has completed!");
-<<<<<<< HEAD
         } finally {
             scope.close();
-=======
->>>>>>> Updating everything to use OpenCensus as that is what the package uses
         }
 
         Tracing.getExportComponent().shutdown();

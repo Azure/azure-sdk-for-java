@@ -89,7 +89,7 @@ Several Java SDK samples are available to you in the SDK's GitHub repository. Th
 
 #### Hello World Samples
 * [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples with tracing enabled for following scenarios:
-    * Create a queue client using [azure-storage-queue][azure-storage-queue] Java sdk
+    * Create a queue client using [azure-storage-queue][azure-storage-queue] Java SDK.
     * Enqueue and dequeue messages using the created QueueClient
 #### List Operations Samples
 * [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_list_async] - Contains samples with tracing enabled for following scenarios:
@@ -113,7 +113,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
 [azure-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets
+[azure-messaging-eventhubs]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/azure-messaging-eventhubs
 [azure-storage-queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-queue
+[context]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
 [maven]: https://maven.apache.org/
 [source_code]:  src
 [aztracing_docs]: TODO
