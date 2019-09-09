@@ -11,7 +11,10 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collections;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
@@ -112,5 +115,13 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         return hotel;
     }
 
+    public abstract void indexWithInvalidDocumentThrowsException();
+
     protected abstract void initializeClient();
+
+    protected void addDocumentToIndexActions(List<IndexAction> indexActions, IndexActionType indexActionType, HashMap<String, Object> document) {
+        indexActions.add(new IndexAction()
+            .actionType(indexActionType)
+            .additionalProperties(document));
+    }
 }
