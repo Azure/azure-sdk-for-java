@@ -8,10 +8,13 @@ import com.azure.core.http.rest.Response
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.Constants
+import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
+import com.azure.storage.file.FileSASPermission
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileCopyInfo
+import com.azure.storage.file.models.FileDownloadInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.FileRange
@@ -354,6 +357,33 @@ class FileAPITests extends APISpec {
 
         cleanup:
         FileTestHelper.deleteFolderIfExists(testFolder.getPath())
+    }
+
+    def "Upload range from URL"() {
+        given:
+        primaryFileClient.create(1024)
+        def data = "The quick brown fox jumps over the lazy dog"
+        def sourceOffset = 5
+        def length = 5
+        def destinationOffset = 0
+
+        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
+        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().read(true))
+
+        when:
+        FileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
+            .endpoint(primaryFileClient.getFileUrl().toString())
+            .buildFileClient()
+
+        client.create(1024)
+        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI())
+
+        then:
+        def result = new String(client.downloadWithProperties().body().blockLast().array())
+
+        for(int i = 0; i < length; i++) {
+            result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
+        }
     }
 
     def "Start copy"() {
