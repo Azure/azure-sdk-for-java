@@ -81,7 +81,7 @@ The easiest means for doing so is to use a connection string, which is created a
 namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
 [get an Event Hubs connection string][event_hubs_connection_string].
 
-Both the asynchronous and synchronous Event Hugb clients are created using `EventHubClientBuilder`. Invoking
+Both the asynchronous and synchronous Event Hub clients can be created using `EventHubClientBuilder`. Invoking
 `.buildAsyncClient()` or `.buildClient()` will create either an `EventHubAsyncClient` or `EventHubClient`.
 
 The snippet below creates an asynchronous Event Hub client.
