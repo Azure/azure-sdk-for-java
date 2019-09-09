@@ -13,6 +13,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -149,15 +151,17 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createDirectoryWithResponse(String, FileSmbProperties, String, Map, Context)}
      */
     public void createDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context
-        Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents",
-            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        // BEGIN: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<DirectoryClient> response = shareClient.createDirectoryWithResponse("documents", smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the directory completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-map-Context
+        // END: com.azure.storage.file.shareClient.createDirectoryWithResponse#string-filesmbproperties-string-map-context
     }
 
     /**
@@ -195,16 +199,28 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHTTPHeaders, Map, Context)}
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Context)}
      */
     public void createFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, httpHeaders,
-            Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
+        // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-context
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"), new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-map-Context
+        // END: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-context
     }
 
     /**
@@ -424,6 +440,50 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareClient#createPermission(String)}
+     */
+    public void createPermissionAsync() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.createPermission#string
+        String response = shareClient.createPermission("filePermission");
+        System.out.printf("The file permission key is %s", response);
+        // END: com.azure.storage.file.shareClient.createPermission#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#createPermissionWithResponse(String, Context)}
+     */
+    public void createPermissionWithResponse() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.createPermissionWithResponse#string-context
+        Response<String> response = shareClient.createPermissionWithResponse("filePermission", Context.NONE);
+        System.out.printf("The file permission key is %s", response.value());
+        // END: com.azure.storage.file.shareClient.createPermissionWithResponse#string-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#getPermission(String)}
+     */
+    public void getPermission() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.getPermission#string
+        String response = shareClient.getPermission("filePermissionKey");
+        System.out.printf("The file permission is %s", response);
+        // END: com.azure.storage.file.shareClient.getPermission#string
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#getPermissionWithResponse(String, Context)}
+     */
+    public void getPermissionWithResponse() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.getPermissionWithResponse#string-context
+        Response<String> response = shareClient.getPermissionWithResponse("filePermissionKey", Context.NONE);
+        System.out.printf("The file permission is %s", response.value());
+        // END: com.azure.storage.file.shareClient.getPermissionWithResponse#string-context
+    }
+
+    /**
      * Generates a code sample for using {@link ShareClient#getSnapshotId()}
      */
     public void getSnapshotId() {
@@ -445,7 +505,7 @@ public class ShareJavaDocCodeSamples {
      */
     public void generateSAS() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.ShareClient.generateSAS
+        // BEGIN: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         String identifier = "identifier";
         ShareSASPermission permissions = new ShareSASPermission()
             .read(true)
@@ -467,6 +527,6 @@ public class ShareJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String sas = shareClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.ShareClient.generateSAS
+        // END: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 }

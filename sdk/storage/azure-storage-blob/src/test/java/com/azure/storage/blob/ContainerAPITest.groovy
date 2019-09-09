@@ -336,8 +336,8 @@ class ContainerAPITest extends APISpec {
                 .expiry(getUTCNow().plusDays(2))
                 .permission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
-        ids.push(identifier)
-        ids.push(identifier2)
+        ids.add(identifier)
+        ids.add(identifier2)
 
         when:
         def response = cc.setAccessPolicyWithResponse(null, ids, null, null, null)
@@ -1035,8 +1035,7 @@ class ContainerAPITest extends APISpec {
         cc.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
         then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
+        thrown(exceptionType)
 
         where:
         snapshots | maxResults | exceptionType

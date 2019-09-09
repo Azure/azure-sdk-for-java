@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -99,7 +100,7 @@ public class DirectoryClient {
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public DirectoryInfo create() {
-        return createWithResponse(null, Context.NONE).value();
+        return createWithResponse(null, null, null, Context.NONE).value();
     }
 
     /**
@@ -109,18 +110,21 @@ public class DirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createWithResponse#map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory.
      * @return A response containing the directory info and the status of creating the directory.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
-    public Response<DirectoryInfo> createWithResponse(Map<String, String> metadata, Context context) {
-        return directoryAsyncClient.createWithResponse(metadata, context).block();
+    public Response<DirectoryInfo> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata, context).block();
     }
 
     /**
@@ -201,6 +205,49 @@ public class DirectoryClient {
     }
 
     /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @return The storage directory SMB properties
+     */
+    public DirectoryInfo setProperties(FileSmbProperties smbProperties, String filePermission) {
+        return setPropertiesWithResponse(smbProperties, filePermission, Context.NONE).value();
+    }
+
+    /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    public Response<DirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission, Context context) {
+        return directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission, context).block();
+    }
+
+    /**
      * Sets the user-defined metadata to associate to the directory.
      *
      * <p>If {@code null} is passed for the metadata it will clear the metadata associated to the directory.</p>
@@ -267,7 +314,7 @@ public class DirectoryClient {
      *
      * @return {@link FileRef File info} in the storage directory
      */
-    public Iterable<FileRef> listFilesAndDirectories() {
+    public PagedIterable<FileRef> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -288,8 +335,8 @@ public class DirectoryClient {
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
-    public Iterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
-        return directoryAsyncClient.listFilesAndDirectories(prefix, maxResults).toIterable();
+    public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+        return new PagedIterable<>(directoryAsyncClient.listFilesAndDirectories(prefix, maxResults));
     }
 
     /**
@@ -308,8 +355,8 @@ public class DirectoryClient {
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public Iterable<HandleItem> listHandles(Integer maxResult, boolean recursive) {
-        return directoryAsyncClient.listHandles(maxResult, recursive).collectList().block();
+    public PagedIterable<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+        return new PagedIterable<>(directoryAsyncClient.listHandles(maxResult, recursive));
     }
 
     /**
@@ -328,10 +375,10 @@ public class DirectoryClient {
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @return The counts of number of handles closed.
      */
-    public Iterable<Integer> forceCloseHandles(String handleId, boolean recursive) {
+    public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
-        return directoryAsyncClient.forceCloseHandles(handleId, recursive).collectList().block();
+        return new PagedIterable<>(directoryAsyncClient.forceCloseHandles(handleId, recursive));
     }
 
     /**
@@ -351,7 +398,7 @@ public class DirectoryClient {
      * @throws StorageException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public DirectoryClient createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, Context.NONE).value();
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -361,20 +408,23 @@ public class DirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
-    public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
+    public Response<DirectoryClient> createSubDirectoryWithResponse(String subDirectoryName, FileSmbProperties smbProperties,
+        String filePermission, Map<String, String> metadata, Context context) {
         DirectoryClient directoryClient = getSubDirectoryClient(subDirectoryName);
-        return new SimpleResponse<>(directoryClient.createWithResponse(metadata, context), directoryClient);
+        return new SimpleResponse<>(directoryClient.createWithResponse(smbProperties, filePermission, metadata, context), directoryClient);
     }
 
     /**
@@ -435,7 +485,7 @@ public class DirectoryClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize,  null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -445,22 +495,25 @@ public class DirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-Context}
+     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
-     * @param httpHeaders the Http headers set to the file
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission THe file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
-        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata, context)
-            .map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        return directoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context).map(response -> new SimpleResponse<>(response, new FileClient(response.value()))).block();
     }
 
     /**

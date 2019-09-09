@@ -5,6 +5,7 @@ package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.DatabaseAccount;
 import com.azure.data.cosmos.internal.routing.LocationCache;
 import com.azure.data.cosmos.internal.routing.LocationHelper;
 import org.apache.commons.collections4.list.UnmodifiableList;

@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "20da3609-c5f4-48a5-9683-9201b93d0c5f",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -14,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "efe54920-601a-008c-0c12-5a7d2d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:efe54920-601a-008c-0c12-5a7d2d000000\nTime:2019-08-24T00:28:12.5840713Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Sat, 24 Aug 2019 00:28:12 GMT",
-      "x-ms-client-request-id" : "bc0f1f9b-818b-40d0-85ca-a7e1bad7433b",
+      "x-ms-request-id" : "cac5204a-301a-001d-3f44-649f87000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:cac5204a-301a-001d-3f44-649f87000000\nTime:2019-09-05T23:49:40.5961190Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:49:39 GMT",
+      "x-ms-client-request-id" : "20da3609-c5f4-48a5-9683-9201b93d0c5f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "85718547acce45179749534def17a4feba1a271762224412ab54897677fb7a1c" ]
+  "variables" : [ "3df015f6ccbf47448d697c0c1c6a246efda1a9208b774e88ae5eeb170424a59e" ]
 }

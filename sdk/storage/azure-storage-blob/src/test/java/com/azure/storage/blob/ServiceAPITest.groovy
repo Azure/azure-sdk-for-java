@@ -60,7 +60,7 @@ class ServiceAPITest extends APISpec {
     def "List containers"() {
         when:
         def response =
-            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
+            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix + testName), null)
 
         then:
         for (ContainerItem c : response) {

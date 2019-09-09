@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsenqueuetimetolive091023db5bd7c12",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsenqueuetimetolive98465027476b2c9",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "84760c78-6ee6-497c-8484-7f776ce37edb"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,16 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9c190995-9003-0099-21cf-5ebfb4000000",
-      "Date" : "Fri, 30 Aug 2019 01:11:41 GMT"
+      "x-ms-request-id" : "b1814bb7-6003-00c8-80c2-62a141000000",
+      "Date" : "Wed, 04 Sep 2019 01:45:55 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsenqueuetimetolive091023db5bd7c12/messages?visibilitytimeout=0&messagettl=2",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestsenqueuetimetolive98465027476b2c9/messages?visibilitytimeout=0&messagettl=2",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_212; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "320a463f-5e53-4ed8-8ffd-b427df13d671",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -30,12 +32,12 @@
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9c19099c-9003-0099-26cf-5ebfb4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>fe10efa4-367a-4313-b971-49e8866f7a12</MessageId><InsertionTime>Fri, 30 Aug 2019 01:11:42 GMT</InsertionTime><ExpirationTime>Fri, 30 Aug 2019 01:11:44 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAUzxE4s9e1QE=</PopReceipt><TimeNextVisible>Fri, 30 Aug 2019 01:11:42 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
-      "Date" : "Fri, 30 Aug 2019 01:11:41 GMT",
+      "x-ms-request-id" : "b1814bbe-6003-00c8-04c2-62a141000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>72b4218f-1e7a-4e70-a291-71bc5999de87</MessageId><InsertionTime>Wed, 04 Sep 2019 01:45:56 GMT</InsertionTime><ExpirationTime>Wed, 04 Sep 2019 01:45:58 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAARTdzfsJi1QE=</PopReceipt><TimeNextVisible>Wed, 04 Sep 2019 01:45:56 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 04 Sep 2019 01:45:55 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsenqueuetimetolive091023db5bd7c12" ]
+  "variables" : [ "queueaysncapitestsenqueuetimetolive98465027476b2c9" ]
 }

@@ -5,6 +5,7 @@ package com.azure.storage.file.spock
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.models.CorsRule
 import com.azure.storage.file.models.FileServiceProperties
 import com.azure.storage.file.models.Metrics
@@ -21,6 +22,7 @@ import java.security.NoSuchAlgorithmException
 import java.time.Duration
 
 class FileTestHelper {
+    private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
 
     static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
         return expectedStatusCode == response.statusCode()
@@ -129,24 +131,22 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            Objects.equals(expected.name(), actual.name())
-            if (expected.properties() == null) {
-                return actual.properties() == null
-            }
-            if (!Objects.equals(expected.properties().quota(), actual.properties().quota())) {
+            if (!Objects.equals(expected.name(), actual.name())) {
                 return false
             }
-            if (includeMetadata) {
-                if (!Objects.equals(expected.metadata(), actual.metadata())) {
-                    return false
-                }
+
+            if (includeMetadata && !Objects.equals(expected.metadata(), actual.metadata())) {
+                return false
             }
-            if (includeSnapshot) {
-                if (!Objects.equals(expected.snapshot(), actual.snapshot())) {
-                    return false
-                }
+            if (includeSnapshot && !Objects.equals(expected.snapshot(), actual.snapshot())) {
+                return false
             }
-            return true
+
+            if (expected.properties() == null) {
+                return actual.properties() == null
+            } else {
+                return Objects.equals(expected.properties().quota(), actual.properties().quota())
+            }
         }
     }
 
@@ -177,10 +177,14 @@ class FileTestHelper {
 
     static String createRandomFileWithLength(int size, String folder, String fileName) {
         def path = Paths.get(folder)
+        if (path == null) {
+            throw logger.logExceptionAsError(new RuntimeException("The folder path does not exist."))
+        }
+
         if (!Files.exists(path)) {
             Files.createDirectory(path)
         }
-        def randomFile = new File(folder + "/" + fileName)
+        def randomFile = new File(folder, fileName)
         RandomAccessFile raf = new RandomAccessFile(randomFile, "rw")
         raf.setLength(size)
         raf.close()
@@ -196,5 +200,13 @@ class FileTestHelper {
                 Files.delete(children[i].toPath())
             }
         }
+    }
+
+    // TODO : Move this into a common package test class?
+    static byte[] getRandomBuffer(int length) {
+        final Random randGenerator = new Random()
+        final byte[] buff = new byte[length]
+        randGenerator.nextBytes(buff)
+        return buff
     }
 }

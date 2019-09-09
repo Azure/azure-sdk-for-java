@@ -6,11 +6,13 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.NtfsFileAttributes;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 /**
@@ -92,16 +94,20 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createWithResponse(Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createWithResponse(FileSmbProperties, String, Map)}
      */
     public void createDirectoryWithResponseAsync() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createWithResponse#Map
-        directoryAsyncClient.createWithResponse(Collections.singletonMap("directory", "metadata")).subscribe(
-            response -> System.out.println("Completed creating the directory with status code:" + response.statusCode()),
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata).subscribe(
+            response ->
+                System.out.println("Completed creating the directory with status code:" + response.statusCode()),
             error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createWithResponse#Map
+        // END: com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map
     }
 
     /**
@@ -116,19 +122,21 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectoryWithResponse(String, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createSubDirectoryWithResponse(String, FileSmbProperties, String, Map)}
      */
     public void createSubDirectoryAsyncMaxOverload() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-map
-        directoryAsyncClient.createSubDirectoryWithResponse("subdir",
-            Collections.singletonMap("directory", "metadata")).subscribe(
-                response ->
-                    System.out.println("Successfully creating the subdirectory with status code: "
-                        + response.statusCode()),
-                error -> System.err.println(error.toString())
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        directoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
+            response ->
+                System.out.println("Successfully creating the subdirectory with status code: "
+                    + response.statusCode()),
+            error -> System.err.println(error.toString())
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-map
+        // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
     }
 
     /**
@@ -146,19 +154,31 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders,
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
                 response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
-        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-map
+        // END: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
     }
 
     /**
@@ -296,6 +316,34 @@ public class DirectoryAsyncJavaDocCodeSamples {
             System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryAsyncClient#setProperties(FileSmbProperties, String)}
+     */
+    public void setPropertiesAsync() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.setProperties(smbProperties, filePermission).subscribe(properties -> {
+            System.out.printf("Directory latest modified date is %s:", properties.lastModified());
+        });
+        // END: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties, String)}
+     */
+    public void setPropertiesWithResponse() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
+            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+        });
+        // END: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
     }
 
     /**

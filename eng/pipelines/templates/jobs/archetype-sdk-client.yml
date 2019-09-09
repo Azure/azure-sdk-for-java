@@ -16,7 +16,7 @@ parameters:
       ProfileFlag: ''
     Windows - Java 8:
       OSName: 'Windows'
-      OSVmImage: 'vs2017-win2016'
+      OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       ProfileFlag: ''
     Linux - Java LTS:
@@ -31,7 +31,7 @@ parameters:
       ProfileFlag: '-Djava-lts'
     Windows - Java LTS:
       OSName: 'Windows'
-      OSVmImage: 'vs2017-win2016'
+      OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       ProfileFlag: '-Djava-lts'
 
@@ -167,10 +167,9 @@ jobs:
           goals: 'install site:site site:stage'
 
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
-      # previous step. This is only generated in non-PR builds (i.e. nightly runs, etc)
+      # previous step.
       - task: Maven@3
         displayName: 'Run SpotBugs'
-        condition: or(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
           options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip'
