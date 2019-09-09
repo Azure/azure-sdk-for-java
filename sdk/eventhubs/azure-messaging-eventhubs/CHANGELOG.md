@@ -1,5 +1,15 @@
 # Release History
 
+## 5.0.0-preview.3 (2019-09-09)
+
+- Added synchronous `EventHubConsumer` and `EventHubProducer`.
+- Added support for balancing partitions across multiple instances of `EventProcessor`.
+- Added `EventProcessorBuilder` to create `EventProcessor` and removed that functionality from `EventHubClientBuilder`.
+- Removed `CheckpointManager`.
+- Changed `PartitionProcessor` from an interface to an abstract base class.
+- Changed `EventData.systemProperties` to exclude already exposed properties (ie. sequence number, enqueued time) from
+  the map.
+
 ## 5.0.0-preview.2 (2019-08-06)
 
 - Added support for AMQP protocol using web sockets to connect to Azure Event Hubs.
