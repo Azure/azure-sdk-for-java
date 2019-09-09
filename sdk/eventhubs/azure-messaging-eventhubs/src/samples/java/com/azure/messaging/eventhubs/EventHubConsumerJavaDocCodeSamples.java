@@ -50,6 +50,6 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         // Gets the next set of events to consume and process.
         IterableStream<EventData> nextEvents = consumer.receive(100, Duration.ofSeconds(30));
-        // END: com.azure.messaging.eventhubs.eventhubconsumer.receive
+        // END: com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration
     }
 }
