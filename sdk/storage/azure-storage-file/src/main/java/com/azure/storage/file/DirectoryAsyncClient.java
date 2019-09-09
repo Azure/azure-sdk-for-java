@@ -13,6 +13,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -32,6 +33,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -438,16 +440,31 @@ public class DirectoryAsyncClient {
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
     public PagedFlux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+        return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * DirectoryClient. Applies the given timeout to each Mono<DirectorysListFilesAndDirectoriesSegmentResponse> backing the PagedFlux.
+     *
+     * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
+     * @param maxResults Optional maximum number of files and/or directories to return per page.
+     *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the listed files and directories, flattened.
+     */
+    PagedFlux<FileRef> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<FileRef>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
-                    marker, maxResults, null, Context.NONE))
+                    marker, maxResults, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     convertResponseAndGetNumOfResults(response),
                     response.value().nextMarker(),
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -469,22 +486,37 @@ public class DirectoryAsyncClient {
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
     public PagedFlux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
+        return listHandlesWithOptionalTimeout(maxResult, recursive, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * DirectoryClient. Applies the given timeout to each Mono<DirectorysListHandlesResponse> backing the PagedFlux.
+     *
+     * @param maxResult Optional maximum number of results will return per page
+     * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the listed handles, flattened.
+     */
+    PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResult, boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
-            .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
-                Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                response.value().handleList(),
-                response.value().nextMarker(),
-                response.deserializedHeaders()));
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
+                    context), timeout)
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().handleList(),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryAsyncClient#listHandles(Integer, boolean)} .
+     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside
+     * {@link DirectoryAsyncClient#listHandles(Integer, boolean)} .
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -500,18 +532,33 @@ public class DirectoryAsyncClient {
      * @return The counts of number of handles closed
      */
     public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive) {
+        return forceCloseHandlesWithOptionalTimeout(handleId, recursive, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * DirectoryClient. Applies the given timeout to each Mono<DirectorysForceCloseHandlesResponse> backing the PagedFlux.
+     *
+     * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
+     * @param maxResults Optional maximum number of files and/or directories to return per page.
+     *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the listed forced closed handles, flattened.
+     */
+    PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, boolean recursive, Duration timeout, Context context) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.directorys()
-            .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
-                recursive, Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
-                response.deserializedHeaders().marker(),
-                response.deserializedHeaders()));
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
+                    recursive, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
+                    response.deserializedHeaders().marker(),
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }

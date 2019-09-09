@@ -950,16 +950,29 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
     public PagedFlux<FileRange> listRanges(FileRange range) {
+        return listRangesWithOptionalTimeout(range, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * FileClient. Applies the given timeout to each Mono<FilesGetRangeListResponse> backing the PagedFlux.
+     *
+     * @param range Optional byte range which returns file data only from the specified range.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the listed file ranges, flattened.
+     */
+    PagedFlux<FileRange> listRangesWithOptionalTimeout(FileRange range, Duration timeout, Context context) {
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<FileRange>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                response.value().stream().map(FileRange::new).collect(Collectors.toList()),
-                null,
-                response.deserializedHeaders()));
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().stream().map(FileRange::new).collect(Collectors.toList()),
+                    null,
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -998,16 +1011,30 @@ public class FileAsyncClient {
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
     public PagedFlux<HandleItem> listHandles(Integer maxResults) {
+        return listHandlesWithOptionalTimeout(maxResults, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * FileClient. Applies the given timeout to each Mono<FilesListHandlesResponse> backing the
+     * PagedFlux.
+     *
+     * @param maxResults Optional maximum number of results will return per page
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the listed handles, flattened.
+     */
+    PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResults, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.files()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResults, null, snapshot,
-                    Context.NONE))
+                    context), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     response.value().handleList(),
                     response.value().nextMarker(),
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -1030,22 +1057,36 @@ public class FileAsyncClient {
      * @return The counts of number of handles closed
      */
     public PagedFlux<Integer> forceCloseHandles(String handleId) {
+        return forceCloseHandlesWithOptionalTimeout(handleId, null, Context.NONE);
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * FileClient. Applies the given timeout to each Mono<FilesForceCloseHandlesResponse> backing the
+     * PagedFlux.
+     *
+     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all
+     * handles.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting the number of closed handles, flattened.
+     */
+    PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, Duration timeout, Context context) {
         // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
         // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.files()
+            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
-                    snapshot, Context.NONE))
+                    snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
                     response.deserializedHeaders().marker(),
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
-
     /**
      * Get snapshot id which attached to {@link FileAsyncClient}. Return {@code null} if no snapshot id attached.
      *

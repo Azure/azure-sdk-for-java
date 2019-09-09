@@ -635,8 +635,8 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
         fileAsyncClient.listHandles(10)
             .subscribe(result -> {
-                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles));
+                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(
+                    numOfClosedHandles -> System.out.printf("Close %d handles.", numOfClosedHandles));
             });
         // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
     }
