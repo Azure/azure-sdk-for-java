@@ -79,6 +79,8 @@ You can set the `AZURE_LOG_LEVEL` environment variable to view logging statement
 example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
 be found here: [log levels][source_loglevels].
 
+## Next steps
+
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
