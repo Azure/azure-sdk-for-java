@@ -238,8 +238,8 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         // Assert
         try {
-            boolean success = semaphore.tryAcquire(15, TimeUnit.SECONDS);
-            Assert.assertTrue(success);
+            Assert.assertTrue("The EventHubConsumer was not closed after one with a higher epoch number started.",
+                semaphore.tryAcquire(60, TimeUnit.SECONDS));
         } finally {
             subscriptions.dispose();
             isActive.set(false);
