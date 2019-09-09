@@ -23,14 +23,15 @@ public final class FixedRetryPolicy extends RetryPolicy {
      * Calculates the delay for a fixed backoff.
      *
      * @param retryCount The number of attempts that have been made, including the initial attempt before any
-     *         retries.
+     *     retries.
      * @param baseDelay The delay to use for the fixed backoff.
      * @param baseJitter The duration to use for the basis of the random jitter value.
      * @param random The random number generator used to calculate the jitter.
      * @return The duration to delay before retrying a request.
      */
     @Override
-    protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter, ThreadLocalRandom random) {
+    protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+                                           ThreadLocalRandom random) {
         final Double jitterNanos = random.nextDouble() * baseJitter.getSeconds() * RetryPolicy.NANOS_PER_SECOND;
         final Duration jitter = Duration.ofNanos(jitterNanos.longValue());
 

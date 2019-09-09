@@ -16,7 +16,7 @@ parameters:
       ProfileFlag: ''
     Windows - Java 8:
       OSName: 'Windows'
-      OSVmImage: 'vs2017-win2016'
+      OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       ProfileFlag: ''
     Linux - Java LTS:
@@ -31,7 +31,7 @@ parameters:
       ProfileFlag: '-Djava-lts'
     Windows - Java LTS:
       OSName: 'Windows'
-      OSVmImage: 'vs2017-win2016'
+      OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       ProfileFlag: '-Djava-lts'
 
@@ -81,6 +81,7 @@ jobs:
 
 
   - job: 'Analyze'
+    condition: ne(variables['Skip.Analyze'], 'true')
 
     variables:
       - template: ../variables/globals.yml
@@ -155,7 +156,6 @@ jobs:
       # running as a PR check.
       - task: Maven@3
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'

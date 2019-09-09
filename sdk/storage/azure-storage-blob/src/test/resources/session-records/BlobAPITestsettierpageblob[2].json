@@ -1,100 +1,100 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcsettierpageblob0blobapitestsettierpageblob51f44898af7f2?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcsettierpageblob0blobapitestsettierpageblob2fa18994d231c?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "646bb478-ddb7-406e-800d-4458975f30e3"
+      "x-ms-client-request-id" : "685f2159-df30-4162-8360-ae2813713680"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73251E885B39A\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "ETag" : "\"0x8D7356138E539C9\"",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:06:37 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "bfed4ed1-901e-0044-693a-643cc7000000",
-      "Date" : "Thu, 05 Sep 2019 22:39:27 GMT",
-      "x-ms-client-request-id" : "646bb478-ddb7-406e-800d-4458975f30e3"
+      "x-ms-request-id" : "c5cab776-301e-0042-3d4a-67cbbf000000",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
+      "x-ms-client-request-id" : "685f2159-df30-4162-8360-ae2813713680"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcsettierpageblob0blobapitestsettierpageblob51f44898af7f2/javablobsettierpageblob1blobapitestsettierpageblob51f1802061",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcsettierpageblob0blobapitestsettierpageblob2fa18994d231c/javablobsettierpageblob1blobapitestsettierpageblob2fa48567fa",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "6106625f-5616-44f5-8d84-16ef2885fcf5",
+      "x-ms-client-request-id" : "0e0a48bd-228b-48e5-b55f-9023593196c7",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:06:37 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "\"0x8D73251E8936459\"",
+      "ETag" : "\"0x8D7356138F1F64E\"",
       "Content-Length" : "0",
-      "x-ms-request-id" : "bfed4ee3-901e-0044-7a3a-643cc7000000",
-      "x-ms-client-request-id" : "6106625f-5616-44f5-8d84-16ef2885fcf5"
+      "x-ms-request-id" : "c5cab787-301e-0042-4d4a-67cbbf000000",
+      "x-ms-client-request-id" : "0e0a48bd-228b-48e5-b55f-9023593196c7"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob51f2549231402?restype=container",
+    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "056fcf5f-f80b-4e32-aecf-316cbcae3d0b"
+      "x-ms-client-request-id" : "4b14d7a7-1bed-4ec7-b147-ede2ce120fe9"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73251E89F4F6A\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "ETag" : "\"0x8D7356138FDBD13\"",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:06:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0c63cf4e-201c-0064-343a-643f71000000",
-      "Date" : "Thu, 05 Sep 2019 22:39:26 GMT",
-      "x-ms-client-request-id" : "056fcf5f-f80b-4e32-aecf-316cbcae3d0b"
+      "x-ms-request-id" : "2ccdd9b2-501c-0049-3b4a-67bcb1000000",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
+      "x-ms-client-request-id" : "4b14d7a7-1bed-4ec7-b147-ede2ce120fe9"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob51f2549231402/javablobsettierpageblob3blobapitestsettierpageblob51f967125a",
+    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba/javablobsettierpageblob3blobapitestsettierpageblob2fa0449701",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "e459bd07-a126-4f40-a2c1-a4dde02898d9"
+      "x-ms-client-request-id" : "2098969b-3b0d-4152-abf4-3ef0cd33483d"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73251E8AC610F\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "ETag" : "\"0x8D73561390B5E72\"",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:06:38 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "0c63cf7c-201c-0064-623a-643f71000000",
-      "Date" : "Thu, 05 Sep 2019 22:39:26 GMT",
-      "x-ms-client-request-id" : "e459bd07-a126-4f40-a2c1-a4dde02898d9"
+      "x-ms-request-id" : "2ccdda22-501c-0049-2b4a-67bcb1000000",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
+      "x-ms-client-request-id" : "2098969b-3b0d-4152-abf4-3ef0cd33483d"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob51f2549231402/javablobsettierpageblob3blobapitestsettierpageblob51f967125a?comp=tier",
+    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba/javablobsettierpageblob3blobapitestsettierpageblob2fa0449701?comp=tier",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "1ab3fae0-eea7-4914-8e6f-fcae62e9e705"
+      "x-ms-client-request-id" : "e31df5f0-7fff-4d66-b6d4-e66503070c0c"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -102,18 +102,18 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0c63cfbe-201c-0064-243a-643f71000000",
-      "Date" : "Thu, 05 Sep 2019 22:39:26 GMT",
-      "x-ms-client-request-id" : "1ab3fae0-eea7-4914-8e6f-fcae62e9e705"
+      "x-ms-request-id" : "2ccdda7c-501c-0049-054a-67bcb1000000",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
+      "x-ms-client-request-id" : "e31df5f0-7fff-4d66-b6d4-e66503070c0c"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob51f2549231402/javablobsettierpageblob3blobapitestsettierpageblob51f967125a",
+    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba/javablobsettierpageblob3blobapitestsettierpageblob2fa0449701",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "89744c43-0279-4281-b6b5-c679b9422f3f"
+      "x-ms-client-request-id" : "cdb5137d-043a-45e8-929b-dbeb91121d7d"
     },
     "Response" : {
       "x-ms-lease-status" : "unlocked",
@@ -121,29 +121,29 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
       "x-ms-blob-sequence-number" : "0",
-      "Last-Modified" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:06:38 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 05 Sep 2019 22:39:26 GMT",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
       "x-ms-blob-type" : "PageBlob",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
       "x-ms-access-tier" : "P10",
-      "ETag" : "\"0x8D73251E8AC610F\"",
-      "x-ms-creation-time" : "Thu, 05 Sep 2019 22:39:27 GMT",
+      "ETag" : "\"0x8D73561390B5E72\"",
+      "x-ms-creation-time" : "Mon, 09 Sep 2019 20:06:38 GMT",
       "Content-Length" : "512",
-      "x-ms-request-id" : "0c63d015-201c-0064-7b3a-643f71000000",
-      "x-ms-client-request-id" : "89744c43-0279-4281-b6b5-c679b9422f3f",
+      "x-ms-request-id" : "2ccddae7-501c-0049-704a-67bcb1000000",
+      "x-ms-client-request-id" : "cdb5137d-043a-45e8-929b-dbeb91121d7d",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob51f2549231402?include=&restype=container&comp=list",
+    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba?include=&restype=container&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "7b92b0ca-12fc-47b8-ae9e-0ddd1f49105a"
+      "x-ms-client-request-id" : "9db4e6a3-18a6-4534-8f95-909ab9a5325b"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -151,20 +151,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0c63d087-201c-0064-6d3a-643f71000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<EnumerationResults ServiceEndpoint=\"https://jaschreppremium.blob.core.windows.net/\" ContainerName=\"jtcsettierpageblob2blobapitestsettierpageblob51f2549231402\"><Blobs><Blob><Name>javablobsettierpageblob3blobapitestsettierpageblob51f967125a</Name><Properties><Creation-Time>Thu, 05 Sep 2019 22:39:27 GMT</Creation-Time><Last-Modified>Thu, 05 Sep 2019 22:39:27 GMT</Last-Modified><Etag>0x8D73251E8AC610F</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding/><Content-Language/><Content-MD5/><Cache-Control/><Content-Disposition/><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><AccessTier>P10</AccessTier><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties></Blob></Blobs><NextMarker/></EnumerationResults>",
-      "Date" : "Thu, 05 Sep 2019 22:39:26 GMT",
-      "x-ms-client-request-id" : "7b92b0ca-12fc-47b8-ae9e-0ddd1f49105a",
+      "x-ms-request-id" : "2ccddb4c-501c-0049-554a-67bcb1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<EnumerationResults ServiceEndpoint=\"https://jaschreppremium.blob.core.windows.net/\" ContainerName=\"jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba\"><Blobs><Blob><Name>javablobsettierpageblob3blobapitestsettierpageblob2fa0449701</Name><Properties><Creation-Time>Mon, 09 Sep 2019 20:06:38 GMT</Creation-Time><Last-Modified>Mon, 09 Sep 2019 20:06:38 GMT</Last-Modified><Etag>0x8D73561390B5E72</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding/><Content-Language/><Content-MD5/><Cache-Control/><Content-Disposition/><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><AccessTier>P10</AccessTier><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties></Blob></Blobs><NextMarker/></EnumerationResults>",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
+      "x-ms-client-request-id" : "9db4e6a3-18a6-4534-8f95-909ab9a5325b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob51f2549231402?restype=container",
+    "Uri" : "https://jaschreppremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "1ca36965-1e60-48e6-a9ac-e59f1869f40e"
+      "x-ms-client-request-id" : "858da93c-9fb5-440f-8918-6419c732f291"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -172,9 +172,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "0c63d0e1-201c-0064-473a-643f71000000",
-      "Date" : "Thu, 05 Sep 2019 22:39:26 GMT",
-      "x-ms-client-request-id" : "1ca36965-1e60-48e6-a9ac-e59f1869f40e"
+      "x-ms-request-id" : "2ccddbb2-501c-0049-3b4a-67bcb1000000",
+      "Date" : "Mon, 09 Sep 2019 20:06:37 GMT",
+      "x-ms-client-request-id" : "858da93c-9fb5-440f-8918-6419c732f291"
     },
     "Exception" : null
   }, {
@@ -183,7 +183,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "0232b32d-ffd3-46bf-8f8a-efff8fdac27f"
+      "x-ms-client-request-id" : "8cc21b98-bef4-44dd-a748-817dc57eca72"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -191,20 +191,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "bfed4f3e-901e-0044-4e3a-643cc7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://jaschrepragrs.blob.core.windows.net/\"><Prefix>jtcsettierpageblob</Prefix><Containers><Container><Name>jtcsettierpageblob0blobapitestsettierpageblob51f44898af7f2</Name><Properties><Last-Modified>Thu, 05 Sep 2019 22:39:27 GMT</Last-Modified><Etag>\"0x8D73251E885B39A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 05 Sep 2019 22:39:27 GMT",
-      "x-ms-client-request-id" : "0232b32d-ffd3-46bf-8f8a-efff8fdac27f",
+      "x-ms-request-id" : "c5cab822-301e-0042-604a-67cbbf000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://jaschrepragrs.blob.core.windows.net/\"><Prefix>jtcsettierpageblob</Prefix><Containers><Container><Name>jtcsettierpageblob0blobapitestsettierpageblob2fa18994d231c</Name><Properties><Last-Modified>Mon, 09 Sep 2019 20:06:37 GMT</Last-Modified><Etag>\"0x8D7356138E539C9\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 09 Sep 2019 20:06:38 GMT",
+      "x-ms-client-request-id" : "8cc21b98-bef4-44dd-a748-817dc57eca72",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcsettierpageblob0blobapitestsettierpageblob51f44898af7f2?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcsettierpageblob0blobapitestsettierpageblob2fa18994d231c?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "90669e52-4b67-408e-addd-ef0172cec3c8"
+      "x-ms-client-request-id" : "132fe00c-df03-4d38-97fd-cfc81ac659ce"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -212,11 +212,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "bfed4f4e-901e-0044-5d3a-643cc7000000",
-      "Date" : "Thu, 05 Sep 2019 22:39:27 GMT",
-      "x-ms-client-request-id" : "90669e52-4b67-408e-addd-ef0172cec3c8"
+      "x-ms-request-id" : "c5cab832-301e-0042-704a-67cbbf000000",
+      "Date" : "Mon, 09 Sep 2019 20:06:38 GMT",
+      "x-ms-client-request-id" : "132fe00c-df03-4d38-97fd-cfc81ac659ce"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcsettierpageblob0blobapitestsettierpageblob51f44898af7f2", "javablobsettierpageblob1blobapitestsettierpageblob51f1802061", "jtcsettierpageblob2blobapitestsettierpageblob51f2549231402", "javablobsettierpageblob3blobapitestsettierpageblob51f967125a" ]
+  "variables" : [ "jtcsettierpageblob0blobapitestsettierpageblob2fa18994d231c", "javablobsettierpageblob1blobapitestsettierpageblob2fa48567fa", "jtcsettierpageblob2blobapitestsettierpageblob2fa834834f5ba", "javablobsettierpageblob3blobapitestsettierpageblob2fa0449701" ]
 }

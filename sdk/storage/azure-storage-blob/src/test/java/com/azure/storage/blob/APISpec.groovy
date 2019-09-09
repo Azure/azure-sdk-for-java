@@ -34,6 +34,7 @@ import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -122,6 +123,7 @@ class APISpec extends Specification {
     BlobServiceClient premiumBlobServiceClient
 
     private InterceptorManager interceptorManager
+    private boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
 
@@ -141,6 +143,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // If the test doesn't have the Requires tag record it in live mode.
+        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -177,13 +182,13 @@ class APISpec extends Specification {
     static TestMode setupTestMode() {
         String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
 
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ex) {
-                return TestMode.PLAYBACK
-            }
-        }
+//        if (testMode != null) {
+//            try {
+//                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+//            } catch (IllegalArgumentException ex) {
+//                return TestMode.PLAYBACK
+//            }
+//        }
 
         return TestMode.PLAYBACK
     }
@@ -204,46 +209,48 @@ class APISpec extends Specification {
             accountKey = "astorageaccountkey"
         }
 
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new SharedKeyCredential(accountName, accountKey)
+    if (accountName == null || accountKey == null) {
+        logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+        return null
     }
 
-    BlobServiceClient setClient(SharedKeyCredential credential) {
-        try {
-            return getServiceClient(credential)
-        } catch (Exception ex) {
-            return null
-        }
+    return new SharedKeyCredential(accountName, accountKey)
+}
+
+BlobServiceClient setClient(SharedKeyCredential credential) {
+    try {
+        return getServiceClient(credential)
+    } catch (Exception ex) {
+        return null
     }
+}
 
-    def getOAuthServiceClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
-            .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+def getOAuthServiceClient() {
+    BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+        .httpClient(getHttpClient())
+        .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+    if (testMode == TestMode.RECORD) {
+        if (recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(primaryCredential).buildClient()
         }
-    }
 
-    BlobServiceClient getServiceClient(String endpoint) {
-        return getServiceClient(null, endpoint, null)
+        // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+        return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+    } else {
+        // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+        return builder.credential(primaryCredential).buildClient()
     }
+}
 
-    BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
-    }
+BlobServiceClient getServiceClient(String endpoint) {
+    return getServiceClient(null, endpoint, null)
+}
+
+BlobServiceClient getServiceClient(SharedKeyCredential credential) {
+    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
+}
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
         return getServiceClient(credential, endpoint, null)
@@ -274,7 +281,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -291,7 +298,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -305,7 +312,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -324,7 +331,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -341,7 +348,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -355,7 +362,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -372,7 +379,7 @@ class APISpec extends Specification {
             builder.credential(credential)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -388,7 +395,7 @@ class APISpec extends Specification {
                 builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
-            return builder.build();
+            return builder.build()
         } else {
             return interceptorManager.getPlaybackClient()
         }

@@ -5,7 +5,6 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Constants;
-import com.azure.data.cosmos.internal.DatabaseAccount;
 import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.QueryMetrics;
@@ -89,6 +88,10 @@ public class BridgeInternal {
                 Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
 
         return account;
+    }
+
+    public static String getAddressesLink(DatabaseAccount databaseAccount) {
+        return databaseAccount.getAddressesLink();
     }
 
     public static Map<String, String> getFeedHeaders(ChangeFeedOptions options) {
@@ -217,7 +220,7 @@ public class BridgeInternal {
     }
 
     public static boolean isEnableMultipleWriteLocations(DatabaseAccount account) {
-        return account.isEnableMultipleWriteLocations();
+        return account.enableMultipleWriteLocations();
     }
 
     public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
@@ -243,7 +246,7 @@ public class BridgeInternal {
     }
 
     public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
-        return databaseAccount.getQueryEngineConfiuration();
+        return databaseAccount.getQueryEngineConfiguration();
     }
 
     public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {

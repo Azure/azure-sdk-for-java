@@ -22,8 +22,9 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR })
 @Inherited
 /**
- * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in future releases,
- * including removal, regardless of any compatibility expectations set by the containing library version.
+ * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in
+ * future releases, including removal, regardless of any compatibility expectations set by the containing library
+ * version.
  *
  *  Examples:
  *
@@ -34,7 +35,8 @@ import static java.lang.annotation.ElementType.TYPE;
  */
 public @interface Beta {
     /**
-     * @return the free-form value for the annotation (used if details cannot be provided using since and reason attributes).
+     * @return the free-form value for the annotation (used if details cannot be provided using since and reason
+     *     attributes).
      */
     String value() default "";
 
@@ -51,5 +53,7 @@ public @interface Beta {
     /**
      * @return the warning message.
      */
-    String warningText() default "This functionality is in preview and as such is subject to change in non-backwards compatible ways in future releases, including removal, regardless of any compatibility expectations set by the containing library version.";
+    String warningText() default "This functionality is in preview and as such is subject to change in non-backwards "
+        + "compatible ways in future releases, including removal, regardless of any compatibility expectations set by"
+        + " the containing library version.";
 }

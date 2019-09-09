@@ -25,15 +25,16 @@ public class CheckpointManager {
      * Creates a new checkpoint manager which {@link PartitionProcessor} can use to update checkpoints.
      *
      * @param ownerId The event processor identifier that is responsible for updating checkpoints.
-     * @param partitionContext The partition context providing necessary partition and event hub information for updating
-     * checkpoints.
-     * @param partitionManager The {@link PartitionManager} implementation that will be store the checkpoint information.
-     * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the  update checkpoint
-     * is called from this CheckpointManager, this ETag will be used to provide <a href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic
-     * concurrency</a>.
+     * @param partitionContext The partition context providing necessary partition and event hub information for
+     *     updating checkpoints.
+     * @param partitionManager The {@link PartitionManager} implementation that will be store the checkpoint
+     *     information.
+     * @param eTag The last known ETag stored in {@link PartitionManager} for this partition. When the  update
+     *     checkpoint is called from this CheckpointManager, this ETag will be used to provide
+     *     <a href="https://en.wikipedia.org/wiki/Optimistic_concurrency_control">optimistic concurrency</a>.
      */
     public CheckpointManager(String ownerId, PartitionContext partitionContext, PartitionManager partitionManager,
-        String eTag) {
+                             String eTag) {
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
         this.partitionContext = Objects.requireNonNull(partitionContext, "partitionContext cannot be null");
         this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null");

@@ -3,11 +3,12 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.Constants;
-import com.azure.data.cosmos.internal.DatabaseAccount;
+import com.azure.data.cosmos.DatabaseAccount;
 import com.azure.data.cosmos.internal.GlobalEndpointManager;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.ReplicationPolicy;
@@ -139,10 +140,10 @@ public class GatewayServiceConfigurationReader {
                             throw new IllegalArgumentException("URI " + url);
                         }
                     }).doOnSuccess(databaseAccount -> {
-                        userReplicationPolicy = databaseAccount.getReplicationPolicy();
-                        systemReplicationPolicy = databaseAccount.getSystemReplicationPolicy();
-                        queryEngineConfiguration = databaseAccount.getQueryEngineConfiuration();
-                        consistencyLevel = databaseAccount.getConsistencyPolicy().defaultConsistencyLevel();
+                        userReplicationPolicy = BridgeInternal.getReplicationPolicy(databaseAccount);
+                        systemReplicationPolicy = BridgeInternal.getSystemReplicationPolicy(databaseAccount);
+                        queryEngineConfiguration = BridgeInternal.getQueryEngineConfiuration(databaseAccount);
+                        consistencyLevel = BridgeInternal.getConsistencyPolicy(databaseAccount).defaultConsistencyLevel();
                         initialized = true;
                     });
         } catch (MalformedURLException e) {
