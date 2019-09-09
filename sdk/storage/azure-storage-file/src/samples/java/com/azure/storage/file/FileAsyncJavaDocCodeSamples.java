@@ -14,6 +14,8 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.NtfsFileAttributes;
 import reactor.core.publisher.Flux;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -294,6 +296,36 @@ public class FileAsyncJavaDocCodeSamples {
             () -> System.out.println("Complete deleting the file!")
         );
         // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURL(long, long, long, URI)}
+     * @throws URISyntaxException when the URI is invalid
+     */
+    public void uploadFileFromURLAsync() throws URISyntaxException {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
+        fileAsyncClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Completed upload range from url!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURLWithResponse(long, long, long, URI)}
+     * @throws URISyntaxException when the URI is invalid
+     */
+    public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
+        fileAsyncClient.uploadRangeFromURLWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Completed upload range from url!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
     }
 
     /**
@@ -603,8 +635,8 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
         fileAsyncClient.listHandles(10)
             .subscribe(result -> {
-                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles));
+                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(
+                    numOfClosedHandles -> System.out.printf("Close %d handles.", numOfClosedHandles));
             });
         // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
     }
