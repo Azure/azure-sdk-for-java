@@ -4,7 +4,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
-import com.azure.data.cosmos.internal.DatabaseAccount;
 import com.azure.data.cosmos.internal.DocumentCollection;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +29,7 @@ public class CosmosBridgeInternal {
     }
 
     public static Mono<DatabaseAccount> getDatabaseAccount(CosmosClient client) {
-        return client.getDatabaseAccount();
+        return client.readDatabaseAccount();
     }
 
     public static AsyncDocumentClient getContextClient(CosmosDatabase database) {
