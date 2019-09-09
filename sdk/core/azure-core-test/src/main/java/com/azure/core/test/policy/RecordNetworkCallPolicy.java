@@ -76,13 +76,6 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             X_MS_VERSION,
             USER_AGENT);
 
-        /* The encryption key is sensitive information so capture it with a hidden value. This value will be replaced
-         * with the request value during playback.
-         */
-        if (context.httpRequest().headers().value(X_MS_ENCRYPTION_KEY_SHA256) != null) {
-            headers.put(X_MS_ENCRYPTION_KEY_SHA256, "REDACTED");
-        }
-
         networkCallRecord.headers(headers);
         networkCallRecord.method(context.httpRequest().httpMethod().toString());
 
@@ -138,7 +131,11 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             if (header.name().equalsIgnoreCase("retry-after")) {
                 headerValueToStore = "0";
                 addedRetryAfter = true;
+            } else if (header.name().equalsIgnoreCase(X_MS_ENCRYPTION_KEY_SHA256)) {
+                // The encryption key is sensitive information so capture it with a hidden value.
+                headerValueToStore = "REDACTED";
             }
+
             responseData.put(header.name(), headerValueToStore);
         }
 

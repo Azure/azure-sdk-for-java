@@ -79,8 +79,9 @@ public final class PlaybackClient implements HttpClient {
         if (networkCallRecord.headers().containsKey(X_MS_CLIENT_REQUEST_ID)) {
             request.header(X_MS_CLIENT_REQUEST_ID, networkCallRecord.headers().get(X_MS_CLIENT_REQUEST_ID));
         }
-        if (networkCallRecord.headers().containsKey(X_MS_ENCRYPTION_KEY_SHA256)) {
-            request.header(X_MS_ENCRYPTION_KEY_SHA256, networkCallRecord.headers().get(X_MS_ENCRYPTION_KEY_SHA256));
+        if (request.headers().value(X_MS_ENCRYPTION_KEY_SHA256) != null) {
+            networkCallRecord.response().put(X_MS_ENCRYPTION_KEY_SHA256,
+                request.headers().value(X_MS_ENCRYPTION_KEY_SHA256));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
