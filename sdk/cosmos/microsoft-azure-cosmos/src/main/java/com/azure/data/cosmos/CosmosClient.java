@@ -5,7 +5,6 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Database;
-import com.azure.data.cosmos.internal.DatabaseAccount;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Permission;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdMetrics;
@@ -357,7 +356,7 @@ public class CosmosClient implements AutoCloseable {
                         response.responseHeaders()));
     }
 
-    Mono<DatabaseAccount> getDatabaseAccount() {
+    public Mono<DatabaseAccount> readDatabaseAccount() {
         return asyncDocumentClient.getDatabaseAccount().single();
     }
 
