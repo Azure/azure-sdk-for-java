@@ -4,14 +4,20 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
+import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
@@ -30,17 +36,24 @@ import java.util.Objects;
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumer implements Closeable {
-    private final EventHubAsyncConsumer consumer;
-    private final EventHubConsumerOptions options;
+    private static final AtomicReferenceFieldUpdater<EventHubConsumer, SynchronousEventSubscriber> SUBSCRIBER =
+        AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, SynchronousEventSubscriber.class,
+            "eventSubscriber");
 
-    EventHubConsumer(EventHubAsyncConsumer consumer, EventHubConsumerOptions options) {
+    private final ClientLogger logger = new ClientLogger(EventHubConsumer.class);
+    private final AtomicLong idGenerator = new AtomicLong();
+
+    private final EventHubAsyncConsumer consumer;
+    private final Duration timeout;
+    private volatile SynchronousEventSubscriber eventSubscriber;
+
+    EventHubConsumer(EventHubAsyncConsumer consumer, Duration tryTimeout) {
+        Objects.requireNonNull(tryTimeout,
+            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRY_TIME_OUT_CANNOT_NULL));
+
         this.consumer = Objects.requireNonNull(consumer,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_CANNOT_NULL));
-        this.options = Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
-
-        //TODO (conniey): Keep track of the last sequence number as each method invoked.
-        this.consumer.receive().windowTimeout(options.prefetchCount(), this.options.retry().tryTimeout());
+        this.timeout = tryTimeout;
     }
 
     /**
@@ -49,9 +62,10 @@ public class EventHubConsumer implements Closeable {
      * @param maximumMessageCount The maximum number of messages to receive in this batch.
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
      *     events.
+     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1.
      */
     public IterableStream<EventData> receive(int maximumMessageCount) {
-        return new IterableStream<>(Flux.empty());
+        return receive(maximumMessageCount, timeout);
     }
 
     /**
@@ -62,9 +76,48 @@ public class EventHubConsumer implements Closeable {
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
      * @return A set of {@link EventData} that was received. The iterable contains up to {@code maximumMessageCount}
      *     events.
+     * @throws NullPointerException if {@code maximumWaitTime} is null.
+     * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
+     *     zero or a negative duration.
      */
     public IterableStream<EventData> receive(int maximumMessageCount, Duration maximumWaitTime) {
-        return new IterableStream<>(Flux.empty());
+        Objects.requireNonNull(maximumWaitTime, "'maximumWaitTime' cannot be null.");
+
+        if (maximumMessageCount < 1) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
+        } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
+        }
+
+        final Flux<EventData> events = Flux.create(emitter -> {
+            queueWork(maximumMessageCount, maximumWaitTime, emitter);
+        });
+
+        final Flux<EventData> map = events.collectList().map(x -> {
+            logger.info("Number of events received: {}", x.size());
+            return Flux.fromIterable(x);
+        }).block();
+        return new IterableStream<>(map);
+    }
+
+    /**
+     * Given an {@code emitter}, queues that work in {@link SynchronousEventSubscriber}. If the {@link #eventSubscriber}
+     * has not been initialised yet, will initialise it.
+     */
+    private void queueWork(int maximumMessageCount, Duration maximumWaitTime, FluxSink<EventData> emitter) {
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
+            emitter);
+
+        if (SUBSCRIBER.compareAndSet(this, null, new SynchronousEventSubscriber(work))) {
+            logger.info("Started synchronous event subscriber.");
+            consumer.receive().subscribeWith(SUBSCRIBER.get(this));
+        } else {
+            logger.info("Queueing work item in SynchronousEventSubscriber.");
+            SUBSCRIBER.get(this).queueReceiveWork(work);
+        }
     }
 
     /**

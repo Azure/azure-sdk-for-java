@@ -86,7 +86,8 @@ public class EventHubAsyncClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
+    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
+                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions,
             EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_OPTIONS_CANNOT_NULL));
         Objects.requireNonNull(provider,
@@ -100,8 +101,10 @@ public class EventHubAsyncClient implements Closeable {
         this.tracerProvider = tracerProvider;
         this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
-            handlerProvider, new ResponseMapper())).doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = Mono.fromCallable(() -> {
+            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
+                handlerProvider, new ResponseMapper());
+        }).doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
@@ -118,7 +121,9 @@ public class EventHubAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
-        return connectionMono.flatMap(connection -> connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
+        return connectionMono
+            .flatMap(connection -> connection
+                .getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
     }
 
     /**
@@ -308,9 +313,12 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw logger.logExceptionAsError(new AmqpException(false,
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.UNABLE_CLOSE_CONNECTION_TO_SERVICE),
-                    exception, new ErrorContext(connectionOptions.host())));
+                throw logger.logExceptionAsError(new AmqpException(
+                    false,
+                    EventHubErrorCodeStrings.getErrorString(
+                        EventHubErrorCodeStrings.UNABLE_CLOSE_CONNECTION_TO_SERVICE),
+                    exception,
+                    new ErrorContext(connectionOptions.host())));
             }
         }
     }
@@ -320,11 +328,18 @@ public class EventHubAsyncClient implements Closeable {
 
         // order of preference
         if (eventPosition.offset() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.offset());
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.offset());
         }
 
         if (eventPosition.sequenceNumber() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.sequenceNumber());
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.sequenceNumber());
         }
 
         if (eventPosition.enqueuedDateTime() != null) {
@@ -335,7 +350,11 @@ public class EventHubAsyncClient implements Closeable {
                 ms = Long.toString(Long.MAX_VALUE);
             }
 
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                ms);
         }
 
         throw new IllegalArgumentException(

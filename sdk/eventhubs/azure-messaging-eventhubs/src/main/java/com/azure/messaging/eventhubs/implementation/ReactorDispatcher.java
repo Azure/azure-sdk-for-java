@@ -83,8 +83,8 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException = this.reactor.attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.logExceptionAsError(new RejectedExecutionException(
-                rejectedException.getMessage(), rejectedException));
+            throw logger.logExceptionAsError(new RejectedExecutionException(rejectedException.getMessage(),
+                rejectedException));
         }
 
         // throw when the pipe is in closed state - in which case,

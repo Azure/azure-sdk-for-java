@@ -157,9 +157,12 @@ public class EventDataUtil {
                         message.setReplyToGroupId((String) value);
                         break;
                     default:
-                        throw new IllegalArgumentException(String.format(Locale.US,
-                            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
-                            key));
+                        throw new IllegalArgumentException(
+                            String.format(
+                                Locale.US,
+                                EventHubErrorCodeStrings.getErrorString(
+                                    EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
+                                key));
                 }
             } else {
                 final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)

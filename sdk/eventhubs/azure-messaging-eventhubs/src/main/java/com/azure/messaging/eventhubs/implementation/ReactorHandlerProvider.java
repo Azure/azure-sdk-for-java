@@ -87,7 +87,8 @@ public class ReactorHandlerProvider {
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName, String entityPath) {
+    ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName,
+                                                String entityPath) {
         return new ReceiveLinkHandler(connectionId, host, receiverName, entityPath);
     }
 }

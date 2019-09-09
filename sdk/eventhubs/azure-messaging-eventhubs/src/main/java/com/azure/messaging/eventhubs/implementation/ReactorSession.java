@@ -147,7 +147,9 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 try {
                     provider.getReactorDispatcher().invoke(() -> {
                         sender.open();
-                        final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout, retry, EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES);
+                        final ReactorSender reactorSender =
+                            new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout,
+                                retry, EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES);
                         openSendLinks.put(linkName, reactorSender);
                         sink.success(reactorSender);
                     });
@@ -164,7 +166,8 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression,
-                                         Duration timeout, RetryPolicy retry, Long ownerLevel, String consumerIdentifier) {
+                                         Duration timeout, RetryPolicy retry, Long ownerLevel,
+                                         String consumerIdentifier) {
         final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
 
         return RetryUtil.withRetry(
@@ -183,13 +186,15 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
                 if (!ImplUtils.isNullOrEmpty(eventPositionExpression)) {
                     final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
-                    filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER, eventPositionExpression));
+                    filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
+                        eventPositionExpression));
                     source.setFilter(filter);
                 }
 
                 //TODO (conniey): support creating a filter when we've already received some events. I believe this in
                 // the cause of recreating a failing link.
-                // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
+                // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider
+                // .getFilter(MessageReceiver.this.lastReceivedMessage);
                 // if (filterMap != null) {
                 //    source.setFilter(filterMap);
                 // }
@@ -215,7 +220,8 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 }
 
                 // TODO (conniey): After preview 1 feature to enable keeping partition information updated.
-                // static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+                // static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR +
+                // ":enable-receiver-runtime-metric");
                 // if (keepPartitionInformationUpdated) {
                 //    receiver.setDesiredCapabilities(new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME});
                 // }
@@ -228,7 +234,8 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                     provider.getReactorDispatcher().invoke(() -> {
                         receiver.open();
 
-                        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
+                        final ReactorReceiver reactorReceiver =
+                            new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
 
                         openReceiveLinks.put(linkName, reactorReceiver);
                         sink.success(reactorReceiver);

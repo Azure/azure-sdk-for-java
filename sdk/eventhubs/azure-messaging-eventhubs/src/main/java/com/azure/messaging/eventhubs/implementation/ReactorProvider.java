@@ -54,7 +54,8 @@ public class ReactorProvider {
      * @param baseHandlers Handler for reactor instance. Usually: {@link ReactorHandler}
      * @return A new reactor instance.
      */
-    private Reactor createReactor(final int maxFrameSize, final Handler globalHandler, final BaseHandler... baseHandlers) throws IOException {
+    private Reactor createReactor(final int maxFrameSize, final Handler globalHandler,
+                                  final BaseHandler... baseHandlers) throws IOException {
         Objects.requireNonNull(baseHandlers);
         Objects.requireNonNull(globalHandler);
 

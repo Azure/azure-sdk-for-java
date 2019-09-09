@@ -77,7 +77,8 @@ import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId}
  *
- * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
+ * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}
+ * .</strong></p>
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
  * <p>
@@ -125,7 +126,8 @@ public class EventHubAsyncProducer implements Closeable {
      * EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
-    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options, TracerProvider tracerProvider) {
+    EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options,
+                          TracerProvider tracerProvider) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
@@ -144,7 +146,6 @@ public class EventHubAsyncProducer implements Closeable {
     /**
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      * @param options A set of options used to configure the {@link EventDataBatch}.
-     *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
@@ -256,7 +257,6 @@ public class EventHubAsyncProducer implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      * @param events Events to send to the service.
-     *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events) {
@@ -272,7 +272,6 @@ public class EventHubAsyncProducer implements Closeable {
      * size is the max amount allowed on the link.
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
-     *
      * @return A {@link Mono} that completes when all events are pushed to the service.
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
@@ -286,8 +285,8 @@ public class EventHubAsyncProducer implements Closeable {
 
     /**
      * Sends the batch to the associated Event Hub.
-     * @param batch The batch to send to the service.
      *
+     * @param batch The batch to send to the service.
      * @return A {@link Mono} that completes when the batch is pushed to the service.
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubAsyncProducer#createBatch()
@@ -350,7 +349,8 @@ public class EventHubAsyncProducer implements Closeable {
                     return events.map(eventData -> {
                         Context parentContext = eventData.context();
                         Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
-                        sendSpanContext.set(tracerProvider.startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
+                        sendSpanContext.set(tracerProvider
+                            .startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
@@ -411,19 +411,21 @@ public class EventHubAsyncProducer implements Closeable {
         if (isPartitionSender) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.partitionKey() cannot be set when an EventHubProducer is created with"
-                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
+                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to "
+                    + "partition '%s'.",
                 senderOptions.partitionId())));
         } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_KEY_EXCEEDS_MAX_LENGTH),
-                partitionKey, MAX_PARTITION_KEY_LENGTH)));
+                partitionKey,
+                MAX_PARTITION_KEY_LENGTH)));
         }
     }
 
     /**
      * Disposes of the {@link EventHubAsyncProducer} by closing the underlying connection to the service.
      * @throws IOException if the underlying transport could not be closed and its resources could not be
-     *                     disposed.
+     *     disposed.
      */
     @Override
     public void close() throws IOException {
@@ -441,7 +443,8 @@ public class EventHubAsyncProducer implements Closeable {
      * maxNumberOfBatches}, then the collector throws a {@link AmqpException} with {@link
      * ErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
-    private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
+    private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>,
+        List<EventDataBatch>> {
         private final String partitionKey;
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;

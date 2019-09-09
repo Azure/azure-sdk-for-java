@@ -12,10 +12,12 @@ import reactor.core.publisher.Mono;
  * should extend from this class and implement {@link #processEvent(PartitionContext, EventData)} for processing events.
  * Additionally, users can override:
  * <ul>
- *     <li>{@link #initialize(PartitionContext)} - This method is called before at the beginning of processing a partition.</li>
- *     <li>{@link #processError(PartitionContext, Throwable)} - This method is called if there is an error while processing events</li>
- *     <li>{@link #close(PartitionContext, CloseReason)} - This method is called at the end of processing a partition. The
- *     {@link CloseReason} specifies why the processing of a partition stopped.</li>
+ *     <li>{@link #initialize(PartitionContext)} - This method is called before at the beginning of processing a
+ *     partition.</li>
+ *     <li>{@link #processError(PartitionContext, Throwable)} - This method is called if there is an error while
+ *     processing events</li>
+ *     <li>{@link #close(PartitionContext, CloseReason)} - This method is called at the end of processing a partition.
+ *     The {@link CloseReason} specifies why the processing of a partition stopped.</li>
  * </ul>
  * <p>
  * An instance of partition processor will process events from a single partition only.

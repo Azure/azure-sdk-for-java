@@ -53,9 +53,11 @@ public class ConnectionStringProperties {
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(Locale.US,
+                throw new IllegalArgumentException(String.format(
+                    Locale.US,
                     EventHubErrorCodeStrings.getErrorString(
-                        EventHubErrorCodeStrings.CONNECTION_STRING_HAS_INVALID_KV_PAIR), tokenValuePair));
+                        EventHubErrorCodeStrings.CONNECTION_STRING_HAS_INVALID_KV_PAIR),
+                    tokenValuePair));
             }
 
             final String key = pair[0].trim();
@@ -65,15 +67,21 @@ public class ConnectionStringProperties {
                 try {
                     endpoint = new URI(value);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INVALID_ENDPOINT_MSG),
-                        tokenValuePair), e);
+                    throw new IllegalArgumentException(
+                        String.format(
+                            Locale.US,
+                            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INVALID_ENDPOINT_MSG),
+                            tokenValuePair),
+                        e);
                 }
 
                 if (!SCHEME.equalsIgnoreCase(endpoint.getScheme())) {
-                    throw new IllegalArgumentException(String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INCORRECT_SCHEME_ENDPOINT),
-                        SCHEME, endpoint.toString()));
+                    throw new IllegalArgumentException(
+                        String.format(
+                            Locale.US,
+                            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INCORRECT_SCHEME_ENDPOINT),
+                            SCHEME,
+                            endpoint.toString()));
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;
@@ -83,8 +91,11 @@ public class ConnectionStringProperties {
                 eventHubName = value;
             } else {
                 throw new IllegalArgumentException(
-                    String.format(Locale.US, EventHubErrorCodeStrings.getErrorString(
-                        EventHubErrorCodeStrings.ILLEGAL_CONNECTION_STRING_PARAMS), key));
+                    String.format(
+                        Locale.US,
+                        EventHubErrorCodeStrings.getErrorString(
+                            EventHubErrorCodeStrings.ILLEGAL_CONNECTION_STRING_PARAMS),
+                        key));
             }
         }
 
