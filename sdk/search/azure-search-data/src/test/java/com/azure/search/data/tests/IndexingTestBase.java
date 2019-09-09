@@ -23,6 +23,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void indexDoesNotThrowWhenAllActionsSucceed();
 
+    @Test
+    public abstract void canIndexWithPascalCaseFields();
+
     protected abstract void initializeClient();
 
     protected void AssertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode)

@@ -30,7 +30,27 @@ public class IndexingSyncTests extends IndexingTestBase {
         Long expectedHotelCount = 1L;
 
         List<IndexAction> indexActions = new LinkedList<>();
-        Hotel myHotel = new Hotel().hotelId("1");
+        Hotel myHotel = new Hotel().hotelId(expectedHotelId);
+        Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
+
+        indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
+        List<IndexingResult> result = indexDocumentsSync(indexActions);
+
+        Assert.assertEquals(expectedHotelCount, client.countDocuments());
+        this.AssertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+    }
+
+    @Override
+    public void canIndexWithPascalCaseFields() {
+        String expectedHotelId = "1";
+        Long expectedHotelCount = 1L;
+
+        List<IndexAction> indexActions = new LinkedList<>();
+        Hotel myHotel = new Hotel().hotelId(expectedHotelId);
+        myHotel.hotelName("My Pascal Hotel");
+        myHotel.description("A Great Pascal Description.");
+        myHotel.category("Category Pascal");
+
         Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
 
         indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
