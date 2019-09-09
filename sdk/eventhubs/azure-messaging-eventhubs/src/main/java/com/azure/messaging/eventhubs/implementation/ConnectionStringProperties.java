@@ -51,7 +51,10 @@ public class ConnectionStringProperties {
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
+                throw new IllegalArgumentException(String.format(
+                    Locale.US,
+                    "Connection string has invalid key value pair: %s",
+                    tokenValuePair));
             }
 
             final String key = pair[0].trim();
@@ -61,12 +64,17 @@ public class ConnectionStringProperties {
                 try {
                     endpoint = new URI(value);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
+                    throw new IllegalArgumentException(
+                        String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
                 }
 
                 if (!SCHEME.equalsIgnoreCase(endpoint.getScheme())) {
-                    throw new IllegalArgumentException(String.format(Locale.US,
-                        "Endpoint is not the correct scheme. Expected: %s. Actual Endpoint: %s", SCHEME, endpoint.toString()));
+                    throw new IllegalArgumentException(
+                        String.format(
+                            Locale.US,
+                            "Endpoint is not the correct scheme. Expected: %s. Actual Endpoint: %s",
+                            SCHEME,
+                            endpoint.toString()));
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;

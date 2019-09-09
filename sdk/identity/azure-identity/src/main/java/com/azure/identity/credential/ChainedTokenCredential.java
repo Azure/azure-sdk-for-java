@@ -15,7 +15,8 @@ import java.util.Deque;
 /**
  * A token credential provider that can provide a credential from a list of providers.
  *
- * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
+ * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then
+ * interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
  * {@codesnippet com.azure.identity.credential.chainedtokencredential.construct}
  */
 @Immutable
@@ -35,6 +36,7 @@ public class ChainedTokenCredential implements TokenCredential {
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(scopes).onErrorResume(t -> Mono.empty()))
             .next()
-            .switchIfEmpty(Mono.error(new ClientAuthenticationException("No credential can provide a token in the chain", null)));
+            .switchIfEmpty(Mono.error(new ClientAuthenticationException(
+                "No credential can provide a token in the chain", null)));
     }
 }

@@ -108,7 +108,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return The information of the created appended blob.
      */
     public AppendBlobItem create(BlobHTTPHeaders headers, Metadata metadata,
-                                          BlobAccessConditions accessConditions, Duration timeout) {
+            BlobAccessConditions accessConditions, Duration timeout) {
         return createWithResponse(headers, metadata, accessConditions, timeout, Context.NONE).value();
     }
 

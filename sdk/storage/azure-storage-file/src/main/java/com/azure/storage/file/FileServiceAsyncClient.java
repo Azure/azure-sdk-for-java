@@ -30,6 +30,7 @@ import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
+import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -160,7 +161,7 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
-        return listShares(null, options);
+        return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
     }
 
     /**
@@ -168,9 +169,10 @@ public final class FileServiceAsyncClient {
      *
      * @param marker Starting point to list the shares
      * @param options Options for listing shares
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    private PagedFlux<ShareItem> listShares(String marker, ListSharesOptions options) {
+    PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout, Context context) {
         final String prefix = (options != null) ? options.prefix() : null;
         final Integer maxResults = (options != null) ? options.maxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
@@ -186,15 +188,14 @@ public final class FileServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> postProcessResponse(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                response.value().shareItems(),
-                response.value().nextMarker(),
-                response.deserializedHeaders()));
-
+            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.request(),
+                    response.statusCode(),
+                    response.headers(),
+                    response.value().shareItems(),
+                    response.value().nextMarker(),
+                    response.deserializedHeaders())));
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
@@ -444,6 +445,13 @@ public final class FileServiceAsyncClient {
 
     /**
      * Generates an account SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
      *
      * @param accountSASService The {@code AccountSASService} services for the account SAS
      * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS

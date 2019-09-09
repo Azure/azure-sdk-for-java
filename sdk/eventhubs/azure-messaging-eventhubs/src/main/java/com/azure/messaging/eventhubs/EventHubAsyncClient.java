@@ -86,7 +86,8 @@ public class EventHubAsyncClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
+    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
+                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         Objects.requireNonNull(provider, "'provider' cannot be null.");
         Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
@@ -116,7 +117,9 @@ public class EventHubAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
-        return connectionMono.flatMap(connection -> connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
+        return connectionMono
+            .flatMap(connection -> connection
+                .getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
     }
 
     /**
@@ -257,9 +260,11 @@ public class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         } else if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be an empty string."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -301,8 +306,9 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw logger.logExceptionAsError(new AmqpException(false, "Unable to close connection to service", exception,
-                    new ErrorContext(connectionOptions.host())));
+                throw logger.logExceptionAsError(
+                    new AmqpException(false, "Unable to close connection to service", exception,
+                        new ErrorContext(connectionOptions.host())));
             }
         }
     }
@@ -312,11 +318,18 @@ public class EventHubAsyncClient implements Closeable {
 
         // order of preference
         if (eventPosition.offset() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.offset());
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.offset());
         }
 
         if (eventPosition.sequenceNumber() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.sequenceNumber());
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.sequenceNumber());
         }
 
         if (eventPosition.enqueuedDateTime() != null) {
@@ -327,7 +340,11 @@ public class EventHubAsyncClient implements Closeable {
                 ms = Long.toString(Long.MAX_VALUE);
             }
 
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                ms);
         }
 
         throw new IllegalArgumentException("No starting position was set.");

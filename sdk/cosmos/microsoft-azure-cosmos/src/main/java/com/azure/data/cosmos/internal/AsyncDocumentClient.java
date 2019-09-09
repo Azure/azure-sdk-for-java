@@ -6,6 +6,7 @@ import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosKeyCredential;
+import com.azure.data.cosmos.DatabaseAccount;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlQuerySpec;
