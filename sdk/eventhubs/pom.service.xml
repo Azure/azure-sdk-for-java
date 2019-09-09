@@ -36,7 +36,7 @@
         <module>../core/azure-core-amqp</module>
         <module>../core/azure-core-http-netty</module>
         <module>../identity/azure-identity</module>
-        <module>../storage/azure-storage-commons</module>
+        <module>../storage/azure-storage-common</module>
         <module>../storage/azure-storage-blob</module>
         <module>azure-messaging-eventhubs</module>
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
