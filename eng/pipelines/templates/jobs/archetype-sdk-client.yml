@@ -132,7 +132,7 @@ jobs:
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-          mavenOptions: '$(LoggingOptions)'
+          mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
