@@ -31,6 +31,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains helper methods for working with AMQP messages
  */
 final class TestUtils {
+    static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummyaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=non-existent-hub;";
+
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
     static final Long OFFSET = 1534L;
