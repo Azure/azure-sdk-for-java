@@ -114,7 +114,7 @@ public class EventHubProducerTest {
     public void sendStartSpanSingleMessage() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
@@ -154,7 +154,7 @@ public class EventHubProducerTest {
     public void sendMessageAddlink() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        final List<Tracer> tracers = Arrays.asList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(

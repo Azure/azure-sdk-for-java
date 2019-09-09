@@ -20,7 +20,7 @@ public class TracerProvider {
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
-        tracers.forEach(this.tracers::add);
+        tracers.forEach(e -> this.tracers.add(e));
     }
 
     public boolean isEnabled() {
