@@ -7,6 +7,8 @@ import com.azure.search.data.customization.Document;
 import com.azure.search.data.models.Hotel;
 import org.junit.Assert;
 
+import java.text.ParseException;
+
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
 
@@ -19,7 +21,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canIndexStaticallyTypedDocuments() throws Exception {
+    public void canIndexStaticallyTypedDocuments() throws ParseException {
         Hotel expected = prepareStaticallyTypedHotel();
         uploadDocuments(client, INDEX_NAME, expected);
 
@@ -29,7 +31,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canIndexDynamicDocuments() throws Exception {
+    public void canIndexDynamicDocuments() {
         Document expected = prepareDynamicallyTypedHotel();
         uploadDocuments(client, INDEX_NAME, expected);
 

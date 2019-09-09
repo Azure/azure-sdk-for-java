@@ -8,6 +8,8 @@ import com.azure.search.data.models.Hotel;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.text.ParseException;
+
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
 
@@ -20,7 +22,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canIndexStaticallyTypedDocuments() throws Exception {
+    public void canIndexStaticallyTypedDocuments() throws ParseException {
         Hotel expected = prepareStaticallyTypedHotel();
         uploadDocuments(client, INDEX_NAME, expected);
 
@@ -36,7 +38,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canIndexDynamicDocuments() throws Exception {
+    public void canIndexDynamicDocuments() {
         Document expected = prepareDynamicallyTypedHotel();
         uploadDocuments(client, INDEX_NAME, expected);
 

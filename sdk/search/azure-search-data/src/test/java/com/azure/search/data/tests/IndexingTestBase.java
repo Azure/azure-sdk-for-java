@@ -6,10 +6,12 @@ import com.azure.search.data.customization.Document;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.models.Hotel;
+import com.azure.search.data.models.HotelAddress;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
@@ -45,13 +47,21 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             .smokingAllowed(false)
             .lastRenovationDate(DATE_FORMAT.parse("2019-01-30T00:00:00Z"))
             .rating(5)
-            .location(GeoPoint.createWithDefaultCrs(-122.131577, 47.678581));
+            .location(GeoPoint.createWithDefaultCrs(-122.131577, 47.678581))
+            .address(
+                new HotelAddress()
+                    .streetAddress("1 Microsoft Way")
+                    .city("Redmond")
+                    .stateProvince("Washington")
+                    .postalCode("98052")
+                    .country("United States")
+            );
     }
 
     protected Document prepareDynamicallyTypedHotel() {
 
         Document room1 = new Document();
-        room1.put("Description", "Budget Room, 1 Queen Bed (Cityside)");
+        room1.put("Description", "Budget Room, 1 Queen Bed");
         room1.put("Description_fr", null);
         room1.put("Type", "Budget Room");
         room1.put("BaseRate", 149.99);
@@ -61,7 +71,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         room1.put("Tags", Arrays.asList("vcr/dvd", "great view"));
 
         Document room2 = new Document();
-        room2.put("Description", "Budget Room, 1 King Bed (Seattle)");
+        room2.put("Description", "Budget Room, 1 King Bed");
         room2.put("Description_fr", null);
         room2.put("Type", "Budget Room");
         room2.put("BaseRate", 249.99);
@@ -73,11 +83,16 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         List<Document> rooms = Arrays.asList(room1, room2);
 
         Document address = new Document();
-        address.put("StreetAddress", "");
-        address.put("City", "");
-        address.put("StateProvince", "");
-        address.put("PostalCode", "");
-        address.put("Country", "");
+        address.put("StreetAddress", "One Microsoft way");
+        address.put("City", "Redmond");
+        address.put("StateProvince", "Washington");
+        address.put("PostalCode", "98052");
+        address.put("Country", "US");
+
+        Document location = new Document();
+        location.put("type", "Point");
+        location.put("coordinates", Arrays.asList(-122.131577, 47.678581));
+        location.put("crs", null);
 
         Document hotel = new Document();
         hotel.put("HotelId", "1");
