@@ -6,6 +6,12 @@ For details on the Azure SDK for Java (September 2019 Preview) release, you can 
 - Added tracing telemetry on maximum overload API.
 - Throw `UnexpectedLengthException` when the upload body doesn't match the expected input length.
 - Added validation policy to check the equality of request client ID between request and response.
+- Updated to use service version 2019-02-02.
+- Added dependency to azure-storage-common.
+- Replaced `ByteBuf` with `ByteBuffer` and removed dependency on `Netty`.
+- Added convenience upload method to `BlockBlobClient` and `BlockBlobAsyncClient`.
+- Added rehydrate priority support.
+- Added customer provided key support.
 
 **Breaking changes: New API design**
 - Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
