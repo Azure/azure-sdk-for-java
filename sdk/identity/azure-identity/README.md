@@ -6,8 +6,9 @@ The Azure Identity library provides Azure Active Directory token authentication 
   - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
   - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
   - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
+  - Shared Token Cache credential, which shares login information with Visual Studio, Azure CLI, and more
 
-  [Source code][source] | API reference documentation (Coming Soon) | [Azure Active Directory documentation][aad_doc]
+  [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
 
 ## Table of contents
 - [Getting started](#getting-started)
@@ -16,6 +17,7 @@ The Azure Identity library provides Azure Active Directory token authentication 
     - [Creating a Service Principal with the Azure CLI](#creating-a-service-principal-with-the-azure-cli)
     - [Enable applications for device code flow](#enable-applications-for-device-code-flow)
     - [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow)
+    - [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential)
   - [Key concepts](#key-concepts)
     - [Credentials](#credentials)
   - [DefaultAzureCredential](#defaultazurecredential)
@@ -37,7 +39,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-preview.3</version>
 </dependency>
 ```
 
@@ -83,6 +85,11 @@ You may notice in `InteractiveBrowserCredentialBuilder`, a port number is requir
 ![interactive redirect uri](./images/interactive-redirecturi.png)
 
 In this case, the port number is 8765.
+
+#### Enable applications for shared token cache credential
+You will need to have Visual Studio 2019 installed. Login to Visual Studio with your org ID or live ID and you are ready to use shared token cache credential.
+
+If you see an error "MSAL V3 Deserialization failed", try clearing the cache in `C:\Users\{username}\AppData\.IdentityService`.
 
 ## Key concepts
 ### Credentials
@@ -253,5 +260,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [secrets_client_library]: ../../keyvault/azure-keyvault-secrets
 [eventhubs_client_library]: ../../eventhubs/azure-messaging-eventhubs
 [azure_core_library]: ../../core
+[javadoc]: http://azure.github.io/azure-sdk-for-java/track2reports/index.html
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/identity/azure-identity/README.png)
