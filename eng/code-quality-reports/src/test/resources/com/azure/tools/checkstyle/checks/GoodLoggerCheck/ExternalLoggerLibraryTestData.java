@@ -4,3 +4,5 @@ import org.apache.logging.log4j;
 import org.slf4j;
 import java.util.logging;
 
+public class ExternalLoggerLibraryTestData {
+}
