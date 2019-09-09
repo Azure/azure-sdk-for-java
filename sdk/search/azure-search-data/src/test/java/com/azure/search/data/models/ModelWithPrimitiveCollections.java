@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data.models;
 
+import com.azure.search.data.customization.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class ModelWithPrimitiveCollections {
     public Long[] longs;
 
     @JsonProperty(value = "Points")
-    public GeographyPoint[] points;
+    public GeoPoint[] points;
 
     @JsonProperty(value = "Strings")
     public String[] strings;
@@ -64,7 +65,7 @@ public class ModelWithPrimitiveCollections {
         return this;
     }
 
-    public ModelWithPrimitiveCollections points(GeographyPoint[] points) {
+    public ModelWithPrimitiveCollections points(GeoPoint[] points) {
         this.points = points;
         return this;
     }

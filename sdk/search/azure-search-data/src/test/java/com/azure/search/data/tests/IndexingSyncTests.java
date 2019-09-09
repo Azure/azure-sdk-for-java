@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data.tests;
 
+<<<<<<< HEAD
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.IndexAction;
@@ -13,16 +14,35 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
+=======
+import com.azure.core.exception.HttpResponseException;
+import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.customization.Document;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.IndexBatch;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
+
+import java.util.LinkedList;
+>>>>>>> master
 import java.util.List;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
+<<<<<<< HEAD
     private int year = 2000,
         month = 1,
         day = 1,
         hour = 0,
         minute = 0,
         second = 0;
+=======
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+>>>>>>> master
 
     @Override
     public void countingDocsOfNewIndexGivesZero() {
@@ -33,6 +53,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
+<<<<<<< HEAD
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
         HashMap<String, Object> expected = new HashMap<String, Object>();
         expected.put(HOTEL_ID_FIELD, HOTEL_ID);
@@ -63,6 +84,14 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     protected void indexDocuments(List<IndexAction> indexActions) {
+=======
+    public void indexWithInvalidDocumentThrowsException() {
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage("The request is invalid. Details: actions : 0: Document key cannot be missing or empty.");
+
+        List<IndexAction> indexActions = new LinkedList<>();
+        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, new Document());
+>>>>>>> master
         client.index(new IndexBatch().actions(indexActions));
     }
 

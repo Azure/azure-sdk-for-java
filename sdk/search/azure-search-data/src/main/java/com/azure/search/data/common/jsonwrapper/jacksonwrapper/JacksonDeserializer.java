@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.TimeZone;
 public class JacksonDeserializer implements JsonApi {
 
     private static final Map<Config, DeserializationFeature> CONFIG_MAP;
+
     static {
         CONFIG_MAP = new HashMap<>();
 
@@ -62,7 +65,8 @@ public class JacksonDeserializer implements JsonApi {
         module.addDeserializer(deserializer.getRawType(), new com.fasterxml.jackson.databind.JsonDeserializer() {
 
             @Override
-            public Object deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+            public Object deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                throws IOException, JsonProcessingException {
                 ObjectCodec codec = jsonParser.getCodec();
                 JsonNode node = codec.readTree(jsonParser);
                 return deserializer.deserialize(new JacksonNode(node));
@@ -74,6 +78,7 @@ public class JacksonDeserializer implements JsonApi {
 
     /**
      * read json string convert to class type
+     *
      * @param json input string
      * @param cls class type
      * @param <T> type
@@ -108,6 +113,22 @@ public class JacksonDeserializer implements JsonApi {
 
         try {
             return objectMapper.readValue(json, listTypeReference(type));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public <T> List<T> readJsonFileToList(String fileName, Type<List<T>> type) {
+        assert type.isParameterizedType();
+
+        try {
+            Reader reader = new InputStreamReader(
+                getClass().getClassLoader().getResourceAsStream(fileName));
+
+            return objectMapper.readValue(reader, listTypeReference(type));
         } catch (IOException e) {
             e.printStackTrace();
         }

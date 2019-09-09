@@ -2,15 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.search.data.tests;
 
+<<<<<<< HEAD
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.Config;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+=======
+>>>>>>> master
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import org.junit.Test;
 
+<<<<<<< HEAD
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +29,13 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected static final String LAST_RENOVATION_DATE_FIELD = "LastRenovationDate";
     protected static final String HOTEL_ID = "1";
     protected static final String LAST_RENOVATION_DATE = "2010-06-27T00:00:00Z";
+=======
+import java.util.HashMap;
+import java.util.List;
+
+public abstract class IndexingTestBase extends SearchIndexClientTestBase {
+    protected static final String INDEX_NAME = "hotels";
+>>>>>>> master
 
     @Override
     protected void beforeTest() {
@@ -32,6 +43,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         initializeClient();
     }
 
+<<<<<<< HEAD
     protected <T> void uploadDocuments(T uploadDoc) throws Exception {
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -48,10 +60,13 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         Thread.sleep(2000);
     }
 
+=======
+>>>>>>> master
     @Test
     public abstract void countingDocsOfNewIndexGivesZero();
 
     @Test
+<<<<<<< HEAD
     public abstract void dynamicDocumentDateTimesRoundTripAsUtc() throws ParseException, Exception;
 
     @Test
@@ -60,4 +75,15 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected abstract void indexDocuments(List<IndexAction> indexActions);
 
     protected abstract void initializeClient();
+=======
+    public abstract void indexWithInvalidDocumentThrowsException();
+
+    protected abstract void initializeClient();
+
+    protected void addDocumentToIndexActions(List<IndexAction> indexActions, IndexActionType indexActionType, HashMap<String, Object> document) {
+        indexActions.add(new IndexAction()
+            .actionType(indexActionType)
+            .additionalProperties(document));
+    }
+>>>>>>> master
 }
