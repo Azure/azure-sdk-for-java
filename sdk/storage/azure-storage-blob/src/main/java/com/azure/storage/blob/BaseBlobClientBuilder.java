@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
