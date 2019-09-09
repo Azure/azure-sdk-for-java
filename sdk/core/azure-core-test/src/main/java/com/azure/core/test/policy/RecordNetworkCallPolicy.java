@@ -4,6 +4,7 @@
 package com.azure.core.test.policy;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -40,6 +41,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_ENCODING = "Content-Encoding";
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
+    private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
     private static final String X_MS_VERSION = "x-ms-version";
     private static final String USER_AGENT = "User-Agent";
     private static final String STATUS_CODE = "StatusCode";
@@ -68,17 +70,17 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
         Map<String, String> headers = new HashMap<>();
 
-        if (context.httpRequest().headers().value(X_MS_CLIENT_REQUEST_ID) != null) {
-            headers.put(X_MS_CLIENT_REQUEST_ID, context.httpRequest().headers().value(X_MS_CLIENT_REQUEST_ID));
-        }
-        if (context.httpRequest().headers().value(CONTENT_TYPE) != null) {
-            headers.put(CONTENT_TYPE, context.httpRequest().headers().value(CONTENT_TYPE));
-        }
-        if (context.httpRequest().headers().value(X_MS_VERSION) != null) {
-            headers.put(X_MS_VERSION, context.httpRequest().headers().value(X_MS_VERSION));
-        }
-        if (context.httpRequest().headers().value(USER_AGENT) != null) {
-            headers.put(USER_AGENT, context.httpRequest().headers().value(USER_AGENT));
+        captureRequestHeaders(context.httpRequest().headers(), headers,
+            X_MS_CLIENT_REQUEST_ID,
+            CONTENT_TYPE,
+            X_MS_VERSION,
+            USER_AGENT);
+
+        /* The encryption key is sensitive information so capture it with a hidden value. This value will be replaced
+         * with the request value during playback.
+         */
+        if (context.httpRequest().headers().value(X_MS_ENCRYPTION_KEY_SHA256) != null) {
+            headers.put(X_MS_ENCRYPTION_KEY_SHA256, "REDACTED");
         }
 
         networkCallRecord.headers(headers);
@@ -114,6 +116,15 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return bufferedResponse;
                 });
             });
+    }
+
+    private void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
+        String... headerNames) {
+        for (String headerName : headerNames) {
+            if (requestHeaders.value(headerName) != null) {
+                captureHeaders.put(headerName, requestHeaders.value(headerName));
+            }
+        }
     }
 
     private Mono<Map<String, String>> extractResponseData(final HttpResponse response) {

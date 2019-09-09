@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class PlaybackClient implements HttpClient {
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
+    private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
     private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
@@ -77,6 +78,9 @@ public final class PlaybackClient implements HttpClient {
         // Overwrite the request header if any.
         if (networkCallRecord.headers().containsKey(X_MS_CLIENT_REQUEST_ID)) {
             request.header(X_MS_CLIENT_REQUEST_ID, networkCallRecord.headers().get(X_MS_CLIENT_REQUEST_ID));
+        }
+        if (networkCallRecord.headers().containsKey(X_MS_ENCRYPTION_KEY_SHA256)) {
+            request.header(X_MS_ENCRYPTION_KEY_SHA256, networkCallRecord.headers().get(X_MS_ENCRYPTION_KEY_SHA256));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
