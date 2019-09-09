@@ -14,10 +14,13 @@ import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
 import java.time.Duration;
+import com.azure.storage.file.models.NtfsFileAttributes;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 /**
@@ -101,15 +104,18 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createWithResponse(Map, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createWithResponse(FileSmbProperties, String, Map,
+     * Duration, Context)}
      */
     public void createWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#map-duration-context
-        Response<DirectoryInfo> response = directoryClient.createWithResponse(
+        // BEGIN: com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-duration-context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<DirectoryInfo> response = directoryClient.createWithResponse(smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the directory with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createWithResponse#map-duration-context
+        // END: com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-duration-context
     }
 
     /**
@@ -124,16 +130,18 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String, Map,
-     * Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String, FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createSubDirectoryMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-duration-context
+        // BEGIN: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-duration-context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
         Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir",
-            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
+            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-map-duration-context
+        // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-duration-context
     }
 
     /**
@@ -148,18 +156,29 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders,
-     * Map, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-duration-context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
+        // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .fileContentType("text/html")
+            .fileContentEncoding("gzip")
+            .fileContentLanguage("en")
+            .fileCacheControl("no-transform")
+            .fileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .fileCreationTime(OffsetDateTime.now())
+            .fileLastWriteTime(OffsetDateTime.now())
+            .filePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
-            httpHeaders, Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1),
-            new Context(key1, value1));
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the file with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map-duration-context
+        // END: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
     }
 
     /**
@@ -278,6 +297,33 @@ public class DirectoryJavaDocCodeSamples {
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
         // END: com.azure.storage.file.directoryClient.getPropertiesWithResponse#duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#setProperties(FileSmbProperties, String)}
+     */
+    public void setProperties() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        DirectoryInfo response = directoryClient.setProperties(smbProperties, filePermission);
+        System.out.printf("Directory latest modified date is %s.", response.lastModified());
+        // END: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#setPropertiesWithResponse(FileSmbProperties, String, Duration, Context)}
+     */
+    public void setPropertiesWithResponse() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<DirectoryInfo> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-duration-Context
     }
 
     /**

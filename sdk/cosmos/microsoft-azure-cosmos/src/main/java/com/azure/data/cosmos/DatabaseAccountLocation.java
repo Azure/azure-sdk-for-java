@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.cosmos.internal;
+package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.JsonSerializable;
+import com.azure.data.cosmos.internal.Constants;
 
 import static com.azure.data.cosmos.BridgeInternal.setProperty;
 
@@ -35,7 +36,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @return the name of the database account location.
      */
-    public String getName() {
+    public String name() {
         return super.getString(Constants.Properties.Name);
     }
 
@@ -44,7 +45,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @param name the name of the database account location.
      */
-    public void setName(String name) {
+    void setName(String name) {
         setProperty(this, Constants.Properties.Name, name);
     }
 
@@ -53,7 +54,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @return the endpoint of the database account location.
      */
-    public String getEndpoint() {
+    public String endpoint() {
         return super.getString(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT);
     }
 
@@ -62,7 +63,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @param endpoint the endpoint of the database account location.
      */
-    public void setEndpoint(String endpoint) {
+    void setEndpoint(String endpoint) {
         setProperty(this, Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
     }
 }

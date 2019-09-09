@@ -24,6 +24,7 @@ import com.azure.storage.file.models.DirectorysCreateResponse;
 import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
@@ -45,6 +46,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
@@ -146,7 +148,7 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public Mono<DirectoryInfo> create() {
-        return createWithResponse(null).flatMap(FluxUtil::toMono);
+        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -156,28 +158,39 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createWithResponse#Map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
-    public Mono<Response<DirectoryInfo>> createWithResponse(Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(metadata, context));
+    public Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata) {
+        return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<DirectoryInfo>> createWithResponse(Map<String, String> metadata, Context context) {
-        // TODO (alzimmer): These properties are dummy defaults to allow the new service version to be used. Remove these and use correct defaults when known (https://github.com/Azure/azure-sdk-for-java/issues/5039)
-        String fileAttributes = "None";
-        String filePermission = "inherit";
-        String fileCreationTime = "now";
-        String fileLastWriteTime = "now";
-        return postProcessResponse(azureFileStorageClient.directorys().
-            createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
-                null, metadata, filePermission, null, context))
+    Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, Context context) {
+        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        filePermission = properties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = properties.filePermissionKey();
+
+        String fileAttributes = properties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = properties.fileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+
+        return postProcessResponse(azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes,
+            fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, context))
             .map(this::createWithRestResponse);
     }
 
@@ -267,6 +280,70 @@ public class DirectoryAsyncClient {
         return postProcessResponse(azureFileStorageClient.directorys()
             .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null, context))
             .map(this::getPropertiesResponse);
+    }
+
+    /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @return The storage directory SMB properties
+     */
+    public Mono<DirectoryInfo> setProperties(FileSmbProperties smbProperties, String filePermission) {
+        return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets the properties of this directory.
+     * The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    public Mono<Response<DirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission) {
+        return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, Context.NONE));
+    }
+
+    Mono<Response<DirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
+        Context context) {
+
+        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        filePermission = properties.filePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = properties.filePermissionKey();
+
+        String fileAttributes = properties.ntfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = properties.fileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.PRESERVE);
+
+        return postProcessResponse(azureFileStorageClient.directorys()
+            .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
+                fileLastWriteTime, null, filePermission, filePermissionKey, context)
+            .map(this::setPropertiesResponse));
     }
 
     /**
@@ -503,7 +580,7 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null).flatMap(FluxUtil::toMono);
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -513,23 +590,28 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subDirectoryName Name of the subdirectory
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
-    public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata) {
-        return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, metadata, context));
+    public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
+            metadata, context));
     }
 
-    Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName, Map<String, String> metadata, Context context) {
+    Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient createSubClient = getSubDirectoryClient(subDirectoryName);
-        return postProcessResponse(createSubClient.createWithResponse(metadata, context))
+        return postProcessResponse(createSubClient.createWithResponse(smbProperties, filePermission, metadata, context))
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 
@@ -596,7 +678,7 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -606,26 +688,31 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-fileHTTPHeaders-map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
-     * @param httpHeaders the Http headers set to the file
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
-    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, metadata, context));
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
+        FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata, Context context) {
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, metadata, context))
-            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
+        return postProcessResponse(fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission,
+            metadata, context)).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
     /**
@@ -693,9 +780,9 @@ public class DirectoryAsyncClient {
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
-
     }
 
     private Response<DirectoryProperties> getPropertiesResponse(DirectorysGetPropertiesResponse response) {
@@ -703,15 +790,22 @@ public class DirectoryAsyncClient {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime offsetDateTime = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-
-        DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted);
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
+    }
+
+    private Response<DirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
+        String eTag = response.deserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
+        return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-
         DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }

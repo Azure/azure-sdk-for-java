@@ -569,6 +569,17 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- Retry thus does not throw -->
+  <Match>
+    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  <!-- Return value not needed -->
+  <Match>
+    <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
   <!-- FlatteningSerializer defines non-transient non-serializable instance field logger,
   but logger is required for logging-->
   <Match>
