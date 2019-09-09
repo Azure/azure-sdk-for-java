@@ -32,6 +32,8 @@ import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
+import com.azure.storage.file.models.FileUploadRangeFromURLHeaders;
+import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
 import com.azure.storage.file.models.FileUploadRangeHeaders;
 import com.azure.storage.file.models.FilesCreateResponse;
 import com.azure.storage.file.models.FilesDownloadResponse;
@@ -39,6 +41,7 @@ import com.azure.storage.file.models.FilesGetPropertiesResponse;
 import com.azure.storage.file.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.models.FilesSetMetadataResponse;
 import com.azure.storage.file.models.FilesStartCopyResponse;
+import com.azure.storage.file.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
@@ -51,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -761,6 +765,68 @@ public class FileAsyncClient {
     }
 
     /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param destinationOffset Starting point of the upload range on the destination.
+     * @param sourceOffset Starting point of the upload range on the source.
+     * @param sourceURI Specifies the URL of the source file.
+     * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
+     */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
+    public Mono<FileUploadRangeFromURLInfo> uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
+        URI sourceURI) {
+        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param destinationOffset Starting point of the upload range on the destination.
+     * @param sourceOffset Starting point of the upload range on the source.
+     * @param sourceURI Specifies the URL of the source file.
+     * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
+     * and response status code.
+     */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
+    public Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length, long destinationOffset,
+        long sourceOffset, URI sourceURI) {
+        return withContext(context -> uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI,
+            context));
+    }
+
+    Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length, long destinationOffset,
+        long sourceOffset, URI sourceURI, Context context) {
+        FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
+        FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
+
+        return postProcessResponse(azureFileStorageClient.files()
+            .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
+                sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context))
+            .map(this::uploadRangeFromURLResponse);
+    }
+
+    /**
      * Clear a range of bytes to specific of a file in storage file service. Clear operations performs an in-place
      * write on the specified file.
      *
@@ -1225,6 +1291,15 @@ public class FileAsyncClient {
         Boolean isServerEncrypted = headers.isServerEncrypted();
         FileUploadInfo fileUploadInfo = new FileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
         return new SimpleResponse<>(response, fileUploadInfo);
+    }
+
+    private Response<FileUploadRangeFromURLInfo> uploadRangeFromURLResponse(final FilesUploadRangeFromURLResponse response) {
+        FileUploadRangeFromURLHeaders headers = response.deserializedHeaders();
+        String eTag = headers.eTag();
+        OffsetDateTime lastModified = headers.lastModified();
+        Boolean isServerEncrypted = headers.isServerEncrypted();
+        FileUploadRangeFromURLInfo fileUploadRangeFromURLInfo = new FileUploadRangeFromURLInfo(eTag, lastModified, isServerEncrypted);
+        return new SimpleResponse<>(response, fileUploadRangeFromURLInfo);
     }
 
     private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {

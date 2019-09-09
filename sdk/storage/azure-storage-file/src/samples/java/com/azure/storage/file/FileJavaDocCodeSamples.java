@@ -19,8 +19,11 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
+import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -335,6 +338,31 @@ public class FileJavaDocCodeSamples {
             System.out.println("Complete downloading the file.");
         }
         // END: com.azure.storage.file.fileClient.downloadToFile#string-filerange
+    }
+
+    /**
+     * Generates a code sample for using {@link FileClient#uploadRangeFromURL(long, long, long, URI)}
+     * @throws URISyntaxException when the URI is invalid
+     */
+    public void uploadFileFromURLAsync() throws URISyntaxException {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri
+        FileUploadRangeFromURLInfo response = fileClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken"));
+        System.out.println("Completed upload range from url!");
+        // END: com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri
+    }
+
+    /**
+     * Generates a code sample for using {@link FileClient#uploadRangeFromURLWithResponse(long, long, long, URI, Context)}
+     * @throws URISyntaxException when the URI is invalid
+     */
+    public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-context
+        Response<FileUploadRangeFromURLInfo> response = fileClient.uploadRangeFromURLWithResponse(6, 8, 0,
+            new URI("filewithSAStoken"), Context.NONE);
+        System.out.println("Completed upload range from url!");
+        // END: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-context
     }
 
     /**
