@@ -19,6 +19,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
  * consumer group.
@@ -49,10 +51,10 @@ public class EventHubConsumer implements Closeable {
 
     EventHubConsumer(EventHubAsyncConsumer consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRY_TIME_OUT_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "tryTimeout"));
 
         this.consumer = Objects.requireNonNull(consumer,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "consumer"));
         this.timeout = tryTimeout;
     }
 

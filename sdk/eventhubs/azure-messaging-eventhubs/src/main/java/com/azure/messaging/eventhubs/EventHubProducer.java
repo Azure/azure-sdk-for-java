@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
  * Depending on the options specified at creation, the producer may be created to allow event data to be automatically
@@ -87,9 +89,9 @@ public class EventHubProducer implements Closeable {
      */
     EventHubProducer(EventHubAsyncProducer producer, Duration tryTimeout) {
         this.producer = Objects.requireNonNull(producer,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PRODUCER_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "producer"));
         this.tryTimeout = Objects.requireNonNull(tryTimeout,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRY_TIME_OUT_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "tryTimeout"));
     }
 
     /**

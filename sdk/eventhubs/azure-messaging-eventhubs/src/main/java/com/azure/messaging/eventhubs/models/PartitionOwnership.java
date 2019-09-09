@@ -7,6 +7,8 @@ import com.azure.core.implementation.annotation.Fluent;
 
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.models.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * A model class to hold partition ownership information.
  */
@@ -40,7 +42,7 @@ public class PartitionOwnership {
      */
     public PartitionOwnership eventHubName(String eventHubName) {
         this.eventHubName = Objects.requireNonNull(eventHubName,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventHubName"));
         return this;
     }
 
@@ -61,7 +63,7 @@ public class PartitionOwnership {
      */
     public PartitionOwnership consumerGroupName(String consumerGroupName) {
         this.consumerGroupName = Objects.requireNonNull(consumerGroupName,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_NAME_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "consumerGroupName"));
         return this;
     }
 
@@ -82,7 +84,7 @@ public class PartitionOwnership {
      */
     public PartitionOwnership partitionId(String partitionId) {
         this.partitionId = Objects.requireNonNull(partitionId,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "partitionId"));
         return this;
     }
 
@@ -103,7 +105,7 @@ public class PartitionOwnership {
      */
     public PartitionOwnership ownerId(String ownerId) {
         this.ownerId = Objects.requireNonNull(ownerId,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OWNER_ID_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "ownerId"));
         return this;
     }
 

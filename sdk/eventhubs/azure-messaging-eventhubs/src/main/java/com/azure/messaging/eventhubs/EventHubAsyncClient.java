@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
 
 /**
  * An <strong>asynchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
@@ -89,13 +90,13 @@ public class EventHubAsyncClient implements Closeable {
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
                         ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "connectionOptions"));
         Objects.requireNonNull(provider,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_PROVIDER_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "provider"));
         Objects.requireNonNull(handlerProvider,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_HANDLER_PROVIDER_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "handlerProvider"));
         Objects.requireNonNull(tracerProvider,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRACER_PROVIDER_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "tracerProvider"));
 
         this.connectionOptions = connectionOptions;
         this.tracerProvider = tracerProvider;
@@ -171,7 +172,7 @@ public class EventHubAsyncClient implements Closeable {
      */
     public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
 
         final EventHubProducerOptions clonedOptions = options.clone();
 
@@ -258,20 +259,20 @@ public class EventHubAsyncClient implements Closeable {
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                                 EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_POSITION_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventPosition"));
         Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
         Objects.requireNonNull(consumerGroup,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "consumerGroup"));
         Objects.requireNonNull(partitionId,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "partitionId"));
 
         if (consumerGroup.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_EMPTY)));
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "consumerGroup")));
         } else if (partitionId.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_EMPTY)));
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "partitionId")));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -315,8 +316,7 @@ public class EventHubAsyncClient implements Closeable {
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(new AmqpException(
                     false,
-                    EventHubErrorCodeStrings.getErrorString(
-                        EventHubErrorCodeStrings.UNABLE_CLOSE_CONNECTION_TO_SERVICE),
+                    getErrorString(EventHubErrorCodeStrings.UNABLE_CLOSE_CONNECTION_TO_SERVICE),
                     exception,
                     new ErrorContext(connectionOptions.host())));
             }
@@ -357,8 +357,7 @@ public class EventHubAsyncClient implements Closeable {
                 ms);
         }
 
-        throw new IllegalArgumentException(
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NO_STARTING_POSITION_SET));
+        throw new IllegalArgumentException(getErrorString(EventHubErrorCodeStrings.NO_STARTING_POSITION_SET));
     }
 
     String eventHubName() {

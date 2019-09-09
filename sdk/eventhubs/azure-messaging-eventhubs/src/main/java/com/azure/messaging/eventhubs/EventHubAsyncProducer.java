@@ -43,6 +43,7 @@ import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.implementation.tracing.Tracer.ENTITY_PATH;
 import static com.azure.core.implementation.tracing.Tracer.HOST_NAME;
 import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
 
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
@@ -150,7 +151,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
         Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
 
         final BatchOptions clone = options.clone();
 
@@ -164,8 +165,7 @@ public class EventHubAsyncProducer implements Closeable {
 
                 if (clone.maximumSizeInBytes() > maximumLinkSize) {
                     return Mono.error(new IllegalArgumentException(String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(
-                            EventHubErrorCodeStrings.BATCH_OPTIONS_LARGER_THAN_LINK_SIZE),
+                        getErrorString(EventHubErrorCodeStrings.BATCH_OPTIONS_LARGER_THAN_LINK_SIZE),
                         clone.maximumSizeInBytes(), maximumLinkSize)));
                 }
 
@@ -193,7 +193,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(EventData event) {
         Objects.requireNonNull(event,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "event"));
 
         return send(Flux.just(event));
     }
@@ -214,9 +214,9 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(EventData event, SendOptions options) {
         Objects.requireNonNull(event,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "event"));
         Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
 
         return send(Flux.just(event), options);
     }
@@ -231,7 +231,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(Iterable<EventData> events) {
         Objects.requireNonNull(events,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "events"));
 
         return send(Flux.fromIterable(events));
     }
@@ -247,7 +247,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         Objects.requireNonNull(events,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
 
         return send(Flux.fromIterable(events), options);
     }
@@ -261,7 +261,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(Flux<EventData> events) {
         Objects.requireNonNull(events,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "events"));
 
         return send(events, DEFAULT_SEND_OPTIONS);
     }
@@ -276,9 +276,9 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(Flux<EventData> events, SendOptions options) {
         Objects.requireNonNull(events,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "events"));
         Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
 
         return sendInternal(events, options);
     }
@@ -294,7 +294,7 @@ public class EventHubAsyncProducer implements Closeable {
      */
     public Mono<Void> send(EventDataBatch batch) {
         Objects.requireNonNull(batch,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.BATCH_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "batch"));
 
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
@@ -416,7 +416,7 @@ public class EventHubAsyncProducer implements Closeable {
                 senderOptions.partitionId())));
         } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_KEY_EXCEEDS_MAX_LENGTH),
+                getErrorString(EventHubErrorCodeStrings.PARTITION_KEY_EXCEEDS_MAX_LENGTH),
                 partitionKey,
                 MAX_PARTITION_KEY_LENGTH)));
         }
@@ -478,8 +478,8 @@ public class EventHubAsyncProducer implements Closeable {
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
                     final String message = String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(
-                            EventHubErrorCodeStrings.EVENT_DATA_EXCEEDS_MAX_NUM_BATCHES), maxNumberOfBatches);
+                        getErrorString(EventHubErrorCodeStrings.EVENT_DATA_EXCEEDS_MAX_NUM_BATCHES),
+                        maxNumberOfBatches);
 
                     throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                         contextProvider.getErrorContext());

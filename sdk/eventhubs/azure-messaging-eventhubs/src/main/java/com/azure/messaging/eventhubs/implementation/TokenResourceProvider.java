@@ -8,6 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Generates the correct resource scope to access Event Hubs resources given the authorization type.
  */
@@ -35,7 +37,7 @@ class TokenResourceProvider {
                 return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.UNSUPPORTED_AUTHORIZATION_TYPE), authorizationType)));
+                    getErrorString(EventHubErrorCodeStrings.UNSUPPORTED_AUTHORIZATION_TYPE), authorizationType)));
         }
     }
 }

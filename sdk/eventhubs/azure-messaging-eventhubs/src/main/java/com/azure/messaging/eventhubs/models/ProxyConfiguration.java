@@ -12,6 +12,8 @@ import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.models.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Properties for configuring proxies with Event Hubs.
  *
@@ -60,7 +62,7 @@ public class ProxyConfiguration implements AutoCloseable {
      */
     public ProxyConfiguration(ProxyAuthenticationType authentication, Proxy proxyAddress, String username, String password) {
         this.authentication = Objects.requireNonNull(authentication,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.AUTHENTICATION_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "authentication"));
         this.proxyAddress = proxyAddress;
 
         if (username != null && password != null) {

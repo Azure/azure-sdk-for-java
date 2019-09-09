@@ -34,6 +34,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link
  * EventHubClient}. Calling {@link #buildAsyncClient() buildAsyncClient()} or {@link #buildClient() buildClient()}
@@ -122,9 +124,7 @@ public class EventHubClientBuilder {
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(
                 new AzureException(
-                    EventHubErrorCodeStrings.getErrorString(
-                        EventHubErrorCodeStrings.CANNOT_CREATE_EVENTHUB_SAS_KEY_CREDENTIAL),
-                    e));
+                    getErrorString(EventHubErrorCodeStrings.CANNOT_CREATE_EVENTHUB_SAS_KEY_CREDENTIAL), e));
         }
 
         return credential(properties.endpoint().getHost(), properties.eventHubName(), tokenCredential);
@@ -147,18 +147,16 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder connectionString(String connectionString, String eventHubName) {
         Objects.requireNonNull(connectionString,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_STRING_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "connectionString"));
         Objects.requireNonNull(eventHubName,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventHubName"));
 
         if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_STRING_CANNOT_EMPTY)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "connectionString")));
         } else if (eventHubName.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_EMPTY)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "eventHubName")));
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -168,7 +166,7 @@ public class EventHubClientBuilder {
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(
-                new AzureException(EventHubErrorCodeStrings.getErrorString(
+                new AzureException(getErrorString(
                     EventHubErrorCodeStrings.CANNOT_CREATE_EVENTHUB_SAS_KEY_CREDENTIAL), e));
         }
 
@@ -211,18 +209,18 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder credential(String host, String eventHubName, TokenCredential credential) {
         this.host = Objects.requireNonNull(host,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.HOST_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "host"));
         this.credentials = Objects.requireNonNull(credential,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CREDENTIAL_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "credential"));
         this.eventHubName = Objects.requireNonNull(eventHubName,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventHubName"));
 
         if (ImplUtils.isNullOrEmpty(host)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.HOST_CANNOT_EMPTY)));
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "host")));
         } else if (ImplUtils.isNullOrEmpty(eventHubName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_EMPTY)));
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "eventHubName")));
         }
 
         return this;
@@ -369,8 +367,7 @@ public class EventHubClientBuilder {
         if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
             && transport != TransportType.AMQP_WEB_SOCKETS) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(
-                        EventHubErrorCodeStrings.CANNOT_USE_PROXY_FOR_AMQP_TRANSPORT_TYPE)));
+                    getErrorString(EventHubErrorCodeStrings.CANNOT_USE_PROXY_FOR_AMQP_TRANSPORT_TYPE)));
         }
 
         if (proxyConfiguration == null) {
@@ -404,7 +401,7 @@ public class EventHubClientBuilder {
         final String[] hostPort = proxyAddress.split(":");
         if (hostPort.length < 2) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.HTTP_PROXY_CANNOT_PARSED_TO_PROXY)));
+                getErrorString(EventHubErrorCodeStrings.HTTP_PROXY_CANNOT_PARSED_TO_PROXY)));
         }
 
         final String host = hostPort[0];

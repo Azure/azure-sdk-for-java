@@ -18,6 +18,8 @@ import java.time.Duration;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread.
  * {@link Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead.
@@ -91,7 +93,7 @@ public final class ReactorDispatcher {
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
             throw logger.logExceptionAsError(new RejectedExecutionException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.REACTOR_DISPATCHER_CLOSED)));
+                getErrorString(EventHubErrorCodeStrings.REACTOR_DISPATCHER_CLOSED)));
         }
     }
 

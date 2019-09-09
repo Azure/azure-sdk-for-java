@@ -15,6 +15,8 @@ import org.apache.qpid.proton.reactor.Reactor;
 import java.time.Duration;
 import java.util.Locale;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Provides handlers for the various types of links.
  */
@@ -49,7 +51,7 @@ public class ReactorHandlerProvider {
             default:
                 throw logger.logExceptionAsWarning(new IllegalArgumentException(
                     String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.TRANSPORT_TYPE_NOT_SUPPORTED),
+                        getErrorString(EventHubErrorCodeStrings.TRANSPORT_TYPE_NOT_SUPPORTED),
                         transportType)));
         }
     }

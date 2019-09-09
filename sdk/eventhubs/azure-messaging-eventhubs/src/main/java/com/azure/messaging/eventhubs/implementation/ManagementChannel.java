@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
  * include another partition, increasing quotas, etc.
@@ -133,15 +135,13 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
             return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
                 if (!(message.getBody() instanceof AmqpValue)) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.MESSAGE_BODY_EXPECT_AMQP_VALUE)
-                            + message.getBody()));
+                        getErrorString(EventHubErrorCodeStrings.MESSAGE_BODY_EXPECT_AMQP_VALUE) + message.getBody()));
                 }
 
                 AmqpValue body = (AmqpValue) message.getBody();
                 if (!(body.getValue() instanceof Map)) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
-                        EventHubErrorCodeStrings.getErrorString(
-                            EventHubErrorCodeStrings.MESSAGE_BODY_VALUE_EXPECT_MAP_TYPE)));
+                        getErrorString(EventHubErrorCodeStrings.MESSAGE_BODY_VALUE_EXPECT_MAP_TYPE)));
                 }
 
                 Map<?, ?> map = (Map<?, ?>) body.getValue();

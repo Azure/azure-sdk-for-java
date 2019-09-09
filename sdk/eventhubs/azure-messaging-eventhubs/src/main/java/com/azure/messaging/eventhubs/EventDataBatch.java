@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * A class for aggregating EventData into a single, size-limited, batch. It is treated as a single message when sent to
  * the Azure Event Hubs service.
@@ -83,7 +85,7 @@ public final class EventDataBatch {
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_DATA_CANNOT_NULL)));
+                    String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventData")));
         }
 
         final int size;
@@ -93,7 +95,7 @@ public final class EventDataBatch {
             throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(
                     Locale.US,
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
+                    getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
                     maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
         }
@@ -120,7 +122,7 @@ public final class EventDataBatch {
 
     private int getSize(final EventData eventData, final boolean isFirst) {
         Objects.requireNonNull(eventData,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENT_DATA_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventData"));
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
@@ -201,8 +203,7 @@ public final class EventDataBatch {
                         default:
                             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                                     String.format(Locale.US,
-                                        EventHubErrorCodeStrings.getErrorString(
-                                            EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
+                                        getErrorString(EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
                                         key)));
                     }
                 } else {

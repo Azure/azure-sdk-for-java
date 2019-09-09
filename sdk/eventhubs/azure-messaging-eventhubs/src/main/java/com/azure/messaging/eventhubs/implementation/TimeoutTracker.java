@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs.implementation;
 import java.time.Duration;
 import java.time.Instant;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 class TimeoutTracker {
     private final Duration originalTimeout;
     private boolean isTimerStarted;
@@ -20,8 +22,7 @@ class TimeoutTracker {
      */
     TimeoutTracker(Duration timeout, boolean startTrackingTimeout) {
         if (timeout.compareTo(Duration.ZERO) < 0) {
-            throw new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.NON_NEGATIVE_TIMEOUT));
+            throw new IllegalArgumentException(getErrorString(EventHubErrorCodeStrings.NON_NEGATIVE_TIMEOUT));
         }
 
         this.originalTimeout = timeout;

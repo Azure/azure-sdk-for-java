@@ -15,39 +15,9 @@ class EventHubErrorCodeStrings {
     private static Properties errorStrings;
 
     /**
-     * The value of {@code authentication} key is null
+     * The property cannot be null.
      */
-    static final String AUTHENTICATION_CANNOT_NULL = "null_authentication";
-
-    /**
-     * The value of {@code consumerGroup} key is null
-     */
-    static final String CONSUMER_GROUP_CANNOT_NULL = "null_consumer_group";
-
-    /**
-     * The value of {@code consumerGroupName} key is null
-     */
-    static final String CONSUMER_GROUP_NAME_CANNOT_NULL = "null_consumer_group_name";
-
-    /**
-     * The value of {@code eventHubName} key is null
-     */
-    static final String EVENTHUB_NAME_CANNOT_NULL = "null_eventhub_name";
-
-    /**
-     * The value of {@code ownerId} key is null
-     */
-    static final String OWNER_ID_CANNOT_NULL = "null_owner_id";
-
-    /**
-     * The value of {@code partitionId} key is null
-     */
-    static final String PARTITION_ID_CANNOT_NULL = "null_partition_id";
-
-    /**
-     * The value of {@code partitionManager} key is null
-     */
-    static final String PARTITION_MANAGER_CANNOT_NULL = "null_partition_manager";
+    static final String CANNOT_BE_NULL = "cannot_be_null_error_message";
 
     /**
      *  Gets the error String for the specified property.
@@ -62,7 +32,7 @@ class EventHubErrorCodeStrings {
 
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
-            try (InputStream fileInputStream = EventHubErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+            try (InputStream fileInputStream = EventHubErrorCodeStrings.class.getClassLoader().getResource(ERROR_STRINGS_FILE_NAME).openStream()) {
                 errorStrings = new Properties();
                 errorStrings.load(fileInputStream);
             } catch (IOException ex) {

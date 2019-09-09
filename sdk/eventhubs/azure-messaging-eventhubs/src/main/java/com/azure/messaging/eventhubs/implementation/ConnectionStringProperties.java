@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * The set of properties that comprise a connection string from the Azure portal.
  */
@@ -38,10 +40,10 @@ public class ConnectionStringProperties {
      */
     public ConnectionStringProperties(String connectionString) {
         Objects.requireNonNull(connectionString,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_STRING_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "connectionString"));
         if (connectionString.isEmpty()) {
             throw new IllegalArgumentException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_STRING_CANNOT_EMPTY));
+                String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_EMPTY), "connectionString"));
         }
 
         final String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);
@@ -55,8 +57,7 @@ public class ConnectionStringProperties {
             if (pair.length != 2) {
                 throw new IllegalArgumentException(String.format(
                     Locale.US,
-                    EventHubErrorCodeStrings.getErrorString(
-                        EventHubErrorCodeStrings.CONNECTION_STRING_HAS_INVALID_KV_PAIR),
+                    getErrorString(EventHubErrorCodeStrings.CONNECTION_STRING_HAS_INVALID_KV_PAIR),
                     tokenValuePair));
             }
 
@@ -70,7 +71,7 @@ public class ConnectionStringProperties {
                     throw new IllegalArgumentException(
                         String.format(
                             Locale.US,
-                            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INVALID_ENDPOINT_MSG),
+                            getErrorString(EventHubErrorCodeStrings.INVALID_ENDPOINT_MSG),
                             tokenValuePair),
                         e);
                 }
@@ -79,7 +80,7 @@ public class ConnectionStringProperties {
                     throw new IllegalArgumentException(
                         String.format(
                             Locale.US,
-                            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INCORRECT_SCHEME_ENDPOINT),
+                            getErrorString(EventHubErrorCodeStrings.INCORRECT_SCHEME_ENDPOINT),
                             SCHEME,
                             endpoint.toString()));
                 }
@@ -93,8 +94,7 @@ public class ConnectionStringProperties {
                 throw new IllegalArgumentException(
                     String.format(
                         Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(
-                            EventHubErrorCodeStrings.ILLEGAL_CONNECTION_STRING_PARAMS),
+                        getErrorString(EventHubErrorCodeStrings.ILLEGAL_CONNECTION_STRING_PARAMS),
                         key));
             }
         }

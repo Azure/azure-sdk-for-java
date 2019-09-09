@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class RequestResponseChannel implements Closeable {
@@ -107,17 +108,15 @@ class RequestResponseChannel implements Closeable {
         if (message == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.MESSAGE_CANNOT_NULL)));
+                    String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "message")));
         }
         if (message.getMessageId() != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.MESSAGE_ID_SHOULD_BE_NULL)));
+                new IllegalArgumentException(getErrorString(EventHubErrorCodeStrings.MESSAGE_ID_SHOULD_BE_NULL)));
         }
         if (message.getReplyTo() != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.MESSAGE_REPLY_TO_SHOULD_BE_NULL)));
+                new IllegalArgumentException(getErrorString(EventHubErrorCodeStrings.MESSAGE_REPLY_TO_SHOULD_BE_NULL)));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());

@@ -21,6 +21,8 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Manages the re-authorization of the client to the token audience against the CBS node.
  */
@@ -70,7 +72,7 @@ class ActiveClientTokenManager implements Closeable {
     Mono<Long> authorize() {
         if (hasDisposed.get()) {
             return Mono.error(new AzureException(
-                EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CANNOT_AUTHORIZE_CBS)));
+                getErrorString(EventHubErrorCodeStrings.CANNOT_AUTHORIZE_CBS)));
         }
 
         return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))

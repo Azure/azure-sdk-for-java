@@ -19,6 +19,8 @@ import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
  * of a consumer group. Event Processor-based application consists of one or more instances of EventProcessor(s) which
@@ -61,13 +63,13 @@ public class EventProcessor {
         PartitionManager partitionManager, TracerProvider tracerProvider) {
 
         Objects.requireNonNull(eventHubAsyncClient,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_ASYNC_CLIENT_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventHubAsyncClient"));
         Objects.requireNonNull(consumerGroup,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "consumerGroup"));
         Objects.requireNonNull(partitionProcessorFactory,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_PROCESSOR_FACTORY_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "partitionProcessorFactory"));
         Objects.requireNonNull(initialEventPosition,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.INITIAL_EVENT_POSITION_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "initialEventPosition"));
 
         this.partitionManager = partitionManager == null ? findPartitionManager() : partitionManager;
         this.identifier = UUID.randomUUID().toString();

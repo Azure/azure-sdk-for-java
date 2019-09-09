@@ -17,6 +17,8 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * A <strong>synchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
  * specific Event Hub and allows operations for sending event data, receiving data, and inspecting the Event Hub's
@@ -45,10 +47,10 @@ public class EventHubClient implements Closeable {
 
     EventHubClient(EventHubAsyncClient client, ConnectionOptions connectionOptions) {
         Objects.requireNonNull(connectionOptions,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONNECTION_OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "connectionOptions"));
 
         this.client = Objects.requireNonNull(client,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CLIENT_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "client"));
         this.retry = connectionOptions.retry();
         this.defaultProducerOptions = new EventHubProducerOptions()
             .retry(connectionOptions.retry());
@@ -111,7 +113,7 @@ public class EventHubClient implements Closeable {
      */
     public EventHubProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OPTIONS_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "options"));
 
         final EventHubAsyncProducer producer = client.createProducer(options);
 

@@ -12,6 +12,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Mono;
 
+import static com.azure.messaging.eventhubs.models.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * A model class to contain partition information that will be provided to each instance of {@link PartitionProcessor}.
  */
@@ -40,16 +42,16 @@ public class PartitionContext {
     public PartitionContext(String partitionId, String eventHubName, String consumerGroup,
         String ownerId, String eTag, PartitionManager partitionManager) {
         this.partitionId = Objects.requireNonNull(partitionId,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_ID_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "partitionId"));
         this.eventHubName = Objects.requireNonNull(eventHubName,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.EVENTHUB_NAME_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "eventHubName"));
         this.consumerGroup = Objects.requireNonNull(consumerGroup,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.CONSUMER_GROUP_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "consumerGroup"));
         this.ownerId = Objects.requireNonNull(ownerId,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.OWNER_ID_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "ownerId"));
         this.eTag = new AtomicReference<>(eTag);
         this.partitionManager = Objects.requireNonNull(partitionManager,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PARTITION_MANAGER_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "partitionManager"));
     }
 
     /**

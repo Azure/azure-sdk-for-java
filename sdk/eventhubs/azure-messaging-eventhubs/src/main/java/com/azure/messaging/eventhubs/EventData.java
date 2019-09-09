@@ -27,6 +27,7 @@ import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubErrorCodeStrings.getErrorString;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -138,7 +139,7 @@ public class EventData implements Comparable<EventData> {
      */
     EventData(Message message) {
         Objects.requireNonNull(message,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.MESSAGE_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "message"));
 
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
         final HashMap<String, Object> receiveProperties = new HashMap<>();
@@ -206,9 +207,9 @@ public class EventData implements Comparable<EventData> {
      */
     public EventData addProperty(String key, Object value) {
         Objects.requireNonNull(key,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PROPERTY_KEY_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "key"));
         Objects.requireNonNull(value,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PROPERTY_VALUE_CANNOT_NULL));
+            String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "value"));
 
         properties.put(key, value);
         return this;

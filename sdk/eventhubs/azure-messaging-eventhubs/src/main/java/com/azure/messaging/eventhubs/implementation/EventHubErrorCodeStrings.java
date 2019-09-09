@@ -15,19 +15,19 @@ class EventHubErrorCodeStrings {
     private static Properties errorStrings;
 
     /**
+     * The property cannot be null.
+     */
+    static final String CANNOT_BE_NULL = "cannot_be_null_error_message";
+
+    /**
+     * The property cannot be empty.
+     */
+    static final String CANNOT_BE_EMPTY = "cannot_be_empty_error_message";
+
+    /**
      * Cannot authorize with CBS node when this token manager has been disposed of.
      */
     static final String CANNOT_AUTHORIZE_CBS = "cannot_authorize_cbs";
-
-    /**
-     * 'connectionString' cannot be an empty string.
-     */
-    static final String CONNECTION_STRING_CANNOT_EMPTY = "empty_connection_string";
-
-    /**
-     * The value of {@code connectionString} key is null
-     */
-    static final String CONNECTION_STRING_CANNOT_NULL = "null_connection_string";
 
     /**
      * Connection string has invalid key value pair
@@ -90,11 +90,6 @@ class EventHubErrorCodeStrings {
     static final String MESSAGE_BODY_VALUE_EXPECT_MAP_TYPE = "message_body_value_expect_map_type";
 
     /**
-     * The value of {@code message} key is null
-     */
-    static final String MESSAGE_CANNOT_NULL = "null_message";
-
-    /**
      * The message.getMessageId() should be null
      */
     static final String MESSAGE_ID_SHOULD_BE_NULL = "message_id_should_be_null";
@@ -152,7 +147,7 @@ class EventHubErrorCodeStrings {
 
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
-            try (InputStream fileInputStream = EventHubErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
+            try (InputStream fileInputStream = EventHubErrorCodeStrings.class.getClassLoader().getResource(ERROR_STRINGS_FILE_NAME).openStream()) {
                 errorStrings = new Properties();
                 errorStrings.load(fileInputStream);
             } catch (IOException ex) {

@@ -15,6 +15,8 @@ import org.apache.qpid.proton.reactor.ReactorOptions;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 public class ReactorProvider {
     private final ClientLogger logger = new ClientLogger(ReactorProvider.class);
     private final Object lock = new Object();
@@ -60,8 +62,8 @@ public class ReactorProvider {
         Objects.requireNonNull(globalHandler);
 
         if (maxFrameSize <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(EventHubErrorCodeStrings.getErrorString(
-                    EventHubErrorCodeStrings.MAX_FRAME_SIZE_REQUIRE_POSITIVE_NUM)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                getErrorString(EventHubErrorCodeStrings.MAX_FRAME_SIZE_REQUIRE_POSITIVE_NUM)));
         }
 
         final ReactorOptions reactorOptions = new ReactorOptions();

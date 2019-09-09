@@ -48,6 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.eventhubs.implementation.EventDataUtil.getDataSerializedSize;
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -142,7 +143,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         } catch (BufferOverflowException exception) {
             final String errorMessage =
                 String.format(Locale.US,
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
+                    getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
                     maxMessageSize / 1024);
             final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
                 exception, handler.getErrorContext(sender));
@@ -188,7 +189,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
             } catch (BufferOverflowException exception) {
                 final String message = String.format(Locale.US,
-                    EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
+                    getErrorString(EventHubErrorCodeStrings.PAYLOAD_EXCEEDED_MAX_SIZE),
                     maxMessageSizeTemp / 1024);
                 final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                     exception, handler.getErrorContext(sender));
@@ -348,10 +349,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 final ErrorContext context = handler.getErrorContext(sender);
                 final Throwable exception = sendException != null
                     ? new OperationCancelledException(String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_FAILED),
+                        getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_FAILED),
                         entityPath), sendException, context)
                     : new OperationCancelledException(String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_FAILED_DELIVERY),
+                        getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_FAILED_DELIVERY),
                         entityPath, deliveryTag), context);
 
                 workItem.sink().error(exception);
@@ -409,10 +410,12 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     exception.initCause(schedulerException);
                     cleanupFailedSend(
                         workItem,
-                        new AmqpException(false,
-                            String.format(Locale.US, EventHubErrorCodeStrings.getErrorString(
-                                EventHubErrorCodeStrings.ENTITY_SEND_FAILED_SCHEDULE_RETRY), entityPath),
-                            schedulerException, handler.getErrorContext(sender)));
+                        new AmqpException(
+                            false,
+                            String.format(Locale.US,
+                                getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_FAILED_SCHEDULE_RETRY), entityPath),
+                            schedulerException,
+                            handler.getErrorContext(sender)));
                 }
             }
         } else if (outcome instanceof Released) {
@@ -515,7 +518,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             } else {
                 exception = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR,
                     String.format(Locale.US,
-                        EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_TIMEOUT),
+                        getErrorString(EventHubErrorCodeStrings.ENTITY_SEND_TIMEOUT),
                         entityPath),
                     handler.getErrorContext(sender));
             }

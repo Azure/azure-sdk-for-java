@@ -22,6 +22,8 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 class ReactorExecutor implements Closeable {
     private static final String LOG_MESSAGE = "connectionId[{}], message[{}]";
 
@@ -99,8 +101,7 @@ class ReactorExecutor implements Closeable {
                 } catch (RejectedExecutionException exception) {
                     logger.warning(LOG_MESSAGE, connectionId,
                         StringUtil.toStackTraceString(exception,
-                            EventHubErrorCodeStrings.getErrorString(
-                                EventHubErrorCodeStrings.REACTOR_FAILED_EXECUTOR_DOWN)));
+                            getErrorString(EventHubErrorCodeStrings.REACTOR_FAILED_EXECUTOR_DOWN)));
 
                     this.reactor.attachments()
                         .set(RejectedExecutionException.class, RejectedExecutionException.class, exception);

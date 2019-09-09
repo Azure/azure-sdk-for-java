@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.messaging.eventhubs.implementation.EventHubErrorCodeStrings.getErrorString;
+
 /**
  * Utility class for converting {@link EventData} to {@link Message}.
  */
@@ -160,8 +162,7 @@ public class EventDataUtil {
                         throw new IllegalArgumentException(
                             String.format(
                                 Locale.US,
-                                EventHubErrorCodeStrings.getErrorString(
-                                    EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
+                                getErrorString(EventHubErrorCodeStrings.UNRESERVED_PROPERTY_NAME),
                                 key));
                 }
             } else {
@@ -240,7 +241,7 @@ public class EventDataUtil {
         }
 
         throw new IllegalArgumentException(String.format(Locale.US,
-            EventHubErrorCodeStrings.getErrorString(EventHubErrorCodeStrings.ENCODING_TYPE_NOT_SUPPORTED),
+            getErrorString(EventHubErrorCodeStrings.ENCODING_TYPE_NOT_SUPPORTED),
             obj.getClass()));
     }
 
