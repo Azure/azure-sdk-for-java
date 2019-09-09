@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * <p><strong>Consuming events from an Event Hub</strong></p>
  * Events can be consumed using {@link #receive(int)} or {@link #receive(int, Duration)}. The call to `.receive`
- * completes and returns an {@link IterableStream<EventData>} when either the number of events is reached, or the
+ * completes and returns an {@link IterableStream} when either the number of events is reached, or the
  * timeout duration is reached.
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration}
  *
