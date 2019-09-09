@@ -146,7 +146,7 @@ public class IssuerBase {
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 3 ? tokens[2] : null);
+                this.name = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

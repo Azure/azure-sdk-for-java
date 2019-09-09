@@ -7,6 +7,9 @@ import com.azure.security.keyvault.certificates.models.webkey.KeyType;
 
 import java.util.List;
 
+/**
+ * Represents RsaKeyOptions configuration for Certificate policy.
+ */
 public final class RSAKeyOptions extends KeyOptions {
 
     private boolean hsm;

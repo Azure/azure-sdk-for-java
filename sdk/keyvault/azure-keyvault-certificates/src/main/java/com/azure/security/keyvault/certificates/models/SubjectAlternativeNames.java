@@ -49,7 +49,7 @@ public final class SubjectAlternativeNames {
                 this.emails = sans;
                 break;
             case DNS_NAMES:
-                this.emails = sans;
+                this.dnsNames = sans;
                 break;
             case UPNS:
                 this.upns = sans;

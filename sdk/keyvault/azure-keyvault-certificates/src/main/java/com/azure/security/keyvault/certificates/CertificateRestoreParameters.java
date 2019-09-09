@@ -23,7 +23,7 @@ class CertificateRestoreParameters {
      */
     public byte[] certificateBundleBackup() {
         if (this.certificateBundleBackup == null) {
-            return null;
+            return new byte[0];
         }
         return this.certificateBundleBackup.decodedBytes();
     }

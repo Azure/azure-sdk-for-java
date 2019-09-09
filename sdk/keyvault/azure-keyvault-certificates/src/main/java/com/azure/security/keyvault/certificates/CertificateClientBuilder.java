@@ -33,28 +33,28 @@ import java.util.Objects;
  * <p> The minimal configuration options required by {@link CertificateClientBuilder} to build {@link CertificateAsyncClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.async.certificateclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link CertificateClientBuilder}.</p>
 
- * {@codesnippet com.azure.security.keyvault.certificates.async.certificateclient.withhttpclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link CertificateClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.async.certificateclient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation}
  *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build {@link CertificateClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.certificateclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.instantiation}
  *
  * @see CertificateAsyncClient
  * @see CertificateClient
  */
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
-    public final class CertificateClientBuilder {
+public final class CertificateClientBuilder {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
 
     private final List<HttpPipelinePolicy> policies;

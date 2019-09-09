@@ -238,6 +238,7 @@ interface CertificateService {
     @Put("certificates/contacts")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(ContactPage.class)
     Mono<PagedResponse<Contact>> setCertificateContacts(@HostParam("url") String url,
                                                         @QueryParam("api-version") String apiVersion,
                                                         @HeaderParam("accept-language") String acceptLanguage,
@@ -265,10 +266,9 @@ interface CertificateService {
                                                          @HeaderParam("Content-Type") String type,
                                                          Context context);
 
-    @Delete("certificates/issuers/{issuer-name}")
+    @Put("certificates/issuers/{issuer-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(ContactPage.class)
     Mono<Response<Issuer>> setCertificateIssuer(@HostParam("url") String url,
                                                      @QueryParam("api-version") String apiVersion,
                                                      @HeaderParam("accept-language") String acceptLanguage,

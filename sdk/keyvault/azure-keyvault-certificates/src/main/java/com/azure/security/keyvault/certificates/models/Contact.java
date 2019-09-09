@@ -29,23 +29,38 @@ public final class Contact {
     private String phone;
 
     /**
+     * Creates a new contact instance.
+     *
+     * @param name The name of the contact
+     * @param emailAddress The email address of the contact
+     * @param phone The phone number of the contact.
+     */
+    public Contact(String name, String emailAddress, String phone) {
+        this.name = name;
+        this.emailAddress = emailAddress;
+        this.phone = phone;
+    }
+
+    /**
+     * Creates a new contact instance.
+     *
+     * @param name The name of the contact
+     * @param emailAddress The email address of the contact
+     */
+    public Contact(String name, String emailAddress) {
+        this.name = name;
+        this.emailAddress = emailAddress;
+    }
+
+    Contact() { }
+
+    /**
      * Get the emailAddress.
      *
      * @return the emailAddress
      */
     public String emailAddress() {
         return this.emailAddress;
-    }
-
-    /**
-     * Set the emailAddress.
-     *
-     * @param emailAddress the emailAddress value to set
-     * @return the Contact object itself.
-     */
-    public Contact emailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-        return this;
     }
 
     /**
@@ -58,17 +73,6 @@ public final class Contact {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the Contact object itself.
-     */
-    public Contact name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the phone info.
      *
      * @return the phone info
@@ -76,16 +80,4 @@ public final class Contact {
     public String phone() {
         return this.phone;
     }
-
-    /**
-     * Set the phone info.
-     *
-     * @param phone the phone info to set
-     * @return the Contact object itself.
-     */
-    public Contact phone(String phone) {
-        this.phone = phone;
-        return this;
-    }
-
 }

@@ -5,9 +5,7 @@ package com.azure.security.keyvault.certificates;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 /**
  * The attributes of an issuer managed by the Key Vault service.
@@ -22,11 +20,13 @@ class IssuerAttributes {
     /**
      * Creation time in UTC.
      */
+    @JsonProperty("created")
     private OffsetDateTime created;
 
     /**
      * Last updated time in UTC.
      */
+    @JsonProperty("updated")
     private OffsetDateTime updated;
 
     /**
@@ -56,24 +56,6 @@ class IssuerAttributes {
      */
     OffsetDateTime created() {
         return created;
-    }
-
-    /**
-     * Unpacks the deletedDate json response. Converts the {@link Long created} epoch second value to OffsetDateTime and updates the
-     * value of class variable created.
-     */
-    @JsonProperty("created")
-    private void unpackCreatedDate(Long created) {
-        this.created = OffsetDateTime.ofInstant(Instant.ofEpochMilli(created * 1000L), ZoneOffset.UTC);
-    }
-
-    /**
-     * Unpacks the updated json response. Converts the {@link Long updated} epoch second value to OffsetDateTime and updates the
-     * value of class variable updated.
-     */
-    @JsonProperty("updated")
-    private void unpackUpdatedDate(Long updated) {
-        this.updated = OffsetDateTime.ofInstant(Instant.ofEpochMilli(updated * 1000L), ZoneOffset.UTC);
     }
 
     /**

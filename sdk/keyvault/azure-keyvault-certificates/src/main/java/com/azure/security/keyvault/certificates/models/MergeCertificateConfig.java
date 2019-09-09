@@ -6,6 +6,9 @@ package com.azure.security.keyvault.certificates.models;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents Merge Certificate Configuration to merge certificates in key vault.
+ */
 public class MergeCertificateConfig {
 
     /**

@@ -5,6 +5,8 @@ package com.azure.security.keyvault.certificates.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +28,17 @@ public final class Issuer extends IssuerBase {
     private String organizationId;
     private List<Administrator> administrators;
 
+    /**
+     * Creates an instance of the issuer.
+     *
+     * @param name The name of the issuer.
+     * @param provider The provider of the issuer.
+     */
     public Issuer(String name, String provider) {
         super(name, provider);
     }
+
+    Issuer() { }
 
     /**
      * Get the account id of the isssuer.
@@ -111,7 +121,22 @@ public final class Issuer extends IssuerBase {
     @JsonProperty(value = "org_details")
     @SuppressWarnings("unchecked")
     private void unpacOrganizationalDetails(Map<String, Object> orgDetails) {
-        this.administrators =  (List<Administrator>) orgDetails.get("admin_details");
+        this.administrators =  parseAdministrators((List<Object>) orgDetails.get("admin_details"));
         this.organizationId = (String) orgDetails.get("id");
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Administrator> parseAdministrators(List<Object> admins) {
+        List<Administrator> output = new ArrayList<>();
+
+        for (Object admin : admins) {
+            LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) admin;
+            String firstName = map.containsKey("first_name") ? map.get("first_name") : "";
+            String lastName = map.containsKey("last_name") ? map.get("last_name") : "";
+            String email = map.containsKey("email") ? map.get("email") : "";
+            String phone = map.containsKey("phone") ? map.get("phone") : "";
+            output.add(new Administrator(firstName, lastName, email, phone));
+        }
+        return  output;
     }
 }

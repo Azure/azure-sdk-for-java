@@ -41,17 +41,6 @@ import java.util.function.Supplier;
  * <p>The {@link Poller} will stop polling when the long-running operation is complete or it is disabled. The polling is considered complete
  * based on status defined in {@link PollResponse.OperationStatus}.
  *
- * <p><strong>Code Samples</strong></p>
- *
- * <p><strong>Instantiating and Subscribing to Poll Response</strong></p>
- * {@codesnippet Poller.instantiationAndSubscribe}
- *
- * <p><strong>Wait/Block for Polling to complete</strong></p>
- * {@codesnippet Poller.block}
- *
- * <p><strong>Disable auto polling and polling manually</strong></p>
- * {@codesnippet Poller.poll}
- *
  * @param <T> Type of poll response value
  * @see PollResponse
  * @see PollResponse.OperationStatus
@@ -91,7 +80,7 @@ public class Poller<T> {
      * This could be shared among many subscriber. One of the subscriber will be this poller itself.
      * Once subscribed, this Flux will continue to poll for status until poll operation is done/complete.
      */
-    private Flux<PollResponse<T>> fluxHandle;
+    private final Flux<PollResponse<T>> fluxHandle;
 
     /*
      * Since constructor create a subscriber and start auto polling.
@@ -114,7 +103,7 @@ public class Poller<T> {
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
-       this(pollInterval, pollOperation, null, null);
+        this(pollInterval, pollOperation, null, null);
     }
 
     /**
@@ -207,7 +196,7 @@ public class Poller<T> {
      */
     public void cancelOperation() throws UnsupportedOperationException {
         if (this.cancelOperation == null) {
-            throw new UnsupportedOperationException("Cancel operation is not supported on this service/resource.");
+            logger.logExceptionAsError(new UnsupportedOperationException("Cancel operation is not supported on this service/resource."));
         }
 
         // We can not cancel an operation if it was never started
@@ -233,12 +222,6 @@ public class Poller<T> {
     /**
      * Enable user to take control of polling and trigger manual poll operation. It will call poll operation once.
      * This will not turn off auto polling.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p><strong>Manual Polling</strong></p>
-     * <p>
-     * {@codesnippet Poller.poll.indepth}
      *
      * @return a Mono of {@link PollResponse} This will call poll operation once. The {@link Mono} returned here could be subscribed
      * for receiving {@link PollResponse} in async manner.

@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -67,7 +68,7 @@ public class Certificate extends CertificateBase {
      * @return the cer content.
      */
     public byte[] cer() {
-        return cer;
+        return ImplUtils.clone(cer);
     }
 
     /**
@@ -84,7 +85,7 @@ public class Certificate extends CertificateBase {
      * @param certificatePolicy the policy to set.
      * @return the certificate object itself.
      */
-    public Certificate certificatePolicy(CertificatePolicy certificatePolicy){
+    public Certificate certificatePolicy(CertificatePolicy certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }

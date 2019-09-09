@@ -151,4 +151,44 @@ public final class CertificateImportOptions {
     public String filePath() {
         return this.filePath;
     }
+
+    /**
+     * Get the notBefore UTC time.
+     *
+     * @return the notBefore UTC time.
+     */
+    public OffsetDateTime notBefore() {
+        return notBefore;
+    }
+
+    /**
+     * Get the Certificate Expiry time in UTC.
+     *
+     * @return the expires UTC time.
+     */
+    public OffsetDateTime expires() {
+        return this.expires;
+    }
+
+    /**
+     * Set the notBefore UTC time.
+     *
+     * @param notBefore THe notBefore UTC time.
+     * @return the notBefore UTC time.
+     */
+    public CertificateImportOptions notBefore(OffsetDateTime notBefore) {
+        this.notBefore = notBefore;
+        return this;
+    }
+
+    /**
+     * Set the Certificate Expiry time in UTC.
+     *
+     * @param expires The expires UTC time.
+     * @return the expires UTC time.
+     */
+    public CertificateImportOptions expires(OffsetDateTime expires) {
+        this.expires = expires;
+        return this;
+    }
 }

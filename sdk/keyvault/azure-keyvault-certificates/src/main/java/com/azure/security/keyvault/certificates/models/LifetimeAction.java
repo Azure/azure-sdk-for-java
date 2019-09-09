@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
+/**
+ * Represents a LifeTimeAction in {@link CertificatePolicy}
+ */
 public final class LifetimeAction {
 
     /**
