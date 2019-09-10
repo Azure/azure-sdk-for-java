@@ -97,12 +97,12 @@ public final class BlobsImpl {
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsDownloadResponse> download(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlobsDownloadResponse> download(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Head("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsGetPropertiesResponse> getProperties(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlobsGetPropertiesResponse> getProperties(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Delete("{containerName}/{blob}")
         @ExpectedResponses({202})
@@ -114,7 +114,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
         Mono<BlobsSetAccessControlResponse> setAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String posixPermissions, @HeaderParam("x-ms-acl") String posixAcl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @Patch("{filesystem}/{path}")
+        @Head("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
         Mono<BlobsGetAccessControlResponse> getAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
@@ -137,7 +137,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsSetMetadataResponse> setMetadata(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlobsSetMetadataResponse> setMetadata(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -167,7 +167,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsCreateSnapshotResponse> createSnapshot(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
+        Mono<BlobsCreateSnapshotResponse> createSnapshot(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
@@ -213,14 +213,14 @@ public final class BlobsImpl {
         final Boolean rangeGetContentCRC64 = null;
         final String requestId = null;
         final String leaseId = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.download(containerName, blob, this.client.getUrl(), snapshot, timeout, range, rangeGetContentMD5, rangeGetContentCRC64, this.client.getVersion(), requestId, leaseId, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.download(containerName, blob, this.client.getUrl(), snapshot, timeout, range, rangeGetContentMD5, rangeGetContentCRC64, this.client.getVersion(), requestId, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -247,17 +247,17 @@ public final class BlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        String xMsEncryptionKey = null;
+        String encryptionKey = null;
         if (cpkInfo != null) {
-            xMsEncryptionKey = cpkInfo.xMsEncryptionKey();
+            encryptionKey = cpkInfo.encryptionKey();
         }
-        String xMsEncryptionKeySha256 = null;
+        String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            xMsEncryptionKeySha256 = cpkInfo.xMsEncryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
         }
-        EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            xMsEncryptionAlgorithm = cpkInfo.xMsEncryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -277,7 +277,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.download(containerName, blob, this.client.getUrl(), snapshot, timeout, range, rangeGetContentMD5, rangeGetContentCRC64, this.client.getVersion(), requestId, leaseId, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.download(containerName, blob, this.client.getUrl(), snapshot, timeout, range, rangeGetContentMD5, rangeGetContentCRC64, this.client.getVersion(), requestId, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -295,14 +295,14 @@ public final class BlobsImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String leaseId = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.getProperties(containerName, blob, this.client.getUrl(), snapshot, timeout, this.client.getVersion(), requestId, leaseId, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.getProperties(containerName, blob, this.client.getUrl(), snapshot, timeout, this.client.getVersion(), requestId, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -326,17 +326,17 @@ public final class BlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        String xMsEncryptionKey = null;
+        String encryptionKey = null;
         if (cpkInfo != null) {
-            xMsEncryptionKey = cpkInfo.xMsEncryptionKey();
+            encryptionKey = cpkInfo.encryptionKey();
         }
-        String xMsEncryptionKeySha256 = null;
+        String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            xMsEncryptionKeySha256 = cpkInfo.xMsEncryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
         }
-        EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            xMsEncryptionAlgorithm = cpkInfo.xMsEncryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -356,7 +356,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getProperties(containerName, blob, this.client.getUrl(), snapshot, timeout, this.client.getVersion(), requestId, leaseId, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.getProperties(containerName, blob, this.client.getUrl(), snapshot, timeout, this.client.getVersion(), requestId, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -817,14 +817,14 @@ public final class BlobsImpl {
         final String requestId = null;
         final String comp = "metadata";
         final String leaseId = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, leaseId, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -849,17 +849,17 @@ public final class BlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        String xMsEncryptionKey = null;
+        String encryptionKey = null;
         if (cpkInfo != null) {
-            xMsEncryptionKey = cpkInfo.xMsEncryptionKey();
+            encryptionKey = cpkInfo.encryptionKey();
         }
-        String xMsEncryptionKeySha256 = null;
+        String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            xMsEncryptionKeySha256 = cpkInfo.xMsEncryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
         }
-        EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            xMsEncryptionAlgorithm = cpkInfo.xMsEncryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -879,7 +879,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, leaseId, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -1206,15 +1206,15 @@ public final class BlobsImpl {
         final Map<String, String> metadata = null;
         final String requestId = null;
         final String comp = "snapshot";
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final String leaseId = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -1235,17 +1235,17 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsCreateSnapshotResponse> createSnapshotWithRestResponseAsync(String containerName, String blob, Integer timeout, Map<String, String> metadata, String requestId, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String comp = "snapshot";
-        String xMsEncryptionKey = null;
+        String encryptionKey = null;
         if (cpkInfo != null) {
-            xMsEncryptionKey = cpkInfo.xMsEncryptionKey();
+            encryptionKey = cpkInfo.encryptionKey();
         }
-        String xMsEncryptionKeySha256 = null;
+        String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            xMsEncryptionKeySha256 = cpkInfo.xMsEncryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
         }
-        EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
+        EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            xMsEncryptionAlgorithm = cpkInfo.xMsEncryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -1269,7 +1269,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**

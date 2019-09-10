@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -65,6 +66,11 @@ public final class ContainerClient {
      * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
      * method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlockBlobClient#String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      *
      * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
@@ -79,6 +85,11 @@ public final class ContainerClient {
      * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
      * method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
      *
@@ -93,6 +104,11 @@ public final class ContainerClient {
      * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
      * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
      * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getPageBlobClient#String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      *
      * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
@@ -106,6 +122,11 @@ public final class ContainerClient {
      * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
      * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
      * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
      *
@@ -121,6 +142,11 @@ public final class ContainerClient {
      * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getAppendBlobClient#String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      *
      * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
@@ -136,6 +162,11 @@ public final class ContainerClient {
      * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
      * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
      *
@@ -153,6 +184,10 @@ public final class ContainerClient {
      * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
      * @param blobName A {@code String} representing the name of the blob.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlobClient#String}
+     *
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName) {
@@ -164,6 +199,11 @@ public final class ContainerClient {
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
      * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
      * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlobClient#String-String}
+     *
      * @param blobName A {@code String} representing the name of the blob.
      * @param snapshot the snapshot identifier for the blob.
      *
@@ -190,7 +230,21 @@ public final class ContainerClient {
     }
 
     /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return containerAsyncClient.getHttpPipeline();
+    }
+
+    /**
      * Gets if the container this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.exists}
+     *
      * @return true if the container exists, false if it doesn't
      */
     public Boolean exists() {
@@ -199,6 +253,10 @@ public final class ContainerClient {
 
     /**
      * Gets if the container this client represents exists in the cloud.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context}
+     *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -214,6 +272,11 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.create}
+     *
      */
     public void create() {
         createWithResponse(null, null, null, Context.NONE);
@@ -223,6 +286,11 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Metadata-PublicAccessType-Duration-Context}
+     *
      * @param metadata {@link Metadata}
      * @param accessType Specifies how the data in this container is available to the public. See the
      *                   x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -241,6 +309,10 @@ public final class ContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.delete}
      */
     public void delete() {
         deleteWithResponse(null, null, Context.NONE);
@@ -250,6 +322,11 @@ public final class ContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context}
+     *
      * @param accessConditions {@link ContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -265,6 +342,11 @@ public final class ContainerClient {
     /**
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getProperties}
+     *
      * @return The container properties.
      */
     public ContainerProperties getProperties() {
@@ -274,6 +356,11 @@ public final class ContainerClient {
     /**
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context}
+     *
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      *                              not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -291,6 +378,11 @@ public final class ContainerClient {
     /**
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadata#Metadata}
+     *
      * @param metadata {@link Metadata}
      *
      */
@@ -301,6 +393,11 @@ public final class ContainerClient {
     /**
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context}
+     *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link ContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -319,6 +416,11 @@ public final class ContainerClient {
      * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getAccessPolicy}
+     *
      * @return The container access policy.
      */
     public ContainerAccessPolicies getAccessPolicy() {
@@ -329,6 +431,11 @@ public final class ContainerClient {
      * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context}
+     *
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      *                              not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -348,6 +455,11 @@ public final class ContainerClient {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.setAccessPolicy#PublicAccessType-List}
+     *
      * @param accessType Specifies how the data in this container is available to the public. See the
      *                    x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
@@ -365,6 +477,11 @@ public final class ContainerClient {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context}
+     *
      * @param accessType Specifies how the data in this container is available to the public. See the
      *                         x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
@@ -395,6 +512,11 @@ public final class ContainerClient {
      * <p>
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsFlat}
+     *
      * @return The listed blobs, flattened.
      */
     public PagedIterable<BlobItem> listBlobsFlat() {
@@ -411,6 +533,11 @@ public final class ContainerClient {
      * <p>
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration}
+     *
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
@@ -443,6 +570,11 @@ public final class ContainerClient {
      * <li>foo/foo1 (isPrefix = false)
      * <li>foo/foo2 (isPrefix = false)
      * </ul>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String}
+     *
      * @param directory The directory to list blobs underneath
      *
      * @return A reactive response emitting the prefixes and blobs.
@@ -474,6 +606,11 @@ public final class ContainerClient {
      * <li>foo/foo1 (isPrefix = false)
      * <li>foo/foo2 (isPrefix = false)
      * </ul>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration}
+     *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -487,6 +624,11 @@ public final class ContainerClient {
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.acquireLease#String-int}
+     *
      * @param proposedId A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
      *                   non-infinite lease can be between 15 and 60 seconds.
@@ -500,6 +642,11 @@ public final class ContainerClient {
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context}
+     *
      * @param proposedID A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
      *                                 non-infinite lease can be between 15 and 60 seconds.
@@ -521,6 +668,11 @@ public final class ContainerClient {
 
     /**
      * Renews the blob's previously-acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.renewLease#String}
+     *
      * @param leaseID The leaseId of the active lease on the blob.
      *
      * @return The renewed lease ID.
@@ -531,6 +683,11 @@ public final class ContainerClient {
 
     /**
      * Renews the blob's previously-acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.renewLease#String-ModifiedAccessConditions-Duration}
+     *
      * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
@@ -546,6 +703,10 @@ public final class ContainerClient {
 
     /**
      * Renews the blob's previously-acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * {@codesnippet com.azure.storage.blob.ContainerClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
+     *
      * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
@@ -565,6 +726,11 @@ public final class ContainerClient {
 
     /**
      * Releases the blob's previously-acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.releaseLease#String}
+     *
      * @param leaseID The leaseId of the active lease on the blob.
      *
      */
@@ -574,6 +740,11 @@ public final class ContainerClient {
 
     /**
      * Releases the blob's previously-acquired lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
+     *
      * @param leaseID The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      *                                 LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
@@ -594,6 +765,11 @@ public final class ContainerClient {
     /**
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.breakLease}
+     *
      * @return The remaining time in the broken lease.
      */
     public Duration breakLease() {
@@ -603,6 +779,11 @@ public final class ContainerClient {
     /**
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context}
+     *
      * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
      *                                 lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
      *                                 shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
@@ -626,6 +807,11 @@ public final class ContainerClient {
 
     /**
      * ChangeLease changes the blob's lease ID.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.changeLease#String-String}
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedID A {@code String} in any valid GUID format.
      *
@@ -638,6 +824,11 @@ public final class ContainerClient {
     /**
      * ChangeLease changes the blob's lease ID.  For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
      * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context}
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedID A {@code String} in any valid GUID format.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -661,6 +852,10 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getAccountInfo#Duration}
+     *
      * @return The account info.
      */
     public StorageAccountInfo getAccountInfo(Duration timeout) {
@@ -670,6 +865,11 @@ public final class ContainerClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context}
+     *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

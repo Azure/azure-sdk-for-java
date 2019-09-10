@@ -16,7 +16,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public final class ServiceSubmitBatchHeaders {
     /*
      * The media type of the body of the response. For batch requests, this is
-     * ' multipart/mixed; boundary=batchresponse_<GUID>'
+     * multipart/mixed; boundary=batchresponse_GUID
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
@@ -44,8 +44,8 @@ public final class ServiceSubmitBatchHeaders {
 
     /**
      * Get the contentType property: The media type of the body of the
-     * response. For batch requests, this is ' multipart/mixed;
-     * boundary=batchresponse_&lt;GUID&gt;'.
+     * response. For batch requests, this is multipart/mixed;
+     * boundary=batchresponse_GUID.
      *
      * @return the contentType value.
      */
@@ -55,8 +55,8 @@ public final class ServiceSubmitBatchHeaders {
 
     /**
      * Set the contentType property: The media type of the body of the
-     * response. For batch requests, this is ' multipart/mixed;
-     * boundary=batchresponse_&lt;GUID&gt;'.
+     * response. For batch requests, this is multipart/mixed;
+     * boundary=batchresponse_GUID.
      *
      * @param contentType the contentType value to set.
      * @return the ServiceSubmitBatchHeaders object itself.

@@ -47,7 +47,7 @@ import java.util.Objects;
  * partitionId} when creating an {@link EventHubProducer}.
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId}
  *
- * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.
+ * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}
  * </strong></p>
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
@@ -58,7 +58,7 @@ import java.util.Objects;
  * </p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
  *
- *  <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
+ * <p><strong>Publish events using an {@link EventDataBatch}</strong></p>
  * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these events together.
  * When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions options} to
  * configure this batch.

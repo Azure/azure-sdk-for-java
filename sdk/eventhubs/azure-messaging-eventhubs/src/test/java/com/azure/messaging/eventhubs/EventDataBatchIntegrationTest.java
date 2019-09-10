@@ -5,8 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
-public class EventDataBatchIntegrationTest extends ApiTestBase {
+public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     private EventHubAsyncClient client;
@@ -74,8 +74,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendSmallEventsFullBatch() {
-        skipIfNotRecordMode();
-
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
         int count = 0;
@@ -98,8 +96,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
-        skipIfNotRecordMode();
-
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
@@ -122,8 +118,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendBatchPartitionKeyValidate() throws InterruptedException {
-        skipIfNotRecordMode();
-
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
 
@@ -195,8 +189,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendEventsFullBatchWithPartitionKey() {
-        skipIfNotRecordMode();
-
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, PARTITION_KEY, contextProvider);
