@@ -96,7 +96,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
-        return new BlobAsyncClient(constructImpl(), snapshot);
+        return new BlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -120,7 +120,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -147,7 +147,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot);
+        return new PageBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**

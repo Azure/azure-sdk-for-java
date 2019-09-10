@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -20,6 +21,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -89,15 +91,17 @@ public class BlobAsyncClient {
 
     final AzureBlobStorageImpl azureBlobStorage;
     protected final String snapshot;
+    protected final CpkInfo cpk;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
+        this.cpk = cpk;
     }
 
     /**
@@ -110,7 +114,7 @@ public class BlobAsyncClient {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -123,7 +127,7 @@ public class BlobAsyncClient {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -136,7 +140,7 @@ public class BlobAsyncClient {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -149,7 +153,7 @@ public class BlobAsyncClient {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -164,7 +168,7 @@ public class BlobAsyncClient {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build());
+            .build(), cpk);
     }
 
     /**
@@ -183,6 +187,15 @@ public class BlobAsyncClient {
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureBlobStorage.getHttpPipeline();
     }
 
     /**
@@ -473,7 +486,7 @@ public class BlobAsyncClient {
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
             null, null, snapshot, null, range.toHeaderValue(), getMD5, null, null,
-            accessConditions.leaseAccessConditions(), null, accessConditions.modifiedAccessConditions(), context))
+            accessConditions.leaseAccessConditions(), cpk, accessConditions.modifiedAccessConditions(), context))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
@@ -681,7 +694,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, null, accessConditions.leaseAccessConditions(), null,
+            null, null, snapshot, null, null, accessConditions.leaseAccessConditions(), cpk,
             accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlobProperties(rb.deserializedHeaders())));
     }
@@ -774,7 +787,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, null, accessConditions.leaseAccessConditions(), null,
+            null, null, null, metadata, null, accessConditions.leaseAccessConditions(), cpk,
             accessConditions.modifiedAccessConditions(), context))
             .map(VoidResponse::new);
     }
@@ -820,7 +833,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, null, null, accessConditions.modifiedAccessConditions(),
+            null, null, null, metadata, null, cpk, accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().snapshot())));
     }
