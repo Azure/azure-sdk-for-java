@@ -35,7 +35,7 @@ public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
     @Test
     public void directThrowExceptionTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(7, 9, String.format(DIRRECT_THROW_ERROR_MESSAGE))
+            expectedErrorMessage(12, 9, String.format(DIRRECT_THROW_ERROR_MESSAGE))
         };
         verify(checker, getPath("DirectThrowExceptionTestData.java"), expected);
     }
