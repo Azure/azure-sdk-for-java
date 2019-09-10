@@ -68,6 +68,15 @@ public class EventProcessorTest {
 
     @After
     public void teardown() {
+        consumer1 = null;
+        consumer2 = null;
+        consumer3 = null;
+        eventData1 = null;
+        eventData2 = null;
+        eventData3 = null;
+        eventData4 = null;
+        eventHubAsyncClient = null;
+
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
