@@ -32,7 +32,8 @@ public class AmqpPropagationFormatUtil {
      * Please refer to the <a href=https://www.w3.org/TR/trace-context/#traceparent-header>Traceparent Header</a>
      * for more information on the conversion of these fields to Span Context format.
      *
-     * @param spanContext is a specification defines an agreed-upon format for the exchange of trace context propagation data
+     * @param spanContext is a specification defines an agreed-upon format for the exchange of trace context propagation
+     * data
      * @retrun The dignostic Id providing an unique identifier for individual traces and requests,
      * allowing trace data of multiple providers to be linked together.
      */
@@ -57,11 +58,16 @@ public class AmqpPropagationFormatUtil {
      * for more information on the conversion of these fields to Span Context format.
      *
      * @param diagnosticId provides a unique identifier for individual traces and requests,
-     * @return SpanContext is a specification defines an agreed-upon format for the exchange of trace context propagation data
+     * @return SpanContext is a specification defines an agreed-upon format for the exchange of trace context
+     * propagation data
      */
     private static SpanContext fromDiagnosticId(String diagnosticId) {
         if (diagnosticId == null || diagnosticId.length() < 55 || !diagnosticId.startsWith("00")) {
-            return SpanContext.create(TraceId.INVALID, SpanId.INVALID, TraceOptions.DEFAULT, Tracestate.builder().build());
+            return SpanContext.create(
+                TraceId.INVALID,
+                SpanId.INVALID,
+                TraceOptions.DEFAULT,
+                Tracestate.builder().build());
         }
         return SpanContext.create(
             TraceId.fromLowerBase16(diagnosticId, 3),

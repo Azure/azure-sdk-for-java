@@ -66,7 +66,8 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         final Message request = Proton.message();
         final Map<String, Object> properties = new HashMap<>();
         properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
-        properties.put(PUT_TOKEN_TYPE, String.format(Locale.ROOT, PUT_TOKEN_TYPE_VALUE_FORMAT, authorizationType.getTokenType()));
+        properties.put(PUT_TOKEN_TYPE, String.format(Locale.ROOT, PUT_TOKEN_TYPE_VALUE_FORMAT,
+            authorizationType.getTokenType()));
         properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);

@@ -7,12 +7,13 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.PartitionKey;
 
-public class CosmosSyncItemResponse {
+public class CosmosSyncItemResponse extends CosmosSyncResponse {
     private final CosmosItemResponse responseWrapper;
     private final CosmosSyncItem item;
 
 
     CosmosSyncItemResponse(CosmosItemResponse response, PartitionKey partitionKey, CosmosSyncContainer container) {
+        super(response);
         this.responseWrapper = response;
         if (responseWrapper.item() != null) {
             this.item = new CosmosSyncItem(responseWrapper.item().id(), partitionKey, container, responseWrapper.item());

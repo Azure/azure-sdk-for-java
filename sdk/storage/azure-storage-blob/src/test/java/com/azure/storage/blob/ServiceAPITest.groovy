@@ -22,7 +22,6 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
-import spock.lang.Ignore
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -61,7 +60,7 @@ class ServiceAPITest extends APISpec {
     def "List containers"() {
         when:
         def response =
-            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
+            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix + testName), null)
 
         then:
         for (ContainerItem c : response) {

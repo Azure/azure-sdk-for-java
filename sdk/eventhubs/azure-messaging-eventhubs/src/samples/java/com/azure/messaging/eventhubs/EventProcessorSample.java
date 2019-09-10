@@ -19,13 +19,17 @@ public class EventProcessorSample {
      * @throws Exception If there are any errors while running the {@link EventProcessor}.
      */
     public static void main(String[] args) throws Exception {
-        EventHubClientBuilder eventHubClientBuilder = new EventHubClientBuilder()
+        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString(EH_CONNECTION_STRING)
-            .consumerGroupName(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncClient();
+
+        EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()
+            .consumerGroup(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME)
+            .eventHubClient(eventHubAsyncClient)
             .partitionProcessorFactory(LogPartitionProcessor::new)
             .partitionManager(new InMemoryPartitionManager());
 
-        EventProcessor eventProcessor = eventHubClientBuilder.buildEventProcessor();
+        EventProcessor eventProcessor = eventProcessorBuilder.buildEventProcessor();
         System.out.println("Starting event processor");
         eventProcessor.start();
         eventProcessor.start(); // should be a no-op
@@ -38,7 +42,7 @@ public class EventProcessorSample {
 
         Thread.sleep(TimeUnit.SECONDS.toMillis(40));
         System.out.println("Starting a new instance of event processor");
-        eventProcessor = eventHubClientBuilder.buildEventProcessor();
+        eventProcessor = eventProcessorBuilder.buildEventProcessor();
         eventProcessor.start();
         // do other stuff
         Thread.sleep(TimeUnit.MINUTES.toMillis(1));

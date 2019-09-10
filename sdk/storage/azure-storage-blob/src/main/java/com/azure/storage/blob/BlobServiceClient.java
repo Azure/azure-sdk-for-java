@@ -59,6 +59,10 @@ public final class BlobServiceClient {
      * Initializes a {@link ContainerClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getContainerClient#String}
+     *
      * @param containerName The name of the container to point to.
      * @return A {@link ContainerClient} object pointing to the specified container
      */
@@ -67,9 +71,22 @@ public final class BlobServiceClient {
     }
 
     /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return blobServiceAsyncClient.getHttpPipeline();
+    }
+
+    /**
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainer#String}
      *
      * @param containerName Name of the container to create
      * @return The {@link ContainerClient} used to interact with the container created.
@@ -82,6 +99,10 @@ public final class BlobServiceClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Metadata-PublicAccessType-Context}
      *
      * @param containerName Name of the container to create
      * @param metadata {@link Metadata}
@@ -99,6 +120,10 @@ public final class BlobServiceClient {
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.deleteContainer#String}
      *
      * @param containerName Name of the container to delete
      */
@@ -132,6 +157,10 @@ public final class BlobServiceClient {
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listContainers}
+     *
      * @return The list of containers.
      */
     public PagedIterable<ContainerItem> listContainers() {
@@ -142,6 +171,10 @@ public final class BlobServiceClient {
      * Returns a lazy loaded list of containers in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listContainers#ListContainersOptions-Duration}
      *
      * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -155,6 +188,10 @@ public final class BlobServiceClient {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getProperties}
+     *
      * @return The storage account properties.
      */
     public StorageServiceProperties getProperties() {
@@ -164,6 +201,10 @@ public final class BlobServiceClient {
     /**
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getPropertiesWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -182,6 +223,10 @@ public final class BlobServiceClient {
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setProperties#StorageServiceProperties}
+     *
      * @param properties Configures the service.
      */
     public void setProperties(StorageServiceProperties properties) {
@@ -194,13 +239,17 @@ public final class BlobServiceClient {
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#StorageServiceProperties-Duration-Context}
+     *
      * @param properties Configures the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The storage account properties.
      */
     public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobServiceAsyncClient.setPropertiesWithReponse(properties, context);
+        Mono<VoidResponse> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -208,6 +257,10 @@ public final class BlobServiceClient {
     /**
      * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
      * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -220,6 +273,10 @@ public final class BlobServiceClient {
     /**
      * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
      * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context}
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -240,6 +297,10 @@ public final class BlobServiceClient {
      * the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getStatistics}
+     *
      * @return The storage account statistics.
      */
     public StorageServiceStats getStatistics() {
@@ -251,6 +312,10 @@ public final class BlobServiceClient {
      * endpoint when read-access geo-redundant replication is enabled for the storage account. For more information, see
      * the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getStatisticsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -265,6 +330,10 @@ public final class BlobServiceClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getAccountInfo}
      *
      * @return The storage account info.
      */
@@ -302,6 +371,13 @@ public final class BlobServiceClient {
 
     /**
      * Generates an account SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.blobServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a></p>
      *
      * @param accountSASService The {@code AccountSASService} services for the account SAS
      * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS

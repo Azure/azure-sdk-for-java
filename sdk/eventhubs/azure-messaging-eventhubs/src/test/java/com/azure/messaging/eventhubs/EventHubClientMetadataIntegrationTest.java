@@ -10,9 +10,9 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
@@ -31,7 +31,7 @@ import java.util.Locale;
 /**
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
-public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
+public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
     private EventHubAsyncClient client;
     private ReactorHandlerProvider handlerProvider;
@@ -51,8 +51,6 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         eventHubName = getConnectionOptions().eventHubName();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());

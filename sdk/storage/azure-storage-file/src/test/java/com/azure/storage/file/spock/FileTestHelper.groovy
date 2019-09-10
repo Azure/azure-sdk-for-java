@@ -201,4 +201,12 @@ class FileTestHelper {
             }
         }
     }
+
+    // TODO : Move this into a common package test class?
+    static byte[] getRandomBuffer(int length) {
+        final Random randGenerator = new Random()
+        final byte[] buff = new byte[length]
+        randGenerator.nextBytes(buff)
+        return buff
+    }
 }

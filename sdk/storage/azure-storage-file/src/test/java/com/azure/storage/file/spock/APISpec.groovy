@@ -22,6 +22,7 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -75,7 +76,8 @@ class APISpec extends Specification {
             FileServiceClient cleanupFileServiceClient = new FileServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase())).each {
+            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase()),
+            Duration.ofSeconds(30), null).each {
                 cleanupFileServiceClient.deleteShare(it.name())
             }
         }
@@ -185,12 +187,7 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             def builder = new NettyAsyncHttpClientBuilder()
-            builder.setProxy(new Supplier<ProxyOptions>() {
-                @Override
-                ProxyOptions get() {
-                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
-                }
-            })
+            builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             return builder.build()
         } else {
             return HttpClient.createDefault()
