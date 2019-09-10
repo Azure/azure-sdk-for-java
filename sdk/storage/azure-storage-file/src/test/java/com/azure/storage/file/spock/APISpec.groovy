@@ -22,6 +22,7 @@ import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -75,7 +76,8 @@ class APISpec extends Specification {
             FileServiceClient cleanupFileServiceClient = new FileServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase())).each {
+            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase()),
+            Duration.ofSeconds(30), null).each {
                 cleanupFileServiceClient.deleteShare(it.name())
             }
         }

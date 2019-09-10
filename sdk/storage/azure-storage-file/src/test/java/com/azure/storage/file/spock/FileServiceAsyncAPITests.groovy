@@ -39,8 +39,10 @@ class FileServiceAsyncAPITests extends APISpec {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+
         when:
         def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl().toString()
+
         then:
         expectURL.equals(fileServiceURL)
     }
@@ -48,6 +50,7 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Get share does not create a share"() {
         when:
         def shareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
+
         then:
         shareAsyncClient instanceof ShareAsyncClient
     }
@@ -55,6 +58,7 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Create share"() {
         when:
         def createShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.createShareWithResponse(shareName, null, null))
+
         then:
         createShareVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
@@ -65,10 +69,12 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Create share with metadata"() {
         when:
         def createShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.createShareWithResponse(shareName, metadata, quota))
+
         then:
         createShareVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
         }
+
         where:
         metadata     | quota
         null         | null
@@ -81,10 +87,12 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Create share with invalid args"() {
         when:
         def createShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.createShareWithResponse(shareName, metadata, quota))
+
         then:
         createShareVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
         }
+
         where:
         metadata                                      | quota | statusCode | errMsg
         Collections.singletonMap("invalid#", "value") | 1     | 400        | StorageErrorCode.INVALID_METADATA
@@ -96,8 +104,10 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Delete share"() {
         given:
         primaryFileServiceAsyncClient.createShare(shareName)
+
         when:
         def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null))
+
         then:
         deleteShareVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
@@ -107,6 +117,7 @@ class FileServiceAsyncAPITests extends APISpec {
     def "Delete share does not exist"() {
         when:
         def deleteShareVerifier = StepVerifier.create(primaryFileServiceAsyncClient.deleteShare(testResourceName.randomName(methodName, 60)))
+
         then:
         deleteShareVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -166,8 +177,10 @@ class FileServiceAsyncAPITests extends APISpec {
             }
             testShares.add(share)
         }
+
         when:
         def sharesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.listShares(options))
+
         then:
         sharesVerifier.assertNext {
             assert FileTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot)
@@ -188,10 +201,12 @@ class FileServiceAsyncAPITests extends APISpec {
             .retentionPolicy(retentionPolicy).version("1.0")
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
             .minuteMetrics(metrics).cors(new ArrayList<>())
+
         when:
         def getPropertiesBeforeVerifier = StepVerifier.create(primaryFileServiceAsyncClient.getPropertiesWithResponse())
         def setPropertiesVerifier = StepVerifier.create(primaryFileServiceAsyncClient.setPropertiesWithResponse(updatedProperties))
         def getPropertiesAfterVerifier = StepVerifier.create(primaryFileServiceAsyncClient.getPropertiesWithResponse())
+
         then:
         getPropertiesBeforeVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
@@ -218,10 +233,12 @@ class FileServiceAsyncAPITests extends APISpec {
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
             .minuteMetrics(metrics).cors(coreList)
         def setPropertyVerifier = StepVerifier.create(primaryFileServiceAsyncClient.setProperties(updatedProperties))
+
         then:
         setPropertyVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
         }
+
         where:
         coreList               | statusCode | errMsg
         TOO_MANY_RULES         | 400        | StorageErrorCode.INVALID_XML_DOCUMENT

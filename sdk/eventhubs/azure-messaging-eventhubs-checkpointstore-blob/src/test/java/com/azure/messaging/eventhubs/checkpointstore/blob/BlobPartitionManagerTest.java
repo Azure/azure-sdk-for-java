@@ -3,13 +3,6 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.when;
-
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
@@ -26,12 +19,6 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
-import java.net.SocketTimeoutException;
-import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -40,6 +27,20 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.net.SocketTimeoutException;
+import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link BlobPartitionManager}.
@@ -116,7 +117,7 @@ public class BlobPartitionManagerTest {
         when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.asBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), any(Metadata.class), any(BlobAccessConditions.class)))
+            isNull(), any(Metadata.class), isNull(), any(BlobAccessConditions.class)))
             .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
@@ -174,7 +175,7 @@ public class BlobPartitionManagerTest {
         when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.asBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), any(Metadata.class), any(BlobAccessConditions.class)))
+            isNull(), any(Metadata.class), isNull(), any(BlobAccessConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();

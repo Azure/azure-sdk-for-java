@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessor;
@@ -20,12 +18,15 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import java.nio.ByteBuffer;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Implementation of {@link PartitionManager} that uses
@@ -114,7 +115,7 @@ public class BlobPartitionManager implements PartitionManager {
                     blobAccessConditions.modifiedAccessConditions(new ModifiedAccessConditions()
                         .ifNoneMatch("*"));
                     return blobAsyncClient.asBlockBlobAsyncClient()
-                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata,
+                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
                             blobAccessConditions)
                         .flatMapMany(response -> {
                             partitionOwnership.eTag(response.headers().get(ETAG).value());
