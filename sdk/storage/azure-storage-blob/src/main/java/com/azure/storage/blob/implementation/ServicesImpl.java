@@ -21,15 +21,17 @@ import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersIncludeType;
-import com.azure.storage.blob.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
 import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
 import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
 import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
 import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
+import com.azure.storage.blob.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageServiceProperties;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -94,10 +96,10 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @Get("")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesFilterBlobsResponse> filterBlobs(@HostParam("url") String url, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("filter") String filter, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesSubmitBatchResponse> submitBatch(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -237,7 +239,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
      * @param context The context to associate with this operation.
@@ -254,7 +256,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -285,27 +287,29 @@ public final class ServicesImpl {
     }
 
     /**
-     * The Filter Blobs operation enables callers to list blobs in an account whose tags match a given search expression.
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
      *
+     * @param body Initial data.
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesFilterBlobsResponse> filterBlobsWithRestResponseAsync(Context context) {
-        final String marker = null;
-        final Integer maxresults = null;
+    public Mono<ServicesSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        final String comp = "blobs";
-        return service.filterBlobs(this.client.getUrl(), marker, maxresults, this.client.getFilter(), timeout, this.client.getVersion(), requestId, comp, context);
+        final String comp = "batch";
+        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
-     * The Filter Blobs operation enables callers to list blobs in an account whose tags match a given search expression.
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
      *
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
+     * @param body Initial data.
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -313,8 +317,8 @@ public final class ServicesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesFilterBlobsResponse> filterBlobsWithRestResponseAsync(String marker, Integer maxresults, Integer timeout, String requestId, Context context) {
-        final String comp = "blobs";
-        return service.filterBlobs(this.client.getUrl(), marker, maxresults, this.client.getFilter(), timeout, this.client.getVersion(), requestId, comp, context);
+    public Mono<ServicesSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
+        final String comp = "batch";
+        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
     }
 }

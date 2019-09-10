@@ -3,9 +3,7 @@
 
 package com.azure.storage.queue;
 
-import com.azure.core.http.rest.Response;
 import com.azure.storage.queue.models.DequeuedMessage;
-
 import java.time.Duration;
 
 import static com.azure.storage.queue.SampleHelper.generateRandomName;
@@ -25,9 +23,7 @@ public class MessageSamples {
         QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
 
         // Create a queue client
-        Response<QueueClient> queueClientResponse = queueServiceClient.createQueue(generateRandomName("enqueue", 16));
-        QueueClient queueClient = queueClientResponse.value();
-        // Using queue client to enqueue several "Hello World" messages into queue.
+        QueueClient queueClient = queueServiceClient.createQueue(generateRandomName("enqueue", 16));
         for (int i = 0; i < 3; i++) {
             queueClient.enqueueMessage("Hello World");
         }
@@ -36,17 +32,17 @@ public class MessageSamples {
         // TODO
 
         // Get the total count of msg in the queue
-        int count = queueClient.getProperties().value().approximateMessagesCount();
+        int count = queueClient.getProperties().approximateMessagesCount();
 
         // Peek all messages in queue. It is supposed to print "Hello World" 3 times.
-        queueClient.peekMessages(count).forEach(
+        queueClient.peekMessages(count, null, null).forEach(
             peekedMessage -> {
                 System.out.println("Here is the msg: " + peekedMessage.messageText());
             }
         );
 
         // Dequeue all messages in queue and update the message "Hello World" to Hello, world!"
-        queueClient.dequeueMessages(count, Duration.ZERO).forEach(
+        queueClient.dequeueMessages(count, Duration.ofSeconds(30), Duration.ofSeconds(50), null).forEach(
             queueMessage -> {
                 String msgToReplace = String.format("Hello, world!");
                 queueClient.updateMessage(queueMessage.messageId(), msgToReplace, queueMessage.popReceipt(), Duration.ZERO);

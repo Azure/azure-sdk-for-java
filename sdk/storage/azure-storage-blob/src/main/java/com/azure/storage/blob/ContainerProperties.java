@@ -4,25 +4,78 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
+import com.azure.storage.blob.models.LeaseDurationType;
+import com.azure.storage.blob.models.LeaseStateType;
+import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 
 import java.time.OffsetDateTime;
 
 public final class ContainerProperties {
 
+    private final Metadata metadata;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final LeaseDurationType leaseDuration;
+    private final LeaseStateType leaseState;
+    private final LeaseStatusType leaseStatus;
     private final PublicAccessType blobPublicAccess;
-
     private final boolean hasImmutabilityPolicy;
-
     private final boolean hasLegalHold;
 
-    private final OffsetDateTime lastModified;
-
     ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
+        this.metadata = new Metadata(generatedResponseHeaders.metadata());
+        this.eTag = generatedResponseHeaders.eTag();
+        this.lastModified = generatedResponseHeaders.lastModified();
+        this.leaseDuration = generatedResponseHeaders.leaseDuration();
+        this.leaseState = generatedResponseHeaders.leaseState();
+        this.leaseStatus = generatedResponseHeaders.leaseStatus();
         this.blobPublicAccess = generatedResponseHeaders.blobPublicAccess();
         this.hasImmutabilityPolicy = generatedResponseHeaders.hasImmutabilityPolicy();
         this.hasLegalHold = generatedResponseHeaders.hasLegalHold();
-        this.lastModified = generatedResponseHeaders.lastModified();
+    }
+
+    /**
+     * @return the metadata associated with the container
+     */
+    public Metadata metadata() {
+        return metadata;
+    }
+
+    /**
+     * @return the eTag of the container
+     */
+    public String eTag() {
+        return eTag;
+    }
+
+    /**
+     * @return the time the container was last modified
+     */
+    public OffsetDateTime lastModified() {
+        return lastModified;
+    }
+
+    /**
+     * @return the type of lease on the container
+     */
+    public LeaseDurationType leaseDuration() {
+        return leaseDuration;
+    }
+
+    /**
+     * @return the lease state of the container
+     */
+    public LeaseStateType leaseState() {
+        return leaseState;
+    }
+
+    /**
+     * @return the lease status of the container
+     */
+    public LeaseStatusType leaseStatus() {
+        return leaseStatus;
     }
 
     /**
@@ -46,10 +99,7 @@ public final class ContainerProperties {
         return hasLegalHold;
     }
 
-    /**
-     * @return the time the container was last modified
-     */
-    public OffsetDateTime lastModified() {
-        return lastModified;
-    }
+
+
+
 }

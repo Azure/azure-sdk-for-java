@@ -10,7 +10,7 @@ public final class VerifyResult {
     /**
      * THe verify operation result.
      */
-    private Boolean isValid;
+    private final Boolean isValid;
 
     /**
      * Creates the instance of Verify Result holding the verification response information.

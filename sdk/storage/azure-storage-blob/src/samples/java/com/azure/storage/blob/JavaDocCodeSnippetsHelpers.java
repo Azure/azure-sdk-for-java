@@ -11,12 +11,24 @@ final class JavaDocCodeSnippetsHelpers {
         return new ContainerClientBuilder().buildAsyncClient();
     }
 
+    static ContainerClient getContainerClient() {
+        return new ContainerClientBuilder().buildClient();
+    }
+
     static BlobAsyncClient getBlobAsyncClient(String blobName) {
         return getContainerAsyncClient().getBlobAsyncClient(blobName);
     }
 
     static BlobClient getBlobClient(String blobName) {
         return new BlobClient(getBlobAsyncClient(blobName));
+    }
+
+    static BlobServiceAsyncClient getBlobServiceAsyncClient() {
+        return new BlobServiceClientBuilder().buildAsyncClient();
+    }
+
+    static BlobServiceClient getBlobServiceClient() {
+        return new BlobServiceClientBuilder().buildClient();
     }
 
     static URL generateURL(String urlString) {

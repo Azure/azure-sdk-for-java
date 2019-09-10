@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -19,14 +20,14 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
@@ -94,7 +95,7 @@ public final class PageBlobClient extends BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
-        return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, length, accessConditions);
     }
 
     /**
@@ -171,21 +172,14 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded pages.
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      */
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        long length = pageRange.end() - pageRange.start();
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
-            .map(i -> i * PAGE_BYTES)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                byte[] cache = new byte[PAGE_BYTES];
-                int read = 0;
-                while (read < PAGE_BYTES) {
-                    read += body.read(cache, read, PAGE_BYTES - read);
-                }
-
-                return ByteBufAllocator.DEFAULT.buffer(read).writeBytes(cache);
-            }));
+        Objects.requireNonNull(body);
+        final long length = pageRange.end() - pageRange.start() + 1;
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
             fbb.subscribeOn(Schedulers.elastic()),

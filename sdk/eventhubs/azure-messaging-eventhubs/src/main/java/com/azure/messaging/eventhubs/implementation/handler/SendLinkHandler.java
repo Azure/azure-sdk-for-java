@@ -66,7 +66,8 @@ public class SendLinkHandler extends LinkHandler {
                     onNext(EndpointState.ACTIVE);
                 }
             } else {
-                logger.info("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[null], remoteSource[null], action[waitingForError]",
+                logger.info("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[null], remoteSource[null], "
+                        + "action[waitingForError]",
                     senderName, link.getName());
             }
         }
@@ -92,9 +93,11 @@ public class SendLinkHandler extends LinkHandler {
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
 
-            logger.info("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], delivery.isBuffered[{}], delivery.id[{}]",
+            logger.info("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], "
+                    + "delivery.isBuffered[{}], delivery.id[{}]",
                 senderName, sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
-                delivery.getRemoteState(), delivery.isBuffered(), new String(delivery.getTag(), StandardCharsets.UTF_8));
+                delivery.getRemoteState(), delivery.isBuffered(), new String(delivery.getTag(),
+                    StandardCharsets.UTF_8));
 
             deliverySink.next(delivery);
             delivery.settle();

@@ -7,9 +7,9 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -48,46 +48,49 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return attemptAsync(context, next, context.httpRequest(), 0);
     }
 
-    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next, final HttpRequest originalHttpRequest, final int tryCount) {
+    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
+                                            final HttpRequest originalHttpRequest, final int tryCount) {
         context.httpRequest(originalHttpRequest.buffer());
         return next.clone().process()
-                .flatMap(httpResponse -> {
-                    if (shouldRetry(httpResponse, tryCount)) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(determineDelayDuration(httpResponse));
-                    } else {
-                        return Mono.just(httpResponse);
-                    }
-                })
-                .onErrorResume(err -> {
-                    if (tryCount < maxRetries) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
-                    } else {
-                        return Mono.error(err);
-                    }
-                });
+            .flatMap(httpResponse -> {
+                if (shouldRetry(httpResponse, tryCount)) {
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                        .delaySubscription(determineDelayDuration(httpResponse));
+                } else {
+                    return Mono.just(httpResponse);
+                }
+            })
+            .onErrorResume(err -> {
+                if (tryCount < maxRetries) {
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                        .delaySubscription(this.delayDuration);
+                } else {
+                    return Mono.error(err);
+                }
+            });
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
         int code = response.statusCode();
         return tryCount < maxRetries
-                && (code == HttpResponseStatus.REQUEST_TIMEOUT.code()
-                || (code >= HttpResponseStatus.INTERNAL_SERVER_ERROR.code()
-                && code != HttpResponseStatus.NOT_IMPLEMENTED.code()
-                && code != HttpResponseStatus.HTTP_VERSION_NOT_SUPPORTED.code()));
+            && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+            || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+            && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+            && code != HttpURLConnection.HTTP_VERSION));
     }
 
     /**
      * Determines the delay duration that should be waited before retrying.
      * @param response HTTP response
      * @return If the HTTP response has a retry-after-ms header that will be returned,
-     * otherwise the duration used during the construction of the policy.
+     *     otherwise the duration used during the construction of the policy.
      */
     private Duration determineDelayDuration(HttpResponse response) {
         int code = response.statusCode();
 
         // Response will not have a retry-after-ms header.
-        if (code != HttpResponseStatus.TOO_MANY_REQUESTS.code()
-            && code != HttpResponseStatus.SERVICE_UNAVAILABLE.code()) {
+        if (code != 429        // too many requests
+            && code != 503) {  // service unavailable
             return this.delayDuration;
         }
 

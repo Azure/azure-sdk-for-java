@@ -6,12 +6,15 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;
+import com.azure.messaging.eventhubs.EventHubProducer;
 import reactor.core.publisher.Flux;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
  * to the Event Hubs service.
  *
+ * @see EventHubProducer#send(EventData, SendOptions)
+ * @see EventHubProducer#send(Iterable, SendOptions)
  * @see EventHubAsyncProducer#send(EventData, SendOptions)
  * @see EventHubAsyncProducer#send(Iterable, SendOptions)
  * @see EventHubAsyncProducer#send(Flux, SendOptions)

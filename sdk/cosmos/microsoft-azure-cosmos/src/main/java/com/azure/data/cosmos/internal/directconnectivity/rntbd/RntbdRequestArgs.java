@@ -5,10 +5,12 @@ package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.base.Stopwatch;
+import io.micrometer.core.instrument.Timer;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,18 +24,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.micrometer.core.instrument.Timer.Sample;
 
 @JsonPropertyOrder({
-    "transportRequestId", "origin", "replicaPath", "activityId", "operationType", "resourceType", "birthTime",
+    "transportRequestId", "origin", "replicaPath", "activityId", "operationType", "resourceType", "creationTime",
     "lifetime"
 })
 public final class RntbdRequestArgs {
 
     private static final AtomicLong instanceCount = new AtomicLong();
-    private static final String simpleClassName = RntbdRequestArgs.class.getSimpleName();
 
+    private final Sample sample;
     private final UUID activityId;
-    private final long birthTime;
+    private final long creationTime;
     private final Stopwatch lifetime;
     private final String origin;
     private final URI physicalAddress;
@@ -42,8 +45,9 @@ public final class RntbdRequestArgs {
     private final long transportRequestId;
 
     public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final URI physicalAddress) {
+        this.sample = Timer.start();
         this.activityId = UUID.fromString(serviceRequest.getActivityId());
-        this.birthTime = System.nanoTime();
+        this.creationTime = System.nanoTime();
         this.lifetime = Stopwatch.createStarted();
         this.origin = physicalAddress.getScheme() + "://" + physicalAddress.getAuthority();
         this.physicalAddress = physicalAddress;
@@ -52,44 +56,62 @@ public final class RntbdRequestArgs {
         this.transportRequestId = instanceCount.incrementAndGet();
     }
 
-    public UUID getActivityId() {
+    // region Accessors
+
+    @JsonProperty
+    public UUID activityId() {
         return this.activityId;
     }
 
-    public long getBirthTime() {
-        return this.birthTime;
+    @JsonProperty
+    public long creationTime() {
+        return this.creationTime;
     }
 
     @JsonSerialize(using = ToStringSerializer.class)
-    public Duration getLifetime() {
+    @JsonProperty
+    public Duration lifetime() {
         return this.lifetime.elapsed();
     }
 
-    public String getOrigin() {
+    @JsonProperty
+    public String origin() {
         return this.origin;
     }
 
     @JsonIgnore
-    public URI getPhysicalAddress() {
+    public URI physicalAddress() {
         return this.physicalAddress;
     }
 
-    public String getReplicaPath() {
+    @JsonProperty
+    public String replicaPath() {
         return this.replicaPath;
     }
 
     @JsonIgnore
-    public RxDocumentServiceRequest getServiceRequest() {
+    public RxDocumentServiceRequest serviceRequest() {
         return this.serviceRequest;
     }
 
-    public long getTransportRequestId() {
+    @JsonProperty
+    public long transportRequestId() {
         return this.transportRequestId;
+    }
+
+    // endregion
+
+    // region Methods
+
+    public long stop(Timer requests, Timer responses) {
+        this.lifetime.stop();
+        this.sample.stop(requests);
+        return this.sample.stop(responses);
     }
 
     @Override
     public String toString() {
-        return simpleClassName + '(' + RntbdObjectMapper.toJson(this) + ')';
+        return RntbdObjectMapper.toString(this);
     }
 
     public void traceOperation(final Logger logger, final ChannelHandlerContext context, final String operationName, final Object... args) {
@@ -98,7 +120,7 @@ public final class RntbdRequestArgs {
 
         if (logger.isTraceEnabled()) {
             final BigDecimal lifetime = BigDecimal.valueOf(this.lifetime.elapsed().toNanos(), 6);
-            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.birthTime, lifetime, operationName,
+            logger.trace("{},{},\"{}({})\",\"{}\",\"{}\"", this.creationTime, lifetime, operationName,
                 Stream.of(args).map(arg ->
                     arg == null ? "null" : arg.toString()).collect(Collectors.joining(",")
                 ),
@@ -106,4 +128,6 @@ public final class RntbdRequestArgs {
             );
         }
     }
+
+    // endregion
 }

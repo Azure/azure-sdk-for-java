@@ -47,22 +47,6 @@ public final class AzureBlobStorageBuilder {
     }
 
     /*
-     * The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     */
-    private String filter;
-
-    /**
-     * Sets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     *
-     * @param filter the filter value.
-     * @return the AzureBlobStorageBuilder.
-     */
-    public AzureBlobStorageBuilder filter(String filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /*
      * Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'
      */
     private PathRenameMode pathRenameMode;
@@ -100,9 +84,6 @@ public final class AzureBlobStorageBuilder {
      * @return an instance of AzureBlobStorageImpl.
      */
     public AzureBlobStorageImpl build() {
-        if (version == null) {
-            this.version = "2019-02-02";
-        }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
@@ -112,9 +93,8 @@ public final class AzureBlobStorageBuilder {
         }
         if (this.version != null) {
             client.setVersion(this.version);
-        }
-        if (this.filter != null) {
-            client.setFilter(this.filter);
+        } else {
+            client.setVersion("2019-02-02");
         }
         if (this.pathRenameMode != null) {
             client.setPathRenameMode(this.pathRenameMode);

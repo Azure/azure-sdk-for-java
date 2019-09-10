@@ -27,6 +27,8 @@
     <azure-identity.version>1.0.0-preview.3</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.3</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.3</azure-messaging-eventhubs.version>
+    <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.1</azure-messaging-eventhubs-checkpointstore-blob.version>
+    <azure-storage-common.version>12.0.0-preview.3</azure-storage-common.version>
     <azure-storage-blob.version>12.0.0-preview.3</azure-storage-blob.version>
     <azure-storage-file.version>12.0.0-preview.3</azure-storage-file.version>
     <azure-storage-queue.version>12.0.0-preview.3</azure-storage-queue.version>
@@ -57,22 +59,28 @@
                 <source>..\..\sdk\core\azure-core\src\main\java</source>
                 <source>..\..\sdk\core\azure-core\src\samples\java</source>
                 <source>..\..\sdk\core\azure-core-amqp\src\main\java</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\main\java</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java</source>
+                <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java</source>
                 <source>..\..\sdk\core\azure-core-management\src\main\java</source>
                 <source>..\..\sdk\core\azure-core-test\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\main\java</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\samples\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\main\java</source>
                 <source>..\..\sdk\identity\azure-identity\src\samples\java</source>
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java</source>-->
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java</source>-->
 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java</source>-->
-<!--                <source>..\..\sdk\storage\client\blob\src\main\java</source>-->
-<!--                <source>..\..\sdk\storage\client\blob\src\samples\java</source>-->
-<!--                <source>..\..\sdk\storage\client\files\src\main\java</source>-->
-<!--                <source>..\..\sdk\storage\client\files\src\samples\java</source>-->
-<!--                <source>..\..\sdk\storage\client\queues\src\main\java</source>-->
-<!--                <source>..\..\sdk\storage\client\queues\src\samples\java</source>-->
+                <source>..\..\sdk\storage\azure-storage-common\src\main\java</source>
+                <source>..\..\sdk\storage\azure-storage-blob\src\main\java</source>
+                <source>..\..\sdk\storage\azure-storage-blob\src\samples\java</source>
+                <source>..\..\sdk\storage\azure-storage-file\src\main\java</source>
+                <source>..\..\sdk\storage\azure-storage-file\src\samples\java</source>
+                <source>..\..\sdk\storage\azure-storage-queue\src\main\java</source>
+                <source>..\..\sdk\storage\azure-storage-queue\src\samples\java</source>
 <!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java</source>-->
               </sources>
             </configuration>
@@ -151,6 +159,16 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-netty</artifactId>
+          <version>${azure-core.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-okhttp</artifactId>
+          <version>${azure-core.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
           <version>${azure-core.version}</version>
         </dependency>
@@ -166,6 +184,11 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
+          <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+          <version>${azure-messaging-eventhubs-checkpointstore-blob.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
           <version>${azure-identity.version}</version>
         </dependency>
@@ -178,6 +201,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-keyvault-secrets</artifactId>
           <version>${azure-keyvault.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-common</artifactId>
+          <version>${azure-storage-common.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

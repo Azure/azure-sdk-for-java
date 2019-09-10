@@ -16,7 +16,7 @@ parameters:
       ProfileFlag: ''
     Windows - Java 8:
       OSName: 'Windows'
-      OSVmImage: 'vs2017-win2016'
+      OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       ProfileFlag: ''
     Linux - Java LTS:
@@ -31,7 +31,7 @@ parameters:
       ProfileFlag: '-Djava-lts'
     Windows - Java LTS:
       OSName: 'Windows'
-      OSVmImage: 'vs2017-win2016'
+      OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       ProfileFlag: '-Djava-lts'
 
@@ -61,13 +61,15 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
+      - template: ../steps/cache-maven-repository.yml
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dmaven.test.skip=true -Dinclude-template' # We include template-module so we ensure it always builds in CI
-          mavenOptions: '$(LoggingOptions)'
+          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
@@ -79,6 +81,7 @@ jobs:
 
 
   - job: 'Analyze'
+    condition: ne(variables['Skip.Analyze'], 'true')
 
     variables:
       - template: ../variables/globals.yml
@@ -110,14 +113,26 @@ jobs:
       - template: ../steps/install-reporting-tools.yml
         parameters:
           Options: --batch-mode
-          MavenOptions: $(LoggingOptions)
+          MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
+      - task: Maven@3
+        displayName: 'Install azure-sdk-parent'
+        inputs:
+          mavenPomFile: parent/pom.xml
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+          mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
 
       - task: Maven@3
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-          mavenOptions: '$(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
@@ -141,11 +156,10 @@ jobs:
       # running as a PR check.
       - task: Maven@3
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
@@ -153,14 +167,13 @@ jobs:
           goals: 'install site:site site:stage'
 
       # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
-      # previous step. This is only generated in non-PR builds (i.e. nightly runs, etc)
+      # previous step.
       - task: Maven@3
         displayName: 'Run SpotBugs'
-        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: eng/spotbugs-aggregate-report/pom.xml
           options: '--batch-mode -Djava-lts -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
@@ -173,23 +186,11 @@ jobs:
         displayName: 'Download dependency checker'
 
       - task: Maven@3
-        displayName: 'Install azure-sdk-parent'
-        inputs:
-          mavenPomFile: parent/pom.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
-
-      - task: Maven@3
         displayName: 'Analyze dependencies'
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'
-          mavenOptions: '$(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
@@ -226,13 +227,15 @@ jobs:
         parameters:
           OSName: $(OSName)
 
+      - template: ../steps/cache-maven-repository.yml
+
       - task: Maven@3
         displayName: 'Start Jetty'
         condition: ne(variables['SdkType'], 'client')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '$(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
@@ -246,7 +249,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: ${{ parameters.TestOptions }}
-          mavenOptions: '-Xmx3072m $(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'

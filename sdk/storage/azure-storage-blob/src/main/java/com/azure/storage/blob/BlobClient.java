@@ -3,10 +3,12 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -16,6 +18,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
@@ -29,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -52,6 +56,8 @@ import java.time.OffsetDateTime;
  * Docs</a> for more information.
  */
 public class BlobClient {
+    private final ClientLogger logger = new ClientLogger(BlobClient.class);
+
     private final BlobAsyncClient blobAsyncClient;
 
     /**
@@ -124,6 +130,15 @@ public class BlobClient {
     }
 
     /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return blobAsyncClient.getHttpPipeline();
+    }
+
+    /**
      * Opens a blob input stream to download the blob.
      * <p>
      *
@@ -192,7 +207,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, Context.NONE).value();
+        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -200,13 +215,15 @@ public class BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param priority {@link RehydratePriority} for rehydrating the blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
@@ -216,10 +233,11 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
-                                                         BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .startCopyFromURLWithResponse(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions, destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -279,7 +297,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, Context.NONE).value();
+        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -287,13 +305,14 @@ public class BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
@@ -303,10 +322,11 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
-                                                    BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
+    public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .copyFromURLWithResponse(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context);
+            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -359,7 +379,7 @@ public class BlobClient {
                     try {
                         stream.write(bf.array());
                     } catch (IOException e) {
-                        throw new UncheckedIOException(e);
+                        throw logger.logExceptionAsError(new UncheckedIOException(e));
                     }
                 }).map(bf -> res))
             .last()
@@ -369,9 +389,13 @@ public class BlobClient {
     }
 
     /**
-     * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -388,9 +412,16 @@ public class BlobClient {
     }
 
     /**
-     * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
+     *
+     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
+     * provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -635,7 +666,7 @@ public class BlobClient {
      * @param tier The new tier for the blob.
      */
     public void setTier(AccessTier tier) {
-        setTierWithResponse(tier, null, null, Context.NONE);
+        setTierWithResponse(tier, null, null, null, Context.NONE);
     }
 
     /**
@@ -646,20 +677,22 @@ public class BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
+     * @param priority Optional priority to set for re-hydrating blobs.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, leaseAccessConditions, context);
+    public VoidResponse setTierWithResponse(AccessTier tier, RehydratePriority priority,
+            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -960,12 +993,12 @@ public class BlobClient {
      *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime) {
         return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime);
     }
 
@@ -974,7 +1007,7 @@ public class BlobClient {
      *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -983,8 +1016,8 @@ public class BlobClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange) {
         return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange);
     }
@@ -992,9 +1025,16 @@ public class BlobClient {
     /**
      * Generates a user delegation SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure Docs</a></p>
+     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1008,9 +1048,9 @@ public class BlobClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
-                                            String contentEncoding, String contentLanguage, String contentType) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, String contentType) {
         return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
@@ -1020,7 +1060,7 @@ public class BlobClient {
      * Generates a SAS token with the specified parameters
      *
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
     public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions) {
@@ -1041,7 +1081,7 @@ public class BlobClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1050,7 +1090,7 @@ public class BlobClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.blobAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
@@ -1058,8 +1098,15 @@ public class BlobClient {
     /**
      * Generates a SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
+     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1073,8 +1120,8 @@ public class BlobClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.blobAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }

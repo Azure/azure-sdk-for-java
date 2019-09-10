@@ -10,7 +10,7 @@ import com.azure.storage.queue.models.QueueItem
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import com.azure.storage.queue.models.RetentionPolicy
 import com.azure.storage.queue.models.StorageErrorCode
-import com.azure.storage.queue.models.StorageErrorException
+import com.azure.storage.queue.models.StorageException
 import com.azure.storage.queue.models.StorageServiceProperties
 import spock.lang.Unroll
 
@@ -23,14 +23,16 @@ class QueueServiceAPITests extends APISpec {
     def "Get queue client"() {
         given:
         def queueClient = primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+
         expect:
         queueClient instanceof QueueClient
     }
 
     def "Create queue"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueue(testResourceName.randomName(methodName, 60))
-        def enqueueMessageResponse = queueClientResponse.value().enqueueMessage("Testing service client creating a queue")
+        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60),  null, null, null)
+        def enqueueMessageResponse = queueClientResponse.value().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null,null)
+
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
         QueueTestHelper.assertResponseStatusCode(enqueueMessageResponse, 201)
@@ -40,9 +42,11 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue with invalid name"() {
         when:
         primaryQueueServiceClient.createQueue(queueName)
+
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMesage)
+
         where:
         queueName      | statusCode | errMesage
         "a_b"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
@@ -56,6 +60,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create null"() {
         when:
         primaryQueueServiceClient.createQueue(null)
+
         then:
         thrown(NullPointerException)
     }
@@ -63,11 +68,13 @@ class QueueServiceAPITests extends APISpec {
     @Unroll
     def "Create queue maxOverload"() {
         when:
-        def queueClientResponse = primaryQueueServiceClient.createQueue(testResourceName.randomName(methodName, 60), metadata)
-        def enqueueMessageResponse = queueClientResponse.value().enqueueMessage("Testing service client creating a queue")
+        def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60), metadata,null, null)
+        def enqueueMessageResponse = queueClientResponse.value().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null, null)
+
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
         QueueTestHelper.assertResponseStatusCode(enqueueMessageResponse, 201)
+
         where:
         metadata                                       | _
         null                                           | _
@@ -78,31 +85,36 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue with invalid metadata"() {
         given:
         def queueName = testResourceName.randomName(methodName, 16)
+
         when:
-        primaryQueueServiceClient.createQueue(queueName, Collections.singletonMap("meta@data", "value"))
+        primaryQueueServiceClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value"), null, null)
+
         then:
-        def e = thrown(StorageErrorException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, "Bad Request")
+        def e = thrown(StorageException)
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_METADATA)
     }
 
     def "Delete queue"() {
         given:
         def queueName = testResourceName.randomName(methodName, 60)
+
         when:
-        def queueClient = primaryQueueServiceClient.createQueue(queueName).value()
-        def deleteQueueResponse = primaryQueueServiceClient.deleteQueue(queueName)
+        def queueClient = primaryQueueServiceClient.createQueue(queueName)
+        def deleteQueueResponse = primaryQueueServiceClient.deleteQueueWithResponse(queueName, null, null)
         queueClient.enqueueMessage("Expecting exception as queue has been deleted.")
+
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Delete queue error"() {
         when:
-        primaryQueueServiceClient.deleteQueue(testResourceName.randomName(methodName, 60))
+        primaryQueueServiceClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 60), null, null)
+
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -116,16 +128,18 @@ class QueueServiceAPITests extends APISpec {
             QueueItem queue = new QueueItem().name(queueName + version)
                 .metadata(Collections.singletonMap("metadata" + version, "value" + version))
             testQueues.add(queue)
-            primaryQueueServiceClient.createQueue(queue.name(), queue.metadata())
+            primaryQueueServiceClient.createQueueWithResponse(queue.name(), queue.metadata(), null, null)
         }
+
         when:
-        def queueListIter = primaryQueueServiceClient.listQueues(options)
+        def queueListIter = primaryQueueServiceClient.listQueues(options, null, null)
         then:
         queueListIter.each {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
             primaryQueueServiceClient.deleteQueue(it.name())
         }
         testQueues.size() == 0
+
         where:
         options                                                                                   | _
         new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues")                       | _
@@ -136,13 +150,14 @@ class QueueServiceAPITests extends APISpec {
     def "List empty queues"() {
         when:
         primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
+
         then:
-        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName)).iterator().hasNext()
+        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName), null, null).iterator().hasNext()
     }
 
     def "Get and set properties"() {
         given:
-        def originalProperties = primaryQueueServiceClient.getProperties().value()
+        def originalProperties = primaryQueueServiceClient.getProperties()
         def retentionPolicy = new RetentionPolicy().enabled(true)
             .days(3)
         def logging = new Logging().version("1.0")
@@ -160,11 +175,12 @@ class QueueServiceAPITests extends APISpec {
 
         when:
         def getResponseBefore = primaryQueueServiceClient.getProperties()
-        def setResponse = primaryQueueServiceClient.setProperties(updatedProperties)
+        def setResponse = primaryQueueServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
         def getResponseAfter = primaryQueueServiceClient.getProperties()
+
         then:
-        QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, getResponseBefore.value())
+        QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, getResponseBefore)
         QueueTestHelper.assertResponseStatusCode(setResponse, 202)
-        QueueTestHelper.assertQueueServicePropertiesAreEqual(updatedProperties, getResponseAfter.value())
+        QueueTestHelper.assertQueueServicePropertiesAreEqual(updatedProperties, getResponseAfter)
     }
 }

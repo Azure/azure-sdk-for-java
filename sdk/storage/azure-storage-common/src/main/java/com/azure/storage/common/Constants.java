@@ -4,7 +4,7 @@
 package com.azure.storage.common;
 
 public final class Constants {
-    private static final int KB = 1024;
+    public static final int KB = 1024;
 
     /**
      * Constant representing a megabyte (Non-SI version).
@@ -68,7 +68,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2018-11-09";
+        public static final String TARGET_STORAGE_VERSION = "2019-02-02";
 
         /**
          * Error code returned from the service.
@@ -79,6 +79,16 @@ public final class Constants {
          * Compression type used on the body.
          */
         public static final String CONTENT_ENCODING = "Content-Encoding";
+
+        public static final String CLIENT_REQUEST_ID = "x-ms-client-request-id";
+
+        public static final String ENCRYPTION_KEY = "x-ms-encryption-key";
+
+        public static final String ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+
+        public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
+
+        public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
 
         private HeaderConstants() {
             // Private to prevent construction.
@@ -211,6 +221,21 @@ public final class Constants {
          * The SAS blob snapshot constant.
          */
         public static final String SAS_CONTAINER_CONSTANT = "c";
+
+        /**
+         * The SAS file constant.
+         */
+        public static final String SAS_FILE_CONSTANT = "f";
+
+        /**
+         * The SAS share constant.
+         */
+        public static final String SAS_SHARE_CONSTANT = "s";
+
+        /**
+         * The SAS queue constant.
+         */
+        public static final String SAS_QUEUE_CONSTANT = "q";
 
         private UrlConstants() {
             // Private to prevent construction.

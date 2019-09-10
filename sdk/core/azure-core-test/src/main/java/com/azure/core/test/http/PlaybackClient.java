@@ -6,33 +6,34 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 /**
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
  */
 public final class PlaybackClient implements HttpClient {
-    private final Logger logger = LoggerFactory.getLogger(PlaybackClient.class);
+    private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
+    private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+    private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
     private final RecordedData recordedData;
 
     /**
-     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces
-     * {@link NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
+     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces {@link
+     * NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
      *
      * @param recordedData The data to playback.
      * @param textReplacementRules A set of rules to replace text in network call responses.
@@ -52,30 +53,6 @@ public final class PlaybackClient implements HttpClient {
         return Mono.defer(() -> playbackHttpResponse(request));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpClient proxy(Supplier<ProxyOptions> supplier) {
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpClient wiretap(boolean b) {
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpClient port(int i) {
-        return this;
-    }
-
     private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
         final String incomingUrl = applyReplacementRule(request.url().toString());
         final String incomingMethod = request.httpMethod().toString();
@@ -88,12 +65,23 @@ public final class PlaybackClient implements HttpClient {
         count.incrementAndGet();
 
         if (networkCallRecord == null) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
-                logger.warn("Records requested: {}.", count);
-            }
+            logger.warning("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
+            logger.warning("Records requested: {}.", count);
 
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
+        }
+
+        if (networkCallRecord.exception() != null) {
+            throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.exception().get()));
+        }
+
+        // Overwrite the request header if any.
+        if (networkCallRecord.headers().containsKey(X_MS_CLIENT_REQUEST_ID)) {
+            request.header(X_MS_CLIENT_REQUEST_ID, networkCallRecord.headers().get(X_MS_CLIENT_REQUEST_ID));
+        }
+        if (request.headers().value(X_MS_ENCRYPTION_KEY_SHA256) != null) {
+            networkCallRecord.response().put(X_MS_ENCRYPTION_KEY_SHA256,
+                request.headers().value(X_MS_ENCRYPTION_KEY_SHA256));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
@@ -112,7 +100,7 @@ public final class PlaybackClient implements HttpClient {
         }
 
         String rawBody = networkCallRecord.response().get("Body");
-        byte[] bytes = new byte[0];
+        byte[] bytes = null;
 
         if (rawBody != null) {
             for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
@@ -121,7 +109,20 @@ public final class PlaybackClient implements HttpClient {
                 }
             }
 
-            bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+            String contentType = networkCallRecord.response().get("Content-Type");
+
+            // octet-stream's are written to disk using Arrays.toString() which creates an output such as "[12, -1]".
+            if (contentType != null && contentType.equalsIgnoreCase("application/octet-stream")) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
+                    outputStream.write(Byte.parseByte(piece));
+                }
+
+                bytes = outputStream.toByteArray();
+            } else {
+                bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+            }
+
             if (bytes.length > 0) {
                 headers.put("Content-Length", String.valueOf(bytes.length));
             }
@@ -141,7 +142,12 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private static String removeHost(String url) {
-        URI uri = URI.create(url);
-        return String.format("%s?%s", uri.getPath(), uri.getQuery());
+        UrlBuilder urlBuilder = UrlBuilder.parse(url);
+
+        if (urlBuilder.query().containsKey("sig")) {
+            urlBuilder.setQueryParameter("sig", "REDACTED");
+        }
+
+        return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
     }
 }

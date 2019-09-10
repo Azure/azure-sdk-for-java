@@ -4,12 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -32,7 +30,7 @@ public class Sample {
         // get service client
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
         // create 5 containers
@@ -84,7 +82,7 @@ public class Sample {
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
         // create 5 containers
@@ -117,7 +115,7 @@ public class Sample {
                 for (int i = 0; i < 5; i++) {
                     BlockBlobAsyncClient blobClient = finalContainerClient.getBlockBlobAsyncClient("testblob-" + i);
                     byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
-                    Flux<ByteBuf> testdata = Flux.just(ByteBufAllocator.DEFAULT.buffer(message.length).writeBytes(message));
+                    Flux<ByteBuffer> testdata = Flux.just(ByteBuffer.wrap(message));
 
                     finished = finished.and(blobClient.upload(testdata, message.length)
                         .then(Mono.defer(() -> {
@@ -137,8 +135,8 @@ public class Sample {
             // download results
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.name())
-                    .downloadWithResponse(null, null, null, false, null)
-                    .flatMapMany(Response::value)
+                    .download()
+                    .flatMapMany(flux -> flux)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
             // cleanup
@@ -163,7 +161,7 @@ public class Sample {
         // get service client
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
         // make container
@@ -193,7 +191,7 @@ public class Sample {
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
         // make container

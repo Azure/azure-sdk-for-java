@@ -10,6 +10,7 @@
 
 # Service teams
 /sdk/appconfiguration/       @alzimmermsft @conniey @sima-zhu
+/sdk/batch/                  @xingwu1 @bgklein @matthchr
 /sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
 /sdk/cosmos/                 @moderakh @christopheranderson @kushagraThapar
 /sdk/eventhubs/              @conniey @srnagar @mssfang
@@ -28,5 +29,8 @@
 ###########
 /eng/   @weshaggard @mitchdenny @danieljurek
 /eng/code-quality-reports/ @mssfang @JonathanGiles
+/eng/jacoco-test-coverage/ @srnagar @JonathanGiles
+/eng/spotbugs-aggregate-report/ @srnagar @JonathanGiles
+
 /**/tests.yml   @danieljurek
 /**/ci.yml      @mitchdenny

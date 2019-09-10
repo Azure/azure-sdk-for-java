@@ -1,7 +1,7 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -244,6 +244,7 @@
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
+              <doclint>all</doclint>
             </configuration>
           </execution>
         </executions>
@@ -362,6 +363,14 @@
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
+                <title>Azure Core - HTTP - Netty</title>
+                <packages>com.azure.core.http.netty*</packages>
+              </group>
+              <group>
+                <title>Azure Core - HTTP - OkHttp</title>
+                <packages>com.azure.core.http.okhttp*</packages>
+              </group>
+              <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
               </group>
@@ -419,9 +428,13 @@
               <artifactId>codesnippet-doclet</artifactId>
               <version>${codesnippet4javadoc.version}</version>
             </docletArtifact>
-            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+            <additionalOptions>
+              <additionalOption>-maxLineLength 120</additionalOption>
+              <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
+            </additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
+            <doclint>all</doclint>
           </configuration>
         </plugin>
 
@@ -548,6 +561,7 @@
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
@@ -555,6 +569,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
+              <doclint>all</doclint>
             </configuration>
           </reportSet>
         </reportSets>
@@ -677,6 +692,32 @@
       </build>
     </profile>
 
+    <!-- Add Automatic-Module-Name -->
+    <profile>
+      <id>modulename</id>
+      <activation>
+        <file>
+          <missing>src/main/java/module-info.java</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <!-- This value will be read out of each projects properties and inserted into its manifest -->
+                  <Automatic-Module-Name>${project.automatic.module.name}</Automatic-Module-Name>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
       javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
       Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
@@ -730,7 +771,7 @@
         <module>./eng/jacoco-test-coverage</module>
       </modules>
     </profile>
-    
+
     <profile>
       <id>template-module</id>
       <activation>
@@ -750,8 +791,11 @@
     <module>./sdk/core/azure-core</module>
     <module>./sdk/core/azure-core-amqp</module>
     <module>./sdk/core/azure-core-management</module>
+    <module>./sdk/core/azure-core-http-netty</module>
+    <module>./sdk/core/azure-core-http-okhttp</module>
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <module>./sdk/tracing/tracing-opentelemetry</module>

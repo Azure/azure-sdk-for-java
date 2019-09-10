@@ -11,11 +11,13 @@ import com.azure.data.cosmos.internal.changefeed.PartitionLoadBalancer;
 import com.azure.data.cosmos.internal.changefeed.PartitionLoadBalancingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Implementation for {@link PartitionLoadBalancer}.
@@ -26,7 +28,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     private final LeaseContainer leaseContainer;
     private final PartitionLoadBalancingStrategy partitionLoadBalancingStrategy;
     private final Duration leaseAcquireInterval;
-    private final ExecutorService executorService;
+    private final Scheduler scheduler;
 
     private CancellationTokenSource cancellationTokenSource;
 
@@ -35,22 +37,33 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     private final Object lock;
 
     public PartitionLoadBalancerImpl(
-        PartitionController partitionController,
-        LeaseContainer leaseContainer,
-        PartitionLoadBalancingStrategy partitionLoadBalancingStrategy,
-        Duration leaseAcquireInterval,
-        ExecutorService executorService) {
+            PartitionController partitionController,
+            LeaseContainer leaseContainer,
+            PartitionLoadBalancingStrategy partitionLoadBalancingStrategy,
+            Duration leaseAcquireInterval,
+            Scheduler scheduler) {
 
-        if (partitionController == null) throw new IllegalArgumentException("partitionController");
-        if (leaseContainer == null) throw new IllegalArgumentException("leaseContainer");
-        if (partitionLoadBalancingStrategy == null) throw new IllegalArgumentException("partitionLoadBalancingStrategy");
-        if (executorService == null) throw new IllegalArgumentException("executorService");
+        if (partitionController == null) {
+            throw new IllegalArgumentException("partitionController");
+        }
+
+        if (leaseContainer == null) {
+            throw new IllegalArgumentException("leaseContainer");
+        }
+
+        if (partitionLoadBalancingStrategy == null) {
+            throw new IllegalArgumentException("partitionLoadBalancingStrategy");
+        }
+
+        if (scheduler == null) {
+            throw new IllegalArgumentException("executorService");
+        }
 
         this.partitionController = partitionController;
         this.leaseContainer = leaseContainer;
         this.partitionLoadBalancingStrategy = partitionLoadBalancingStrategy;
         this.leaseAcquireInterval = leaseAcquireInterval;
-        this.executorService = executorService;
+        this.scheduler = scheduler;
 
         this.started = false;
         this.lock = new Object();
@@ -58,66 +71,74 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
 
     @Override
     public Mono<Void> start() {
-        PartitionLoadBalancerImpl self = this;
-
-        return Mono.fromRunnable( () -> {
-            synchronized (lock) {
-                if (this.started) {
-                    throw new IllegalStateException("Partition load balancer already started");
-                }
-
-                this.started = true;
-                this.cancellationTokenSource = new CancellationTokenSource();
+        synchronized (lock) {
+            if (this.started) {
+                throw new IllegalStateException("Partition load balancer already started");
             }
 
-            CancellationToken cancellationToken = this.cancellationTokenSource.getToken();
+            this.cancellationTokenSource = new CancellationTokenSource();
+            this.started = true;
+        }
 
-            this.executorService.execute(() -> self.run(cancellationToken).block());
+        return Mono.fromRunnable( () -> {
+            scheduler.schedule(() -> this.run(this.cancellationTokenSource.getToken()).subscribe());
         });
     }
 
     @Override
     public Mono<Void> stop() {
-        return Mono.fromRunnable( () -> {
-            synchronized (lock) {
-                this.started = false;
-                this.cancellationTokenSource.cancel();
-            }
+        synchronized (lock) {
+            this.started = false;
+            this.cancellationTokenSource.cancel();
+        }
 
-            this.partitionController.shutdown().block();
-            this.cancellationTokenSource = null;
-        });
+        return this.partitionController.shutdown();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return this.started;
     }
 
     private Mono<Void> run(CancellationToken cancellationToken) {
-        PartitionLoadBalancerImpl self = this;
+        return Flux.just(this)
+            .flatMap(value -> this.leaseContainer.getAllLeases())
+            .collectList()
+            .flatMap(allLeases -> {
+                if (cancellationToken.isCancellationRequested()) return Mono.empty();
+                List<Lease> leasesToTake = this.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
+                this.logger.debug("Found {} leases, taking {}", allLeases.size(), leasesToTake.size());
 
-        return Mono.fromRunnable( () -> {
-            try {
-                while (!cancellationToken.isCancellationRequested()) {
-                    List<Lease> allLeases = self.leaseContainer.getAllLeases().collectList().block();
-                    List<Lease> leasesToTake = self.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
-                    for (Lease lease : leasesToTake) {
-                        self.partitionController.addOrUpdateLease(lease).block();
-                    }
+                if (cancellationToken.isCancellationRequested()) return Mono.empty();
+                return Flux.fromIterable(leasesToTake)
+                    .flatMap(lease -> {
+                        if (cancellationToken.isCancellationRequested()) return Mono.empty();
+                        return this.partitionController.addOrUpdateLease(lease);
+                    })
+                    .then(Mono.just(this)
+                        .flatMap(value -> {
+                            if (cancellationToken.isCancellationRequested()) {
+                                return Mono.empty();
+                            }
 
-                    long remainingWork = this.leaseAcquireInterval.toMillis();
-
-                    try {
-                        while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
-                            Thread.sleep(100);
-                            remainingWork -= 100;
-                        }
-                    } catch (InterruptedException ex) {
-                        // exception caught
-                        logger.warn("Partition load balancer caught an interrupted exception", ex);
-                    }
-                }
-            } catch (Exception ex) {
+                            ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.leaseAcquireInterval);
+                            return Mono.just(value)
+                                .delayElement(Duration.ofMillis(100))
+                                .repeat( () -> {
+                                    ZonedDateTime currentTime = ZonedDateTime.now();
+                                    return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                                }).last();
+                        })
+                    );
+            })
+            .repeat(() -> {
+                return !cancellationToken.isCancellationRequested();
+            })
+            .then()
+            .onErrorResume(throwable -> {
                 // We should not get here.
                 logger.info("Partition load balancer task stopped.");
-                this.stop();
-            }
-        });
+                return this.stop();
+            });
     }
 }
