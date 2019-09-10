@@ -21,6 +21,7 @@ demonstrate the new API.
 - Added `uploadRangeFromUrl` APIs on sync and async File client.
 - Added `setProperties` APIs on sync and async File and Directory client.
 - Added `timeout` parameter for sync APIs which allows requests throw exception if no response received within the time span.
+- Added `azure-storage-common` as a dependency.
 
 **Breaking changes: New API design**
 - Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
