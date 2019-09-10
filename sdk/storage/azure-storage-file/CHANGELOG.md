@@ -26,7 +26,7 @@ demonstrate the new API.
 
 **Breaking changes: New API design**
 - Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
-- Replaced setHttpHeaders with setProperties APIs on sync and async File client. Allows users to set file SMB properties and file permission.
+- Replaced setHttpHeaders with setProperties APIs on sync and async File client. Additionally Allows users to set file SMB properties and file permission.
 - Added file smb properties and file permission parameters to create APIs on sync and async File and Directory clients.
 
 ## Version 12.0.0-preview.2 (2019-08-08)
