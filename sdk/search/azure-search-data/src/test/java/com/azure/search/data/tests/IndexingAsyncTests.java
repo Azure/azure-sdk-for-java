@@ -77,8 +77,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                     Hotel actual = d.as(Hotel.class);
                     return actual.equals(expected);
                 })
-                .expectComplete()
-                .verify();
+                .verifyComplete();
         }
     }
 
