@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,17 +24,23 @@ import com.azure.messaging.eventhubs.InMemoryPartitionManager;
 import com.azure.messaging.eventhubs.LogPartitionProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.PartitionProcessor;
+import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,12 +70,13 @@ public class PartitionBasedLoadBalancerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+
+        final Date enqueuedTime = Date.from(Instant.now());
+        final byte[] contents = "Hello, world".getBytes(StandardCharsets.UTF_8);
         eventDataList = new ArrayList<>();
         IntStream.range(0, 25)
             .forEach(index -> {
-                EventData eventData = mock(EventData.class);
-                when(eventData.sequenceNumber()).thenReturn((long) index);
-                when(eventData.offset()).thenReturn(Long.valueOf(index));
+                final EventData eventData = TestUtils.getEventData(contents, (long) index, (long) index, enqueuedTime);
                 eventDataList.add(eventData);
             });
         this.partitionManager = new InMemoryPartitionManager();
@@ -97,13 +105,15 @@ public class PartitionBasedLoadBalancerTest {
             partitionBasedLoadBalancer.loadBalance();
             List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
                 consumerGroupName).collectList().block();
+
+            assertNotNull(partitionOwnership);
             assertEquals(index + 1, partitionOwnership.size());
             partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).ownerId()));
             assertEquals(index + 1, partitionOwnership.stream().map(po -> po.partitionId()).distinct().count());
         });
     }
 
-    void sleep(int secondsToSleep) {
+    private void sleep(int secondsToSleep) {
         try {
             TimeUnit.SECONDS.sleep(secondsToSleep);
         } catch (InterruptedException ex) {
