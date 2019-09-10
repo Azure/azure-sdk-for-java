@@ -21,11 +21,13 @@ demonstrate the new API.
 - Added `uploadRangeFromUrl` APIs on sync and async File client.
 - Added `timeout` parameter for sync APIs which allows requests throw exception if no response received within the time span.
 - Added `azure-storage-common` as a dependency.
-- Added the ability for the user to obtian file SMB properties and file permissions from `getProperties` API. 
+- Added the ability for the user to obtain file SMB properties and file permissions from getProperties APIs on File and Directory and download APIs on File.
+- Added setProperties APIs on sync and async Directory client. Allows users to set file SMB properties and file permission.
 
 **Breaking changes: New API design**
 - Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
-- Replaced `setHttpHeaders` with `setProperties` APIs on sync and async File and Directory client. Allows users to set file SMB properites and file permission.
+- Replaced setHttpHeaders with setProperties APIs on sync and async File client. Allows users to set file SMB properties and file permission.
+- Added file smb properties and file permission parameters to create APIs on sync and async File and Directory clients.
 
 ## Version 12.0.0-preview.2 (2019-08-08)
 Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
