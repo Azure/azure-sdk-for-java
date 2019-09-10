@@ -44,7 +44,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Hotel myHotel = new Hotel().hotelId(expectedHotelId);
         Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
 
-        indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
+        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, hotelMap);
         Mono<DocumentIndexResult> asyncResult = indexDocumentsAsync(indexActions);
 
         StepVerifier.create(asyncResult).consumeNextWith(res -> {
@@ -68,7 +68,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
 
-        indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
+        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, hotelMap);
         Mono<DocumentIndexResult> asyncResult = indexDocumentsAsync(indexActions);
 
         StepVerifier.create(asyncResult).consumeNextWith(res -> {

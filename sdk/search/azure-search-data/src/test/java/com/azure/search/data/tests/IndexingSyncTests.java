@@ -44,7 +44,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         Hotel myHotel = new Hotel().hotelId(expectedHotelId);
         Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
 
-        indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
+        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, hotelMap);
         List<IndexingResult> result = indexDocumentsSync(indexActions);
 
         Assert.assertEquals(expectedHotelCount, client.countDocuments());
@@ -64,7 +64,7 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
 
-        indexActions.add(new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(hotelMap));
+        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, hotelMap);
         List<IndexingResult> result = indexDocumentsSync(indexActions);
 
         Assert.assertEquals(expectedHotelCount, client.countDocuments());
