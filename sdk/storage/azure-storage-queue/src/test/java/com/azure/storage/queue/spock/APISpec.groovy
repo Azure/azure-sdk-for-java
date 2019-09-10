@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.util.Context
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.QueueClientBuilder
@@ -71,7 +72,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName.toLowerCase()),
-                Duration.ofSeconds(30)).each {
+                Duration.ofSeconds(30), Context.NONE).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
             }
         }

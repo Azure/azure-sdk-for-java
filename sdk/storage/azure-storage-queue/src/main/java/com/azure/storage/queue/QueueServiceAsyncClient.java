@@ -217,7 +217,7 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
-        return listQueuesWithOptionalTimeout(null, options, null, null);
+        return listQueuesWithOptionalTimeout(null, options, null, Context.NONE);
     }
 
     /**

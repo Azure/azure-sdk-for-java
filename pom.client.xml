@@ -170,7 +170,7 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
-          <fork>false</fork>
+          <fork>true</fork>
         </configuration>
         <executions>
           <execution>
@@ -461,7 +461,7 @@
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
-            <fork>false</fork>
+            <fork>true</fork>
           </configuration>
         </plugin>
 
@@ -535,7 +535,7 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
-          <fork>false</fork>
+          <fork>true</fork>
         </configuration>
       </plugin>
       <plugin>
