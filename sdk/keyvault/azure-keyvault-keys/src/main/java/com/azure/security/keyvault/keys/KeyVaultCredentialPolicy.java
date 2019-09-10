@@ -42,7 +42,8 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      * Adds the required header to authenticate a request to Azure Key Vault service.
      *
      * @param context The request context
-     * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy completes.
+     * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy
+     *     completes.
      * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
      */
     @Override
@@ -73,7 +74,8 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
         if (!isValidChallenge(authenticateHeader, authChallengePrefix)) {
             return null;
         }
-        authenticateHeader = authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+        authenticateHeader =
+            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
 
         String[] challenges = authenticateHeader.split(", ");
         Map<String, String> challengeMap = new HashMap<>();

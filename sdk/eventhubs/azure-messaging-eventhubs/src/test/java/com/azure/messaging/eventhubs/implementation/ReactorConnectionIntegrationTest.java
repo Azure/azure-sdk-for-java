@@ -15,9 +15,7 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-public class ReactorConnectionIntegrationTest extends ApiTestBase {
-    private ReactorHandlerProvider handlerProvider;
-
+public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Mock
     private AmqpResponseMapper responseMapper;
 
@@ -36,11 +34,9 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         MockitoAnnotations.initMocks(this);
 
-        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         connection = new ReactorConnection("test-connection-id", getConnectionOptions(),
             getReactorProvider(), handlerProvider, responseMapper);
     }

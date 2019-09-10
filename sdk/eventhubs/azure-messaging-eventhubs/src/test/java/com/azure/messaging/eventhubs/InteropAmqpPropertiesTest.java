@@ -7,7 +7,7 @@ import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -42,7 +42,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class InteropAmqpPropertiesTest extends ApiTestBase {
+public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
 
@@ -84,8 +84,6 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
      */
     @Test
     public void interoperableWithDirectProtonAmqpMessage() {
-        skipIfNotRecordMode();
-
         // Arrange
         final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
         final String messageTrackingValue = UUID.randomUUID().toString();

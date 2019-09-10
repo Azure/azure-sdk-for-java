@@ -21,7 +21,8 @@ import java.util.Set;
  *  No external dependency exposed in public API
  */
 public class ExternalDependencyExposedCheck extends AbstractCheck {
-    private static final String EXTERNAL_DEPENDENCY_ERROR = "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
+    private static final String EXTERNAL_DEPENDENCY_ERROR =
+        "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
     private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "java", "com.azure", "reactor"
     )));
@@ -58,7 +59,8 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.IMPORT:
-                // Add all imported classes into a map, key is the name of class and value is the full package path of class.
+                // Add all imported classes into a map, key is the name of class and value is the full package
+                // path of class.
                 final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
                 final String className = importClassPath.substring(importClassPath.lastIndexOf(".") + 1);
                 simpleClassNameToQualifiedNameMap.put(className, importClassPath);
@@ -67,7 +69,8 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
                 // CLASS_DEF always has MODIFIERS
                 final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(
                     token.findFirstToken(TokenTypes.MODIFIERS));
-                isPublicClass = accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED);
+                isPublicClass =
+                    accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED);
                 break;
             case TokenTypes.METHOD_DEF:
                 if (!isPublicClass) {
@@ -100,14 +103,18 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (typeToken != null) {
             getInvalidReturnTypes(typeToken).forEach(
-                (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName, "return")));
+                (token, returnTypeName) -> log(
+                    token,
+                    String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName, "return")));
         }
 
         // Checks for the parameters of the method
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         if (parametersToken != null) {
             getInvalidParameterTypes(parametersToken).forEach(
-                (token, parameterTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, parameterTypeName, "method argument")));
+                (token, parameterTypeName) -> log(
+                    token,
+                    String.format(EXTERNAL_DEPENDENCY_ERROR, parameterTypeName, "method argument")));
         }
     }
 

@@ -174,7 +174,8 @@ public class EventHubClient implements Closeable {
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
-        final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition, options);
+        final EventHubAsyncConsumer consumer =
+            client.createConsumer(consumerGroup, partitionId, eventPosition, options);
         final Duration timeout = options.retry() == null || options.retry().tryTimeout() == null
             ? defaultConsumerOptions.retry().tryTimeout()
             : options.retry().tryTimeout();

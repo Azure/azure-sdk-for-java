@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileserviceapitestsdeletesharedoesnotexist60915c0ec8b?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileserviceapitestsdeletesharedoesnotexist78128006563?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "ea6b1db3-67d0-4cfe-aed8-d4cf410bd3fa"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "18722e04-c933-4a5d-941b-78caf7628b8e"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -14,13 +14,13 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "e7c18d27-101a-0044-10c2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:e7c18d27-101a-0044-10c2-62ec1a000000\nTime:2019-09-04T01:44:32.9460085Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:44:32 GMT",
-      "x-ms-client-request-id" : "ea6b1db3-67d0-4cfe-aed8-d4cf410bd3fa",
+      "x-ms-request-id" : "36c459c1-601a-0000-6d44-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:36c459c1-601a-0000-6d44-64923b000000\nTime:2019-09-05T23:48:59.4490805Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:48:58 GMT",
+      "x-ms-client-request-id" : "18722e04-c933-4a5d-941b-78caf7628b8e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestsdeletesharedoesnotexist291287a91c9", "fileserviceapitestsdeletesharedoesnotexist60915c0ec8b" ]
+  "variables" : [ "fileserviceapitestsdeletesharedoesnotexist839275f9aa7", "fileserviceapitestsdeletesharedoesnotexist78128006563" ]
 }

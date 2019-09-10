@@ -49,7 +49,8 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility =
+    JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
     private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
 
@@ -543,7 +544,7 @@ public class JsonWebKey {
     private RSAPrivateKeySpec getRSAPrivateKeySpec() {
 
         return new RSAPrivateCrtKeySpec(toBigInteger(n), toBigInteger(e), toBigInteger(d), toBigInteger(p),
-                toBigInteger(q), toBigInteger(dp), toBigInteger(dq), toBigInteger(qi));
+            toBigInteger(q), toBigInteger(dp), toBigInteger(dq), toBigInteger(qi));
     }
 
     /**
@@ -557,7 +558,7 @@ public class JsonWebKey {
         try {
             RSAPublicKeySpec publicKeySpec = getRSAPublicKeySpec();
             KeyFactory factory = provider != null ? KeyFactory.getInstance("RSA", provider)
-                    : KeyFactory.getInstance("RSA");
+                : KeyFactory.getInstance("RSA");
 
             return factory.generatePublic(publicKeySpec);
         } catch (GeneralSecurityException e) {
@@ -576,7 +577,7 @@ public class JsonWebKey {
         try {
             RSAPrivateKeySpec privateKeySpec = getRSAPrivateKeySpec();
             KeyFactory factory = provider != null ? KeyFactory.getInstance("RSA", provider)
-                    : KeyFactory.getInstance("RSA");
+                : KeyFactory.getInstance("RSA");
 
             return factory.generatePrivate(privateKeySpec);
         } catch (GeneralSecurityException e) {
@@ -589,7 +590,7 @@ public class JsonWebKey {
         try {
             ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
             KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider)
-                    : KeyFactory.getInstance("EC", "SunEC");
+                : KeyFactory.getInstance("EC", "SunEC");
             return (ECPublicKey) kf.generatePublic(pubSpec);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
@@ -600,7 +601,7 @@ public class JsonWebKey {
         try {
             ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
             KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider)
-                    : KeyFactory.getInstance("EC", "SunEC");
+                : KeyFactory.getInstance("EC", "SunEC");
             return (ECPrivateKey) kf.generatePrivate(priSpec);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
@@ -652,18 +653,18 @@ public class JsonWebKey {
         if (privateKey != null) {
 
             key = new JsonWebKey().kty(KeyType.RSA).n(toByteArray(privateKey.getModulus()))
-                    .e(toByteArray(privateKey.getPublicExponent()))
-                    .d(toByteArray(privateKey.getPrivateExponent())).p(toByteArray(privateKey.getPrimeP()))
-                    .q(toByteArray(privateKey.getPrimeQ())).dp(toByteArray(privateKey.getPrimeExponentP()))
-                    .dq(toByteArray(privateKey.getPrimeExponentQ()))
-                    .qi(toByteArray(privateKey.getCrtCoefficient()));
+                .e(toByteArray(privateKey.getPublicExponent()))
+                .d(toByteArray(privateKey.getPrivateExponent())).p(toByteArray(privateKey.getPrimeP()))
+                .q(toByteArray(privateKey.getPrimeQ())).dp(toByteArray(privateKey.getPrimeExponentP()))
+                .dq(toByteArray(privateKey.getPrimeExponentQ()))
+                .qi(toByteArray(privateKey.getCrtCoefficient()));
         } else {
 
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
             key = new JsonWebKey().kty(KeyType.RSA).n(toByteArray(publicKey.getModulus()))
-                    .e(toByteArray(publicKey.getPublicExponent())).d(null).p(null).q(null).dp(null)
-                    .dq(null).qi(null);
+                .e(toByteArray(publicKey.getPublicExponent())).d(null).p(null).q(null).dp(null)
+                .dq(null).qi(null);
         }
 
         return key;
@@ -768,7 +769,7 @@ public class JsonWebKey {
 
             if (includePrivateParameters) {
                 realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider),
-                        getECPrivateKey(d, aspec, provider));
+                    getECPrivateKey(d, aspec, provider));
             } else {
                 realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), null);
             }
@@ -794,12 +795,12 @@ public class JsonWebKey {
 
         if (apriv != null) {
             return new JsonWebKey().kty(KeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
-                    .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
-                    .d(apriv.getS().toByteArray()).kty(KeyType.EC);
+                .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
+                .d(apriv.getS().toByteArray()).kty(KeyType.EC);
         } else {
             return new JsonWebKey().kty(KeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
-                    .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
-                    .kty(KeyType.EC);
+                .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
+                .kty(KeyType.EC);
         }
     }
 
@@ -812,7 +813,7 @@ public class JsonWebKey {
             EllipticCurve crv = spec.getCurve();
 
             List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384,
-                    KeyCurveName.P_521, KeyCurveName.P_256K);
+                KeyCurveName.P_521, KeyCurveName.P_256K);
 
             for (KeyCurveName curve : curveList) {
                 ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
@@ -882,7 +883,7 @@ public class JsonWebKey {
      *
      * @param jwk The other {@link JsonWebKey} to compare with.
      * @return true if this {@link JsonWebKey} is the same as the jwk argument;
-     *         false otherwise.
+     *     false otherwise.
      */
     public boolean equals(JsonWebKey jwk) {
         if (jwk == null) {
@@ -981,7 +982,8 @@ public class JsonWebKey {
         }
 
         if (keyOps != null) {
-            final Set<KeyOperation> set = new HashSet<KeyOperation>(Collections.unmodifiableList(Arrays.asList(KeyOperation.values())));
+            final Set<KeyOperation> set =
+                new HashSet<KeyOperation>(Collections.unmodifiableList(Arrays.asList(KeyOperation.values())));
             for (int i = 0; i < keyOps.size(); i++) {
                 if (!set.contains(keyOps.get(i))) {
                     return false;

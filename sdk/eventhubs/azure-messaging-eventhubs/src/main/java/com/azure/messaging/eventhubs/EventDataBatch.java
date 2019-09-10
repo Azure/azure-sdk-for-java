@@ -75,10 +75,10 @@ public final class EventDataBatch {
      *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
-     *         the batch.
+     *     the batch.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
      * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link
-     *         EventDataBatch}.
+     *     EventDataBatch}.
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
@@ -90,7 +90,8 @@ public final class EventDataBatch {
             size = getSize(eventData, events.isEmpty());
         } catch (BufferOverflowException exception) {
             throw logger.logExceptionAsWarning(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                    maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
         }
 
@@ -194,7 +195,8 @@ public final class EventDataBatch {
                             message.setReplyToGroupId((String) value);
                             break;
                         default:
-                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
+                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
+                                "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)

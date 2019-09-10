@@ -202,7 +202,7 @@ jobs:
           ProfileFlag: ''
         Windows - Java 8:
           OSName: 'Windows'
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
           ProfileFlag: ''
         Linux - Java LTS:
@@ -217,7 +217,7 @@ jobs:
           ProfileFlag: '-Djava-lts'
         Windows - Java LTS:
           OSName: 'Windows'
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
           ProfileFlag: '-Djava-lts'
 

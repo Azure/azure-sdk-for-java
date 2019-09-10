@@ -48,7 +48,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 @Immutable
 public class EventHubAsyncConsumer implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubAsyncConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
+    private static final AtomicReferenceFieldUpdater<EventHubAsyncConsumer, AmqpReceiveLink>
+        RECEIVE_LINK_FIELD_UPDATER =
         AtomicReferenceFieldUpdater.newUpdater(EventHubAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
@@ -125,7 +126,8 @@ public class EventHubAsyncConsumer implements Closeable {
                     ? MAXIMUM_REQUEST
                     : (int) request;
 
-                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
+                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(),
+                    newRequest);
                 creditsToRequest.set(newRequest);
             });
     }

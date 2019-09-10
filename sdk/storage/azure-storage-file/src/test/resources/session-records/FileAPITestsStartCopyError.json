@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror350690ec0619e663d4f?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsstartcopyerror11872e181b2f0cf9947?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "c1ce1a05-4ec4-4fd8-b678-eabee45af890"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "0ffa0f98-a426-4912-92ee-652f968ac7a6"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D730D95879B550\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:43:54 GMT",
+      "ETag" : "\"0x8D7325B6A39D088\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:47:30 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "e7c18970-101a-0044-19c2-62ec1a000000",
-      "Date" : "Wed, 04 Sep 2019 01:43:54 GMT",
-      "x-ms-client-request-id" : "c1ce1a05-4ec4-4fd8-b678-eabee45af890"
+      "x-ms-request-id" : "07339974-301a-000d-1044-645aef000000",
+      "Date" : "Thu, 05 Sep 2019 23:47:29 GMT",
+      "x-ms-client-request-id" : "0ffa0f98-a426-4912-92ee-652f968ac7a6"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror350690ec0619e663d4f/fileapitestsstartcopyerror59408769e1db85bf242",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsstartcopyerror11872e181b2f0cf9947/fileapitestsstartcopyerror001799143c11ac35048",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "fe07f748-2bb3-4f44-ba54-ed649ca27a82"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "4a5baec1-8eae-4990-94a0-6792ac5afc0a"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "2189138948451189390*13168958551941065216",
+      "x-ms-file-permission-key" : "15581347578553677299*8114634751575874941",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-04T01:43:54.7074064Z",
-      "Last-Modified" : "Wed, 04 Sep 2019 01:43:54 GMT",
+      "x-ms-file-creation-time" : "2019-09-05T23:47:30.3017030Z",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:47:30 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Sep 2019 01:43:54 GMT",
-      "ETag" : "\"0x8D730D958809A10\"",
+      "Date" : "Thu, 05 Sep 2019 23:47:29 GMT",
+      "ETag" : "\"0x8D7325B6A4C5E46\"",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-09-04T01:43:54.7074064Z",
+      "x-ms-file-change-time" : "2019-09-05T23:47:30.3017030Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "e7c18972-101a-0044-1ac2-62ec1a000000",
-      "x-ms-client-request-id" : "fe07f748-2bb3-4f44-ba54-ed649ca27a82",
-      "x-ms-file-last-write-time" : "2019-09-04T01:43:54.7074064Z"
+      "x-ms-request-id" : "07339977-301a-000d-1244-645aef000000",
+      "x-ms-client-request-id" : "4a5baec1-8eae-4990-94a0-6792ac5afc0a",
+      "x-ms-file-last-write-time" : "2019-09-05T23:47:30.3017030Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror350690ec0619e663d4f/fileapitestsstartcopyerror59408769e1db85bf242",
+    "Uri" : "https://gapradev.file.core.windows.net/fileapitestsstartcopyerror11872e181b2f0cf9947/fileapitestsstartcopyerror001799143c11ac35048",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "a1d539fa-9241-4d0a-aa4a-51c168511f1b"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "c7e5142a-defa-4268-aec5-ae8e7d2b5895"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "330",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e7c18973-101a-0044-1bc2-62ec1a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:e7c18973-101a-0044-1bc2-62ec1a000000\nTime:2019-09-04T01:43:54.7493102Z</Message><HeaderName>x-ms-copy-source</HeaderName><HeaderValue>some url</HeaderValue></Error>",
-      "Date" : "Wed, 04 Sep 2019 01:43:54 GMT",
-      "x-ms-client-request-id" : "a1d539fa-9241-4d0a-aa4a-51c168511f1b",
+      "x-ms-request-id" : "07339978-301a-000d-1344-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:07339978-301a-000d-1344-645aef000000\nTime:2019-09-05T23:47:30.8151149Z</Message><HeaderName>x-ms-copy-source</HeaderName><HeaderValue>some url</HeaderValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:47:30 GMT",
+      "x-ms-client-request-id" : "c7e5142a-defa-4268-aec5-ae8e7d2b5895",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileapitestsstartcopyerror350690ec0619e663d4f", "fileapitestsstartcopyerror59408769e1db85bf242" ]
+  "variables" : [ "fileapitestsstartcopyerror11872e181b2f0cf9947", "fileapitestsstartcopyerror001799143c11ac35048" ]
 }

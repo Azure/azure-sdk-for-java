@@ -26,14 +26,15 @@ import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListContainersOptions
-import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -122,6 +123,7 @@ class APISpec extends Specification {
     BlobServiceClient premiumBlobServiceClient
 
     private InterceptorManager interceptorManager
+    private boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
 
@@ -141,6 +143,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // If the test doesn't have the Requires tag record it in live mode.
+        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -204,46 +209,48 @@ class APISpec extends Specification {
             accountKey = "astorageaccountkey"
         }
 
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new SharedKeyCredential(accountName, accountKey)
+    if (accountName == null || accountKey == null) {
+        logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+        return null
     }
 
-    BlobServiceClient setClient(SharedKeyCredential credential) {
-        try {
-            return getServiceClient(credential)
-        } catch (Exception ex) {
-            return null
-        }
+    return new SharedKeyCredential(accountName, accountKey)
+}
+
+BlobServiceClient setClient(SharedKeyCredential credential) {
+    try {
+        return getServiceClient(credential)
+    } catch (Exception ex) {
+        return null
     }
+}
 
-    def getOAuthServiceClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
-            .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+def getOAuthServiceClient() {
+    BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+        .httpClient(getHttpClient())
+        .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+    if (testMode == TestMode.RECORD) {
+        if (recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(primaryCredential).buildClient()
         }
-    }
 
-    BlobServiceClient getServiceClient(String endpoint) {
-        return getServiceClient(null, endpoint, null)
+        // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+        return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+    } else {
+        // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+        return builder.credential(primaryCredential).buildClient()
     }
+}
 
-    BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
-    }
+BlobServiceClient getServiceClient(String endpoint) {
+    return getServiceClient(null, endpoint, null)
+}
+
+BlobServiceClient getServiceClient(SharedKeyCredential credential) {
+    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
+}
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
         return getServiceClient(credential, endpoint, null)
@@ -274,14 +281,19 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        addOptionalRecording(builder)
 
         if (credential != null) {
             builder.credential(credential)
         }
 
+        return builder
+    }
+
+    def addOptionalRecording(BaseClientBuilder<? extends BaseClientBuilder> builder) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
         return builder
     }
 
@@ -291,7 +303,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -305,7 +317,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -324,7 +336,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -341,7 +353,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -355,7 +367,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -372,7 +384,7 @@ class APISpec extends Specification {
             builder.credential(credential)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -388,7 +400,7 @@ class APISpec extends Specification {
                 builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
-            return builder.build();
+            return builder.build()
         } else {
             return interceptorManager.getPlaybackClient()
         }
@@ -448,7 +460,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bc, String match) {
         if (match == receivedEtag) {
-            return bc.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return bc.getProperties().eTag()
         } else {
             return match
         }
@@ -456,7 +468,7 @@ class APISpec extends Specification {
 
     def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
         if (match == receivedEtag) {
-            return bac.getPropertiesWithResponse(null, null).block().headers().value("ETag")
+            return bac.getProperties().block().eTag()
         } else {
             return match
         }
@@ -502,7 +514,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return cu.getProperties().eTag()
         } else {
             return match
         }
@@ -510,7 +522,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
+            return cu.acquireLease(null, -1)
         } else {
             return leaseID
         }
@@ -607,19 +619,6 @@ class APISpec extends Specification {
             response.value().contentLanguage() == contentLanguage &&
             response.value().contentMD5() == contentMD5 &&
             response.headers().value("Content-Type") == contentType
-    }
-
-    Metadata getMetadataFromHeaders(HttpHeaders headers) {
-        Metadata metadata = new Metadata()
-
-        for (Map.Entry<String, String> header : headers.toMap()) {
-            if (header.getKey().startsWith("x-ms-meta-")) {
-                String metadataKey = header.getKey().substring(10)
-                metadata.put(metadataKey, header.getValue())
-            }
-        }
-
-        return metadata
     }
 
     def enableSoftDelete() {

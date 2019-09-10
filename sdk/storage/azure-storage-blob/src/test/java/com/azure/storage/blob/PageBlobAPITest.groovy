@@ -60,7 +60,7 @@ class PageBlobAPITest extends APISpec {
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2, null, null, null, null, null)
 
         then:
-        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-sequence-number")) == 2
+        bc.getProperties().blobSequenceNumber() == 2
     }
 
     @Unroll
@@ -836,7 +836,7 @@ class PageBlobAPITest extends APISpec {
         def response = bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, null, null, null)
 
         expect:
-        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("Content-Length")) == PageBlobClient.PAGE_BYTES * 2
+        bc.getProperties().blobSize() == PageBlobClient.PAGE_BYTES * 2
         validateBasicHeaders(response.headers())
         response.value().blobSequenceNumber() != null
     }
@@ -913,7 +913,7 @@ class PageBlobAPITest extends APISpec {
         Response<PageBlobItem> response = bc.updateSequenceNumberWithResponse(action, number, null, null, null)
 
         expect:
-        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-sequence-number")) == result
+        bc.getProperties().blobSequenceNumber() == result
         validateBasicHeaders(response.headers())
         response.value().blobSequenceNumber() == result
 
@@ -998,22 +998,22 @@ class PageBlobAPITest extends APISpec {
         def snapId = bc.createSnapshot().getSnapshotId()
 
         def copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapId, null, null, null)
-        def status = copyResponse.value().toString()
 
-        OffsetDateTime start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bc2.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
+        def status = copyResponse.value()
+        def start = OffsetDateTime.now()
+        while (status != CopyStatusType.SUCCESS) {
+            status = bc2.getProperties().copyStatus()
             OffsetDateTime currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
             sleepIfRecord(1000)
         }
 
         expect:
-        Response<BlobProperties> propertiesResponse = bc2.getPropertiesWithResponse(null, null, null)
-        Boolean.parseBoolean(propertiesResponse.headers().value("x-ms-incremental-copy"))
-        propertiesResponse.headers().value("x-ms-copy-destination-snapshot") != null
+        def properties = bc2.getProperties()
+        properties.isIncrementalCopy()
+        properties.copyDestinationSnapshot() != null
         validateBasicHeaders(copyResponse.headers())
         copyResponse.headers().value("x-ms-copy-id") != null
         copyResponse.value() != null
@@ -1037,13 +1037,13 @@ class PageBlobAPITest extends APISpec {
         String snapshot = bc.createSnapshot().getSnapshotId()
 
         def copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null)
-        def status = copyResponse.value().toString()
 
-        OffsetDateTime start = OffsetDateTime.now()
-        while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu2.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
+        def status = copyResponse.value()
+        def start = OffsetDateTime.now()
+        while (status != CopyStatusType.SUCCESS) {
+            status = bu2.getProperties().copyStatus()
             OffsetDateTime currentTime = OffsetDateTime.now()
-            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
             }
             sleepIfRecord(1000)

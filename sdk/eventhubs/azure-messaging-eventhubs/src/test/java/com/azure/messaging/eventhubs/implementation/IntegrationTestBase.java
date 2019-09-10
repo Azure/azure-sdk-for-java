@@ -12,8 +12,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
-import org.apache.qpid.proton.reactor.Reactor;
-import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -28,29 +26,25 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 /**
- * Test base for running live and offline tests.
+ * Test base for running integration tests.
  */
-public abstract class ApiTestBase extends TestBase {
+public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
     protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().tryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
-    private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummyaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=non-existent-hub;";
 
     private ConnectionStringProperties properties;
-    private Reactor reactor = mock(Reactor.class);
     private TokenCredential tokenCredential;
     private ReactorProvider reactorProvider;
     private ConnectionOptions connectionOptions;
     private TransportType transportType;
+    private Scheduler scheduler;
 
-    protected ApiTestBase(ClientLogger logger) {
+    protected IntegrationTestBase(ClientLogger logger) {
         this.transportType = TransportType.AMQP;
         this.logger = logger;
     }
@@ -59,14 +53,12 @@ public abstract class ApiTestBase extends TestBase {
     @Override
     @Before
     public void setupTest() {
-        logger.info("[{}]: Performing test set-up.", testName());
+        logger.info("[{}]: Performing integration test set-up.", testName());
 
-        final Scheduler scheduler = Schedulers.newParallel("AMQPConnection");
-        final String connectionString = getTestMode() == TestMode.RECORD
-            ? CONNECTION_STRING
-            : TEST_CONNECTION_STRING;
+        skipIfNotRecordMode();
 
-        properties = new ConnectionStringProperties(connectionString);
+        scheduler = Schedulers.newParallel("AMQPConnection");
+        properties = new ConnectionStringProperties(getConnectionString());
         reactorProvider = new ReactorProvider();
 
         try {
@@ -74,17 +66,6 @@ public abstract class ApiTestBase extends TestBase {
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             Assert.fail("Could not create tokenProvider :" + e);
-        }
-
-        if (getTestMode() != TestMode.RECORD) {
-            when(reactor.selectable()).thenReturn(mock(Selectable.class));
-            ReactorDispatcher reactorDispatcher = null;
-            try {
-                reactorDispatcher = new ReactorDispatcher(reactor);
-            } catch (IOException e) {
-                Assert.fail("Could not create dispatcher: " + e);
-            }
-            reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         }
 
         connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubName(),
@@ -99,8 +80,11 @@ public abstract class ApiTestBase extends TestBase {
     @After
     public void teardownTest() {
         logger.info("[{}]: Performing test clean-up.", testName());
-
         afterTest();
+
+        if (scheduler != null) {
+            scheduler.dispose();
+        }
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -121,7 +105,7 @@ public abstract class ApiTestBase extends TestBase {
     }
 
     protected String getConnectionString() {
-        return getTestMode() == TestMode.RECORD ? CONNECTION_STRING : TEST_CONNECTION_STRING;
+        return CONNECTION_STRING;
     }
 
     protected void skipIfNotRecordMode() {
@@ -144,10 +128,6 @@ public abstract class ApiTestBase extends TestBase {
         return tokenCredential;
     }
 
-    protected Reactor getReactor() {
-        return reactor;
-    }
-
     protected ReactorProvider getReactorProvider() {
         return reactorProvider;
     }
@@ -166,9 +146,7 @@ public abstract class ApiTestBase extends TestBase {
             return;
         }
 
-        for (int i = 0; i < closeables.length; i++) {
-            final Closeable closeable = closeables[i];
-
+        for (final Closeable closeable : closeables) {
             if (closeable == null) {
                 continue;
             }
