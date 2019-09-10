@@ -391,7 +391,7 @@ public final class CertificatePolicy {
         }
 
         keyOptions
-            .enhancedKeyUsage(x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")): null)
+            .enhancedKeyUsage(x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")) : null)
             .keyUsage(x509Props.containsKey("key_usage") ? parseKeyUsage((List<Object>) x509Props.get("key_usage")) : null);
     }
 
