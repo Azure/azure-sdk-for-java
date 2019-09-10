@@ -72,6 +72,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.create}
+     *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
     public Mono<AppendBlobItem> create() {
@@ -80,6 +84,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions}
+     *
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -105,6 +114,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#Flux-long}
+     *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
@@ -121,6 +135,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions}
+     *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
@@ -150,6 +169,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Commits a new block of data from another blob to the end of this append blob.
+     *
+     *  <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrl#URL-BlobRange}
+     *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
@@ -164,6 +188,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Commits a new block of data from another blob to the end of this append blob.
+     *
+     *  <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
+     *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
