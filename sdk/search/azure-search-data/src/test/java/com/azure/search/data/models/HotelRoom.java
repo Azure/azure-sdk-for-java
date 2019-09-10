@@ -117,7 +117,7 @@ public class HotelRoom {
             Objects.equals(bedOptions, hotelRoom.bedOptions) &&
             Objects.equals(sleepsCount, hotelRoom.sleepsCount) &&
             Objects.equals(smokingAllowed, hotelRoom.smokingAllowed) &&
-            Objects.equals(tags, hotelRoom.tags);
+            ModelComparer.collectionEquals(tags, hotelRoom.tags);
     }
 
     @Override
