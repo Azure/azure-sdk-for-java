@@ -86,6 +86,10 @@ public final class BlobServiceAsyncClient {
      * create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String}
+     *
      * @param containerName The name of the container to point to.
      * @return A {@link ContainerAsyncClient} object pointing to the specified container
      */
@@ -110,6 +114,10 @@ public final class BlobServiceAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String}
+     *
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link ContainerAsyncClient} used to interact with the container created.
      */
@@ -121,6 +129,10 @@ public final class BlobServiceAsyncClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType}
      *
      * @param containerName Name of the container to create
      * @param metadata {@link Metadata}
@@ -144,6 +156,9 @@ public final class BlobServiceAsyncClient {
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteContainer#String}
      *
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
@@ -156,6 +171,10 @@ public final class BlobServiceAsyncClient {
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context}
      *
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
@@ -186,6 +205,10 @@ public final class BlobServiceAsyncClient {
      * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information,
      * see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listContainers}
+     *
      * @return A reactive response emitting the list of containers.
      */
     public PagedFlux<ContainerItem> listContainers() {
@@ -195,6 +218,10 @@ public final class BlobServiceAsyncClient {
     /**
      * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information,
      * see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions}
      *
      * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of containers.
@@ -263,6 +290,10 @@ public final class BlobServiceAsyncClient {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getProperties}
+     *
      * @return A reactive response containing the storage account properties.
      */
     public Mono<StorageServiceProperties> getProperties() {
@@ -272,6 +303,10 @@ public final class BlobServiceAsyncClient {
     /**
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse}
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the storage
      * account properties.
@@ -292,11 +327,15 @@ public final class BlobServiceAsyncClient {
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties}
+     *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
      */
     public Mono<Void> setProperties(StorageServiceProperties properties) {
-        return setPropertiesWithReponse(properties).flatMap(FluxUtil::toMono);
+        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -304,15 +343,18 @@ public final class BlobServiceAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties}
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
      */
-    public Mono<VoidResponse> setPropertiesWithReponse(StorageServiceProperties properties) {
-        return withContext(context -> setPropertiesWithReponse(properties, context));
+    public Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties) {
+        return withContext(context -> setPropertiesWithResponse(properties, context));
     }
 
-    Mono<VoidResponse> setPropertiesWithReponse(StorageServiceProperties properties, Context context) {
+    Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
         return postProcessResponse(
             this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context))
             .map(VoidResponse::new);
@@ -321,6 +363,10 @@ public final class BlobServiceAsyncClient {
     /**
      * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
      * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -334,6 +380,10 @@ public final class BlobServiceAsyncClient {
     /**
      * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
      * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime}
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -366,6 +416,10 @@ public final class BlobServiceAsyncClient {
      * the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getStatistics}
+     *
      * @return A {@link Mono} containing the storage account statistics.
      */
     public Mono<StorageServiceStats> getStatistics() {
@@ -377,6 +431,10 @@ public final class BlobServiceAsyncClient {
      * endpoint when read-access geo-redundant replication is enabled for the storage account. For more information, see
      * the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse}
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} containing the storage
      * account statistics.
@@ -394,6 +452,9 @@ public final class BlobServiceAsyncClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo}
      *
      * @return A {@link Mono} containing containing the storage account info.
      */
@@ -404,6 +465,10 @@ public final class BlobServiceAsyncClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse}
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} the storage account
      * info.
