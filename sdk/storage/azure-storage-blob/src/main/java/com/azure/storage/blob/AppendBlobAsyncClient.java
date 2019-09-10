@@ -196,6 +196,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
                 destAccessConditions.leaseAccessConditions(),
                 destAccessConditions.appendPositionAccessConditions(),
                 destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders(),
+                rb.headers().value("x-ms-request-server-encrypted"))));
     }
 }
