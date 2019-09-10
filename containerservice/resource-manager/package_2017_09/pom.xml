@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure.containerservice-package-2017-09</groupId>
     <parent>
-        <groupId>com.microsoft.azure</groupId>
+        <groupId>com.microsoft.azure.containerservice-package-2017-09</groupId>
         <artifactId>azure-mgmt-containerservice-parent</artifactId>
         <version>1.0.0-beta</version>
         <relativePath>../pom.xml</relativePath>
@@ -52,17 +52,17 @@
         <dependency>
             <groupId>com.microsoft.azure.containerservice-2017-09-30</groupId>
             <artifactId>azure-mgmt-containerservice</artifactId>
-            <version>1.0.0-beta</version>
+            <version>1.0.0-beta-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure.containerservice-2017-08-31</groupId>
             <artifactId>azure-mgmt-containerservice</artifactId>
-            <version>1.0.0-beta</version>
+            <version>1.0.0-beta-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure.containerservice-2017-07-01</groupId>
             <artifactId>azure-mgmt-containerservice</artifactId>
-            <version>1.0.0-beta</version>
+            <version>1.0.0-beta-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

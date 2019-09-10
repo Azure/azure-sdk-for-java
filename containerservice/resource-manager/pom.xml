@@ -5,6 +5,7 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.microsoft.azure.containerservice-package-2017-09</groupId>
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
@@ -13,7 +14,7 @@
     </parent>
     <artifactId>azure-mgmt-containerservice-parent</artifactId>
     <version>1.0.0-beta</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>Microsoft Azure SDK for ContainerService Management</name>
     <description>This package contains Microsoft ContainerService Management SDK.</description>
     <url>https://github.com/Azure/azure-libraries-for-java</url>
