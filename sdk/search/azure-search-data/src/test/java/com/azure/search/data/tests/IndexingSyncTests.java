@@ -12,7 +12,6 @@ import com.azure.search.data.models.Hotel;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
