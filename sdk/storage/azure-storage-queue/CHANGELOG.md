@@ -17,6 +17,7 @@ and
 - Added validation policy to check the equality of request client id between request and response.
 - Upgraded to use service version 2019-02-02 from 2018-11-09.
 - Replaced `ByteBuf` with `ByteBuffer` and removed dependency on `Netty`.
+- Added `azure-storage-common` as a dependency.
 
 **Breaking changes: New API design**
 - Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
