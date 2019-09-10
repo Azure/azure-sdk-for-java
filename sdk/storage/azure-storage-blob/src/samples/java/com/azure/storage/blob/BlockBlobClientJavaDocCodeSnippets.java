@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.Context;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -13,15 +15,12 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 
-import com.azure.core.util.Context;
-
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -36,7 +35,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private BlockBlobClient client = JavaDocCodeSnippetsHelpers.getBlobClient("blobName")
         .asBlockBlobClient();
 
-    private InputStream data = new ByteArrayInputStream("data".getBytes("UTF-8"));
+    private InputStream data = new ByteArrayInputStream("data".getBytes(StandardCharsets.UTF_8));
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);
     private String leaseId = "leaseId";
@@ -48,9 +47,8 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
     /**
      *
-     * @throws UnsupportedEncodingException when failing parsing sample string
      */
-    public BlockBlobClientJavaDocCodeSnippets() throws UnsupportedEncodingException {
+    public BlockBlobClientJavaDocCodeSnippets() {
     }
 
     /**
@@ -66,14 +64,14 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHTTPHeaders, Metadata, BlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration, Context)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void upload2() throws IOException {
-        // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -85,9 +83,11 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
-            .encodeToString(client.uploadWithResponse(data, length, headers, metadata, accessConditions, timeout, context)
-                .value().contentMD5()));
-        // END: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+            .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
+                accessConditions, timeout, context)
+                .value()
+                .contentMD5()));
+        // END: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
     }
 
     /**
@@ -107,14 +107,14 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, BlobHTTPHeaders, Metadata, BlobAccessConditions, Duration)}
+     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -125,12 +125,12 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         try {
-            client.uploadFromFile(filePath, headers, metadata, accessConditions, timeout);
+            client.uploadFromFile(filePath, headers, metadata, AccessTier.HOT, accessConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
     }
 
     /**
@@ -216,20 +216,18 @@ public class BlockBlobClientJavaDocCodeSnippets {
      */
     public void commitBlockList() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.commitBlockList#List
-        System.out.printf("Committing block list completed. Last modified: %d%n",
+        System.out.printf("Committing block list completed. Last modified: %s%n",
             client.commitBlockList(Collections.singletonList(base64BlockID)).lastModified());
         // END: com.azure.storage.blob.BlockBlobClient.commitBlockList#List
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Metadata, BlobAccessConditions, Duration, Context)}
-     *
-     * @throws UnsupportedEncodingException if there is an error while getting bytes from sample string
+     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration, Context)}
      */
-    public void commitBlockList2() throws UnsupportedEncodingException {
-        // BEGIN: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+    public void commitBlockList2() {
+        // BEGIN: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -242,7 +240,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
-                accessConditions, timeout, context).statusCode());
-        // END: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+                AccessTier.HOT, accessConditions, timeout, context).statusCode());
+        // END: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
     }
 }

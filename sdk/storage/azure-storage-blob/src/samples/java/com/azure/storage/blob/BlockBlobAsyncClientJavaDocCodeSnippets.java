@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -12,13 +13,11 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
@@ -32,7 +31,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     private BlockBlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName")
         .asBlockBlobAsyncClient();
 
-    private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes("UTF-8")));
+    private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes(StandardCharsets.UTF_8)));
     private long length = 4L;
     private String leaseId = "leaseId";
     private String filePath = "filePath";
@@ -45,9 +44,8 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
     /**
      *
-     * @throws UnsupportedEncodingException when failing parsing the sample string
      */
-    public BlockBlobAsyncClientJavaDocCodeSnippets() throws UnsupportedEncodingException {
+    public BlockBlobAsyncClientJavaDocCodeSnippets() {
     }
 
     /**
@@ -62,14 +60,12 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHTTPHeaders, Metadata, BlobAccessConditions)}
-     *
-     * @throws UnsupportedEncodingException if there is an error while getting bytes from sample string
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
      */
-    public void upload2() throws UnsupportedEncodingException {
-        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-BlobAccessConditions
+    public void upload2() {
+        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -79,10 +75,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
-        client.uploadWithResponse(data, length, headers, metadata, accessConditions).subscribe(response ->
-            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
+            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.value().contentMD5())));
-        // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
     /**
@@ -97,14 +93,12 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, int, int, BlobHTTPHeaders, Metadata, BlobAccessConditions)}
-     *
-     * @throws UnsupportedEncodingException if there is an error while getting bytes from sample string
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, int, int, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
      */
-    public void upload4() throws UnsupportedEncodingException {
-        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-BlobAccessConditions
+    public void upload4() {
+        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -114,10 +108,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
-        client.uploadWithResponse(data, blockSize, numBuffers, headers, metadata, accessConditions).subscribe(response ->
-            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+        client.uploadWithResponse(data, blockSize, numBuffers, headers, metadata, AccessTier.HOT, accessConditions)
+            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.value().contentMD5())));
-        // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
     /**
@@ -132,14 +126,12 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadFromFile(String, Integer, BlobHTTPHeaders, Metadata, BlobAccessConditions)}
-     *
-     * @throws UnsupportedEncodingException if there is an error while getting bytes from sample string
+     * Code snippet for {@link BlockBlobAsyncClient#uploadFromFile(String, Integer, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
      */
-    public void uploadFromFile2() throws UnsupportedEncodingException {
-        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-BlobAccessConditions
+    public void uploadFromFile2() {
+        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -150,10 +142,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE,
-            headers, metadata, accessConditions)
+            headers, metadata, AccessTier.HOT, accessConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
     /**
@@ -163,7 +155,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlock#String-Flux-long
         client.stageBlock(base64BlockID, data, length)
             .subscribe(
-                response -> System.out.printf("Staging block completed"),
+                response -> System.out.println("Staging block completed"),
                 error -> System.out.printf("Error when calling stage Block: %s", error));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlock#String-Flux-long
     }
@@ -186,7 +178,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURL#String-URL-BlobRange
         client.stageBlockFromURL(base64BlockID, sourceURL, new BlobRange(offset, count))
             .subscribe(
-                response -> System.out.printf("Staging block completed"),
+                response -> System.out.println("Staging block completed"),
                 error -> System.out.printf("Error when calling stage Block: %s", error));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURL#String-URL-BlobRange
     }
@@ -245,19 +237,17 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void commitBlockList() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockList#List
         client.commitBlockList(Collections.singletonList(base64BlockID)).subscribe(response ->
-            System.out.printf("Committing block list completed. Last modified: %d%n", response.lastModified()));
+            System.out.printf("Committing block list completed. Last modified: %s%n", response.lastModified()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockList#List
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Metadata, BlobAccessConditions)}
-     *
-     * @throws UnsupportedEncodingException if there is an error while getting bytes from sample string
+     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
      */
-    public void commitBlockList2() throws UnsupportedEncodingException {
-        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-BlobAccessConditions
+    public void commitBlockList2() {
+        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes("UTF-8"))
+            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .blobContentLanguage("en-US")
             .blobContentType("binary");
 
@@ -266,9 +256,9 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
-        client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata, accessConditions)
-            .subscribe(response -> System.out.printf("Committing block list completed with status %d%n",
-                response.statusCode()));
-        // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-BlobAccessConditions
+        client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
+            AccessTier.HOT, accessConditions).subscribe(response ->
+                System.out.printf("Committing block list completed with status %d%n", response.statusCode()));
+        // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 }
