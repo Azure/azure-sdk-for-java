@@ -170,11 +170,11 @@ public class CertificateClient {
      * Gets information about the certificate which represents the {@link CertificateBase} from the key vault. This
      * operation requires the certificates/get permission.
      *
-     * <p>The list operations {@link CertificateAsyncClient#listCertificates()} and {@link CertificateAsyncClient#listCertificateVersions(String)} return
+     * <p>The list operations {@link CertificateClient#listCertificates()} and {@link CertificateClient#listCertificateVersions(String)} return
      * the {@link PagedIterable} containing {@link CertificateBase} as output excluding the properties like secretId and keyId of the certificate.
      * This operation can then be used to get the full certificate with its properties excluding the policy from {@code certificateBase}.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#CertificateBase}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificate#CertificateBase}
      *
      * @param certificateBase The {@link CertificateBase} holding attributes of the certificate being requested.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateBase#name() name} and {@link CertificateBase#version() version} doesn't exist in the key vault.
@@ -195,7 +195,7 @@ public class CertificateClient {
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-String-Context}
      *
      * @param name The name of the certificate to retrieve, cannot be null
-     * @param version The version of the certificate to retrieve. If this is an empty String or null, this call is equivalent to calling {@link CertificateAsyncClient#getCertificateWithPolicy(String)}, with the latest version being retrieved.
+     * @param version The version of the certificate to retrieve. If this is an empty String or null, this call is equivalent to calling {@link CertificateClient#getCertificateWithPolicy(String)}, with the latest version being retrieved.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -215,7 +215,7 @@ public class CertificateClient {
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificate#String-String}
      *
      * @param name The name of the certificate to retrieve, cannot be null
-     * @param version The version of the certificate to retrieve. If this is an empty String or null, this call is equivalent to calling {@link CertificateAsyncClient#getCertificateWithPolicy(String)}, with the latest version being retrieved.
+     * @param version The version of the certificate to retrieve. If this is an empty String or null, this call is equivalent to calling {@link CertificateClient#getCertificateWithPolicy(String)}, with the latest version being retrieved.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
      * @return The requested {@link Certificate certificate}.
@@ -370,7 +370,6 @@ public class CertificateClient {
      * @param name The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link VoidResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedCertificateWithResponse(String name) {
@@ -523,7 +522,7 @@ public class CertificateClient {
 
     /**
      * List certificates in a the key vault. Retrieves the set of certificates resources in the key vault and the individual
-     * certificate response in the flux is represented by {@link CertificateBase} as only the certificate identifier, thumbprint,
+     * certificate response in the iterable is represented by {@link CertificateBase} as only the certificate identifier, thumbprint,
      * attributes and tags are provided in the response. The policy and individual certificate versions are not listed in
      * the response. This operation requires the certificates/list permission.
      *
@@ -542,7 +541,7 @@ public class CertificateClient {
 
     /**
      * List certificates in a the key vault. Retrieves the set of certificates resources in the key vault and the individual
-     * certificate response in the flux is represented by {@link CertificateBase} as only the certificate identifier, thumbprint,
+     * certificate response in the iterable is represented by {@link CertificateBase} as only the certificate identifier, thumbprint,
      * attributes and tags are provided in the response. The policy and individual certificate versions are not listed in
      * the response. This operation requires the certificates/list permission.
      *
@@ -600,7 +599,7 @@ public class CertificateClient {
     }
 
     /**
-     * List all versions of the specified certificate. The individual certificate response in the flux is represented by {@link CertificateBase}
+     * List all versions of the specified certificate. The individual certificate response in the iterable is represented by {@link CertificateBase}
      * as only the certificate identifier, thumbprint, attributes and tags are provided in the response. The policy is not listed in
      * the response. This operation requires the certificates/list permission.
      *
@@ -621,7 +620,7 @@ public class CertificateClient {
     }
 
     /**
-     * List all versions of the specified certificate. The individual certificate response in the flux is represented by {@link CertificateBase}
+     * List all versions of the specified certificate. The individual certificate response in the iterable is represented by {@link CertificateBase}
      * as only the certificate identifier, thumbprint, attributes and tags are provided in the response. The policy is not listed in
      * the response. This operation requires the certificates/list permission.
      *
@@ -635,7 +634,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link PagedIterable} containing {@link CertificateBase certificate} of all the versions of the specified certificate in the vault. Flux is empty if certificate with {@code name} does not exist in key vault.
+     * @return A {@link PagedIterable} containing {@link CertificateBase certificate} of all the versions of the specified certificate in the vault. Iterable is empty if certificate with {@code name} does not exist in key vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateBase> listCertificateVersions(String name, Context context) {
@@ -830,7 +829,7 @@ public class CertificateClient {
      * Gets information about the certificate issuer which represents the {@link IssuerBase} from the key vault. This operation
      * requires the certificates/manageissuers/getissuers permission.
      *
-     * <p>The list operations {@link CertificateAsyncClient#listCertificateIssuers()} return the {@link PagedIterable} containing
+     * <p>The list operations {@link CertificateClient#listCertificateIssuers()} return the {@link PagedIterable} containing
      * {@link IssuerBase base issuer} as output excluding the properties like accountId and organization details of the certificate issuer.
      * This operation can then be used to get the full certificate issuer with its properties from {@code issuerBase}.</p>
      *
@@ -850,7 +849,7 @@ public class CertificateClient {
      * Gets information about the certificate issuer which represents the {@link IssuerBase} from the key vault. This operation
      * requires the certificates/manageissuers/getissuers permission.
      *
-     * <p>The list operations {@link CertificateAsyncClient#listCertificateIssuers()} return the {@link PagedIterable} containing
+     * <p>The list operations {@link CertificateClient#listCertificateIssuers()} return the {@link PagedIterable} containing
      * {@link IssuerBase base issuer} as output excluding the properties like accountId and organization details of the certificate issuer.
      * This operation can then be used to get the full certificate issuer with its properties from {@code issuerBase}.</p>
      *
@@ -909,7 +908,7 @@ public class CertificateClient {
     }
 
     /**
-     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the flux is represented by {@link IssuerBase}
+     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the iterable is represented by {@link IssuerBase}
      * as only the certificate issuer identifier and provider are provided in the response. This operation requires the
      * {@code certificates/manageissuers/getissuers} permission.
      *
@@ -927,7 +926,7 @@ public class CertificateClient {
     }
 
     /**
-     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the flux is represented by {@link IssuerBase}
+     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the iterable is represented by {@link IssuerBase}
      * as only the certificate issuer identifier and provider are provided in the response. This operation requires the
      * {@code certificates/manageissuers/getissuers} permission.
      *
@@ -1034,7 +1033,7 @@ public class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the returned contacts details in the response.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listCertificateContacts}
      *
      * @return A {@link PagedIterable} containing all of the {@link Contact certificate contacts} in the vault.
      */
@@ -1177,7 +1176,7 @@ public class CertificateClient {
      * Gets the pending certificate signing request for the specified certificate under pending status.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the pending signing request of a certificate created with third party issuer. Subscribes to the call asynchronously and prints out the
+     * <p>Gets the pending signing request of a certificate created with third party issuer. Prints out the
      * returned certificate signing request details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getPendingCertificateSigningRequest#String}
