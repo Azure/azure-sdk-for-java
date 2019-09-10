@@ -13,7 +13,7 @@ and
 - Renamed `getHandles` to `listHandles`.
 - Added `clearRange` API and removed the parameter of `FileRangeWriteType` from `upload` API.
 - Moved `ReactorNettyClient` into a separate module as default plugin. Customer can configure a custom http client through builder.
-- Throw `UnexpectedLengthException` when the upload body length does not match the input length. ([GitHub #4193](https://github.com/Azure/azure-sdk-for-java/issues/4193))
+- Throw `UnexpectedLengthException` when the upload body length does not match the input length. [GitHub #4193](https://github.com/Azure/azure-sdk-for-java/issues/4193)
 - Added validation policy to check the equality of request client id between request and response.
 - Upgraded to use service version 2019-02-02 from 2018-11-09.
 - Replaced `ByteBuf` with `ByteBuffer` and removed dependency on `Netty`.

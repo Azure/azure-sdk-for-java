@@ -13,7 +13,7 @@ demonstrate the new API.
 - Added generate SAS token APIs.
 - Throw `StorageException` with error code when get error response from service.
 - Moved `ReactorNettyClient` into a separate module as default plugin. Customer can configure a custom http client through builder.
-- Throw `UnexpectedLengthException` when the upload body length does not match the input length. ([GitHub #4193](https://github.com/Azure/azure-sdk-for-java/issues/4193))
+- Throw `UnexpectedLengthException` when the upload body length does not match the input length. [GitHub #4193](https://github.com/Azure/azure-sdk-for-java/issues/4193)
 - Added validation policy to check the equality of request client id between request and response.
 - Added `PageFlux` on async APIs and `PageIterable` on sync APIs.
 - Upgraded to use service version 2019-02-02 from 2018-11-09.
