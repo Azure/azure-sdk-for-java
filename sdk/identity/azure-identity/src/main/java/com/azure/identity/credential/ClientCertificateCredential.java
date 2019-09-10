@@ -36,11 +36,17 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */
-    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword, IdentityClientOptions identityClientOptions) {
+    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword,
+                                IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath);
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = certificatePassword;
-        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
+        identityClient =
+            new IdentityClientBuilder()
+                .tenantId(tenantId)
+                .clientId(clientId)
+                .identityClientOptions(identityClientOptions)
+                .build();
     }
 
     @Override

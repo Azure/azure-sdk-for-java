@@ -41,3 +41,6 @@ stages:
         - name: azure-messaging-eventhubs
           safeName: azuremessagingeventhubs
           stagingProfileId: 88192f04117501
+        - name: azure-messaging-eventhubs-checkpointstore-blob
+          safeName: azuremessagingeventhubscheckpointstoreblob
+          stagingProfileId: 88192f04117501

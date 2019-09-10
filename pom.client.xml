@@ -428,7 +428,10 @@
               <artifactId>codesnippet-doclet</artifactId>
               <version>${codesnippet4javadoc.version}</version>
             </docletArtifact>
-            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+            <additionalOptions>
+              <additionalOption>-maxLineLength 120</additionalOption>
+              <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
+            </additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
             <doclint>all</doclint>
@@ -558,6 +561,7 @@
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
@@ -791,6 +795,7 @@
     <module>./sdk/core/azure-core-http-okhttp</module>
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <module>./sdk/tracing/tracing-opentelemetry</module>

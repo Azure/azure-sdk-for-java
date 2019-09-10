@@ -34,7 +34,6 @@ class FileSASTests extends APISpec {
         primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
         primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
-
     }
 
     @Unroll

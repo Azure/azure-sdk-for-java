@@ -8,6 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.storage.queue.models.StorageErrorCode;
 import com.azure.storage.queue.models.StorageException;
 
+import java.time.Duration;
+
 import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
 public class QueueExceptionSamples {
@@ -27,7 +29,8 @@ public class QueueExceptionSamples {
         // Create queue client.
         Response<QueueClient> queueClientResponse;
         try {
-            queueClientResponse = queueServiceClient.createQueueWithResponse(generateRandomName("delete-not-exist", 16), null, new Context("key1", "value1"));
+            queueClientResponse = queueServiceClient.createQueueWithResponse(generateRandomName("delete-not-exist",
+                16), null, Duration.ofSeconds(1), new Context("key1", "value1"));
             System.out.println("Successfully create the queue! Status code: " + queueClientResponse.statusCode());
         } catch (StorageException e) {
             System.out.println(String.format("Error creating a queue. Error message: %s", e.serviceMessage()));

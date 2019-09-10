@@ -25,7 +25,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 
-
 /**
  * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asAppendBlobClient()}, or via the method
@@ -92,6 +91,10 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.create}
+     *
      * @return The information of the created appended blob.
      */
     public AppendBlobItem create() {
@@ -101,6 +104,10 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.create#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration}
+     *
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -109,12 +116,16 @@ public final class AppendBlobClient extends BlobClient {
      * @return The information of the created appended blob.
      */
     public AppendBlobItem create(BlobHTTPHeaders headers, Metadata metadata,
-                                          BlobAccessConditions accessConditions, Duration timeout) {
+            BlobAccessConditions accessConditions, Duration timeout) {
         return createWithResponse(headers, metadata, accessConditions, timeout, Context.NONE).value();
     }
 
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
      *
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
@@ -136,6 +147,10 @@ public final class AppendBlobClient extends BlobClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlock#InputStream-long}
+     *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
      *         emitted by the {@code Flux}.
@@ -151,6 +166,10 @@ public final class AppendBlobClient extends BlobClient {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -175,6 +194,10 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data from another blob to the end of this append blob.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockFromUrl#URL-BlobRange}
+     *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
@@ -189,6 +212,10 @@ public final class AppendBlobClient extends BlobClient {
 
     /**
      * Commits a new block of data from another blob to the end of this append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockFromUrl#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration}
      *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -212,6 +239,10 @@ public final class AppendBlobClient extends BlobClient {
 
     /**
      * Commits a new block of data from another blob to the end of this append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob

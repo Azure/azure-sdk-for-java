@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
- * turned on will not be able to use this credential. Please use {@link DeviceCodeCredential} or {@link InteractiveBrowserCredential}
- * instead, or create a service principal if you want to authenticate silently.
+ * turned on will not be able to use this credential. Please use {@link DeviceCodeCredential} or {@link
+ * InteractiveBrowserCredential} instead, or create a service principal if you want to authenticate silently.
  */
 @Immutable
 public class UsernamePasswordCredential implements TokenCredential {
@@ -35,12 +35,18 @@ public class UsernamePasswordCredential implements TokenCredential {
      * @param password the password of the user
      * @param identityClientOptions the options for configuring the identity client
      */
-    UsernamePasswordCredential(String clientId, String username, String password, IdentityClientOptions identityClientOptions) {
+    UsernamePasswordCredential(String clientId, String username, String password,
+                               IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
         this.username = username;
         this.password = password;
-        identityClient = new IdentityClientBuilder().tenantId("common").clientId(clientId).identityClientOptions(identityClientOptions).build();
+        identityClient =
+            new IdentityClientBuilder()
+                .tenantId("common")
+                .clientId(clientId)
+                .identityClientOptions(identityClientOptions)
+                .build();
         cachedToken = new AtomicReference<>();
     }
 
@@ -48,7 +54,8 @@ public class UsernamePasswordCredential implements TokenCredential {
     public Mono<AccessToken> getToken(String... scopes) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }

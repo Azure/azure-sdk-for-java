@@ -80,6 +80,10 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * methods such as {@link BlobClient#download(OutputStream) download} and
      * {@link BlobClient#getProperties() get properties}, use this when the blob type is unknown.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildBlobClient}
+     *
      * @return a {@link BlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
@@ -92,11 +96,15 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * generic blob methods such as {@link BlobAsyncClient#download() download} and
      * {@link BlobAsyncClient#getProperties()}, use this when the blob type is unknown.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildBlobAsyncClient}
+     *
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
-        return new BlobAsyncClient(constructImpl(), snapshot);
+        return new BlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -120,7 +128,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -147,7 +155,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -172,11 +180,16 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot);
+        return new PageBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.endpoint#String}
+     *
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -204,6 +217,11 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
 
     /**
      * Sets the name of the container this client is connecting to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.containerName#String}
+     *
      * @param containerName the name of the container
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code containerName} is {@code null}

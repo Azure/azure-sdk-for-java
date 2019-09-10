@@ -3,6 +3,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.DatabaseAccount;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;

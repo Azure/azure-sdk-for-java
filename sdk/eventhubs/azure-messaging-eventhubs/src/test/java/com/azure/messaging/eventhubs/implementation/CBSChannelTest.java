@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-public class CBSChannelTest extends ApiTestBase {
+public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
     @Mock
@@ -93,8 +93,6 @@ public class CBSChannelTest extends ApiTestBase {
 
     @Test
     public void unsuccessfulAuthorize() {
-        skipIfNotRecordMode();
-
         // Arrange
         final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubName());
         final Duration duration = Duration.ofMinutes(10);
