@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
