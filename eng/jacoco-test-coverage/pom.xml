@@ -35,8 +35,10 @@
     <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.1</azure-messaging-eventhubs-checkpointstore-blob.version>
     <azure-storage-common.version>12.0.0-preview.3</azure-storage-common.version>
     <azure-storage-blob.version>12.0.0-preview.3</azure-storage-blob.version>
+    <azure-storage-blob-cryptography.version>12.0.0-preview.4</azure-storage-blob-cryptography.version>
     <azure-storage-file.version>12.0.0-preview.3</azure-storage-file.version>
     <azure-storage-queue.version>12.0.0-preview.3</azure-storage-queue.version>
+    <azure-storage-queue-cryptography.version>12.0.0-preview.4</azure-storage-queue-cryptography.version>
   </properties>
 
   <distributionManagement>
@@ -115,6 +117,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob-cryptography</artifactId>
+      <version>${azure-storage-blob-cryptography.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-storage-file</artifactId>
       <version>${azure-storage-file.version}</version>
     </dependency>
@@ -122,6 +129,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>${azure-storage-queue.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-queue-cryptography</artifactId>
+      <version>${azure-storage-queue-cryptography.version}</version>
     </dependency>
     <!-- Tracing will be built and released separately. Removing tracing dependency
      until we finalize dependency composition -->
