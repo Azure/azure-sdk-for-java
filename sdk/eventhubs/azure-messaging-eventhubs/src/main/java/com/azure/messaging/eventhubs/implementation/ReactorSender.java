@@ -66,7 +66,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     private final Object pendingSendLock = new Object();
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
-    private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue = new PriorityQueue<>(1000, new DeliveryTagComparator());
+    private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
+        new PriorityQueue<>(1000, new DeliveryTagComparator());
 
     private final ActiveClientTokenManager tokenManager;
     private final RetryPolicy retry;
@@ -131,14 +132,18 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     @Override
     public Mono<Void> send(Message message) {
         final int payloadSize = getDataSerializedSize(message);
-        final int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        final int allocationSize =
+            Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         final byte[] bytes = new byte[allocationSize];
 
         int encodedSize;
         try {
             encodedSize = message.encode(bytes, 0, allocationSize);
         } catch (BufferOverflowException exception) {
-            final String errorMessage = String.format(Locale.US, "Error sending. Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024);
+            final String errorMessage =
+                String.format(Locale.US,
+                    "Error sending. Size of the payload exceeded maximum message size: %s kb",
+                    maxMessageSize / 1024);
             final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
                 exception, handler.getErrorContext(sender));
 
@@ -171,16 +176,21 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             final Message messageWrappedByData = Proton.message();
 
             int payloadSize = getDataSerializedSize(amqpMessage);
-            int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
+            int allocationSize =
+                Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
 
             byte[] messageBytes = new byte[allocationSize];
             int messageSizeBytes = amqpMessage.encode(messageBytes, 0, allocationSize);
             messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
 
             try {
-                encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
+                encodedSize =
+                    messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
             } catch (BufferOverflowException exception) {
-                final String message = String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSizeTemp / 1024);
+                final String message =
+                    String.format(Locale.US,
+                        "Size of the payload exceeded maximum message size: %s kb",
+                        maxMessageSizeTemp / 1024);
                 final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                     exception, handler.getErrorContext(sender));
 
@@ -292,7 +302,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             if (workItem == null) {
                 if (deliveryTag != null) {
-                    logger.verbose("clientId[{}]. path[{}], linkName[{}], deliveryTag[{}]: sendData not found for this delivery.",
+                    logger.verbose(
+                        "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}]: sendData not found for this delivery.",
                         handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
                 }
 
@@ -310,7 +321,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 delivery.setMessageFormat(workItem.messageFormat());
 
                 sentMsgSize = sender.send(workItem.message(), 0, workItem.encodedMessageSize());
-                assert sentMsgSize == workItem.encodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
+                assert sentMsgSize == workItem.encodedMessageSize()
+                    : "Contract of the ProtonJ library for Sender. Send API changed";
 
                 linkAdvance = sender.advance();
             } catch (Exception exception) {
@@ -318,14 +330,17 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }
 
             if (linkAdvance) {
-                logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}]: Sent message", entityPath, getLinkName(), deliveryTag);
+                logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}]: Sent message", entityPath,
+                    getLinkName(), deliveryTag);
 
                 workItem.setIsWaitingForAck();
                 sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), timeout.toMillis());
             } else {
                 logger.verbose(
-                    "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}], sentMessageSize[{}], payloadActualSize[{}]: sendlink advance failed",
-                    handler.getConnectionId(), entityPath, getLinkName(), deliveryTag, sentMsgSize, workItem.encodedMessageSize());
+                    "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}], sentMessageSize[{}], "
+                        + "payloadActualSize[{}]: sendlink advance failed",
+                    handler.getConnectionId(), entityPath, getLinkName(), deliveryTag, sentMsgSize,
+                    workItem.encodedMessageSize());
 
                 if (delivery != null) {
                     delivery.free();
@@ -333,8 +348,12 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
                 final ErrorContext context = handler.getErrorContext(sender);
                 final Throwable exception = sendException != null
-                    ? new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed. Please see cause for more details", entityPath), sendException, context)
-                    : new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed while advancing delivery(tag: %s).", entityPath, deliveryTag), context);
+                    ? new OperationCancelledException(String.format(Locale.US,
+                    "Entity(%s): send operation failed. Please see cause for more details", entityPath),
+                    sendException, context)
+                    : new OperationCancelledException(String.format(Locale.US,
+                    "Entity(%s): send operation failed while advancing delivery(tag: %s).",
+                    entityPath, deliveryTag), context);
 
                 workItem.sink().error(exception);
             }

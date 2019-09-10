@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdeletemin0containerapitestdeletemin83e36766647c4bce?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcdeletemin0containerapitestdeletemince4726982bd27527?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "bc003989-93f6-4606-be97-74e30c5ca9f0"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "dd807f6a-1d65-4991-ae06-2221b3c84625"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D730FEDB21DAA5\"",
-      "Last-Modified" : "Wed, 04 Sep 2019 06:12:25 GMT",
+      "ETag" : "\"0x8D735604FCA38A3\"",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:00:06 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1828c3d4-901e-007c-7be7-62ad43000000",
-      "Date" : "Wed, 04 Sep 2019 06:12:24 GMT",
-      "x-ms-client-request-id" : "bc003989-93f6-4606-be97-74e30c5ca9f0"
+      "x-ms-request-id" : "077ff9f0-801e-001f-4c49-673bbb000000",
+      "Date" : "Mon, 09 Sep 2019 20:00:06 GMT",
+      "x-ms-client-request-id" : "dd807f6a-1d65-4991-ae06-2221b3c84625"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdeletemin0containerapitestdeletemin83e36766647c4bce?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcdeletemin0containerapitestdeletemince4726982bd27527?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "e9c9db06-b954-4161-9cd6-e69aaef082e7"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "77b485cb-c9e1-44f8-9de7-62744ac4edeb"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -34,18 +34,18 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "1828c3f6-901e-007c-18e7-62ad43000000",
-      "Date" : "Wed, 04 Sep 2019 06:12:24 GMT",
-      "x-ms-client-request-id" : "e9c9db06-b954-4161-9cd6-e69aaef082e7"
+      "x-ms-request-id" : "077ffa03-801e-001f-5e49-673bbb000000",
+      "Date" : "Mon, 09 Sep 2019 20:00:06 GMT",
+      "x-ms-client-request-id" : "77b485cb-c9e1-44f8-9de7-62744ac4edeb"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net/jtcdeletemin0containerapitestdeletemin83e36766647c4bce?restype=container",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcdeletemin0containerapitestdeletemince4726982bd27527?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "48879cbd-55d1-473d-bcc6-b3d63d935be2"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "e46369d4-52a4-4a1e-a7f4-58889fb8e28b"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -54,20 +54,20 @@
       "retry-after" : "0",
       "Content-Length" : "225",
       "StatusCode" : "404",
-      "x-ms-request-id" : "1828c40b-901e-007c-2de7-62ad43000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:1828c40b-901e-007c-2de7-62ad43000000\nTime:2019-09-04T06:12:25.3110547Z</Message></Error>",
-      "Date" : "Wed, 04 Sep 2019 06:12:24 GMT",
-      "x-ms-client-request-id" : "48879cbd-55d1-473d-bcc6-b3d63d935be2",
+      "x-ms-request-id" : "077ffa08-801e-001f-6349-673bbb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:077ffa08-801e-001f-6349-673bbb000000\nTime:2019-09-09T20:00:06.9641083Z</Message></Error>",
+      "Date" : "Mon, 09 Sep 2019 20:00:06 GMT",
+      "x-ms-client-request-id" : "e46369d4-52a4-4a1e-a7f4-58889fb8e28b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://azstoragesdkaccount.blob.core.windows.net?prefix=jtcdeletemin&comp=list",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net?prefix=jtcdeletemin&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "f57ca59a-c379-4259-8763-15197bb4eeb2"
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "b24e1992-9223-446c-b294-71f64d6994a7"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -75,13 +75,13 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1828c41a-901e-007c-3be7-62ad43000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcdeletemin</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 04 Sep 2019 06:12:24 GMT",
-      "x-ms-client-request-id" : "f57ca59a-c379-4259-8763-15197bb4eeb2",
+      "x-ms-request-id" : "077ffa29-801e-001f-0449-673bbb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://jaschrepragrs.blob.core.windows.net/\"><Prefix>jtcdeletemin</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 09 Sep 2019 20:00:06 GMT",
+      "x-ms-client-request-id" : "b24e1992-9223-446c-b294-71f64d6994a7",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcdeletemin0containerapitestdeletemin83e36766647c4bce" ]
+  "variables" : [ "jtcdeletemin0containerapitestdeletemince4726982bd27527" ]
 }

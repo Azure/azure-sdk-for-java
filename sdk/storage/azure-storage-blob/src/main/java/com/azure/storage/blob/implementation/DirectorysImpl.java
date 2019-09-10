@@ -8,6 +8,7 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.Delete;
 import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Head;
 import com.azure.core.implementation.annotation.HeaderParam;
 import com.azure.core.implementation.annotation.Host;
 import com.azure.core.implementation.annotation.HostParam;
@@ -86,7 +87,7 @@ public final class DirectorysImpl {
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
         Mono<DirectorysSetAccessControlResponse> setAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String posixPermissions, @HeaderParam("x-ms-acl") String posixAcl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
-        @Patch("{filesystem}/{path}")
+        @Head("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
         Mono<DirectorysGetAccessControlResponse> getAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);

@@ -7,9 +7,9 @@ import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -48,7 +48,7 @@ import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
  */
-public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
+public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     // The maximum number of receivers on a partition + consumer group is 5.
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
@@ -70,8 +70,6 @@ public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
@@ -92,8 +90,6 @@ public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
      */
     @Test
     public void parallelCreationOfReceivers() {
-        skipIfNotRecordMode();
-
         // Arrange
         final int numberOfEvents = 10;
         final List<String> partitionIds = client.getPartitionIds().collectList().block(TIMEOUT);
@@ -242,8 +238,8 @@ public class EventHubAsyncConsumerIntegrationTest extends ApiTestBase {
 
         // Assert
         try {
-            boolean success = semaphore.tryAcquire(15, TimeUnit.SECONDS);
-            Assert.assertTrue(success);
+            Assert.assertTrue("The EventHubConsumer was not closed after one with a higher epoch number started.",
+                semaphore.tryAcquire(60, TimeUnit.SECONDS));
         } finally {
             subscriptions.dispose();
             isActive.set(false);

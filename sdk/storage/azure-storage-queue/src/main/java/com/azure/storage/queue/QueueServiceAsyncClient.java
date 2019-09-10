@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +195,7 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account
      */
     public PagedFlux<QueueItem> listQueues() {
-        return listQueues(null, null);
+        return listQueuesWithOptionalTimeout(null, null, null, Context.NONE);
     }
 
     /**
@@ -207,7 +208,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
@@ -216,7 +217,7 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
-        return listQueues(null, options);
+        return listQueuesWithOptionalTimeout(null, options, null, null);
     }
 
     /**
@@ -227,9 +228,11 @@ public final class QueueServiceAsyncClient {
      *
      * @param marker Starting point to list the queues
      * @param options Options for listing queues
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    PagedFlux<QueueItem> listQueues(String marker, QueuesSegmentOptions options) {
+    PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout, Context context) {
         final String prefix = (options != null) ? options.prefix() : null;
         final Integer maxResults = (options != null) ? options.maxResults() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
@@ -241,15 +244,15 @@ public final class QueueServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> postProcessResponse(this.client.services()
+            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
-                    null, null, Context.NONE))
+                    null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
                     response.value().queueItems(),
                     response.value().nextMarker(),
-                    response.deserializedHeaders()));
+                    response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
@@ -436,6 +439,13 @@ public final class QueueServiceAsyncClient {
 
     /**
      * Generates an account SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     *{@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
      *
      * @param accountSASService The {@code AccountSASService} services for the account SAS
      * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS

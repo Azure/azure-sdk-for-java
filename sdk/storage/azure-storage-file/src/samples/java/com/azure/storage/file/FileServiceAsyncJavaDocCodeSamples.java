@@ -157,12 +157,12 @@ public class FileServiceAsyncJavaDocCodeSamples {
     public void listSharesAsyncWithOverload() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
-        fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true)
-            .includeSnapshots(true)).subscribe(
+        fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true).includeSnapshots(true))
+            .subscribe(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
-        );
+            );
         // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
     }
 
@@ -275,7 +275,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
      */
     public void generateAccountSASAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.FileServiceAsyncClient.generateAccountSAS
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
         AccountSASService service = new AccountSASService()
             .blob(true)
             .file(true)
@@ -304,6 +304,6 @@ public class FileServiceAsyncJavaDocCodeSamples {
 
         String sas = fileServiceAsyncClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
             version, ipRange, sasProtocol);
-        // END: com.azure.storage.queue.FileServiceAsyncClient.generateAccountSAS
+        // END: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
     }
 }
