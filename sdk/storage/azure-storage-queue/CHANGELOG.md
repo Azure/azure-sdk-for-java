@@ -15,8 +15,11 @@ and
 - Moved `ReactorNettyClient` into a separate module as default plugin. Customer can configure a custom http client through builder.
 - Throw `UnexpectedLengthException` when the upload body length does not match the input length.
 - Added validation policy to check the equality of request client id between request and response.
-- Added `PageFlux` on async APIs and `PageIterable` on sync APIs.
 - Upgraded to use service version 2019-02-02 from 2018-11-09.
+- Replaced `ByteBuf` with `ByteBuffer` and removed dependency on `Netty`.
+
+**Breaking changes: New API design**
+- Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
 
 ## Version 12.0.0-preview.2 (2019-08-08)
 Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
