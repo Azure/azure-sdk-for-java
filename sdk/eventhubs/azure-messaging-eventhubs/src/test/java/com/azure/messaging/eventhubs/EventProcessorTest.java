@@ -36,10 +36,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -62,6 +64,22 @@ public class EventProcessorTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @After
+    public void teardown() {
+        consumer1 = null;
+        consumer2 = null;
+        consumer3 = null;
+        eventData1 = null;
+        eventData2 = null;
+        eventData3 = null;
+        eventData4 = null;
+        eventHubAsyncClient = null;
+
+        // Tear down any inline mocks to avoid memory leaks.
+        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
