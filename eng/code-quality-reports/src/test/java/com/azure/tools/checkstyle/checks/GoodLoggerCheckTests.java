@@ -11,7 +11,7 @@ import org.junit.Test;
  */
 public class GoodLoggerCheckTests extends AbstractModuleTestSupport {
     private static final String INCONSISTENCY_NAMING_MESSAGE = "ClientLogger instance naming: use 'logger'"
-        + " instead of 'LOGGER' for consistency.";
+        + " instead of 'wrongLoggerName' for consistency.";
     private static final String EXTERNAL_LOGGER_USED_MESSAGE = "Do not use external logger class. "
         + "Use 'com.azure.core.util.logging.ClientLogger' as a logging mechanism instead of '%s'.";
     private static final String NOT_NEWING_MATCH_CLASS_NAME = "Not newing a ClientLogger with matching class name. "
