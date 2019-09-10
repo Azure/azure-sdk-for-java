@@ -127,17 +127,17 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
-      - task: Maven@3
-        displayName: 'Install all client libraries (for SpotBugs analysis)'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
+      # - task: Maven@3
+      #   displayName: 'Install all client libraries (for SpotBugs analysis)'
+      #   inputs:
+      #     mavenPomFile: pom.client.xml
+      #     options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+      #     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      #     javaHomeOption: 'JDKVersion'
+      #     jdkVersionOption: '1.11'
+      #     jdkArchitectureOption: 'x64'
+      #     publishJUnitResults: false
+      #     goals: 'install'
 
       # Run SpotBugs and CheckStyle tools to ensure high code quality - these will fail the build if issues are found
       - task: Maven@3
