@@ -1,7 +1,30 @@
 # Change Log azure-storage-blob
 
-## Version 12.0.0-preview.2:
+## Version 12.0.0-preview.3 (2019-09-10)
+For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
+- Added tracing telemetry on maximum overload API.
+- Throw `UnexpectedLengthException` when the upload body doesn't match the expected input length.
+- Added validation policy to check the equality of request client ID between request and response.
+- Updated to use service version 2019-02-02.
+- Added dependency to azure-storage-common.
+- Replaced `ByteBuf` with `ByteBuffer` and removed dependency on `Netty`.
+- Added convenience upload method to `BlockBlobClient` and `BlockBlobAsyncClient`.
+- Added rehydrate priority support.
+- Added capability to set tier on additional APIs.
+- Added customer provided key support.
+
+**Breaking changes: New API design**
+- Changed list responses to `PagedFlux` on async APIs and `PagedIterable` on sync APIs.
+- Simplified API to return model types directly on non-maximal overloads. Maximal overloads return `Response<T>` and suffixed with WithResponse.
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.3/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.3/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+demonstrate the new API.
+
+## Version 12.0.0-preview.2 (2019-08-08)
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
 
 - Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
@@ -15,10 +38,16 @@ For details on the Azure SDK for Java (August 2019 Preview) release refer to the
 - Removed `AnonymousClientCredential` class.
 - Changed parameter ordering of `BlobClient` and `BlobAsyncClient` `download` and `downloadToFile`.
 
-## Version 12.0.0-preview.1:
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.2/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.2/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+demonstrate the new API.
 
-Version 12.0.0-preview.1 is the first preview of our efforts to create a user-friendly and Java client library for Azure Storage Blobs. For more information about this, and preview releases of other Azure SDK libraries, please visit
-https://aka.ms/azure-sdk-preview1-java.
+## Version 12.0.0-preview.1 (2019-06-28)
+Version 12.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
+
+For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
 **Breaking changes: New API design**
 - Operations are now scoped to a particular client:
