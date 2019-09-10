@@ -1,4 +1,29 @@
 {
+<<<<<<< HEAD
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkfc967636577b.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "1fa44fac-55fd-4dc8-89ea-9cfea0d520c6",
+      "StatusCode" : "200",
+      "Date" : "Thu, 05 Sep 2019 01:38:15 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "109",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿0",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    }
+  } ],
+  "variables" : [ ]
+}
+=======
     "networkCallRecords": [
         {
             "Method": "GET",
@@ -24,3 +49,4 @@
     ],
     "variables": []
 }
+>>>>>>> master
