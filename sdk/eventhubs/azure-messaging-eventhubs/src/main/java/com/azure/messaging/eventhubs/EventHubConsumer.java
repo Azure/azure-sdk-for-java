@@ -32,6 +32,16 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
+ * <p><strong>Creating a synchronous consumer</strong></p>
+ * Create an {@link EventHubConsumer} using {@link EventHubClient}.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.instantiation}
+ *
+ * <p><strong>Consuming events from an Event Hub</strong></p>
+ * Events can be consumed using {@link #receive(int)} or {@link #receive(int, Duration)}. The call to `receive`
+ * completes and returns an {@link IterableStream} when either the number of events is reached, or the
+ * timeout duration is reached.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration}
+ *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
