@@ -29,6 +29,7 @@ import com.azure.storage.blob.models.ListContainersOptions
 import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -281,14 +282,19 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        addOptionalRecording(builder)
 
         if (credential != null) {
             builder.credential(credential)
         }
 
+        return builder
+    }
+
+    def addOptionalRecording(BaseClientBuilder<? extends BaseClientBuilder> builder) {
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
         return builder
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -20,6 +21,7 @@ import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
@@ -79,14 +81,16 @@ public final class ContainerAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(ContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
+    private final CpkInfo cpk; // only used to pass down to blob clients
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+    ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
+        this.cpk = cpk;
     }
 
     /**
@@ -120,7 +124,7 @@ public final class ContainerAsyncClient {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -154,7 +158,7 @@ public final class ContainerAsyncClient {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -188,7 +192,7 @@ public final class ContainerAsyncClient {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -218,7 +222,7 @@ public final class ContainerAsyncClient {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -230,7 +234,7 @@ public final class ContainerAsyncClient {
         return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build());
+            .build(), cpk);
     }
 
     /**
@@ -245,6 +249,15 @@ public final class ContainerAsyncClient {
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureBlobStorage.getHttpPipeline();
     }
 
     /**
