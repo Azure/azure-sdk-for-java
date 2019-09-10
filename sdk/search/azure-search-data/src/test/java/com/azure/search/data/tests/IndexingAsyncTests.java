@@ -49,7 +49,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(asyncResult).consumeNextWith(res -> {
             List<IndexingResult> result = res.results();
-            this.AssertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+            this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
         }).thenAwait(Duration.ofSeconds(4)).verifyComplete();
 
         StepVerifier.create(client.countDocuments()).expectNext(expectedHotelCount).expectComplete().verify();
@@ -73,7 +73,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(asyncResult).consumeNextWith(res -> {
             List<IndexingResult> result = res.results();
-            this.AssertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+            this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
         }).thenAwait(Duration.ofSeconds(4)).verifyComplete();
 
         StepVerifier.create(client.countDocuments()).expectNext(expectedHotelCount).expectComplete().verify();

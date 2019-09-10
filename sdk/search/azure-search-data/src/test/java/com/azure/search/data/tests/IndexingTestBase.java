@@ -37,7 +37,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     protected abstract void initializeClient();
 
-    protected void AssertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
+    protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
         Assert.assertEquals(key, result.key());
         Assert.assertTrue(result.succeeded());
         Assert.assertNull(result.errorMessage());

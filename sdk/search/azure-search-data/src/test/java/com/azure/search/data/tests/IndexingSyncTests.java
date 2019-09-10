@@ -48,7 +48,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<IndexingResult> result = indexDocumentsSync(indexActions);
 
         Assert.assertEquals(expectedHotelCount, client.countDocuments());
-        this.AssertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+        this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<IndexingResult> result = indexDocumentsSync(indexActions);
 
         Assert.assertEquals(expectedHotelCount, client.countDocuments());
-        this.AssertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+        this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
     }
 
     protected List<IndexingResult> indexDocumentsSync(List<IndexAction> indexActions) {

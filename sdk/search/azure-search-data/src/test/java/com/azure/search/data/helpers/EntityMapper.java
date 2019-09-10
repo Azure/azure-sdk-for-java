@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.search.data.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +18,7 @@ public class EntityMapper<T> {
 
         try {
             targetJson = mapper.writeValueAsString(object);
-        } catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             Assert.fail(e.getMessage());
         }
 
