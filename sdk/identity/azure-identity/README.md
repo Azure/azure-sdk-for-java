@@ -135,7 +135,7 @@ principal authentication with these environment variables:
 ## Examples
 
 ### Authenticating with `DefaultAzureCredential`
-This example demonstrates authenticating the `SecretClient` from the [azure-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`.
+This example demonstrates authenticating the `SecretClient` from the [azure-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 ```java
 // The default credential first checks environment variables for configuration as described above.
 // If environment configuration is incomplete, it will try managed identity.
@@ -147,15 +147,15 @@ DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().b
 
 // Azure SDK client builders accept the credential as a parameter
 
-SecretClient client = SecretClient.builder()
+SecretClient client = new SecretClientBuilder()
     .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(credential)
-    .build();
+    .buildClient();
 ```
 When executing this in a development machine you need to first [configure the environment](#environment-variables) setting the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` to the appropriate values for your service principal.
 
 ### Authenticating a service principal with a client secret
-This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`.
+This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`. There's also [a compilable sample](../../keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 ```java
 // using a client secret
 import com.azure.identity.credential.ClientSecretCredential;
@@ -169,14 +169,14 @@ ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilde
         .tenantId("<YOUR_TENANT_ID>")
         .build();
 
-KeyClient client = KeyClient.builder()
+KeyClient client = new KeyClientBuilder()
     .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(clientSecretCredential)
-    .build();
+    .buildClient();
 ```
 
 ### Authenticating a user account with device code flow
-This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device.
+This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device. There's also [a compilable sample](../../keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 ```java
 // using a client secret
 import com.azure.identity.credential.DeviceCodeCredential;
@@ -191,23 +191,23 @@ DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
         })
         .build();
 
-KeyClient client = KeyClient.builder()
+KeyClient client = new KeyClientBuilder()
     .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(deviceCodeCredential)
-    .build();
+    .buildClient();
 ```
 
 When the challenge is displayed on the IoT device, it will contain the message "Please open the browser to {url} and type in code XXXXXXXX". When the user follows the directions and logs in on another computer, the credential will return the token to the `KeyClient`.
 
 ### Chaining credentials
-The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`.
+The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`. There's also [a compilable sample](../../keyvault/azure-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 
 ```java
 ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
         .clientId("<YOUR_CLIENT_ID>")
         .build();
 
-ClientSecretcredential secondServicePrincipal = new ClientSecretCredentialBuilder()
+ClientSecretCredential secondServicePrincipal = new ClientSecretCredentialBuilder()
         .clientId("<YOUR_CLIENT_ID>")
         .clientSecret("<YOUR_CLIENT_SECRET>")
         .tenantId("<YOUR_TENANT_ID>")
