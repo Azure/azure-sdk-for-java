@@ -5,11 +5,15 @@ package com.azure.search.data.tests;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.customization.models.GeoPoint;
+import com.azure.search.data.generated.models.IndexingResult;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -35,9 +39,10 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canIndexDynamicDocuments() throws Exception;
 
-    protected Hotel prepareStaticallyTypedHotel() throws ParseException {
+    protected Hotel prepareStaticallyTypedHotel(String hotelId) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return new Hotel()
-            .hotelId("1")
+            .hotelId(hotelId)
             .hotelName("Fancy Stay")
             .description("Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.")
             .descriptionFr("Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.")
@@ -48,7 +53,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(false)
-            .lastRenovationDate(DATE_FORMAT.parse("2019-01-30T00:00:00Z"))
+            .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(5)
             .location(GeoPoint.createWithDefaultCrs(-122.131577, 47.678581))
             .address(
@@ -61,7 +66,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             );
     }
 
-    protected Document prepareDynamicallyTypedHotel() {
+    protected Document prepareDynamicallyTypedHotel(String hotelId) {
 
         Document room1 = new Document();
         room1.put("Description", "Budget Room, 1 Queen Bed");
@@ -98,7 +103,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         location.put("crs", null);
 
         Document hotel = new Document();
-        hotel.put("HotelId", "1");
+        hotel.put("HotelId", hotelId);
         hotel.put("HotelName", "Fancy Stay Hotel");
         hotel.put("Description", "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.");
         hotel.put("Description_fr", null);
@@ -113,6 +118,19 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         hotel.put("Rooms", rooms);
 
         return hotel;
+    }
+
+    protected void AssertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
+        Assert.assertEquals(result.key(), key);
+        Assert.assertEquals(result.statusCode(), statusCode);
+        Assert.assertEquals(result.succeeded(), true);
+    }
+
+    protected void AssertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
+        Assert.assertEquals(result.key(), key);
+        Assert.assertEquals(result.statusCode(), statusCode);
+        Assert.assertEquals(result.errorMessage(), errorMessage);
+        Assert.assertEquals(result.succeeded(), false);
     }
 
     public abstract void indexWithInvalidDocumentThrowsException();

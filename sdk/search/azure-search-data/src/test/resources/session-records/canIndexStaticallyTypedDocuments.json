@@ -1,43 +1,83 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk4f3514338dec.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a26b7210-6fc8-4c03-9821-312cf7ca11e4",
-      "StatusCode" : "200",
-      "Date" : "Mon, 09 Sep 2019 17:05:31 GMT",
+      "request-id" : "2dcd4062-d645-410b-8d38-dfaa8aa21d5f",
+      "StatusCode" : "207",
+      "Date" : "Tue, 10 Sep 2019 02:39:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "136",
+      "elapsed-time" : "366",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "227",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk4f3514338dec.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Content-Length" : "519",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"randomId\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"nonExistingHotel\",\"status\":false,\"errorMessage\":\"Document not found.\",\"statusCode\":404},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk4f3514338dec.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "521d33c4-fb68-4ff8-8a71-1783abfa3603",
+      "request-id" : "95954833-98d0-40be-9c36-73f907c95fc6",
       "StatusCode" : "200",
-      "Date" : "Mon, 09 Sep 2019 17:05:32 GMT",
+      "Date" : "Tue, 10 Sep 2019 02:39:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "13",
+      "elapsed-time" : "10",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1175",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk4f3514338dec.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
+      "Content-Length" : "1157",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":null,\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/docs('2')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ab8a8524-3e75-42b6-b6bd-b58ea7a7ccb8",
+      "StatusCode" : "200",
+      "Date" : "Tue, 10 Sep 2019 02:39:30 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "4",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1157",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"2\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":null,\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/docs('3')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "720892c8-0acb-4e61-9e79-107a3b87c4a4",
+      "StatusCode" : "200",
+      "Date" : "Tue, 10 Sep 2019 02:39:30 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "5",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1157",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkc3f58281973a.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"3\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":null,\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
