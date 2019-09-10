@@ -1,8 +1,8 @@
-# Azure Checkpoint Store client library for Java using Storage Blobs
+# Azure Event Hubs Checkpoint Store client library for Java using Storage Blobs
 
-Azure Checkpoint Store can be used for storing checkpoints while processing events from Azure Event Hubs. This Azure 
-Checkpoint Store package uses Storage Blobs as a persistent store for maintaining checkpoints and partition 
-ownership information that can be plugged in to `EventProcessor`.
+Azure Event Hubs Checkpoint Store can be used for storing checkpoints while processing events from Azure Event Hubs. 
+This package uses Storage Blobs as a persistent store for maintaining checkpoints and partition ownership information. 
+The `BlobPartitionManager` provided in this package can be plugged in to `EventProcessor`.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
@@ -134,6 +134,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [api_documentation]: http://azure.github.io/azure-sdk-for-java/track2reports/index.html
+[event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [maven]: https://maven.apache.org/
 [sample_container_client]: ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobPartitionManagerSample.java
