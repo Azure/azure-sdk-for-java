@@ -43,6 +43,10 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
     public ContainerClientBuilder() { }
 
     /**
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.buildClient}
+     *
      * @return a {@link ContainerClient} created from the configurations in this builder.
      */
     public ContainerClient buildClient() {
@@ -50,6 +54,11 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
     }
 
     /**
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.buildAsyncClient}
+     *
      * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
      */
     public ContainerAsyncClient buildAsyncClient() {
@@ -68,6 +77,11 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name)
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.endpoint#String}
+     *
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -94,6 +108,11 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
 
     /**
      * Sets the name of the container this client is connecting to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.containerName#String}
+     *
      * @param containerName the name of the container
      * @return the updated ContainerClientBuilder object
      */
