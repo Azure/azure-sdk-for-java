@@ -14,7 +14,7 @@
       <activation>
         <property>
           <name>env.SDKTYPE</name>
-          <value>!client</value>
+          <value>data</value>
         </property>
       </activation>
       <modules>
