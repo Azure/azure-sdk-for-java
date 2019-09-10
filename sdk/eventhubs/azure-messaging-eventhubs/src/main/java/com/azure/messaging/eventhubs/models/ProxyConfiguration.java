@@ -60,7 +60,8 @@ public class ProxyConfiguration implements AutoCloseable {
      * @throws IllegalArgumentException if {@code authentication} is {@link ProxyAuthenticationType#BASIC} or
      *     {@link ProxyAuthenticationType#DIGEST} and {@code username} or {@code password} are {@code null}.
      */
-    public ProxyConfiguration(ProxyAuthenticationType authentication, Proxy proxyAddress, String username, String password) {
+    public ProxyConfiguration(ProxyAuthenticationType authentication, Proxy proxyAddress, String username,
+                              String password) {
         this.authentication = Objects.requireNonNull(authentication,
             String.format(getErrorString(EventHubErrorCodeStrings.CANNOT_BE_NULL), "authentication"));
         this.proxyAddress = proxyAddress;

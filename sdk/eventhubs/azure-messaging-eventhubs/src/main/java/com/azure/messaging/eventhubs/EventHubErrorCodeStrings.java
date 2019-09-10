@@ -97,7 +97,8 @@ class EventHubErrorCodeStrings {
 
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
-            try (InputStream fileInputStream = EventHubErrorCodeStrings.class.getClassLoader().getResource(ERROR_STRINGS_FILE_NAME).openStream()) {
+            try (InputStream fileInputStream = EventHubErrorCodeStrings.class.getClassLoader()
+                .getResource(ERROR_STRINGS_FILE_NAME).openStream()) {
                 errorStrings = new Properties();
                 errorStrings.load(fileInputStream);
             } catch (IOException ex) {
