@@ -8,6 +8,12 @@ import com.azure.search.data.generated.models.IndexingResult;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+
+import java.util.HashMap;
+import java.util.List;
+
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected static final String INDEX_NAME = "hotels";
 
@@ -26,13 +32,21 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canIndexWithPascalCaseFields();
 
+    @Test
+    public abstract void indexWithInvalidDocumentThrowsException();
+
     protected abstract void initializeClient();
 
-    protected void AssertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode)
-    {
+    protected void AssertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
         Assert.assertEquals(key, result.key());
         Assert.assertTrue(result.succeeded());
         Assert.assertNull(result.errorMessage());
         Assert.assertEquals(expectedStatusCode, result.statusCode());
+    }
+
+    protected void addDocumentToIndexActions(List<IndexAction> indexActions, IndexActionType indexActionType, HashMap<String, Object> document) {
+        indexActions.add(new IndexAction()
+            .actionType(indexActionType)
+            .additionalProperties(document));
     }
 }

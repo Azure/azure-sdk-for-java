@@ -2,69 +2,46 @@
     "networkCallRecords": [
         {
             "Method": "POST",
-            "Uri": "https://azs-sdk66b5675793a3.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+            "Uri": "https://azs-sdkef3597113508.search.windows.net/indexes('testindex')/docs/search.index?api-version=2019-05-06",
             "Headers": {
                 "Content-Type": "application/json; charset=utf-8"
             },
             "Response": {
                 "Pragma": "no-cache",
                 "retry-after": "0",
-                "request-id": "c24bc6a6-fc91-463b-8bdc-7a9a6ca0ff02",
+                "request-id": "9deb2cf2-57d9-4ef9-9e72-a6ff54366efa",
                 "StatusCode": "200",
-                "Date": "Mon, 19 Aug 2019 15:37:22 GMT",
+                "Date": "Sun, 08 Sep 2019 15:45:18 GMT",
                 "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
                 "Cache-Control": "no-cache",
-                "elapsed-time": "110",
-                "OData-Version": "4.0",
-                "Expires": "-1",
-                "Content-Length": "795",
-                "Body": "{\"@odata.context\":\"https://azs-sdk66b5675793a3.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-                "Preference-Applied": "odata.include-annotations=\"*\"",
-                "Content-Type": "application/json; odata.metadata=minimal"
-            }
-        },
-        {
-            "Method": "POST",
-            "Uri": "https://azs-sdk66b5675793a3.search.windows.net/indexes('testindex')/docs/search.index?api-version=2019-05-06",
-            "Headers": {
-                "Content-Type": "application/json; charset=utf-8"
-            },
-            "Response": {
-                "Pragma": "no-cache",
-                "retry-after": "0",
-                "request-id": "af998362-76a9-4490-be38-0411bfb84487",
-                "StatusCode": "200",
-                "Date": "Mon, 19 Aug 2019 15:37:26 GMT",
-                "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-                "Cache-Control": "no-cache",
-                "elapsed-time": "90",
+                "elapsed-time": "112",
                 "OData-Version": "4.0",
                 "Expires": "-1",
                 "Content-Length": "362",
-                "Body": "{\"@odata.context\":\"https://azs-sdk66b5675793a3.search.windows.net/indexes('testindex')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"789\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+                "Body": "{\"@odata.context\":\"https://azs-sdkef3597113508.search.windows.net/indexes('testindex')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"789\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
                 "Preference-Applied": "odata.include-annotations=\"*\"",
                 "Content-Type": "application/json; odata.metadata=minimal"
             }
         },
         {
             "Method": "POST",
-            "Uri": "https://azs-sdk66b5675793a3.search.windows.net/indexes('testindex')/docs/search.post.search?api-version=2019-05-06",
+            "Uri": "https://azs-sdkef3597113508.search.windows.net/indexes('testindex')/docs/search.post.search?api-version=2019-05-06",
             "Headers": {
                 "Content-Type": "application/json; charset=utf-8"
             },
             "Response": {
                 "Pragma": "no-cache",
                 "retry-after": "0",
-                "request-id": "5814108d-7dee-4fd6-a565-46a8eeaae7d5",
+                "request-id": "77e81661-2452-4c33-ab01-4c3260922da6",
                 "StatusCode": "200",
-                "Date": "Mon, 19 Aug 2019 15:37:36 GMT",
+                "Date": "Sun, 08 Sep 2019 15:45:21 GMT",
                 "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
                 "Cache-Control": "no-cache",
-                "elapsed-time": "56",
+                "elapsed-time": "303",
                 "OData-Version": "4.0",
                 "Expires": "-1",
                 "Content-Length": "286",
-                "Body": "{\"@odata.context\":\"https://azs-sdk66b5675793a3.search.windows.net/indexes('testindex')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"IntValue\":0,\"Bucket\":{\"BucketName\":\"A\",\"Count\":3}},{\"@search.score\":1.0,\"Key\":\"456\",\"IntValue\":7,\"Bucket\":{\"BucketName\":\"B\",\"Count\":5}}]}",
+                "Body": "{\"@odata.context\":\"https://azs-sdkef3597113508.search.windows.net/indexes('testindex')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"IntValue\":0,\"Bucket\":{\"BucketName\":\"A\",\"Count\":3}},{\"@search.score\":1.0,\"Key\":\"456\",\"IntValue\":7,\"Bucket\":{\"BucketName\":\"B\",\"Count\":5}}]}",
                 "Preference-Applied": "odata.include-annotations=\"*\"",
                 "Content-Type": "application/json; odata.metadata=minimal"
             }

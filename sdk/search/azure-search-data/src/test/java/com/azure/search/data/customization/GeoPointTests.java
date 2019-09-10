@@ -104,8 +104,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        Map geoPointMap = GeoPoint.create(100.0, 1.0).createObjectMap();
-        Map indexObjectMap = createGeoPointIndexMap("1", "test", geoPointMap);
+        Map indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(100.0, 1.0));
         DocumentIndexResult indexResult = client.setIndexName(INDEX_NAME_GEO_POINTS)
             .index(new IndexBatch()
                 .actions(Collections.singletonList(new IndexAction()
@@ -127,11 +126,11 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         return searchResults;
     }
 
-    private Map<String, Object> createGeoPointIndexMap(String id, String name, Map geoPointMap) {
+    private Map<String, Object> createGeoPointIndexMap(String id, String name, GeoPoint geoPoint) {
         Map<String, Object> indexObjectMap = new HashMap<>();
         indexObjectMap.put("Id", id);
         indexObjectMap.put("Name", name);
-        indexObjectMap.put("Location", geoPointMap);
+        indexObjectMap.put("Location", geoPoint);
 
         return indexObjectMap;
     }

@@ -1,0 +1,73 @@
+{
+    "name": "non-nullable-index",
+    "fields": [
+        {
+            "name": "Key",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true
+        },
+        {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "retrievable": true
+        },
+        {
+            "name": "Count",
+            "type": "Edm.Int64",
+            "retrievable": true
+        },
+        {
+            "name": "IsEnabled",
+            "type": "Edm.Boolean",
+            "retrievable": true
+        },
+        {
+            "name": "Ratio",
+            "type": "Edm.Double",
+            "retrievable": true
+        },
+        {
+            "name": "StartDate",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true
+        },
+        {
+            "name": "EndDate",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true
+        },
+        {
+            "name": "TopLevelBucket",
+            "type": "Edm.ComplexType",
+            "fields": [
+                {
+                    "name": "BucketName",
+                    "type": "Edm.String",
+                    "filterable": true
+                },
+                {
+                    "name": "Count",
+                    "type": "Edm.Int32",
+                    "filterable": true
+                }
+            ]
+        },
+        {
+            "name": "Buckets",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+                {
+                    "name": "BucketName",
+                    "type": "Edm.String",
+                    "filterable": true
+                },
+                {
+                    "name": "Count",
+                    "type": "Edm.Int32",
+                    "filterable": true
+                }
+            ]
+        }
+    ]
+}

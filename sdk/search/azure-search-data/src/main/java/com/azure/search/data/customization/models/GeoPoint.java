@@ -4,13 +4,10 @@
 package com.azure.search.data.customization.models;
 
 import com.azure.core.implementation.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Fluent
@@ -22,6 +19,11 @@ public class GeoPoint {
 
     @JsonProperty("crs")
     private CoordinateSystem coordinateSystem;
+
+    @JsonProperty
+    public String getType(){
+        return TYPE;
+    }
 
     public List<Double> coordinates() {
         return this.coordinates;
@@ -47,14 +49,6 @@ public class GeoPoint {
 
     public static GeoPoint createWithDefaultCrs(double latitude, double longitude) {
         return create(latitude, longitude).coordinateSystem(CoordinateSystem.create());
-    }
-
-    public Map createObjectMap() {
-        Map geoPointMap = new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .convertValue(this, Map.class);
-        geoPointMap.put("type", TYPE);
-        return geoPointMap;
     }
 
     /**

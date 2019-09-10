@@ -5,6 +5,9 @@ package com.azure.search.data.customization;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.common.jsonwrapper.JsonWrapper;
+import com.azure.search.data.common.jsonwrapper.api.JsonApi;
+import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -12,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +25,10 @@ import static org.junit.Assert.assertTrue;
 
 public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
-    private SearchIndexAsyncClient asyncClient;
-
+    private static final CharSequence ERROR_MESSAGE_INVALID_FIELDS_REQUEST =
+        "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'.";
     private static final String INDEX_NAME = "hotels";
+    private SearchIndexAsyncClient asyncClient;
 
     @Override
     protected void beforeTest() {
@@ -33,7 +38,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void canGetDynamicDocument() {
-
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         Map<String, Object> addressDoc = new HashMap<String, Object>();
         addressDoc.put("StreetAddress", "677 5th Ave");
         addressDoc.put("City", "New York");
@@ -72,7 +77,6 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         rooms.add(room1Doc);
         rooms.add(room2Doc);
 
-
         ArrayList<String> tags = new ArrayList<String>();
         tags.add("pool");
         tags.add("air conditioning");
@@ -81,8 +85,17 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         HashMap<String, Object> expectedDoc = new HashMap<String, Object>();
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("HotelName", "Secret Point Motel");
-        expectedDoc.put("Description", "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
-        expectedDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+        expectedDoc.put(
+            "Description",
+            "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few "
+                + "minutes away is Time's Square and the historic centre of the city, as well as other places of "
+                + "interest that make New York one of America's most attractive and cosmopolitan cities.");
+        expectedDoc.put(
+            "Description_fr",
+            "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York."
+                + " A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que "
+                + "d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites "
+                + "de l'Amérique.");
         expectedDoc.put("Category", "Boutique");
         expectedDoc.put("Tags", tags);
         expectedDoc.put("ParkingIncluded", false);
@@ -91,22 +104,17 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        expectedDoc.put("Location", GeoPoint.createWithDefaultCrs(40.760586, -73.975403).createObjectMap());
+        expectedDoc.put(
+            "Location",
+            jsonApi.convertObjectToType(GeoPoint.createWithDefaultCrs(40.760586, -73.975403), Map.class));
 
-        try {
-            super.indexDocument(asyncClient, expectedDoc);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        uploadDocuments(asyncClient, INDEX_NAME, expectedDoc);
 
         Mono<Document> futureDoc = asyncClient.getDocument("1");
 
         StepVerifier
             .create(futureDoc)
-            .assertNext(result -> {
-                Assert.assertEquals(expectedDoc, result);
-            })
+            .assertNext(result -> Assert.assertEquals(expectedDoc, result))
             .verifyComplete();
     }
 
@@ -129,12 +137,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         selectedFields.add("HotelId");
         selectedFields.add("ThisFieldDoesNotExist");
 
-        try {
-            super.indexDocument(asyncClient, hotelDoc);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        uploadDocuments(asyncClient, INDEX_NAME, hotelDoc);
 
         Mono futureDoc = asyncClient.getDocument("2", selectedFields, null);
 
@@ -143,8 +146,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             .verifyErrorSatisfies(error -> {
                 assertEquals(HttpResponseException.class, error.getClass());
                 assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
-                assertTrue(error.getMessage().contains("Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
-                //TODO: Create Enum for messages
+                assertTrue(error.getMessage().contains(ERROR_MESSAGE_INVALID_FIELDS_REQUEST));
             });
     }
 }

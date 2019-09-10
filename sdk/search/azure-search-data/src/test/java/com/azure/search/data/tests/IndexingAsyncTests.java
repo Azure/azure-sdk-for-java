@@ -14,6 +14,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.search.data.customization.Document;
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.IndexBatch;
+import io.netty.handler.codec.http.HttpResponseStatus;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
 
@@ -67,6 +78,21 @@ public class IndexingAsyncTests extends IndexingTestBase {
         }).thenAwait(Duration.ofSeconds(4)).verifyComplete();
 
         StepVerifier.create(client.countDocuments()).expectNext(expectedHotelCount).expectComplete().verify();
+    }
+
+    @Override
+    public void indexWithInvalidDocumentThrowsException() {
+        List<IndexAction> indexActions = new LinkedList<>();
+        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, new Document());
+        Mono<DocumentIndexResult> indexResult = client.index(new IndexBatch().actions(indexActions));
+
+        StepVerifier
+            .create(indexResult)
+            .verifyErrorSatisfies(error -> {
+                assertEquals(HttpResponseException.class, error.getClass());
+                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
+                assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
+            });
     }
 
     @Override
