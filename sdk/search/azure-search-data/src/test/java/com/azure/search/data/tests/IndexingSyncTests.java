@@ -55,7 +55,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<IndexAction> actions = boundaryConditionDocs.stream()
             .map(h -> new IndexAction()
                 .actionType(IndexActionType.UPLOAD)
-                .additionalProperties((Map<String,Object>)jsonApi.convertObjectToType(h, Map.class)))
+                .additionalProperties((Map<String, Object>) jsonApi.convertObjectToType(h, Map.class)))
             .collect(Collectors.toList());
         IndexBatch batch = new IndexBatch()
             .actions(actions);
