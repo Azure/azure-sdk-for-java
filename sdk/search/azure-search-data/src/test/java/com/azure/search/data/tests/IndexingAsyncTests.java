@@ -8,6 +8,7 @@ import com.azure.search.data.helpers.EntityMapper;
 import com.azure.search.data.models.Hotel;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import org.junit.Assert;
 
 import java.time.Duration;
 import java.util.LinkedList;
@@ -22,8 +23,6 @@ import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
@@ -89,9 +88,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
         StepVerifier
             .create(indexResult)
             .verifyErrorSatisfies(error -> {
-                assertEquals(HttpResponseException.class, error.getClass());
-                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
-                assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
+                Assert.assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
             });
     }
 
