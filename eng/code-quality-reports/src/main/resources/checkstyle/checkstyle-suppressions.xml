@@ -121,6 +121,9 @@
   <!-- Suppress LineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]"/>
 
+  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
+  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
+
   <!-- Suppress LineLength for Track 1 libraries. -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]microsoft[/\\]"/>
 

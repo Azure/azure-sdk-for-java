@@ -77,6 +77,7 @@ public class CertificateClient {
      * @param tags The application specific metadata to set.
      * @param timeout The duration for which execution should be blocked and wait for certificate operation to finish.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
+     * @throws IllegalStateException when the operation does not finish in specified {@code timeout}.
      * @return The last {@link CertificateOperation create certificate operation} status received after operation was completed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -121,6 +122,7 @@ public class CertificateClient {
      * @param policy The policy of the certificate to be created.
      * @param timeout The duration for which execution should be blocked and wait for certificate operation to finish.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
+     * @throws IllegalStateException when the operation does not finish in specified {@code timeout}.
      * @return The last {@link CertificateOperation create certificate operation} status received after operation was completed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
