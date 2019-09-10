@@ -28,7 +28,7 @@ import com.azure.security.keyvault.certificates.models.Contact;
 import com.azure.security.keyvault.certificates.models.Issuer;
 import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.IssuerBase;
-import com.azure.security.keyvault.certificates.models.MergeCertificateConfig;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.LifetimeActionType;
 import reactor.core.publisher.Flux;
@@ -852,7 +852,7 @@ public class CertificateAsyncClient {
      * @return A {@link Mono} containing the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Certificate> mergeCertificate(MergeCertificateConfig mergeCertificateConfig) {
+    public Mono<Certificate> mergeCertificate(MergeCertificateOptions mergeCertificateConfig) {
         return withContext(context -> mergeCertificateWithResponse(mergeCertificateConfig, context)).flatMap(FluxUtil::toMono);
     }
 
@@ -872,12 +872,12 @@ public class CertificateAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateConfig mergeCertificateConfig) {
+    public Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig) {
         Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null");
         return withContext(context -> mergeCertificateWithResponse(mergeCertificateConfig, context));
     }
 
-    Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateConfig mergeCertificateConfig, Context context) {
+    Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig, Context context) {
         CertificateMergeParameters mergeParameters = new CertificateMergeParameters().x509Certificates(mergeCertificateConfig.x509Certificates())
             .tags(mergeCertificateConfig.tags())
             .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateConfig.enabled()));
@@ -926,7 +926,7 @@ public class CertificateAsyncClient {
     }
 
     Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String name, Context context) {
-        return service.getCertificatePolicy(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.getCertificatePolicy(endpoint, API_VERSION, ACCEPT_LANGUAGE, name, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving certificate policy - {}",  name))
             .doOnSuccess(response -> logger.info("Retrieved certificate policy - {}", name))
             .doOnError(error -> logger.warning("Failed to retrieve certificate policy - {}", name, error));

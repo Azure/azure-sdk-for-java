@@ -21,7 +21,7 @@ import com.azure.security.keyvault.certificates.models.Contact;
 import com.azure.security.keyvault.certificates.models.Issuer;
 import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.IssuerBase;
-import com.azure.security.keyvault.certificates.models.MergeCertificateConfig;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.LifetimeActionType;
 
@@ -1263,7 +1263,7 @@ public class CertificateClient {
      * @return The merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Certificate mergeCertificate(MergeCertificateConfig mergeCertificateConfig) {
+    public Certificate mergeCertificate(MergeCertificateOptions mergeCertificateConfig) {
         return mergeCertificateWithResponse(mergeCertificateConfig, Context.NONE).value();
     }
 
@@ -1283,7 +1283,7 @@ public class CertificateClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Certificate> mergeCertificateWithResponse(MergeCertificateConfig mergeCertificateConfig, Context context) {
+    public Response<Certificate> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig, Context context) {
         Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null");
         return client.mergeCertificateWithResponse(mergeCertificateConfig, context).block();
     }

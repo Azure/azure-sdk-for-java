@@ -3,28 +3,40 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.certificates.models.webkey.KeyType;
 
 import java.util.List;
 
 /**
- * Represents RsaKeyOptions configuration for Certificate policy.
+ * Represents EcKeyOptions configuration for Certificate policy.
  */
-public final class RSAKeyOptions extends KeyOptions {
+public final class EcKeyOptions extends KeyOptions {
 
     private boolean hsm;
 
-    public RSAKeyOptions() {
-        this.keyType = KeyType.RSA;
+    public EcKeyOptions() {
+        this.keyType = KeyType.EC;
+    }
+
+    /**
+     * Set the curve value.
+     *
+     * @param curve the curve value to set
+     * @return the EcKeyOptions object itself.
+     */
+    public EcKeyOptions curve(KeyCurveName curve) {
+        super.curve = curve;
+        return this;
     }
 
     /**
      * Set the key usage.
      *
      * @param keyUsage the key usage value to set
-     * @return the RSAKeyOptions object itself.
+     * @return the EcKeyOptions object itself.
      */
-    public RSAKeyOptions keyUsage(KeyUsageType... keyUsage) {
+    public EcKeyOptions keyUsage(KeyUsageType... keyUsage) {
         super.keyUsage(keyUsage);
         return this;
     }
@@ -33,9 +45,9 @@ public final class RSAKeyOptions extends KeyOptions {
      * Set the enhanced key usage.
      *
      * @param ekus the ekus value to set
-     * @return the RSAKeyOptions object itself.
+     * @return the EcKeyOptions object itself.
      */
-    public RSAKeyOptions enhancedKeyUsage(List<String> ekus) {
+    public EcKeyOptions enhancedKeyUsage(List<String> ekus) {
         super.enhancedKeyUsage(ekus);
         return this;
     }
@@ -44,21 +56,10 @@ public final class RSAKeyOptions extends KeyOptions {
      * Set the exportable value.
      *
      * @param exportable the exportable value to set
-     * @return the RSAKeyOptions object itself.
+     * @return the EcKeyOptions object itself.
      */
-    public RSAKeyOptions exportable(Boolean exportable) {
+    public EcKeyOptions exportable(Boolean exportable) {
         super.exportable(exportable);
-        return this;
-    }
-
-    /**
-     * Set the keySize value.
-     *
-     * @param keySize the keySize value to set
-     * @return the RSAKeyOptions object itself.
-     */
-    public RSAKeyOptions keySize(Integer keySize) {
-        super.keySize = keySize;
         return this;
     }
 
@@ -66,9 +67,9 @@ public final class RSAKeyOptions extends KeyOptions {
      * Indicate whether the key should e reused or not.
      *
      * @param reuseKey the reuse key value to set.
-     * @return the RSAKeyOptions object itself.
+     * @return the EcKeyOptions object itself.
      */
-    public RSAKeyOptions reuseKey(Boolean reuseKey) {
+    public EcKeyOptions reuseKey(Boolean reuseKey) {
         super.reuseKey(reuseKey);
         return this;
     }
@@ -84,18 +85,18 @@ public final class RSAKeyOptions extends KeyOptions {
     /**
      * Indicate if the Rsa key is of hsm type or not.
      * @param hsm The hsm indicator value to set.
-     * @return the RSAKeyOptions object itself.
+     * @return the EcKeyOptions object itself.
      */
-    public RSAKeyOptions hsm(boolean hsm) {
+    public EcKeyOptions hsm(boolean hsm) {
         this.hsm = hsm;
-        this.keyType = hsm ? KeyType.RSA_HSM : KeyType.RSA;
+        this.keyType = hsm ? KeyType.EC_HSM : KeyType.EC;
         return this;
     }
 
     /*
      * Set the key usage.
      */
-    RSAKeyOptions keyUsage(List<KeyUsageType> keyUsage) {
+    EcKeyOptions keyUsage(List<KeyUsageType> keyUsage) {
         this.keyUsage = keyUsage;
         return this;
     }

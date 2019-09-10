@@ -9,16 +9,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.Contact;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateBase;
-import com.azure.security.keyvault.certificates.models.IssuerBase;
-import com.azure.security.keyvault.certificates.models.MergeCertificateConfig;
-import com.azure.security.keyvault.certificates.models.Administrator;
+import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -623,7 +615,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#mergeCertificate(MergeCertificateConfig)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#mergeCertificate(MergeCertificateOptions)}
      * and {@link CertificateAsyncClient#mergeCertificate(String, List)}
      */
     public void mergeCertificateCodeSnippets() {
@@ -645,8 +637,8 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificate#config
         List<byte[]> x509CertificatesToMerge = new ArrayList<>();
-        MergeCertificateConfig config =
-            new MergeCertificateConfig("certificateName", x509CertificatesToMerge)
+        MergeCertificateOptions config =
+            new MergeCertificateOptions("certificateName", x509CertificatesToMerge)
                 .enabled(false);
         Certificate mergedCertificate = certificateClient.mergeCertificate(config);
         System.out.printf("Received Certificate with name %s and key id %s", mergedCertificate.name(),
@@ -655,8 +647,8 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#config
         List<byte[]> x509CertsToMerge = new ArrayList<>();
-        MergeCertificateConfig mergeConfig =
-            new MergeCertificateConfig("certificateName", x509CertsToMerge)
+        MergeCertificateOptions mergeConfig =
+            new MergeCertificateOptions("certificateName", x509CertsToMerge)
                 .enabled(false);
         Response<Certificate> mergedCertificateWithResponse =
             certificateClient.mergeCertificateWithResponse(mergeConfig, new Context(key2, value2));

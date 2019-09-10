@@ -5,7 +5,7 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.ECKeyOptions;
+import com.azure.security.keyvault.certificates.models.EcKeyOptions;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.certificates.models.Contact;
@@ -39,7 +39,7 @@ public class ListOperationsAsync {
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .subjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .keyOptions(new ECKeyOptions()
+            .keyOptions(new EcKeyOptions()
                 .reuseKey(true)
                 .curve(KeyCurveName.P_256));
         Map<String, String> tags = new HashMap<>();

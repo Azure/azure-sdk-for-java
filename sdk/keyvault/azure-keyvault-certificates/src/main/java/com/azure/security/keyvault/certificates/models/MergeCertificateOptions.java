@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Represents Merge Certificate Configuration to merge certificates in key vault.
  */
-public class MergeCertificateConfig {
+public class MergeCertificateOptions {
 
     /**
      * The name of the certificate.
@@ -31,7 +31,7 @@ public class MergeCertificateConfig {
      */
     private Map<String, String> tags;
 
-    public MergeCertificateConfig(String certificateName, List<byte[]> x509Certificates) {
+    public MergeCertificateOptions(String certificateName, List<byte[]> x509Certificates) {
         this.certificateName = certificateName;
         this.x509Certificates = x509Certificates;
     }
@@ -40,9 +40,9 @@ public class MergeCertificateConfig {
      * Set the tags to be associated with the secret.
      *
      * @param tags The tags to set
-     * @return the MergeCertificateConfig object itself.
+     * @return the MergeCertificateOptions object itself.
      */
-    public MergeCertificateConfig tags(Map<String, String> tags) {
+    public MergeCertificateOptions tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -59,9 +59,9 @@ public class MergeCertificateConfig {
     /**
      * Set the enabled status.
      * @param enabled The enabled status to set.
-     * @return the MergeCertificateConfig object itself.
+     * @return the MergeCertificateOptions object itself.
      */
-    public MergeCertificateConfig enabled(Boolean enabled) {
+    public MergeCertificateOptions enabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

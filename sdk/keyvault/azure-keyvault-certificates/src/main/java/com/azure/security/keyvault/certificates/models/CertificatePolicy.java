@@ -218,7 +218,7 @@ public final class CertificatePolicy {
      * @param ecKeyOptions the ec key options to set
      * @return the CertificatePolicy object itself.
      */
-    public CertificatePolicy keyOptions(ECKeyOptions ecKeyOptions) {
+    public CertificatePolicy keyOptions(EcKeyOptions ecKeyOptions) {
         this.keyOptions = ecKeyOptions;
         return this;
     }
@@ -229,7 +229,7 @@ public final class CertificatePolicy {
      * @param rsaKeyOptions the rsa key options to set.
      * @return the CertificatePolicy object itself.
      */
-    public CertificatePolicy keyOptions(RSAKeyOptions rsaKeyOptions) {
+    public CertificatePolicy keyOptions(RsaKeyOptions rsaKeyOptions) {
         this.keyOptions = rsaKeyOptions;
         return this;
     }
@@ -338,7 +338,7 @@ public final class CertificatePolicy {
         Integer keySize = (Integer) keyProps.get("key_size");
         Boolean exportable = (Boolean) keyProps.get("exportable");
         Boolean reuseKey = (Boolean) keyProps.get("reuseKey");
-        KeyCurveName curve = KeyCurveName.fromString((String) keyProps.get("crv"));
+        KeyCurveName curve = keyProps.containsKey("crv") ? KeyCurveName.fromString((String) keyProps.get("crv")) : null;
 
         if (keyOptions == null) {
             keyOptions = new KeyOptions();
@@ -391,8 +391,8 @@ public final class CertificatePolicy {
         }
 
         keyOptions
-            .enhancedKeyUsage(parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")))
-            .keyUsage(parseKeyUsage((List<Object>) x509Props.get("key_usage")));
+            .enhancedKeyUsage(x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")): null)
+            .keyUsage(x509Props.containsKey("key_usage") ? parseKeyUsage((List<Object>) x509Props.get("key_usage")) : null);
     }
 
     @SuppressWarnings("unchecked")
@@ -418,7 +418,7 @@ public final class CertificatePolicy {
 
     @JsonProperty("secret_props")
     private void unpackSecretProperties(Map<String, Object> secretProps) {
-        this.secretContentType = SecretContentType.fromString((String) secretProps.get("contentType"));
+        this.secretContentType = secretProps.containsKey("contentType") ? SecretContentType.fromString((String) secretProps.get("contentType")) : null;
     }
 
     @JsonProperty("issuer")
@@ -426,7 +426,6 @@ public final class CertificatePolicy {
         this.issuerName = (String) issuerProps.get("name");
         this.issuerCertificateTypeRequest = (String) issuerProps.get("cty");
         this.certificateTransparency = (Boolean) issuerProps.get("cert_transparency");
-
     }
 
     @JsonProperty("lifetime_actions")
