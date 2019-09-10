@@ -25,7 +25,14 @@ public final class Issuer extends IssuerBase {
      */
     private String password;
 
+    /**
+     * The organization Id.
+     */
     private String organizationId;
+
+    /**
+     * The administrators.
+     */
     private List<Administrator> administrators;
 
     /**
@@ -121,7 +128,7 @@ public final class Issuer extends IssuerBase {
     @JsonProperty(value = "org_details")
     @SuppressWarnings("unchecked")
     private void unpacOrganizationalDetails(Map<String, Object> orgDetails) {
-        this.administrators =  parseAdministrators((List<Object>) orgDetails.get("admin_details"));
+        this.administrators =  orgDetails.containsKey("admin_details") ? parseAdministrators((List<Object>) orgDetails.get("admin_details")) : null;
         this.organizationId = (String) orgDetails.get("id");
     }
 

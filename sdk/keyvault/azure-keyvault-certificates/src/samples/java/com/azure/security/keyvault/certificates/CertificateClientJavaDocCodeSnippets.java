@@ -9,11 +9,23 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.*;
+import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.CertificateBase;
+import com.azure.security.keyvault.certificates.models.IssuerBase;
+import com.azure.security.keyvault.certificates.models.MergeCertificateConfig;
+import com.azure.security.keyvault.certificates.models.Administrator;
 
 import java.time.Duration;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link CertificateClient}
@@ -348,20 +360,19 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#purgeDeletedCertificate(String, Context)}
+     * Method to insert code snippets for {@link CertificateClient#purgeDeletedCertificateWithResponse(String, Context)}
      */
     public void purgeDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string
-        VoidResponse response = certificateClient.purgeDeletedCertificate("certificateName");
-        System.out.printf("Purged Deleted certificate with status %s", response.statusCode());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string
+        certificateClient.purgeDeletedCertificateWithResponse("certificateName");
+        // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string
         
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string-Context
-        VoidResponse purgeResponse = certificateClient.purgeDeletedCertificate("certificateName",
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context
+        VoidResponse purgeResponse = certificateClient.purgeDeletedCertificateWithResponse("certificateName",
             new Context(key1, value1));
         System.out.printf("Purged Deleted certificate with status %s", purgeResponse.statusCode());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string-Context
+        // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context
     }
 
     /**
@@ -634,8 +645,9 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificate#config
         List<byte[]> x509CertificatesToMerge = new ArrayList<>();
-        MergeCertificateConfig config = new MergeCertificateConfig("certificateName", x509CertificatesToMerge)
-            .enabled(false);
+        MergeCertificateConfig config =
+            new MergeCertificateConfig("certificateName", x509CertificatesToMerge)
+                .enabled(false);
         Certificate mergedCertificate = certificateClient.mergeCertificate(config);
         System.out.printf("Received Certificate with name %s and key id %s", mergedCertificate.name(),
             mergedCertificate.keyId());
@@ -643,10 +655,11 @@ public final class CertificateClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#config
         List<byte[]> x509CertsToMerge = new ArrayList<>();
-        MergeCertificateConfig mergeConfig = new MergeCertificateConfig("certificateName", x509CertsToMerge)
-            .enabled(false);
+        MergeCertificateConfig mergeConfig =
+            new MergeCertificateConfig("certificateName", x509CertsToMerge)
+                .enabled(false);
         Response<Certificate> mergedCertificateWithResponse =
-            certificateClient.mergeCertificateWithResponse(config, new Context(key2, value2));
+            certificateClient.mergeCertificateWithResponse(mergeConfig, new Context(key2, value2));
         System.out.printf("Received Certificate with name %s and key id %s",
             mergedCertificateWithResponse.value().name(), mergedCertificateWithResponse.value().keyId());
         // END: com.azure.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#config

@@ -17,9 +17,9 @@ class CertificateBackup {
     private Base64Url value;
 
     /**
-     * Get the value value.
+     * Get the backup blob.
      *
-     * @return the value value
+     * @return the backup blob
      */
     byte[] value() {
         if (this.value == null) {

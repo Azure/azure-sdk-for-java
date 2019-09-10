@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.certificates.models.Certificate;
@@ -38,13 +39,14 @@ import java.util.Objects;
  * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link Issuer certificate issuers}. The client also supports
  * creating, listing and deleting {@link Contact certificate contacts}</p>
  *
- * <p><strong>Samples to construct the async client</strong></p>
+ * <p><strong>Samples to construct the sync client</strong></p>
  *
  * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.instantiation}
  *
  * @see CertificateClientBuilder
  * @see PagedIterable
  */
+@ServiceClient(builder = CertificateClientBuilder.class, serviceInterfaces = CertificateService.class)
 public class CertificateClient {
     private final CertificateAsyncClient client;
 
@@ -363,7 +365,7 @@ public class CertificateClient {
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string}
      *
      * @param name The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
@@ -371,8 +373,8 @@ public class CertificateClient {
      * @return A {@link VoidResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoidResponse purgeDeletedCertificate(String name) {
-        return purgeDeletedCertificate(name, Context.NONE);
+    public void purgeDeletedCertificateWithResponse(String name) {
+         purgeDeletedCertificateWithResponse(name, Context.NONE);
     }
 
     /**
@@ -383,7 +385,7 @@ public class CertificateClient {
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string-Context}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context}
      *
      * @param name The name of the deleted certificate.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -392,7 +394,7 @@ public class CertificateClient {
      * @return A {@link VoidResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoidResponse purgeDeletedCertificate(String name, Context context) {
+    public VoidResponse purgeDeletedCertificateWithResponse(String name, Context context) {
         return client.purgeDeletedCertificate(name, context).block();
     }
 
@@ -1032,7 +1034,7 @@ public class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the returned contacts details in the response.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.listCertificateContacts}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.}
      *
      * @return A {@link PagedIterable} containing all of the {@link Contact certificate contacts} in the vault.
      */

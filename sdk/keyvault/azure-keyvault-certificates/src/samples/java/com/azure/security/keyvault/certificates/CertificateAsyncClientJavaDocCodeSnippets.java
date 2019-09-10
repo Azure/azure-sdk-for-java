@@ -12,10 +12,19 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.*;
 import reactor.util.context.Context;
+import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.CertificateBase;
+import com.azure.security.keyvault.certificates.models.MergeCertificateConfig;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 
 /**
@@ -263,7 +272,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponseValue -> {
                 Certificate certificate = certificateResponseValue;
-                //Update enabled status of the issuer
+                //Update enabled status of the certificate
                 certificate.enabled(false);
                 certificateAsyncClient.updateCertificate(certificate)
                     .subscribe(certificateResponse ->
@@ -430,12 +439,12 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public void purgeDeletedCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string
         certificateAsyncClient.purgeDeletedCertificate("deletedCertificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d \n", purgeResponse.statusCode()));
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string
     }
 
     /**
@@ -601,8 +610,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string
         certificateAsyncClient.deleteCertificateOperationWithResponse("certificateName")
-            .subscribe(certificateOperationResponse -> System.out.printf("Deleted Certificate operation's last" +
-                " status %s", certificateOperationResponse.value().status()));
+            .subscribe(certificateOperationResponse -> System.out.printf("Deleted Certificate operation's last"
+                + " status %s", certificateOperationResponse.value().status()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string

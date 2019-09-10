@@ -39,11 +39,10 @@ import java.util.function.Supplier;
  * <p>When auto-polling is disabled, the {@link Poller} will not update its status or other information, unless manual polling is triggered by calling {@link Poller#poll()} function.
  *
  * <p>The {@link Poller} will stop polling when the long-running operation is complete or it is disabled. The polling is considered complete
- * based on status defined in {@link PollResponse.OperationStatus}.
+ * based on status defined in {@link PollResponse}.
  *
  * @param <T> Type of poll response value
  * @see PollResponse
- * @see PollResponse.OperationStatus
  */
 public class Poller<T> {
 
@@ -96,7 +95,7 @@ public class Poller<T> {
      *
      * @param pollInterval Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link PollResponse.OperationStatus}.
+     * which must never return {@code null}, and which must always have a non-null status.
      * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
@@ -113,7 +112,7 @@ public class Poller<T> {
      *
      * @param pollInterval Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link PollResponse.OperationStatus}.
+     * which must never return {@code null}, and which must always have a non-null status.
      * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
@@ -155,7 +154,7 @@ public class Poller<T> {
      *
      * @param pollInterval Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link PollResponse.OperationStatus}.
+     * which must never return {@code null}, and which must always have a non-null status.
      *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
@@ -174,7 +173,7 @@ public class Poller<T> {
      *
      * @param pollInterval Not-null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into the client library,
-     * which must never return {@code null}, and which must always have a non-null {@link PollResponse.OperationStatus}.
+     * which must never return {@code null}, and which must always have a non-null status.
      * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
@@ -190,7 +189,7 @@ public class Poller<T> {
      * Attempts to cancel the long-running operation that this {@link Poller} represents. This is possible only if the service supports it,
      * otherwise an {@code UnsupportedOperationException} will be thrown.
      * <p>
-     * It will call cancelOperation if status is {@link PollResponse.OperationStatus#IN_PROGRESS} otherwise it does nothing.
+     * It will call cancelOperation if status is 'In Progress' otherwise it does nothing.
      *
      * @throws UnsupportedOperationException when cancel operation is not provided.
      */
@@ -236,10 +235,10 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined in {@link PollResponse.OperationStatus}.
+     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined in {@link PollResponse}.
      * <p>It will enable auto-polling if it was disable by user.
      *
-     * @return returns final {@link PollResponse} when polling is complete as defined in {@link PollResponse.OperationStatus}.
+     * @return returns final {@link PollResponse} when polling is complete.
      */
     public PollResponse<T> block() {
         if (!isAutoPollingEnabled()) {
@@ -249,11 +248,11 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined in {@link PollResponse.OperationStatus}.
+     * Blocks execution and wait for polling to complete. The polling is considered complete based on status defined in {@link PollResponse}.
      * <p>It will enable auto-polling if it was disable by user.
      *
      * @param timeout the duration for which the excecution is blocked and waits for polling to complete.
-     * @return returns final {@link PollResponse} when polling is complete as defined in {@link PollResponse.OperationStatus}.
+     * @return returns final {@link PollResponse} when polling is complete.
      */
     public PollResponse<T> block(Duration timeout) {
         if (!isAutoPollingEnabled()) {
@@ -263,8 +262,8 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks indefinitely until given {@link PollResponse.OperationStatus} is received.
-     * @param statusToBlockFor The desired {@link PollResponse.OperationStatus} to block for and it can be any valid {@link PollResponse.OperationStatus} value.
+     * Blocks indefinitely until given {@code statusToBlockFor} is received.
+     * @param statusToBlockFor The desired status to block for.
      * @return {@link PollResponse} for matching desired status.
      * @throws IllegalArgumentException If {@code statusToBlockFor} is {@code null}.
      */
@@ -273,8 +272,8 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks until given {@link PollResponse.OperationStatus} is received or a timeout expires if provided. A {@code null} {@code timeout} will cause to block indefinitely for desired status.
-     * @param statusToBlockFor The desired {@link PollResponse.OperationStatus} to block for and it can be any valid {@link PollResponse.OperationStatus} value.
+     * Blocks until given {@code statusToBlockFor} is received or a timeout expires if provided. A {@code null} {@code timeout} will cause to block indefinitely for desired status.
+     * @param statusToBlockFor The desired status to block for.
      * @param timeout The time after which it will stop blocking. A {@code null} value will cause to block indefinitely. Zero or negative are not valid values.
      * @return {@link PollResponse} for matching desired status to block for.
      * @throws IllegalArgumentException if {@code timeout} is zero or negative and if {@code statusToBlockFor} is {@code null}.

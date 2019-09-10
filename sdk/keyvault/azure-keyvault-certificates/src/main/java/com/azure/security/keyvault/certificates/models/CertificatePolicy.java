@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,6 @@ public final class CertificatePolicy {
      * Actions that will be performed by Key Vault over the lifetime of a
      * certificate.
      */
-    @JsonProperty(value = "lifetime_actions")
     private List<LifetimeAction> lifetimeActions;
 
     /**
@@ -338,7 +338,7 @@ public final class CertificatePolicy {
         Integer keySize = (Integer) keyProps.get("key_size");
         Boolean exportable = (Boolean) keyProps.get("exportable");
         Boolean reuseKey = (Boolean) keyProps.get("reuseKey");
-        KeyCurveName curve = (KeyCurveName) keyProps.get("crv");
+        KeyCurveName curve = KeyCurveName.fromString((String) keyProps.get("crv"));
 
         if (keyOptions == null) {
             keyOptions = new KeyOptions();
@@ -391,8 +391,29 @@ public final class CertificatePolicy {
         }
 
         keyOptions
-            .enhancedKeyUsage((List<String>) x509Props.get("ekus"))
-            .keyUsage((List<KeyUsageType>) x509Props.get("key_usage"));
+            .enhancedKeyUsage(parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")))
+            .keyUsage(parseKeyUsage((List<Object>) x509Props.get("key_usage")));
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<KeyUsageType> parseKeyUsage(List<Object> keyUsages) {
+        List<KeyUsageType> output = new ArrayList<>();
+
+        for (Object keyUsage : keyUsages) {
+            KeyUsageType type = KeyUsageType.fromString((String) keyUsage);
+            output.add(type);
+        }
+        return output;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> parseEnhancedKeyUsage(List<Object> keyUsages) {
+        List<String> output = new ArrayList<>();
+
+        for (Object keyUsage : keyUsages) {
+            output.add((String) keyUsage);
+        }
+        return output;
     }
 
     @JsonProperty("secret_props")
@@ -406,6 +427,32 @@ public final class CertificatePolicy {
         this.issuerCertificateTypeRequest = (String) issuerProps.get("cty");
         this.certificateTransparency = (Boolean) issuerProps.get("cert_transparency");
 
+    }
+
+    @JsonProperty("lifetime_actions")
+    @SuppressWarnings("unchecked")
+    private void unpackLifeTimeActions(List<Object> lifetimeActions) {
+        List<LifetimeAction> actions = new ArrayList<>();
+
+        for (Object action: lifetimeActions) {
+            Map<String, Object> map = (Map<String, Object>) action;
+            Integer lifetimePercentageTrigger = null;
+            Integer daysBeforeExpiryTrigger = null;
+            LifetimeActionType actionType = null;
+            if (map.containsKey("trigger")) {
+                Map<String, Object> trigger = (Map<String, Object>) map.get("trigger");
+                lifetimePercentageTrigger = trigger.containsKey("lifetime_percentage") ? (Integer) trigger.get("lifetime_percentage") : null;
+                daysBeforeExpiryTrigger = trigger.containsKey("days_before_expiry") ? (Integer) trigger.get("days_before_expiry") : null;
+            }
+
+            if (map.containsKey("action")) {
+                Map<String, Object> lifetimeAction = (Map<String, Object>) map.get("action");
+                actionType = lifetimeAction.containsKey("action_type") ? LifetimeActionType.fromString((String) lifetimeAction.get("action_type")) : null;
+            }
+            actions.add(new LifetimeAction(actionType).lifetimePercentage(lifetimePercentageTrigger).daysBeforeExpiry(daysBeforeExpiryTrigger));
+        }
+
+        this.lifetimeActions = actions;
     }
 
 

@@ -100,7 +100,7 @@ public class CertificateAsyncClient {
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation> createCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return new Poller<CertificateOperation>(Duration.ofSeconds(10), createPollOperation(name), activationOperation(name, policy, tags), cancelOperation(name));
+        return new Poller<CertificateOperation>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, tags), cancelOperation(name));
     }
 
     private Consumer<Poller<CertificateOperation>> cancelOperation(String name) {
@@ -417,7 +417,7 @@ public class CertificateAsyncClient {
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string}
      *
      * @param name The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.

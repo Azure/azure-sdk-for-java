@@ -42,4 +42,18 @@ public enum KeyUsageType {
     public String toString() {
         return value;
     }
+
+    /**
+     * Return the KeyUsageType which maps to {@code value}.
+     * @param value The value whose equivalent KeyUsageType is needed.
+     * @return the KeyUsageType
+     */
+    public static KeyUsageType fromString(String value) {
+        for (KeyUsageType keyUsageType : values()) {
+            if (keyUsageType.value.equalsIgnoreCase(value)) {
+                return keyUsageType;
+            }
+        }
+        return null;
+    }
 }

@@ -791,14 +791,14 @@
     <module>./sdk/core/azure-core-http-okhttp</module>
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
+    <module>./sdk/identity/azure-identity</module>
     <module>./sdk/keyvault/azure-keyvault-certificates</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
-    <module>./sdk/tracing/tracing-opentelemetry</module>
-    <module>./sdk/identity/azure-identity</module>
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
+    <module>./sdk/tracing/tracing-opentelemetry</module>
   </modules>
 </project>
