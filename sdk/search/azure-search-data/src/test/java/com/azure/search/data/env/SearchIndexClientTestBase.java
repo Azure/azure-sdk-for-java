@@ -116,7 +116,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .searchDnsSuffix("search.windows.net")
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
-                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpClient(HttpClient.createDefault())
                 .addPolicy(new SearchPipelinePolicy(apiKey))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
