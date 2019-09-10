@@ -16,7 +16,8 @@ abstract class BaseQueueClientBuilder<T extends BaseClientBuilder<T>> extends Ba
 
     @Override
     protected final UserAgentPolicy getUserAgentPolicy() {
-        return new UserAgentPolicy(QueueConfiguration.NAME, QueueConfiguration.VERSION, super.getConfiguration());
+        QueueConfiguration queueConfiguration = new QueueConfiguration();
+        return new UserAgentPolicy(queueConfiguration.getName(), queueConfiguration.getVersion(), super.getConfiguration());
     }
 
     @Override
