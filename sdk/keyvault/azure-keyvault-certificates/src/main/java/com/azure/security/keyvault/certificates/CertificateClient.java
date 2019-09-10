@@ -375,7 +375,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedCertificateWithResponse(String name) {
-         purgeDeletedCertificateWithResponse(name, Context.NONE);
+        purgeDeletedCertificateWithResponse(name, Context.NONE);
     }
 
     /**
