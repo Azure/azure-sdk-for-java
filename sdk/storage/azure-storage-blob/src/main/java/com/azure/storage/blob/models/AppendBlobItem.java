@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
@@ -37,6 +40,7 @@ public class AppendBlobItem {
     public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders) {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
+        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
         this.blobAppendOffset = generatedHeaders.blobAppendOffset();
         this.blobCommittedBlockCount = generatedHeaders.blobCommittedBlockCount();
     }
