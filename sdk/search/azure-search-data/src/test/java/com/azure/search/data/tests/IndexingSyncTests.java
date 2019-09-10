@@ -13,10 +13,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
