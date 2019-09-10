@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
@@ -126,6 +127,15 @@ public class BlobClient {
      */
     public URL getBlobUrl() {
         return blobAsyncClient.getBlobUrl();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return blobAsyncClient.getHttpPipeline();
     }
 
     /**
