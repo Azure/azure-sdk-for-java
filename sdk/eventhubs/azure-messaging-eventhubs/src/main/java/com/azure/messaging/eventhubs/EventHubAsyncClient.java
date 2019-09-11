@@ -8,6 +8,7 @@ import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -45,9 +46,13 @@ import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
- * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
- * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
- * Event Hub.
+ * An <strong>asynchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
+ * specific Event Hub and allows operations for sending event data, receiving data, and inspecting the Event Hub's
+ * metadata.
+ *
+ * <p>
+ * Instantiated through {@link EventHubClientBuilder}.
+ * </p>
  *
  * <p><strong>Creating an {@link EventHubAsyncClient} using an Event Hubs namespace connection string</strong></p>
  *
@@ -58,6 +63,7 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncclient.instantiation#string}
  *
  * @see EventHubClientBuilder
+ * @see EventHubClient See EventHubClient to communicate with an Event Hub using a synchronous client.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
@@ -78,13 +84,17 @@ public class EventHubAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
+    private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
-        Objects.requireNonNull(connectionOptions);
-        Objects.requireNonNull(provider);
-        Objects.requireNonNull(handlerProvider);
+    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
+                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
+        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
+        Objects.requireNonNull(provider, "'provider' cannot be null.");
+        Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
+        Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
 
         this.connectionOptions = connectionOptions;
+        this.tracerProvider = tracerProvider;
         this.eventHubName = connectionOptions.eventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
@@ -107,7 +117,9 @@ public class EventHubAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
-        return connectionMono.flatMap(connection -> connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
+        return connectionMono
+            .flatMap(connection -> connection
+                .getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
     }
 
     /**
@@ -156,7 +168,7 @@ public class EventHubAsyncClient implements Closeable {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public EventHubAsyncProducer createProducer(EventHubProducerOptions options) {
-        Objects.requireNonNull(options);
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         final EventHubProducerOptions clonedOptions = options.clone();
 
@@ -185,7 +197,7 @@ public class EventHubAsyncClient implements Closeable {
                     .cast(AmqpSendLink.class);
             });
 
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
     }
 
     /**
@@ -236,22 +248,23 @@ public class EventHubAsyncClient implements Closeable {
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
      *         EventHubConsumerOptions}.
-     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or {@code
-     *     options} is {@code null}.
+     * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
+     *     {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                                 EventHubConsumerOptions options) {
-        Objects.requireNonNull(eventPosition);
-        Objects.requireNonNull(options);
-        Objects.requireNonNull(consumerGroup);
-        Objects.requireNonNull(partitionId);
+        Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
+        Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
 
-        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
-        }
-        if (ImplUtils.isNullOrEmpty(partitionId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be an empty string."));
+        if (consumerGroup.isEmpty()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
+        } else if (partitionId.isEmpty()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -293,8 +306,9 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw logger.logExceptionAsError(new AmqpException(false, "Unable to close connection to service", exception,
-                    new ErrorContext(connectionOptions.host())));
+                throw logger.logExceptionAsError(
+                    new AmqpException(false, "Unable to close connection to service", exception,
+                        new ErrorContext(connectionOptions.host())));
             }
         }
     }
@@ -304,11 +318,18 @@ public class EventHubAsyncClient implements Closeable {
 
         // order of preference
         if (eventPosition.offset() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.offset());
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.offset());
         }
 
         if (eventPosition.sequenceNumber() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.sequenceNumber());
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.sequenceNumber());
         }
 
         if (eventPosition.enqueuedDateTime() != null) {
@@ -319,10 +340,18 @@ public class EventHubAsyncClient implements Closeable {
                 ms = Long.toString(Long.MAX_VALUE);
             }
 
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                ms);
         }
 
         throw new IllegalArgumentException("No starting position was set.");
+    }
+
+    String eventHubName() {
+        return this.eventHubName;
     }
 
     private static class ResponseMapper implements AmqpResponseMapper {

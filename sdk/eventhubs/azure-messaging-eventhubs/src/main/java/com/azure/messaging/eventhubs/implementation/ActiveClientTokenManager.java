@@ -69,7 +69,8 @@ class ActiveClientTokenManager implements Closeable {
      */
     Mono<Long> authorize() {
         if (hasDisposed.get()) {
-            return Mono.error(new AzureException("Cannot authorize with CBS node when this token manager has been disposed of."));
+            return Mono.error(new AzureException(
+                "Cannot authorize with CBS node when this token manager has been disposed of."));
         }
 
         return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))

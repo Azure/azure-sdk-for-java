@@ -19,6 +19,10 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
+  <properties>
+    <project.automatic.module.name>com.azure.identity</project.automatic.module.name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -33,11 +37,9 @@
       <groupId>com.nimbusds</groupId>
       <artifactId>oauth2-oidc-sdk</artifactId>
     </dependency>
-
-    <!-- used for creating an HTTP server in AuthorizationCodeListener only -->
     <dependency>
-      <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty</artifactId>
+      <groupId>org.nanohttpd</groupId>
+      <artifactId>nanohttpd</artifactId>
     </dependency>
 
     <dependency>
@@ -59,6 +61,11 @@
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna-platform</artifactId>
+      <version>4.1.0</version>
     </dependency>
   </dependencies>
 </project>

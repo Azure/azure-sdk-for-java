@@ -36,7 +36,7 @@ jobs:
         inputs:
           mavenPomFile: $(pomFile)
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -Dmaven.test.skip=true -Dinclude-template' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinclude-template' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -202,7 +202,7 @@ jobs:
           ProfileFlag: ''
         Windows - Java 8:
           OSName: 'Windows'
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
           ProfileFlag: ''
         Linux - Java LTS:
@@ -217,7 +217,7 @@ jobs:
           ProfileFlag: '-Djava-lts'
         Windows - Java LTS:
           OSName: 'Windows'
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
           ProfileFlag: '-Djava-lts'
 

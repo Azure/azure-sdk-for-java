@@ -22,7 +22,7 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-preview.3</version>
 </dependency>
 ```
 
@@ -197,3 +197,5 @@ If you would like to become an active contributor to this project please follow 
 [samples]: src/samples/java/com/azure/data/appconfiguration
 [source_code]: src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/appconfiguration/azure-data-appconfiguration/README.png)

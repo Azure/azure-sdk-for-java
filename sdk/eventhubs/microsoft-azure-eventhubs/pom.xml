@@ -71,7 +71,6 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>0.4.0-preview</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -86,18 +85,18 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <!-- Now that all checkstyle issues have been resolved, override the
-        default behavior to make checkstyle fail on error and violation. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+<!--  <build>-->
+<!--    <plugins>-->
+<!--      &lt;!&ndash; Now that all checkstyle issues have been resolved, override the-->
+<!--        default behavior to make checkstyle fail on error and violation. &ndash;&gt;-->
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--        <configuration>-->
+<!--          <failsOnError>true</failsOnError>-->
+<!--          <failOnViolation>true</failOnViolation>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
+<!--    </plugins>-->
+<!--  </build>-->
 </project>

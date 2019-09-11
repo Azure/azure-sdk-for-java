@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.common.SR;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -305,7 +306,7 @@ public abstract class BlobOutputStream extends OutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, this.accessConditions).block();
+            client.commitBlockListWithResponse(this.blockList, null, null, null, this.accessConditions).block();
         }
     }
 

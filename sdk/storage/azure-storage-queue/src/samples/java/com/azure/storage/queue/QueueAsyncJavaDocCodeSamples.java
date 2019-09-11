@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.queue.javadoc;
+package com.azure.storage.queue;
 
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.QueueClientBuilder;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
@@ -22,6 +23,8 @@ import java.util.Map;
  */
 
 public class QueueAsyncJavaDocCodeSamples {
+
+    private QueueAsyncClient client = createAsyncClientWithSASToken();
 
     /**
      * Generates code sample for creating a {@link QueueAsyncClient}.
@@ -82,9 +85,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#create()}
      */
     public void createQueueAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.create
-        queueAsyncClient.create().subscribe(
+        client.create().subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the queue!")
@@ -96,9 +98,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#create()}
      */
     public void createQueueAsyncMaxOverload() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.create#map
-        queueAsyncClient.create().subscribe(
+        client.create().subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the queue!")
@@ -110,9 +111,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#createWithResponse(Map)}
      */
     public void createWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.createWithResponse#map
-        queueAsyncClient.createWithResponse(Collections.singletonMap("queue", "metadataMap")).subscribe(
+        client.createWithResponse(Collections.singletonMap("queue", "metadataMap")).subscribe(
             response -> System.out.println("Complete creating the queue with status code:" + response.statusCode()),
             error -> System.err.print(error.toString())
         );
@@ -124,9 +124,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#enqueueMessage(String)}
      */
     public void enqueueMessageAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessage#string
-        queueAsyncClient.enqueueMessage("Hello, Azure").subscribe(
+        client.enqueueMessage("Hello, Azure").subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete enqueuing the message!")
@@ -138,9 +137,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#enqueueMessageWithResponse(String, Duration, Duration)}
      */
     public void enqueueMessageAsyncWithTimeoutOverload() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponse#string-duration-duration
-        queueAsyncClient.enqueueMessageWithResponse("Hello, Azure",
+        client.enqueueMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null).subscribe(
                 response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
                     response.value().expirationTime()),
@@ -154,25 +152,23 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#enqueueMessageWithResponse(String, Duration, Duration)}
      */
     public void enqueueMessageAsyncWithLiveTimeOverload() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponseLiveTime#string-duration-duration
-        queueAsyncClient.enqueueMessageWithResponse("Goodbye, Azure",
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration
+        client.enqueueMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5)).subscribe(
                 response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
                     response.value().expirationTime()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete enqueuing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponseLiveTime#string-duration-duration
+        // END: com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration
     }
 
     /**
      * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages()}
      */
     public void dequeueMessageAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages
-        queueAsyncClient.dequeueMessages().subscribe(
+        client.dequeueMessages().subscribe(
             dequeuedMessage -> System.out.println("The message got from dequeue operation: "
                     + dequeuedMessage.messageText()),
             error -> System.err.print(error.toString()),
@@ -185,9 +181,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages(Integer)}
      */
     public void dequeueMessageAsyncWithOverload() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer
-        queueAsyncClient.dequeueMessages(5).subscribe(
+        client.dequeueMessages(5).subscribe(
             dequeuedMessage -> System.out.println("The message got from dequeue operation: "
                 + dequeuedMessage.messageText()),
             error -> System.err.print(error.toString()),
@@ -200,14 +195,14 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages(Integer, Duration)}
      */
     public void dequeueMessageAsyncMaxOverload() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
-        queueAsyncClient.dequeueMessages(5, Duration.ofSeconds(60)).subscribe(
-            dequeuedMessage -> System.out.println("The message got from dequeue operation: "
-                + dequeuedMessage.messageText()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete dequeuing the message!")
-        );
+        client.dequeueMessages(5, Duration.ofSeconds(60))
+            .subscribe(
+                dequeuedMessage -> System.out.println("The message got from dequeue operation: "
+                    + dequeuedMessage.messageText()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete dequeuing the message!")
+            );
         // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
     }
 
@@ -216,9 +211,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#peekMessages()}
      */
     public void peekMessageAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages
-        queueAsyncClient.peekMessages().subscribe(
+        client.peekMessages().subscribe(
             peekMessages -> System.out.println("The message got from peek operation: " + peekMessages.messageText()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete peeking the message!")
@@ -230,9 +224,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#peekMessages(Integer)}
      */
     public void peekMessageAsyncMaxOverload() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
-        queueAsyncClient.peekMessages(5).subscribe(
+        client.peekMessages(5).subscribe(
             peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
                 peekMessage.messageId(), peekMessage.dequeueCount()),
             error -> System.err.print(error.toString()),
@@ -245,11 +238,10 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#updateMessage(String, String, String, Duration)}
      */
     public void updateMessageAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.updateMessage
-        queueAsyncClient.dequeueMessages().subscribe(
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration
+        client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-                queueAsyncClient.updateMessage("newText", dequeuedMessage.messageId(),
+                client.updateMessage("newText", dequeuedMessage.messageId(),
                     dequeuedMessage.popReceipt(), null).subscribe(
                         response -> { },
                         updateError -> System.err.print(updateError.toString()),
@@ -259,18 +251,17 @@ public class QueueAsyncJavaDocCodeSamples {
             dequeueError -> System.err.print(dequeueError.toString()),
             () -> System.out.println("Complete dequeueing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.updateMessage
+        // END: com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration
     }
 
     /**
      * Generates a code sample for using {@link QueueAsyncClient#updateMessageWithResponse(String, String, String, Duration)}
      */
     public void updateMessageWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.updateMessageWithResponse
-        queueAsyncClient.dequeueMessages().subscribe(
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
+        client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-                queueAsyncClient.updateMessageWithResponse("newText", dequeuedMessage.messageId(),
+                client.updateMessageWithResponse("newText", dequeuedMessage.messageId(),
                     dequeuedMessage.popReceipt(), null).subscribe(
                         response -> System.out.println("Complete updating the message with status code:"
                             + response.statusCode()),
@@ -281,18 +272,17 @@ public class QueueAsyncJavaDocCodeSamples {
             dequeueError -> System.err.print(dequeueError.toString()),
             () -> System.out.println("Complete dequeueing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.updateMessageWithResponse
+        // END: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
     }
 
     /**
      * Generates a code sample for using {@link QueueAsyncClient#deleteMessage(String, String)}
      */
     public void deleteMessageAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteMessage
-        queueAsyncClient.dequeueMessages().subscribe(
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String
+        client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-                queueAsyncClient.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
+                client.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
                     response -> { },
                     deleteError -> System.err.print(deleteError.toString()),
                     () -> System.out.println("Complete deleting the message!")
@@ -301,18 +291,17 @@ public class QueueAsyncJavaDocCodeSamples {
             dequeueError -> System.err.print(dequeueError.toString()),
             () -> System.out.println("Complete dequeueing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.deleteMessage
+        // END: com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String
     }
 
     /**
      * Generates a code sample for using {@link QueueAsyncClient#deleteMessageWithResponse(String, String)}
      */
     public void deleteMessageWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteMessageWithResponse
-        queueAsyncClient.dequeueMessages().subscribe(
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String
+        client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-                queueAsyncClient.deleteMessageWithResponse(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
+                client.deleteMessageWithResponse(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
                     response -> System.out.println("Complete deleting the message with status code: " + response.statusCode()),
                     deleteError -> System.err.print(deleteError.toString()),
                     () -> System.out.println("Complete deleting the message!")
@@ -321,16 +310,15 @@ public class QueueAsyncJavaDocCodeSamples {
             dequeueError -> System.err.print(dequeueError.toString()),
             () -> System.out.println("Complete dequeueing the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.deleteMessageWithResponse
+        // END: com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String
     }
 
     /**
      * Generates a code sample for using {@link QueueAsyncClient#delete()}
      */
     public void deleteQueueAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.delete
-        queueAsyncClient.delete().doOnSuccess(
+        client.delete().doOnSuccess(
             response -> System.out.println("Deleting the queue completed.")
         );
         // END: com.azure.storage.queue.queueAsyncClient.delete
@@ -340,9 +328,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#deleteWithResponse()}
      */
     public void deleteWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteWithResponse
-        queueAsyncClient.deleteWithResponse().subscribe(
+        client.deleteWithResponse().subscribe(
             response -> System.out.println("Deleting the queue completed with status code: " + response.statusCode())
         );
         // END: com.azure.storage.queue.queueAsyncClient.deleteWithResponse
@@ -352,9 +339,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#getProperties()}
      */
     public void getPropertiesAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getProperties
-        queueAsyncClient.getProperties()
+        client.getProperties()
             .subscribe(properties -> {
                 System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
                     properties.approximateMessagesCount());
@@ -366,9 +352,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#getProperties()}
      */
     public void getPropertiesWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getPropertiesWithResponse
-        queueAsyncClient.getPropertiesWithResponse()
+        client.getPropertiesWithResponse()
             .subscribe(response -> {
                 QueueProperties properties = response.value();
                 System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
@@ -381,9 +366,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generate a code sample for using {@link QueueAsyncClient#setMetadata(Map)} to set metadata.
      */
     public void setMetadataAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.setMetadata#map
-        queueAsyncClient.setMetadata(Collections.singletonMap("queue", "metadataMap"))
+        client.setMetadata(Collections.singletonMap("queue", "metadataMap"))
             .subscribe(response -> System.out.printf("Setting metadata completed."));
         // END: com.azure.storage.queue.queueAsyncClient.setMetadata#map
     }
@@ -392,9 +376,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generate a code sample for using {@link QueueAsyncClient#setMetadataWithResponse(Map)} to set metadata.
      */
     public void setMetadataWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.setMetadataWithResponse#map
-        queueAsyncClient.setMetadataWithResponse(Collections.singletonMap("queue", "metadataMap"))
+        client.setMetadataWithResponse(Collections.singletonMap("queue", "metadataMap"))
             .subscribe(response -> System.out.printf("Setting metadata completed with status code %d",
                 response.statusCode()));
         // END: com.azure.storage.queue.queueAsyncClient.setMetadataWithResponse#map
@@ -404,9 +387,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generate a code sample for using {@link QueueAsyncClient#setMetadata(Map)} to clear metadata.
      */
     public void clearMetadataAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMetadata#map
-        queueAsyncClient.setMetadata(null)
+        client.setMetadata(null)
             .subscribe(response -> System.out.printf("Clearing metadata completed."));
         // END: com.azure.storage.queue.queueAsyncClient.clearMetadata#map
     }
@@ -415,9 +397,8 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generate a code sample for using {@link QueueAsyncClient#setMetadata(Map)} to clear metadata.
      */
     public void clearMetadataWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map
-        queueAsyncClient.setMetadataWithResponse(null)
+        client.setMetadataWithResponse(null)
             .subscribe(response -> System.out.printf("Clearing metadata completed with status code %d",
                 response.statusCode()));
         // END: com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map
@@ -427,9 +408,9 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#getAccessPolicy()}
      */
     public void getAccessPolicyAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
+
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getAccessPolicy
-        queueAsyncClient.getAccessPolicy()
+        client.getAccessPolicy()
             .subscribe(result -> System.out.printf("Access policy %s allows these permissions: %s",
                 result.id(), result.accessPolicy().permission()));
         // END: com.azure.storage.queue.queueAsyncClient.getAccessPolicy
@@ -440,16 +421,16 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void setAccessPolicyWithResponse() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.setAccessPolicyWithResponse
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
-        queueAsyncClient.setAccessPolicyWithResponse(Collections.singletonList(permission))
+        client.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed with status code %d",
                 response.statusCode()));
-        // END: com.azure.storage.queue.queueAsyncClient.setAccessPolicyWithResponse
+        // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
     }
 
     /**
@@ -457,24 +438,23 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void setAccessPolicyAsync() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.setAccessPolicy
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
         AccessPolicy accessPolicy = new AccessPolicy().permission("r")
             .start(OffsetDateTime.now(ZoneOffset.UTC))
             .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
-        queueAsyncClient.setAccessPolicy(Collections.singletonList(permission))
+        client.setAccessPolicy(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed."));
-        // END: com.azure.storage.queue.queueAsyncClient.setAccessPolicy
+        // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
     }
 
     /**
      * Generates a code sample for using {@link QueueAsyncClient#clearMessagesWithResponse()}
      */
     public void clearMessagesWithResponse() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse
-        queueAsyncClient.clearMessagesWithResponse().doOnSuccess(
+        client.clearMessagesWithResponse().doOnSuccess(
             response -> System.out.println("Clearing messages completed with status code: " + response.statusCode())
         );
         // END: com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse
@@ -484,10 +464,34 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#clearMessages()}
      */
     public void clearMessagesAsync() {
-        QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMessages
-        queueAsyncClient.clearMessages().subscribe(
+        client.clearMessages().subscribe(
             response -> System.out.println("Clearing messages completed."));
         // END: com.azure.storage.queue.queueAsyncClient.clearMessages
+    }
+
+    /**
+     * Code snippet for {@link QueueAsyncClient#generateSAS(String, QueueSASPermission, OffsetDateTime, OffsetDateTime,
+     * String, SASProtocol, IPRange)}
+     */
+    public void generateSASCodeSnippets() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
+        QueueSASPermission permissions = new QueueSASPermission()
+            .read(true)
+            .add(true)
+            .update(true)
+            .process(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String identifier = "";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+
+        // Note either "identifier", or "expiryTime and permissions" are required to be set
+        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
+        // END: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
     }
 }

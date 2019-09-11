@@ -15,7 +15,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-secrets</artifactId>
-    <version>4.0.0-preview.2</version>
+    <version>4.0.0-preview.3</version>
 </dependency>
 ```
 
@@ -306,3 +306,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_BackupRestoreAsync]: src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
 [sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
 [sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-keyvault-secrets/README.png)

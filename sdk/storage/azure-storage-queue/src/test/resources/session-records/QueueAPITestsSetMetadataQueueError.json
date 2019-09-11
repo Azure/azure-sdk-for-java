@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmetadataqueueerror215410bb255310f?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmetadataqueueerror03385532b806379?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "ec07da3b-05e2-44b5-99f6-aa012a2e90b2"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,11 +14,12 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "86d0ac1d-d003-0034-1488-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:86d0ac1d-d003-0034-1488-539fde000000\nTime:2019-08-15T16:40:15.7774776Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:15 GMT",
+      "x-ms-request-id" : "b181464a-6003-00c8-24c2-62a141000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:b181464a-6003-00c8-24c2-62a141000000\nTime:2019-09-04T01:45:40.4959579Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:45:39 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetmetadataqueueerror215410bb255310f" ]
+  "variables" : [ "queueapitestssetmetadataqueueerror03385532b806379" ]
 }

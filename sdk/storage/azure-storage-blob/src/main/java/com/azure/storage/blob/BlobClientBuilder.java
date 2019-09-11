@@ -3,44 +3,21 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.credentials.SASTokenCredential;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -70,70 +47,27 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class, AppendBlobClient.class,
     AppendBlobAsyncClient.class, BlockBlobClient.class, BlockBlobAsyncClient.class, PageBlobClient.class,
     PageBlobAsyncClient.class})
-public final class BlobClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
+public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
 
-    private final List<HttpPipelinePolicy> additionalPolicies;
-
-    private String endpoint;
     private String containerName;
     private String blobName;
     private String snapshot;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
-    private HttpClient httpClient;
-    private HttpLogDetailLevel logLevel;
-    private RequestRetryOptions retryOptions;
-    private Configuration configuration;
 
     /**
      * Creates a builder instance that is able to configure and construct Storage Blob clients.
      */
-    public BlobClientBuilder() {
-        retryOptions = new RequestRetryOptions();
-        logLevel = HttpLogDetailLevel.NONE;
-        additionalPolicies = new ArrayList<>();
-    }
+    public BlobClientBuilder() { }
 
     private AzureBlobStorageImpl constructImpl() {
-        Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(blobName);
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        if (configuration == null) {
-            configuration = ConfigurationManager.getConfiguration();
+        HttpPipeline pipeline = super.getPipeline();
+        if (pipeline == null) {
+            pipeline = super.buildPipeline();
         }
-        policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        }
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
-
-        policies.addAll(this.additionalPolicies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(logLevel));
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
 
         return new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
@@ -145,6 +79,10 @@ public final class BlobClientBuilder {
      * Creates a {@link BlobClient} based on options set in the Builder. BlobClients are used to perform generic blob
      * methods such as {@link BlobClient#download(OutputStream) download} and
      * {@link BlobClient#getProperties() get properties}, use this when the blob type is unknown.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildBlobClient}
      *
      * @return a {@link BlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -158,11 +96,15 @@ public final class BlobClientBuilder {
      * generic blob methods such as {@link BlobAsyncClient#download() download} and
      * {@link BlobAsyncClient#getProperties()}, use this when the blob type is unknown.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildBlobAsyncClient}
+     *
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
-        return new BlobAsyncClient(constructImpl(), snapshot);
+        return new BlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -186,7 +128,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -213,7 +155,7 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
@@ -238,15 +180,21 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot);
+        return new PageBlobAsyncClient(constructImpl(), snapshot, cpk);
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.endpoint#String}
+     *
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
+    @Override
     public BlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
@@ -257,20 +205,23 @@ public final class BlobClientBuilder {
             this.blobName = parts.blobName();
             this.snapshot = parts.snapshot();
 
-            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
-            if (this.sasTokenCredential != null) {
-                this.tokenCredential = null;
-                this.sharedKeyCredential = null;
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
+            if (sasTokenCredential != null) {
+                super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
-
         return this;
     }
 
     /**
      * Sets the name of the container this client is connecting to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.containerName#String}
+     *
      * @param containerName the name of the container
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code containerName} is {@code null}
@@ -298,144 +249,6 @@ public final class BlobClientBuilder {
      */
     public BlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}
-     */
-    public BlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential);
-        this.tokenCredential = null;
-        this.sasTokenCredential = null;
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}
-     */
-    public BlobClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
-        this.sasTokenCredential = null;
-        return this;
-    }
-
-    /**
-     * Sets the credential used to authorize requests sent to the service
-     * @param credential authorization credential
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code credential} is {@code null}
-     */
-    public BlobClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential);
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
-        return this;
-    }
-
-    /**
-     * Clears the credential used to authorize requests sent to the service
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
-        this.sasTokenCredential = null;
-        return this;
-    }
-
-    /**
-     * Sets the connection string for the service, parses it for authentication information (account name, account key)
-     * @param connectionString connection string from access keys section
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code connectionString} is {@code null}
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
-     */
-    public BlobClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
-
-        Map<String, String> connectionKVPs = new HashMap<>();
-        for (String s : connectionString.split(";")) {
-            String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
-
-        String accountName = connectionKVPs.get(ACCOUNT_NAME);
-        String accountKey = connectionKVPs.get(ACCOUNT_KEY);
-        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
-
-        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
-        }
-
-        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
-            endpoint(endpoint);
-        }
-
-        // Use accountName and accountKey to get the SAS token using the credential class.
-        return credential(new SharedKeyCredential(accountName, accountKey));
-    }
-
-    /**
-     * Sets the http client used to send service requests
-     * @param httpClient http client to send requests
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code httpClient} is {@code null}
-     */
-    public BlobClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient);
-        return this;
-    }
-
-    /**
-     * Adds a pipeline policy to apply on each request sent
-     * @param pipelinePolicy a pipeline policy
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
-     */
-    public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
-        return this;
-    }
-
-    /**
-     * Sets the logging level for service requests
-     * @param logLevel logging level
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
-        return this;
-    }
-
-    /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
-     * @param configuration configuration store
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /**
-     * Sets the request retry options for all the requests made through the client.
-     * @param retryOptions the options to configure retry behaviors
-     * @return the updated BlobClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}
-     */
-    public BlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions);
         return this;
     }
 }

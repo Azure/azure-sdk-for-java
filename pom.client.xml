@@ -170,7 +170,7 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
-          <fork>false</fork>
+          <fork>true</fork>
         </configuration>
         <executions>
           <execution>
@@ -244,6 +244,7 @@
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
+              <doclint>all</doclint>
             </configuration>
           </execution>
         </executions>
@@ -362,6 +363,14 @@
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
+                <title>Azure Core - HTTP - Netty</title>
+                <packages>com.azure.core.http.netty*</packages>
+              </group>
+              <group>
+                <title>Azure Core - HTTP - OkHttp</title>
+                <packages>com.azure.core.http.okhttp*</packages>
+              </group>
+              <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
               </group>
@@ -419,9 +428,13 @@
               <artifactId>codesnippet-doclet</artifactId>
               <version>${codesnippet4javadoc.version}</version>
             </docletArtifact>
-            <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
+            <additionalOptions>
+              <additionalOption>-maxLineLength 120</additionalOption>
+              <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
+            </additionalOptions>
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
+            <doclint>all</doclint>
           </configuration>
         </plugin>
 
@@ -448,7 +461,7 @@
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
-            <fork>false</fork>
+            <fork>true</fork>
           </configuration>
         </plugin>
 
@@ -522,7 +535,7 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
-          <fork>false</fork>
+          <fork>true</fork>
         </configuration>
       </plugin>
       <plugin>
@@ -548,13 +561,16 @@
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
+              <doclint>all</doclint>
             </configuration>
           </reportSet>
         </reportSets>
@@ -677,6 +693,32 @@
       </build>
     </profile>
 
+    <!-- Add Automatic-Module-Name -->
+    <profile>
+      <id>modulename</id>
+      <activation>
+        <file>
+          <missing>src/main/java/module-info.java</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <!-- This value will be read out of each projects properties and inserted into its manifest -->
+                  <Automatic-Module-Name>${project.automatic.module.name}</Automatic-Module-Name>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
       javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
       Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
@@ -751,15 +793,18 @@
     <module>./sdk/core/azure-core-amqp</module>
     <module>./sdk/core/azure-core-management</module>
     <module>./sdk/core/azure-core-http-netty</module>
+    <module>./sdk/core/azure-core-http-okhttp</module>
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
-    <module>./sdk/keyvault/azure-keyvault-secrets</module>
-    <module>./sdk/keyvault/azure-keyvault-keys</module>
-    <module>./sdk/tracing/tracing-opentelemetry</module>
+    <module>./sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>./sdk/identity/azure-identity</module>
+    <module>./sdk/keyvault/azure-keyvault-certificates</module>
+    <module>./sdk/keyvault/azure-keyvault-keys</module>
+    <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
+    <module>./sdk/tracing/tracing-opentelemetry</module>
   </modules>
 </project>

@@ -78,7 +78,7 @@ public final class FluxUtil {
         byteBuffer.get(byteArray);
         return byteArray;
     }
-
+    
     /**
      * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
@@ -233,7 +233,8 @@ public final class FluxUtil {
      * @param length The number of bytes to read from the file.
      * @return the Flux.
      */
-    public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
+    public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset,
+                                            long length) {
         return new FileReadFlux(fileChannel, chunkSize, offset, length);
     }
 
@@ -281,7 +282,8 @@ public final class FluxUtil {
 
         @Override
         public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-            FileReadSubscription subscription = new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
+            FileReadSubscription subscription =
+                new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
             actual.onSubscribe(subscription);
         }
 
@@ -304,13 +306,16 @@ public final class FluxUtil {
             //
             volatile int wip;
             @SuppressWarnings("rawtypes")
-            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP = AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
+            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
+                AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
             volatile long requested;
             @SuppressWarnings("rawtypes")
-            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED = AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
+            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
+                AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //
 
-            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
+            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
+                                 int chunkSize, long offset, long length) {
                 this.subscriber = subscriber;
                 //
                 this.fileChannel = fileChannel;

@@ -67,6 +67,7 @@
       <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
       <Class name="com.azure.storage.file.implementation.AzureFileStorageBuilder"/>
       <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
+      <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -379,6 +380,7 @@
       <Package name="com.microsoft.azure.storage.blob"/>
       <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+      <Class name="com.azure.storage.blob.BlobProperties"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -467,6 +469,7 @@
     <Or>
       <Class name="com.azure.security.keyvault.keys.KeyClient"/>
       <Class name="com.azure.security.keyvault.secrets.SecretClient"/>
+      <Class name="com.azure.security.keyvault.certificates.CertificateClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -485,6 +488,14 @@
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
       <Class name="com.azure.security.keyvault.keys.models.Key"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
+      <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.IssuerBase"/>
+      <Class name="com.azure.security.keyvault.certificates.models.Issuer"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
+      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
+      <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -518,10 +529,30 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.webkey.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
+        <Method name="clone"/>
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
     <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
-    <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE,
+                  URF_UNREAD_FIELD,
+                  SIC_INNER_SHOULD_BE_STATIC_ANON,
+                  DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD,
+                  NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- These methods are called, SpotBugs just can't see through the specific lambda and static class code -->
@@ -531,6 +562,7 @@
           name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
       <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
       <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
+      <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -543,7 +575,7 @@
 
   <!-- This is a false positive, it is possible for usingUserDelegation to be false. -->
   <Match>
-    <Class name="com.azure.storage.blob.ServiceSASSignatureValues"/>
+    <Class name="com.azure.storage.blob.BlobServiceSASSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
 
@@ -559,6 +591,24 @@
       <Class name="com.azure.storage.file.models.StorageException"/>
       <Class name="com.azure.storage.queue.models.StorageException"/>
     </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Retry thus does not throw -->
+  <Match>
+    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  <!-- Return value not needed -->
+  <Match>
+    <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <!-- FlatteningSerializer defines non-transient non-serializable instance field logger,
+  but logger is required for logging-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jackson.FlatteningSerializer"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 </FindBugsFilter>

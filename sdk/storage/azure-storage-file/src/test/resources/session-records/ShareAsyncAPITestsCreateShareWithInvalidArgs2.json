@@ -1,23 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs252249d03c6?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareasyncapitestscreatesharewithinvalidargs209111c638b?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "8bea5ccd-3549-4bbb-a4d3-d3d190d46815"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "84142233-701a-0136-0177-57db71000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:84142233-701a-0136-0177-57db71000000\nTime:2019-08-20T16:52:23.1657804Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:52:22 GMT",
+      "x-ms-request-id" : "36c4577b-601a-0000-6844-64923b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:36c4577b-601a-0000-6844-64923b000000\nTime:2019-09-05T23:48:44.9539637Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:48:44 GMT",
+      "x-ms-client-request-id" : "8bea5ccd-3549-4bbb-a4d3-d3d190d46815",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs252249d03c6" ]
+  "variables" : [ "shareasyncapitestscreatesharewithinvalidargs209111c638b" ]
 }

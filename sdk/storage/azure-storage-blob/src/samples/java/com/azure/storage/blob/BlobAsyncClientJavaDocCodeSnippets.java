@@ -11,7 +11,12 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -105,7 +110,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and
-     * {@link BlobAsyncClient#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean)}
+     * {@link BlobAsyncClient#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions,
+     * boolean)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
@@ -259,11 +265,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Metadata, AccessTier,
+     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -271,9 +278,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(
                 new LeaseAccessConditions().leaseId(leaseId));
 
-        client.startCopyFromURLWithResponse(url, metadata, modifiedAccessConditions, blobAccessConditions)
+        client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
+                modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.value()));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
@@ -289,11 +297,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, AccessTier,
+     * ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -301,13 +310,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .leaseAccessConditions(
                 new LeaseAccessConditions().leaseId(leaseId));
 
-        client.copyFromURLWithResponse(url, metadata, modifiedAccessConditions, blobAccessConditions)
+        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions, BlobAccessConditions, boolean)}
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * BlobAccessConditions, boolean)}
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadWithResponseCodeSnippets() {
@@ -404,16 +414,17 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setTierWithResponse(AccessTier, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setTierWithResponse(AccessTier, RehydratePriority,
+     * LeaseAccessConditions)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
-        client.setTierWithResponse(AccessTier.HOT, accessConditions)
+        client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.statusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-LeaseAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
     }
 
     /**
@@ -507,5 +518,70 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.getAccountInfoWithResponse().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
             response.value().accountKind(), response.value().skuName()));
         // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateUserDelegationSASCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        BlobSASPermission permissions = new BlobSASPermission()
+            .read(true)
+            .write(true)
+            .create(true)
+            .delete(true)
+            .add(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        String accountName = "accountName";
+        UserDelegationKey userDelegationKey = new UserDelegationKey();
+
+        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
+            contentLanguage, contentType);
+        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
+     * String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSASCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        BlobSASPermission permissions = new BlobSASPermission()
+            .read(true)
+            .write(true)
+            .create(true)
+            .delete(true)
+            .add(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .ipMin("0.0.0.0")
+            .ipMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String identifier = "identifier";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+
+        // Note either "identifier", or "expiryTime and permissions" are required to be set
+        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 }

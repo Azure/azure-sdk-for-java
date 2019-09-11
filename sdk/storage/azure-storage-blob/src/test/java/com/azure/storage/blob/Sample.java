@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -31,7 +30,7 @@ public class Sample {
         // get service client
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
         // create 5 containers
@@ -83,7 +82,7 @@ public class Sample {
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
         // create 5 containers
@@ -136,8 +135,8 @@ public class Sample {
             // download results
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.name())
-                    .downloadWithResponse(null, null, null, false, null)
-                    .flatMapMany(Response::value)
+                    .download()
+                    .flatMapMany(flux -> flux)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
             // cleanup
@@ -162,7 +161,7 @@ public class Sample {
         // get service client
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
         // make container
@@ -192,7 +191,7 @@ public class Sample {
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
-            .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
+            .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
         // make container

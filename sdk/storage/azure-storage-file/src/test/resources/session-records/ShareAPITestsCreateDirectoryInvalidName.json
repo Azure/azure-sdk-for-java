@@ -1,41 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatedirectoryinvalidname78068e2be7c41?restype=share",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatedirectoryinvalidname20502e9e86b97?restype=share",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "53c41a64-fdb0-422a-a665-0342e3d131e5"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7258EAC2866C4\"",
-      "Last-Modified" : "Tue, 20 Aug 2019 16:51:40 GMT",
+      "ETag" : "\"0x8D7325B75AC701B\"",
+      "Last-Modified" : "Thu, 05 Sep 2019 23:47:49 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a2d63bbe-a01a-0116-6177-57b7bd000000",
-      "Date" : "Tue, 20 Aug 2019 16:51:39 GMT"
-    }
+      "x-ms-request-id" : "07339abe-301a-000d-1e44-645aef000000",
+      "Date" : "Thu, 05 Sep 2019 23:47:48 GMT",
+      "x-ms-client-request-id" : "53c41a64-fdb0-422a-a665-0342e3d131e5"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareapitestscreatedirectoryinvalidname78068e2be7c41/test%2fdirectory?restype=directory",
+    "Uri" : "https://gapradev.file.core.windows.net/shareapitestscreatedirectoryinvalidname20502e9e86b97/test%2fdirectory?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "5c301a8f-0d4a-48d3-af75-31bd6a3fcdaa"
     },
     "Response" : {
-      "x-ms-version" : "2018-11-09",
+      "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ParentNotFound",
       "retry-after" : "0",
       "Content-Length" : "224",
       "StatusCode" : "404",
-      "x-ms-request-id" : "a2d63bc0-a01a-0116-6277-57b7bd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:a2d63bc0-a01a-0116-6277-57b7bd000000\nTime:2019-08-20T16:51:40.1658620Z</Message></Error>",
-      "Date" : "Tue, 20 Aug 2019 16:51:40 GMT",
+      "x-ms-request-id" : "07339ac0-301a-000d-1f44-645aef000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:07339ac0-301a-000d-1f44-645aef000000\nTime:2019-09-05T23:47:49.5172418Z</Message></Error>",
+      "Date" : "Thu, 05 Sep 2019 23:47:49 GMT",
+      "x-ms-client-request-id" : "5c301a8f-0d4a-48d3-af75-31bd6a3fcdaa",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatedirectoryinvalidname78068e2be7c41" ]
+  "variables" : [ "shareapitestscreatedirectoryinvalidname20502e9e86b97" ]
 }

@@ -34,6 +34,10 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "azure-kusto/resource-manager": {
+    "source": "specification/azure-kusto/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "azurestack/resource-manager": {
     "source": "specification/azurestack/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -270,6 +274,10 @@
   },
   "storage/resource-manager": {
     "source": "specification/storage/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "storagecache/resource-manager": {
+    "source": "specification/storagecache/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "storageimportexport/resource-manager": {

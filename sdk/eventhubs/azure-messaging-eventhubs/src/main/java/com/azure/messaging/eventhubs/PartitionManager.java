@@ -5,12 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Partition manager stores and retrieves partition ownership information and checkpoint details for each partition.
+ * A partition manager stores and retrieves partition ownership information and checkpoint details for each partition.
  */
 public interface PartitionManager {
 

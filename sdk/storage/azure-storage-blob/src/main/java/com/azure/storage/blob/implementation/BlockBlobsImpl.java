@@ -30,19 +30,18 @@ import com.azure.storage.blob.models.BlockBlobsStageBlockResponse;
 import com.azure.storage.blob.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
-import com.azure.storage.blob.models.CustomerProvidedKeyInfo;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageErrorException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -79,27 +78,27 @@ public final class BlockBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-tags") String tags, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsStageBlockResponse> stageBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        Mono<BlockBlobsStageBlockResponse> stageBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64, @QueryParam("timeout") Integer timeout, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, Context context);
+        Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-tags") String tags, @QueryParam("x-ms-encryption-key") String xMsEncryptionKey, @QueryParam("x-ms-encryption-key-sha256") String xMsEncryptionKeySha256, @QueryParam("x-ms-encryption-algorithm") EncryptionAlgorithmType xMsEncryptionAlgorithm, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsGetBlockListResponse> getBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @QueryParam("blocklisttype") BlockListType listType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
+        Mono<BlockBlobsGetBlockListResponse> getBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("blocklisttype") BlockListType listType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
     }
 
     /**
@@ -117,10 +116,6 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final String tags = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
         final AccessTierOptional tier = null;
         final String requestId = null;
         final String blobType = "BlockBlob";
@@ -130,13 +125,15 @@ public final class BlockBlobsImpl {
         final String blobCacheControl = null;
         final String blobContentDisposition = null;
         final String leaseId = null;
-        final String encryptionScope = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         String blobContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, contentLength, metadata, tags, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, tier, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, contentLength, metadata, tier, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -148,22 +145,18 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param tags Optional. A URL encoded query param string which specifies the tags to be created with the Blob object. e.g. TagName1=TagValue1&amp;TagName2=TagValue2. The x-ms-tags header may contain up to 2kb of tags.
-     * @param xMsEncryptionKey Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for Azure Storage Services.
-     * @param xMsEncryptionKeySha256 The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-     * @param xMsEncryptionAlgorithm The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided. Possible values include: 'AES256'.
-     * @param tier Optional. Indicates the tier to be set on the blob. Possible values include: 'Hot', 'Cool', 'Archive'.
+     * @param tier Optional. Indicates the tier to be set on the blob. Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool', 'Archive'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobHTTPHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
-     * @param customerProvidedKeyInfo Additional parameters for the operation.
+     * @param cpkInfo Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, Map<String, String> metadata, String tags, String xMsEncryptionKey, String xMsEncryptionKeySha256, EncryptionAlgorithmType xMsEncryptionAlgorithm, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CustomerProvidedKeyInfo customerProvidedKeyInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, Map<String, String> metadata, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String blobType = "BlockBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
@@ -193,9 +186,17 @@ public final class BlockBlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        String encryptionScope = null;
-        if (customerProvidedKeyInfo != null) {
-            encryptionScope = customerProvidedKeyInfo.encryptionScope();
+        String encryptionKey = null;
+        if (cpkInfo != null) {
+            encryptionKey = cpkInfo.encryptionKey();
+        }
+        String encryptionKeySha256 = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -216,7 +217,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, contentLength, metadata, tags, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, tier, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, contentLength, metadata, tier, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -234,16 +235,15 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, Flux<ByteBuffer> body, Context context) {
         final Integer timeout = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
         final String requestId = null;
         final String comp = "block";
         final String leaseId = null;
-        final String encryptionScope = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         String transactionalContentMD5Converted = null;
         String transactionalContentCrc64Converted = null;
-        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, body, timeout, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, encryptionScope, context);
+        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, body, timeout, this.client.getVersion(), requestId, comp, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, context);
     }
 
     /**
@@ -257,30 +257,35 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param xMsEncryptionKey Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for Azure Storage Services.
-     * @param xMsEncryptionKeySha256 The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-     * @param xMsEncryptionAlgorithm The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided. Possible values include: 'AES256'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
-     * @param customerProvidedKeyInfo Additional parameters for the operation.
+     * @param cpkInfo Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String xMsEncryptionKey, String xMsEncryptionKeySha256, EncryptionAlgorithmType xMsEncryptionAlgorithm, String requestId, LeaseAccessConditions leaseAccessConditions, CustomerProvidedKeyInfo customerProvidedKeyInfo, Context context) {
+    public Mono<BlockBlobsStageBlockResponse> stageBlockWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
         final String comp = "block";
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        String encryptionScope = null;
-        if (customerProvidedKeyInfo != null) {
-            encryptionScope = customerProvidedKeyInfo.encryptionScope();
+        String encryptionKey = null;
+        if (cpkInfo != null) {
+            encryptionKey = cpkInfo.encryptionKey();
+        }
+        String encryptionKeySha256 = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, body, timeout, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, encryptionScope, context);
+        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, body, timeout, this.client.getVersion(), requestId, comp, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, context);
     }
 
     /**
@@ -299,20 +304,19 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, URL sourceUrl, Context context) {
         final String sourceRange = null;
         final Integer timeout = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
         final String requestId = null;
         final String comp = "block";
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String leaseId = null;
-        final String encryptionScope = null;
         final String sourceIfMatch = null;
         final String sourceIfNoneMatch = null;
         String sourceContentMD5Converted = null;
         String sourceContentcrc64Converted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, encryptionScope, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
+        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -327,27 +331,32 @@ public final class BlockBlobsImpl {
      * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param xMsEncryptionKey Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for Azure Storage Services.
-     * @param xMsEncryptionKeySha256 The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-     * @param xMsEncryptionAlgorithm The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided. Possible values include: 'AES256'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
-     * @param customerProvidedKeyInfo Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, URL sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String xMsEncryptionKey, String xMsEncryptionKeySha256, EncryptionAlgorithmType xMsEncryptionAlgorithm, String requestId, LeaseAccessConditions leaseAccessConditions, CustomerProvidedKeyInfo customerProvidedKeyInfo, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithRestResponseAsync(String containerName, String blob, String blockId, long contentLength, URL sourceUrl, String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String requestId, CpkInfo cpkInfo, LeaseAccessConditions leaseAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         final String comp = "block";
+        String encryptionKey = null;
+        if (cpkInfo != null) {
+            encryptionKey = cpkInfo.encryptionKey();
+        }
+        String encryptionKeySha256 = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+        }
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
-        }
-        String encryptionScope = null;
-        if (customerProvidedKeyInfo != null) {
-            encryptionScope = customerProvidedKeyInfo.encryptionScope();
         }
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
@@ -369,7 +378,7 @@ public final class BlockBlobsImpl {
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, encryptionScope, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
+        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -386,10 +395,6 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final String tags = null;
-        final String xMsEncryptionKey = null;
-        final String xMsEncryptionKeySha256 = null;
-        final EncryptionAlgorithmType xMsEncryptionAlgorithm = null;
         final AccessTierOptional tier = null;
         final String requestId = null;
         final String comp = "blocklist";
@@ -399,7 +404,9 @@ public final class BlockBlobsImpl {
         final String blobContentLanguage = null;
         final String blobContentDisposition = null;
         final String leaseId = null;
-        final String encryptionScope = null;
+        final String encryptionKey = null;
+        final String encryptionKeySha256 = null;
+        final EncryptionAlgorithmType encryptionAlgorithm = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         String transactionalContentMD5Converted = null;
@@ -407,7 +414,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, tags, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, tier, blocks, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, tier, blocks, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -420,22 +427,18 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param tags Optional. A URL encoded query param string which specifies the tags to be created with the Blob object. e.g. TagName1=TagValue1&amp;TagName2=TagValue2. The x-ms-tags header may contain up to 2kb of tags.
-     * @param xMsEncryptionKey Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for Azure Storage Services.
-     * @param xMsEncryptionKeySha256 The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-     * @param xMsEncryptionAlgorithm The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided. Possible values include: 'AES256'.
-     * @param tier Optional. Indicates the tier to be set on the blob. Possible values include: 'Hot', 'Cool', 'Archive'.
+     * @param tier Optional. Indicates the tier to be set on the blob. Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool', 'Archive'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobHTTPHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
-     * @param customerProvidedKeyInfo Additional parameters for the operation.
+     * @param cpkInfo Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, String tags, String xMsEncryptionKey, String xMsEncryptionKeySha256, EncryptionAlgorithmType xMsEncryptionAlgorithm, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CustomerProvidedKeyInfo customerProvidedKeyInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "blocklist";
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
@@ -465,9 +468,17 @@ public final class BlockBlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        String encryptionScope = null;
-        if (customerProvidedKeyInfo != null) {
-            encryptionScope = customerProvidedKeyInfo.encryptionScope();
+        String encryptionKey = null;
+        if (cpkInfo != null) {
+            encryptionKey = cpkInfo.encryptionKey();
+        }
+        String encryptionKeySha256 = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -490,7 +501,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, tags, xMsEncryptionKey, xMsEncryptionKeySha256, xMsEncryptionAlgorithm, tier, blocks, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, tier, blocks, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -506,12 +517,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsGetBlockListResponse> getBlockListWithRestResponseAsync(String containerName, String blob, BlockListType listType, Context context) {
         final String snapshot = null;
-        final String versionId = null;
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "blocklist";
         final String leaseId = null;
-        return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, versionId, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
+        return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 
     /**
@@ -521,7 +531,6 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together. Possible values include: 'committed', 'uncommitted', 'all'.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param versionId The version ID parameter is an opaque DateTime value that, when present, specifies the blob version to retrieve.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
@@ -530,12 +539,12 @@ public final class BlockBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsGetBlockListResponse> getBlockListWithRestResponseAsync(String containerName, String blob, BlockListType listType, String snapshot, String versionId, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<BlockBlobsGetBlockListResponse> getBlockListWithRestResponseAsync(String containerName, String blob, BlockListType listType, String snapshot, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String comp = "blocklist";
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, versionId, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
+        return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 }
