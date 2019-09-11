@@ -12,20 +12,17 @@ import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.models.Hotel;
-import org.junit.Assert;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.search.data.customization.Document;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;

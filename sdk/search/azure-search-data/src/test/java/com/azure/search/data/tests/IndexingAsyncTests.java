@@ -13,7 +13,7 @@ import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.models.Hotel;
+import com.azure.core.exception.HttpResponseException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -23,11 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.azure.core.exception.HttpResponseException;
-import com.azure.search.data.customization.Document;
-import com.azure.search.data.generated.models.DocumentIndexResult;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
 
 public class IndexingAsyncTests extends IndexingTestBase {

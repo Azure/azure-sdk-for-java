@@ -9,16 +9,12 @@ import com.azure.search.data.generated.models.IndexingResult;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
 import com.azure.search.data.models.HotelRoom;
-import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
@@ -79,7 +75,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 new HotelRoom()
                     .baseRate(Double.MIN_VALUE)
             )),
-            // Maximimum values
+            // Maximum values
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
