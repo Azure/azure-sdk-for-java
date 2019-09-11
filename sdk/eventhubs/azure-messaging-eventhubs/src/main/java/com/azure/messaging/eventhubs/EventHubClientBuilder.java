@@ -19,10 +19,16 @@ import com.azure.messaging.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
+import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.ReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
+import com.azure.messaging.eventhubs.implementation.StringUtil;
+import com.azure.messaging.eventhubs.implementation.TokenManagerProvider;
+import com.azure.messaging.eventhubs.implementation.TokenResourceProvider;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -287,11 +293,7 @@ public class EventHubClientBuilder {
      */
     public EventHubAsyncClient buildAsyncClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
-        return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
+        return buildAsyncClient(connectionOptions);
     }
 
     /**
@@ -320,13 +322,27 @@ public class EventHubClientBuilder {
      */
     public EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
+        final EventHubAsyncClient client = buildAsyncClient(connectionOptions);
+
+        return new EventHubClient(client, connectionOptions);
+    }
+
+    private static EventHubAsyncClient buildAsyncClient(ConnectionOptions connectionOptions) {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        final EventHubAsyncClient client =
-            new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider);
 
-        return new EventHubClient(client, connectionOptions);
+        final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
+            final String connectionId = StringUtil.getRandomString("MF");
+            final TokenManagerProvider tokenManagerProvider = new TokenResourceProvider(
+                connectionOptions.authorizationType(), connectionOptions.host(),
+                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+
+            return new ReactorConnection(connectionId, connectionOptions, provider,
+                handlerProvider, new EventHubAsyncClient.ResponseMapper(), tokenManagerProvider);
+        });
+
+        return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider, connectionMono);
     }
 
     private ConnectionOptions getConnectionOptions() {

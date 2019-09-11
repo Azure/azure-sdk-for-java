@@ -23,7 +23,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
-import com.azure.messaging.eventhubs.implementation.ReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
@@ -77,7 +76,6 @@ public class EventHubAsyncClient implements Closeable {
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
-    private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
@@ -87,7 +85,8 @@ public class EventHubAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
-        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
+                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider,
+                        Mono<EventHubConnection> eventHubConnectionMono) {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         Objects.requireNonNull(provider, "'provider' cannot be null.");
         Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
@@ -96,11 +95,7 @@ public class EventHubAsyncClient implements Closeable {
         this.connectionOptions = connectionOptions;
         this.tracerProvider = tracerProvider;
         this.eventHubName = connectionOptions.getEventHubName();
-        this.connectionId = StringUtil.getRandomString("MF");
-        this.connectionMono = Mono.fromCallable(() -> {
-            return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
-                handlerProvider, new ResponseMapper());
-        }).doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = eventHubConnectionMono.doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
@@ -353,7 +348,7 @@ public class EventHubAsyncClient implements Closeable {
         return this.eventHubName;
     }
 
-    private static class ResponseMapper implements AmqpResponseMapper {
+    static class ResponseMapper implements AmqpResponseMapper {
         @Override
         public EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
             return new EventHubProperties(

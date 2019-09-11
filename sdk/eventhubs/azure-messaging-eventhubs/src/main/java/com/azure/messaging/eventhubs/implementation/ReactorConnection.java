@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,11 +36,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private final Mono<Connection> connectionMono;
     private final ConnectionHandler handler;
     private final ReactorHandlerProvider handlerProvider;
+    private final TokenManagerProvider tokenManagerProvider;
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
     private final Mono<EventHubManagementNode> managementChannelMono;
-    private final TokenResourceProvider tokenResourceProvider;
     private final RetryPolicy retryPolicy;
 
     private ReactorExecutor executor;
@@ -58,13 +59,16 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
+                             ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper,
+                             TokenManagerProvider tokenManagerProvider) {
         super(new ClientLogger(ReactorConnection.class));
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
+        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
+            "'tokenManagerProvider' cannot be null.");
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHost(),
             connectionOptions.getTransportType());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
@@ -82,12 +86,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
-        tokenResourceProvider =
-            new TokenResourceProvider(connectionOptions.getAuthorizationType(), connectionOptions.getHost());
-
         this.managementChannelMono = connectionMono.then(
             Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
-                connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenResourceProvider,
+                connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
                 reactorProvider, connectionOptions.getRetry(), handlerProvider, mapper))).cache();
     }
 
@@ -157,7 +158,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
             BaseHandler.setHandler(session, handler);
             return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-                tokenResourceProvider, connectionOptions.getRetry().getTryTimeout());
+                tokenManagerProvider, connectionOptions.getRetry().getTryTimeout());
         }));
     }
 
