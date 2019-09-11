@@ -4,6 +4,9 @@ package com.azure.search.data.tests;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.common.jsonwrapper.JsonWrapper;
+import com.azure.search.data.common.jsonwrapper.api.JsonApi;
+import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -11,6 +14,7 @@ import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.models.Book;
 import com.azure.search.service.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.search.data.models.Hotel;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -23,16 +27,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
-    private static final String BOOKS_INDEX_NAME = "books";
-    private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-    private static final String PUBLISH_DATE_FIELD = "PublishDate";
-    private static final String ISBN_FIELD = "ISBN";
-    private static final String ISBN1 = "1";
-    private static final String ISBN2 = "2";
-    private static final String DATE_UTC = "2010-06-27T00:00:00Z";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -55,6 +54,34 @@ public class IndexingSyncTests extends IndexingTestBase {
         client.index(new IndexBatch().actions(indexActions));
     }
 
+    @Override
+    public void canRoundtripBoundaryValues() throws Exception {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
+        List<Hotel> boundaryConditionDocs = getBoundaryValues();
+
+        List<IndexAction> actions = boundaryConditionDocs.stream()
+            .map(h -> new IndexAction()
+                .actionType(IndexActionType.UPLOAD)
+                .additionalProperties((Map<String, Object>) jsonApi.convertObjectToType(h, Map.class)))
+            .collect(Collectors.toList());
+        IndexBatch batch = new IndexBatch()
+            .actions(actions);
+
+        client.index(batch);
+
+        // Wait 2 secs to allow index request to finish
+        Thread.sleep(2000);
+
+        for (Hotel expected : boundaryConditionDocs) {
+            Document doc = client.getDocument(expected.hotelId());
+            Hotel actual = doc.as(Hotel.class);
+            Assert.assertEquals(expected, actual);
+        }
+    }
+
+    @Override
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
         // Book 1's publish date is in UTC format, and book 2's is unspecified.
         List<HashMap<String, Object>> books = Arrays.asList(
