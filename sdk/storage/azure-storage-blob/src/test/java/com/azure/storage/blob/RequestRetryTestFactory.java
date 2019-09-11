@@ -95,7 +95,7 @@ class RequestRetryTestFactory {
             .policies(new RequestRetryPolicy(this.options))
             .httpClient(new RetryTestClient(this))
             .build()
-            .send(new HttpRequest(HttpMethod.GET, url).body(Flux.just(RETRY_TEST_DEFAULT_DATA)));
+            .send(new HttpRequest(HttpMethod.GET, url).getBody(Flux.just(RETRY_TEST_DEFAULT_DATA)));
     }
 
     int getTryNumber() {
@@ -193,7 +193,7 @@ class RequestRetryTestFactory {
 
             // Subscribe and block until all information is read to prevent a blocking on another thread exception from Reactor.
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Disposable disposable = request.body().subscribe(data -> {
+            Disposable disposable = request.getBody().subscribe(data -> {
                 try {
                     outputStream.write(data.array());
                 } catch (IOException ex) {

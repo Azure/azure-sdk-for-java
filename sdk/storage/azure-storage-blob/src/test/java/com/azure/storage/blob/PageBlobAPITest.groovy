@@ -624,9 +624,9 @@ class PageBlobAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 200
-        response.value().pageRange().size() == 1
+        response.value().pageRange().getSize() == 1
         validateBasicHeaders(response.headers())
-        Long.parseLong(response.headers().get("x-ms-blob-content-length").value()) == (long) PageBlobClient.PAGE_BYTES
+        Long.parseLong(response.headers().get("x-ms-blob-content-length").getValue()) == (long) PageBlobClient.PAGE_BYTES
     }
 
     def "Get page ranges min"() {
@@ -722,10 +722,10 @@ class PageBlobAPITest extends APISpec {
         def response = bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapId, null, null, null)
 
         then:
-        response.value().pageRange().size() == 1
+        response.value().pageRange().getSize() == 1
         response.value().pageRange().get(0).start() == 0
         response.value().pageRange().get(0).end() == PageBlobClient.PAGE_BYTES - 1
-        response.value().clearRange().size() == 1
+        response.value().clearRange().getSize() == 1
         response.value().clearRange().get(0).start() == PageBlobClient.PAGE_BYTES
         response.value().clearRange().get(0).end() == PageBlobClient.PAGE_BYTES * 2 - 1
         validateBasicHeaders(response.headers())

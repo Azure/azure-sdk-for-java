@@ -60,7 +60,8 @@ public class UsernamePasswordCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
@@ -85,7 +86,8 @@ public class UsernamePasswordCredentialTest {
 
         // test
         try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
             credential.getToken(scopes).block();
             fail();
         } catch (MsalServiceException e) {
@@ -118,14 +120,16 @@ public class UsernamePasswordCredentialTest {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("password"));
         }
         try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {

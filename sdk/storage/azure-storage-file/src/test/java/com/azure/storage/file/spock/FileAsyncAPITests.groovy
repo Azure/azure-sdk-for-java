@@ -257,7 +257,7 @@ class FileAsyncAPITests extends APISpec {
             FileTestHelper.assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
-            assert it.value().body() != null
+            assert it.value().getBody() != null
         }
     }
 
@@ -277,7 +277,7 @@ class FileAsyncAPITests extends APISpec {
             FileTestHelper.assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
-            assert it.value().body() != null
+            assert it.value().getBody() != null
         }
 
         cleanup:

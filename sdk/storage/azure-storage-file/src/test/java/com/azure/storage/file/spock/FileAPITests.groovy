@@ -177,7 +177,7 @@ class FileAPITests extends APISpec {
         downloadResponse.value().smbProperties().parentId()
         downloadResponse.value().smbProperties().fileId()
 
-        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
+        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block())
 
         cleanup:
         defaultData.clear()
@@ -199,7 +199,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(downloadResponse, 206)
         downloadResponse.value().contentLength() == dataLength
 
-        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
+        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block())
 
         cleanup:
         defaultData.clear()
@@ -229,7 +229,7 @@ class FileAPITests extends APISpec {
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false, null, null)
 
         then:
-        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block()
         downloadArray.eachByte {
             assert it == 0
         }
@@ -250,7 +250,7 @@ class FileAPITests extends APISpec {
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false, null, null)
 
         then:
-        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block()
         downloadArray.eachByte {
             assert it == 0
         }

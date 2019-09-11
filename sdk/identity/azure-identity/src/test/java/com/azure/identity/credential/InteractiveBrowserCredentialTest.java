@@ -62,7 +62,8 @@ public class InteractiveBrowserCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+        InteractiveBrowserCredential credential =
+            new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());

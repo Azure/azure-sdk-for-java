@@ -101,7 +101,7 @@ public class OkHttpClientTests {
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
         //
-        StepVerifier.create(response.body(), stepVerifierOptions)
+        StepVerifier.create(response.getBody(), stepVerifierOptions)
                 .expectNextCount(0)
                 .thenRequest(1)
                 .expectNextCount(1)
@@ -117,7 +117,7 @@ public class OkHttpClientTests {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
                 .setHeader("Content-Length", "123")
-                .body(Flux.error(new RuntimeException("boo")));
+                .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
                 .expectErrorMessage("boo")
@@ -131,7 +131,7 @@ public class OkHttpClientTests {
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
                 .setHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
-                .body(Flux.just(contentChunk)
+                .setBody(Flux.just(contentChunk)
                         .repeat(repetitions)
                         .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                         .concatWith(Flux.error(new RuntimeException("boo"))));
@@ -203,7 +203,7 @@ public class OkHttpClientTests {
                 .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
                 .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                     MessageDigest md = md5Digest();
-                    return response.body()
+                    return response.getBody()
                             .doOnNext(bb -> md.update(bb))
                             .map(bb -> new NumberedByteBuffer(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))

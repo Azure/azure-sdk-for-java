@@ -47,7 +47,8 @@ public class ClientSecretCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
@@ -72,12 +73,14 @@ public class ClientSecretCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes).block();
         Assert.assertEquals(token1, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
         try {
-            credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(badSecret).build();
+            credential =
+                new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(badSecret).build();
             credential.getToken(scopes).block();
             fail();
         } catch (MsalServiceException e) {
@@ -100,7 +103,8 @@ public class ClientSecretCredentialTest {
 
         // test
         try {
-            ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId).clientSecret(secret).build();
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().clientId(clientId).clientSecret(secret).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
@@ -114,7 +118,8 @@ public class ClientSecretCredentialTest {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {

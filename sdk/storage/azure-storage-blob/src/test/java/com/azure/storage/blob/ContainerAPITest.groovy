@@ -122,7 +122,7 @@ class ContainerAPITest extends APISpec {
         response.value().leaseDuration() == null
         response.value().leaseState() == LeaseStateType.AVAILABLE
         response.value().leaseStatus() == LeaseStatusType.UNLOCKED
-        response.value().metadata().size() == 0
+        response.value().metadata().getSize() == 0
     }
 
     def "Get properties min"() {
@@ -170,7 +170,7 @@ class ContainerAPITest extends APISpec {
         then:
         response.getStatusCode() == 200
         validateBasicHeaders(response.headers())
-        cc.getPropertiesWithResponse(null, null, null).value().metadata().size() == 0
+        cc.getPropertiesWithResponse(null, null, null).value().metadata().getSize() == 0
     }
 
     def "Set metadata min"() {
@@ -791,8 +791,8 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         expect: "Get first page of blob listings (sync and async)"
-        cc.listBlobsFlat(options, null).iterableByPage().iterator().next().value().size() == PAGE_SIZE
-        ccAsync.listBlobsFlat(options).byPage().blockFirst().value().size() == PAGE_SIZE
+        cc.listBlobsFlat(options, null).iterableByPage().iterator().next().value().getSize() == PAGE_SIZE
+        ccAsync.listBlobsFlat(options).byPage().blockFirst().value().getSize() == PAGE_SIZE
     }
 
     def "List blobs flat options fail"() {
@@ -818,8 +818,8 @@ class ContainerAPITest extends APISpec {
         def pagedSyncResponse2 = pagedIterable.iterableByPage(pagedSyncResponse1.nextLink()).iterator().next()
 
         then:
-        pagedSyncResponse1.value().size() == PAGE_SIZE
-        pagedSyncResponse2.value().size() == NUM_BLOBS - PAGE_SIZE
+        pagedSyncResponse1.value().getSize() == PAGE_SIZE
+        pagedSyncResponse2.value().getSize() == NUM_BLOBS - PAGE_SIZE
         pagedSyncResponse2.nextLink() == null
 
 
@@ -829,8 +829,8 @@ class ContainerAPITest extends APISpec {
         def pagedResponse2 = pagedFlux.byPage(pagedResponse1.nextLink()).blockFirst()
 
         then:
-        pagedResponse1.value().size() == PAGE_SIZE
-        pagedResponse2.value().size() == NUM_BLOBS - PAGE_SIZE
+        pagedResponse1.value().getSize() == PAGE_SIZE
+        pagedResponse2.value().getSize() == NUM_BLOBS - PAGE_SIZE
         pagedResponse2.nextLink() == null
     }
 
@@ -1025,7 +1025,7 @@ class ContainerAPITest extends APISpec {
         def blobs = ccAsync.listBlobsHierarchy("", options).byPage().blockFirst()
 
         then:
-        blobs.value().size() == 1
+        blobs.value().getSize() == 1
     }
 
     @Unroll
@@ -1089,14 +1089,14 @@ class ContainerAPITest extends APISpec {
         def firstPage = blobs.iterableByPage().iterator().next()
 
         then:
-        firstPage.value().size() == PAGE_SIZE
+        firstPage.value().getSize() == PAGE_SIZE
         firstPage.nextLink() != null
 
         when:
         def secondPage = blobs.iterableByPage(firstPage.nextLink()).iterator().next()
 
         then:
-        secondPage.value().size() == NUM_BLOBS - PAGE_SIZE
+        secondPage.value().getSize() == NUM_BLOBS - PAGE_SIZE
         secondPage.nextLink() == null
     }
 

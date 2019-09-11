@@ -126,7 +126,7 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), null)
-            .iterableByPage().iterator().next().value().size() == PAGE_RESULTS
+            .iterableByPage().iterator().next().value().getSize() == PAGE_RESULTS
 
         cleanup:
         containers.each { container -> container.delete() }
@@ -307,7 +307,7 @@ class ServiceAPITest extends APISpec {
         response.value().signedExpiry() != null
         response.value().signedService() != null
         response.value().signedVersion() != null
-        response.value().value() != null
+        response.value().getValue() != null
     }
 
     def "Get UserDelegationKey min"() {

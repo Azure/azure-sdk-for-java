@@ -1005,7 +1005,7 @@ class BlockBlobAPITest extends APISpec {
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         def mockPolicy = Mock(HttpPipelinePolicy) {
             process(*_) >> { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                return collectBytesInBuffer(context.getHttpRequest().body())
+                return collectBytesInBuffer(context.getHttpRequest().getBody())
                     .map { b ->
                     return b == defaultData
                 }
