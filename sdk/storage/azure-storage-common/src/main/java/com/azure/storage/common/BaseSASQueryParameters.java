@@ -108,49 +108,49 @@ public abstract class BaseSASQueryParameters {
     /**
      * @return The storage version
      */
-    public String version() {
+    public String getVersion() {
         return version;
     }
 
     /**
      * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
      */
-    public SASProtocol protocol() {
+    public SASProtocol getProtocol() {
         return protocol;
     }
 
     /**
      * @return The start time for this SAS token or {@code null}.
      */
-    public OffsetDateTime startTime() {
+    public OffsetDateTime getStartTime() {
         return startTime;
     }
 
     /**
      * @return The expiry time for this SAS token.
      */
-    public OffsetDateTime expiryTime() {
+    public OffsetDateTime getExpiryTime() {
         return expiryTime;
     }
 
     /**
      * @return {@link IPRange}
      */
-    public IPRange ipRange() {
+    public IPRange getIpRange() {
         return ipRange;
     }
 
     /**
      * @return Please refer to *SASPermission classes for more details.
      */
-    public String permissions() {
+    public String getPermissions() {
         return permissions;
     }
 
     /**
      * @return The signature for the SAS token.
      */
-    public String signature() {
+    public String getSignature() {
         return signature;
     }
 
