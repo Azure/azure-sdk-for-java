@@ -3,34 +3,57 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.CBSNode;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Generates the correct resource scope to access Event Hubs resources given the authorization type.
+ * Generates the correct resource scope to access Azure messaging resources given the authorization type.
  */
-class TokenResourceProvider {
+public class TokenResourceProvider implements TokenManagerProvider {
     private static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
-    private static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://eventhubs.azure.net//.default";
 
     private final ClientLogger logger = new ClientLogger(TokenResourceProvider.class);
     private final CBSAuthorizationType authorizationType;
     private final String host;
+    private final String activeDirectoryScope;
 
-    TokenResourceProvider(CBSAuthorizationType authorizationType, String host) {
-        Objects.requireNonNull(authorizationType);
-        Objects.requireNonNull(host);
-
-        this.host = host;
-        this.authorizationType = authorizationType;
+    /**
+     * Creates an instance that provides {@link TokenManager} for the given {@code host} with the {@code
+     * authorizationType}.
+     *
+     * @param authorizationType Method to authorize against Azure messaging service.
+     * @param host Fully-qualified domain name (FQDN) of the message broker.
+     * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
+     */
+    public TokenResourceProvider(CBSAuthorizationType authorizationType, String host, String activeDirectoryScope) {
+        this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
+            "'activeDirectoryScope' cannot be null.");
+        this.host = Objects.requireNonNull(host, "'host' cannot be null.");
+        this.authorizationType = Objects.requireNonNull(authorizationType,
+            "'authorizationType' cannot be null.");
     }
 
-    String getResourceString(String resource) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TokenManager getTokenManager(Mono<CBSNode> cbsNodeMono, String resource) {
+        final String audience = getResourceString(resource);
+        return new ActiveClientTokenManager(cbsNodeMono, audience);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getResourceString(String resource) {
         switch (authorizationType) {
             case JSON_WEB_TOKEN:
-                return AZURE_ACTIVE_DIRECTORY_SCOPE;
+                return activeDirectoryScope;
             case SHARED_ACCESS_SIGNATURE:
                 return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, host, resource);
             default:
