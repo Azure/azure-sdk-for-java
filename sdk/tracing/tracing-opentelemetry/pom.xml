@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>tracing-opentelemetry</artifactId>
-  <version>1.0.0-preview.2</version>
+  <version>1.0.0-preview.3</version>
 
   <name>Microsoft Azure OpenTelemetry tracing plugin</name>
   <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
