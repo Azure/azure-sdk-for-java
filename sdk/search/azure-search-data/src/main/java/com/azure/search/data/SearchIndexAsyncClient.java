@@ -80,8 +80,8 @@ public interface SearchIndexAsyncClient {
     /**
      * Searches for documents in the Azure Search index
      *
-     * @param searchText           Search Test
-     * @param searchParameters     Search Parameters
+     * @param searchText Search Test
+     * @param searchParameters Search Parameters
      * @param searchRequestOptions Search Request Options
      * @return PagedFlux of the search result.
      */
@@ -100,8 +100,8 @@ public interface SearchIndexAsyncClient {
     /**
      * Retrieves a document from the Azure Search index.
      *
-     * @param key                  document key
-     * @param selectedFields       selected fields to return
+     * @param key document key
+     * @param selectedFields selected fields to return
      * @param searchRequestOptions search request options
      * @return document object
      */
@@ -112,7 +112,7 @@ public interface SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText    search text
+     * @param searchText search text
      * @param suggesterName suggester name
      * @return suggests result
      */
@@ -121,9 +121,9 @@ public interface SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText           search text
-     * @param suggesterName        suggester name
-     * @param suggestParameters    suggest parameters
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param suggestParameters suggest parameters
      * @param searchRequestOptions search request options
      * @return suggests results
      */
@@ -143,7 +143,7 @@ public interface SearchIndexAsyncClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText    search text
+     * @param searchText search text
      * @param suggesterName suggester name
      * @return auto complete result
      */
@@ -152,9 +152,9 @@ public interface SearchIndexAsyncClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText             search text
-     * @param suggesterName          suggester name
-     * @param searchRequestOptions   search request options
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param searchRequestOptions search request options
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */

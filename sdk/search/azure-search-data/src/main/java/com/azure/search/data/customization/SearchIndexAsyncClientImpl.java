@@ -206,11 +206,11 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .map(DocumentResponseConversions::cleanupDocument)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
             .doOnSuccess(s -> logger.info(
-                "Document with key: " + key +
-                    "and selectedFields: " + selectedFields.toString() +
-                    " was retrieved successfully"))
-            .doOnError(e -> logger.error("An error occurred in " +
-                "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
+                "Document with key: " + key
+                    + "and selectedFields: " + selectedFields.toString()
+                    + " was retrieved successfully"))
+            .doOnError(e -> logger.error("An error occurred in "
+                + "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 
     @Override
@@ -281,7 +281,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     /**
      * Create search request from search text and parameters
      *
-     * @param searchText       search text
+     * @param searchText search text
      * @param searchParameters search parameters
      * @return SearchRequest
      */

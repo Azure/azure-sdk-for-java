@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fluent SearchIndexClientBuilder for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
+ * Fluent SearchIndexClientBuilder
+ * for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
  * using {@link SearchIndexClientBuilder#buildClient()} or {@link SearchIndexClientBuilder#buildAsyncClient()}
  *
  * <p>
