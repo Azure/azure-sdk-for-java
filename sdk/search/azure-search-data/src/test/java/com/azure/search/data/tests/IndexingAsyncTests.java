@@ -4,8 +4,10 @@ package com.azure.search.data.tests;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.common.jsonwrapper.JsonWrapper;
+import com.azure.search.data.common.jsonwrapper.api.JsonApi;
+import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.customization.IndexingAction;
 import com.azure.search.data.generated.models.*;
 import com.azure.search.data.models.Hotel;
 import reactor.core.publisher.Mono;
@@ -15,9 +17,7 @@ import java.text.ParseException;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,16 +35,32 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void canIndexStaticallyTypedDocuments() throws ParseException {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
         Hotel hotel1 = prepareStaticallyTypedHotel("1");
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
         Hotel hotel3 = prepareStaticallyTypedHotel("3");
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel");
 
-        IndexAction uploadAction = IndexingAction.upload(hotel1);
-        IndexAction deleteAction = IndexingAction.delete("HotelId", "randomId");
-        IndexAction mergeNonExistingAction = IndexingAction.merge(nonExistingHotel);
-        IndexAction mergeOrUploadAction = IndexingAction.mergeOrUpload(hotel3);
-        IndexAction uploadAction2 = IndexingAction.upload(hotel2);
+        IndexAction uploadAction = new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
+        Map<String, Object> randomHotel = new HashMap<String, Object>(){
+            {
+                put("HotelId", "randomId");
+            }
+        };
+        IndexAction deleteAction = new IndexAction()
+            .actionType(IndexActionType.DELETE)
+            .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
+        IndexAction mergeNonExistingAction = new IndexAction()
+            .actionType(IndexActionType.MERGE)
+            .additionalProperties(jsonApi.convertObjectToType(nonExistingHotel, Map.class));
+        IndexAction mergeOrUploadAction = new IndexAction()
+            .actionType(IndexActionType.MERGE_OR_UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel3, Map.class));
+        IndexAction uploadAction2 = new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel2, Map.class));
 
         IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
             uploadAction,
@@ -66,8 +82,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
                 return results.size() == indexBatch.actions().size();
             })
-            .expectComplete()
-            .verify();
+            .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
             .expectNextMatches(result -> {
@@ -82,30 +97,46 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 Hotel actual = result.as(Hotel.class);
                 return actual.equals(hotel2);
             })
-            .expectComplete()
-            .verify();
+            .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel3.hotelId()))
             .expectNextMatches(result -> {
                 Hotel actual = result.as(Hotel.class);
                 return actual.equals(hotel3);
             })
-            .expectComplete()
-            .verify();
+            .verifyComplete();
     }
 
     @Override
     public void canIndexDynamicDocuments() {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
         Document hotel1 = prepareDynamicallyTypedHotel("1");
         Document hotel2 = prepareDynamicallyTypedHotel("2");
         Document hotel3 = prepareDynamicallyTypedHotel("3");
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel");
 
-        IndexAction uploadAction = IndexingAction.upload(hotel1);
-        IndexAction deleteAction = IndexingAction.delete("HotelId", "randomId");
-        IndexAction mergeNonExistingAction = IndexingAction.merge(nonExistingHotel);
-        IndexAction mergeOrUploadAction = IndexingAction.mergeOrUpload(hotel3);
-        IndexAction uploadAction2 = IndexingAction.upload(hotel2);
+        IndexAction uploadAction = new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
+        Map<String, Object> randomHotel = new HashMap<String, Object>(){
+            {
+                put("HotelId", "randomId");
+            }
+        };
+        IndexAction deleteAction = new IndexAction()
+            .actionType(IndexActionType.DELETE)
+            .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
+        IndexAction mergeNonExistingAction = new IndexAction()
+            .actionType(IndexActionType.MERGE)
+            .additionalProperties(jsonApi.convertObjectToType(nonExistingHotel, Map.class));
+        IndexAction mergeOrUploadAction = new IndexAction()
+            .actionType(IndexActionType.MERGE_OR_UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel3, Map.class));
+        IndexAction uploadAction2 = new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel2, Map.class));
 
         IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
             uploadAction,
@@ -127,13 +158,11 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
                 return results.size() == indexBatch.actions().size();
             })
-            .expectComplete()
-            .verify();
+            .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel1.get("HotelId").toString()))
             .expectNext(hotel1)
-            .expectComplete()
-            .verify();
+            .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel2.get("HotelId").toString()))
             .expectNext(hotel2)
@@ -142,8 +171,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(client.getDocument(hotel3.get("HotelId").toString()))
             .expectNext(hotel3)
-            .expectComplete()
-            .verify();
+            .verifyComplete();
     }
 
     @Override
