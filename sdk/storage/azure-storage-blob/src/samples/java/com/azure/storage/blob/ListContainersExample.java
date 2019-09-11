@@ -52,7 +52,7 @@ public class ListContainersExample {
             /*
              * Clean up the containers at the same time.
              */
-            storageClient.getContainerClient(containerItem.getName()).setDelete();
+            storageClient.getContainerClient(containerItem.getName()).delete();
         });
     }
 }

@@ -623,7 +623,7 @@ public class BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setDelete() {
+    public Mono<Void> delete() {
         return deleteWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -902,7 +902,7 @@ public class BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> unsetDelete() {
+    public Mono<Void> undelete() {
         return undeleteWithResponse().flatMap(FluxUtil::toMono);
     }
 

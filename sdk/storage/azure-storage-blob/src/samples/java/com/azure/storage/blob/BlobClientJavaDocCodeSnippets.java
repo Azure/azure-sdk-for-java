@@ -112,11 +112,11 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#setDelete()}
+     * Code snippets for {@link BlobClient#delete()}
      */
     public void setDelete() {
         // BEGIN: com.azure.storage.blob.BlobClient.delete
-        client.setDelete();
+        client.delete();
         System.out.println("Delete completed.");
         // END: com.azure.storage.blob.BlobClient.delete
     }
@@ -176,11 +176,11 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#unsetDelete()}
+     * Code snippets for {@link BlobClient#undelete()}
      */
     public void unsetDelete() {
         // BEGIN: com.azure.storage.blob.BlobClient.undelete
-        client.unsetDelete();
+        client.undelete();
         System.out.printf("Undelete completed");
         // END: com.azure.storage.blob.BlobClient.undelete
     }

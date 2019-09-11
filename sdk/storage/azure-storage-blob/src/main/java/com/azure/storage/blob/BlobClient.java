@@ -458,7 +458,7 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
      */
-    public void setDelete() {
+    public void delete() {
         deleteWithResponse(null, null, null, Context.NONE);
     }
 
@@ -708,7 +708,7 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
      *
      */
-    public void unsetDelete() {
+    public void undelete() {
         undeleteWithResponse(null, Context.NONE);
     }
 

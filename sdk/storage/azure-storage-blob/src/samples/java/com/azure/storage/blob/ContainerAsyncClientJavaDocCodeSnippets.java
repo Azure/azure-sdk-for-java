@@ -228,11 +228,11 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerAsyncClient#setDelete()}
+     * Code snippet for {@link ContainerAsyncClient#delete()}
      */
     public void setDelete() {
         // BEGIN: com.azure.storage.blob.ContainerAsyncClient.delete
-        client.setDelete().subscribe(
+        client.delete().subscribe(
             response -> System.out.printf("Delete completed%n"),
             error -> System.out.printf("Delete failed: %s%n", error));
         // END: com.azure.storage.blob.ContainerAsyncClient.delete

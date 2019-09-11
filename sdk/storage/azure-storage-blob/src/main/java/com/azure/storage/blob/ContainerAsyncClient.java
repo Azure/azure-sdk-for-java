@@ -383,7 +383,7 @@ public final class ContainerAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setDelete() {
+    public Mono<Void> delete() {
         return deleteWithResponse(null).flatMap(FluxUtil::toMono);
     }
 

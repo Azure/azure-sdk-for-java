@@ -487,7 +487,7 @@ class ContainerAPITest extends APISpec {
 
     def "Delete min"() {
         when:
-        cc.setDelete()
+        cc.delete()
 
         then:
         !cc.exists()
@@ -558,7 +558,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
 
         when:
-        cc.setDelete()
+        cc.delete()
 
         then:
         thrown(StorageException)
@@ -749,7 +749,7 @@ class ContainerAPITest extends APISpec {
         String name = generateBlobName()
         AppendBlobClient bu = cc.getAppendBlobClient(name)
         bu.create()
-        bu.setDelete()
+        bu.delete()
 
         when:
         ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
@@ -979,7 +979,7 @@ class ContainerAPITest extends APISpec {
         def name = generateBlobName()
         def bc = cc.getAppendBlobClient(name)
         bc.create()
-        bc.setDelete()
+        bc.delete()
 
         when:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))

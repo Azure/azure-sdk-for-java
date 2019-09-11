@@ -168,7 +168,7 @@ class APISpec extends Specification {
                 containerClient.breakLeaseWithResponse(0, null, null, null)
             }
 
-            containerClient.setDelete()
+            containerClient.delete()
         }
 
         interceptorManager.close()

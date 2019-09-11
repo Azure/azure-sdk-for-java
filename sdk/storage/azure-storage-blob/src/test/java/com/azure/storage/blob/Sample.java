@@ -72,7 +72,7 @@ public class Sample {
         // cleanup
         for (ContainerItem item : serviceClient.listContainers()) {
             containerClient = serviceClient.getContainerClient(item.getName());
-            containerClient.setDelete();
+            containerClient.delete();
             System.out.println("Deleted container: " + item.getName());
         }
     }
@@ -143,7 +143,7 @@ public class Sample {
             .thenMany(serviceClient.listContainers())
             .flatMap(containerItem -> serviceClient
                 .getContainerAsyncClient(containerItem.getName())
-                .setDelete())
+                .delete())
             .blockLast();
     }
 

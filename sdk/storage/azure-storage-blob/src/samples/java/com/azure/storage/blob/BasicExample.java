@@ -116,11 +116,11 @@ public class BasicExample {
         /*
          * Delete the blob we created earlier.
          */
-        blobClient.setDelete();
+        blobClient.delete();
 
         /*
          * Delete the container we created earlier.
          */
-        containerClient.setDelete();
+        containerClient.delete();
     }
 }

@@ -282,8 +282,8 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            LeaseAccessConditions leaseAccessConditions = (accessConditions == null) ?
-                null : accessConditions.getLeaseAccessConditions();
+            LeaseAccessConditions leaseAccessConditions = (accessConditions == null) 
+                ? null : accessConditions.getLeaseAccessConditions();
 
             return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
                 .then()
