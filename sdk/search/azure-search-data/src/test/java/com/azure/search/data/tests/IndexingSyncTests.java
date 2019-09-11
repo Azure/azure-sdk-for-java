@@ -5,18 +5,28 @@ package com.azure.search.data.tests;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.customization.Document;
+import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.models.Hotel;
+import com.azure.search.data.models.Book;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
+    private static final String BOOKS_INDEX_NAME = "books";
+    private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    private static final String PUBLISH_DATE_FIELD = "PublishDate";
+    private static final String ISBN_FIELD = "ISBN";
+    private static final String ISBN1 = "1";
+    private static final String ISBN2 = "2";
+    private static final String DATE_UTC = "2010-06-27T00:00:00Z";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -40,44 +50,58 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
-        List<HashMap<String, Object>> hotels = new ArrayList<>();
-        HashMap<String, Object> expectedHotel1 = new HashMap<String, Object>();
-        expectedHotel1.put(HOTEL_ID_FIELD, HOTEL_ID1);
-        expectedHotel1.put(LAST_RENOVATION_DATE_FIELD, DATE_UTC);
-        HashMap<String, Object> expectedHotel2 = new HashMap<String, Object>();
-        expectedHotel2.put(HOTEL_ID_FIELD, HOTEL_ID2);
-        expectedHotel2.put(LAST_RENOVATION_DATE_FIELD, "2010-06-27T00:00:00-00:00");
-        hotels.add(expectedHotel1);
-        hotels.add(expectedHotel2);
+        // Book 1's publish date is in UTC format, and book 2's is unspecified.
+        List<HashMap<String, Object>> books = Arrays.asList(
+            new HashMap<String, Object>() {{
+                put(ISBN_FIELD, ISBN1);
+                put(PUBLISH_DATE_FIELD, DATE_UTC);
+            }},
+            new HashMap<String, Object>() {{
+                put(ISBN_FIELD, ISBN2);
+                put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
+            }}
+        );
 
-        uploadDocuments(client, INDEX_NAME, hotels);
+        // Create 'books' index
+        SearchIndexService searchIndexService = new SearchIndexService(BOOKS_INDEX_JSON, searchServiceName, apiKey);
+        searchIndexService.initialize();
 
-        Document actualHotel1 = client.getDocument(HOTEL_ID1);
-        Document actualHotel2 = client.getDocument(HOTEL_ID2);
+        // Upload and retrieve book documents
+        uploadDocuments(client, BOOKS_INDEX_NAME, books);
+        Document actualBook1 = client.getDocument(ISBN1);
+        Document actualBook2 = client.getDocument(ISBN2);
 
-        Assert.assertEquals(DATE_UTC, actualHotel1.get(LAST_RENOVATION_DATE_FIELD));
-        Assert.assertEquals(DATE_UTC, actualHotel2.get(LAST_RENOVATION_DATE_FIELD));
+        // Verify
+        Assert.assertEquals(DATE_UTC, actualBook1.get(PUBLISH_DATE_FIELD));
+        Assert.assertEquals(DATE_UTC, actualBook2.get(PUBLISH_DATE_FIELD));
     }
 
     @Override
     public void staticallyTypedDateTimesRoundTripAsUtc() throws Exception {
-        List<Hotel> hotels = new ArrayList<>();
-        Hotel expectedHotel1 = new Hotel()
-            .hotelId(HOTEL_ID1)
-            .lastRenovationDate(DATE_FORMAT_UTC.parse(DATE_UTC));
-        Hotel expectedHotel2 = new Hotel()
-            .hotelId(HOTEL_ID2)
-            .lastRenovationDate(DATE_FORMAT_UNSPECIFIED_TIMEZONE.parse(DATE_UNSPECIFIED_TIMEZONE));
-        hotels.add(expectedHotel1);
-        hotels.add(expectedHotel2);
+        // Book 1's publish date is in UTC format, and book 2's is unspecified.
+        DateFormat dateFormatUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormatUnspecifiedTimezone = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Book> books = Arrays.asList(
+            new Book()
+                .ISBN(ISBN1)
+                .publishDate(dateFormatUtc.parse(DATE_UTC)),
+            new Book()
+                .ISBN(ISBN2)
+                .publishDate(dateFormatUnspecifiedTimezone.parse("2010-06-27 00:00:00"))
+        );
 
-        uploadDocuments(client, INDEX_NAME, hotels);
+        // Create 'books' index
+        SearchIndexService searchIndexService = new SearchIndexService(BOOKS_INDEX_JSON, searchServiceName, apiKey);
+        searchIndexService.initialize();
 
-        Document actualHotel1 = client.getDocument(HOTEL_ID1);
-        Document actualHotel2 = client.getDocument(HOTEL_ID2);
+        // Upload and retrieve book documents
+        uploadDocuments(client, BOOKS_INDEX_NAME, books);
+        Document actualBook1 = client.getDocument(ISBN1);
+        Document actualBook2 = client.getDocument(ISBN2);
 
-        Assert.assertEquals(DATE_FORMAT_UTC.format(expectedHotel1.lastRenovationDate()), actualHotel1.get(LAST_RENOVATION_DATE_FIELD));
-        Assert.assertEquals(DATE_FORMAT_UTC.format(expectedHotel2.lastRenovationDate()), actualHotel2.get(LAST_RENOVATION_DATE_FIELD));
+        // Verify
+        Assert.assertEquals(books.get(0).publishDate(), actualBook1.as(Book.class).publishDate());
+        Assert.assertEquals(books.get(1).publishDate(), actualBook2.as(Book.class).publishDate());
     }
 
     @Override

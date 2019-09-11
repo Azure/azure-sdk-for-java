@@ -27,7 +27,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     private static final CharSequence ERROR_MESSAGE_INVALID_FIELDS_REQUEST =
         "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'.";
-    private static final String INDEX_NAME = "hotels";
+    private static final String INDEX_NAME = "books";
     private SearchIndexAsyncClient asyncClient;
 
     @Override

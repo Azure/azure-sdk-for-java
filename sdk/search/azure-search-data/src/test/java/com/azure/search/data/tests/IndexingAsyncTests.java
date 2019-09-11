@@ -5,26 +5,33 @@ package com.azure.search.data.tests;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.customization.Document;
+import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.models.Hotel;
+import com.azure.search.data.models.Book;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
+    private static final String BOOKS_INDEX_NAME = "books";
+    private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    private static final String PUBLISH_DATE_FIELD = "PublishDate";
+    private static final String ISBN_FIELD = "ISBN";
+    private static final String ISBN1 = "1";
+    private static final String ISBN2 = "2";
+    private static final String DATE_UTC = "2010-06-27T00:00:00Z";
 
     @Override
     public void countingDocsOfNewIndexGivesZero() {
@@ -50,63 +57,77 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void dynamicDocumentDateTimesRoundTripAsUtc() {
-        List<HashMap<String, Object>> hotels = new ArrayList<>();
-        HashMap<String, Object> expectedHotel1 = new HashMap<String, Object>();
-        expectedHotel1.put(HOTEL_ID_FIELD, HOTEL_ID1);
-        expectedHotel1.put(LAST_RENOVATION_DATE_FIELD, DATE_UTC);
-        HashMap<String, Object> expectedHotel2 = new HashMap<String, Object>();
-        expectedHotel2.put(HOTEL_ID_FIELD, HOTEL_ID2);
-        expectedHotel2.put(LAST_RENOVATION_DATE_FIELD, "2010-06-27T00:00:00-00:00");
-        hotels.add(expectedHotel1);
-        hotels.add(expectedHotel2);
+    public void dynamicDocumentDateTimesRoundTripAsUtc() throws IOException {
+        // Book 1's publish date is in UTC format, and book 2's is unspecified.
+        List<HashMap<String, Object>> books = Arrays.asList(
+            new HashMap<String, Object>() {{
+                put(ISBN_FIELD, ISBN1);
+                put(PUBLISH_DATE_FIELD, DATE_UTC);
+            }},
+            new HashMap<String, Object>() {{
+                put(ISBN_FIELD, ISBN2);
+                put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
+            }}
+        );
 
-        uploadDocuments(client, INDEX_NAME, hotels);
+        // Create 'books' index
+        SearchIndexService searchIndexService = new SearchIndexService(BOOKS_INDEX_JSON, searchServiceName, apiKey);
+        searchIndexService.initialize();
 
-        Mono<Document> actualHotel1 = client.getDocument(HOTEL_ID1);
-        Mono<Document> actualHotel2 = client.getDocument(HOTEL_ID2);
+        // Upload and retrieve book documents
+        uploadDocuments(client, BOOKS_INDEX_NAME, books);
+        Mono<Document> actualBook1 = client.getDocument(ISBN1);
+        Mono<Document> actualBook2 = client.getDocument(ISBN2);
 
+        // Verify
         StepVerifier
-            .create(actualHotel1)
+            .create(actualBook1)
             .assertNext(res -> {
-                Assert.assertEquals(DATE_UTC, res.get(LAST_RENOVATION_DATE_FIELD));
+                Assert.assertEquals(DATE_UTC, res.get(PUBLISH_DATE_FIELD));
             })
             .verifyComplete();
         StepVerifier
-            .create(actualHotel2)
+            .create(actualBook2)
             .assertNext(res -> {
-                Assert.assertEquals(DATE_UTC, res.get(LAST_RENOVATION_DATE_FIELD));
+                Assert.assertEquals(DATE_UTC, res.get(PUBLISH_DATE_FIELD));
             })
             .verifyComplete();
     }
 
     @Override
     public void staticallyTypedDateTimesRoundTripAsUtc() throws Exception {
-        List<Hotel> hotels = new ArrayList<>();
-        Hotel expectedHotel1 = new Hotel()
-            .hotelId(HOTEL_ID1)
-            .lastRenovationDate(DATE_FORMAT_UTC.parse(DATE_UTC));
-        Hotel expectedHotel2 = new Hotel()
-            .hotelId(HOTEL_ID2)
-            .lastRenovationDate(DATE_FORMAT_UNSPECIFIED_TIMEZONE.parse(DATE_UNSPECIFIED_TIMEZONE));
-        hotels.add(expectedHotel1);
-        hotels.add(expectedHotel2);
+        // Book 1's publish date is in UTC format, and book 2's is unspecified.
+        DateFormat dateFormatUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormatUnspecifiedTimezone = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Book> books = Arrays.asList(
+            new Book()
+                .ISBN(ISBN1)
+                .publishDate(dateFormatUtc.parse(DATE_UTC)),
+            new Book()
+                .ISBN(ISBN2)
+                .publishDate(dateFormatUnspecifiedTimezone.parse("2010-06-27 00:00:00"))
+        );
 
-        uploadDocuments(client, INDEX_NAME, hotels);
+        // Create 'books' index
+        SearchIndexService searchIndexService = new SearchIndexService(BOOKS_INDEX_JSON, searchServiceName, apiKey);
+        searchIndexService.initialize();
 
-        Mono<Document> actualHotel1 = client.getDocument(HOTEL_ID1);
-        Mono<Document> actualHotel2 = client.getDocument(HOTEL_ID2);
+        // Upload and retrieve book documents
+        uploadDocuments(client, BOOKS_INDEX_NAME, books);
+        Mono<Document> actualBook1 = client.getDocument(ISBN1);
+        Mono<Document> actualBook2 = client.getDocument(ISBN2);
 
+        // Verify
         StepVerifier
-            .create(actualHotel1)
+            .create(actualBook1)
             .assertNext(res -> {
-                Assert.assertEquals(DATE_FORMAT_UTC.format(expectedHotel1.lastRenovationDate()), res.get(LAST_RENOVATION_DATE_FIELD));
+                Assert.assertEquals(books.get(0).publishDate(), res.as(Book.class).publishDate());
             })
             .verifyComplete();
         StepVerifier
-            .create(actualHotel2)
+            .create(actualBook2)
             .assertNext(res -> {
-                Assert.assertEquals(DATE_FORMAT_UTC.format(expectedHotel2.lastRenovationDate()), res.get(LAST_RENOVATION_DATE_FIELD));
+                Assert.assertEquals(books.get(1).publishDate(), res.as(Book.class).publishDate());
             })
             .verifyComplete();
     }
