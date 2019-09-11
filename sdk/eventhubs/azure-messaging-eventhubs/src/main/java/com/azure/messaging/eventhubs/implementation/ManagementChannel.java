@@ -57,35 +57,29 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private final ReactorProvider provider;
     private final String eventHubName;
     private final AmqpResponseMapper mapper;
-    private final TokenResourceProvider audienceProvider;
+    private final TokenManagerProvider tokenManagerProvider;
 
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
      * @param eventHubName The name of the Event Hub.
-     * @param tokenProvider A provider that generates authorization tokens.
+     * @param credential A provider that generates authorization tokens.
      * @param provider The dispatcher to execute work on Reactor.
      */
-    ManagementChannel(AmqpConnection connection, String eventHubName, TokenCredential tokenProvider,
-                      TokenResourceProvider audienceProvider, ReactorProvider provider, RetryOptions retryOptions,
+    ManagementChannel(AmqpConnection connection, String eventHubName, TokenCredential credential,
+                      TokenManagerProvider tokenManagerProvider, ReactorProvider provider, RetryOptions retryOptions,
                       ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
         super(new ClientLogger(ManagementChannel.class));
 
-        Objects.requireNonNull(connection);
-        Objects.requireNonNull(eventHubName);
-        Objects.requireNonNull(tokenProvider);
-        Objects.requireNonNull(audienceProvider);
-        Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
-        Objects.requireNonNull(mapper);
         Objects.requireNonNull(retryOptions);
 
-        this.audienceProvider = audienceProvider;
-        this.connection = connection;
-        this.tokenProvider = tokenProvider;
-        this.provider = provider;
-        this.eventHubName = eventHubName;
-        this.mapper = mapper;
+        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider);
+        this.connection = Objects.requireNonNull(connection);
+        this.tokenProvider = Objects.requireNonNull(credential);
+        this.provider = Objects.requireNonNull(provider);
+        this.eventHubName = Objects.requireNonNull(eventHubName);
+        this.mapper = Objects.requireNonNull(mapper);
         this.channelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
@@ -121,7 +115,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
-        final String tokenAudience = audienceProvider.getResourceString(eventHubName);
+        final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
 
         return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
