@@ -82,7 +82,7 @@ public final class BlobItem {
      *
      * @return the deleted value.
      */
-    public boolean getDeleted() {
+    public boolean isDeleted() {
         return this.deleted;
     }
 
@@ -182,7 +182,7 @@ public final class BlobItem {
      *
      * @return the isPrefix value.
      */
-    public Boolean getIsPrefix() {
+    public Boolean isPrefix() {
         return this.isPrefix;
     }
 

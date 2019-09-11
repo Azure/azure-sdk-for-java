@@ -206,7 +206,7 @@ public final class ContainerProperties {
      *
      * @return the hasImmutabilityPolicy value.
      */
-    public Boolean getHasImmutabilityPolicy() {
+    public Boolean isHasImmutabilityPolicy() {
         return this.hasImmutabilityPolicy;
     }
 
@@ -227,7 +227,7 @@ public final class ContainerProperties {
      *
      * @return the hasLegalHold value.
      */
-    public Boolean getHasLegalHold() {
+    public Boolean isHasLegalHold() {
         return this.hasLegalHold;
     }
 

@@ -243,7 +243,7 @@ public final class FileSetHTTPHeadersHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.isServerEncrypted;
     }
 

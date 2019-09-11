@@ -156,8 +156,8 @@ public class BlobServiceClientJavaDocCodeSnippets {
         StorageServiceProperties properties = client.getProperties();
 
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-            properties.getHourMetrics().getEnabled(),
-            properties.getMinuteMetrics().getEnabled());
+            properties.getHourMetrics().isEnabled(),
+            properties.getMinuteMetrics().isEnabled());
         // END: com.azure.storage.blob.BlobServiceClient.getProperties
     }
 
@@ -170,8 +170,8 @@ public class BlobServiceClientJavaDocCodeSnippets {
         StorageServiceProperties properties = client.getPropertiesWithResponse(timeout, context).getValue();
 
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-            properties.getHourMetrics().getEnabled(),
-            properties.getMinuteMetrics().getEnabled());
+            properties.getHourMetrics().isEnabled(),
+            properties.getMinuteMetrics().isEnabled());
         // END: com.azure.storage.blob.BlobServiceClient.getPropertiesWithResponse#Duration-Context
     }
 

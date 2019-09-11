@@ -393,7 +393,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
     public void listBlobsFlat() {
         // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat
         client.listBlobsFlat().subscribe(blob ->
-            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.getIsPrefix()));
+            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat
     }
 
@@ -411,8 +411,8 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
         client.listBlobsFlat(options).subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
-                blob.getIsPrefix(),
-                blob.getDeleted(),
+                blob.isPrefix(),
+                blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat#ListBlobsOptions
     }
@@ -423,7 +423,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
     public void listBlobsHierarchy() {
         // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String
         client.listBlobsHierarchy("directoryName").subscribe(blob ->
-            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.getIsPrefix()));
+            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isDeleted()));
         // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String
     }
 
@@ -441,8 +441,8 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
         client.listBlobsHierarchy("/", options).subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
-                blob.getIsPrefix(),
-                blob.getDeleted(),
+                blob.isPrefix(),
+                blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
     }

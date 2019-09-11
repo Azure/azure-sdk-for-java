@@ -279,7 +279,7 @@ public final class AppendBlobCreateHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.isServerEncrypted;
     }
 

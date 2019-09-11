@@ -71,11 +71,11 @@ public final class BlobProperties {
         this.copyProgress = generatedHeaders.getCopyProgress();
         this.copyCompletionTime = generatedHeaders.getCopyCompletionTime();
         this.copyStatusDescription = generatedHeaders.getCopyStatusDescription();
-        this.isServerEncrypted = generatedHeaders.getIsServerEncrypted();
-        this.isIncrementalCopy = generatedHeaders.getIsIncrementalCopy();
+        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
+        this.isIncrementalCopy = generatedHeaders.isIncrementalCopy();
         this.copyDestinationSnapshot = generatedHeaders.getDestinationSnapshot();
         this.accessTier = AccessTier.fromString(generatedHeaders.getAccessTier());
-        this.isAccessTierInferred = generatedHeaders.getAccessTierInferred();
+        this.isAccessTierInferred = generatedHeaders.isAccessTierInferred();
         this.archiveStatus = ArchiveStatus.fromString(generatedHeaders.getArchiveStatus());
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
         this.accessTierChangeTime = generatedHeaders.getAccessTierChangeTime();

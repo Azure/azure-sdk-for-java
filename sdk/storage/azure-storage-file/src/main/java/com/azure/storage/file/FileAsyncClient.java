@@ -1210,7 +1210,7 @@ public class FileAsyncClient {
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
@@ -1228,7 +1228,7 @@ public class FileAsyncClient {
     private Response<FileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
@@ -1270,7 +1270,7 @@ public class FileAsyncClient {
         String copyProgress = headers.getCopyProgress();
         String copySource = headers.getCopySource();
         CopyStatusType copyStatus = headers.getCopyStatus();
-        Boolean isServerEncrpted = headers.getIsServerEncrypted();
+        Boolean isServerEncrpted = headers.isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileProperties fileProperties = new FileProperties(eTag, lastModified, metadata, fileType, contentLength,
             contentType, contentMD5, contentEncoding, cacheControl, contentDisposition, copyCompletionTime, copyStatusDescription,
@@ -1288,7 +1288,7 @@ public class FileAsyncClient {
         } catch (NullPointerException e) {
             contentMD5 = null;
         }
-        Boolean isServerEncrypted = headers.getIsServerEncrypted();
+        Boolean isServerEncrypted = headers.isServerEncrypted();
         FileUploadInfo fileUploadInfo = new FileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
         return new SimpleResponse<>(response, fileUploadInfo);
     }
@@ -1297,14 +1297,14 @@ public class FileAsyncClient {
         FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
-        Boolean isServerEncrypted = headers.getIsServerEncrypted();
+        Boolean isServerEncrypted = headers.isServerEncrypted();
         FileUploadRangeFromURLInfo fileUploadRangeFromURLInfo = new FileUploadRangeFromURLInfo(eTag, lastModified, isServerEncrypted);
         return new SimpleResponse<>(response, fileUploadRangeFromURLInfo);
     }
 
     private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileMetadataInfo fileMetadataInfo = new FileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, fileMetadataInfo);
     }

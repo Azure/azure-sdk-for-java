@@ -408,7 +408,7 @@ public class ContainerClientJavaDocCodeSnippets {
     public void listBlobsFlat() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat
         client.listBlobsFlat().forEach(blob ->
-            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.getIsPrefix()));
+            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsFlat
     }
 
@@ -426,8 +426,8 @@ public class ContainerClientJavaDocCodeSnippets {
         client.listBlobsFlat(options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
-                blob.getIsPrefix(),
-                blob.getDeleted(),
+                blob.isPrefix(),
+                blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration
     }
@@ -438,7 +438,7 @@ public class ContainerClientJavaDocCodeSnippets {
     public void listBlobsHierarchy() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
         client.listBlobsHierarchy("directoryName").forEach(blob ->
-            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.getIsPrefix()));
+            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
     }
 
@@ -456,8 +456,8 @@ public class ContainerClientJavaDocCodeSnippets {
         client.listBlobsHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
-                blob.getIsPrefix(),
-                blob.getDeleted(),
+                blob.isPrefix(),
+                blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
     }

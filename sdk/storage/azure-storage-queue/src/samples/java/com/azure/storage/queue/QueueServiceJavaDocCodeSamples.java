@@ -160,7 +160,7 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.getProperties
         StorageServiceProperties properties = client.getProperties();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-            properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
+            properties.getHourMetrics().isEnabled(), properties.getMinuteMetrics().isEnabled());
         // END: com.azure.storage.queue.queueServiceClient.getProperties
     }
 
@@ -172,7 +172,7 @@ public class QueueServiceJavaDocCodeSamples {
         StorageServiceProperties properties = client.getPropertiesWithResponse(Duration.ofSeconds(1),
             new Context(key1, value1)).getValue();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-            properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
+            properties.getHourMetrics().isEnabled(), properties.getMinuteMetrics().isEnabled());
         // END: com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context
     }
 

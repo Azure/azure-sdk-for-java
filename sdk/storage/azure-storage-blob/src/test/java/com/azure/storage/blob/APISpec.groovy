@@ -560,7 +560,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             }
 
             @Override
-            Flux<ByteBuffer> body() {
+            Flux<ByteBuffer> getBody() {
                 return Flux.empty()
             }
 
@@ -667,9 +667,9 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         private final Flux<ByteBuffer> body
 
         MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            this.request(response.getRequest())
+            this.setRequest(response.getRequest())
             this.statusCode = statusCode
-            this.headers = response.headers()
+            this.headers = response.getHeaders()
             this.body = body
         }
 
@@ -689,7 +689,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         }
 
         @Override
-        Flux<ByteBuffer> body() {
+        Flux<ByteBuffer> getBody() {
             return body
         }
 

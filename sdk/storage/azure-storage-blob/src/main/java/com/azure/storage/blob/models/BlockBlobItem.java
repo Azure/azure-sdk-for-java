@@ -18,7 +18,7 @@ public class BlockBlobItem {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.getIsServerEncrypted();
+        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
     }
 
@@ -26,7 +26,7 @@ public class BlockBlobItem {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = generatedHeaders.getIsServerEncrypted();
+        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
     }
 
