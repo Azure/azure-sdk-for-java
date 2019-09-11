@@ -12,6 +12,7 @@ import com.azure.search.service.implementation.SearchServiceClientImpl;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
 import com.azure.search.data.models.HotelRoom;
+
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -47,6 +48,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void indexWithInvalidDocumentThrowsException();
+
+    @Test
+    public abstract void canUseIndexWithReservedName();
 
     @Test
     public abstract void canRoundtripBoundaryValues() throws Exception;

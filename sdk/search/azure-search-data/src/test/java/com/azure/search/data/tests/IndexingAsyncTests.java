@@ -12,26 +12,26 @@ import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.models.Book;
+import com.azure.search.service.models.DataType;
+import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
+import com.azure.search.data.models.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.search.data.models.Hotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
+
 import org.junit.Assert;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.*;
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -63,6 +63,32 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
+    public void canUseIndexWithReservedName() {
+
+        Index indexWithReservedName = new Index()
+            .withName("prototype")
+            .withFields(Collections.singletonList(new Field().withName("ID").withType(DataType.EDM_STRING).withKey(Boolean.TRUE)));
+
+        if (!interceptorManager.isPlaybackMode()) {
+            searchServiceClient.indexes().create(indexWithReservedName);
+        }
+
+        Map<String, Object> indexData = new HashMap<>();
+        indexData.put("ID", "1");
+
+        client.setIndexName(indexWithReservedName.name())
+            .index(new IndexBatch()
+                .actions(Collections.singletonList(new IndexAction()
+                    .actionType(IndexActionType.UPLOAD)
+                    .additionalProperties(indexData)))).block();
+
+        StepVerifier
+            .create(client.getDocument("1"))
+            .assertNext(result -> Assert.assertNotNull(result))
+            .verifyComplete();
+    }
+
+    @Override
     public void canRoundtripBoundaryValues() throws Exception {
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         jsonApi.configureTimezone();
@@ -90,6 +116,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 })
                 .verifyComplete();
         }
+
     }
 
     @Override
