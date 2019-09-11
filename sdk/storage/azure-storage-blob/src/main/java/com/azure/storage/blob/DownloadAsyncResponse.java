@@ -116,7 +116,7 @@ public final class DownloadAsyncResponse {
      * @return HTTP status of the download
      */
     public int statusCode() {
-        return this.rawResponse.statusCode();
+        return this.rawResponse.getStatusCode();
     }
 
     /**

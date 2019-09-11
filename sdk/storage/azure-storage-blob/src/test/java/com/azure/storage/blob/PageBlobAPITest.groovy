@@ -44,7 +44,7 @@ class PageBlobAPITest extends APISpec {
         def response = bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         validateBasicHeaders(response.headers())
         response.value().contentMD5() == null
         response.value().isServerEncrypted()
@@ -52,7 +52,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null).statusCode() == 201
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Create sequence number"() {
@@ -107,7 +107,7 @@ class PageBlobAPITest extends APISpec {
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value().metadata() == metadata
 
         where:
@@ -129,7 +129,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
 
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null).statusCode() == 201
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -182,7 +182,7 @@ class PageBlobAPITest extends APISpec {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         validateBasicHeaders(response.headers())
         response.headers().value("x-ms-content-crc64") != null
         response.value().blobSequenceNumber() == 0
@@ -192,7 +192,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page min"() {
         expect:
         bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null).statusCode() == 201
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -228,7 +228,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
         bc.uploadPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null).statusCode() == 201
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -306,7 +306,7 @@ class PageBlobAPITest extends APISpec {
         Response<PageBlobItem> response = bc.uploadPagesFromURLWithResponse(pageRange, destURL.getBlobUrl(), null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         validateBasicHeaders(response.headers())
     }
 
@@ -397,7 +397,7 @@ class PageBlobAPITest extends APISpec {
                 .ifSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
-        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).statusCode() == 201
+        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -470,7 +470,7 @@ class PageBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bc.uploadPagesFromURLWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -550,7 +550,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
         bc.clearPagesWithResponse(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
-            .statusCode() == 201
+            .getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -623,7 +623,7 @@ class PageBlobAPITest extends APISpec {
         def response = bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value().pageRange().size() == 1
         validateBasicHeaders(response.headers())
         Long.parseLong(response.headers().get("x-ms-blob-content-length").value()) == (long) PageBlobClient.PAGE_BYTES
@@ -843,7 +843,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Resize min"() {
         expect:
-        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null).statusCode() == 200
+        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -858,7 +858,7 @@ class PageBlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null).statusCode() == 200
+        bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -926,7 +926,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Sequence number min"() {
         expect:
-        bc.updateSequenceNumberWithResponse(SequenceNumberActionType.INCREMENT, null, null, null, null).statusCode() == 200
+        bc.updateSequenceNumberWithResponse(SequenceNumberActionType.INCREMENT, null, null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -942,7 +942,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
         bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
-            .statusCode() == 200
+            .getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1026,7 +1026,7 @@ class PageBlobAPITest extends APISpec {
         String snapshot = bc.createSnapshot().getSnapshotId()
 
         expect:
-        bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null).statusCode() == 202
+        bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -1058,7 +1058,7 @@ class PageBlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, mac, null, null).statusCode() == 202
+        bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, mac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch

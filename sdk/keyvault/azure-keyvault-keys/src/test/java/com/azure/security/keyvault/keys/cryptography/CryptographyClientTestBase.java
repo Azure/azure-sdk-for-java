@@ -87,7 +87,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {
-            httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
+            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
             policies.add(interceptorManager.getRecordPolicy());
         }
 
@@ -196,7 +196,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
     /**

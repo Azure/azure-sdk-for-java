@@ -411,7 +411,7 @@ public class NettyFluxTests {
     private <T> Mono<Response<T>> getMonoRestResponse(T value) {
         Response<T> response = new Response<T>() {
             @Override
-            public int statusCode() {
+            public int getStatusCode() {
                 return 200;
             }
 

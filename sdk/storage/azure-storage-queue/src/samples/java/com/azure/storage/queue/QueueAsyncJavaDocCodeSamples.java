@@ -113,7 +113,7 @@ public class QueueAsyncJavaDocCodeSamples {
     public void createWithResponse() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.createWithResponse#map
         client.createWithResponse(Collections.singletonMap("queue", "metadataMap")).subscribe(
-            response -> System.out.println("Complete creating the queue with status code:" + response.statusCode()),
+            response -> System.out.println("Complete creating the queue with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.queue.queueAsyncClient.createWithResponse#map
@@ -264,7 +264,7 @@ public class QueueAsyncJavaDocCodeSamples {
                 client.updateMessageWithResponse("newText", dequeuedMessage.messageId(),
                     dequeuedMessage.popReceipt(), null).subscribe(
                         response -> System.out.println("Complete updating the message with status code:"
-                            + response.statusCode()),
+                            + response.getStatusCode()),
                         updateError -> System.err.print(updateError.toString()),
                         () -> System.out.println("Complete updating the message!")
                 );
@@ -302,7 +302,7 @@ public class QueueAsyncJavaDocCodeSamples {
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
                 client.deleteMessageWithResponse(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
-                    response -> System.out.println("Complete deleting the message with status code: " + response.statusCode()),
+                    response -> System.out.println("Complete deleting the message with status code: " + response.getStatusCode()),
                     deleteError -> System.err.print(deleteError.toString()),
                     () -> System.out.println("Complete deleting the message!")
                 );
@@ -330,7 +330,7 @@ public class QueueAsyncJavaDocCodeSamples {
     public void deleteWithResponse() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteWithResponse
         client.deleteWithResponse().subscribe(
-            response -> System.out.println("Deleting the queue completed with status code: " + response.statusCode())
+            response -> System.out.println("Deleting the queue completed with status code: " + response.getStatusCode())
         );
         // END: com.azure.storage.queue.queueAsyncClient.deleteWithResponse
     }
@@ -379,7 +379,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.setMetadataWithResponse#map
         client.setMetadataWithResponse(Collections.singletonMap("queue", "metadataMap"))
             .subscribe(response -> System.out.printf("Setting metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.queue.queueAsyncClient.setMetadataWithResponse#map
     }
 
@@ -400,7 +400,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map
         client.setMetadataWithResponse(null)
             .subscribe(response -> System.out.printf("Clearing metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map
     }
 
@@ -429,7 +429,7 @@ public class QueueAsyncJavaDocCodeSamples {
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
         client.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
     }
 
@@ -455,7 +455,7 @@ public class QueueAsyncJavaDocCodeSamples {
     public void clearMessagesWithResponse() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse
         client.clearMessagesWithResponse().doOnSuccess(
-            response -> System.out.println("Clearing messages completed with status code: " + response.statusCode())
+            response -> System.out.println("Clearing messages completed with status code: " + response.getStatusCode())
         );
         // END: com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse
     }

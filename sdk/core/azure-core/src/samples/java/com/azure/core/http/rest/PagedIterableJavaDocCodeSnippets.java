@@ -24,7 +24,7 @@ public class PagedIterableJavaDocCodeSnippets {
         // process the streamByPage
         pagedIterableResponse.streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });
@@ -42,7 +42,7 @@ public class PagedIterableJavaDocCodeSnippets {
         // process the iterableByPage
         pagedIterableResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });
@@ -62,7 +62,7 @@ public class PagedIterableJavaDocCodeSnippets {
         while (ite.hasNext()) {
             PagedResponse<Integer> resp = ite.next();
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });

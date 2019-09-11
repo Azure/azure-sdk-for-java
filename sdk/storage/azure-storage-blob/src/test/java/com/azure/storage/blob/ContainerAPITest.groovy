@@ -43,7 +43,7 @@ class ContainerAPITest extends APISpec {
         def response = cc.createWithResponse(null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         validateBasicHeaders(response.headers())
     }
 
@@ -105,7 +105,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         def e = thrown(StorageException)
-        e.response().statusCode() == 409
+        e.response().getStatusCode() == 409
         e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
         e.serviceMessage().contains("The specified container already exists.")
     }
@@ -135,7 +135,7 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.getPropertiesWithResponse(new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 200
+        cc.getPropertiesWithResponse(new LeaseAccessConditions().leaseId(leaseID), null, null).getStatusCode() == 200
     }
 
     def "Get properties lease fail"() {
@@ -168,7 +168,7 @@ class ContainerAPITest extends APISpec {
         def response = cc.setMetadataWithResponse(null, null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         validateBasicHeaders(response.headers())
         cc.getPropertiesWithResponse(null, null, null).value().metadata().size() == 0
     }
@@ -197,7 +197,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        cc.setMetadataWithResponse(metadata, null, null, null).statusCode() == 200
+        cc.setMetadataWithResponse(metadata, null, null, null).getStatusCode() == 200
         cc.getPropertiesWithResponse(null, null, null).value().metadata() == metadata
 
         where:
@@ -216,7 +216,7 @@ class ContainerAPITest extends APISpec {
                 .ifModifiedSince(modified))
 
         expect:
-        cc.setMetadataWithResponse(null, cac, null, null).statusCode() == 200
+        cc.setMetadataWithResponse(null, cac, null, null).getStatusCode() == 200
 
         where:
         modified | leaseID
@@ -344,7 +344,7 @@ class ContainerAPITest extends APISpec {
         def receivedIdentifiers = cc.getAccessPolicyWithResponse(null, null, null).value().getIdentifiers()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         validateBasicHeaders(response.headers())
         receivedIdentifiers.get(0).accessPolicy().expiry() == identifier.accessPolicy().expiry()
         receivedIdentifiers.get(0).accessPolicy().start() == identifier.accessPolicy().start()
@@ -365,7 +365,7 @@ class ContainerAPITest extends APISpec {
                 .ifUnmodifiedSince(unmodified))
 
         expect:
-        cc.setAccessPolicyWithResponse(null, null, cac, null, null).statusCode() == 200
+        cc.setAccessPolicyWithResponse(null, null, cac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | leaseID
@@ -439,7 +439,7 @@ class ContainerAPITest extends APISpec {
         Response<ContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null, null)
 
         expect:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value().getBlobAccessType() == PublicAccessType.BLOB
         validateBasicHeaders(response.headers())
         response.value().getIdentifiers().get(0).accessPolicy().expiry() == identifier.accessPolicy().expiry()
@@ -452,7 +452,7 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 200
+        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().leaseId(leaseID), null, null).getStatusCode() == 200
     }
 
     def "Get access policy lease fail"() {
@@ -479,7 +479,7 @@ class ContainerAPITest extends APISpec {
         VoidResponse response = cc.deleteWithResponse(null, null, null)
 
         then:
-        response.statusCode() == 202
+        response.getStatusCode() == 202
         response.headers().value("x-ms-request-id") != null
         response.headers().value("x-ms-version") != null
         response.headers().value("Date") != null
@@ -504,7 +504,7 @@ class ContainerAPITest extends APISpec {
                 .ifUnmodifiedSince(unmodified))
 
         expect:
-        cc.deleteWithResponse(cac, null, null).statusCode() == 202
+        cc.deleteWithResponse(cac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | leaseID
@@ -1147,7 +1147,7 @@ class ContainerAPITest extends APISpec {
 
     def "Acquire lease min"() {
         expect:
-        cc.acquireLeaseWithResponse(null, -1, null, null, null).statusCode() == 201
+        cc.acquireLeaseWithResponse(null, -1, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -1156,7 +1156,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         expect:
-        cc.acquireLeaseWithResponse(null, -1, mac, null, null).statusCode() == 201
+        cc.acquireLeaseWithResponse(null, -1, mac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified
@@ -1228,7 +1228,7 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.renewLeaseWithResponse(leaseID, null, null, null).statusCode() == 200
+        cc.renewLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -1238,7 +1238,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         expect:
-        cc.renewLeaseWithResponse(leaseID, mac, null, null).statusCode() == 200
+        cc.renewLeaseWithResponse(leaseID, mac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified
@@ -1309,7 +1309,7 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.releaseLeaseWithResponse(leaseID, null, null, null).statusCode() == 200
+        cc.releaseLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -1319,7 +1319,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         expect:
-        cc.releaseLeaseWithResponse(leaseID, mac, null, null).statusCode() == 200
+        cc.releaseLeaseWithResponse(leaseID, mac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified
@@ -1404,7 +1404,7 @@ class ContainerAPITest extends APISpec {
         setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.breakLeaseWithResponse(null, null, null, null).statusCode() == 202
+        cc.breakLeaseWithResponse(null, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -1414,7 +1414,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         expect:
-        cc.breakLeaseWithResponse(null, mac, null, null).statusCode() == 202
+        cc.breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified
@@ -1476,7 +1476,7 @@ class ContainerAPITest extends APISpec {
         leaseID = changeLeaseResponse.value()
 
         expect:
-        cc.releaseLeaseWithResponse(leaseID, null, null, null).statusCode() == 200
+        cc.releaseLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
         validateBasicHeaders(changeLeaseResponse.headers())
     }
 
@@ -1485,7 +1485,7 @@ class ContainerAPITest extends APISpec {
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).statusCode() == 200
+        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -1495,7 +1495,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
 
         expect:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).statusCode() == 200
+        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified
@@ -1560,10 +1560,10 @@ class ContainerAPITest extends APISpec {
         BlockBlobClient bu5 = cc.getBlockBlobClient(name)
 
         expect:
-        bu2.createWithResponse(null, null, null, null, null).statusCode() == 201
-        bu5.getPropertiesWithResponse(null, null, null).statusCode() == 200
-        bu3.createWithResponse(512, null, null, null, null, null, null).statusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).statusCode() == 201
+        bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
+        bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+        bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()
@@ -1594,7 +1594,7 @@ class ContainerAPITest extends APISpec {
         AppendBlobClient bu = cc.getAppendBlobClient("rootblob")
 
         expect:
-        bu.createWithResponse(null, null, null, null, null).statusCode() == 201
+        bu.createWithResponse(null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Root explicit in endpoint"() {
@@ -1613,8 +1613,8 @@ class ContainerAPITest extends APISpec {
         Response<BlobProperties> propsResponse = bu.getPropertiesWithResponse(null, null, null)
 
         then:
-        createResponse.statusCode() == 201
-        propsResponse.statusCode() == 200
+        createResponse.getStatusCode() == 201
+        propsResponse.getStatusCode() == 200
         propsResponse.value().blobType() == BlobType.APPEND_BLOB
     }
 
@@ -1681,7 +1681,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get account info error"() {

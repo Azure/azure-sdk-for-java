@@ -73,7 +73,7 @@ public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
     private static final RetryOptions DEFAULT_RETRY = new RetryOptions()
-        .tryTimeout(ClientConstants.OPERATION_TIMEOUT);
+        .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     private TokenCredential credentials;
     private Configuration configuration;

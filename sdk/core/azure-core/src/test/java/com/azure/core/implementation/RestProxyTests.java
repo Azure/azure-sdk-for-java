@@ -1421,7 +1421,7 @@ public abstract class RestProxyTests {
                 .getBytes100OnlyHeaders();
         assertNotNull(response);
 
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
 
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
@@ -1438,7 +1438,7 @@ public abstract class RestProxyTests {
                 .getBytes100BodyAndHeaders();
         assertNotNull(response);
 
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
 
         final byte[] body = response.getValue();
         assertNotNull(body);
@@ -1457,7 +1457,7 @@ public abstract class RestProxyTests {
         final Response<Void> response = createService(Service20.class)
                 .getBytesOnlyStatus();
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -1466,7 +1466,7 @@ public abstract class RestProxyTests {
                 .getBytes100OnlyRawHeaders();
 
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
         assertNotNull(response.getHeaders());
         assertNotEquals(0, response.getHeaders().size());
     }
@@ -1477,7 +1477,7 @@ public abstract class RestProxyTests {
                 .putOnlyHeaders("body string");
         assertNotNull(response);
 
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
 
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
@@ -1494,7 +1494,7 @@ public abstract class RestProxyTests {
                 .putBodyAndHeaders("body string");
         assertNotNull(response);
 
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
 
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
@@ -1514,14 +1514,14 @@ public abstract class RestProxyTests {
     public void service20GetVoidResponse() {
         final VoidResponse response = createService(Service20.class).getVoidResponse();
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void service20GetResponseBody() {
         final Response<HttpBinJSON> response = createService(Service20.class).putBody("body string");
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
 
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);

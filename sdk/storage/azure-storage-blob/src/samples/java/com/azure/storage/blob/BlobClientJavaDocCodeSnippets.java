@@ -169,7 +169,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void setTier() {
         // BEGIN: com.azure.storage.blob.BlobClient.setTier#AccessTier
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTierWithResponse(AccessTier.HOT, null, null, null, null).statusCode());
+            client.setTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.setTier#AccessTier
 
 
@@ -284,7 +284,7 @@ public class BlobClientJavaDocCodeSnippets {
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
         System.out.printf("Aborted copy completed with status %d%n",
             client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions, timeout,
-                new Context(key2, value2)).statusCode());
+                new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context
     }
 
@@ -320,7 +320,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Download completed with status %d%n",
             client.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false,
-                timeout, new Context(key2, value2)).statusCode());
+                timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
 
     }
@@ -334,7 +334,7 @@ public class BlobClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions-Duration-Context
         System.out.printf("Delete completed with status %d%n",
             client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
-                new Context(key1, value1)).statusCode());
+                new Context(key1, value1)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions-Duration-Context
     }
 
@@ -366,7 +366,7 @@ public class BlobClientJavaDocCodeSnippets {
             client.setHTTPHeadersWithResponse(new BlobHTTPHeaders()
                 .blobContentLanguage("en-US")
                 .blobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
-                .statusCode());
+                .getStatusCode());
         // END: com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions-Duration-Context
     }
 
@@ -381,7 +381,7 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(
                 new Metadata(Collections.singletonMap("metadata", "value")), accessConditions, timeout,
-                new Context(key1, value1)).statusCode());
+                new Context(key1, value1)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context
     }
 
@@ -412,7 +412,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Set tier completed with status code %d%n",
             client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions, timeout,
-                new Context(key2, value2)).statusCode());
+                new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context
     }
 
@@ -422,7 +422,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void undeleteWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.undeleteWithResponse#Duration-Context
         System.out.printf("Undelete completed with status %d%n", client.undeleteWithResponse(timeout,
-            new Context(key1, value1)).statusCode());
+            new Context(key1, value1)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.undeleteWithResponse#Duration-Context
     }
 
@@ -468,7 +468,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Release lease completed with status %d%n",
             client.releaseLeaseWithResponse(leaseId, modifiedAccessConditions, timeout,
-                new Context(key2, value2)).statusCode());
+                new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
     }
 

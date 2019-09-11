@@ -47,7 +47,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
             return next.process().map(httpResponse -> {
                 Map<String, List<String>> responseHeaders = new HashMap<>();
                 for (HttpHeader header : httpResponse.getHeaders()) {
-                    responseHeaders.put(header.getName(), Collections.singletonList(header.value()));
+                    responseHeaders.put(header.getName(), Collections.singletonList(header.getValue()));
                 }
 
                 try {

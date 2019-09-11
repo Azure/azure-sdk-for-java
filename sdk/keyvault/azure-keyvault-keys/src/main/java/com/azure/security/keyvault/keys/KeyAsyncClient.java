@@ -930,7 +930,7 @@ public final class KeyAsyncClient {
             .doOnSuccess(response -> logger.info("Backed up key - {}", name))
             .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
             .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
-                base64URLResponse.statusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
+                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
     }
 
     /**

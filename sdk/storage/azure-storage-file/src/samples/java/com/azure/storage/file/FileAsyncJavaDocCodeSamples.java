@@ -141,7 +141,7 @@ public class FileAsyncJavaDocCodeSamples {
         fileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map
     }
 
@@ -169,7 +169,7 @@ public class FileAsyncJavaDocCodeSamples {
         fileAsyncClient.startCopyWithResponse("https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata")).subscribe(
                 response ->
-                    System.out.println("Successfully copying the file with status code: " + response.statusCode()),
+                    System.out.println("Successfully copying the file with status code: " + response.getStatusCode()),
                 error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map
@@ -194,7 +194,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.abortCopyWithResponse#string
         fileAsyncClient.abortCopyWithResponse("someCopyId")
             .subscribe(response -> System.out.printf("Abort copying the file completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.abortCopyWithResponse#string
     }
 
@@ -236,7 +236,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining()).subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.statusCode()),
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
@@ -250,7 +250,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024).subscribe(
-            response -> System.out.println("Complete deleting the file with status code" + response.statusCode()),
+            response -> System.out.println("Complete deleting the file with status code" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
@@ -365,7 +365,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
         fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false)
             .subscribe(
-                response -> System.out.println("Complete downloading the data with status code: " + response.statusCode()),
+                response -> System.out.println("Complete downloading the data with status code: " + response.getStatusCode()),
                 error -> System.err.print(error.toString())
             );
         // END: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
@@ -428,7 +428,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.deleteWithResponse
         fileAsyncClient.deleteWithResponse().subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.statusCode()),
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.deleteWithResponse
@@ -480,7 +480,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map
         fileAsyncClient.setMetadataWithResponse(Collections.singletonMap("file", "updatedMetadata"))
             .subscribe(response -> System.out.printf("Setting the file metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map
     }
 
@@ -492,7 +492,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map.clearMetadata
         fileAsyncClient.setMetadataWithResponse(null).subscribe(
             response -> System.out.printf("Setting the file metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map.clearMetadata
     }
 
@@ -553,7 +553,7 @@ public class FileAsyncJavaDocCodeSamples {
         // NOTE: filePermission and filePermissionKey should never be both set
         fileAsyncClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission)
             .subscribe(response -> System.out.printf("Setting the file properties completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string
     }
 
@@ -566,7 +566,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
         fileAsyncClient.setPropertiesWithResponse(1024, null, null, null)
             .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
     }
 

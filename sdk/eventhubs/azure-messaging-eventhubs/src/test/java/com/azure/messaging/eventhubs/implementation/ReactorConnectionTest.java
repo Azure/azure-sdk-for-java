@@ -88,7 +88,7 @@ public class ReactorConnectionTest {
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
-        final RetryOptions retryOptions = new RetryOptions().tryTimeout(TEST_DURATION);
+        final RetryOptions retryOptions = new RetryOptions().setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
             CREDENTIAL_INFO.eventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
@@ -285,10 +285,10 @@ public class ReactorConnectionTest {
         // Arrange
         Duration timeout = Duration.ofSeconds(2);
         RetryOptions retryOptions = new RetryOptions()
-            .maxRetries(2)
-            .delay(Duration.ofMillis(200))
-            .retryMode(RetryMode.FIXED)
-            .tryTimeout(timeout);
+            .setMaxRetries(2)
+            .setDelay(Duration.ofMillis(200))
+            .setRetryMode(RetryMode.FIXED)
+            .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
             CREDENTIAL_INFO.eventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());

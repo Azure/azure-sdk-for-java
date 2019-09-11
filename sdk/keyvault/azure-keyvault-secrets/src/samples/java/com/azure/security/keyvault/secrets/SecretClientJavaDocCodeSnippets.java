@@ -184,12 +184,12 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
         VoidResponse purgeResponse = secretClient.purgeDeletedSecret("secretName");
-        System.out.printf("Purge Status Code: %d", purgeResponse.statusCode());
+        System.out.printf("Purge Status Code: %d", purgeResponse.getStatusCode());
         // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
 
         // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context
         VoidResponse purgedResponse = secretClient.purgeDeletedSecret("secretName", new Context(key2, value2));
-        System.out.printf("Purge Status Code: %d", purgedResponse.statusCode());
+        System.out.printf("Purge Status Code: %d", purgedResponse.getStatusCode());
         // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context
     }
 
@@ -288,7 +288,7 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.listSecrets.iterableByPage
         secretClient.listSecrets().iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 Secret secretWithValue  = secretClient.getSecret(value);
                 System.out.printf("Received secret with name %s and value %s",
@@ -318,7 +318,7 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage
         secretClient.listDeletedSecrets().iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Deleted secret's recovery Id %s", value.recoveryId());
             });
@@ -350,7 +350,7 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
         secretClient.listSecretVersions("secretName", new Context(key1, value2)).iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 Secret secretWithValue  = secretClient.getSecret(value);
                 System.out.printf("Received secret's version with name %s and value %s",

@@ -16,10 +16,10 @@ public class EventHubProducerOptionsTest {
         String partitionId = "my-partition-id";
         Duration timeout = Duration.ofMinutes(10);
         RetryOptions retryOptions = new RetryOptions()
-            .tryTimeout(timeout)
-            .delay(Duration.ofSeconds(20))
-            .maxDelay(Duration.ofSeconds(30))
-            .maxRetries(3);
+            .setTryTimeout(timeout)
+            .setDelay(Duration.ofSeconds(20))
+            .setMaxDelay(Duration.ofSeconds(30))
+            .setMaxRetries(3);
         EventHubProducerOptions options = new EventHubProducerOptions();
 
         options.partitionId(partitionId)
@@ -31,7 +31,7 @@ public class EventHubProducerOptionsTest {
 
         // Assert
         Assert.assertEquals(partitionId, clone.partitionId());
-        Assert.assertEquals(timeout, clone.retry().tryTimeout());
+        Assert.assertEquals(timeout, clone.retry().getTryTimeout());
         Assert.assertEquals(retryOptions, clone.retry());
 
         Assert.assertNotSame(retryOptions, clone.retry());

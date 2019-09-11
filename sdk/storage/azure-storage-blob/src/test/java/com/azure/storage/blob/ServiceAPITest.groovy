@@ -111,7 +111,7 @@ class ServiceAPITest extends APISpec {
             .iterator().next().metadata() == metadata
 
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cc.deleteWithResponse(null, null, null).statusCode() == 202
+        cc.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
 
     def "List containers maxResults"() {
@@ -265,7 +265,7 @@ class ServiceAPITest extends APISpec {
             .staticWebsite(website)
 
         expect:
-        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).statusCode() == 202
+        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
     }
 
     def "Set props error"() {
@@ -279,7 +279,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props min"() {
         expect:
-        primaryBlobServiceClient.getPropertiesWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getPropertiesWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get props error"() {
@@ -299,7 +299,7 @@ class ServiceAPITest extends APISpec {
         Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKeyWithResponse(start, expiry, null, null)
 
         expect:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value() != null
         response.value().signedOid() != null
         response.value().signedTid() != null
@@ -317,7 +317,7 @@ class ServiceAPITest extends APISpec {
         def response = getOAuthServiceClient().getUserDelegationKeyWithResponse(null, expiry, null, null)
 
         expect:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
     }
 
     def "Get UserDelegationKey error"() {
@@ -353,7 +353,7 @@ class ServiceAPITest extends APISpec {
         BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
 
         expect:
-        serviceClient.getStatisticsWithResponse(null, null).statusCode() == 200
+        serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get stats error"() {
@@ -378,7 +378,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get account info error"() {

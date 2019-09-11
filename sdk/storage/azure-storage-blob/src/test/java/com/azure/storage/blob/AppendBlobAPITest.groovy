@@ -34,7 +34,7 @@ class AppendBlobAPITest extends APISpec {
         Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null)
 
         then:
-        createResponse.statusCode() == 201
+        createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.headers())
         createResponse.value().contentMD5() == null
         createResponse.value().isServerEncrypted()
@@ -42,7 +42,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bc.createWithResponse(null, null, null, null, null).statusCode() == 201
+        bc.createWithResponse(null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Create error"() {
@@ -119,7 +119,7 @@ class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bc.createWithResponse(null, null, bac, null, null).statusCode() == 201
+        bc.createWithResponse(null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -178,7 +178,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     def "Append block min"() {
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode() == 201
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -230,7 +230,7 @@ class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null).statusCode() == 201
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
@@ -308,7 +308,7 @@ class AppendBlobAPITest extends APISpec {
         Response<AppendBlobItem> response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), blobRange, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         validateBasicHeaders(response.headers())
     }
 
@@ -383,10 +383,10 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
         expect:
-        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, null).statusCode() == 201
+        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
@@ -420,7 +420,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
         when:
         bc.appendBlockFromUrl(sourceURL.getBlobUrl(), null, null, bac, null, null)
@@ -446,7 +446,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
         def smac = new SourceModifiedAccessConditions()
             .sourceIfModifiedSince(sourceIfModifiedSince)
@@ -455,7 +455,7 @@ class AppendBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -473,7 +473,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getAppendBlobClient(generateBlobName())
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).statusCode()
+        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getStatusCode()
 
         def smac = new SourceModifiedAccessConditions()
             .sourceIfModifiedSince(sourceIfModifiedSince)

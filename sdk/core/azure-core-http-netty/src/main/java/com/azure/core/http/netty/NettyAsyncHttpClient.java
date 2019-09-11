@@ -30,9 +30,9 @@ import java.util.function.BiFunction;
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of
  * this class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API
- * for features such as {@link NettyAsyncHttpClientBuilder#setNioEventLoopGroup(NioEventLoopGroup) thread pooling},
- * {@link NettyAsyncHttpClientBuilder#setWiretap(boolean) wiretapping},
- * {@link NettyAsyncHttpClientBuilder#setProxy(ProxyOptions) setProxy configuration}, and much more.
+ * for features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder

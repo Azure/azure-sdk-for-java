@@ -145,7 +145,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             int statusCode = 0;
             String requestId = null;
             if (response != null) {
-                statusCode = response.statusCode();
+                statusCode = response.getStatusCode();
                 requestId = response.getHeaderValue(REQUEST_ID);
             }
 

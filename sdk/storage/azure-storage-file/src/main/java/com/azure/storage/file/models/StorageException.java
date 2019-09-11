@@ -53,6 +53,6 @@ public final class StorageException extends HttpResponseException {
      * @return The status code on the response.
      */
     public int statusCode() {
-        return super.getResponse().statusCode();
+        return super.getResponse().getStatusCode();
     }
 }

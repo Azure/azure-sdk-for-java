@@ -54,7 +54,7 @@ class CPKTest extends APISpec {
             null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         response.value().isServerEncrypted()
         response.value().encryptionKeySha256() == key.keySHA256()
     }
@@ -68,7 +68,7 @@ class CPKTest extends APISpec {
         def response = cpkBlockBlob.downloadWithResponse(datastream, null, null, null, false, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         datastream.toByteArray() == defaultData.array()
     }
 
@@ -78,7 +78,7 @@ class CPKTest extends APISpec {
             null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
     }
 
@@ -93,7 +93,7 @@ class CPKTest extends APISpec {
             null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
     }
 
@@ -108,7 +108,7 @@ class CPKTest extends APISpec {
         def response = cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         response.value().isServerEncrypted()
         response.value().encryptionKeySha256() == key.keySHA256()
     }
@@ -122,7 +122,7 @@ class CPKTest extends APISpec {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         response.value().isServerEncrypted()
         response.value().encryptionKeySha256() == key.keySHA256()
     }
@@ -142,7 +142,7 @@ class CPKTest extends APISpec {
             null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         response.value().isServerEncrypted()
         //TODO uncomment when swagger is fixed so PageBlobUploadPagesFromURLHeaders contains the encryption SHA
         //response.value().encryptionKeySha256() == key.keySHA256()
@@ -157,7 +157,7 @@ class CPKTest extends APISpec {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         response.value().isServerEncrypted()
         response.value().encryptionKeySha256() == key.keySHA256()
     }
@@ -170,7 +170,7 @@ class CPKTest extends APISpec {
         def response = cpkAppendBlob.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         response.value().isServerEncrypted()
         response.value().encryptionKeySha256() == key.keySHA256()
     }
@@ -187,7 +187,7 @@ class CPKTest extends APISpec {
             null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         //TODO uncomment when swagger is fixed so AppendBlobAppendBLockFromURLHeaders contains isrequestserverencrypted
         //response.value().isServerEncrypted()
         response.value().encryptionKeySha256() == key.keySHA256()
@@ -202,7 +202,7 @@ class CPKTest extends APISpec {
         def response = cpkExistingBlob.setMetadataWithResponse(metadata, null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
         response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.keySHA256()
     }
@@ -212,7 +212,7 @@ class CPKTest extends APISpec {
         def response = cpkExistingBlob.getPropertiesWithResponse(null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.SERVER_ENCRYPTED))
         response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.keySHA256()
     }
@@ -237,7 +237,7 @@ class CPKTest extends APISpec {
         def response = cpkExistingBlob.createSnapshotWithResponse(null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
     }
 
     //TODO add tests for copy blob CPK tests once generated code supports it

@@ -169,7 +169,7 @@ class BlobAPITest extends APISpec {
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -194,7 +194,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).statusCode()
+        bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
 
         then:
         thrown(StorageException)
@@ -318,7 +318,7 @@ class BlobAPITest extends APISpec {
 
     def "Get properties min"() {
         expect:
-        bc.getPropertiesWithResponse(null, null, null).statusCode() == 200
+        bc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -333,7 +333,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bc.getPropertiesWithResponse(bac, null, null).statusCode() == 200
+        bc.getPropertiesWithResponse(bac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -387,7 +387,7 @@ class BlobAPITest extends APISpec {
         VoidResponse response = bc.setHTTPHeadersWithResponse(null, null, null, null)
 
         expect:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         validateBasicHeaders(response.headers())
     }
 
@@ -446,7 +446,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bc.setHTTPHeadersWithResponse(null, bac, null, null).statusCode() == 200
+        bc.setHTTPHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -503,7 +503,7 @@ class BlobAPITest extends APISpec {
 
         then:
         bc.getProperties().metadata().size() == 0
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         validateBasicHeaders(response.headers())
         Boolean.parseBoolean(response.headers().value("x-ms-request-server-encrypted"))
     }
@@ -532,7 +532,7 @@ class BlobAPITest extends APISpec {
         }
 
         expect:
-        bc.setMetadataWithResponse(metadata, null, null, null).statusCode() == statusCode
+        bc.setMetadataWithResponse(metadata, null, null, null).getStatusCode() == statusCode
         bc.getProperties().metadata() == metadata
 
         where:
@@ -555,7 +555,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bc.setMetadataWithResponse(null, bac, null, null).statusCode() == 200
+        bc.setMetadataWithResponse(null, bac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -634,7 +634,7 @@ class BlobAPITest extends APISpec {
 
     def "Acquire lease min"() {
         expect:
-        bc.acquireLeaseWithResponse(null, -1, null, null, null).statusCode() == 201
+        bc.acquireLeaseWithResponse(null, -1, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -648,7 +648,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bc.acquireLeaseWithResponse(null, -1, mac, null, null).statusCode() == 201
+        bc.acquireLeaseWithResponse(null, -1, mac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch
@@ -713,7 +713,7 @@ class BlobAPITest extends APISpec {
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        bc.renewLeaseWithResponse(leaseID, null, null, null).statusCode() == 200
+        bc.renewLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -728,7 +728,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bc.renewLeaseWithResponse(leaseID, mac, null, null).statusCode() == 200
+        bc.renewLeaseWithResponse(leaseID, mac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch
@@ -789,7 +789,7 @@ class BlobAPITest extends APISpec {
         String leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        bc.releaseLeaseWithResponse(leaseID, null, null, null).statusCode() == 200
+        bc.releaseLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -804,7 +804,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bc.releaseLeaseWithResponse(leaseID, mac, null, null).statusCode() == 200
+        bc.releaseLeaseWithResponse(leaseID, mac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch
@@ -876,7 +876,7 @@ class BlobAPITest extends APISpec {
         setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        bc.breakLeaseWithResponse(null, null, null, null).statusCode() == 202
+        bc.breakLeaseWithResponse(null, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -891,7 +891,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bc.breakLeaseWithResponse(null, mac, null, null).statusCode() == 202
+        bc.breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -944,7 +944,7 @@ class BlobAPITest extends APISpec {
         Response<String> changeLeaseResponse = bc.changeLeaseWithResponse(acquireLease, getRandomUUID(), null, null, null)
 
         expect:
-        bc.releaseLeaseWithResponse(changeLeaseResponse.value(), null, null, null).statusCode() == 200
+        bc.releaseLeaseWithResponse(changeLeaseResponse.value(), null, null, null).getStatusCode() == 200
         validateBasicHeaders(changeLeaseResponse.headers())
     }
 
@@ -953,7 +953,7 @@ class BlobAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).statusCode() == 200
+        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -968,7 +968,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).statusCode() == 200
+        bc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch
@@ -1025,7 +1025,7 @@ class BlobAPITest extends APISpec {
     }
 
     def "Snapshot min"() {
-        bc.createSnapshotWithResponse(null, null, null, null).statusCode() == 201
+        bc.createSnapshotWithResponse(null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -1043,7 +1043,7 @@ class BlobAPITest extends APISpec {
         def bcSnap = response.value()
 
         expect:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         bcSnap.getProperties().metadata() == metadata
 
         where:
@@ -1066,7 +1066,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bc.createSnapshotWithResponse(null, bac, null, null).statusCode() == 201
+        bc.createSnapshotWithResponse(null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1141,7 +1141,7 @@ class BlobAPITest extends APISpec {
 
     def "Copy min"() {
         expect:
-        bc.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null, null).statusCode() == 202
+        bc.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -1190,7 +1190,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        copyDestBlob.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, mac, null, null, null).statusCode() == 202
+        copyDestBlob.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, mac, null, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -1243,7 +1243,7 @@ class BlobAPITest extends APISpec {
 
 
         expect:
-        bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, bac, null, null).statusCode() == 202
+        bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, bac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1330,12 +1330,12 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = response.headers()
 
         then:
-        response.statusCode() == 204
+        response.getStatusCode() == 204
         headers.value("x-ms-request-id") != null
         headers.value("x-ms-version") != null
         headers.value("Date") != null
         // Normal test cleanup will not clean up containers in the alternate account.
-        cu2.deleteWithResponse(null, null, null).statusCode() == 202
+        cu2.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
 
     def "Abort copy min"() {
@@ -1353,7 +1353,7 @@ class BlobAPITest extends APISpec {
         String copyID = bu2.startCopyFromURL(bc.getBlobUrl())
 
         then:
-        bu2.abortCopyFromURLWithResponse(copyID, null, null, null).statusCode() == 204
+        bu2.abortCopyFromURLWithResponse(copyID, null, null, null).getStatusCode() == 204
     }
 
     def "Abort copy lease"() {
@@ -1375,7 +1375,7 @@ class BlobAPITest extends APISpec {
                 new BlobAccessConditions().leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null, null).value()
 
         then:
-        bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 204
+        bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().leaseId(leaseID), null, null).getStatusCode() == 204
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete()
     }
@@ -1423,7 +1423,7 @@ class BlobAPITest extends APISpec {
         BlobClient bu2 = cc.getBlockBlobClient(generateBlobName())
 
         expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).statusCode() == 202
+        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -1464,7 +1464,7 @@ class BlobAPITest extends APISpec {
             .ifNoneMatch(noneMatch)
 
         expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).statusCode() == 202
+        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -1518,7 +1518,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).statusCode() == 202
+        bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1578,7 +1578,7 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = response.headers()
 
         then:
-        response.statusCode() == 202
+        response.getStatusCode() == 202
         headers.value("x-ms-request-id") != null
         headers.value("x-ms-version") != null
         headers.value("Date") != null
@@ -1586,7 +1586,7 @@ class BlobAPITest extends APISpec {
 
     def "Delete min"() {
         expect:
-        bc.deleteWithResponse(null, null, null, null).statusCode() == 202
+        bc.deleteWithResponse(null, null, null, null).getStatusCode() == 202
     }
 
     @Unroll
@@ -1623,7 +1623,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         expect:
-        bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null).statusCode() == 202
+        bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1686,7 +1686,7 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = initialResponse.headers()
 
         then:
-        initialResponse.statusCode() == 200 || initialResponse.statusCode() == 202
+        initialResponse.getStatusCode() == 200 || initialResponse.getStatusCode() == 202
         headers.value("x-ms-version") != null
         headers.value("x-ms-request-id") != null
         bc.getProperties().accessTier() == tier
@@ -1738,7 +1738,7 @@ class BlobAPITest extends APISpec {
         bu.upload(defaultInputStream.get(), defaultData.remaining())
 
         when:
-        int statusCode = bc.setTierWithResponse(AccessTier.HOT, null, null, null, null).statusCode()
+        int statusCode = bc.setTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode()
 
         then:
         statusCode == 200 || statusCode == 202
@@ -1890,7 +1890,7 @@ class BlobAPITest extends APISpec {
         bc.delete()
 
         expect:
-        bc.undeleteWithResponse(null, null).statusCode() == 200
+        bc.undeleteWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Undelete error"() {
@@ -1917,7 +1917,7 @@ class BlobAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        bc.getAccountInfoWithResponse(null, null).statusCode() == 200
+        bc.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get account info error"() {

@@ -104,7 +104,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
         directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata).subscribe(
             response ->
-                System.out.println("Completed creating the directory with status code:" + response.statusCode()),
+                System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map
@@ -133,7 +133,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         directoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
             response ->
                 System.out.println("Successfully creating the subdirectory with status code: "
-                    + response.statusCode()),
+                    + response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
@@ -174,7 +174,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // NOTE: filePermission and filePermissionKey should never be both set
         directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
-                response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
+                response ->  System.out.printf("Creating the file completed with status code %d", response.getStatusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
@@ -232,7 +232,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteFileWithResponse#string
         directoryAsyncClient.deleteFileWithResponse("myfile").subscribe(
-            response ->  System.out.printf("Delete file completed with status code %d", response.statusCode()),
+            response ->  System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the file.")
         );
@@ -260,7 +260,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteSubDirectoryWithResponse#string
         directoryAsyncClient.deleteSubDirectoryWithResponse("mysubdirectory").subscribe(
-            response ->  System.out.printf("Delete subdirectory completed with status code %d", response.statusCode()),
+            response ->  System.out.printf("Delete subdirectory completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
@@ -288,7 +288,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteWithResponse
         directoryAsyncClient.deleteWithResponse().subscribe(
-            response ->  System.out.printf("Delete completed with status code %d", response.statusCode()),
+            response ->  System.out.printf("Delete completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.deleteWithResponse
@@ -376,7 +376,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map.clearMetadata
         directoryAsyncClient.setMetadataWithResponse(null).subscribe(
             response ->  System.out.printf("Clearing the directory metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map.clearMetadata
     }
 
@@ -388,7 +388,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map
         directoryAsyncClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"))
             .subscribe(response -> System.out.println("Setting the directory metadata completed with status code:"
-                + response.statusCode()));
+                + response.getStatusCode()));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map
     }
 

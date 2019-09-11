@@ -20,7 +20,7 @@ import java.time.Duration
 
 class QueueTestHelper {
     static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
-        return expectedStatusCode == response.statusCode()
+        return expectedStatusCode == response.getStatusCode()
     }
 
     static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {

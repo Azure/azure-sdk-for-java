@@ -153,7 +153,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
         try {
             MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events).block(RETRY_OPTIONS.tryTimeout());
+            producer.send(events).block(RETRY_OPTIONS.getTryTimeout());
         } finally {
             dispose(producer);
         }

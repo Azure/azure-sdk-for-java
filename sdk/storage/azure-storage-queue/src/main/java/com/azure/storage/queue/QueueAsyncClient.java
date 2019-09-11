@@ -303,7 +303,7 @@ public final class QueueAsyncClient {
             marker -> postProcessResponse(this.client.queues()
                 .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE))
             .map(response -> new PagedResponseBase<>(response.getRequest(),
-                response.statusCode(),
+                response.getStatusCode(),
                 response.getHeaders(),
                 response.getValue(),
                 null,
@@ -582,7 +582,7 @@ public final class QueueAsyncClient {
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue(),
                     null,
@@ -655,7 +655,7 @@ public final class QueueAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
                 .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue(),
                     null,

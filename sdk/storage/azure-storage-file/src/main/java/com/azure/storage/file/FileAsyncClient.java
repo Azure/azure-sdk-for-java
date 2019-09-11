@@ -968,7 +968,7 @@ public class FileAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().stream().map(FileRange::new).collect(Collectors.toList()),
                     null,
@@ -1030,7 +1030,7 @@ public class FileAsyncClient {
                 .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResults, null, snapshot,
                     context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().handleList(),
                     response.getValue().nextMarker(),
@@ -1079,7 +1079,7 @@ public class FileAsyncClient {
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
                     snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     Collections.singletonList(response.getDeserializedHeaders().numberOfHandlesClosed()),
                     response.getDeserializedHeaders().marker(),

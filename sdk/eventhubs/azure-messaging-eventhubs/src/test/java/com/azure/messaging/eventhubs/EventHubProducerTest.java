@@ -60,7 +60,7 @@ public class EventHubProducerTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private EventHubAsyncProducer asyncProducer;
-    private RetryOptions retryOptions = new RetryOptions().tryTimeout(Duration.ofSeconds(30));
+    private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
 
     @Before
     public void setup() {
@@ -90,7 +90,7 @@ public class EventHubProducerTest {
     @Test
     public void sendSingleMessage() {
         // Arrange
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         // Act
@@ -117,7 +117,7 @@ public class EventHubProducerTest {
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
             new EventHubProducerOptions().retry(retryOptions), tracerProvider);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
@@ -155,7 +155,7 @@ public class EventHubProducerTest {
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
             new EventHubProducerOptions().retry(retryOptions), tracerProvider);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE));
 
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
@@ -189,7 +189,7 @@ public class EventHubProducerTest {
 
         final SendOptions options = new SendOptions();
 
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
 
         // Act
         producer.send(events, options);
@@ -229,7 +229,7 @@ public class EventHubProducerTest {
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions, tracerProvider);
-        final EventHubProducer hubProducer = new EventHubProducer(hubAsyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer hubProducer = new EventHubProducer(hubAsyncProducer, retryOptions.getTryTimeout());
 
         // Act
         final EventDataBatch batch = hubProducer.createBatch();
@@ -261,7 +261,7 @@ public class EventHubProducerTest {
         final BatchOptions options = new BatchOptions()
             .partitionKey("some-key")
             .maximumSizeInBytes(maxBatchSize);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
 
         // Act
         final EventDataBatch batch = producer.createBatch(options);
@@ -289,7 +289,7 @@ public class EventHubProducerTest {
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
         final BatchOptions options = new BatchOptions()
             .maximumSizeInBytes(maxBatchSize);
-        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.tryTimeout());
+        final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
         final EventDataBatch batch = producer.createBatch(options);
 
         // Act & Assert

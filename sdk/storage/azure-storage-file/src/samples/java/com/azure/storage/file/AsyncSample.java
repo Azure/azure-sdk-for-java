@@ -29,7 +29,7 @@ public class AsyncSample {
         String shareName = generateRandomName();
         fileServiceAsyncClient.createShareWithResponse(shareName, null, null).subscribe(
             response -> {
-                System.out.printf("Successfully created a share with status code: %d.", response.statusCode());
+                System.out.printf("Successfully created a share with status code: %d.", response.getStatusCode());
             },
             err -> {
                 System.out.println("Failed to create a share. Reasons: " + err.getMessage());

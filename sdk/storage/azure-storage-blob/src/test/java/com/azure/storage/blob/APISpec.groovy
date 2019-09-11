@@ -394,10 +394,10 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.setWiretap(true)
+            builder.wiretap(true)
 
             if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
             return builder.build()
@@ -545,7 +545,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         return new HttpResponse() {
 
             @Override
-            int statusCode() {
+            int getStatusCode() {
                 return code
             }
 
@@ -674,7 +674,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         }
 
         @Override
-        int statusCode() {
+        int getStatusCode() {
             return statusCode
         }
 

@@ -126,7 +126,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteContainerWithResponse#String-Context
         Context context = new Context("Key", "Value");
         System.out.printf("Delete container completed with status %d%n",
-            client.deleteContainerWithResponse("containerName", context).statusCode());
+            client.deleteContainerWithResponse("containerName", context).getStatusCode());
         // END: com.azure.storage.blob.BlobServiceClient.deleteContainerWithResponse#String-Context
     }
 
@@ -227,7 +227,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Setting properties completed with status %d%n",
-            client.setPropertiesWithResponse(properties, timeout, context).statusCode());
+            client.setPropertiesWithResponse(properties, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#StorageServiceProperties-Duration-Context
     }
 

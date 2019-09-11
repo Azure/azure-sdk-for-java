@@ -460,7 +460,7 @@ public class DirectoryAsyncClient {
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResults, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     convertResponseAndGetNumOfResults(response),
                     response.getValue().nextMarker(),
@@ -505,7 +505,7 @@ public class DirectoryAsyncClient {
                 .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
                     context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().handleList(),
                     response.getValue().nextMarker(),
@@ -554,7 +554,7 @@ public class DirectoryAsyncClient {
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     Collections.singletonList(response.getDeserializedHeaders().numberOfHandlesClosed()),
                     response.getDeserializedHeaders().marker(),

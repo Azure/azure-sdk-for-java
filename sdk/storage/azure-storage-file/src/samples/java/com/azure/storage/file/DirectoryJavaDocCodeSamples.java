@@ -114,7 +114,7 @@ public class DirectoryJavaDocCodeSamples {
         String filePermission = "filePermission";
         Response<DirectoryInfo> response = directoryClient.createWithResponse(smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Completed creating the directory with status code: " + response.statusCode());
+        System.out.println("Completed creating the directory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.createWithResponse#filesmbproperties-string-map-duration-context
     }
 
@@ -140,7 +140,7 @@ public class DirectoryJavaDocCodeSamples {
         Response<DirectoryClient> response = directoryClient.createSubDirectoryWithResponse("subdir",
             smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
+        System.out.printf("Creating the sub directory completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map-duration-context
     }
 
@@ -177,7 +177,7 @@ public class DirectoryJavaDocCodeSamples {
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
             httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Completed creating the file with status code: " + response.statusCode());
+        System.out.println("Completed creating the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
     }
 
@@ -227,7 +227,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
         VoidResponse response = directoryClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Completed deleting the file with status code: " + response.statusCode());
+        System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
     }
 
@@ -250,7 +250,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
         VoidResponse response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Completed deleting the subdirectory with status code: " + response.statusCode());
+        System.out.println("Completed deleting the subdirectory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
     }
 
@@ -272,7 +272,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
         VoidResponse response = directoryClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Completed deleting the file with status code: " + response.statusCode());
+        System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
     }
 
@@ -347,7 +347,7 @@ public class DirectoryJavaDocCodeSamples {
         Response<DirectorySetMetadataInfo> response =
             directoryClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"),
                 Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Setting the directory metadata completed with updated etag %d", response.statusCode());
+        System.out.printf("Setting the directory metadata completed with updated etag %d", response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.setMetadataWithResponse#map-duration-context
     }
 
@@ -370,7 +370,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata
         Response<DirectorySetMetadataInfo> response = directoryClient.setMetadataWithResponse(null,
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.statusCode());
+        System.out.printf("Directory latest modified date is %s.", response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata
     }
 

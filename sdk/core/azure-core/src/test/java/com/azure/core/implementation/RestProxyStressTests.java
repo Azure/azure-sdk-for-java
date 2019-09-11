@@ -140,10 +140,10 @@ public class RestProxyStressTests {
 
         Mono<HttpResponse> process(final int waitTimeSeconds, final HttpPipelineCallContext context, final HttpPipelineNextPolicy nextPolicy) {
             return nextPolicy.clone().process().flatMap(httpResponse -> {
-                if (httpResponse.statusCode() != 503 && httpResponse.statusCode() != 500) {
+                if (httpResponse.getStatusCode() != 503 && httpResponse.getStatusCode() != 500) {
                     return Mono.just(httpResponse);
                 } else {
-                    LoggerFactory.getLogger(getClass()).warn("Received " + httpResponse.statusCode() + " for request. Waiting " + waitTimeSeconds + " seconds before retry.");
+                    LoggerFactory.getLogger(getClass()).warn("Received " + httpResponse.getStatusCode() + " for request. Waiting " + waitTimeSeconds + " seconds before retry.");
                     final int nextWaitTime = 5 + ThreadLocalRandom.current().nextInt(10);
                     httpResponse.body().subscribe().dispose(); // TODO: Anu re-evaluate this
                     return Mono.delay(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS))
@@ -516,7 +516,7 @@ public class RestProxyStressTests {
                                 .onErrorResume(throwable -> {
                                     if (throwable instanceof HttpResponseException) {
                                         HttpResponseException restException = (HttpResponseException) throwable;
-                                        if ((restException.getResponse().statusCode() == 409 || restException.getResponse().statusCode() == 404)) {
+                                        if ((restException.getResponse().getStatusCode() == 409 || restException.getResponse().getStatusCode() == 404)) {
                                             return Mono.empty();
                                         }
                                     }

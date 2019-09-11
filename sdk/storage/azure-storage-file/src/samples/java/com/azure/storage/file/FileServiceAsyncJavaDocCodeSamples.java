@@ -100,7 +100,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShareWithResponse#string-map-integer.metadata
         fileServiceAsyncClient.createShareWithResponse("test", Collections.singletonMap("share", "metadata"), null)
             .subscribe(
-                response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
+                response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete creating the share!")
             );
@@ -116,7 +116,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         fileServiceAsyncClient.createShareWithResponse("test", null, 10)
             .subscribe(
                 response -> System.out.printf("Creating the share completed with status code %d",
-                    response.statusCode()),
+                    response.getStatusCode()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete creating the share!")
             );
@@ -187,7 +187,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         fileServiceAsyncClient.deleteShareWithResponse("test", midnight.toString())
             .subscribe(response -> System.out.printf("Deleting the snapshot completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileServiceAsyncClient.deleteShareWithResponse#string-string
     }
 
@@ -248,7 +248,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
             properties.hourMetrics().enabled(true);
 
             fileServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(r ->
-                System.out.printf("Setting File service properties completed with status code %d", r.statusCode()));
+                System.out.printf("Setting File service properties completed with status code %d", r.getStatusCode()));
         });
         // END: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties
     }
@@ -264,7 +264,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
 
             fileServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(response ->
                 System.out.printf("Setting File service properties completed with status code %d",
-                    response.statusCode()));
+                    response.getStatusCode()));
         });
         // END: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
     }

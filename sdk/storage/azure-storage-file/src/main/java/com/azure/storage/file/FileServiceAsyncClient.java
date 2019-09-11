@@ -191,7 +191,7 @@ public final class FileServiceAsyncClient {
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
                 .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().shareItems(),
                     response.getValue().nextMarker(),

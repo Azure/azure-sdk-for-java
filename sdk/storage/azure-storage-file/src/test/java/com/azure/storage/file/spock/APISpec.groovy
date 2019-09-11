@@ -9,7 +9,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.ResourceNamer
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
@@ -24,7 +23,6 @@ import spock.lang.Specification
 
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.Supplier
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -187,7 +185,7 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             def builder = new NettyAsyncHttpClientBuilder()
-            builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             return builder.build()
         } else {
             return HttpClient.createDefault()

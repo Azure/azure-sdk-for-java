@@ -36,7 +36,7 @@ public class UserAgentTests {
         HttpResponse response = pipeline.send(new HttpRequest(
                 HttpMethod.GET, new URL("http://localhost"))).block();
 
-        Assert.assertEquals(200, response.statusCode());
+        Assert.assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -55,6 +55,6 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost"))).block();
-        Assert.assertEquals(200, response.statusCode());
+        Assert.assertEquals(200, response.getStatusCode());
     }
 }

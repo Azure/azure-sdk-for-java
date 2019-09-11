@@ -92,7 +92,7 @@ public class HttpPipelineTests {
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class HttpPipelineTests {
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -144,6 +144,6 @@ public class HttpPipelineTests {
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
-        assertEquals(200, response.statusCode());
+        assertEquals(200, response.getStatusCode());
     }
 }

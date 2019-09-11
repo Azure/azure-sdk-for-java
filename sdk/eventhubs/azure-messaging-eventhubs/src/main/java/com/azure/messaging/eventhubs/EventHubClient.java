@@ -62,7 +62,7 @@ public class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getProperties() {
-        return client.getProperties().block(retry.tryTimeout());
+        return client.getProperties().block(retry.getTryTimeout());
     }
 
     /**
@@ -84,7 +84,7 @@ public class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
-        return client.getPartitionProperties(partitionId).block(retry.tryTimeout());
+        return client.getPartitionProperties(partitionId).block(retry.getTryTimeout());
     }
 
     /**
@@ -112,9 +112,9 @@ public class EventHubClient implements Closeable {
 
         final EventHubAsyncProducer producer = client.createProducer(options);
 
-        final Duration tryTimeout = options.retry() != null && options.retry().tryTimeout() != null
-            ? options.retry().tryTimeout()
-            : defaultProducerOptions.retry().tryTimeout();
+        final Duration tryTimeout = options.retry() != null && options.retry().getTryTimeout() != null
+            ? options.retry().getTryTimeout()
+            : defaultProducerOptions.retry().getTryTimeout();
 
         return new EventHubProducer(producer, tryTimeout);
     }
@@ -139,7 +139,7 @@ public class EventHubClient implements Closeable {
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         final EventHubAsyncConsumer consumer = client.createConsumer(consumerGroup, partitionId, eventPosition);
-        return new EventHubConsumer(consumer, defaultConsumerOptions.retry().tryTimeout());
+        return new EventHubConsumer(consumer, defaultConsumerOptions.retry().getTryTimeout());
     }
 
     /**
@@ -176,9 +176,9 @@ public class EventHubClient implements Closeable {
                                            EventHubConsumerOptions options) {
         final EventHubAsyncConsumer consumer =
             client.createConsumer(consumerGroup, partitionId, eventPosition, options);
-        final Duration timeout = options.retry() == null || options.retry().tryTimeout() == null
-            ? defaultConsumerOptions.retry().tryTimeout()
-            : options.retry().tryTimeout();
+        final Duration timeout = options.retry() == null || options.retry().getTryTimeout() == null
+            ? defaultConsumerOptions.retry().getTryTimeout()
+            : options.retry().getTryTimeout();
 
         return new EventHubConsumer(consumer, timeout);
     }

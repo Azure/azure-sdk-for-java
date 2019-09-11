@@ -111,7 +111,7 @@ class RequestRetryTestFactory {
         }
 
         @Override
-        public int statusCode() {
+        public int getStatusCode() {
             return this.statusCode;
         }
 

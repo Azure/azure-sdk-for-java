@@ -82,7 +82,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         Mono<Void> reqBodyLoggingMono = Mono.empty();
         //
         if (detailLevel.shouldLogBody()) {
-            if (request.body() == null) {
+            if (request.getBody() == null) {
                 logger.info("(empty body)");
                 logger.info("--> END {}", request.getHttpMethod());
             } else {
@@ -92,7 +92,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
-                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.body());
+                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.getBody());
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(
@@ -130,7 +130,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             //            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
             if (detailLevel.shouldLogURL()) {
-                logger.info("<-- {} {} ({} ms, {} body)", response.statusCode(), url, tookMs, bodySize);
+                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
             }
 
             if (detailLevel.shouldLogHeaders()) {

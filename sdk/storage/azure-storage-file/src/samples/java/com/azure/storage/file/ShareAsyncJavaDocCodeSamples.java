@@ -104,7 +104,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createWithResponse#map-integer.metadata
         shareAsyncClient.createWithResponse(Collections.singletonMap("share", "metadata"), null).subscribe(
-            response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
+            response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the share!")
         );
@@ -118,7 +118,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createWithResponse#map-integer.quota
         shareAsyncClient.createWithResponse(null, 10).subscribe(
-            response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
+            response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the share!")
         );
@@ -194,7 +194,7 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.createDirectoryWithResponse("documents", smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the directory completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.shareAsyncClient.createDirectoryWithResponse#string-filesmbproperties-string-map
     }
 
@@ -231,7 +231,7 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
     }
 
@@ -285,7 +285,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.deleteWithResponse
         shareAsyncClient.deleteWithResponse().subscribe(
             response -> System.out.println("Deleting the shareAsyncClient completed with status code: "
-                + response.statusCode()),
+                + response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Complete deleting the share.")
         );
@@ -338,7 +338,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.ShareAsyncClient.setQuotaWithResponse#int
         shareAsyncClient.setQuotaWithResponse(1024)
             .subscribe(response ->
-                System.out.printf("Setting the share quota completed with status code %d", response.statusCode())
+                System.out.printf("Setting the share quota completed with status code %d", response.getStatusCode())
             );
         // END: com.azure.storage.file.ShareAsyncClient.setQuotaWithResponse#int
     }
@@ -364,7 +364,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.setMetadataWithResponse#map
         shareAsyncClient.setMetadataWithResponse(Collections.singletonMap("share", "updatedMetadata"))
             .subscribe(response ->
-                System.out.printf("Setting the share metadata completed with status code %d", response.statusCode())
+                System.out.printf("Setting the share metadata completed with status code %d", response.getStatusCode())
             );
         // END: com.azure.storage.file.shareAsyncClient.setMetadataWithResponse#map
     }
@@ -423,7 +423,7 @@ public class ShareAsyncJavaDocCodeSamples {
         SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
         shareAsyncClient.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.ShareAsyncClient.setAccessPolicyWithResponse#List
     }
 

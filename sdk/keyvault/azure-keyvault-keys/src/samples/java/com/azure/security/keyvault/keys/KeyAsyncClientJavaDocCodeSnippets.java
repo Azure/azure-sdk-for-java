@@ -348,7 +348,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.purgeDeletedKey("deletedKeyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(purgeResponse ->
-                System.out.printf("Purge Status response %rsaPrivateExponent \n", purgeResponse.statusCode()));
+                System.out.printf("Purge Status response %rsaPrivateExponent \n", purgeResponse.getStatusCode()));
         // END: com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string
     }
 

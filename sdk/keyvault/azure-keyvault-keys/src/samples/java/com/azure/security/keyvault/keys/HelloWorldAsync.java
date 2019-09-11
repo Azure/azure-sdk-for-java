@@ -38,7 +38,7 @@ public class HelloWorldAsync {
                                                                                                 .keySize(2048)).block();
 
         // Let's validate create key operation succeeded using the status code information in the response.
-        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.statusCode());
+        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.getStatusCode());
         System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.getValue().name(), createKeyResponse.getValue().keyMaterial().kty());
 
         Thread.sleep(2000);
@@ -81,7 +81,7 @@ public class HelloWorldAsync {
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
         keyAsyncClient.purgeDeletedKey("CloudRsaKey").subscribe(purgeResponse ->
-                System.out.printf("Cloud Rsa key purge status response %d \n", purgeResponse.statusCode()));
+                System.out.printf("Cloud Rsa key purge status response %d \n", purgeResponse.getStatusCode()));
 
         //To ensure key is purged on server side.
         Thread.sleep(15000);

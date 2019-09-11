@@ -117,7 +117,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context
         Context context = new Context("Key", "Value");
         client.deleteContainerWithResponse("containerName").subscribe(response ->
-            System.out.printf("Delete container completed with status %d%n", response.statusCode()));
+            System.out.printf("Delete container completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context
     }
 
@@ -210,7 +210,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
                 .retentionPolicy(metricsRetentionPolicy));
 
         client.setPropertiesWithResponse(properties).subscribe(response ->
-            System.out.printf("Setting properties completed with status %d%n", response.statusCode()));
+            System.out.printf("Setting properties completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
     }
 

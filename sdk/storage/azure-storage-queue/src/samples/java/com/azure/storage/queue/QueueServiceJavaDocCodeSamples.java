@@ -104,7 +104,7 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context
         Response<QueueClient> response = client.createQueueWithResponse("myqueue",
             Collections.singletonMap("queue", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete creating queue with status code: " + response.statusCode());
+        System.out.println("Complete creating queue with status code: " + response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context
     }
 
@@ -149,7 +149,7 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context
         VoidResponse response = client.deleteQueueWithResponse("myqueue", Duration.ofSeconds(1),
             new Context(key1, value1));
-        System.out.println("Complete deleting the queue with status code: " + response.statusCode());
+        System.out.println("Complete deleting the queue with status code: " + response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context
     }
 
@@ -199,7 +199,7 @@ public class QueueServiceJavaDocCodeSamples {
         properties.cors(Collections.emptyList());
         VoidResponse response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
-        System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode());
+        System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context
     }
 
@@ -214,7 +214,7 @@ public class QueueServiceJavaDocCodeSamples {
         properties.hourMetrics().enabled(true);
         VoidResponse response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
-        System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode());
+        System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-duration-context
     }
 

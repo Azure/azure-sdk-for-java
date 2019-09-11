@@ -25,7 +25,7 @@ class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
 
     static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
-        return expectedStatusCode == response.statusCode()
+        return expectedStatusCode == response.getStatusCode()
     }
 
     static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, StorageErrorCode errMessage) {

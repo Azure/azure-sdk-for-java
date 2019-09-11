@@ -98,7 +98,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     public Mono<CBSNode> getCBSNode() {
         final Mono<CBSNode> cbsNodeMono = RetryUtil.withRetry(
             getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
-            connectionOptions.retry().tryTimeout(), retryPolicy)
+            connectionOptions.retry().getTryTimeout(), retryPolicy)
             .then(Mono.fromCallable(() -> getOrCreateCBSNode()));
 
         return hasConnection.get()
@@ -152,12 +152,12 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
             final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHost(), sessionName,
-                connectionOptions.retry().tryTimeout());
+                connectionOptions.retry().getTryTimeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
             return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-                tokenResourceProvider, connectionOptions.retry().tryTimeout());
+                tokenResourceProvider, connectionOptions.retry().getTryTimeout());
         }));
     }
 
@@ -209,7 +209,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
             reactorExceptionHandler = new ReactorExceptionHandler();
             executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId,
-                reactorExceptionHandler, connectionOptions.retry().tryTimeout(), connectionOptions.host());
+                reactorExceptionHandler, connectionOptions.retry().getTryTimeout(), connectionOptions.host());
 
             executor.start();
         }

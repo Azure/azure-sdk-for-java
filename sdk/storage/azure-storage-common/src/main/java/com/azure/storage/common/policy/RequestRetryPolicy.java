@@ -92,8 +92,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          duplicates the ByteBuffer object, not the underlying data.
          */
         context.setHttpRequest(originalRequest.buffer());
-        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().body() == null) ? null : context.getHttpRequest().body().map(ByteBuffer::duplicate);
-        context.getHttpRequest().body(bufferedBody);
+        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null) ? null :
+            context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
+        context.getHttpRequest().setBody(bufferedBody);
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.secondaryHost());
@@ -114,7 +115,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             .flatMap(response -> {
                 boolean newConsiderSecondary = considerSecondary;
                 String action;
-                int statusCode = response.statusCode();
+                int statusCode = response.getStatusCode();
 
                     /*
                     If attempt was against the secondary & it returned a StatusNotFound (404), then the

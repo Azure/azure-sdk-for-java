@@ -82,7 +82,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
 
     @Override
     public void close() {
-        final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.tryTimeout());
+        final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.getTryTimeout());
         if (channel != null) {
             channel.close();
         }

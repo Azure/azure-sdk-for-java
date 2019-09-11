@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
         @Override
-        public int statusCode() {
+        public int getStatusCode() {
             return 500;
         }
 

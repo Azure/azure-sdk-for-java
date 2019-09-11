@@ -58,7 +58,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 

@@ -167,7 +167,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
         client.stageBlockWithResponse(base64BlockID, data, length, accessConditions).subscribe(response ->
-            System.out.printf("Staging block completed with status %d%n", response.statusCode()));
+            System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
     }
 
@@ -194,7 +194,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
         client.stageBlockFromURLWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
             leaseAccessConditions, sourceModifiedAccessConditions).subscribe(response ->
-            System.out.printf("Staging block from URL completed with status %d%n", response.statusCode()));
+            System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
     }
 
@@ -258,7 +258,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
             AccessTier.HOT, accessConditions).subscribe(response ->
-                System.out.printf("Committing block list completed with status %d%n", response.statusCode()));
+                System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 }

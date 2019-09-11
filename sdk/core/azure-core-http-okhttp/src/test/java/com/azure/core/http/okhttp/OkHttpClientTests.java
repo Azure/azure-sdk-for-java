@@ -90,7 +90,7 @@ public class OkHttpClientTests {
         StepVerifier.create(response.getBodyAsString())
                 .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
                 .verifyComplete();
-        Assert.assertEquals(500, response.statusCode());
+        Assert.assertEquals(500, response.getStatusCode());
     }
 
     @Ignore("Not working accurately at present")
@@ -178,7 +178,7 @@ public class OkHttpClientTests {
             HttpRequest request = new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost:" + ss.getLocalPort() + "/get"));
             HttpResponse response = client.send(request).block();
-            Assert.assertEquals(200, response.statusCode());
+            Assert.assertEquals(200, response.getStatusCode());
             System.out.println("reading body");
             //
             StepVerifier.create(response.getBodyAsByteArray())

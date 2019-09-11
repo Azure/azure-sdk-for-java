@@ -70,7 +70,7 @@ public class EventHubConsumerTest {
             .retry(new RetryOptions())
             .scheduler(Schedulers.elastic());
         EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, options);
-        consumer = new EventHubConsumer(asyncConsumer, options.retry().tryTimeout());
+        consumer = new EventHubConsumer(asyncConsumer, options.retry().getTryTimeout());
     }
 
     @After

@@ -84,7 +84,7 @@ public abstract class KeyClientTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
             policies.add(interceptorManager.getRecordPolicy());
         } else {
-            httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
+            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
             policies.add(interceptorManager.getRecordPolicy());
         }
 
@@ -317,7 +317,7 @@ public abstract class KeyClientTestBase extends TestBase {
      */
     static void assertKeyEquals(KeyCreateOptions expected, Response<Key> response, final int expectedStatusCode) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.statusCode());
+        assertEquals(expectedStatusCode, response.getStatusCode());
 
         assertKeyEquals(expected, response.getValue());
     }
@@ -368,7 +368,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
     /**

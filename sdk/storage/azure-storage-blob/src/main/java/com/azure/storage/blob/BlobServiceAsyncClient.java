@@ -245,7 +245,7 @@ public final class BlobServiceAsyncClient {
             marker -> listContainersSegment(marker, options, timeout)
                 .map(response -> new PagedResponseBase<>(
                     response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().containerItems(),
                     response.getValue().nextMarker(),

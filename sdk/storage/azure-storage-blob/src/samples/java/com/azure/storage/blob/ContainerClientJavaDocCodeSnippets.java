@@ -218,7 +218,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Create completed with status %d%n",
-            client.createWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).statusCode());
+            client.createWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.createWithResponse#Metadata-PublicAccessType-Duration-Context
     }
 
@@ -250,7 +250,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
-            accessConditions, timeout, context).statusCode());
+            accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
     }
 
@@ -313,7 +313,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Set metadata completed with status %d%n",
-            client.setMetadataWithResponse(metadata, accessConditions, timeout, context).statusCode());
+            client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
     }
 
@@ -398,7 +398,7 @@ public class ContainerClientJavaDocCodeSnippets {
                 Collections.singletonList(identifier),
                 accessConditions,
                 timeout,
-                context).statusCode());
+                context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context
     }
 
@@ -549,7 +549,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Release lease completed with status %d%n",
-            client.releaseLeaseWithResponse(leaseId, accessConditions, timeout, context).statusCode());
+            client.releaseLeaseWithResponse(leaseId, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
     }
 

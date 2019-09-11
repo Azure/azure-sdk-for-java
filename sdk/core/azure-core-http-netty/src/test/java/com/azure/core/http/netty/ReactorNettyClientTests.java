@@ -90,7 +90,7 @@ public class ReactorNettyClientTests {
     @Test
     public void testDispose() throws InterruptedException {
         ReactorNettyHttpResponse response = getResponse("/long");
-        response.body().subscribe().dispose();
+        response.getBody().subscribe().dispose();
         // Wait for scheduled connection disposal action to execute on netty event-loop
         Thread.sleep(5000);
         Assert.assertTrue(response.internConnection().isDisposed());
@@ -103,7 +103,7 @@ public class ReactorNettyClientTests {
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
         //
-        StepVerifier.create(response.body(), stepVerifierOptions)
+        StepVerifier.create(response.getBody(), stepVerifierOptions)
                 .expectNextCount(0)
                 .thenRequest(1)
                 .expectNextCount(1)
@@ -118,7 +118,7 @@ public class ReactorNettyClientTests {
         StepVerifier.create(response.getBodyAsString())
                 .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
                 .verifyComplete();
-        Assert.assertEquals(500, response.statusCode());
+        Assert.assertEquals(500, response.getStatusCode());
     }
 
     @Test
@@ -129,7 +129,7 @@ public class ReactorNettyClientTests {
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
         //
-        StepVerifier.create(response.body(), stepVerifierOptions)
+        StepVerifier.create(response.getBody(), stepVerifierOptions)
                 .expectNextCount(0)
                 .thenRequest(1)
                 .expectNextCount(1)
@@ -145,7 +145,7 @@ public class ReactorNettyClientTests {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
                 .setHeader("Content-Length", "123")
-                .body(Flux.error(new RuntimeException("boo")));
+                .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
                 .expectErrorMessage("boo")
@@ -159,7 +159,7 @@ public class ReactorNettyClientTests {
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
                 .setHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
-                .body(Flux.just(contentChunk)
+                .setBody(Flux.just(contentChunk)
                         .repeat(repetitions)
                         .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                         .concatWith(Flux.error(new RuntimeException("boo"))));
@@ -206,7 +206,7 @@ public class ReactorNettyClientTests {
             HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
             HttpResponse response = client.send(request).block();
-            Assert.assertEquals(200, response.statusCode());
+            Assert.assertEquals(200, response.getStatusCode());
             System.out.println("reading body");
             //
             StepVerifier.create(response.getBodyAsByteArray())

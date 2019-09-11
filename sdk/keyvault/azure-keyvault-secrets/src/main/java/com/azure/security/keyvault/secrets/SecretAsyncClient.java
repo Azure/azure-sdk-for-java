@@ -596,7 +596,7 @@ public final class SecretAsyncClient {
             .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
             .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
             .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
-                base64URLResponse.statusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
+                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
     }
 
     /**

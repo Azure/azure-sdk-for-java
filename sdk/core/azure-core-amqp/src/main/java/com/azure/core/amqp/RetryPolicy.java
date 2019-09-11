@@ -26,8 +26,8 @@ public abstract class RetryPolicy implements Cloneable {
     private final Duration baseJitter;
 
     /**
-     * Creates an instance with the given retry options. If {@link RetryOptions#maxDelay()}, {@link
-     * RetryOptions#delay()}, or {@link RetryOptions#maxRetries()} is equal to {@link Duration#ZERO} or zero, requests
+     * Creates an instance with the given retry options. If {@link RetryOptions#getMaxDelay()}, {@link
+     * RetryOptions#getDelay()}, or {@link RetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or zero, requests
      * failing with a retriable exception will not be retried.
      *
      * @param retryOptions The options to set on this retry policy.
@@ -39,7 +39,7 @@ public abstract class RetryPolicy implements Cloneable {
         this.retryOptions = retryOptions;
 
         // 1 second = 1.0 * 10^9 nanoseconds.
-        final Double jitterInNanos = retryOptions.delay().getSeconds() * JITTER_FACTOR * NANOS_PER_SECOND;
+        final Double jitterInNanos = retryOptions.getDelay().getSeconds() * JITTER_FACTOR * NANOS_PER_SECOND;
         baseJitter = Duration.ofNanos(jitterInNanos.longValue());
     }
 
@@ -58,7 +58,7 @@ public abstract class RetryPolicy implements Cloneable {
      * @return The maximum number of retry attempts.
      */
     public int getMaxRetries() {
-        return retryOptions.maxRetries();
+        return retryOptions.getMaxRetries();
     }
 
     /**
@@ -71,19 +71,19 @@ public abstract class RetryPolicy implements Cloneable {
      *         is no longer eligible to be retried.
      */
     public Duration calculateRetryDelay(Exception lastException, int retryCount) {
-        if (retryOptions.delay() == Duration.ZERO
-            || retryOptions.maxDelay() == Duration.ZERO
-            || retryCount > retryOptions.maxRetries()) {
+        if (retryOptions.getDelay() == Duration.ZERO
+            || retryOptions.getMaxDelay() == Duration.ZERO
+            || retryCount > retryOptions.getMaxRetries()) {
             return null;
         }
 
         final Duration baseDelay;
         if (lastException instanceof AmqpException && isRetriableException(lastException)) {
             baseDelay = ((AmqpException) lastException).getErrorCondition() == SERVER_BUSY_ERROR
-                ? retryOptions.delay().plus(SERVER_BUSY_WAIT_TIME)
-                : retryOptions.delay();
+                ? retryOptions.getDelay().plus(SERVER_BUSY_WAIT_TIME)
+                : retryOptions.getDelay();
         } else if (lastException instanceof TimeoutException) {
-            baseDelay = retryOptions.delay();
+            baseDelay = retryOptions.getDelay();
         } else {
             baseDelay = null;
         }
@@ -95,9 +95,9 @@ public abstract class RetryPolicy implements Cloneable {
         final Duration delay = calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
 
         // If delay is smaller or equal to the maximum delay, return the maximum delay.
-        return delay.compareTo(retryOptions.maxDelay()) <= 0
+        return delay.compareTo(retryOptions.getMaxDelay()) <= 0
             ? delay
-            : retryOptions.maxDelay();
+            : retryOptions.getMaxDelay();
     }
 
     /**

@@ -69,7 +69,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID)
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+            .retry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         producer = client.createProducer(producerOptions);
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }

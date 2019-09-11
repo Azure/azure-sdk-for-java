@@ -49,7 +49,7 @@ public class EventHubProducerJavaDocCodeSamples {
     public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
         RetryOptions retryOptions = new RetryOptions()
-            .tryTimeout(Duration.ofSeconds(45));
+            .setTryTimeout(Duration.ofSeconds(45));
         EventHubProducerOptions options = new EventHubProducerOptions()
             .partitionId("foo")
             .retry(retryOptions);

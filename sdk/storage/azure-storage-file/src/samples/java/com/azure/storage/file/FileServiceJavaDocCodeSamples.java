@@ -119,7 +119,7 @@ public class FileServiceJavaDocCodeSamples {
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
             Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(1),
             new Context(key1, value1));
-        System.out.printf("Creating the share completed with status code %d", response.statusCode());
+        System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.FileServiceClient.createShareWithResponse#string-map-integer-duration-context
     }
 
@@ -182,7 +182,7 @@ public class FileServiceJavaDocCodeSamples {
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         VoidResponse response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode());
+        System.out.printf("Deleting the snapshot completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
     }
 
@@ -241,7 +241,7 @@ public class FileServiceJavaDocCodeSamples {
 
         VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
+        System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
     }
 
@@ -256,7 +256,7 @@ public class FileServiceJavaDocCodeSamples {
 
         VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
+        System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
     }
 

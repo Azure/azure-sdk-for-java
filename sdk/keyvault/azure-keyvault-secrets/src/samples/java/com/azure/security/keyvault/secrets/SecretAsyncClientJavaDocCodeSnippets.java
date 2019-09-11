@@ -275,7 +275,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.purgeDeletedSecret("deletedSecretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(purgeResponse ->
-                System.out.printf("Purge Status response %d \n", purgeResponse.statusCode()));
+                System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
         // END: com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string
     }
 

@@ -387,8 +387,8 @@ public final class Utility {
                     rawHeaders.put(ETAG, eTag);
                 } else {
                     HttpHeader eTagHeader = rawHeaders.get(ETAG);
-                    if (eTagHeader != null && eTagHeader.value() != null) {
-                        eTag = eTagHeader.value().replace("\"", "");
+                    if (eTagHeader != null && eTagHeader.getValue() != null) {
+                        eTag = eTagHeader.getValue().replace("\"", "");
                         rawHeaders.put(ETAG, eTag);
                     }
                 }

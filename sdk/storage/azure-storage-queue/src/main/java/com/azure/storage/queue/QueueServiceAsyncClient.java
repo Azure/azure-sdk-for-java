@@ -248,7 +248,7 @@ public final class QueueServiceAsyncClient {
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.statusCode(),
+                    response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().queueItems(),
                     response.getValue().nextMarker(),

@@ -81,10 +81,10 @@ public class ManagingDeletedSecretsAsync {
 
         // If the key vault is soft-delete enabled, then for permanent deletion  deleted secrets need to be purged.
         secretAsyncClient.purgeDeletedSecret("StorageAccountPassword").subscribe(purgeResponse ->
-            System.out.printf("Storage account secret purge status response %d \n", purgeResponse.statusCode()));
+            System.out.printf("Storage account secret purge status response %d \n", purgeResponse.getStatusCode()));
 
         secretAsyncClient.purgeDeletedSecret("BankAccountPassword").subscribe(purgeResponse ->
-            System.out.printf("Bank account secret purge status response %d \n", purgeResponse.statusCode()));
+            System.out.printf("Bank account secret purge status response %d \n", purgeResponse.getStatusCode()));
 
         // To ensure secret is purged on server side.
         Thread.sleep(15000);

@@ -181,7 +181,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             StepVerifier.create(client.purgeDeletedKey(keyToDelete.name()))
                     .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.statusCode());
+                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
             sleepInRecordMode(15000);
         });
@@ -268,7 +268,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             StepVerifier.create(client.purgeDeletedKey(keyToBackupAndRestore.name()))
                     .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.statusCode());
+                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
             pollOnKeyPurge(keyToBackupAndRestore.name());
 
@@ -316,7 +316,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             StepVerifier.create(client.purgeDeletedKey(keyToDeleteAndGet.name()))
                     .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.statusCode());
+                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
             pollOnKeyPurge(keyToDeleteAndGet.name());
             sleepInRecordMode(15000);
@@ -360,7 +360,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             for (DeletedKey deletedKey : deletedKeys) {
                 StepVerifier.create(client.purgeDeletedKey(deletedKey.name()))
                         .assertNext(voidResponse -> {
-                            assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.statusCode());
+                            assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                         }).verifyComplete();
                 pollOnKeyPurge(deletedKey.name());
             }
@@ -393,7 +393,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             StepVerifier.create(client.purgeDeletedKey(keyName))
                     .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.statusCode());
+                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
             pollOnKeyPurge(keyName);
         });

@@ -292,7 +292,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
         client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
-            .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.statusCode()));
+            .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
     }
 
@@ -345,7 +345,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
         client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.statusCode()));
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
     }
 
@@ -380,7 +380,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .blobContentType("binary"), accessConditions).subscribe(
                 response ->
                 System.out.printf("Set HTTP headers completed with status %d%n",
-                    response.statusCode()));
+                    response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
     }
 
@@ -394,7 +394,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 new LeaseAccessConditions().leaseId(leaseId));
 
         client.setMetadataWithResponse(new Metadata(Collections.singletonMap("metadata", "value")), accessConditions)
-            .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.statusCode()));
+            .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
     }
 
@@ -423,7 +423,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
     }
 
@@ -433,7 +433,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     public void undeleteWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse
         client.undeleteWithResponse()
-            .subscribe(response -> System.out.printf("Undelete completed with status %d%n", response.statusCode()));
+            .subscribe(response -> System.out.printf("Undelete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse
     }
 
@@ -475,7 +475,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.releaseLeaseWithResponse(leaseId, modifiedAccessConditions)
             .subscribe(response -> System.out.printf("Release lease completed with status %d%n",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.releaseLeaseWithResponse#String-ModifiedAccessConditions
     }
 

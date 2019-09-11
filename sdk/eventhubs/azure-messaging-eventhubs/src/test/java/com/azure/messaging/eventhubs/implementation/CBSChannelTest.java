@@ -60,7 +60,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             handlerProvider, mapper);
 
         cbsChannel = new CBSChannel(connection, getTokenCredential(), getAuthorizationType(), getReactorProvider(),
-            handlerProvider, new RetryOptions().tryTimeout(Duration.ofMinutes(5)));
+            handlerProvider, new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         }
 
         final CBSNode node = new CBSChannel(connection, tokenProvider, getAuthorizationType(), getReactorProvider(),
-            handlerProvider, new RetryOptions().tryTimeout(Duration.ofMinutes(5)));
+            handlerProvider, new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
         StepVerifier.create(node.authorize(tokenAudience))

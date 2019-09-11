@@ -40,7 +40,7 @@ public class HelloWorld {
                                                                                  .keySize(2048), new Context("key1", "value1"));
 
         // Let's validate create key operation succeeded using the status code information in the response.
-        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.statusCode());
+        System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.getStatusCode());
 
         // Let's Get the Cloud Rsa Key from the key vault.
         Key cloudRsaKey = keyClient.getKey("CloudRsaKey");

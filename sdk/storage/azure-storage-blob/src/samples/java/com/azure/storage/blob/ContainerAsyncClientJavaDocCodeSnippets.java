@@ -223,7 +223,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
 
         client.createWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response ->
-            System.out.printf("Create completed with status %d%n", response.statusCode()));
+            System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Metadata-PublicAccessType
     }
 
@@ -249,7 +249,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.deleteWithResponse(accessConditions).subscribe(response ->
-            System.out.printf("Delete completed with status %d%n", response.statusCode()));
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.ContainerAsyncClient.deleteWithResponse#ContainerAccessConditions
     }
 
@@ -306,7 +306,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.setMetadataWithResponse(metadata, accessConditions).subscribe(response ->
-            System.out.printf("Set metadata completed with status %d%n", response.statusCode()));
+            System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.ContainerAsyncClient.setMetadataWithResponse#Metadata-ContainerAccessConditions
     }
 
@@ -383,7 +383,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
 
         client.setAccessPolicyWithResponse(PublicAccessType.CONTAINER, Collections.singletonList(identifier), accessConditions)
             .subscribe(response ->
-                System.out.printf("Set access policy completed with status %d%n", response.statusCode()));
+                System.out.printf("Set access policy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.ContainerAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions
     }
 
@@ -513,7 +513,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
             .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.releaseLeaseWithResponse(leaseId, accessConditions).subscribe(response ->
-            System.out.printf("Release lease completed with status %d%n", response.statusCode()));
+            System.out.printf("Release lease completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.ContainerAsyncClient.releaseLeaseWithResponse#String-ModifiedAccessConditions
     }
 

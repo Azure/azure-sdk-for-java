@@ -271,7 +271,7 @@ public class MockAzureHttpClient implements HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body())
+        Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.getBody())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
         return asyncString.block();
     }
@@ -279,7 +279,7 @@ public class MockAzureHttpClient implements HttpClient {
     private static Map<String, String> toMap(HttpHeaders headers) {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers) {
-            result.put(header.getName(), header.value());
+            result.put(header.getName(), header.getValue());
         }
         return result;
     }

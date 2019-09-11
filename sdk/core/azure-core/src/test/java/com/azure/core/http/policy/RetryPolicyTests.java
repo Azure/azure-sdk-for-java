@@ -38,7 +38,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                         new URL("http://localhost/"))).block();
 
-        Assert.assertEquals(501, response.statusCode());
+        Assert.assertEquals(501, response.getStatusCode());
     }
 
     @Test
@@ -61,6 +61,6 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                         new URL("http://localhost/"))).block();
 
-        Assert.assertEquals(500, response.statusCode());
+        Assert.assertEquals(500, response.getStatusCode());
     }
 }

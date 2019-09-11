@@ -253,12 +253,12 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string
         VoidResponse purgeResponse = keyClient.purgeDeletedKey("deletedKeyName");
-        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgeResponse.statusCode());
+        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgeResponse.getStatusCode());
         // END: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string
 
         // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context
         VoidResponse purgedResponse = keyClient.purgeDeletedKey("deletedKeyName", new Context(key2, value2));
-        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgedResponse.statusCode());
+        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgedResponse.getStatusCode());
         // END: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context
     }
 
@@ -356,7 +356,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
         keyClient.listKeys().iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 Key keyWithMaterial = keyClient.getKey(value);
                 System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.name(),
@@ -386,7 +386,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.keys.keyclient.listDeletedKeys.iterableByPage
         keyClient.listDeletedKeys().iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Deleted key's recovery Id %s %n", value.recoveryId());
             });
@@ -418,7 +418,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
         keyClient.listKeyVersions("keyName").iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Key name: %s, Key version: %s %n", value.name(), value.version());
             });

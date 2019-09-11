@@ -453,7 +453,7 @@ public class ShareAsyncClient {
             marker -> postProcessResponse(this.azureFileStorageClient.shares()
                 .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE))
             .map(response -> new PagedResponseBase<>(response.getRequest(),
-                response.statusCode(),
+                response.getStatusCode(),
                 response.getHeaders(),
                 response.getValue(),
                 null,
@@ -983,14 +983,14 @@ public class ShareAsyncClient {
         String eTag = response.getHeaders().value("ETag");
         OffsetDateTime lastModified = new DateTimeRfc1123(response.getHeaders().value("Last-Modified")).getDateTime();
 
-        return new SimpleResponse<>(response.getRequest(), response.statusCode(), response.getHeaders(), new ShareInfo(eTag, lastModified));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), new ShareInfo(eTag, lastModified));
     }
 
     private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(SharesCreateSnapshotResponse response) {
         ShareCreateSnapshotHeaders headers = response.getDeserializedHeaders();
         ShareSnapshotInfo snapshotInfo = new ShareSnapshotInfo(headers.snapshot(), headers.eTag(), headers.lastModified());
 
-        return new SimpleResponse<>(response.getRequest(), response.statusCode(), response.getHeaders(), snapshotInfo);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), snapshotInfo);
     }
 
     private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
@@ -1000,12 +1000,12 @@ public class ShareAsyncClient {
             .lastModified(headers.lastModified())
             .metadata(headers.metadata());
 
-        return new SimpleResponse<>(response.getRequest(), response.statusCode(), response.getHeaders(), shareProperties);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), shareProperties);
     }
 
     private Response<ShareStatistics> mapGetStatisticsResponse(SharesGetStatisticsResponse response) {
         ShareStatistics shareStatistics = new ShareStatistics((int) (response.getValue().shareUsageBytes() / 1024));
 
-        return new SimpleResponse<>(response.getRequest(), response.statusCode(), response.getHeaders(), shareStatistics);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), shareStatistics);
     }
 }

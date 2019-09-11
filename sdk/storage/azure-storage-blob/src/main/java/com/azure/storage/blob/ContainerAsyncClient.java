@@ -328,7 +328,7 @@ public final class ContainerAsyncClient {
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
                 HttpResponse response = ((StorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.statusCode(), response.getHeaders(), false));
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), false));
             });
     }
 
@@ -701,7 +701,7 @@ public final class ContainerAsyncClient {
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
-                        response.statusCode(),
+                        response.getStatusCode(),
                         response.getHeaders(),
                         value,
                         response.getValue().nextMarker(),
@@ -838,7 +838,7 @@ public final class ContainerAsyncClient {
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
-                        response.statusCode(),
+                        response.getStatusCode(),
                         response.getHeaders(),
                         value,
                         response.getValue().nextMarker(),

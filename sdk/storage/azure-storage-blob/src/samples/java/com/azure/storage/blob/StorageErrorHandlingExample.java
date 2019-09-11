@@ -46,7 +46,7 @@ public class StorageErrorHandlingExample {
                  * Examine the raw response.
                  */
                 HttpResponse response = e.getResponse();
-                System.out.println("Error creating the container with status code: " + response.statusCode());
+                System.out.println("Error creating the container with status code: " + response.getStatusCode());
             } else if (e.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
 
                 /*

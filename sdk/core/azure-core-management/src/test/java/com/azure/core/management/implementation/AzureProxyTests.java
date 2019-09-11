@@ -846,7 +846,7 @@ public class AzureProxyTests {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
         } catch (HttpResponseException e) {
-            assertEquals(403, e.getResponse().statusCode());
+            assertEquals(403, e.getResponse().getStatusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }
     }

@@ -150,7 +150,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
         Context context = new Context("key", "value");
         System.out.printf("Staging block completed with status %d%n",
-            client.stageBlockWithResponse(base64BlockID, data, length, accessConditions, timeout, context).statusCode());
+            client.stageBlockWithResponse(base64BlockID, data, length, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context
     }
 
@@ -175,7 +175,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Staging block from URL completed with status %d%n",
             client.stageBlockFromURLWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
-                leaseAccessConditions, sourceModifiedAccessConditions, timeout, context).statusCode());
+                leaseAccessConditions, sourceModifiedAccessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
 
@@ -240,7 +240,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
-                AccessTier.HOT, accessConditions, timeout, context).statusCode());
+                AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
     }
 }

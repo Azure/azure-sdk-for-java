@@ -71,7 +71,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
-        int code = response.statusCode();
+        int code = response.getStatusCode();
         return tryCount < maxRetries
             && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
@@ -86,7 +86,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      *     otherwise the duration used during the construction of the policy.
      */
     private Duration determineDelayDuration(HttpResponse response) {
-        int code = response.statusCode();
+        int code = response.getStatusCode();
 
         // Response will not have a retry-after-ms header.
         if (code != 429        // too many requests

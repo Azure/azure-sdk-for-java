@@ -48,7 +48,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId
         RetryOptions retryOptions = new RetryOptions()
-            .tryTimeout(Duration.ofSeconds(45));
+            .setTryTimeout(Duration.ofSeconds(45));
         EventHubProducerOptions options = new EventHubProducerOptions()
             .partitionId("foo")
             .retry(retryOptions);

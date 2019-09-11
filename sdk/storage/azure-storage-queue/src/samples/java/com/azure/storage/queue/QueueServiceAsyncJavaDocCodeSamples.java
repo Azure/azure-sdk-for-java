@@ -100,7 +100,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map
         client.createQueueWithResponse("myqueue", Collections.singletonMap("queue", "metadata"))
             .subscribe(
-                response -> System.out.printf("Creating the queue with status code %d", response.statusCode()),
+                response -> System.out.printf("Creating the queue with status code %d", response.getStatusCode()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete creating the queue!")
             );
@@ -151,7 +151,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void deleteQueueWithResponse() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.deleteQueueWithResponse#string
         client.deleteQueueWithResponse("myshare").subscribe(
-            response -> System.out.println("Deleting the queue completed with status code: " + response.statusCode())
+            response -> System.out.println("Deleting the queue completed with status code: " + response.getStatusCode())
         );
         // END: com.azure.storage.queue.queueServiceAsyncClient.deleteQueueWithResponse#string
     }
@@ -204,7 +204,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         StorageServiceProperties properties = client.getProperties().block();
         client.setPropertiesWithResponse(properties)
             .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#storageServiceProperties
     }
 
@@ -231,7 +231,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         properties.hourMetrics().enabled(true);
         client.setPropertiesWithResponse(properties)
             .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties
     }
 

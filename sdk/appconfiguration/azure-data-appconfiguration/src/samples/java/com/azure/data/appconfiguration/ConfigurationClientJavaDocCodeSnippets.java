@@ -304,7 +304,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
         client.listSettingRevisions(settingSelector).streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-                resp.getRequest().getUrl(), resp.statusCode());
+                resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });

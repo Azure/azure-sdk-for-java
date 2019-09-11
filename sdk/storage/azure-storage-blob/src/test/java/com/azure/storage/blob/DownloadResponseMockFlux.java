@@ -163,7 +163,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                          */
                         throw new StorageErrorException("Message", new HttpResponse() {
                             @Override
-                            public int statusCode() {
+                            public int getStatusCode() {
                                 return 500;
                             }
 

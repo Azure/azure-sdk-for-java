@@ -54,7 +54,7 @@ class BlockBlobAPITest extends APISpec {
         HttpHeaders headers = response.headers()
 
         expect:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         headers.value("x-ms-content-crc64") != null
         headers.value("x-ms-request-id") != null
         headers.value("x-ms-version") != null
@@ -109,7 +109,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions().leaseId(leaseID),
-            null, null).statusCode() == 201
+            null, null).getStatusCode() == 201
     }
 
     def "Stage block lease fail"() {
@@ -172,7 +172,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         expect:
-        bu2.stageBlockFromURLWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).statusCode() == 201
+        bu2.stageBlockFromURLWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -283,7 +283,7 @@ class BlockBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bc.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -310,7 +310,7 @@ class BlockBlobAPITest extends APISpec {
             .sourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bc.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
 
         then:
         thrown(StorageException)
@@ -335,7 +335,7 @@ class BlockBlobAPITest extends APISpec {
         def headers = response.headers()
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         validateBasicHeaders(headers)
         headers.value("x-ms-content-crc64")
         Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
@@ -354,7 +354,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Commit block list null"() {
         expect:
-        bc.commitBlockListWithResponse(null, null, null, null, null, null, null).statusCode() == 201
+        bc.commitBlockListWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -403,7 +403,7 @@ class BlockBlobAPITest extends APISpec {
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value().metadata() == metadata
 
         where:
@@ -427,7 +427,7 @@ class BlockBlobAPITest extends APISpec {
 
 
         expect:
-        bc.commitBlockListWithResponse(null, null, null, null, bac, null, null).statusCode() == 201
+        bc.commitBlockListWithResponse(null, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -580,7 +580,7 @@ class BlockBlobAPITest extends APISpec {
         def response = bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null)
 
         then:
-        response.statusCode() == 201
+        response.getStatusCode() == 201
         def outStream = new ByteArrayOutputStream()
         bc.download(outStream)
         outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
@@ -616,7 +616,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload empty body"() {
         expect:
-        bc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null).statusCode() == 201
+        bc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Upload null body"() {
@@ -670,7 +670,7 @@ class BlockBlobAPITest extends APISpec {
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value().metadata() == metadata
 
         where:
@@ -694,7 +694,7 @@ class BlockBlobAPITest extends APISpec {
 
 
         expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null).statusCode() == 201
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -890,7 +890,7 @@ class BlockBlobAPITest extends APISpec {
         Response<BlobProperties> response = bac.getPropertiesWithResponse(null).block()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         response.value().metadata() == metadata
 
         where:
@@ -913,7 +913,7 @@ class BlockBlobAPITest extends APISpec {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
 
         expect:
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, null, accessConditions).block().statusCode() == 201
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, null, accessConditions).block().getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID

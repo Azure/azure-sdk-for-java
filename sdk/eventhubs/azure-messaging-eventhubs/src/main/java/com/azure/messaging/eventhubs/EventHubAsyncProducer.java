@@ -418,7 +418,7 @@ public class EventHubAsyncProducer implements Closeable {
     @Override
     public void close() throws IOException {
         if (!isDisposed.getAndSet(true)) {
-            final AmqpSendLink block = sendLinkMono.block(senderOptions.retry().tryTimeout());
+            final AmqpSendLink block = sendLinkMono.block(senderOptions.retry().getTryTimeout());
             if (block != null) {
                 block.close();
             }

@@ -39,7 +39,7 @@ public class IterableStreamJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.iterableStream.stream
         // process the stream
         myIterableStream.stream().forEach(resp -> {
-            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
+            if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
@@ -68,7 +68,7 @@ public class IterableStreamJavaDocCodeSnippets {
         Iterator<PagedResponseBase<String, Integer>> ite = myIterableStream.iterator();
         while (ite.hasNext()) {
             PagedResponseBase<String, Integer> resp = ite.next();
-            if (resp.statusCode() == HttpURLConnection.HTTP_OK) {
+            if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
@@ -94,7 +94,7 @@ public class IterableStreamJavaDocCodeSnippets {
 
         // BEGIN: com.azure.core.util.iterableStream.stream.filter
         // process the stream
-        myIterableStream.stream().filter(resp -> resp.statusCode() == HttpURLConnection.HTTP_OK)
+        myIterableStream.stream().filter(resp -> resp.getStatusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
             .forEach(resp -> {
                 System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.getRequest().getUrl());
