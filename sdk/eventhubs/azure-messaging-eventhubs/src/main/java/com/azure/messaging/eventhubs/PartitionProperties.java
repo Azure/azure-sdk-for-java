@@ -42,7 +42,7 @@ public final class PartitionProperties {
      *
      * @return The name of the Event Hub that contains the partition.
      */
-    public String eventHubName() {
+    public String getEventHubName() {
         return this.eventHubName;
     }
 
@@ -51,7 +51,7 @@ public final class PartitionProperties {
      *
      * @return The identifier of the partition within the Event Hub.
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -60,7 +60,7 @@ public final class PartitionProperties {
      *
      * @return The starting sequence number of the partition's message stream.
      */
-    public long beginningSequenceNumber() {
+    public long getBeginningSequenceNumber() {
         return this.beginningSequenceNumber;
     }
 
@@ -69,7 +69,7 @@ public final class PartitionProperties {
      *
      * @return the last sequence number of the partition's message stream.
      */
-    public long lastEnqueuedSequenceNumber() {
+    public long getLastEnqueuedSequenceNumber() {
         return this.lastEnqueuedSequenceNumber;
     }
 
@@ -84,7 +84,7 @@ public final class PartitionProperties {
      *
      * @return the offset of the last enqueued message in the partition's stream.
      */
-    public String lastEnqueuedOffset() {
+    public String getLastEnqueuedOffset() {
         return this.lastEnqueuedOffset;
     }
 
@@ -93,7 +93,7 @@ public final class PartitionProperties {
      *
      * @return the instant, in UTC, of the last enqueued message in the partition's stream.
      */
-    public Instant lastEnqueuedTime() {
+    public Instant getLastEnqueuedTime() {
         return this.lastEnqueuedTime;
     }
 

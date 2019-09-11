@@ -51,8 +51,8 @@ public class EventHubProducerJavaDocCodeSamples {
         RetryOptions retryOptions = new RetryOptions()
             .setTryTimeout(Duration.ofSeconds(45));
         EventHubProducerOptions options = new EventHubProducerOptions()
-            .partitionId("foo")
-            .retry(retryOptions);
+            .setPartitionId("foo")
+            .setRetry(retryOptions);
 
         EventHubProducer producer = client.createProducer(options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId
@@ -73,7 +73,7 @@ public class EventHubProducerJavaDocCodeSamples {
 
         final EventHubProducer producer = client.createProducer();
         final SendOptions options = new SendOptions()
-            .partitionKey("bread");
+            .setPartitionKey("bread");
 
         producer.send(events, options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions
@@ -93,8 +93,8 @@ public class EventHubProducerJavaDocCodeSamples {
         );
 
         final BatchOptions options = new BatchOptions()
-            .partitionKey("telemetry")
-            .maximumSizeInBytes(256);
+            .setPartitionKey("telemetry")
+            .setMaximumSizeInBytes(256);
 
         EventDataBatch currentBatch = producer.createBatch(options);
 

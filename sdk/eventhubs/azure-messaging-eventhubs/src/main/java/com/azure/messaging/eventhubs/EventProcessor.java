@@ -117,7 +117,7 @@ public class EventProcessor {
      *
      * @return Identifier for this event processor.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return this.identifier;
     }
 

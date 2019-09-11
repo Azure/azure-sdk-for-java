@@ -51,14 +51,14 @@ public class PublishEventsWithCustomMetadata {
         // pretend type names and other hints. Note that the set of metadata is unique to an event; there is no need for every
         // event in a batch to have the same metadata properties available nor the same data type for those properties.
         EventData firstEvent = new EventData("EventData Sample 1".getBytes(UTF_8));
-        firstEvent.properties().put("EventType", "com.microsoft.samples.hello-event");
-        firstEvent.properties().put("priority", 1);
-        firstEvent.properties().put("score", 9.0);
+        firstEvent.getProperties().put("EventType", "com.microsoft.samples.hello-event");
+        firstEvent.getProperties().put("priority", 1);
+        firstEvent.getProperties().put("score", 9.0);
 
         EventData secEvent = new EventData("EventData Sample 2".getBytes(UTF_8));
-        secEvent.properties().put("EventType", "com.microsoft.samples.goodbye-event");
-        secEvent.properties().put("priority", "17");
-        secEvent.properties().put("blob", 10);
+        secEvent.getProperties().put("EventType", "com.microsoft.samples.goodbye-event");
+        secEvent.getProperties().put("priority", "17");
+        secEvent.getProperties().put("blob", 10);
 
         final Flux<EventData> data = Flux.just(firstEvent, secEvent);
 

@@ -28,7 +28,7 @@ public class PartitionOwnership {
      *
      * @return The Event Hub name associated with this ownership record.
      */
-    public String eventHubName() {
+    public String getEventHubName() {
         return eventHubName;
     }
 
@@ -38,7 +38,7 @@ public class PartitionOwnership {
      * @param eventHubName The Event Hub name associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership eventHubName(String eventHubName) {
+    public PartitionOwnership setEventHubName(String eventHubName) {
         this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null");
         return this;
     }
@@ -48,7 +48,7 @@ public class PartitionOwnership {
      *
      * @return The consumer group name associated with this ownership record.
      */
-    public String consumerGroupName() {
+    public String getConsumerGroupName() {
         return consumerGroupName;
     }
 
@@ -58,7 +58,7 @@ public class PartitionOwnership {
      * @param consumerGroupName The consumer group name associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership consumerGroupName(String consumerGroupName) {
+    public PartitionOwnership setConsumerGroupName(String consumerGroupName) {
         this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupName cannot be null");
         return this;
     }
@@ -68,7 +68,7 @@ public class PartitionOwnership {
      *
      * @return The partition id associated with this ownership record.
      */
-    public String partitionId() {
+    public String getPartitionId() {
         return partitionId;
     }
 
@@ -78,7 +78,7 @@ public class PartitionOwnership {
      * @param partitionId The partition id associated with this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership partitionId(String partitionId) {
+    public PartitionOwnership setPartitionId(String partitionId) {
         this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null");
         return this;
     }
@@ -88,7 +88,7 @@ public class PartitionOwnership {
      *
      * @return The unique event processor identifier as the owner of the partition id in this ownership record.
      */
-    public String ownerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
@@ -98,29 +98,29 @@ public class PartitionOwnership {
      * @param ownerId The unique event processor identifier that owns the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership ownerId(String ownerId) {
+    public PartitionOwnership setOwnerId(String ownerId) {
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null");
         return this;
     }
 
     /**
-     * Gets the owner level (aka epoch number) for the event processor identified by {@link #ownerId() this instance}.
+     * Gets the owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this instance}.
      *
-     * @return The owner level (aka epoch number) for the event processor identified by {@link #ownerId() this
+     * @return The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this
      *     instance}.
      */
-    public long ownerLevel() {
+    public long getOwnerLevel() {
         return ownerLevel;
     }
 
     /**
-     * Sets the owner level (aka epoch number) for the event processor identified by {@link #ownerId() this instance}.
+     * Sets the owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this instance}.
      *
-     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #ownerId()
+     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId()
      *     this instance}.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership ownerLevel(long ownerLevel) {
+    public PartitionOwnership setOwnerLevel(long ownerLevel) {
         this.ownerLevel = ownerLevel;
         return this;
     }
@@ -130,7 +130,7 @@ public class PartitionOwnership {
      *
      * @return The offset that serves as checkpoint for the partition id in this ownership record.
      */
-    public Long offset() {
+    public Long getOffset() {
         return offset;
     }
 
@@ -140,7 +140,7 @@ public class PartitionOwnership {
      * @param offset The offset that serves as checkpoint for the partition id in this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership offset(Long offset) {
+    public PartitionOwnership setOffset(Long offset) {
         this.offset = offset;
         return this;
     }
@@ -150,7 +150,7 @@ public class PartitionOwnership {
      *
      * @return The sequence number that serves as checkpoint for the partition id in this ownership record.
      */
-    public Long sequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
@@ -161,7 +161,7 @@ public class PartitionOwnership {
      *     record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership sequenceNumber(Long sequenceNumber) {
+    public PartitionOwnership setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
     }
@@ -171,7 +171,7 @@ public class PartitionOwnership {
      *
      * @return The last modified time of this ownership record as epoch millis.
      */
-    public Long lastModifiedTime() {
+    public Long getLastModifiedTime() {
         return lastModifiedTime;
     }
 
@@ -181,7 +181,7 @@ public class PartitionOwnership {
      * @param lastModifiedTime The last modified time of this ownership record as epoch millis.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership lastModifiedTime(Long lastModifiedTime) {
+    public PartitionOwnership setLastModifiedTime(Long lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
         return this;
     }
@@ -197,7 +197,7 @@ public class PartitionOwnership {
      *
      * @return The eTag for this ownership record.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
@@ -213,7 +213,7 @@ public class PartitionOwnership {
      * @param eTag The eTag for this ownership record.
      * @return The updated {@link PartitionOwnership} instance.
      */
-    public PartitionOwnership eTag(String eTag) {
+    public PartitionOwnership setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

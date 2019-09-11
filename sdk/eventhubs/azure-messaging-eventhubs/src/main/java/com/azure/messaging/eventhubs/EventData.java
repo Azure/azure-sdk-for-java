@@ -38,8 +38,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  *
  * <ol>
- * <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
- * <li>{@link #body()} - if AMQPMessage.Body has Data section</li>
+ * <li>{@link #getProperties()} - AMQPMessage.ApplicationProperties section</li>
+ * <li>{@link #getBody()} - if AMQPMessage.Body has Data section</li>
  * </ol>
  *
  * <p>
@@ -188,7 +188,7 @@ public class EventData implements Comparable<EventData> {
      * the {@code key} exists in the map, its existing value is overwritten.
      *
      * <p>
-     * A common use case for {@link #properties()} is to associate serialization hints for the {@link #body()} as an aid
+     * A common use case for {@link #getProperties()} is to associate serialization hints for the {@link #getBody()} as an aid
      * to consumers who wish to deserialize the binary data.
      * </p>
      *
@@ -231,13 +231,13 @@ public class EventData implements Comparable<EventData> {
      * event body during Event Hubs operations.
      *
      * <p>
-     * A common use case for {@code properties()} is to associate serialization hints for the {@link #body()} as an aid
+     * A common use case for {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid
      * to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
      * </p>
      *
      * @return Application properties associated with this {@link EventData}.
      */
-    public Map<String, Object> properties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -246,7 +246,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return the {@link Context} object set on the event
      */
-    public Context context() {
+    public Context getContext() {
         return context;
     }
 
@@ -257,7 +257,7 @@ public class EventData implements Comparable<EventData> {
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
      *     the {@link EventData} is not received and is created by the public constructors.
      */
-    public Map<String, Object> systemProperties() {
+    public Map<String, Object> getSystemProperties() {
         return systemProperties;
     }
 
@@ -266,13 +266,13 @@ public class EventData implements Comparable<EventData> {
      *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #properties()} when creating the event, to associate serialization hints as an aid to consumers who wish
+     * {@link #getProperties()} when creating the event, to associate serialization hints as an aid to consumers who wish
      * to deserialize the binary data.
      * </p>
      *
      * @return ByteBuffer representing the data.
      */
-    public ByteBuffer body() {
+    public ByteBuffer getBody() {
         return body.duplicate();
     }
 
@@ -281,7 +281,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return UTF-8 decoded string representation of the event data.
      */
-    public String bodyAsString() {
+    public String getBodyAsString() {
         return UTF_8.decode(body).toString();
     }
 
@@ -291,8 +291,8 @@ public class EventData implements Comparable<EventData> {
      * @return The offset within the Event Hub partition of the received event. {@code null} if the EventData was not
      *     received from Event Hub service.
      */
-    public Long offset() {
-        return systemProperties.offset();
+    public Long getOffset() {
+        return systemProperties.getOffset();
     }
 
     /**
@@ -302,8 +302,8 @@ public class EventData implements Comparable<EventData> {
      * @return A partition key for this Event Data. {@code null} if the EventData was not received from Event Hub
      *     service or there was no partition key set when the event was sent to the Event Hub.
      */
-    public String partitionKey() {
-        return systemProperties.partitionKey();
+    public String getPartitionKey() {
+        return systemProperties.getPartitionKey();
     }
 
     /**
@@ -312,8 +312,8 @@ public class EventData implements Comparable<EventData> {
      * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the EventData was not
      *     received from Event Hub service.
      */
-    public Instant enqueuedTime() {
-        return systemProperties.enqueuedTime();
+    public Instant getEnqueuedTime() {
+        return systemProperties.getEnqueuedTime();
     }
 
     /**
@@ -323,8 +323,8 @@ public class EventData implements Comparable<EventData> {
      * @return The sequence number for this event. {@code null} if the EventData was not received from Event Hub
      *     service.
      */
-    public Long sequenceNumber() {
-        return systemProperties.sequenceNumber();
+    public Long getSequenceNumber() {
+        return systemProperties.getSequenceNumber();
     }
 
     private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
@@ -341,8 +341,8 @@ public class EventData implements Comparable<EventData> {
     @Override
     public int compareTo(EventData other) {
         return Long.compare(
-            this.sequenceNumber(),
-            other.sequenceNumber()
+            this.getSequenceNumber(),
+            other.getSequenceNumber()
         );
     }
 
@@ -419,7 +419,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The offset within the Event Hubs stream.
          */
-        private Long offset() {
+        private Long getOffset() {
             return offset;
         }
 
@@ -429,7 +429,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return A partition key for this Event Data.
          */
-        private String partitionKey() {
+        private String getPartitionKey() {
             return partitionKey;
         }
 
@@ -438,7 +438,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The time this was enqueued in the service.
          */
-        private Instant enqueuedTime() {
+        private Instant getEnqueuedTime() {
             return enqueuedTime;
         }
 
@@ -450,7 +450,7 @@ public class EventData implements Comparable<EventData> {
          * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
          *     retrieved event.
          */
-        private Long sequenceNumber() {
+        private Long getSequenceNumber() {
             return sequenceNumber;
         }
 

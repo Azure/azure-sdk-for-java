@@ -60,9 +60,9 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     public void getCbsNodeAuthorize() {
         // Arrange
         final TokenResourceProvider provider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            getConnectionStringProperties().endpoint().getHost());
+            getConnectionStringProperties().getEndpoint().getHost());
 
-        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().eventHubName());
+        final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEventHubName());
 
         // Act & Assert
         StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience)))

@@ -58,7 +58,7 @@ public class EventHubAsyncProducerIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendMessageToPartition() throws IOException {
         // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
@@ -128,10 +128,10 @@ public class EventHubAsyncProducerIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         try (EventHubAsyncProducer producer = client.createProducer()) {
-            final BatchOptions options = new BatchOptions().partitionKey("my-partition-key");
+            final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
             final Mono<EventDataBatch> createBatch = producer.createBatch(options)
                 .map(batch -> {
-                    Assert.assertEquals(options.partitionKey(), batch.getPartitionKey());
+                    Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
 
                     events.forEach(event -> {
                         Assert.assertTrue(batch.tryAdd(event));

@@ -93,9 +93,9 @@ public class BlobPartitionManager implements PartitionManager {
         return Flux.fromArray(requestedPartitionOwnerships).flatMap(
             partitionOwnership -> {
 
-                String partitionId = partitionOwnership.partitionId();
-                String blobName = getBlobName(partitionOwnership.eventHubName(),
-                    partitionOwnership.consumerGroupName(), partitionId);
+                String partitionId = partitionOwnership.getPartitionId();
+                String blobName = getBlobName(partitionOwnership.getEventHubName(),
+                    partitionOwnership.getConsumerGroupName(), partitionId);
 
                 if (!blobClients.containsKey(blobName)) {
                     blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
@@ -104,13 +104,13 @@ public class BlobPartitionManager implements PartitionManager {
                 BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
                 Metadata metadata = new Metadata();
-                metadata.put(OWNER_ID, partitionOwnership.ownerId());
-                Long offset = partitionOwnership.offset();
+                metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
+                Long offset = partitionOwnership.getOffset();
                 metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
-                Long sequenceNumber = partitionOwnership.sequenceNumber();
+                Long sequenceNumber = partitionOwnership.getSequenceNumber();
                 metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
                 BlobAccessConditions blobAccessConditions = new BlobAccessConditions();
-                if (ImplUtils.isNullOrEmpty(partitionOwnership.eTag())) {
+                if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                     // New blob should be created
                     blobAccessConditions.modifiedAccessConditions(new ModifiedAccessConditions()
                         .ifNoneMatch("*"));
@@ -118,7 +118,7 @@ public class BlobPartitionManager implements PartitionManager {
                         .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
                             blobAccessConditions)
                         .flatMapMany(response -> {
-                            partitionOwnership.eTag(response.getHeaders().get(ETAG).getValue());
+                            partitionOwnership.setETag(response.getHeaders().get(ETAG).getValue());
                             return Mono.just(partitionOwnership);
                         }, error -> {
                                 logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
@@ -128,10 +128,10 @@ public class BlobPartitionManager implements PartitionManager {
                 } else {
                     // update existing blob
                     blobAccessConditions.modifiedAccessConditions(new ModifiedAccessConditions()
-                        .ifMatch(partitionOwnership.eTag()));
+                        .ifMatch(partitionOwnership.getETag()));
                     return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
                         .flatMapMany(response -> {
-                            partitionOwnership.eTag(response.getHeaders().get(ETAG).getValue());
+                            partitionOwnership.setETag(response.getHeaders().get(ETAG).getValue());
                             return Mono.just(partitionOwnership);
                         }, error -> {
                                 logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
@@ -151,29 +151,29 @@ public class BlobPartitionManager implements PartitionManager {
      */
     @Override
     public Mono<String> updateCheckpoint(Checkpoint checkpoint) {
-        if (checkpoint.sequenceNumber() == null && checkpoint.offset() == null) {
+        if (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null) {
             throw logger.logExceptionAsWarning(Exceptions
                 .propagate(new IllegalStateException(
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
         }
 
-        String partitionId = checkpoint.partitionId();
-        String blobName = getBlobName(checkpoint.eventHubName(), checkpoint.consumerGroupName(), partitionId);
+        String partitionId = checkpoint.getPartitionId();
+        String blobName = getBlobName(checkpoint.getEventHubName(), checkpoint.getConsumerGroupName(), partitionId);
         if (!blobClients.containsKey(blobName)) {
             blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
         }
 
         Metadata metadata = new Metadata();
-        String sequenceNumber = checkpoint.sequenceNumber() == null ? null
-            : String.valueOf(checkpoint.sequenceNumber());
+        String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
+            : String.valueOf(checkpoint.getSequenceNumber());
 
-        String offset = checkpoint.offset() == null ? null : String.valueOf(checkpoint.offset());
+        String offset = checkpoint.getOffset() == null ? null : String.valueOf(checkpoint.getOffset());
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
         metadata.put(OFFSET, offset);
-        metadata.put(OWNER_ID, checkpoint.ownerId());
+        metadata.put(OWNER_ID, checkpoint.getOwnerId());
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .modifiedAccessConditions(new ModifiedAccessConditions().ifMatch(checkpoint.eTag()));
+            .modifiedAccessConditions(new ModifiedAccessConditions().ifMatch(checkpoint.getETag()));
 
         return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
             .map(response -> response.getHeaders().get(ETAG).getValue());
@@ -192,9 +192,9 @@ public class BlobPartitionManager implements PartitionManager {
         logger.info("Found blob for partition {}", blobItem.name());
 
         String[] names = blobItem.name().split(BLOB_PATH_SEPARATOR);
-        partitionOwnership.eventHubName(names[0]);
-        partitionOwnership.consumerGroupName(names[1]);
-        partitionOwnership.partitionId(names[2]);
+        partitionOwnership.setEventHubName(names[0]);
+        partitionOwnership.setConsumerGroupName(names[1]);
+        partitionOwnership.setPartitionId(names[2]);
 
         if (ImplUtils.isNullOrEmpty(blobItem.metadata())) {
             logger.warning("No metadata available for blob {}", blobItem.name());
@@ -205,13 +205,13 @@ public class BlobPartitionManager implements PartitionManager {
             .forEach(entry -> {
                 switch (entry.getKey()) {
                     case OWNER_ID:
-                        partitionOwnership.ownerId(entry.getValue());
+                        partitionOwnership.setOwnerId(entry.getValue());
                         break;
                     case SEQUENCE_NUMBER:
-                        partitionOwnership.sequenceNumber(Long.valueOf(entry.getValue()));
+                        partitionOwnership.setSequenceNumber(Long.valueOf(entry.getValue()));
                         break;
                     case OFFSET:
-                        partitionOwnership.offset(Long.valueOf(entry.getValue()));
+                        partitionOwnership.setOffset(Long.valueOf(entry.getValue()));
                         break;
                     default:
                         // do nothing, other metadata that we don't use
@@ -219,8 +219,8 @@ public class BlobPartitionManager implements PartitionManager {
                 }
             });
         BlobProperties blobProperties = blobItem.properties();
-        partitionOwnership.lastModifiedTime(blobProperties.lastModified().toInstant().toEpochMilli());
-        partitionOwnership.eTag(blobProperties.etag());
+        partitionOwnership.setLastModifiedTime(blobProperties.lastModified().toInstant().toEpochMilli());
+        partitionOwnership.setETag(blobProperties.etag());
         return partitionOwnership;
     }
 

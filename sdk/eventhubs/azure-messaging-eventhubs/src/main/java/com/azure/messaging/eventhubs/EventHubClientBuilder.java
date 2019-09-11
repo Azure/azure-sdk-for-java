@@ -117,14 +117,14 @@ public class EventHubClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
-                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new AzureException(
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        return credential(properties.endpoint().getHost(), properties.eventHubName(), tokenCredential);
+        return credential(properties.getEndpoint().getHost(), properties.getEventHubName(), tokenCredential);
     }
 
     /**
@@ -156,22 +156,22 @@ public class EventHubClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
-                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new AzureException(
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        if (!ImplUtils.isNullOrEmpty(properties.eventHubName()) && !eventHubName.equals(properties.eventHubName())) {
+        if (!ImplUtils.isNullOrEmpty(properties.getEventHubName()) && !eventHubName.equals(properties.getEventHubName())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
                     + "'eventHubName' parameter [%s]. Please use the credentials(String connectionString) overload. "
                     + "Or supply a 'connectionString' without 'EntityPath' in it.",
-                properties.eventHubName(), eventHubName)));
+                properties.getEventHubName(), eventHubName)));
         }
 
-        return credential(properties.endpoint().getHost(), eventHubName, tokenCredential);
+        return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential);
     }
 
     /**
@@ -377,7 +377,7 @@ public class EventHubClientBuilder {
     private ProxyConfiguration getDefaultProxyConfiguration(Configuration configuration) {
         ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
         if (proxyConfiguration != null) {
-            authentication = proxyConfiguration.authentication();
+            authentication = proxyConfiguration.getAuthentication();
         }
 
         String proxyAddress = configuration.get(BaseConfigurations.HTTP_PROXY);

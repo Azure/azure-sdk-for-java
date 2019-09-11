@@ -65,12 +65,12 @@ public class EventHubConsumerTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .identifier("an-identifier")
-            .prefetchCount(PREFETCH)
-            .retry(new RetryOptions())
-            .scheduler(Schedulers.elastic());
+            .setIdentifier("an-identifier")
+            .setPrefetchCount(PREFETCH)
+            .setRetry(new RetryOptions())
+            .setScheduler(Schedulers.elastic());
         EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, options);
-        consumer = new EventHubConsumer(asyncConsumer, options.retry().getTryTimeout());
+        consumer = new EventHubConsumer(asyncConsumer, options.getRetry().getTryTimeout());
     }
 
     @After
@@ -95,7 +95,7 @@ public class EventHubConsumerTest {
         // Assert
         final Map<Integer, EventData> actual = receive.stream()
             .collect(Collectors.toMap(e -> {
-                final String value = String.valueOf(e.properties().get(MESSAGE_POSITION_ID));
+                final String value = String.valueOf(e.getProperties().get(MESSAGE_POSITION_ID));
                 return Integer.valueOf(value);
             }, Function.identity()));
 
@@ -165,7 +165,7 @@ public class EventHubConsumerTest {
     }
 
     private static Integer getPositionId(EventData event) {
-        final String value = String.valueOf(event.properties().get(MESSAGE_POSITION_ID));
+        final String value = String.valueOf(event.getProperties().get(MESSAGE_POSITION_ID));
         return Integer.valueOf(value);
     }
 

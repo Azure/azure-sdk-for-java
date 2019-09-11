@@ -62,13 +62,13 @@ public abstract class IntegrationTestBase extends TestBase {
         reactorProvider = new ReactorProvider();
 
         try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
-                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+            tokenCredential = new EventHubSharedAccessKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             Assert.fail("Could not create tokenProvider :" + e);
         }
 
-        connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubName(),
+        connectionOptions = new ConnectionOptions(properties.getEndpoint().getHost(), properties.getEventHubName(),
             tokenCredential, getAuthorizationType(), transportType, RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS,
             scheduler);
 

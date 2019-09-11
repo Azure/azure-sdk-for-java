@@ -38,13 +38,13 @@ public class BlobPartitionManagerSample {
 
         System.out.println("Updating checkpoint");
         Checkpoint checkpoint = new Checkpoint()
-            .consumerGroupName("xyz")
-            .eventHubName("abc")
-            .ownerId("owner1")
-            .partitionId("0")
-            .eTag("")
-            .sequenceNumber(2L)
-            .offset(250L);
+            .setConsumerGroupName("xyz")
+            .setEventHubName("abc")
+            .setOwnerId("owner1")
+            .setPartitionId("0")
+            .setETag("")
+            .setSequenceNumber(2L)
+            .setOffset(250L);
         blobPartitionManager.updateCheckpoint(checkpoint)
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));
@@ -52,11 +52,11 @@ public class BlobPartitionManagerSample {
         PartitionOwnership[] pos = new PartitionOwnership[5];
         for (int i = 0; i < 5; i++) {
             PartitionOwnership po = new PartitionOwnership()
-                .eventHubName("abc")
-                .consumerGroupName("xyz")
-                .ownerId("owner1")
-                .partitionId(String.valueOf(i))
-                .ownerLevel(0);
+                .setEventHubName("abc")
+                .setConsumerGroupName("xyz")
+                .setOwnerId("owner1")
+                .setPartitionId(String.valueOf(i))
+                .setOwnerLevel(0);
             pos[i] = po;
         }
         blobPartitionManager.claimOwnership(pos).subscribe(BlobPartitionManagerSample::printPartitionOwnership,
@@ -66,13 +66,13 @@ public class BlobPartitionManagerSample {
     static void printPartitionOwnership(PartitionOwnership partitionOwnership) {
         String po =
             new StringJoiner(",")
-                .add("pid=" + partitionOwnership.partitionId())
-                .add("ownerId=" + partitionOwnership.ownerId())
-                .add("cg=" + partitionOwnership.consumerGroupName())
-                .add("eh=" + partitionOwnership.eventHubName())
-                .add("offset=" + partitionOwnership.offset())
-                .add("etag=" + partitionOwnership.eTag())
-                .add("lastModified=" + partitionOwnership.lastModifiedTime())
+                .add("pid=" + partitionOwnership.getPartitionId())
+                .add("ownerId=" + partitionOwnership.getOwnerId())
+                .add("cg=" + partitionOwnership.getConsumerGroupName())
+                .add("eh=" + partitionOwnership.getEventHubName())
+                .add("offset=" + partitionOwnership.getOffset())
+                .add("etag=" + partitionOwnership.getETag())
+                .add("lastModified=" + partitionOwnership.getLastModifiedTime())
                 .toString();
         System.out.println(po);
     }

@@ -22,18 +22,18 @@ public class EventHubProducerOptionsTest {
             .setMaxRetries(3);
         EventHubProducerOptions options = new EventHubProducerOptions();
 
-        options.partitionId(partitionId)
-            .retry(retryOptions)
-            .partitionId(partitionId);
+        options.setPartitionId(partitionId)
+            .setRetry(retryOptions)
+            .setPartitionId(partitionId);
 
         // Act
         EventHubProducerOptions clone = options.clone();
 
         // Assert
-        Assert.assertEquals(partitionId, clone.partitionId());
-        Assert.assertEquals(timeout, clone.retry().getTryTimeout());
-        Assert.assertEquals(retryOptions, clone.retry());
+        Assert.assertEquals(partitionId, clone.getPartitionId());
+        Assert.assertEquals(timeout, clone.getRetry().getTryTimeout());
+        Assert.assertEquals(retryOptions, clone.getRetry());
 
-        Assert.assertNotSame(retryOptions, clone.retry());
+        Assert.assertNotSame(retryOptions, clone.getRetry());
     }
 }

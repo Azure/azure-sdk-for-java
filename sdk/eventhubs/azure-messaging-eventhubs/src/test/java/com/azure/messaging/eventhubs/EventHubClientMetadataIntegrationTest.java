@@ -51,7 +51,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        eventHubName = getConnectionOptions().eventHubName();
+        eventHubName = getConnectionOptions().getEventHubName();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
@@ -72,8 +72,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
-                Assert.assertEquals(eventHubName, properties.name());
-                Assert.assertEquals(expectedPartitionIds.length, properties.partitionIds().length);
+                Assert.assertEquals(eventHubName, properties.getName());
+                Assert.assertEquals(expectedPartitionIds.length, properties.getPartitionIds().length);
             }).verifyComplete();
     }
 
@@ -97,8 +97,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         for (String partitionId : expectedPartitionIds) {
             StepVerifier.create(client.getPartitionProperties(partitionId))
                 .assertNext(properties -> {
-                    Assert.assertEquals(eventHubName, properties.eventHubName());
-                    Assert.assertEquals(partitionId, properties.id());
+                    Assert.assertEquals(eventHubName, properties.getEventHubName());
+                    Assert.assertEquals(partitionId, properties.getId());
                 })
                 .verifyComplete();
         }
@@ -117,8 +117,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
         // Assert
         StepVerifier.create(partitionProperties)
-            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubName()))
-            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.eventHubName()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assert.assertEquals(eventHubName, properties.getEventHubName()))
             .verifyComplete();
     }
 
@@ -129,13 +129,13 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubName(),
-            original.sharedAccessKeyName(), "invalid-sas-key-value");
+        final ConnectionStringProperties invalidCredentials = getCredentials(original.getEndpoint(), original.getEventHubName(),
+            original.getSharedAccessKeyName(), "invalid-sas-key-value");
         final TokenCredential badTokenProvider = new EventHubSharedAccessKeyCredential(
-            invalidCredentials.sharedAccessKeyName(), invalidCredentials.sharedAccessKey(), TIMEOUT);
-        final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
-            original.eventHubName(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
-            ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
+            invalidCredentials.getSharedAccessKeyName(), invalidCredentials.getSharedAccessKey(), TIMEOUT);
+        final ConnectionOptions connectionOptions = new ConnectionOptions(original.getEndpoint().getHost(),
+            original.getEventHubName(), badTokenProvider, getAuthorizationType(), TransportType.AMQP, RETRY_OPTIONS,
+            ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().getScheduler());
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
@@ -160,9 +160,9 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionPropertiesNonExistentHub() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
+        final ConnectionOptions connectionOptions = new ConnectionOptions(original.getEndpoint().getHost(),
             "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
-            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
+            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().getScheduler());
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);

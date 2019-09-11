@@ -36,9 +36,9 @@ public class ProxyConfigurationTest {
 
     @Test
     public void nullProxyConfiguration() {
-        Assert.assertNull(SYSTEM_DEFAULTS.authentication());
-        Assert.assertNull(SYSTEM_DEFAULTS.credential());
-        Assert.assertNull(SYSTEM_DEFAULTS.proxyAddress());
+        Assert.assertNull(SYSTEM_DEFAULTS.getAuthentication());
+        Assert.assertNull(SYSTEM_DEFAULTS.getCredential());
+        Assert.assertNull(SYSTEM_DEFAULTS.getProxyAddress());
     }
 
     @Theory
@@ -102,11 +102,11 @@ public class ProxyConfigurationTest {
     }
 
     private static void validateProxyConfiguration(ProxyConfiguration proxyConfiguration, ProxyAuthenticationType proxyAuthenticationType) {
-        String proxyAddressStr = proxyConfiguration.proxyAddress().address().toString();
-        ProxyAuthenticationType authentication = proxyConfiguration.authentication();
+        String proxyAddressStr = proxyConfiguration.getProxyAddress().address().toString();
+        ProxyAuthenticationType authentication = proxyConfiguration.getAuthentication();
         Assert.assertEquals(HTTP_PROXY, proxyAddressStr);
-        Assert.assertEquals(PROXY_USERNAME, proxyConfiguration.credential().getUserName());
-        Assert.assertEquals(PROXY_PASSWORD, new String(proxyConfiguration.credential().getPassword()));
+        Assert.assertEquals(PROXY_USERNAME, proxyConfiguration.getCredential().getUserName());
+        Assert.assertEquals(PROXY_PASSWORD, new String(proxyConfiguration.getCredential().getPassword()));
         Assert.assertTrue(proxyAuthenticationType.equals(authentication));
     }
 }
