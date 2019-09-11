@@ -4,6 +4,7 @@
 package com.azure.search.data.customization;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.search.data.SearchIndexAsyncClient;
@@ -46,7 +47,7 @@ public class SearchIndexClientBuilder {
      */
     public SearchIndexClientBuilder() {
         searchDnsSuffix = "search.windows.net";
-        httpClient = HttpClient.createDefault();
+        httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
         policies = new ArrayList<>();
     }
 
