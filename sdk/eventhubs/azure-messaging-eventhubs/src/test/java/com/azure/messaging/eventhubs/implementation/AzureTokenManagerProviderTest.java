@@ -11,17 +11,17 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 @RunWith(Theories.class)
-public class TokenResourceProviderTest {
+public class AzureTokenManagerProviderTest {
     private static final String HOST_NAME = "foobar.windows.net";
 
     @Test(expected = NullPointerException.class)
     public void constructorNullType() {
-        new TokenResourceProvider(null, HOST_NAME);
+        new AzureTokenManagerProvider(null, HOST_NAME);
     }
 
     @Test(expected = NullPointerException.class)
     public void constructorNullHost() {
-        new TokenResourceProvider(CBSAuthorizationType.JSON_WEB_TOKEN, null);
+        new AzureTokenManagerProvider(CBSAuthorizationType.JSON_WEB_TOKEN, null);
     }
 
     @DataPoints
@@ -35,7 +35,7 @@ public class TokenResourceProviderTest {
     @Theory
     public void getResourceString(CBSAuthorizationType authorizationType) {
         // Arrange
-        final TokenResourceProvider provider = new TokenResourceProvider(authorizationType, HOST_NAME);
+        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(authorizationType, HOST_NAME);
         final String entityPath = "event-hub-test-2/partition/2";
 
         // Act

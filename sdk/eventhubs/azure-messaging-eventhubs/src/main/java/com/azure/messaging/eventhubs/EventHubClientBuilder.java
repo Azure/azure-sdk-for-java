@@ -25,7 +25,7 @@ import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
 import com.azure.messaging.eventhubs.implementation.TokenManagerProvider;
-import com.azure.messaging.eventhubs.implementation.TokenResourceProvider;
+import com.azure.messaging.eventhubs.implementation.AzureTokenManagerProvider;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import reactor.core.publisher.Mono;
@@ -334,7 +334,7 @@ public class EventHubClientBuilder {
 
         final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
-            final TokenManagerProvider tokenManagerProvider = new TokenResourceProvider(
+            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                 connectionOptions.authorizationType(), connectionOptions.host(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 

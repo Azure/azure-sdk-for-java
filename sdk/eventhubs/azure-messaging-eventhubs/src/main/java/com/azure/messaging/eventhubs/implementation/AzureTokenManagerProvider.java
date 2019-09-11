@@ -13,10 +13,10 @@ import java.util.Objects;
 /**
  * Generates the correct resource scope to access Azure messaging resources given the authorization type.
  */
-public class TokenResourceProvider implements TokenManagerProvider {
+public class AzureTokenManagerProvider implements TokenManagerProvider {
     private static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
-    private final ClientLogger logger = new ClientLogger(TokenResourceProvider.class);
+    private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
     private final CBSAuthorizationType authorizationType;
     private final String host;
     private final String activeDirectoryScope;
@@ -29,7 +29,7 @@ public class TokenResourceProvider implements TokenManagerProvider {
      * @param host Fully-qualified domain name (FQDN) of the message broker.
      * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
      */
-    public TokenResourceProvider(CBSAuthorizationType authorizationType, String host, String activeDirectoryScope) {
+    public AzureTokenManagerProvider(CBSAuthorizationType authorizationType, String host, String activeDirectoryScope) {
         this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
             "'activeDirectoryScope' cannot be null.");
         this.host = Objects.requireNonNull(host, "'host' cannot be null.");

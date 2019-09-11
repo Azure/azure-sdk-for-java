@@ -44,8 +44,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     private CBSChannel cbsChannel;
     private ConnectionStringProperties connectionString;
     private ReactorHandlerProvider handlerProvider;
-    private TokenResourceProvider tokenResourceProvider;
-    private ReactorProvider reactorProvider;
+    private AzureTokenManagerProvider azureTokenManagerProvider;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -61,7 +60,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         MockitoAnnotations.initMocks(this);
 
         connectionString = getConnectionStringProperties();
-        tokenResourceProvider = new TokenResourceProvider(SHARED_ACCESS_SIGNATURE, connectionString.getEndpoint().getHost());
+        azureTokenManagerProvider = new AzureTokenManagerProvider(SHARED_ACCESS_SIGNATURE, connectionString.getEndpoint().getHost());
 
         TokenCredential tokenCredential = null;
         try {
@@ -104,7 +103,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = tokenResourceProvider.getResourceString(connectionString.getEventHubName());
+        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEventHubName());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience))
@@ -115,7 +114,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void unsuccessfulAuthorize() {
         // Arrange
-        final String tokenAudience = tokenResourceProvider.getResourceString(connectionString.getEventHubName());
+        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEventHubName());
         final Duration duration = Duration.ofMinutes(10);
 
         TokenCredential tokenProvider = null;

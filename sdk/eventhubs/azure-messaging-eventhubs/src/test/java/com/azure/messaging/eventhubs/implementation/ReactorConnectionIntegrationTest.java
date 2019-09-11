@@ -83,7 +83,8 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Test
     public void getCbsNodeAuthorize() {
         // Arrange
-        final TokenResourceProvider provider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(
+            CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             getConnectionStringProperties().getEndpoint().getHost());
 
         final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEventHubName());

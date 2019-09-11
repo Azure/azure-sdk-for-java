@@ -38,7 +38,7 @@ public class ReactorSessionTest {
     private SessionHandler handler;
     private ReactorSession reactorSession;
     private MockReactorProvider reactorProvider;
-    private TokenResourceProvider tokenResourceProvider;
+    private AzureTokenManagerProvider azureTokenManagerProvider;
     private MockReactorHandlerProvider handlerProvider;
 
     @Mock
@@ -62,9 +62,9 @@ public class ReactorSessionTest {
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60));
         this.reactorProvider = new MockReactorProvider(reactor, dispatcher);
         this.handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
-        this.tokenResourceProvider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST);
+        this.azureTokenManagerProvider = new AzureTokenManagerProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST);
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
-            Mono.just(cbsNode), tokenResourceProvider, TIMEOUT);
+            Mono.just(cbsNode), azureTokenManagerProvider, TIMEOUT);
     }
 
     @After
