@@ -22,7 +22,7 @@
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
 
     <!-- Track 2 client library versions -->
-    <azure-core.version>1.0.0-preview.4</azure-core.version>
+    <azure-core.version>1.0.0-preview.5</azure-core.version>
     <azure-data-appconfiguration.version>1.0.0-preview.3</azure-data-appconfiguration.version>
     <azure-identity.version>1.0.0-preview.3</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.3</azure-keyvault.version>

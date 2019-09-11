@@ -23,11 +23,11 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <azure-core.version>1.0.0-preview.4</azure-core.version>
-    <azure-core-amqp.version>1.0.0-preview.4</azure-core-amqp.version>
-    <azure-core-http-netty.version>1.0.0-preview.4</azure-core-http-netty.version>
-    <azure-core-management.version>1.0.0-preview.4</azure-core-management.version>
-    <azure-core-test.version>1.0.0-preview.4</azure-core-test.version>
+    <azure-core.version>1.0.0-preview.5</azure-core.version>
+    <azure-core-amqp.version>1.0.0-preview.5</azure-core-amqp.version>
+    <azure-core-http-netty.version>1.0.0-preview.5</azure-core-http-netty.version>
+    <azure-core-management.version>1.0.0-preview.5</azure-core-management.version>
+    <azure-core-test.version>1.0.0-preview.5</azure-core-test.version>
     <azure-data-appconfiguration.version>1.0.0-preview.3</azure-data-appconfiguration.version>
     <azure-identity.version>1.0.0-preview.3</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.3</azure-keyvault.version>
