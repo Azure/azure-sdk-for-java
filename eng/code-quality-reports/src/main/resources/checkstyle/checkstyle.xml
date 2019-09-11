@@ -382,8 +382,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,
     (2) should not start with the words in the avoidStartWords list.-->
-    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
-      <property name="avoidStartWords" value="with,set"/>
-    </module>
+<!--    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
+<!--      <property name="avoidStartWords" value="with,set"/>-->
+<!--    </module>-->
   </module>
 </module>

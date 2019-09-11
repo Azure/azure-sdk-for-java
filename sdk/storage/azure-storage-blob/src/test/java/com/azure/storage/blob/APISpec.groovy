@@ -227,7 +227,7 @@ BlobServiceClient setClient(SharedKeyCredential credential) {
 
 def getOAuthServiceClient() {
     BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
         .httpClient(getHttpClient())
         .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
@@ -249,7 +249,7 @@ BlobServiceClient getServiceClient(String endpoint) {
 }
 
 BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
+    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
 }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
@@ -266,7 +266,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
-        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.accountName()))
+        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
             .buildAsyncClient()
     }
 
@@ -578,13 +578,13 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
             }
-        }.request(request)
+        }.setRequest(request)
     }
 
     def waitForCopy(ContainerClient bu, String status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
+            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().value("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -613,12 +613,12 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
                                String contentLanguage, byte[] contentMD5, String contentType) {
-        return response.value().getCacheControl() == cacheControl &&
-            response.value().getContentDisposition() == contentDisposition &&
-            response.value().getContentEncoding() == contentEncoding &&
-            response.value().getContentLanguage() == contentLanguage &&
-            response.value().getContentMD5() == contentMD5 &&
-            response.headers().value("Content-Type") == contentType
+        return response.getValue().getCacheControl() == cacheControl &&
+            response.getValue().getContentDisposition() == contentDisposition &&
+            response.getValue().getContentEncoding() == contentEncoding &&
+            response.getValue().getContentLanguage() == contentLanguage &&
+            response.getValue().getContentMD5() == contentMD5 &&
+            response.getHeaders().value("Content-Type") == contentType
     }
 
     def enableSoftDelete() {

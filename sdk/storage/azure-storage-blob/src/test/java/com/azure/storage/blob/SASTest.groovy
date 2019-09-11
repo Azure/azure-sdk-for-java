@@ -250,7 +250,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        String sas = bu.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = bu.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         then:
         sas != null
@@ -365,7 +365,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
         when:
-        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
         BlockBlobClient client1 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
@@ -411,7 +411,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        String sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime)
+        String sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime)
 
         ContainerClient client = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
         client.listBlobsFlat().iterator().hasNext()
@@ -890,7 +890,7 @@ class SASTest extends APISpec {
         def token = v.generateSASQueryParameters(primaryCredential)
 
         then:
-        token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.accountName()))
+        token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.getAccountName()))
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign

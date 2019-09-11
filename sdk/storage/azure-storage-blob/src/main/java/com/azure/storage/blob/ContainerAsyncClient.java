@@ -1328,7 +1328,7 @@ public final class ContainerAsyncClient {
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
         BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
-            sharedKeyCredential.accountName());
+            sharedKeyCredential.getAccountName());
 
         BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 

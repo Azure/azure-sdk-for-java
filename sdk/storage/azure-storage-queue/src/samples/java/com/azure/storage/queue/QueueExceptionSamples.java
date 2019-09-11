@@ -13,11 +13,13 @@ import java.time.Duration;
 import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
 public class QueueExceptionSamples {
+
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
 
     /**
      * The main method shows how to handle the storage exception.
+     *
      * @param args No args needed for the main method.
      * @throws RuntimeException If queueServiceClient failed to create a queue.
      */

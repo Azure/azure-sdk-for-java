@@ -179,8 +179,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ContainerClient#exists()} and
-     * {@link ContainerClient#existsWithResponse(Duration, Context)}
+     * Code snippets for {@link ContainerClient#exists()} and {@link ContainerClient#existsWithResponse(Duration,
+     * Context)}
      */
     public void exists() {
         // BEGIN: com.azure.storage.blob.ContainerClient.exists
@@ -275,7 +275,8 @@ public class ContainerClientJavaDocCodeSnippets {
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("Key", "Value");
 
-        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context).getValue();
+        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context)
+            .getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
             properties.getBlobPublicAccess(),
             properties.hasLegalHold(),
@@ -300,8 +301,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#setMetadataWithResponse(Metadata, ContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#setMetadataWithResponse(Metadata, ContainerAccessConditions, Duration,
+     * Context)}
      */
     public void setMetadata2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
@@ -340,7 +341,8 @@ public class ContainerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("Key", "Value");
-        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context).getValue();
+        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context)
+            .getValue();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
         for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
@@ -373,9 +375,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#setAccessPolicyWithResponse(
-     * PublicAccessType, List, ContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#setAccessPolicyWithResponse(PublicAccessType, List,
+     * ContainerAccessConditions, Duration, Context)}
      */
     public void setAccessPolicy2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context
@@ -472,8 +473,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#acquireLeaseWithResponse(String, int, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#acquireLeaseWithResponse(String, int, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void acquireLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
@@ -509,8 +510,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#renewLeaseWithResponse(String, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#renewLeaseWithResponse(String, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void renewLease3() {
         // BEGIN: com.azure.storage.blob.ContainerClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
@@ -519,7 +520,8 @@ public class ContainerClientJavaDocCodeSnippets {
 
         Context context = new Context("Key", "Value");
 
-        System.out.printf("Renewed Lease ID: %s%n", client.renewLeaseWithResponse(leaseId, accessConditions, timeout, context));
+        System.out.printf("Renewed Lease ID: %s%n",
+            client.renewLeaseWithResponse(leaseId, accessConditions, timeout, context));
         // END: com.azure.storage.blob.ContainerClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -538,8 +540,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#releaseLeaseWithResponse(String, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#releaseLeaseWithResponse(String, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void releaseLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
@@ -564,8 +566,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void breakLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
@@ -589,8 +591,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#changeLeaseWithResponse(String, String, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#changeLeaseWithResponse(String, String, ModifiedAccessConditions,
+     * Duration, Context)}
      */
     public void changeLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context

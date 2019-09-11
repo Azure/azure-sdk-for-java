@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * an error status code.
  */
 public class UnexpectedExceptionInformation {
-    private static final String EXCEPTION_BODY_METHOD = "value";
+    private static final String EXCEPTION_BODY_METHOD = "getValue";
     private Class<? extends HttpResponseException> exceptionType;
     private Class<?> exceptionBodyType;
 

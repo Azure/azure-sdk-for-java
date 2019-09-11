@@ -957,7 +957,7 @@ public class ShareAsyncClient {
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
         FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
-            sharedKeyCredential.accountName());
+            sharedKeyCredential.getAccountName());
 
         FileServiceSASQueryParameters fileServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 

@@ -11,15 +11,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel() label}.
- * By default, the label is {@code null}. To explicitly reference the default label use {@link #NO_LABEL}.
+ * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel()
+ * label}. By default, the label is {@code null}. To explicitly reference the default label use {@link #NO_LABEL}.
  */
 @Fluent
 public class ConfigurationSetting {
     /**
-     * The default label for configuration settings is the label, "\0".
-     * Users use this value when they want to explicitly reference a configuration setting that has no label.
-     * This gets URL encoded as "%00".
+     * The default label for configuration settings is the label, "\0". Users use this value when they want to
+     * explicitly reference a configuration setting that has no label. This gets URL encoded as "%00".
      */
     public static final String NO_LABEL = "\0";
 
@@ -83,8 +82,8 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Sets the label of this configuration setting. {@link #NO_LABEL} is the default label used when this value is
-     * not set.
+     * Sets the label of this configuration setting. {@link #NO_LABEL} is the default label used when this value is not
+     * set.
      *
      * @param label The label of this configuration setting.
      * @return The updated ConfigurationSetting object.
@@ -167,8 +166,7 @@ public class ConfigurationSetting {
      * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
      * made to this setting.
      *
-     * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration
-     * service.
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration service.
      *
      * @return true if locked; false otherwise.
      */
@@ -238,12 +236,12 @@ public class ConfigurationSetting {
     @Override
     public int hashCode() {
         return Objects.hash(this.key,
-                this.label,
-                this.value,
-                this.etag,
-                this.lastModified,
-                this.locked,
-                this.contentType,
-                this.tags);
+            this.label,
+            this.value,
+            this.etag,
+            this.lastModified,
+            this.locked,
+            this.contentType,
+            this.tags);
     }
 }

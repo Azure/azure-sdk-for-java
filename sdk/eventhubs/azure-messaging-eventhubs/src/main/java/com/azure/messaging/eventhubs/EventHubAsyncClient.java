@@ -350,7 +350,7 @@ public class EventHubAsyncClient implements Closeable {
         throw new IllegalArgumentException("No starting position was set.");
     }
 
-    String eventHubName() {
+    String getEventHubName() {
         return this.eventHubName;
     }
 

@@ -267,7 +267,7 @@ public final class AccountSASSignatureValues {
 
     private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
-                sharedKeyCredentials.accountName(),
+                sharedKeyCredentials.getAccountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,

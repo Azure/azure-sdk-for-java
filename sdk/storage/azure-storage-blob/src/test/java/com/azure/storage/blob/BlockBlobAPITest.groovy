@@ -1024,7 +1024,7 @@ class BlockBlobAPITest extends APISpec {
         // Build the pipeline
         bac = new BlobServiceClientBuilder()
             .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))

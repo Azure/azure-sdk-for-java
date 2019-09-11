@@ -263,7 +263,8 @@ public class RestProxy implements InvocationHandler {
         }
 
         final URL url = urlBuilder.toURL();
-        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, args);
+        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
+            methodParser, args);
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         for (final HttpHeader header : methodParser.setHeaders(args)) {
@@ -284,7 +285,8 @@ public class RestProxy implements InvocationHandler {
     private HttpRequest createHttpRequest(OperationDescription operationDescription, SwaggerMethodParser methodParser,
                                           Object[] args) throws IOException {
         final HttpRequest request =
-            configRequest(new HttpRequest(methodParser.getHttpMethod(), operationDescription.getUrl()), methodParser, args);
+            configRequest(new HttpRequest(methodParser.getHttpMethod(), operationDescription.getUrl()),
+                methodParser, args);
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         for (final String headerName : operationDescription.getHeaders().keySet()) {

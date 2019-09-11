@@ -55,8 +55,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        response.value().isServerEncrypted()
-        response.value().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().isServerEncrypted()
+        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
     }
 
     def "Get blob with CPK"() {
@@ -79,7 +79,7 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
+        Boolean.parseBoolean(response.getHeaders().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
     }
 
     def "Put block from URL with CPK"() {
@@ -94,7 +94,7 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
+        Boolean.parseBoolean(response.getHeaders().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
     }
 
     def "Put block list with CPK"() {
@@ -109,8 +109,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        response.value().isServerEncrypted()
-        response.value().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().isServerEncrypted()
+        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
     }
 
     def "Put page with CPK"() {
@@ -123,8 +123,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        response.value().isServerEncrypted()
-        response.value().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().isServerEncrypted()
+        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
     }
 
     def "Put page from URL wih CPK"() {
@@ -143,7 +143,7 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        response.value().isServerEncrypted()
+        response.getValue().isServerEncrypted()
         //TODO uncomment when swagger is fixed so PageBlobUploadPagesFromURLHeaders contains the encryption SHA
         //response.value().setEncryptionKeySha256() == key.getKeySHA256()
     }
@@ -158,8 +158,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        response.value().isServerEncrypted()
-        response.value().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().isServerEncrypted()
+        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
     }
 
     def "Append block with CPK"() {
@@ -171,8 +171,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        response.value().isServerEncrypted()
-        response.value().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().isServerEncrypted()
+        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
     }
 
     def "Append block from URL with CPK"() {
@@ -190,7 +190,7 @@ class CPKTest extends APISpec {
         response.getStatusCode() == 201
         //TODO uncomment when swagger is fixed so AppendBlobAppendBLockFromURLHeaders contains isrequestserverencrypted
         //response.value().isServerEncrypted()
-        response.value().getEncryptionKeySha256() == key.getKeySHA256()
+        response.getValue().getEncryptionKeySha256() == key.getKeySHA256()
     }
 
     def "Set blob metadata with CPK"() {
@@ -203,8 +203,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 200
-        Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
-        response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
+        Boolean.parseBoolean(response.getHeaders().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
+        response.getHeaders().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
     }
 
     def "Get blob properties and metadata with CPK"() {
@@ -213,8 +213,8 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 200
-        Boolean.parseBoolean(response.headers().value(Constants.HeaderConstants.SERVER_ENCRYPTED))
-        response.headers().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
+        Boolean.parseBoolean(response.getHeaders().value(Constants.HeaderConstants.SERVER_ENCRYPTED))
+        response.getHeaders().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
     }
 
 //    TODO unignore when swagger is resolved with service team

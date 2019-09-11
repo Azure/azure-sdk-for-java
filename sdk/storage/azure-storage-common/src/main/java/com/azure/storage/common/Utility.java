@@ -3,24 +3,23 @@
 
 package com.azure.storage.common;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -381,7 +381,7 @@ public final class Utility {
             }
 
             try {
-                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("headers").invoke(response);
+                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("getHeaders").invoke(response);
                 //
                 if (eTag != null) {
                     rawHeaders.put(ETAG, eTag);
