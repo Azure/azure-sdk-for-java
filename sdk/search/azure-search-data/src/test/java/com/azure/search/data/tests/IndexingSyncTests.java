@@ -50,10 +50,11 @@ public class IndexingSyncTests extends IndexingTestBase {
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
 
-        Hotel myHotel = new Hotel().hotelId(expectedHotelId);
-        myHotel.hotelName("My Pascal Hotel");
-        myHotel.description("A Great Pascal Description.");
-        myHotel.category("Category Pascal");
+        Hotel myHotel =
+            new Hotel().hotelId(expectedHotelId).
+                hotelName("My Pascal Hotel").
+                description("A Great Pascal Description.").
+                category("Category Pascal");
         List<Hotel> toUpload = Arrays.asList(myHotel);
 
         List<IndexingResult> result = client.uploadDocuments(toUpload).results();
