@@ -1,83 +1,83 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a26b5e15-607f-4624-9d64-eb39a4bb048e",
+      "request-id" : "35217d26-ef0b-4e2d-9301-5628405cfae8",
       "StatusCode" : "207",
-      "Date" : "Wed, 11 Sep 2019 21:39:01 GMT",
+      "Date" : "Wed, 11 Sep 2019 23:35:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "220",
+      "elapsed-time" : "302",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "519",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"randomId\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"nonExistingHotel\",\"status\":false,\"errorMessage\":\"Document not found.\",\"statusCode\":404},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"randomId\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"nonExistingHotel\",\"status\":false,\"errorMessage\":\"Document not found.\",\"statusCode\":404},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c1b78f2d-cb0e-45a8-951a-4f1412ae33f5",
+      "request-id" : "b68fe9c9-ba4c-4eac-86ba-a589707359e2",
       "StatusCode" : "200",
-      "Date" : "Wed, 11 Sep 2019 21:39:01 GMT",
+      "Date" : "Wed, 11 Sep 2019 23:35:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "10",
+      "elapsed-time" : "70",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1148",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/docs('2')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/docs('2')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "14f649a1-536c-4b04-ad95-eb5cfbc25a01",
+      "request-id" : "8e604c0c-4d68-4e9e-8e04-83932f884897",
       "StatusCode" : "200",
-      "Date" : "Wed, 11 Sep 2019 21:39:01 GMT",
+      "Date" : "Wed, 11 Sep 2019 23:35:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "5",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1148",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"2\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"2\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/docs('3')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/docs('3')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6fda8bfb-c8ca-4491-90a7-2a5642ed04cf",
+      "request-id" : "4701f26d-d00d-4fcb-b09c-06f2c55b184f",
       "StatusCode" : "200",
-      "Date" : "Wed, 11 Sep 2019 21:39:01 GMT",
+      "Date" : "Wed, 11 Sep 2019 23:35:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "9",
+      "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1148",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkf8557623015a.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"3\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk4c878675e017.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"3\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
