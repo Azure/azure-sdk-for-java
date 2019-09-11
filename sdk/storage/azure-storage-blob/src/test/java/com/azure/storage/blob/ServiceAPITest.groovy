@@ -71,8 +71,8 @@ class ServiceAPITest extends APISpec {
             assert c.getProperties().getLeaseState() != null
             assert c.getProperties().getLeaseDuration() == null
             assert c.getProperties().getPublicAccess() == null
-            assert !c.getProperties().getHasLegalHold()
-            assert !c.getProperties().getHasImmutabilityPolicy()
+            assert !c.getProperties().isHasLegalHold()
+            assert !c.getProperties().isHasImmutabilityPolicy()
         }
     }
 
@@ -161,12 +161,12 @@ class ServiceAPITest extends APISpec {
     }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
-        return received.getLogging().getRead() == sent.getLogging().getRead() &&
-            received.getLogging().getDelete() == sent.getLogging().getDelete() &&
-            received.getLogging().getWrite() == sent.getLogging().getWrite() &&
+        return received.getLogging().isRead() == sent.getLogging().isRead() &&
+            received.getLogging().isDelete() == sent.getLogging().isDelete() &&
+            received.getLogging().isWrite() == sent.getLogging().isWrite() &&
             received.getLogging().getVersion() == sent.getLogging().getVersion() &&
             received.getLogging().getRetentionPolicy().getDays() == sent.getLogging().getRetentionPolicy().getDays() &&
-            received.getLogging().getRetentionPolicy().getEnabled() == sent.getLogging().getRetentionPolicy().getEnabled() &&
+            received.getLogging().getRetentionPolicy().isEnabled() == sent.getLogging().getRetentionPolicy().isEnabled() &&
 
             received.getCors().size() == sent.getCors().size() &&
             received.getCors().get(0).getAllowedMethods() == sent.getCors().get(0).getAllowedMethods() &&
@@ -177,22 +177,22 @@ class ServiceAPITest extends APISpec {
 
             received.getDefaultServiceVersion() == sent.getDefaultServiceVersion() &&
 
-            received.getHourMetrics().getEnabled() == sent.getHourMetrics().getEnabled() &&
-            received.getHourMetrics().getIncludeAPIs() == sent.getHourMetrics().getIncludeAPIs() &&
-            received.getHourMetrics().getRetentionPolicy().getEnabled() == sent.getHourMetrics().getRetentionPolicy().getEnabled() &&
+            received.getHourMetrics().isEnabled() == sent.getHourMetrics().isEnabled() &&
+            received.getHourMetrics().isIncludeAPIs() == sent.getHourMetrics().isIncludeAPIs() &&
+            received.getHourMetrics().getRetentionPolicy().isEnabled() == sent.getHourMetrics().getRetentionPolicy().isEnabled() &&
             received.getHourMetrics().getRetentionPolicy().getDays() == sent.getHourMetrics().getRetentionPolicy().getDays() &&
             received.getHourMetrics().getVersion() == sent.getHourMetrics().getVersion() &&
 
-            received.getMinuteMetrics().getEnabled() == sent.getMinuteMetrics().getEnabled() &&
-            received.getMinuteMetrics().getIncludeAPIs() == sent.getMinuteMetrics().getIncludeAPIs() &&
-            received.getMinuteMetrics().getRetentionPolicy().getEnabled() == sent.getMinuteMetrics().getRetentionPolicy().getEnabled() &&
+            received.getMinuteMetrics().isEnabled() == sent.getMinuteMetrics().isEnabled() &&
+            received.getMinuteMetrics().isIncludeAPIs() == sent.getMinuteMetrics().isIncludeAPIs() &&
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled() == sent.getMinuteMetrics().getRetentionPolicy().isEnabled() &&
             received.getMinuteMetrics().getRetentionPolicy().getDays() == sent.getMinuteMetrics().getRetentionPolicy().getDays() &&
             received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion() &&
 
-            received.getDeleteRetentionPolicy().getEnabled() == sent.getDeleteRetentionPolicy().getEnabled() &&
+            received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled() &&
             received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays() &&
 
-            received.getStaticWebsite().getEnabled() == sent.getStaticWebsite().getEnabled() &&
+            received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled() &&
             received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument() &&
             received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path()
     }

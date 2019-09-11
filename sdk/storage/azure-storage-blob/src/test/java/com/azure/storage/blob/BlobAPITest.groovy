@@ -1755,12 +1755,12 @@ class BlobAPITest extends APISpec {
 
         when:
         boolean inferred1 = bc.getProperties().isAccessTierInferred()
-        Boolean inferredList1 = cc.listBlobsFlat().iterator().next().getProperties().getAccessTierInferred()
+        Boolean inferredList1 = cc.listBlobsFlat().iterator().next().getProperties().isAccessTierInferred()
 
         bc.setTier(AccessTier.HOT)
 
         boolean inferred2 = bc.getProperties().isAccessTierInferred()
-        Boolean inferredList2 = cc.listBlobsFlat().iterator().next().getProperties().getAccessTierInferred()
+        Boolean inferredList2 = cc.listBlobsFlat().iterator().next().getProperties().isAccessTierInferred()
 
         then:
         inferred1

@@ -592,7 +592,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getCopyProgress() == null
         blob.getProperties().getCopySource() == null
         blob.getProperties().getCopyStatus() == null
-        blob.getProperties().getIncrementalCopy() == null
+        blob.getProperties().isIncrementalCopy() == null
         blob.getProperties().getDestinationSnapshot() == null
         blob.getProperties().getLeaseDuration() == null
         blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
@@ -605,8 +605,8 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getContentLanguage() == null
         blob.getProperties().getCacheControl() == null
         blob.getProperties().getBlobSequenceNumber() == 0
-        blob.getProperties().getServerEncrypted()
-        blob.getProperties().getAccessTierInferred()
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred()
         blob.getProperties().getAccessTier() == AccessTier.HOT
         blob.getProperties().getArchiveStatus() == null
         blob.getProperties().getCreationTime() != null
@@ -1057,7 +1057,7 @@ class ContainerAPITest extends APISpec {
         def foundPrefixes = [] as Set
         cc.listBlobsHierarchy(null).stream().collect(Collectors.toList())
             .forEach { blobItem ->
-            if (blobItem.getIsPrefix()) {
+            if (blobItem.isPrefix()) {
                 foundPrefixes << blobItem.getName()
             }
             else {
