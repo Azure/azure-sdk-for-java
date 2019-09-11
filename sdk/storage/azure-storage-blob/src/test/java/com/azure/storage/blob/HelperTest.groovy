@@ -660,7 +660,7 @@ class HelperTest extends APISpec {
         parts.getBlobName() == "blob"
         parts.getSnapshot() == "snapshot"
         parts.getSasQueryParameters().getPermissions() == "r"
-        parts.getSasQueryParameters().getKeyVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
+        parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
