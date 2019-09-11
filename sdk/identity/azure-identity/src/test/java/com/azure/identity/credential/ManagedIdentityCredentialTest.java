@@ -40,8 +40,8 @@ public class ManagedIdentityCredentialTest {
                 .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
                 .put(BaseConfigurations.MSI_SECRET, "bar");
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
-            Assert.assertEquals("http://foo", credential.msiEndpoint());
-            Assert.assertEquals("bar", credential.msiSecret());
+            Assert.assertEquals("http://foo", credential.getMsiEndpoint());
+            Assert.assertEquals("bar", credential.getMsiSecret());
         } finally {
             configuration.remove(BaseConfigurations.MSI_ENDPOINT);
             configuration.remove(BaseConfigurations.MSI_SECRET);
@@ -51,7 +51,7 @@ public class ManagedIdentityCredentialTest {
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
-        Assert.assertEquals("foo", credential.clientId());
+        Assert.assertEquals("foo", credential.getClientId());
     }
 
     @Test

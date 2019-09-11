@@ -31,7 +31,7 @@ public final class MsalToken extends AccessToken {
     /**
      * @return the signed in account
      */
-    public IAccount account() {
+    public IAccount getAccount() {
         return account;
     }
 }

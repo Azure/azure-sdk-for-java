@@ -102,7 +102,7 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).value()
+        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
 
         expect:
         primaryBlobServiceClient.listContainers(new ListContainersOptions()
@@ -126,7 +126,7 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), null)
-            .iterableByPage().iterator().next().value().size() == PAGE_RESULTS
+            .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
         containers.each { container -> container.setDelete() }
@@ -223,7 +223,7 @@ class ServiceAPITest extends APISpec {
             .setDeleteRetentionPolicy(retentionPolicy)
             .setStaticWebsite(website)
 
-        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).headers()
+        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleepIfRecord(30 * 1000)
@@ -300,14 +300,14 @@ class ServiceAPITest extends APISpec {
 
         expect:
         response.getStatusCode() == 200
-        response.value() != null
-        response.value().getSignedOid() != null
-        response.value().getSignedTid() != null
-        response.value().getSignedStart() != null
-        response.value().getSignedExpiry() != null
-        response.value().getSignedService() != null
-        response.value().getSignedVersion() != null
-        response.value().getValue() != null
+        response.getValue() != null
+        response.getValue().getSignedOid() != null
+        response.getValue().getSignedTid() != null
+        response.getValue().getSignedStart() != null
+        response.getValue().getSignedExpiry() != null
+        response.getValue().getSignedService() != null
+        response.getValue().getSignedVersion() != null
+        response.getValue().getValue() != null
     }
 
     def "Get UserDelegationKey min"() {
@@ -340,11 +340,11 @@ class ServiceAPITest extends APISpec {
         Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
-        response.headers().value("x-ms-version") != null
-        response.headers().value("x-ms-request-id") != null
-        response.headers().value("Date") != null
-        response.value().getGeoReplication().getStatus() != null
-        response.value().getGeoReplication().getLastSyncTime() != null
+        response.getHeaders().value("x-ms-version") != null
+        response.getHeaders().value("x-ms-request-id") != null
+        response.getHeaders().value("Date") != null
+        response.getValue().getGeoReplication().getStatus() != null
+        response.getValue().getGeoReplication().getLastSyncTime() != null
     }
 
     def "Get stats min"() {
@@ -369,11 +369,11 @@ class ServiceAPITest extends APISpec {
         Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
-        response.headers().value("Date") != null
-        response.headers().value("x-ms-version") != null
-        response.headers().value("x-ms-request-id") != null
-        response.value().getAccountKind() != null
-        response.value().getSkuName() != null
+        response.getHeaders().value("Date") != null
+        response.getHeaders().value("x-ms-version") != null
+        response.getHeaders().value("x-ms-request-id") != null
+        response.getValue().getAccountKind() != null
+        response.getValue().getSkuName() != null
     }
 
     def "Get account info min"() {

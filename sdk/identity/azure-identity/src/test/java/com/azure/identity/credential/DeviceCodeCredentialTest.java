@@ -61,7 +61,8 @@ public class DeviceCodeCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        DeviceCodeCredential credential = new DeviceCodeCredentialBuilder().deviceCodeChallengeConsumer(consumer).clientId(clientId).build();
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().deviceCodeChallengeConsumer(consumer).clientId(clientId).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());

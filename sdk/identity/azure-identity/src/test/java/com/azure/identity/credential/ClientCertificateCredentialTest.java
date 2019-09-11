@@ -49,11 +49,13 @@ public class ClientCertificateCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
         AccessToken token = credential.getToken(scopes1).block();
         Assert.assertEquals(token1, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
-        credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
+        credential =
+            new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
         token = credential.getToken(scopes2).block();
         Assert.assertEquals(token2, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
@@ -77,13 +79,15 @@ public class ClientCertificateCredentialTest {
 
         // test
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
             credential.getToken(scopes1).block();
         } catch (MsalServiceException e) {
             Assert.assertEquals("bad pem", e.getMessage());
         }
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
             credential.getToken(scopes2).block();
             fail();
         } catch (MsalServiceException e) {
@@ -106,7 +110,8 @@ public class ClientCertificateCredentialTest {
 
         // test
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().clientId(clientId).pemCertificate(pemPath).build();
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().clientId(clientId).pemCertificate(pemPath).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
@@ -120,7 +125,8 @@ public class ClientCertificateCredentialTest {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
             credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {

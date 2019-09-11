@@ -24,6 +24,7 @@ public class IterableStreamJavaDocCodeSnippets {
 
     /**
      * Iterate over {@link java.util.stream.Stream}
+     *
      * @throws MalformedURLException if can not create URL object.
      */
     public void streamSnippet() throws MalformedURLException {
@@ -40,7 +41,8 @@ public class IterableStreamJavaDocCodeSnippets {
         // process the stream
         myIterableStream.stream().forEach(resp -> {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(), resp.getRequest().getUrl());
+                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(),
+                    resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
                 });
@@ -50,7 +52,8 @@ public class IterableStreamJavaDocCodeSnippets {
     }
 
     /**
-     *  Iterate with {@link Iterator} interface.
+     * Iterate with {@link Iterator} interface.
+     *
      * @throws MalformedURLException if can not create URL object.
      */
     public void iteratorwhileSnippet() throws MalformedURLException {
@@ -67,7 +70,8 @@ public class IterableStreamJavaDocCodeSnippets {
         // Iterate over iterator
         for (PagedResponseBase<String, Integer> resp : myIterableStream) {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(), resp.getRequest().getUrl());
+                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(),
+                    resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
                 });
@@ -78,6 +82,7 @@ public class IterableStreamJavaDocCodeSnippets {
 
     /**
      * Iterate over {@link java.util.stream.Stream}
+     *
      * @throws MalformedURLException if can not create URL object.
      */
     public void iteratorStreamFilterSnippet() throws MalformedURLException {
@@ -95,7 +100,8 @@ public class IterableStreamJavaDocCodeSnippets {
         myIterableStream.stream().filter(resp -> resp.getStatusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
             .forEach(resp -> {
-                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(), resp.getRequest().getUrl());
+                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(),
+                    resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
                 });
@@ -104,7 +110,7 @@ public class IterableStreamJavaDocCodeSnippets {
     }
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest, HttpHeaders httpHeaders,
-                                                                   String deserializedHeaders, int i, int noOfPages) {
+        String deserializedHeaders, int i, int noOfPages) {
         return new PagedResponseBase<>(httpRequest, HttpURLConnection.HTTP_OK,
             httpHeaders,
             getItems(i),

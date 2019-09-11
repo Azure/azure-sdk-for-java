@@ -178,7 +178,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                             }
 
                             @Override
-                            public Flux<ByteBuffer> body() {
+                            public Flux<ByteBuffer> getBody() {
                                 return null;
                             }
 
