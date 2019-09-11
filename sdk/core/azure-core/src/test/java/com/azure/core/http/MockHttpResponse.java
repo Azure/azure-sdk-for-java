@@ -82,7 +82,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         if (bodyBytes == null) {
             return Flux.empty();
         } else {

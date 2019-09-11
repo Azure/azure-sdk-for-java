@@ -14,15 +14,15 @@ import java.time.format.DateTimeFormatter;
  *
  * <ul>
  *     <li>
- *         Providing {@link #labels() labels} will filter {@link ConfigurationSetting ConfigurationSettings} that match
+ *         Providing {@link #getLabels() labels} will filter {@link ConfigurationSetting ConfigurationSettings} that match
  *         any label name in conjunction with the keys that are passed in to the service request.
  *     </li>
  *     <li>
- *         Providing {@link #acceptDateTime() acceptDateTime} will return the representation of matching
+ *         Providing {@link #getAcceptDateTime() acceptDateTime} will return the representation of matching
  *         {@link ConfigurationSetting} at that given {@link OffsetDateTime}.
  *     </li>
  *     <li>
- *         Providing {@link #fields() fields} will populate only those {@link ConfigurationSetting} fields in the
+ *         Providing {@link #getFields() fields} will populate only those {@link ConfigurationSetting} fields in the
  *         response. By default, all of the fields are returned.
  *     </li>
  * </ul>
@@ -40,13 +40,13 @@ public class SettingSelector {
     /**
      * Creates a setting selector that will populate responses with all of the
      * {@link ConfigurationSetting ConfigurationSetting's} properties and select all
-     * {@link ConfigurationSetting#key() keys}.
+     * {@link ConfigurationSetting#getKey() keys}.
      */
     public SettingSelector() {
     }
 
     /**
-     * Gets the expressions to filter {@link ConfigurationSetting#key() keys} on for the request.
+     * Gets the expressions to filter {@link ConfigurationSetting#getKey() keys} on for the request.
      *
      * <p>
      * Examples:
@@ -59,12 +59,12 @@ public class SettingSelector {
      *
      * @return The expressions to filter ConfigurationSetting keys on.
      */
-    public String[] keys() {
+    public String[] getKeys() {
         return keys == null ? new String[0] : ImplUtils.clone(keys);
     }
 
     /**
-     * Sets the expressions to filter {@link ConfigurationSetting#key() keys} on for the request.
+     * Sets the expressions to filter {@link ConfigurationSetting#getKey() keys} on for the request.
      *
      * <p>
      * Examples:
@@ -79,13 +79,13 @@ public class SettingSelector {
      * @param keys The expressions to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
      */
-    public SettingSelector keys(String... keys) {
+    public SettingSelector setKeys(String... keys) {
         this.keys = keys;
         return this;
     }
 
     /**
-     * Gets the labels used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
+     * Gets the labels used to filter settings based on their {@link ConfigurationSetting#getLabel() label} in the service.
      *
      * If the value is {@code null} or an empty string, all ConfigurationSettings with
      * {@link ConfigurationSetting#NO_LABEL} are returned.
@@ -105,12 +105,12 @@ public class SettingSelector {
      *
      * @return labels The labels used to filter GET requests from the service.
      */
-    public String[] labels() {
+    public String[] getLabels() {
         return labels == null ? new String[0] : ImplUtils.clone(labels);
     }
 
     /**
-     * Sets the query to match {@link ConfigurationSetting#label() labels} in the service.
+     * Sets the query to match {@link ConfigurationSetting#getLabel() labels} in the service.
      *
      * <p>
      * Examples:
@@ -127,19 +127,19 @@ public class SettingSelector {
      * ConfigurationSettings will be returned regardless of their label.
      * @return SettingSelector The updated SettingSelector object.
      */
-    public SettingSelector labels(String... labels) {
+    public SettingSelector setLabels(String... labels) {
         this.labels = labels;
         return this;
     }
 
     /**
      * Gets the date time for the request query. When the query is performed, if {@code acceptDateTime} is set, the
-     * {@link ConfigurationSetting#value() configuration setting value} at that point in time is returned. Otherwise,
+     * {@link ConfigurationSetting#getValue() configuration setting value} at that point in time is returned. Otherwise,
      * the current value is returned.
      *
      * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
      */
-    public String acceptDateTime() {
+    public String getAcceptDateTime() {
         return this.acceptDatetime;
     }
 
@@ -150,7 +150,7 @@ public class SettingSelector {
      * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
      * @return The updated SettingSelector object.
      */
-    public SettingSelector acceptDatetime(OffsetDateTime datetime) {
+    public SettingSelector setAcceptDatetime(OffsetDateTime datetime) {
         this.acceptDatetime = DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
         return this;
     }
@@ -161,7 +161,7 @@ public class SettingSelector {
      *
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
-    public SettingFields[] fields() {
+    public SettingFields[] getFields() {
         return fields == null ? new SettingFields[0] : ImplUtils.clone(fields);
     }
 
@@ -173,7 +173,7 @@ public class SettingSelector {
      * ConfigurationSettings with a default set of properties.
      * @return The updated SettingSelector object.
      */
-    public SettingSelector fields(SettingFields... fields) {
+    public SettingSelector setFields(SettingFields... fields) {
         this.fields = fields;
         return this;
     }
@@ -183,7 +183,7 @@ public class SettingSelector {
      * If {@code null}, the service returns all revisions.
      * @return The {@link Range} used to select a range of revisions.
      */
-    public Range range() {
+    public Range getRange() {
         return range;
     }
 
@@ -192,7 +192,7 @@ public class SettingSelector {
      * @param range The range of revisions to select.
      * @return The updated SettingSelector object.
      */
-    public SettingSelector range(Range range) {
+    public SettingSelector setRange(Range range) {
         this.range = range;
         return this;
     }

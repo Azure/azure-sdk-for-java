@@ -41,15 +41,15 @@ public class HttpRequestTests {
         assertEquals(request.getUrl(), bufferedRequest.getUrl());
 
         assertNotSame(request.getHeaders(), bufferedRequest.getHeaders());
-        assertEquals(request.getHeaders().size(), bufferedRequest.getHeaders().size());
+        assertEquals(request.getHeaders().getSize(), bufferedRequest.getHeaders().getSize());
         for (HttpHeader clonedHeader : bufferedRequest.getHeaders()) {
             for (HttpHeader originalHeader : request.getHeaders()) {
                 assertNotSame(clonedHeader, originalHeader);
             }
 
-            assertEquals(clonedHeader.value(), request.getHeaders().value(clonedHeader.getName()));
+            assertEquals(clonedHeader.getValue(), request.getHeaders().value(clonedHeader.getName()));
         }
 
-        assertSame(request.body(), bufferedRequest.body());
+        assertSame(request.getBody(), bufferedRequest.getBody());
     }
 }

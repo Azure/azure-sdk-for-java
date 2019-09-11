@@ -174,7 +174,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     response = new MockHttpResponse(request, statusCode);
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
-                return FluxUtil.collectBytesInByteBufferStream(request.body())
+                return FluxUtil.collectBytesInByteBufferStream(request.getBody())
                     .map(bytes -> new MockHttpResponse(request, 200, new HttpHeaders(request.getHeaders()), bytes));
             }
         } catch (Exception ex) {
@@ -199,8 +199,8 @@ public class MockHttpClient extends NoOpHttpClient {
 
     private static String bodyToString(HttpRequest request) {
         String body = "";
-        if (request.body() != null) {
-            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body())
+        if (request.getBody() != null) {
+            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.getBody())
                     .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }
@@ -210,7 +210,7 @@ public class MockHttpClient extends NoOpHttpClient {
     private static Map<String, String> toMap(HttpHeaders headers) {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers) {
-            result.put(header.getName(), header.value());
+            result.put(header.getName(), header.getValue());
         }
         return result;
     }

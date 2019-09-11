@@ -40,7 +40,7 @@ public class IterableStreamJavaDocCodeSnippets {
         // process the stream
         myIterableStream.stream().forEach(resp -> {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.getRequest().getUrl());
+                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(), resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
                 });
@@ -65,11 +65,9 @@ public class IterableStreamJavaDocCodeSnippets {
 
         // BEGIN: com.azure.core.util.iterableStream.iterator.while
         // Iterate over iterator
-        Iterator<PagedResponseBase<String, Integer>> ite = myIterableStream.iterator();
-        while (ite.hasNext()) {
-            PagedResponseBase<String, Integer> resp = ite.next();
+        for (PagedResponseBase<String, Integer> resp : myIterableStream) {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.getRequest().getUrl());
+                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(), resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
                 });
@@ -97,7 +95,7 @@ public class IterableStreamJavaDocCodeSnippets {
         myIterableStream.stream().filter(resp -> resp.getStatusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
             .forEach(resp -> {
-                System.out.printf("Response headers are %s. Url %s%n", resp.deserializedHeaders(), resp.getRequest().getUrl());
+                System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(), resp.getRequest().getUrl());
                 resp.getItems().forEach(value -> {
                     System.out.printf("Response value is %d%n", value);
                 });

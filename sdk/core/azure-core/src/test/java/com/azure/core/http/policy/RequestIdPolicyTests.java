@@ -44,7 +44,7 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Flux<ByteBuffer> body() {
+        public Flux<ByteBuffer> getBody() {
             return Flux.empty();
         }
 

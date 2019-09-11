@@ -95,7 +95,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String
         ConfigurationSetting result = configurationClient
             .addSetting("prodDBConnection", "db_connection");
-        System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String
 
     /*
@@ -103,8 +103,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addSetting#ConfigurationSetting
         ConfigurationSetting resultSetting = configurationClient
-            .addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
+            .addSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"));
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.addSetting#ConfigurationSetting
 
     /*
@@ -114,8 +114,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         Response<ConfigurationSetting> responseResultSetting = configurationClient
             .addSettingWithResponse(
                 new ConfigurationSetting()
-                    .key("prodDBConnection").label("westUS").value("db_connection"), new Context(key1, value1));
-        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().key(), responseResultSetting.getValue().value());
+                    .setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"), new Context(key1, value1));
+        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(), responseResultSetting.getValue().getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.addSettingWithResponse#ConfigurationSetting-Context
     }
 
@@ -127,11 +127,11 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String
         ConfigurationSetting result = configurationClient
             .setSetting("prodDBConnection", "db_connection");
-        System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
 
         // Update the value of the setting to "updated_db_connection".
         result = configurationClient.setSetting("prodDBConnection", "updated_db_connection");
-        System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String
 
     /*
@@ -140,14 +140,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting
         // Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection"
         ConfigurationSetting resultSetting = configurationClient
-            .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
+            .setSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"));
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
 
         // Update the value of the setting to "updated_db_connection".
         resultSetting = configurationClient
              .setSetting(new ConfigurationSetting()
-                 .key("prodDBConnection").label("westUS").value("updated_db_connection"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
+                 .setKey("prodDBConnection").setLabel("westUS").setValue("updated_db_connection"));
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting
 
     /*
@@ -156,15 +156,15 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-Context
         // Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection"
         Response<ConfigurationSetting> responseSetting = configurationClient
-            .setSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS")
-                    .value("db_connection"), new Context(key2, value2));
-        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().key(), responseSetting.getValue().value());
+            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
+                    .setValue("db_connection"), new Context(key2, value2));
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
 
         // Update the value of the setting to "updated_db_connection".
         responseSetting = configurationClient
-            .setSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS")
-                .value("updated_db_connection"), new Context(key2, value2));
-        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().key(), responseSetting.getValue().value());
+            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
+                .setValue("updated_db_connection"), new Context(key2, value2));
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-Context
     }
 
@@ -175,7 +175,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#string
         ConfigurationSetting result = configurationClient.getSetting("prodDBConnection");
-        System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getSetting#string
 
     /*
@@ -184,8 +184,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         ConfigurationSetting resultSetting = configurationClient
-            .getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
+            .getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting
 
     /*
@@ -194,10 +194,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         Response<ConfigurationSetting> responseResultSetting = configurationClient
-            .getSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS"),
+            .getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
                 new Context(key1, value1));
-        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().key(),
-            responseResultSetting.getValue().value());
+        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
+            responseResultSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context
     }
 
@@ -209,7 +209,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.updateSetting#String-String
         // Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".
         ConfigurationSetting result = configurationClient.updateSetting("prodDBConnection", "updated_db_connection");
-        System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.updateSetting#String-String
 
     /*
@@ -219,8 +219,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".
         ConfigurationSetting resultSetting = configurationClient
             .updateSetting(
-                new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
+                new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("updated_db_connection"));
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.updateSetting#ConfigurationSetting
 
     /*
@@ -229,10 +229,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context
         // Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".
         Response<ConfigurationSetting> responseResultSetting = configurationClient
-            .updateSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS")
-                .value("updated_db_connection"), new Context(key1, value1));
-        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().key(),
-            responseResultSetting.getValue().value());
+            .updateSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
+                .setValue("updated_db_connection"), new Context(key1, value1));
+        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
+            responseResultSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context
     }
 
@@ -244,7 +244,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#string
         ConfigurationSetting result = configurationClient
             .deleteSetting("prodDBConnection");
-        System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
 
         // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#string
 
@@ -253,8 +253,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
         ConfigurationSetting resultSetting = configurationClient
-            .deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
+            .deleteSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
 
         /**
@@ -262,9 +262,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseSetting = configurationClient
-            .deleteSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS"),
+            .deleteSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
                 new Context(key2, value2));
-        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().key(), responseSetting.getValue().value());
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
     }
 
@@ -274,9 +274,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listSettings() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
-        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
         configurationClient.listSettings(settingSelector).forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
     }
@@ -287,10 +287,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listSettingsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
-        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
         Context ctx = new Context(key2, value2);
         configurationClient.listSettings(settingSelector, ctx).forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context
     }
@@ -301,7 +301,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listSettingRevisions() {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
-        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
         client.listSettingRevisions(settingSelector).streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
@@ -318,10 +318,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void listSettingRevisionsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
-        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        SettingSelector settingSelector = new SettingSelector().setKeys("prodDBConnection");
         Context ctx = new Context(key2, value2);
         configurationClient.listSettingRevisions(settingSelector, ctx).forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector-context
     }

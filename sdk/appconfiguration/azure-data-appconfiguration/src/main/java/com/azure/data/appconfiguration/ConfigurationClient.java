@@ -63,7 +63,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).getValue();
+        return addSetting(new ConfigurationSetting().setKey(key).setValue(value), Context.NONE).getValue();
     }
 
     /**
@@ -80,7 +80,7 @@ public final class ConfigurationClient {
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      *     is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -105,7 +105,7 @@ public final class ConfigurationClient {
      *     key collision occurs or the key is an invalid value (which will also throw ServiceRequestException described
      *     below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -137,14 +137,14 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).getValue();
+        return setSetting(new ConfigurationSetting().setKey(key).setValue(value), Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is updated if the current
      * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
@@ -159,8 +159,8 @@ public final class ConfigurationClient {
      *     value, the setting is locked, or an etag was provided but does not match the service's current etag value
      *     (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
      *     wildcard character, and the current configuration value's etag does not match, or the setting exists and is
      *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -174,7 +174,7 @@ public final class ConfigurationClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is updated if the current
      * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
@@ -190,8 +190,8 @@ public final class ConfigurationClient {
      *     value, the setting is locked, or an etag was provided but does not match the service's current etag value
      *     (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
      *     wildcard character, and the current configuration value's etag does not match, or the setting exists and is
      *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -225,14 +225,14 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).getValue();
+        return updateSetting(new ConfigurationSetting().setKey(key).setValue(value), Context.NONE).getValue();
     }
 
     /**
      * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
      * supported, the entire configuration value is replaced.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it matches.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -246,9 +246,9 @@ public final class ConfigurationClient {
      *     exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described
      *     below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     *     setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match the current
+     *     setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
      *     value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -261,7 +261,7 @@ public final class ConfigurationClient {
      * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
      * supported, the entire configuration value is replaced.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it matches.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -276,9 +276,9 @@ public final class ConfigurationClient {
      *     configuration value does not exist, is locked, or the key is an invalid value (which will also throw
      *     ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     *     setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match the current
+     *     setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
      *     value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -309,7 +309,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), Context.NONE).getValue();
+        return getSetting(new ConfigurationSetting().setKey(key), Context.NONE).getValue();
     }
 
     /**
@@ -325,7 +325,7 @@ public final class ConfigurationClient {
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      *     not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
@@ -349,7 +349,7 @@ public final class ConfigurationClient {
      *     configuration value does not exist or the key is an invalid value (which will also throw
      *     ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
@@ -380,13 +380,13 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE).getValue();
+        return deleteSetting(new ConfigurationSetting().setKey(key), Context.NONE).getValue();
     }
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
+     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}),
      * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
      * the ConfigurationSetting yet.
      *
@@ -398,12 +398,12 @@ public final class ConfigurationClient {
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
-     *     the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
+     *     the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
      *     current etag (which will also throw ServiceRequestException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
      *     character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -415,7 +415,7 @@ public final class ConfigurationClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
+     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}),
      * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
      * the ConfigurationSetting yet.
      *
@@ -428,12 +428,12 @@ public final class ConfigurationClient {
      * @param setting The ConfigurationSetting to delete.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
-     *     is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set
+     *     is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set
      *     but does not match the current etag (which will also throw ServiceRequestException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
      *     character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -487,7 +487,7 @@ public final class ConfigurationClient {
 
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
      *
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
@@ -509,7 +509,7 @@ public final class ConfigurationClient {
 
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
      *
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched

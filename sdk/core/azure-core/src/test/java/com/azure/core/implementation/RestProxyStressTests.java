@@ -145,7 +145,7 @@ public class RestProxyStressTests {
                 } else {
                     LoggerFactory.getLogger(getClass()).warn("Received " + httpResponse.getStatusCode() + " for request. Waiting " + waitTimeSeconds + " seconds before retry.");
                     final int nextWaitTime = 5 + ThreadLocalRandom.current().nextInt(10);
-                    httpResponse.body().subscribe().dispose(); // TODO: Anu re-evaluate this
+                    httpResponse.getBody().subscribe().dispose(); // TODO: Anu re-evaluate this
                     return Mono.delay(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS))
                             .then(process(nextWaitTime, context, nextPolicy));
                 }

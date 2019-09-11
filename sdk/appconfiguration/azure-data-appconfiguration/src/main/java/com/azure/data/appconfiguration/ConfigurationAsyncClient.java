@@ -87,7 +87,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(String key, String value) {
         return withContext(
-            context -> addSetting(new ConfigurationSetting().key(key).value(value), context))
+            context -> addSetting(new ConfigurationSetting().setKey(key).setValue(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -105,7 +105,7 @@ public final class ConfigurationAsyncClient {
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key
      *     is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -129,7 +129,7 @@ public final class ConfigurationAsyncClient {
      * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
      *     or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -147,8 +147,8 @@ public final class ConfigurationAsyncClient {
         return service
             .setKey(
                 serviceEndpoint,
-                setting.key(),
-                setting.label(),
+                setting.getKey(),
+                setting.getLabel(),
                 setting,
                 null,
                 getETagValue(ETAG_ANY),
@@ -179,7 +179,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(String key, String value) {
         return withContext(
-            context -> setSetting(new ConfigurationSetting().key(key).value(value), context))
+            context -> setSetting(new ConfigurationSetting().setKey(key).setValue(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -187,7 +187,7 @@ public final class ConfigurationAsyncClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is updated if the current
      * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
@@ -202,8 +202,8 @@ public final class ConfigurationAsyncClient {
      *     is locked, or an etag was provided but does not match the service's current etag value (which will also throw
      *     HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
      *     wildcard character, and the current configuration value's etag does not match, or the setting exists and is
      *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -218,7 +218,7 @@ public final class ConfigurationAsyncClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is updated if the current
      * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
@@ -233,8 +233,8 @@ public final class ConfigurationAsyncClient {
      *     invalid value, the setting is locked, or an etag was provided but does not match the service's current etag
      *     value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
      *     wildcard character, and the current configuration value's etag does not match, or the setting exists and is
      *     locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -254,7 +254,7 @@ public final class ConfigurationAsyncClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()),
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, getETagValue(setting.getETag()),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
@@ -282,7 +282,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> updateSetting(String key, String value) {
         return withContext(
-            context -> updateSetting(new ConfigurationSetting().key(key).value(value), context))
+            context -> updateSetting(new ConfigurationSetting().setKey(key).setValue(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -290,7 +290,7 @@ public final class ConfigurationAsyncClient {
      * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
      * supported, the entire configuration value is replaced.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it matches.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -303,9 +303,9 @@ public final class ConfigurationAsyncClient {
      * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not exist, is locked,
      *     or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     *     setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match the current
+     *     setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
      *     value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -319,7 +319,7 @@ public final class ConfigurationAsyncClient {
      * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
      * supported, the entire configuration value is replaced.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
+     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it matches.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -333,9 +333,9 @@ public final class ConfigurationAsyncClient {
      *     does not exist, is locked, or the key is an invalid value (which will also throw HttpResponseException
      *     described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
-     *     exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
+     *     exist, the setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match
      *     the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -348,9 +348,9 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
+        String etag = setting.getETag() == null ? ETAG_ANY : setting.getETag();
 
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag),
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, getETagValue(etag),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Updating ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.getValue()))
@@ -376,7 +376,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key) {
         return withContext(
-            context -> getSetting(new ConfigurationSetting().key(key), context))
+            context -> getSetting(new ConfigurationSetting().setKey(key), context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -393,7 +393,7 @@ public final class ConfigurationAsyncClient {
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does
      *     not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
@@ -417,7 +417,7 @@ public final class ConfigurationAsyncClient {
      *     value does
      *     not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
@@ -430,7 +430,7 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null, context)
+        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null, null, null, null, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
@@ -455,14 +455,14 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(String key) {
         return withContext(
-            context -> deleteSetting(new ConfigurationSetting().key(key), context))
+            context -> deleteSetting(new ConfigurationSetting().setKey(key), context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
+     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}),
      * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
      * the ConfigurationSetting yet.
      *
@@ -474,12 +474,12 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
-     *     the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
+     *     the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
      *     current etag (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
      *     character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -492,7 +492,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
+     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}),
      * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
      * the ConfigurationSetting yet.
      *
@@ -504,12 +504,12 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The ConfigurationSetting to delete.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
-     *     is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set
+     *     is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set
      *     but does not match the current etag (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
      *     character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -522,7 +522,7 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()),
+        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), getETagValue(setting.getETag()),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
@@ -574,11 +574,11 @@ public final class ConfigurationAsyncClient {
                 .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
         }
 
-        String fields = ImplUtils.arrayToString(options.fields(), SettingFields::toStringMapper);
-        String keys = ImplUtils.arrayToString(options.keys(), key -> key);
-        String labels = ImplUtils.arrayToString(options.labels(), label -> label);
+        String fields = ImplUtils.arrayToString(options.getFields(), SettingFields::toStringMapper);
+        String keys = ImplUtils.arrayToString(options.getKeys(), key -> key);
+        String labels = ImplUtils.arrayToString(options.getLabels(), label -> label);
 
-        return service.listKeyValues(serviceEndpoint, keys, labels, fields, options.acceptDateTime(), context)
+        return service.listKeyValues(serviceEndpoint, keys, labels, fields, options.getAcceptDateTime(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", options))
             .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", options))
             .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", options, error));
@@ -587,7 +587,7 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
      *
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
@@ -613,14 +613,14 @@ public final class ConfigurationAsyncClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
 
         if (selector != null) {
-            String fields = ImplUtils.arrayToString(selector.fields(), SettingFields::toStringMapper);
-            String keys = ImplUtils.arrayToString(selector.keys(), key -> key);
-            String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
-            String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
+            String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
+            String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
+            String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;
 
             result =
                 service.listKeyValueRevisions(
-                        serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
+                        serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), range, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(
@@ -681,7 +681,7 @@ public final class ConfigurationAsyncClient {
     private static void validateSetting(ConfigurationSetting setting) {
         Objects.requireNonNull(setting);
 
-        if (setting.key() == null) {
+        if (setting.getKey() == null) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
     }

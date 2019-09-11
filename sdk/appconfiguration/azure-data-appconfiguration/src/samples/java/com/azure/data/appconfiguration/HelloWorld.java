@@ -43,7 +43,7 @@ public class HelloWorld {
         client.setSetting(key, "world").subscribe(
             result -> {
                 ConfigurationSetting setting = result;
-                System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
+                System.out.println(String.format("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
             },
             error -> System.err.println("There was an error adding the setting: " + error.toString()),
             () -> {
