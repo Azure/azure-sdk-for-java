@@ -13,8 +13,8 @@ namespace StoragePerfNet
 {
     class Program
     {
-        private const string _containerName = "test";
-        private const string _blobName = "test";
+        private const string _containerName = "testcontainer";
+        private const string _blobName = "testblob";
         
         private const int _bytesPerMessage = 1024 * 10;
         private static readonly byte[] _payload;
