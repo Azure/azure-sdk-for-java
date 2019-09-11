@@ -44,7 +44,7 @@ class HelperTest extends APISpec {
         def response = cc.deleteWithResponse(null, null, null)
 
         then:
-        response.request() != null
+        response.getRequest() != null
     }
 
     @Unroll

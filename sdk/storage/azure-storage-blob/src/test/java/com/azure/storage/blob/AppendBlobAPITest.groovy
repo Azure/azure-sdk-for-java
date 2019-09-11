@@ -35,9 +35,9 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         createResponse.getStatusCode() == 201
-        validateBasicHeaders(createResponse.headers())
-        createResponse.value().getContentMD5() == null
-        createResponse.value().isServerEncrypted()
+        validateBasicHeaders(createResponse.getHeaders())
+        createResponse.getValue().getContentMD5() == null
+        createResponse.getValue().isServerEncrypted()
     }
 
     def "Create min"() {
@@ -168,13 +168,13 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         downloadStream.toByteArray() == defaultData.array()
-        validateBasicHeaders(appendResponse.headers())
-        appendResponse.headers().value("x-ms-content-crc64") != null
-        appendResponse.value().getBlobAppendOffset() != null
-        appendResponse.value().getBlobCommittedBlockCount() != null
+        validateBasicHeaders(appendResponse.getHeaders())
+        appendResponse.getHeaders().value("x-ms-content-crc64") != null
+        appendResponse.getValue().getBlobAppendOffset() != null
+        appendResponse.getValue().getBlobCommittedBlockCount() != null
 
         expect:
-        Integer.parseInt(bc.getPropertiesWithResponse(null, null, null).headers().value("x-ms-blob-committed-block-count")) == 1
+        bc.getProperties().getCommittedBlockCount() == 1
     }
 
     def "Append block min"() {
@@ -309,7 +309,7 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        validateBasicHeaders(response.headers())
+        validateBasicHeaders(response.getHeaders())
     }
 
     def "Append block from URL range"() {
