@@ -430,9 +430,9 @@ class SASTest extends APISpec {
         def service = new AccountSASService()
             .blob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
         def expiryTime = getUTCNow().plusDays(1)
@@ -458,9 +458,9 @@ class SASTest extends APISpec {
         def service = new AccountSASService()
             .blob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
         def expiryTime = getUTCNow().plusDays(1)
@@ -480,9 +480,9 @@ class SASTest extends APISpec {
         def service = new AccountSASService()
             .blob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
             .setCreate(false)
@@ -503,9 +503,9 @@ class SASTest extends APISpec {
         def service = new AccountSASService()
             .blob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
             .setCreate(true)
@@ -996,9 +996,9 @@ class SASTest extends APISpec {
     def "AccountSASResourceType toString"() {
         setup:
         def resourceTypes = new AccountSASResourceType()
-            .service(service)
-            .container(container)
-            .object(object)
+            .setService(service)
+            .setContainer(container)
+            .setObject(object)
 
         expect:
         resourceTypes.toString() == expectedString
@@ -1017,9 +1017,9 @@ class SASTest extends APISpec {
         def resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.service() == service
-        resourceTypes.container() == container
-        resourceTypes.object() == object
+        resourceTypes.getService() == service
+        resourceTypes.getContainer() == container
+        resourceTypes.getObject() == object
 
         where:
         resourceTypeString || service | container | object

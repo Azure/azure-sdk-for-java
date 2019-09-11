@@ -274,9 +274,9 @@ public class QueueServiceAsyncJavaDocCodeSamples {
             .queue(true)
             .table(true);
         AccountSASResourceType resourceType = new AccountSASResourceType()
-            .container(true)
-            .object(true)
-            .service(true);
+            .setContainer(true)
+            .setObject(true)
+            .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
             .read(true)
             .add(true)
