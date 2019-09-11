@@ -18,7 +18,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         byte[] randomBytes = getRandomByteArray(length)
 
         BlobOutputStream outStream = bc.getBlobOutputStream()
-        outStream.write(randomBytes)
+        outStream.setWrite(randomBytes)
         outStream.close()
 
         then:
@@ -26,8 +26,8 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b)
+            while ((b = inputStream.setRead()) != -1) {
+                outputStream.setWrite(b)
             }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)

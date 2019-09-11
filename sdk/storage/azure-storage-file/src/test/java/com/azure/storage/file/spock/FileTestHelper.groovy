@@ -34,12 +34,12 @@ class FileTestHelper {
 
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         return throwable instanceof StorageException &&
-            ((StorageException) throwable).statusCode() == expectedStatusCode
+            ((StorageException) throwable).getStatusCode() == expectedStatusCode
     }
 
     static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
         return throwable instanceof StorageException &&
-            ((StorageException) throwable).errorCode() == errMessage
+            ((StorageException) throwable).getErrorCode() == errMessage
     }
 
     static boolean assertFileServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
@@ -108,7 +108,7 @@ class FileTestHelper {
         }
         return Objects.equals(expected.id(), actual.id()) &&
             Objects.equals(expected.accessPolicy().permission(), actual.accessPolicy().permission()) &&
-            Objects.equals(expected.accessPolicy().start(), actual.accessPolicy().start()) &&
+            Objects.equals(expected.accessPolicy().getStart(), actual.accessPolicy().getStart()) &&
             Objects.equals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry())
     }
 

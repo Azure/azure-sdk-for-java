@@ -24,7 +24,7 @@ public final class ListBlobsOptions {
     /**
      * @return the details for listing specific blobs
      */
-    public BlobListDetails details() {
+    public BlobListDetails getDetails() {
         return details;
     }
 
@@ -32,7 +32,7 @@ public final class ListBlobsOptions {
      * @param details The details for listing specific blobs
      * @return the updated ListBlobsOptions object
      */
-    public ListBlobsOptions details(BlobListDetails details) {
+    public ListBlobsOptions setDetails(BlobListDetails details) {
         this.details = details;
         return this;
     }
@@ -43,7 +43,7 @@ public final class ListBlobsOptions {
      *
      * @return the prefix that a blob must match to be returned in the listing
      */
-    public String prefix() {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -54,7 +54,7 @@ public final class ListBlobsOptions {
      * @param prefix A prefix that a blob must match to be returned
      * @return the updated ListBlobsOptions object
      */
-    public ListBlobsOptions prefix(String prefix) {
+    public ListBlobsOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -65,7 +65,7 @@ public final class ListBlobsOptions {
      *
      * @return the number of blobs that will be returned in a single response
      */
-    public Integer maxResults() {
+    public Integer getMaxResults() {
         return maxResults;
     }
 
@@ -76,7 +76,7 @@ public final class ListBlobsOptions {
      * @param maxResults The number of blobs to returned in a single response
      * @return the updated ListBlobsOptions object
      */
-    public ListBlobsOptions maxResults(Integer maxResults) {
+    public ListBlobsOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw new IllegalArgumentException("MaxResults must be greater than 0.");
         }

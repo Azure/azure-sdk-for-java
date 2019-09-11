@@ -166,7 +166,7 @@ public class BlobAsyncClient {
     public ContainerAsyncClient getContainerAsyncClient() {
         BlobURLParts parts = URLParser.parse(getBlobUrl());
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
+            .url(String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getContainerName()))
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), cpk);
     }
@@ -221,13 +221,13 @@ public class BlobAsyncClient {
      * @return true if the blob exists, false if it doesn't
      */
     public Mono<Response<Boolean>> existsWithResponse() {
-        return withContext(context -> existsWithResponse(context));
+        return withContext(this::existsWithResponse);
     }
 
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
+            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).getStatusCode() == 404, t -> {
                 HttpResponse response = ((StorageException) t).response();
                 return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
             });
@@ -289,15 +289,15 @@ public class BlobAsyncClient {
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
-            .sourceIfModifiedSince(sourceModifiedAccessConditions.ifModifiedSince())
-            .sourceIfUnmodifiedSince(sourceModifiedAccessConditions.ifUnmodifiedSince())
-            .sourceIfMatch(sourceModifiedAccessConditions.ifMatch())
-            .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
+            .setSourceIfModifiedSince(sourceModifiedAccessConditions.getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceModifiedAccessConditions.getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
+            .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
             null, null, sourceURL, null, metadata, tierOp, priority, null, sourceConditions,
-            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
+            destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().getCopyId()));
     }
 
     /**
@@ -398,15 +398,15 @@ public class BlobAsyncClient {
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
-            .sourceIfModifiedSince(sourceModifiedAccessConditions.ifModifiedSince())
-            .sourceIfUnmodifiedSince(sourceModifiedAccessConditions.ifUnmodifiedSince())
-            .sourceIfMatch(sourceModifiedAccessConditions.ifMatch())
-            .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
+            .setSourceIfModifiedSince(sourceModifiedAccessConditions.getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceModifiedAccessConditions.getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
+            .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
             null, null, copySource, null, metadata, tierOp, null, sourceConditions,
-            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
+            destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().getCopyId()));
     }
 
     /**
@@ -450,7 +450,7 @@ public class BlobAsyncClient {
     Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(BlobRange range, ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
         return download(range, accessConditions, rangeGetContentMD5, context)
             .map(response -> new SimpleResponse<>(
-                response.rawResponse(),
+                response.getRawResponse(),
                 response.body(options).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])))));
     }
 
@@ -478,25 +478,25 @@ public class BlobAsyncClient {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
-            .offset(range.offset())
-            .count(range.count())
-            .eTag(accessConditions.modifiedAccessConditions().ifMatch());
+            .setOffset(range.getOffset())
+            .setCount(range.getCount())
+            .setETag(accessConditions.getModifiedAccessConditions().getIfMatch());
 
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
             null, null, snapshot, null, range.toHeaderValue(), getMD5, null, null,
-            accessConditions.leaseAccessConditions(), cpk, accessConditions.modifiedAccessConditions(), context))
+            accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(), context))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
-                info.eTag(response.deserializedHeaders().eTag());
+                info.setETag(response.deserializedHeaders().getETag());
                 return new DownloadAsyncResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
-                        this.download(new BlobRange(newInfo.offset(), newInfo.count()),
-                            new BlobAccessConditions().modifiedAccessConditions(
-                                new ModifiedAccessConditions().ifMatch(info.eTag())), false, context));
+                        this.download(new BlobRange(newInfo.getOffset(), newInfo.getCount()),
+                            new BlobAccessConditions().setModifiedAccessConditions(
+                                new ModifiedAccessConditions().setIfMatch(info.getETag())), false, context));
             });
     }
 
@@ -570,7 +570,7 @@ public class BlobAsyncClient {
                 .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
                 .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
+                    .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel, chunk.getOffset() - (range == null ? 0 : range.getOffset()))))
                 .then(), this::downloadToFileCleanup);
     }
 
@@ -591,15 +591,15 @@ public class BlobAsyncClient {
     }
 
     private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions) {
-        return getPropertiesWithResponse(accessConditions).map(rb -> new BlobRange(0, rb.value().blobSize()));
+        return getPropertiesWithResponse(accessConditions).map(rb -> new BlobRange(0, rb.value().getBlobSize()));
     }
 
     private List<BlobRange> sliceBlobRange(BlobRange blobRange, Integer blockSize) {
         if (blockSize == null) {
             blockSize = BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
         }
-        long offset = blobRange.offset();
-        long length = blobRange.count();
+        long offset = blobRange.getOffset();
+        long length = blobRange.getCount();
         List<BlobRange> chunks = new ArrayList<>();
         for (long pos = offset; pos < offset + length; pos += blockSize) {
             long count = blockSize;
@@ -652,7 +652,7 @@ public class BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
             null, null, snapshot, null, deleteBlobSnapshotOptions,
-            null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
+            null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
             context))
             .map(VoidResponse::new);
     }
@@ -694,8 +694,8 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, null, accessConditions.leaseAccessConditions(), cpk,
-            accessConditions.modifiedAccessConditions(), context))
+            null, null, snapshot, null, null, accessConditions.getLeaseAccessConditions(), cpk,
+            accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlobProperties(rb.deserializedHeaders())));
     }
 
@@ -741,7 +741,7 @@ public class BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
             null, null, null, null, headers,
-            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context))
+            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context))
             .map(VoidResponse::new);
     }
 
@@ -787,8 +787,8 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, null, accessConditions.leaseAccessConditions(), cpk,
-            accessConditions.modifiedAccessConditions(), context))
+            null, null, null, metadata, null, accessConditions.getLeaseAccessConditions(), cpk,
+            accessConditions.getModifiedAccessConditions(), context))
             .map(VoidResponse::new);
     }
 
@@ -833,9 +833,9 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, null, cpk, accessConditions.modifiedAccessConditions(),
-            accessConditions.leaseAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().snapshot())));
+            null, null, null, metadata, null, cpk, accessConditions.getModifiedAccessConditions(),
+            accessConditions.getLeaseAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().getSnapshot())));
     }
 
     /**
@@ -982,7 +982,7 @@ public class BlobAsyncClient {
         return postProcessResponse(this.azureBlobStorage.blobs().acquireLeaseWithRestResponseAsync(
             null, null, null, duration, proposedId, null,
             modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().getLeaseId()));
     }
 
     /**
@@ -1025,7 +1025,7 @@ public class BlobAsyncClient {
     Mono<Response<String>> renewLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().renewLeaseWithRestResponseAsync(null,
             null, leaseId, null, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().getLeaseId()));
     }
 
     /**
@@ -1116,7 +1116,7 @@ public class BlobAsyncClient {
     Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().breakLeaseWithRestResponseAsync(null,
             null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseTime()));
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().getLeaseTime()));
     }
 
     /**
@@ -1161,7 +1161,7 @@ public class BlobAsyncClient {
     Mono<Response<String>> changeLeaseWithResponse(String leaseId, String proposedId, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().changeLeaseWithRestResponseAsync(null,
             null, leaseId, proposedId, null, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().getLeaseId()));
     }
 
     /**
@@ -1376,16 +1376,16 @@ public class BlobAsyncClient {
         String accountName) {
 
         // Set canonical name
-        blobServiceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
+        blobServiceSASSignatureValues.setCanonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId
-        blobServiceSASSignatureValues.snapshotId(getSnapshotId());
+        blobServiceSASSignatureValues.setSnapshotId(getSnapshotId());
 
         // Set resource
         if (isSnapshot()) {
-            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
+            blobServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
         } else {
-            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
+            blobServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
         }
 
         return blobServiceSASSignatureValues;

@@ -149,10 +149,10 @@ class QueueServiceAsyncAPITests extends APISpec {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
         }.verifyComplete()
         where:
-        options                                                                                        | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues")                       | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").maxResults(2)         | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").includeMetadata(true) | _
+        options                                                                                              | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues")                          | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setMaxResults(2)         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setIncludeMetadata(true) | _
     }
 
     def "List empty queues"() {
@@ -176,7 +176,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         def metrics = new Metrics().enabled(true)
             .includeAPIs(false)
             .retentionPolicy(retentionPolicy)
-            .version("1.0")
+            .setVersion("1.0")
         def updatedProperties = new StorageServiceProperties().logging(logging)
             .hourMetrics(metrics)
             .minuteMetrics(metrics)

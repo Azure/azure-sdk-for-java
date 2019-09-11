@@ -146,7 +146,7 @@ class FileServiceAPITests extends APISpec {
             def shareClient = primaryFileServiceClient.getShareClient(share.name())
             shareClient.createWithResponse(share.metadata(), share.properties().quota(), null, null)
             if (i == 2) {
-                def snapshot = shareClient.createSnapshot().snapshot()
+                def snapshot = shareClient.createSnapshot().getSnapshot()
                 testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(snapshot))
             }
             testShares.add(share)
@@ -173,7 +173,7 @@ class FileServiceAPITests extends APISpec {
         def originalProperties = primaryFileServiceClient.getProperties()
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
         def metrics = new Metrics().enabled(true).includeAPIs(false)
-            .retentionPolicy(retentionPolicy).version("1.0")
+            .retentionPolicy(retentionPolicy).setVersion("1.0")
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
             .minuteMetrics(metrics).cors(new ArrayList<>())
 
@@ -195,7 +195,7 @@ class FileServiceAPITests extends APISpec {
         given:
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
         def metrics = new Metrics().enabled(true).includeAPIs(false)
-            .retentionPolicy(retentionPolicy).version("1.0")
+            .retentionPolicy(retentionPolicy).setVersion("1.0")
 
         when:
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)

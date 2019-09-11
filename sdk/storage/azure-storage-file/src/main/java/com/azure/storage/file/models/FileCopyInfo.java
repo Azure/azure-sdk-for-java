@@ -36,21 +36,21 @@ public final class FileCopyInfo {
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return Last time the directory was modified.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
      * @return String identifier for this copy operation.
      */
-    public String copyId() {
+    public String getCopyId() {
         return copyId;
     }
 
@@ -59,7 +59,7 @@ public final class FileCopyInfo {
      *                       - success: the copy completed successfully.
      *                       - pending: the copy is still in progress.
      */
-    public CopyStatusType copyStatus() {
+    public CopyStatusType getCopyStatus() {
         return copyStatus;
     }
 }

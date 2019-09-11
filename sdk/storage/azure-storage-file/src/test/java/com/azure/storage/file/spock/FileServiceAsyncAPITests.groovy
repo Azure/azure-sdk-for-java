@@ -171,7 +171,7 @@ class FileServiceAsyncAPITests extends APISpec {
             if (i == 2) {
                 StepVerifier.create(shareAsyncClient.createSnapshotWithResponse(null))
                     .assertNext {
-                        testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.value().snapshot()))
+                        testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.value().getSnapshot()))
                         FileTestHelper.assertResponseStatusCode(it, 201)
                     }.verifyComplete()
             }
@@ -198,7 +198,7 @@ class FileServiceAsyncAPITests extends APISpec {
         def originalProperties = primaryFileServiceAsyncClient.getProperties().block()
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
         def metrics = new Metrics().enabled(true).includeAPIs(false)
-            .retentionPolicy(retentionPolicy).version("1.0")
+            .retentionPolicy(retentionPolicy).setVersion("1.0")
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
             .minuteMetrics(metrics).cors(new ArrayList<>())
 
@@ -227,7 +227,7 @@ class FileServiceAsyncAPITests extends APISpec {
         given:
         def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
         def metrics = new Metrics().enabled(true).includeAPIs(false)
-            .retentionPolicy(retentionPolicy).version("1.0")
+            .retentionPolicy(retentionPolicy).setVersion("1.0")
 
         when:
         def updatedProperties = new FileServiceProperties().hourMetrics(metrics)

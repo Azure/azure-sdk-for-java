@@ -132,10 +132,10 @@ public class FileAsyncJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         fileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
@@ -442,7 +442,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.getProperties
         fileAsyncClient.getProperties()
             .subscribe(properties -> {
-                System.out.printf("File latest modified date is %s.", properties.lastModified());
+                System.out.printf("File latest modified date is %s.", properties.getLastModified());
             });
         // END: com.azure.storage.file.fileAsyncClient.getProperties
     }
@@ -456,7 +456,7 @@ public class FileAsyncJavaDocCodeSamples {
         fileAsyncClient.getPropertiesWithResponse()
             .subscribe(response -> {
                 FileProperties properties = response.value();
-                System.out.printf("File latest modified date is %s.", properties.lastModified());
+                System.out.printf("File latest modified date is %s.", properties.getLastModified());
             });
         // END: com.azure.storage.file.fileAsyncClient.getPropertiesWithResponse
     }
@@ -521,10 +521,10 @@ public class FileAsyncJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         fileAsyncClient.setProperties(1024, httpHeaders, smbProperties, filePermission)
@@ -545,10 +545,10 @@ public class FileAsyncJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         fileAsyncClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission)
@@ -589,7 +589,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges
         fileAsyncClient.listRanges().subscribe(range ->
-            System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
+            System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
         // END: com.azure.storage.file.fileAsyncClient.listRanges
     }
 
@@ -601,7 +601,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges#filerange
         fileAsyncClient.listRanges(new FileRange(1024, 2048L))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
-                result.start(), result.end()));
+                result.getStart(), result.getEnd()));
         // END: com.azure.storage.file.fileAsyncClient.listRanges#filerange
     }
 
@@ -650,15 +650,15 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         String identifier = "identifier";
         FileSASPermission permissions = new FileSASPermission()
-            .read(true)
-            .create(true)
-            .delete(true)
-            .write(true);
+            .setRead(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setWrite(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";

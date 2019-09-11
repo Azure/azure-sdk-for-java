@@ -342,8 +342,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getProperties
         client.getProperties()
             .subscribe(properties -> {
-                System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
-                    properties.approximateMessagesCount());
+                System.out.printf("Metadata: %s, Approximate message count: %d", properties.getMetadata(),
+                    properties.getApproximateMessagesCount());
             });
         // END: com.azure.storage.queue.queueAsyncClient.getProperties
     }
@@ -356,8 +356,8 @@ public class QueueAsyncJavaDocCodeSamples {
         client.getPropertiesWithResponse()
             .subscribe(response -> {
                 QueueProperties properties = response.value();
-                System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
-                    properties.approximateMessagesCount());
+                System.out.printf("Metadata: %s, Approximate message count: %d", properties.getMetadata(),
+                    properties.getApproximateMessagesCount());
             });
         // END: com.azure.storage.queue.queueAsyncClient.getPropertiesWithResponse
     }
@@ -477,15 +477,15 @@ public class QueueAsyncJavaDocCodeSamples {
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
         QueueSASPermission permissions = new QueueSASPermission()
-            .read(true)
-            .add(true)
-            .update(true)
-            .process(true);
+            .setRead(true)
+            .setAdd(true)
+            .setUpdate(true)
+            .setProcess(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String identifier = "";
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;

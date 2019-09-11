@@ -101,12 +101,12 @@ public final class BlobServiceSASQueryParameters extends BaseSASQueryParameters 
         this.contentType = contentType;
 
         if (key != null) {
-            this.keyOid = key.signedOid();
-            this.keyTid = key.signedTid();
-            this.keyStart = key.signedStart();
-            this.keyExpiry = key.signedExpiry();
-            this.keyService = key.signedService();
-            this.keyVersion = key.signedVersion();
+            this.keyOid = key.getSignedOid();
+            this.keyTid = key.getSignedTid();
+            this.keyStart = key.getSignedStart();
+            this.keyExpiry = key.getSignedExpiry();
+            this.keyService = key.getSignedService();
+            this.keyVersion = key.getSignedVersion();
         } else {
             this.keyOid = null;
             this.keyTid = null;
@@ -122,102 +122,102 @@ public final class BlobServiceSASQueryParameters extends BaseSASQueryParameters 
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return identifier;
     }
 
     /**
      * @return The storage container or blob (only for {@link BlobServiceSASSignatureValues}).
      */
-    public String resource() {
+    public String getResource() {
         return resource;
     }
 
     /**
      * @return The Cache-Control header value when a client accesses the resource with this sas token.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return cacheControl;
     }
 
     /**
      * @return The Content-Disposition header value when a client accesses the resource with this sas token.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return contentDisposition;
     }
 
     /**
      * @return The Content-Encoding header value when a client accesses the resource with this sas token.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return contentEncoding;
     }
 
     /**
      * @return The Content-Language header value when a client accesses the resource with this sas token.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return contentLanguage;
     }
 
     /**
      * @return The Content-Type header value when a client accesses the resource with this sas token.
      */
-    public String contentType() {
+    public String getContentType() {
         return contentType;
     }
 
     /**
      * @return the object ID of the key.
      */
-    public String keyOid() {
+    public String getKeyOid() {
         return keyOid;
     }
 
     /**
      * @return the tenant ID of the key.
      */
-    public String keyTid() {
+    public String getKeyTid() {
         return keyTid;
     }
 
     /**
      * @return the datetime when the key becomes active.
      */
-    public OffsetDateTime keyStart() {
+    public OffsetDateTime getKeyStart() {
         return keyStart;
     }
 
     /**
      * @return the datetime when the key expires.
      */
-    public OffsetDateTime keyExpiry() {
+    public OffsetDateTime getKeyExpiry() {
         return keyExpiry;
     }
 
     /**
      * @return the services that are permitted by the key.
      */
-    public String keyService() {
+    public String getKeyService() {
         return keyService;
     }
 
     /**
      * @return the service version that created the key.
      */
-    public String keyVersion() {
+    public String getKeyVersion() {
         return keyVersion;
     }
 
     UserDelegationKey userDelegationKey() {
         return new UserDelegationKey()
-            .signedExpiry(this.keyExpiry)
-            .signedOid(this.keyOid)
-            .signedService(this.keyService)
-            .signedStart(this.keyStart)
-            .signedTid(this.keyTid)
-            .signedVersion(this.keyVersion);
+            .setSignedExpiry(this.keyExpiry)
+            .setSignedOid(this.keyOid)
+            .setSignedService(this.keyService)
+            .setSignedStart(this.keyStart)
+            .setSignedTid(this.keyTid)
+            .setSignedVersion(this.keyVersion);
     }
 
     /**

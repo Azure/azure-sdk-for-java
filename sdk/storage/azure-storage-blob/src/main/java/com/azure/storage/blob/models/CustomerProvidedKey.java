@@ -63,7 +63,7 @@ public class CustomerProvidedKey {
      *
      * @return A base64 encoded string of the encryption key.
      */
-    public String key() {
+    public String getKey() {
         return key;
     }
 
@@ -72,7 +72,7 @@ public class CustomerProvidedKey {
      *
      * @return A base64 encoded string of the encryption key hash.
      */
-    public String keySHA256() {
+    public String getKeySHA256() {
         return keySHA256;
     }
 
@@ -81,7 +81,7 @@ public class CustomerProvidedKey {
      *
      * @return A label for the encryption algorithm, as understood by Azure Storage.
      */
-    public EncryptionAlgorithmType encryptionAlgorithm() {
+    public EncryptionAlgorithmType getEncryptionAlgorithm() {
         return encryptionAlgorithm;
     }
 }

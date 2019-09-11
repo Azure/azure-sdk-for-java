@@ -25,63 +25,63 @@ public final class ContainerProperties {
     private final boolean hasLegalHold;
 
     ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
-        this.metadata = new Metadata(generatedResponseHeaders.metadata());
-        this.eTag = generatedResponseHeaders.eTag();
-        this.lastModified = generatedResponseHeaders.lastModified();
-        this.leaseDuration = generatedResponseHeaders.leaseDuration();
-        this.leaseState = generatedResponseHeaders.leaseState();
-        this.leaseStatus = generatedResponseHeaders.leaseStatus();
-        this.blobPublicAccess = generatedResponseHeaders.blobPublicAccess();
-        this.hasImmutabilityPolicy = generatedResponseHeaders.hasImmutabilityPolicy();
-        this.hasLegalHold = generatedResponseHeaders.hasLegalHold();
+        this.metadata = new Metadata(generatedResponseHeaders.getMetadata());
+        this.eTag = generatedResponseHeaders.getETag();
+        this.lastModified = generatedResponseHeaders.getLastModified();
+        this.leaseDuration = generatedResponseHeaders.getLeaseDuration();
+        this.leaseState = generatedResponseHeaders.getLeaseState();
+        this.leaseStatus = generatedResponseHeaders.getLeaseStatus();
+        this.blobPublicAccess = generatedResponseHeaders.getBlobPublicAccess();
+        this.hasImmutabilityPolicy = generatedResponseHeaders.getHasImmutabilityPolicy();
+        this.hasLegalHold = generatedResponseHeaders.getHasLegalHold();
     }
 
     /**
      * @return the metadata associated with the container
      */
-    public Metadata metadata() {
+    public Metadata getMetadata() {
         return metadata;
     }
 
     /**
      * @return the eTag of the container
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return the time the container was last modified
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
      * @return the type of lease on the container
      */
-    public LeaseDurationType leaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return leaseDuration;
     }
 
     /**
      * @return the lease state of the container
      */
-    public LeaseStateType leaseState() {
+    public LeaseStateType getLeaseState() {
         return leaseState;
     }
 
     /**
      * @return the lease status of the container
      */
-    public LeaseStatusType leaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return leaseStatus;
     }
 
     /**
      * @return the access type for the container
      */
-    public PublicAccessType blobPublicAccess() {
+    public PublicAccessType getBlobPublicAccess() {
         return blobPublicAccess;
     }
 

@@ -160,11 +160,11 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def options = new ListContainersOptions().prefix(containerPrefix + testName)
+        def options = new ListContainersOptions().setPrefix(containerPrefix + testName)
         for (ContainerItem container : primaryBlobServiceClient.listContainers(options, Duration.ofSeconds(120))) {
-            ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.name())
+            ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.getName())
 
-            if (container.properties().leaseState() == LeaseStateType.LEASED) {
+            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 containerClient.breakLeaseWithResponse(0, null, null, null)
             }
 
@@ -185,7 +185,7 @@ class APISpec extends Specification {
         if (testMode != null) {
             try {
                 return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ignore) {
                 return TestMode.PLAYBACK
             }
         }
@@ -220,7 +220,7 @@ class APISpec extends Specification {
 BlobServiceClient setClient(SharedKeyCredential credential) {
     try {
         return getServiceClient(credential)
-    } catch (Exception ex) {
+    } catch (Exception ignore) {
         return null
     }
 }
@@ -460,7 +460,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
      */
     def setupBlobMatchCondition(BlobClient bc, String match) {
         if (match == receivedEtag) {
-            return bc.getProperties().eTag()
+            return bc.getProperties().getETag()
         } else {
             return match
         }
@@ -468,7 +468,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
         if (match == receivedEtag) {
-            return bac.getProperties().block().eTag()
+            return bac.getProperties().block().getETag()
         } else {
             return match
         }
@@ -514,7 +514,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getProperties().eTag()
+            return cu.getProperties().getETag()
         } else {
             return match
         }
@@ -613,24 +613,24 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
                                String contentLanguage, byte[] contentMD5, String contentType) {
-        return response.value().cacheControl() == cacheControl &&
-            response.value().contentDisposition() == contentDisposition &&
-            response.value().contentEncoding() == contentEncoding &&
-            response.value().contentLanguage() == contentLanguage &&
-            response.value().contentMD5() == contentMD5 &&
+        return response.value().getCacheControl() == cacheControl &&
+            response.value().getContentDisposition() == contentDisposition &&
+            response.value().getContentEncoding() == contentEncoding &&
+            response.value().getContentLanguage() == contentLanguage &&
+            response.value().getContentMD5() == contentMD5 &&
             response.headers().value("Content-Type") == contentType
     }
 
     def enableSoftDelete() {
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
+            .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(true).setDays(2)))
 
         sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
+            .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(false)))
 
         sleepIfRecord(30000)
     }

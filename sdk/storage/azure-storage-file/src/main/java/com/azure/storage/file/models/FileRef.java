@@ -30,7 +30,7 @@ public final class FileRef {
     /**
      * @return Name of the file or the directory.
      */
-    public String name() {
+    public String getName() {
         return name;
     }
 
@@ -44,7 +44,7 @@ public final class FileRef {
     /**
      * @return Property of a file. Return {@code null} if the reference is a directory.
      */
-    public FileProperty fileProperties() {
+    public FileProperty getFileProperties() {
         return fileProperty;
     }
 

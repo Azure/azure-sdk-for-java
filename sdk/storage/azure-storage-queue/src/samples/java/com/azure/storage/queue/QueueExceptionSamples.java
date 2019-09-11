@@ -33,7 +33,7 @@ public class QueueExceptionSamples {
                 16), null, Duration.ofSeconds(1), new Context("key1", "value1"));
             System.out.println("Successfully create the queue! Status code: " + queueClientResponse.statusCode());
         } catch (StorageException e) {
-            System.out.println(String.format("Error creating a queue. Error message: %s", e.serviceMessage()));
+            System.out.println(String.format("Error creating a queue. Error message: %s", e.getServiceMessage()));
             throw new RuntimeException(e);
         }
         QueueClient queueClient = queueClientResponse.value();

@@ -166,10 +166,10 @@ public class DirectoryAsyncJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
@@ -189,7 +189,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories
         directoryAsyncClient.listFilesAndDirectories().subscribe(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name()),
+                fileRef.isDirectory(), fileRef.getName()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed listing the directories and files.")
         );
@@ -204,7 +204,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
         directoryAsyncClient.listFilesAndDirectories("subdir", 10).subscribe(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name()),
+                fileRef.isDirectory(), fileRef.getName()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed listing the directories and files.")
         );
@@ -301,7 +301,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.getProperties
         directoryAsyncClient.getProperties().subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s.", properties.lastModified());
+            System.out.printf("Directory latest modified date is %s.", properties.getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.getProperties
     }
@@ -313,7 +313,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
         directoryAsyncClient.getPropertiesWithResponse().subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.value().getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
     }
@@ -327,7 +327,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setProperties(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
     }
@@ -341,7 +341,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.value().getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
     }

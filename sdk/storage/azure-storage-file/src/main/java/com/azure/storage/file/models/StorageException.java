@@ -38,21 +38,21 @@ public final class StorageException extends HttpResponseException {
     /**
      * @return The error code returned by the service.
      */
-    public StorageErrorCode errorCode() {
+    public StorageErrorCode getErrorCode() {
         return this.errorCode;
     }
 
     /**
      * @return The message returned by the service.
      */
-    public String serviceMessage() {
+    public String getServiceMessage() {
         return this.message;
     }
 
     /**
      * @return The status code on the response.
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return super.response().statusCode();
     }
 }

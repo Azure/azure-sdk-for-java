@@ -160,7 +160,7 @@ public class BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobAccessConditions accessConditions) {
-        return new BlobInputStream(blobAsyncClient, range.offset(), range.count(), accessConditions);
+        return new BlobInputStream(blobAsyncClient, range.getOffset(), range.getCount(), accessConditions);
     }
 
     /**

@@ -32,7 +32,7 @@ public class MessageSamples {
         // TODO
 
         // Get the total count of msg in the queue
-        int count = queueClient.getProperties().approximateMessagesCount();
+        int count = queueClient.getProperties().getApproximateMessagesCount();
 
         // Peek all messages in queue. It is supposed to print "Hello World" 3 times.
         queueClient.peekMessages(count, null, null).forEach(

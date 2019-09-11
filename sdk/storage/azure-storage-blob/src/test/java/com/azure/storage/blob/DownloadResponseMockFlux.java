@@ -81,8 +81,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (this.info.offset() != (this.tryNumber - 1) * 256
-                        || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                    if (this.info.getOffset() != (this.tryNumber - 1) * 256
+                        || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                         Operators.error(subscriber, new IllegalArgumentException("Info values are incorrect."));
                         return;
                     }
@@ -93,8 +93,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                     Operators.error(subscriber, new IOException());
                     break;
                 }
-                if (this.info.offset() != (this.tryNumber - 1) * 256
-                    || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                if (this.info.getOffset() != (this.tryNumber - 1) * 256
+                    || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                     Operators.error(subscriber, new IllegalArgumentException("Info values are incorrect."));
                     return;
                 }
@@ -202,7 +202,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 }
             case DR_TEST_SCENARIO_INFO_TEST:
                 // We also test that the info is updated in DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
-                if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals("etag")) {
+                if (info.getCount() != 10 || info.getOffset() != 20 || !info.getETag().equals("etag")) {
                     throw new IllegalArgumentException("Info values incorrect");
                 }
                 return Mono.just(response);
