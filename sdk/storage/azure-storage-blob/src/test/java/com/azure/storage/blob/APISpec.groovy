@@ -560,7 +560,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             }
 
             @Override
-            Flux<ByteBuffer> body() {
+            Flux<ByteBuffer> getBody() {
                 return Flux.empty()
             }
 
@@ -689,7 +689,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         }
 
         @Override
-        Flux<ByteBuffer> body() {
+        Flux<ByteBuffer> getBody() {
             return body
         }
 

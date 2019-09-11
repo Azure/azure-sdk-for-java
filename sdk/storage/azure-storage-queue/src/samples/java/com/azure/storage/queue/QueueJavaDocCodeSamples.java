@@ -48,6 +48,7 @@ public class QueueJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueClient} with {@link QueueClient}
+     *
      * @return An instance of {@link QueueClient}
      */
     public QueueClient createClientWithSASToken() {
@@ -61,6 +62,7 @@ public class QueueJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link QueueClient}
      */
     public QueueClient createClientWithCredential() {
@@ -75,13 +77,15 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link QueueClient} with {@code connectionString} which turns into {@link
+     * SharedKeyCredential}
+     *
      * @return An instance of {@link QueueClient}
      */
     public QueueClient createClientWithConnectionString() {
         // BEGIN: com.azure.storage.queue.queueClient.instantiation.connectionstring
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
-                    + "AccountKey={key};EndpointSuffix={core.windows.net}";
+            + "AccountKey={key};EndpointSuffix={core.windows.net}";
         QueueClient client = new QueueClientBuilder()
             .connectionString(connectionString)
             .buildClient();
@@ -265,7 +269,8 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#deleteMessageWithResponse(String, String, Duration, Context)}
+     * Generates a code sample for using {@link QueueClient#deleteMessageWithResponse(String, String, Duration,
+     * Context)}
      */
     public void deleteMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context
@@ -338,8 +343,8 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generate a code sample for using {@link QueueClient#setMetadataWithResponse(Map, Duration, Context)}
-     * to set metadata.
+     * Generate a code sample for using {@link QueueClient#setMetadataWithResponse(Map, Duration, Context)} to set
+     * metadata.
      */
     public void setMetadataWithResponse() {
 
@@ -362,8 +367,8 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generate a code sample for using {@link QueueClient#setMetadataWithResponse(Map, Duration, Context)}
-     * to clear metadata.
+     * Generate a code sample for using {@link QueueClient#setMetadataWithResponse(Map, Duration, Context)} to clear
+     * metadata.
      */
     public void clearMetadataWithResponse() {
 
