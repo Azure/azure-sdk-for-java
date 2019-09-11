@@ -58,15 +58,18 @@ public class IndexingSyncTests extends IndexingTestBase {
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
         // Book 1's publish date is in UTC format, and book 2's is unspecified.
         List<HashMap<String, Object>> books = Arrays.asList(
-            new HashMap<String, Object>() {{
-                put(ISBN_FIELD, ISBN1);
-                put(PUBLISH_DATE_FIELD, DATE_UTC);
-            }},
-            new HashMap<String, Object>()
-            {{
-                put(ISBN_FIELD, ISBN2);
-                put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
-            }}
+            new HashMap<String, Object>() {
+                {
+                    put(ISBN_FIELD, ISBN1);
+                    put(PUBLISH_DATE_FIELD, DATE_UTC);
+                }
+            },
+            new HashMap<String, Object>() {
+                {
+                    put(ISBN_FIELD, ISBN2);
+                    put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
+                }
+            }
         );
 
         // Create 'books' index
