@@ -151,7 +151,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().getCount()
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -265,7 +265,7 @@ class ServiceAPITest extends APISpec {
             .setStaticWebsite(website)
 
         expect:
-        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
+        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).statusCode() == 202
     }
 
     def "Set props error"() {
