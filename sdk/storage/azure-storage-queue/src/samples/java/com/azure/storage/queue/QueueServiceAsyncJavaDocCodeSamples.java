@@ -20,7 +20,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link QueueServiceAsyncClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link
+ * QueueServiceAsyncClient}.
  */
 public class QueueServiceAsyncJavaDocCodeSamples {
 
@@ -40,6 +41,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
     public QueueServiceAsyncClient createAsyncClientWithSASToken() {
@@ -53,6 +55,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
     public QueueServiceAsyncClient createAsyncClientWithCredential() {
@@ -66,7 +69,9 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@code connectionString} which turns
+     * into {@link SharedKeyCredential}
+     *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
     public QueueServiceAsyncClient createAsyncClientWithConnectionString() {
@@ -86,7 +91,8 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void createQueueAsync() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.createQueue#string
         client.createQueue("myqueue").subscribe(
-            response -> { },
+            response -> {
+            },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the queue!")
         );
@@ -209,7 +215,8 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(StorageServiceProperties)} with metrics enabled.
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(StorageServiceProperties)} with
+     * metrics enabled.
      */
     public void setPropertiesEnableMetrics() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
@@ -222,7 +229,8 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#setPropertiesWithResponse(StorageServiceProperties)} with metrics enabled.
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setPropertiesWithResponse(StorageServiceProperties)}
+     * with metrics enabled.
      */
     public void setPropertiesAsyncEnableMetrics() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties

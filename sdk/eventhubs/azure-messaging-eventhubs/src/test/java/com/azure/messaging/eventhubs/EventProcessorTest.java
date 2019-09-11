@@ -90,7 +90,7 @@ public class EventProcessorTest {
     @Test
     public void testWithSimplePartitionProcessor() throws Exception {
         // Arrange
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -152,7 +152,7 @@ public class EventProcessorTest {
     @Test
     public void testWithFaultyPartitionProcessor() throws Exception {
         // Arrange
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -189,7 +189,7 @@ public class EventProcessorTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -247,7 +247,7 @@ public class EventProcessorTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -306,7 +306,7 @@ public class EventProcessorTest {
         final CountDownLatch count = new CountDownLatch(1);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("1"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);

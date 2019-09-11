@@ -27,6 +27,7 @@ import java.util.Collections;
  * Code snippets for {@link AppendBlobClient}
  */
 public class AppendBlobClientJavaDocCodeSnippets {
+
     private AppendBlobClient client = JavaDocCodeSnippetsHelpers.getBlobClient("blobName")
         .asAppendBlobClient();
     private Duration timeout = Duration.ofSeconds(30);
@@ -40,7 +41,6 @@ public class AppendBlobClientJavaDocCodeSnippets {
     private long count = 1024;
 
     /**
-     *
      * @throws UnsupportedEncodingException if cannot get bytes from sample sting as utf-8 encoding
      */
     AppendBlobClientJavaDocCodeSnippets() throws UnsupportedEncodingException {
@@ -75,7 +75,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#createWithResponse(BlobHTTPHeaders, Metadata, BlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link AppendBlobClient#createWithResponse(BlobHTTPHeaders, Metadata, BlobAccessConditions,
+     * Duration, Context)}
      */
     public void create3() {
         // BEGIN: com.azure.storage.blob.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
@@ -105,7 +106,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, AppendBlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, AppendBlobAccessConditions,
+     * Duration, Context)}
      */
     public void appendBlock2() {
         // BEGIN: com.azure.storage.blob.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
@@ -116,8 +118,13 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("AppendBlob has %d committed blocks%n",
+<<<<<<< HEAD
             client.appendBlockWithResponse(data, length, accessConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
+=======
+            client.appendBlockWithResponse(data, length, accessConditions, timeout, context).getValue()
+                .blobCommittedBlockCount());
+>>>>>>> Misc getter and setter renaming
         // END: com.azure.storage.blob.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
     }
 
@@ -132,7 +139,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockFromUrl(URL, BlobRange, byte[], AppendBlobAccessConditions, SourceModifiedAccessConditions, Duration)}
+     * Code snippet for {@link AppendBlobClient#appendBlockFromUrl(URL, BlobRange, byte[], AppendBlobAccessConditions,
+     * SourceModifiedAccessConditions, Duration)}
      */
     public void appendBlockFromUrl2() {
         // BEGIN: com.azure.storage.blob.AppendBlobClient.appendBlockFromUrl#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration
@@ -151,7 +159,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockFromUrlWithResponse(URL, BlobRange, byte[], AppendBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link AppendBlobClient#appendBlockFromUrlWithResponse(URL, BlobRange, byte[],
+     * AppendBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
     public void appendBlockFromUrl3() {
         // BEGIN: com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
@@ -167,8 +176,13 @@ public class AppendBlobClientJavaDocCodeSnippets {
 
         System.out.printf("AppendBlob has %d committed blocks%n",
             client.appendBlockFromUrlWithResponse(sourceUrl, new BlobRange(offset, count), null,
+<<<<<<< HEAD
                 appendBlobAccessConditions, modifiedAccessConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
+=======
+                appendBlobAccessConditions, modifiedAccessConditions, timeout, context).getValue()
+                .blobCommittedBlockCount());
+>>>>>>> Misc getter and setter renaming
         // END: com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
 }

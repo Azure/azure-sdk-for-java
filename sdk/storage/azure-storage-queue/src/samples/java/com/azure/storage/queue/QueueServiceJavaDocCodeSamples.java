@@ -24,7 +24,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link QueueServiceAsyncClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link
+ * QueueServiceAsyncClient}.
  */
 public class QueueServiceJavaDocCodeSamples {
 
@@ -46,6 +47,7 @@ public class QueueServiceJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link QueueServiceClient}
      */
     public QueueServiceClient createClientWithSASToken() {
@@ -59,6 +61,7 @@ public class QueueServiceJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link QueueServiceClient}
      */
     public QueueServiceClient createClientWithCredential() {
@@ -72,13 +75,15 @@ public class QueueServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link QueueServiceClient} with {@code connectionString} which turns into
+     * {@link SharedKeyCredential}
+     *
      * @return An instance of {@link QueueServiceClient}
      */
     public QueueServiceClient createClientWithConnectionString() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.instantiation.connectionstring
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
-                         + "AccountKey={key};EndpointSuffix={core.windows.net}";
+            + "AccountKey={key};EndpointSuffix={core.windows.net}";
         QueueServiceClient client = new QueueServiceClientBuilder()
             .connectionString(connectionString)
             .buildClient();
@@ -120,7 +125,8 @@ public class QueueServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceClient#listQueues(QueuesSegmentOptions, Duration, Context)} )}
+     * Generates a code sample for using {@link QueueServiceClient#listQueues(QueuesSegmentOptions, Duration, Context)}
+     * )}
      */
     public void listQueuesWithOverload() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context
@@ -219,7 +225,8 @@ public class QueueServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceClient#setProperties(StorageServiceProperties)} with metrics enabled.
+     * Generates a code sample for using {@link QueueServiceClient#setProperties(StorageServiceProperties)} with metrics
+     * enabled.
      */
     public void setPropertiesEnableMetrics() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties
