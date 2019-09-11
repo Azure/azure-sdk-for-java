@@ -89,5 +89,5 @@ public class  KeyVaultTest extends TestBase {
     }
 
     protected String domain;
-    private static String PRINCIPAL_ID = "5ae156d4-2a10-47dc-a5c7-89fa4cd313ce";    // if it fails, user your clientId in AZURE_AUTH_LOCATION
+    private static String PRINCIPAL_ID = "00000000-0000-0000-0000-000000000000";    // one option is to use your userId or clientId in AZURE_AUTH_LOCATION
 }
