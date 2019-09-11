@@ -11,12 +11,18 @@ import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.models.Book;
+import com.azure.search.service.models.DataType;
+import com.azure.search.service.models.Field;
+import com.azure.search.service.models.Index;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -71,8 +77,11 @@ public class IndexingAsyncTests extends IndexingTestBase {
         );
 
         // Create 'books' index
-        SearchIndexService searchIndexService = new SearchIndexService(BOOKS_INDEX_JSON, searchServiceName, apiKey);
-        searchIndexService.initialize();
+        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(BOOKS_INDEX_JSON));
+        Index index = new ObjectMapper().readValue(indexData, Index.class);
+        if (!interceptorManager.isPlaybackMode()) {
+            searchServiceClient.indexes().create(index);
+        }
 
         // Upload and retrieve book documents
         uploadDocuments(client, BOOKS_INDEX_NAME, books);
@@ -109,8 +118,11 @@ public class IndexingAsyncTests extends IndexingTestBase {
         );
 
         // Create 'books' index
-        SearchIndexService searchIndexService = new SearchIndexService(BOOKS_INDEX_JSON, searchServiceName, apiKey);
-        searchIndexService.initialize();
+        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(BOOKS_INDEX_JSON));
+        Index index = new ObjectMapper().readValue(indexData, Index.class);
+        if (!interceptorManager.isPlaybackMode()) {
+            searchServiceClient.indexes().create(index);
+        }
 
         // Upload and retrieve book documents
         uploadDocuments(client, BOOKS_INDEX_NAME, books);

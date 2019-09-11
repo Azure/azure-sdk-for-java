@@ -5,6 +5,9 @@ package com.azure.search.data.tests;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.service.SearchServiceClient;
+import com.azure.search.service.customization.SearchCredentials;
+import com.azure.search.service.implementation.SearchServiceClientImpl;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -12,11 +15,18 @@ import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected static final String INDEX_NAME = "hotels";
+    protected SearchServiceClient searchServiceClient;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         initializeClient();
+
+        if (searchServiceClient == null) {
+            SearchCredentials searchCredentials = new SearchCredentials(apiKey);
+            searchServiceClient = new SearchServiceClientImpl(searchCredentials)
+                .withSearchServiceName(searchServiceName);
+        }
     }
 
     @Test
