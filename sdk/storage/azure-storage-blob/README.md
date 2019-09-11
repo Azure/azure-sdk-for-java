@@ -1,7 +1,5 @@
 # Azure Storage Blobs client library for Java
 
-> Server Version: 2018-11-09
-
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob
 storage is optimized for storing massive amounts of unstructured data.
 Unstructured data is data that does not adhere to a particular data model or
@@ -23,7 +21,7 @@ definition, such as text or binary data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.0.0-preview.2</version>
+  <version>12.0.0-preview.3</version>
 </dependency>
 ```
 
