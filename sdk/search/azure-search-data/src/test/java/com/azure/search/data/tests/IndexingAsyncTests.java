@@ -4,23 +4,18 @@ package com.azure.search.data.tests;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.*;
-import com.azure.search.data.helpers.EntityMapper;
 import com.azure.search.data.models.Hotel;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import org.junit.Assert;
 
 import java.time.Duration;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 
@@ -40,19 +35,20 @@ public class IndexingAsyncTests extends IndexingTestBase {
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
 
-        List<IndexAction> indexActions = new LinkedList<>();
         Hotel myHotel = new Hotel().hotelId(expectedHotelId);
-        Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
+        List<Hotel> toUpload = Arrays.asList(myHotel);
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(toUpload);
 
-        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, hotelMap);
-        Mono<DocumentIndexResult> asyncResult = indexDocumentsAsync(indexActions);
-
-        StepVerifier.create(asyncResult).consumeNextWith(res -> {
+        StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.results();
             this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
-        }).thenAwait(Duration.ofSeconds(4)).verifyComplete();
+        }).verifyComplete();
 
-        StepVerifier.create(client.countDocuments()).expectNext(expectedHotelCount).expectComplete().verify();
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments()).
+            expectNext(expectedHotelCount).
+            verifyComplete();
     }
 
     @Override
@@ -60,30 +56,30 @@ public class IndexingAsyncTests extends IndexingTestBase {
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
 
-        List<IndexAction> indexActions = new LinkedList<>();
         Hotel myHotel = new Hotel().hotelId(expectedHotelId);
         myHotel.hotelName("My Pascal Hotel");
         myHotel.description("A Great Pascal Description.");
         myHotel.category("Category Pascal");
+        List<Hotel> toUpload = Arrays.asList(myHotel);
 
-        Map<String, Object> hotelMap = new EntityMapper<Hotel>().objectToMap(myHotel);
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(toUpload);
 
-        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, hotelMap);
-        Mono<DocumentIndexResult> asyncResult = indexDocumentsAsync(indexActions);
-
-        StepVerifier.create(asyncResult).consumeNextWith(res -> {
+        StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.results();
             this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
-        }).thenAwait(Duration.ofSeconds(4)).verifyComplete();
+        }).verifyComplete();
 
-        StepVerifier.create(client.countDocuments()).expectNext(expectedHotelCount).expectComplete().verify();
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments()).
+            expectNext(expectedHotelCount).
+            verifyComplete();
     }
 
     @Override
     public void indexWithInvalidDocumentThrowsException() {
-        List<IndexAction> indexActions = new LinkedList<>();
-        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, new Document());
-        Mono<DocumentIndexResult> indexResult = client.index(new IndexBatch().actions(indexActions));
+        List<Document> toUpload = Arrays.asList(new Document());
+        Mono<DocumentIndexResult> indexResult = client.uploadDocuments(toUpload);
 
         StepVerifier
             .create(indexResult)
@@ -97,12 +93,5 @@ public class IndexingAsyncTests extends IndexingTestBase {
     @Override
     protected void initializeClient() {
         client = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
-    }
-
-    protected Mono<DocumentIndexResult> indexDocumentsAsync(List<IndexAction> indexActions) {
-        IndexBatch indexBatch = new IndexBatch().actions(indexActions);
-        Mono<DocumentIndexResult> indexResult = client.index(indexBatch);
-
-        return indexResult;
     }
 }

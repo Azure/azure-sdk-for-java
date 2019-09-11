@@ -11,21 +11,17 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.common.jsonwrapper.JsonWrapper;
+import com.azure.search.data.common.jsonwrapper.api.JsonApi;
+import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.data.generated.models.AutocompleteParameters;
-import com.azure.search.data.generated.models.AutocompleteResult;
-import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.generated.models.SearchParameters;
-import com.azure.search.data.generated.models.SearchRequest;
-import com.azure.search.data.generated.models.SearchRequestOptions;
-import com.azure.search.data.generated.models.SearchResult;
-import com.azure.search.data.generated.models.SuggestParameters;
-import com.azure.search.data.generated.models.SuggestResult;
+import com.azure.search.data.generated.models.*;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements SearchIndexAsyncClient {
 
@@ -126,6 +122,11 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         this.indexName = indexName;
         restClient.setIndexName(indexName);
         return this;
+    }
+
+    @Override
+    public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().upload(documents));
     }
 
     @Override

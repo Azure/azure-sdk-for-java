@@ -8,11 +8,6 @@ import com.azure.search.data.generated.models.IndexingResult;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-
-import java.util.List;
-import java.util.Map;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected static final String INDEX_NAME = "hotels";
@@ -44,9 +39,12 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(expectedStatusCode, result.statusCode());
     }
 
-    protected void addDocumentToIndexActions(List<IndexAction> indexActions, IndexActionType indexActionType, Map<String, Object> document) {
-        indexActions.add(new IndexAction()
-            .actionType(indexActionType)
-            .additionalProperties(document));
+    protected void waitFor(int seconds){
+        seconds = seconds * 1000;
+        try {
+            Thread.sleep(seconds);
+        } catch (InterruptedException e) {
+            Assert.fail(e.getMessage());
+        }
     }
 }

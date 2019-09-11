@@ -40,6 +40,11 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
+    public <T> DocumentIndexResult uploadDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().upload(documents));
+    }
+
+    @Override
     public String getApiVersion() {
 
         return asyncClient.getApiVersion();
