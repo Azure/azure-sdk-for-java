@@ -12,8 +12,10 @@ import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.models.Book;
+import com.azure.search.service.models.DataType;
+import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
+import com.azure.search.data.models.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.search.data.models.Hotel;
 
@@ -26,6 +28,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import java.util.Collections;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
@@ -90,6 +93,28 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
+    public void canUseIndexWithReservedName() {
+        Index indexWithReservedName = new Index()
+            .withName("prototype")
+            .withFields(Collections.singletonList(new Field().withName("ID").withType(DataType.EDM_STRING).withKey(Boolean.TRUE)));
+
+        if (!interceptorManager.isPlaybackMode()) {
+            searchServiceClient.indexes().create(indexWithReservedName);
+        }
+        Map<String, Object> indexData = new HashMap<>();
+        indexData.put("ID", "1");
+
+        client.setIndexName(indexWithReservedName.name())
+            .index(new IndexBatch()
+                .actions(Collections.singletonList(new IndexAction()
+                    .actionType(IndexActionType.UPLOAD)
+                    .additionalProperties(indexData))));
+
+        Document actual = client.getDocument("1");
+        Assert.assertNotNull(actual);
+    }
+
+    @Override
     public void canRoundtripBoundaryValues() throws Exception {
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         jsonApi.configureTimezone();
@@ -114,6 +139,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             Hotel actual = doc.as(Hotel.class);
             Assert.assertEquals(expected, actual);
         }
+
     }
 
     @Override

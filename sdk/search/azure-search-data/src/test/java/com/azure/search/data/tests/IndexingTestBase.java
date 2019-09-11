@@ -56,6 +56,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     public abstract void indexWithInvalidDocumentThrowsException();
 
     @Test
+    public abstract void canUseIndexWithReservedName();
+
+    @Test
     public abstract void canRoundtripBoundaryValues() throws Exception;
 
     @Test
