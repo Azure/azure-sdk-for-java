@@ -118,13 +118,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("AppendBlob has %d committed blocks%n",
-<<<<<<< HEAD
             client.appendBlockWithResponse(data, length, accessConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
-=======
-            client.appendBlockWithResponse(data, length, accessConditions, timeout, context).getValue()
-                .blobCommittedBlockCount());
->>>>>>> Misc getter and setter renaming
         // END: com.azure.storage.blob.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
     }
 
@@ -176,13 +171,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
 
         System.out.printf("AppendBlob has %d committed blocks%n",
             client.appendBlockFromUrlWithResponse(sourceUrl, new BlobRange(offset, count), null,
-<<<<<<< HEAD
                 appendBlobAccessConditions, modifiedAccessConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
-=======
-                appendBlobAccessConditions, modifiedAccessConditions, timeout, context).getValue()
-                .blobCommittedBlockCount());
->>>>>>> Misc getter and setter renaming
         // END: com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
 }

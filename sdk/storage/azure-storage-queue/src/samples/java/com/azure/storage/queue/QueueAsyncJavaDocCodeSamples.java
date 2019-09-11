@@ -149,13 +149,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponse#string-duration-duration
         client.enqueueMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null).subscribe(
-<<<<<<< HEAD
             response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
                 response.getValue().getExpirationTime()),
-=======
-            response -> System.out.printf("Message %s expires at %s", response.getValue().messageId(),
-                response.getValue().expirationTime()),
->>>>>>> Misc getter and setter renaming
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete enqueuing the message!")
         );
@@ -170,13 +165,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration
         client.enqueueMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5)).subscribe(
-<<<<<<< HEAD
             response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
                 response.getValue().getExpirationTime()),
-=======
-            response -> System.out.printf("Message %s expires at %s", response.getValue().messageId(),
-                response.getValue().expirationTime()),
->>>>>>> Misc getter and setter renaming
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete enqueuing the message!")
         );
@@ -190,11 +180,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages
         client.dequeueMessages().subscribe(
             dequeuedMessage -> System.out.println("The message got from dequeue operation: "
-<<<<<<< HEAD
                 + dequeuedMessage.getMessageText()),
-=======
-                + dequeuedMessage.messageText()),
->>>>>>> Misc getter and setter renaming
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete dequeuing the message!")
         );
@@ -265,13 +251,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-<<<<<<< HEAD
                 client.updateMessage("newText", dequeuedMessage.getMessageId(),
                     dequeuedMessage.getPopReceipt(), null).subscribe(
-=======
-                client.updateMessage("newText", dequeuedMessage.messageId(),
-                    dequeuedMessage.popReceipt(), null).subscribe(
->>>>>>> Misc getter and setter renaming
                     response -> {
                     },
                     updateError -> System.err.print(updateError.toString()),
@@ -292,13 +273,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-<<<<<<< HEAD
                 client.updateMessageWithResponse("newText", dequeuedMessage.getMessageId(),
                     dequeuedMessage.getPopReceipt(), null).subscribe(
-=======
-                client.updateMessageWithResponse("newText", dequeuedMessage.messageId(),
-                    dequeuedMessage.popReceipt(), null).subscribe(
->>>>>>> Misc getter and setter renaming
                     response -> System.out.println("Complete updating the message with status code:"
                         + response.getStatusCode()),
                     updateError -> System.err.print(updateError.toString()),
@@ -318,11 +294,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-<<<<<<< HEAD
                 client.deleteMessage(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt()).subscribe(
-=======
-                client.deleteMessage(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
->>>>>>> Misc getter and setter renaming
                     response -> {
                     },
                     deleteError -> System.err.print(deleteError.toString()),
@@ -342,14 +314,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-<<<<<<< HEAD
                 client.deleteMessageWithResponse(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt()).subscribe(
                     response -> System.out.println("Complete deleting the message with status code: " + response.getStatusCode()),
-=======
-                client.deleteMessageWithResponse(dequeuedMessage.messageId(), dequeuedMessage.popReceipt()).subscribe(
-                    response -> System.out
-                        .println("Complete deleting the message with status code: " + response.getStatusCode()),
->>>>>>> Misc getter and setter renaming
                     deleteError -> System.err.print(deleteError.toString()),
                     () -> System.out.println("Complete deleting the message!")
                 );
