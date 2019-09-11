@@ -37,22 +37,22 @@ public class ManagingDeletedKeysAsync {
         // Let's create Ec and Rsa keys valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
         keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .expires(OffsetDateTime.now().plusYears(1)))
+                .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
+                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1)))
+                .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
+                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.deleteKey("CloudEcKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);
@@ -67,17 +67,17 @@ public class ManagingDeletedKeysAsync {
 
         // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
         keyAsyncClient.deleteKey("CloudEcKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
 
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
 
         // To ensure key is deleted on server side.
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
         keyAsyncClient.listDeletedKeys().subscribe(deletedKey ->
-            System.out.printf("Deleted key's recovery Id %s \n", deletedKey.recoveryId()));
+            System.out.printf("Deleted key's recovery Id %s \n", deletedKey.getRecoveryId()));
 
         Thread.sleep(15000);
 

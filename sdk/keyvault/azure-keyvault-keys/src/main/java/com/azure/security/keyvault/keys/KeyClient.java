@@ -133,7 +133,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and {@link
      * RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
@@ -161,7 +161,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and {@link
      * RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
@@ -190,7 +190,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
      * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if
@@ -219,7 +219,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
      * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if
@@ -272,10 +272,10 @@ public final class KeyClient {
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#keyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
      * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
      * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
@@ -304,10 +304,10 @@ public final class KeyClient {
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#keyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
      * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
      * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>

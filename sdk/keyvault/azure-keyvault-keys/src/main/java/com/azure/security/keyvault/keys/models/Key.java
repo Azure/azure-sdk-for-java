@@ -18,7 +18,7 @@ public class Key extends KeyBase {
      *
      * @return the key value
      */
-    public JsonWebKey keyMaterial() {
+    public JsonWebKey getKeyMaterial() {
         return this.keyMaterial;
     }
 
@@ -29,8 +29,8 @@ public class Key extends KeyBase {
      * @return the Key object itself.
      */
     @Override
-    public Key notBefore(OffsetDateTime notBefore) {
-        super.notBefore(notBefore);
+    public Key setNotBefore(OffsetDateTime notBefore) {
+        super.setNotBefore(notBefore);
         return this;
     }
 
@@ -41,8 +41,8 @@ public class Key extends KeyBase {
      * @return the Key object itself.
      */
     @Override
-    public Key expires(OffsetDateTime expires) {
-        super.expires(expires);
+    public Key setExpires(OffsetDateTime expires) {
+        super.setExpires(expires);
         return this;
     }
 
@@ -52,8 +52,8 @@ public class Key extends KeyBase {
      * @param tags The tags to set
      * @return the Key object itself.
      */
-    public Key tags(Map<String, String> tags) {
-        super.tags(tags);
+    public Key setTags(Map<String, String> tags) {
+        super.setTags(tags);
         return this;
     }
 

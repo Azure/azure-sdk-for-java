@@ -41,7 +41,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the recoveryId identifier.
      */
-    public String recoveryId() {
+    public String getRecoveryId() {
         return this.recoveryId;
     }
 
@@ -51,7 +51,7 @@ public final class DeletedSecret extends SecretBase {
      * @param recoveryId The recoveryId identifier to set
      * @return the DeletedSecret object itself.
      */
-    public DeletedSecret recoveryId(String recoveryId) {
+    public DeletedSecret setRecoveryId(String recoveryId) {
         this.recoveryId = recoveryId;
         return this;
     }
@@ -61,7 +61,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the scheduledPurgeDate UTC time.
      */
-    public OffsetDateTime scheduledPurgeDate() {
+    public OffsetDateTime getScheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
@@ -70,7 +70,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime deletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return this.deletedDate;
     }
 
@@ -89,7 +89,7 @@ public final class DeletedSecret extends SecretBase {
      * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
-    private void deletedDate(Long deletedDate) {
+    private void setDeletedDate(Long deletedDate) {
         this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 

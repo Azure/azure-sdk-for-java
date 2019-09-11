@@ -38,9 +38,9 @@ public class BackupAndRestoreOperationsAsync {
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-            .expires(OffsetDateTime.now().plusYears(1)))
+            .setExpires(OffsetDateTime.now().plusYears(1)))
             .subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
@@ -56,7 +56,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // The storage account secret is no longer in use, so you delete it.
         secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);
@@ -71,7 +71,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the secret is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         secretAsyncClient.restoreSecret(backupFromFile).subscribe(secretResponse ->
-            System.out.printf("Restored Secret with name %s \n", secretResponse.name()));
+            System.out.printf("Restored Secret with name %s \n", secretResponse.getName()));
 
         //To ensure secret is restored on server side.
         Thread.sleep(15000);

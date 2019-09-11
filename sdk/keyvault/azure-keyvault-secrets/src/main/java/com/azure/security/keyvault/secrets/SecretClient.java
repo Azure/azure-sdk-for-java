@@ -47,9 +47,9 @@ public final class SecretClient {
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, a new version of the
      * secret is created in the key vault. This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@link Secret} is required. The {@link Secret#expires() expires}, {@link Secret#contentType() contentType}
+     * <p>The {@link Secret} is required. The {@link Secret#getExpires() expires}, {@link Secret#getContentType() contentType}
      * and
-     * {@link Secret#notBefore() notBefore} values in {@code secret} are optional. The {@link Secret#enabled() enabled}
+     * {@link Secret#getNotBefore() notBefore} values in {@code secret} are optional. The {@link Secret#isEnabled() enabled}
      * field is set to true by key vault, if not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -60,7 +60,7 @@ public final class SecretClient {
      * @return The {@link Secret created secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpRequestException if {@link Secret#name() name} or {@link Secret#value() value} is empty string.
+     * @throws HttpRequestException if {@link Secret#getName() name} or {@link Secret#getValue() value} is empty string.
      */
     public Secret setSecret(Secret secret) {
         return setSecretWithResponse(secret, Context.NONE).getValue();
@@ -142,9 +142,9 @@ public final class SecretClient {
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Secret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
-     *     SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} is empty
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
+     *     SecretBase#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#getName()  name} or {@link SecretBase#getVersion() version} is empty
      *     string.
      */
     public Response<Secret> getSecretWithResponse(SecretBase secretBase, Context context) {
@@ -164,9 +164,9 @@ public final class SecretClient {
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @return The requested {@link Secret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
-     *     SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name()  name} or {@link SecretBase#version() version} is
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
+     *     SecretBase#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#getName()  name} or {@link SecretBase#getVersion() version} is
      *     empty string.
      */
     public Secret getSecret(SecretBase secretBase) {
@@ -219,7 +219,7 @@ public final class SecretClient {
      * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
      * requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version()
+     * <p>The {@code secret} is required and its fields {@link SecretBase#getName() name} and {@link SecretBase#getVersion()
      * version} cannot be null.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -231,9 +231,9 @@ public final class SecretClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link SecretBase updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
-     *     SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name() name} or {@link SecretBase#version() version} is
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
+     *     SecretBase#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#getName() name} or {@link SecretBase#getVersion() version} is
      *     empty string.
      */
     public Response<SecretBase> updateSecretWithResponse(SecretBase secret, Context context) {
@@ -246,7 +246,7 @@ public final class SecretClient {
      * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
      * requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version()
+     * <p>The {@code secret} is required and its fields {@link SecretBase#getName() name} and {@link SecretBase#getVersion()
      * version} cannot be null.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -257,9 +257,9 @@ public final class SecretClient {
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @return The {@link SecretBase updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
-     *     SecretBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#name() name} or {@link SecretBase#version() version} is
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
+     *     SecretBase#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#getName() name} or {@link SecretBase#getVersion() version} is
      *     empty string.
      */
     public SecretBase updateSecret(SecretBase secret) {

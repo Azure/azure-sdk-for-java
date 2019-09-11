@@ -131,7 +131,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Key>> createKeyWithResponse(String name, KeyType keyType, Context context) {
-        KeyRequestParameters parameters = new KeyRequestParameters().kty(keyType);
+        KeyRequestParameters parameters = new KeyRequestParameters().setKty(keyType);
         return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", name))
@@ -172,9 +172,9 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
         Objects.requireNonNull(keyCreateOptions, "The key create options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(keyCreateOptions.keyType())
-            .keyOps(keyCreateOptions.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(keyCreateOptions));
+            .setKty(keyCreateOptions.keyType())
+            .setKeyOps(keyCreateOptions.keyOperations())
+            .setKeyAttributes(new KeyRequestAttributes(keyCreateOptions));
         return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", keyCreateOptions.name()))
@@ -187,7 +187,7 @@ public final class KeyAsyncClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and
      * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The
      * {@link RsaKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
@@ -218,7 +218,7 @@ public final class KeyAsyncClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and
      * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link
      * RsaKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
@@ -244,10 +244,10 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
         Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(rsaKeyCreateOptions.keyType())
-            .keySize(rsaKeyCreateOptions.keySize())
-            .keyOps(rsaKeyCreateOptions.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
+            .setKty(rsaKeyCreateOptions.keyType())
+            .setKeySize(rsaKeyCreateOptions.getKeySize())
+            .setKeyOps(rsaKeyCreateOptions.keyOperations())
+            .setKeyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
         return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", rsaKeyCreateOptions.name()))
@@ -260,7 +260,7 @@ public final class KeyAsyncClient {
      * type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires
      * the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
      * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault,
@@ -292,7 +292,7 @@ public final class KeyAsyncClient {
      * type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires
      * the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
      * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if
@@ -323,10 +323,10 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
         Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(ecKeyCreateOptions.keyType())
-            .curve(ecKeyCreateOptions.curve())
-            .keyOps(ecKeyCreateOptions.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
+            .setKty(ecKeyCreateOptions.keyType())
+            .setCurve(ecKeyCreateOptions.getCurve())
+            .setKeyOps(ecKeyCreateOptions.keyOperations())
+            .setKeyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
         return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating Ec key - {}", ecKeyCreateOptions.name()))
@@ -361,7 +361,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Key>> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
-        KeyImportRequestParameters parameters = new KeyImportRequestParameters().key(keyMaterial);
+        KeyImportRequestParameters parameters = new KeyImportRequestParameters().setKey(keyMaterial);
         return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", name))
@@ -375,10 +375,10 @@ public final class KeyAsyncClient {
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#keyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
      * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
      * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key
@@ -410,10 +410,10 @@ public final class KeyAsyncClient {
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#keyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
      * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
      * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled}
-     * field is set to true and the {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they
+     * field is set to true and the {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they
      * are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -445,9 +445,9 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions, Context context) {
         Objects.requireNonNull(keyImportOptions, "The key import configuration parameter cannot be null.");
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
-            .key(keyImportOptions.keyMaterial())
-            .hsm(keyImportOptions.hsm())
-            .keyAttributes(new KeyRequestAttributes(keyImportOptions));
+            .setKey(keyImportOptions.getKeyMaterial())
+            .setHsm(keyImportOptions.isHsm())
+            .setKeyAttributes(new KeyRequestAttributes(keyImportOptions));
         return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", keyImportOptions.name()))
@@ -605,8 +605,8 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> updateKeyWithResponse(KeyBase key, Context context) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .tags(key.tags())
-            .keyAttributes(new KeyRequestAttributes(key));
+            .setTags(key.tags())
+            .setKeyAttributes(new KeyRequestAttributes(key));
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating key - {}", key.name()))
@@ -672,9 +672,9 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> updateKeyWithResponse(KeyBase key, Context context, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .tags(key.tags())
-            .keyOps(Arrays.asList(keyOperations))
-            .keyAttributes(new KeyRequestAttributes(key));
+            .setTags(key.tags())
+            .setKeyOps(Arrays.asList(keyOperations))
+            .setKeyAttributes(new KeyRequestAttributes(key));
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating key - {}", key.name()))
@@ -930,7 +930,7 @@ public final class KeyAsyncClient {
             .doOnSuccess(response -> logger.info("Backed up key - {}", name))
             .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
             .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
-                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
+                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().getValue())));
     }
 
     /**
@@ -989,7 +989,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Key>> restoreKeyWithResponse(byte[] backup, Context context) {
-        KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().keyBackup(backup);
+        KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
         return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Attempting to restore key"))

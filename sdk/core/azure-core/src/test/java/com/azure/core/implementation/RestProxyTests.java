@@ -1468,7 +1468,7 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getHeaders());
-        assertNotEquals(0, response.getHeaders().size());
+        assertNotEquals(0, response.getHeaders().getSize());
     }
 
     @Test

@@ -77,7 +77,7 @@ public class KeyCreateOptions {
      * @param keyOperations The key operations value to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions keyOperations(KeyOperation... keyOperations) {
+    public KeyCreateOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
@@ -97,7 +97,7 @@ public class KeyCreateOptions {
      * @param notBefore The notBefore UTC time to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions notBefore(OffsetDateTime notBefore) {
+    public KeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -117,7 +117,7 @@ public class KeyCreateOptions {
      * @param expires The expiry time to set for the key.
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions expires(OffsetDateTime expires) {
+    public KeyCreateOptions setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }
@@ -137,7 +137,7 @@ public class KeyCreateOptions {
      * @param tags The tags to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions tags(Map<String, String> tags) {
+    public KeyCreateOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -157,7 +157,7 @@ public class KeyCreateOptions {
      * @param enabled The enabled value to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions enabled(Boolean enabled) {
+    public KeyCreateOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

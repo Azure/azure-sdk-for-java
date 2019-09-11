@@ -36,20 +36,20 @@ public class ManagingDeletedSecretsAsync {
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
-                .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
+                .setExpires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-                .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
+                .setExpires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
         // The storage account was closed, need to delete its credentials from the key vault.
         secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);
@@ -57,7 +57,7 @@ public class ManagingDeletedSecretsAsync {
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
         secretAsyncClient.recoverDeletedSecret("BankAccountPassword").subscribe(recoveredSecretResponse ->
-            System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.name()));
+            System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.getName()));
 
         //To ensure secret is recovered on server side.
         Thread.sleep(10000);
@@ -65,17 +65,17 @@ public class ManagingDeletedSecretsAsync {
         // The bank acoount and storage accounts got closed.
         // Let's delete bank and  storage accounts secrets.
         secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
 
         secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
 
         // To ensure secret is deleted on server side.
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged secrets, assuming key vault is soft-delete enabled.
         secretAsyncClient.listDeletedSecrets().subscribe(deletedSecret ->
-                System.out.printf("Deleted secret's recovery Id %s \n", deletedSecret.recoveryId()));
+                System.out.printf("Deleted secret's recovery Id %s \n", deletedSecret.getRecoveryId()));
 
         Thread.sleep(15000);
 
