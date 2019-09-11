@@ -14,7 +14,7 @@ To get started with a specific library, see the **README.md** file located in th
 For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 
 ### Prerequisites
-Java 8 or later is required to use the July 2019 client preview libraries, otherwise Java 7 or later is required.
+Java 8 or later is required to use the September 2019 client preview libraries, otherwise Java 7 or later is required.
 
 ## Packages available
 Each service might have a number of libraries available from each of the following categories:
