@@ -3,7 +3,6 @@
 
 package com.azure.search.data.tests;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
@@ -25,11 +24,11 @@ import com.azure.search.data.models.Bucket;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.NonNullableModel;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -544,26 +543,26 @@ public class SearchSyncTests extends SearchTestBase {
         Assert.assertEquals(expectedDescriptionHighlights, highlights.get(description));
     }
 
-    @Test
-    public void searchThrowsWhenRequestIsMalformed() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
+    @Override
+    public void canSearchWithSynonyms() {
+        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
 
-        SearchParameters invalidSearchParameters = new SearchParameters()
-            .filter("This is not a valid filter.");
+        String fieldName = "HotelName";
+        prepareHotelsSynonymMap("names", "luxury,fancy", fieldName);
 
-        search("*", invalidSearchParameters, new SearchRequestOptions());
-    }
+        SearchParameters searchParameters = new SearchParameters()
+            .queryType(QueryType.FULL)
+            .searchFields(Collections.singletonList(fieldName))
+            .select(Arrays.asList("HotelName", "Rating"));
 
-    @Test
-    public void searchThrowsWhenSpecialCharInRegexIsUnescaped() {
-        thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Failed to parse query string at line 1, column 8.");
+        PagedIterable<SearchResult> results =
+            client.search("luxury", searchParameters, new SearchRequestOptions());
+        Assert.assertNotNull(results);
 
-        SearchParameters invalidSearchParameters = new SearchParameters()
-            .queryType(QueryType.FULL);
-
-        search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
+        List<Map<String, Object>> response = getSearchResults(results);
+        Assert.assertEquals(1, response.size());
+        Assert.assertEquals("Fancy Stay", response.get(0).get("HotelName"));
+        Assert.assertEquals(5, response.get(0).get("Rating"));
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
