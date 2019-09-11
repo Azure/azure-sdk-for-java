@@ -72,8 +72,8 @@ import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
- * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#setPartitionId(String)
- * partitionId} when creating an {@link EventHubAsyncProducer}.
+ * Developers can push events to a single partition by specifying the
+ * {@link EventHubProducerOptions#setPartitionId(String) partitionId} when creating an {@link EventHubAsyncProducer}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId}
  *
@@ -171,7 +171,7 @@ public class EventHubAsyncProducer implements Closeable {
                     ? clone.getMaximumSizeInBytes()
                     : maximumLinkSize;
 
-                return Mono.just(new EventDataBatch(batchSize, clone.getPartitionKey(), () -> link.getErrorContext()));
+                return Mono.just(new EventDataBatch(batchSize, clone.getPartitionKey(), link::getErrorContext));
             }));
     }
 
@@ -319,7 +319,7 @@ public class EventHubAsyncProducer implements Closeable {
                         .setPartitionKey(partitionKey)
                         .setMaximumSizeInBytes(batchSize);
 
-                    return events.collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
+                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)));
         });
@@ -342,7 +342,7 @@ public class EventHubAsyncProducer implements Closeable {
                             .startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
-                    }).collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
+                    }).collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list)))
                 .doOnEach(signal -> {

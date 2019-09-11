@@ -87,7 +87,7 @@ public class EventHubAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
-                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
+        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         Objects.requireNonNull(provider, "'provider' cannot be null.");
         Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
@@ -193,8 +193,8 @@ public class EventHubAsyncClient implements Closeable {
                 logger.verbose("Creating producer for {}", entityPath);
                 final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
-                return session.createProducer(linkName, entityPath, clonedOptions.getRetry().getTryTimeout(), retryPolicy)
-                    .cast(AmqpSendLink.class);
+                return session.createProducer(linkName, entityPath, clonedOptions.getRetry().getTryTimeout(),
+                    retryPolicy).cast(AmqpSendLink.class);
             });
 
         return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
@@ -208,15 +208,15 @@ public class EventHubAsyncClient implements Closeable {
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
-     *         the context of this group. The name of the consumer group that is created by default is {@link
-     *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is {@link
+     * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubAsyncConsumer} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
-     *         empty string.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
+     * string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
@@ -240,20 +240,20 @@ public class EventHubAsyncClient implements Closeable {
      * non-exclusive.
      * </p>
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
-     *         the context of this group. The name of the consumer group that is created by default is {@link
-     *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is {@link
+     * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
-     *         EventHubConsumerOptions}.
+     * EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     *     {@code options} is {@code null}.
+     * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
-                                                EventHubConsumerOptions options) {
+        EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
@@ -279,16 +279,15 @@ public class EventHubAsyncClient implements Closeable {
         final String entityPath =
             String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubName, consumerGroup, partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> {
-            return connection.createSession(entityPath).cast(EventHubSession.class);
-        }).flatMap(session -> {
-            logger.verbose("Creating consumer for path: {}", entityPath);
-            final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection ->
+            connection.createSession(entityPath).cast(EventHubSession.class)).flatMap(session -> {
+                logger.verbose("Creating consumer for path: {}", entityPath);
+                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
-            return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
-                clonedOptions.getRetry().getTryTimeout(), retryPolicy, options.getOwnerLevel(), options.getIdentifier())
-                .cast(AmqpReceiveLink.class);
-        });
+                return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
+                    clonedOptions.getRetry().getTryTimeout(), retryPolicy, options.getOwnerLevel(),
+                    options.getIdentifier()).cast(AmqpReceiveLink.class);
+            });
 
         return new EventHubAsyncConsumer(receiveLinkMono, clonedOptions);
     }

@@ -194,7 +194,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             logger.info("Setting CBS channel.");
 
             cbsChannel = new CBSChannel(this, connectionOptions.getTokenCredential(),
-                connectionOptions.getAuthorizationType(), reactorProvider, handlerProvider, connectionOptions.getRetry());
+                connectionOptions.getAuthorizationType(), reactorProvider, handlerProvider,
+                connectionOptions.getRetry());
         }
 
         return cbsChannel;

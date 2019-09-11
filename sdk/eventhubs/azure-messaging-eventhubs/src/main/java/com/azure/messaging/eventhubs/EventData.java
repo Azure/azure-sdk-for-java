@@ -188,8 +188,8 @@ public class EventData implements Comparable<EventData> {
      * the {@code key} exists in the map, its existing value is overwritten.
      *
      * <p>
-     * A common use case for {@link #getProperties()} is to associate serialization hints for the {@link #getBody()} as an aid
-     * to consumers who wish to deserialize the binary data.
+     * A common use case for {@link #getProperties()} is to associate serialization hints for the {@link #getBody()} as
+     * an aid to consumers who wish to deserialize the binary data.
      * </p>
      *
      * <p>
@@ -231,8 +231,8 @@ public class EventData implements Comparable<EventData> {
      * event body during Event Hubs operations.
      *
      * <p>
-     * A common use case for {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid
-     * to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
+     * A common use case for {@code properties()} is to associate serialization hints for the {@link #getBody()} as an
+     * aid to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
      * </p>
      *
      * @return Application properties associated with this {@link EventData}.
@@ -255,7 +255,7 @@ public class EventData implements Comparable<EventData> {
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     *     the {@link EventData} is not received and is created by the public constructors.
+     * the {@link EventData} is not received and is created by the public constructors.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -266,8 +266,8 @@ public class EventData implements Comparable<EventData> {
      *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #getProperties()} when creating the event, to associate serialization hints as an aid to consumers who wish
-     * to deserialize the binary data.
+     * {@link #getProperties()} when creating the event, to associate serialization hints as an aid to consumers who
+     * wish to deserialize the binary data.
      * </p>
      *
      * @return ByteBuffer representing the data.
@@ -289,7 +289,7 @@ public class EventData implements Comparable<EventData> {
      * Gets the offset of the event when it was received from the associated Event Hub partition.
      *
      * @return The offset within the Event Hub partition of the received event. {@code null} if the EventData was not
-     *     received from Event Hub service.
+     * received from Event Hub service.
      */
     public Long getOffset() {
         return systemProperties.getOffset();
@@ -300,7 +300,7 @@ public class EventData implements Comparable<EventData> {
      * a partition to send the message to.
      *
      * @return A partition key for this Event Data. {@code null} if the EventData was not received from Event Hub
-     *     service or there was no partition key set when the event was sent to the Event Hub.
+     * service or there was no partition key set when the event was sent to the Event Hub.
      */
     public String getPartitionKey() {
         return systemProperties.getPartitionKey();
@@ -310,7 +310,7 @@ public class EventData implements Comparable<EventData> {
      * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
      *
      * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the EventData was not
-     *     received from Event Hub service.
+     * received from Event Hub service.
      */
     public Instant getEnqueuedTime() {
         return systemProperties.getEnqueuedTime();
@@ -321,7 +321,7 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return The sequence number for this event. {@code null} if the EventData was not received from Event Hub
-     *     service.
+     * service.
      */
     public Long getSequenceNumber() {
         return systemProperties.getSequenceNumber();
@@ -447,8 +447,8 @@ public class EventData implements Comparable<EventData> {
          * Event Hub.
          *
          * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
-         *     retrieved event.
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
+         * event.
          */
         private Long getSequenceNumber() {
             return sequenceNumber;

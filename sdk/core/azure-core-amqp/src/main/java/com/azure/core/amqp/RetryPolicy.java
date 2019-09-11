@@ -27,8 +27,8 @@ public abstract class RetryPolicy implements Cloneable {
 
     /**
      * Creates an instance with the given retry options. If {@link RetryOptions#getMaxDelay()}, {@link
-     * RetryOptions#getDelay()}, or {@link RetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or zero, requests
-     * failing with a retriable exception will not be retried.
+     * RetryOptions#getDelay()}, or {@link RetryOptions#getMaxRetries()} is equal to {@link Duration#ZERO} or zero,
+     * requests failing with a retriable exception will not be retried.
      *
      * @param retryOptions The options to set on this retry policy.
      * @throws NullPointerException if {@code retryOptions} is {@code null}.
@@ -39,8 +39,8 @@ public abstract class RetryPolicy implements Cloneable {
         this.retryOptions = retryOptions;
 
         // 1 second = 1.0 * 10^9 nanoseconds.
-        final Double jitterInNanos = retryOptions.getDelay().getSeconds() * JITTER_FACTOR * NANOS_PER_SECOND;
-        baseJitter = Duration.ofNanos(jitterInNanos.longValue());
+        final double jitterInNanos = retryOptions.getDelay().getSeconds() * JITTER_FACTOR * NANOS_PER_SECOND;
+        baseJitter = Duration.ofNanos((long) jitterInNanos);
     }
 
     /**
@@ -65,10 +65,9 @@ public abstract class RetryPolicy implements Cloneable {
      * Calculates the amount of time to delay before the next retry attempt.
      *
      * @param lastException The last exception that was observed for the operation to be retried.
-     * @param retryCount The number of attempts that have been made, including the initial attempt before any
-     *         retries.
+     * @param retryCount The number of attempts that have been made, including the initial attempt before any retries.
      * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
-     *         is no longer eligible to be retried.
+     * is no longer eligible to be retried.
      */
     public Duration calculateRetryDelay(Exception lastException, int retryCount) {
         if (retryOptions.getDelay() == Duration.ZERO
@@ -101,20 +100,18 @@ public abstract class RetryPolicy implements Cloneable {
     }
 
     /**
-     * Calculates the amount of time to delay before the next retry attempt based on the {@code retryCound},
+     * Calculates the amount of time to delay before the next retry attempt based on the {@code retryCount},
      * {@code baseDelay}, and {@code baseJitter}.
      *
-     * @param retryCount The number of attempts that have been made, including the initial attempt before any
-     *         retries.
+     * @param retryCount The number of attempts that have been made, including the initial attempt before any retries.
      * @param baseDelay The base delay for a retry attempt.
      * @param baseJitter The base jitter delay.
-     * @param random The random number generator. Can be utilised to calculate a random jitter value for the
-     *         retry.
+     * @param random The random number generator. Can be utilised to calculate a random jitter value for the retry.
      * @return The amount of time to delay before retrying to associated operation; or {@code null} if the it cannot be
-     *         retried.
+     * retried.
      */
     protected abstract Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
-                                                    ThreadLocalRandom random);
+        ThreadLocalRandom random);
 
     /**
      * Creates a clone of the retry policy.

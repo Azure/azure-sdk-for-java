@@ -20,6 +20,8 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.publisher.Signal;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -27,7 +29,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import reactor.core.publisher.Signal;
 
 import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
@@ -173,7 +174,8 @@ public class PartitionPumpManager {
                 // close the consumer
                 eventHubConsumer.close();
             } catch (IOException ex) {
-                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.getPartitionId(), ex);
+                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.getPartitionId(),
+                    ex);
             } finally {
                 // finally, remove the partition from partitionPumps map
                 partitionPumps.remove(claimedOwnership.getPartitionId());

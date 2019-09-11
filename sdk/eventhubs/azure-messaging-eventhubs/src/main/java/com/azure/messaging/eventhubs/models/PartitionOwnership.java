@@ -104,7 +104,8 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this instance}.
+     * Gets the owner level (aka epoch number) for the event processor identified by
+     * {@link #getOwnerId() this instance}.
      *
      * @return The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this
      *     instance}.
@@ -114,7 +115,8 @@ public class PartitionOwnership {
     }
 
     /**
-     * Sets the owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this instance}.
+     * Sets the owner level (aka epoch number) for the event processor identified by
+     * {@link #getOwnerId() this instance}.
      *
      * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId()
      *     this instance}.

@@ -92,8 +92,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          duplicates the ByteBuffer object, not the underlying data.
          */
         context.setHttpRequest(originalRequest.buffer());
-        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null) ? null :
-            context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
+        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
+            ? null
+            : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
         context.getHttpRequest().setBody(bufferedBody);
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());

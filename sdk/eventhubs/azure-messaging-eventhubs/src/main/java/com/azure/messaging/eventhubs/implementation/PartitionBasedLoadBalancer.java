@@ -3,9 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toList;
-
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
@@ -13,6 +10,10 @@ import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import com.azure.messaging.eventhubs.EventProcessor;
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,9 +24,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
+
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 /**
  * This class is responsible for balancing the load of processing events from all partitions of an Event Hub by
@@ -185,7 +186,7 @@ public final class PartitionBasedLoadBalancer {
             int numberOfEventProcessorsWithAdditionalPartition = numberOfPartitions % numberOfActiveEventProcessors;
 
             logger.info("Expected min partitions per event processor = {}, expected number of event "
-                + "processors with additional partition = {}", minPartitionsPerEventProcessor,
+                    + "processors with additional partition = {}", minPartitionsPerEventProcessor,
                 numberOfEventProcessorsWithAdditionalPartition);
 
             if (isLoadBalanced(minPartitionsPerEventProcessor, numberOfEventProcessorsWithAdditionalPartition,
@@ -346,7 +347,9 @@ public final class PartitionBasedLoadBalancer {
             .setPartitionId(partitionIdToClaim)
             .setConsumerGroupName(this.consumerGroupName)
             .setEventHubName(this.eventHubName)
-            .setSequenceNumber(previousPartitionOwnership == null ? null : previousPartitionOwnership.getSequenceNumber())
+            .setSequenceNumber(previousPartitionOwnership == null
+                ? null
+                : previousPartitionOwnership.getSequenceNumber())
             .setOffset(previousPartitionOwnership == null ? null : previousPartitionOwnership.getOffset())
             .setETag(previousPartitionOwnership == null ? null : previousPartitionOwnership.getETag())
             .setOwnerLevel(0L);

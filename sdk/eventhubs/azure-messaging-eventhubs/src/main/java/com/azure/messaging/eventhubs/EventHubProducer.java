@@ -40,11 +40,13 @@ import java.util.Objects;
  * <p><strong>Create a producer that routes events to any partition</strong></p>
  * To allow automatic routing of messages to available partition, do not specify the {@link
  * EventHubProducerOptions#getPartitionId() partitionId} when creating the {@link EventHubProducer}.
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation}
  *
  * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
- * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#setPartitionId(String)
- * partitionId} when creating an {@link EventHubProducer}.
+ * Developers can push events to a single partition by specifying the
+ * {@link EventHubProducerOptions#setPartitionId(String) partitionId} when creating an {@link EventHubProducer}.
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiation#partitionId}
  *
  * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#setPartitionKey(String)}
@@ -56,6 +58,7 @@ import java.util.Objects;
  * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
  * of the available partitions. All that matters to the end user is that they are grouped together.
  * </p>
+ *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
  *
  * <p><strong>Publish events using an {@link EventDataBatch}</strong></p>
