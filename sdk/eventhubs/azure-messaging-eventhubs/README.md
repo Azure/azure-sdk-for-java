@@ -276,15 +276,19 @@ logic needed to provide value while the processor holds responsibility for manag
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the built-in
 [`InMemoryPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
-events received and errors to console.
+events received to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventHubClientBuilder()
+        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .consumerGroupName("<< CONSUMER GROUP NAME>>")
-            .partitionProcessorFactory(SimplePartitionProcessor::new)
+            .buildAsyncClient();
+
+        EventProcessor eventProcessor = new EventProcessorBuilder()
+            .consumerGroup("<< CONSUMER GROUP NAME>>")
+            .eventHubClient(eventHubAsyncClient)
+            .partitionProcessorFactory((SimplePartitionProcessor::new))
             .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
 
@@ -296,29 +300,14 @@ class Program {
     }
 }
 
-class SimplePartitionProcessor implements PartitionProcessor {
-    SimplePartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
-    }
-
+class SimplePartitionProcessor extends PartitionProcessor {
+    /**
+     * Processes the event data.
+     */
     @Override
-    Mono<Void> initialize() {
-        return Mono.empty();
-    }
-
-    @Override
-    Mono<Void> processEvent(EventData eventData) {
-        System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
-        return Mono.empty();
-    }
-
-    @Override
-    void processError(Throwable throwable) {
-        System.err.println("Error received." + throwable.toString());
-    }
-
-    @Override
-    Mono<Void> close(CloseReason closeReason) {
-        return Mono.empty();
+    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
+        System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
+        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```
