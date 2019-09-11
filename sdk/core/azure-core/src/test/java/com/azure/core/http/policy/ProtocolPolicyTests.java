@@ -33,7 +33,7 @@ public class ProtocolPolicyTests {
             .httpClient(new NoOpHttpClient())
             .policies(new ProtocolPolicy(protocol, true),
                 (context, next) -> {
-                    assertEquals(expectedUrl, context.httpRequest().url().toString());
+                    assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
                     return next.process();
                 })
             .build();
@@ -44,7 +44,7 @@ public class ProtocolPolicyTests {
             .httpClient(new NoOpHttpClient())
             .policies(new ProtocolPolicy(protocol, overwrite),
                 (context, next) -> {
-                    assertEquals(expectedUrl, context.httpRequest().url().toString());
+                    assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
                     return next.process();
                 })
             .build();

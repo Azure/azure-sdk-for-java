@@ -302,12 +302,12 @@ public final class QueueAsyncClient {
         Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
             marker -> postProcessResponse(this.client.queues()
                 .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
+            .map(response -> new PagedResponseBase<>(response.getRequest(),
                 response.statusCode(),
-                response.headers(),
-                response.value(),
+                response.getHeaders(),
+                response.getValue(),
                 null,
-                response.deserializedHeaders()));
+                response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -484,7 +484,7 @@ public final class QueueAsyncClient {
         return postProcessResponse(client.messages()
             .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
                 null, null, context))
-            .map(response -> new SimpleResponse<>(response, response.value().get(0)));
+            .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
     }
 
     /**
@@ -581,12 +581,12 @@ public final class QueueAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value(),
+                    response.getHeaders(),
+                    response.getValue(),
                     null,
-                    response.deserializedHeaders())));
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -654,12 +654,12 @@ public final class QueueAsyncClient {
         Function<String, Mono<PagedResponse<PeekedMessage>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
                 .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value(),
+                    response.getHeaders(),
+                    response.getValue(),
                     null,
-                    response.deserializedHeaders())));
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -839,7 +839,7 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
-        QueueGetPropertiesHeaders propertiesHeaders = response.deserializedHeaders();
+        QueueGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
         QueueProperties properties = new QueueProperties(propertiesHeaders.metadata(), propertiesHeaders.approximateMessagesCount());
         return new SimpleResponse<>(response, properties);
     }
@@ -850,7 +850,7 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<UpdatedMessage> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
-        MessageIdUpdateHeaders headers = response.deserializedHeaders();
+        MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
         UpdatedMessage updatedMessage = new UpdatedMessage(headers.popReceipt(), headers.timeNextVisible());
         return new SimpleResponse<>(response, updatedMessage);
     }

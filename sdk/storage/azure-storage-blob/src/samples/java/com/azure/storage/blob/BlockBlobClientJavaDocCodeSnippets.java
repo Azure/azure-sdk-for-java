@@ -85,7 +85,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
             .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
                 accessConditions, timeout, context)
-                .value()
+                .getValue()
                 .contentMD5()));
         // END: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
     }
@@ -201,7 +201,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
         Context context = new Context("key", "value");
-        BlockList block = client.listBlocksWithResponse(BlockListType.ALL, accessConditions, timeout, context).value();
+        BlockList block = client.listBlocksWithResponse(BlockListType.ALL, accessConditions, timeout, context).getValue();
 
         System.out.println("Committed Blocks:");
         block.committedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));

@@ -56,7 +56,7 @@ public final class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Key getKey() {
-        return getKeyWithResponse(Context.NONE).value();
+        return getKeyWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -68,7 +68,7 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

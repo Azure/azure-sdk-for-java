@@ -33,7 +33,7 @@ public class HostPolicyTests {
             .httpClient(new NoOpHttpClient())
             .policies(new HostPolicy(host),
                 (context, next) -> {
-                    assertEquals(expectedUrl, context.httpRequest().url().toString());
+                    assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
                     return next.process();
                 })
             .build();

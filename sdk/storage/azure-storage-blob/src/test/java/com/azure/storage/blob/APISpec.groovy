@@ -550,12 +550,12 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             }
 
             @Override
-            String headerValue(String s) {
+            String getHeaderValue(String s) {
                 return null
             }
 
             @Override
-            HttpHeaders headers() {
+            HttpHeaders getHeaders() {
                 return new HttpHeaders()
             }
 
@@ -565,17 +565,17 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             }
 
             @Override
-            Mono<byte[]> bodyAsByteArray() {
+            Mono<byte[]> getBodyAsByteArray() {
                 return Mono.just(new byte[0])
             }
 
             @Override
-            Mono<String> bodyAsString() {
+            Mono<String> getBodyAsString() {
                 return Mono.just("")
             }
 
             @Override
-            Mono<String> bodyAsString(Charset charset) {
+            Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
             }
         }.request(request)
@@ -646,7 +646,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().flatMap { HttpResponse response ->
-                if (response.request().headers().value("x-ms-range") != "bytes=2-6") {
+                if (response.getRequest().getHeaders().value("x-ms-range") != "bytes=2-6") {
                     return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
                 } else {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
@@ -667,7 +667,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         private final Flux<ByteBuffer> body
 
         MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            this.request(response.request())
+            this.request(response.getRequest())
             this.statusCode = statusCode
             this.headers = response.headers()
             this.body = body
@@ -679,12 +679,12 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         }
 
         @Override
-        String headerValue(String s) {
+        String getHeaderValue(String s) {
             return headers.value(s)
         }
 
         @Override
-        HttpHeaders headers() {
+        HttpHeaders getHeaders() {
             return headers
         }
 
@@ -694,17 +694,17 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         }
 
         @Override
-        Mono<byte[]> bodyAsByteArray() {
+        Mono<byte[]> getBodyAsByteArray() {
             return Mono.error(new IOException())
         }
 
         @Override
-        Mono<String> bodyAsString() {
+        Mono<String> getBodyAsString() {
             return Mono.error(new IOException())
         }
 
         @Override
-        Mono<String> bodyAsString(Charset charset) {
+        Mono<String> getBodyAsString(Charset charset) {
             return Mono.error(new IOException())
         }
     }

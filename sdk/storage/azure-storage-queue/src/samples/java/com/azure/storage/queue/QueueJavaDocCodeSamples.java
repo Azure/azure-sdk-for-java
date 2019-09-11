@@ -130,7 +130,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context1
         EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Hello, Azure",
-            Duration.ofSeconds(5), null, Duration.ofSeconds(1), new Context(key1, value1)).value();
+            Duration.ofSeconds(5), null, Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
         // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context1
     }
@@ -142,7 +142,7 @@ public class QueueJavaDocCodeSamples {
     public void enqueueMessageWithLiveTimeOverload() {
         // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context2
         EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Goodbye, Azure",
-            null, Duration.ofSeconds(5), Duration.ofSeconds(1), new Context(key1, value1)).value();
+            null, Duration.ofSeconds(5), Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
         // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context2
     }
@@ -320,7 +320,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context
         QueueProperties properties = client.getPropertiesWithResponse(Duration.ofSeconds(1),
-            new Context(key1, value1)).value();
+            new Context(key1, value1)).getValue();
         System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
             properties.approximateMessagesCount());
         // END: com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context

@@ -165,8 +165,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.createKeyWithResponse(keyCreateOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
-                System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(),
-                    keyResponse.value().id()));
+                System.out.printf("Key is created with name %s and id %s \n", keyResponse.getValue().name(),
+                    keyResponse.getValue().id()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createKeyWithResponse#keyCreateOptions
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions
@@ -177,8 +177,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.createRsaKeyWithResponse(rsaKeyCreateOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
-                System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(),
-                    keyResponse.value().id()));
+                System.out.printf("Key is created with name %s and id %s \n", keyResponse.getValue().name(),
+                    keyResponse.getValue().id()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions
@@ -189,8 +189,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.createEcKeyWithResponse(ecKeyCreateOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
-                System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(),
-                    keyResponse.value().id()));
+                System.out.printf("Key is created with name %s and id %s \n", keyResponse.getValue().name(),
+                    keyResponse.getValue().id()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions
     }
 
@@ -205,7 +205,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s \n",
-                    keyResponse.value().name(), keyResponse.value().id()));
+                    keyResponse.getValue().name(), keyResponse.getValue().id()));
         // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string-string
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyBase
@@ -213,8 +213,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
             keyAsyncClient.getKeyWithResponse(keyBase)
                 .subscriberContext(Context.of(key1, value1, key2, value2))
                 .subscribe(keyResponse ->
-                System.out.printf("Key with name %s and value %s \n", keyResponse.value().name(),
-                    keyResponse.value().id())));
+                System.out.printf("Key with name %s and value %s \n", keyResponse.getValue().name(),
+                    keyResponse.getValue().id())));
         // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyBase
     }
 
@@ -262,7 +262,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                     .subscriberContext(Context.of(key1, value1, key2, value2))
                     .subscribe(updatedKeyResponse  ->
                         System.out.printf("Key's updated not before time %s \n",
-                            updatedKeyResponse.value().notBefore().toString()));
+                            updatedKeyResponse.getValue().notBefore().toString()));
             });
         // END: com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase-keyOperations
 
@@ -275,7 +275,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                     .subscriberContext(Context.of(key1, value1, key2, value2))
                     .subscribe(updatedKeyResponse  ->
                         System.out.printf("Key's updated not before time %s \n",
-                            updatedKeyResponse.value().notBefore().toString()));
+                            updatedKeyResponse.getValue().notBefore().toString()));
             });
         // END: com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase
     }
@@ -322,7 +322,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.deleteKeyWithResponse("keyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s", deletedKeyResponse.value().recoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s", deletedKeyResponse.getValue().recoveryId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string
     }
 
@@ -335,7 +335,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.getDeletedKeyWithResponse("keyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s", deletedKeyResponse.value().recoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s", deletedKeyResponse.getValue().recoveryId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.getDeletedKeyWithResponse#string
     }
 
@@ -361,7 +361,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.recoverDeletedKeyWithResponse("deletedKeyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(recoveredKeyResponse ->
-                System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
+                System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.getValue().name()));
         // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string
     }
 
@@ -400,7 +400,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.backupKeyWithResponse("keyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyBackupResponse ->
-                System.out.printf("Key's Backup Byte array's length %s \n", keyBackupResponse.value().length));
+                System.out.printf("Key's Backup Byte array's length %s \n", keyBackupResponse.getValue().length));
         // END: com.azure.security.keyvault.keys.async.keyclient.backupKeyWithResponse#string
     }
 
@@ -428,8 +428,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.restoreKeyWithResponse(keyBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse  ->
-                System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(),
-                    keyResponse.value().id()));
+                System.out.printf("Restored Key with name %s and id %s \n", keyResponse.getValue().name(),
+                    keyResponse.getValue().id()));
         // END: com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte
     }
 

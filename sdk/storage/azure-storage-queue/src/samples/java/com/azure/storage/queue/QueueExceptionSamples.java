@@ -36,13 +36,13 @@ public class QueueExceptionSamples {
             System.out.println(String.format("Error creating a queue. Error message: %s", e.serviceMessage()));
             throw new RuntimeException(e);
         }
-        QueueClient queueClient = queueClientResponse.value();
+        QueueClient queueClient = queueClientResponse.getValue();
         queueClient.enqueueMessage("Hello, message 1!");
         queueClient.enqueueMessage("Hello, message 2!");
 
         // Delete message with wrong message id.
         try {
-            queueClientResponse.value().dequeueMessages().forEach(
+            queueClientResponse.getValue().dequeueMessages().forEach(
                 msg -> {
                     queueClient.deleteMessage("wrong id", msg.popReceipt());
                 }

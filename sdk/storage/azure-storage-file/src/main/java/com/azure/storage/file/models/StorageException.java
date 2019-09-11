@@ -30,8 +30,8 @@ public final class StorageException extends HttpResponseException {
      * @param responseBody The exception body.
      */
     public StorageException(StorageErrorException e, String responseBody) {
-        super(e.getMessage(), e.response(), e);
-        this.errorCode = StorageErrorCode.fromString(e.response().headers().value(ERROR_CODE));
+        super(e.getMessage(), e.getResponse(), e);
+        this.errorCode = StorageErrorCode.fromString(e.getResponse().getHeaders().value(ERROR_CODE));
         this.message = responseBody;
     }
 
@@ -53,6 +53,6 @@ public final class StorageException extends HttpResponseException {
      * @return The status code on the response.
      */
     public int statusCode() {
-        return super.response().statusCode();
+        return super.getResponse().statusCode();
     }
 }

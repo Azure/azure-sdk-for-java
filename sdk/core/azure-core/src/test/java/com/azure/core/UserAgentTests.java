@@ -25,7 +25,7 @@ public class UserAgentTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assert.assertEquals(
-                            request.headers().value("User-Agent"),
+                            request.getHeaders().value("User-Agent"),
                             "AutoRest-Java");
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
@@ -45,7 +45,7 @@ public class UserAgentTests {
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    String header = request.headers().value("User-Agent");
+                    String header = request.getHeaders().value("User-Agent");
                     Assert.assertEquals("Awesome", header);
                     return Mono.just(new MockHttpResponse(request, 200));
                 }

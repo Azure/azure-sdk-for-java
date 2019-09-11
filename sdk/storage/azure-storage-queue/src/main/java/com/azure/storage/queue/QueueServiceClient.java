@@ -88,7 +88,7 @@ public final class QueueServiceClient {
      * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public QueueClient createQueue(String queueName) {
-        return createQueueWithResponse(queueName, null, null, Context.NONE).value();
+        return createQueueWithResponse(queueName, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class QueueServiceClient {
 
         Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
         Response<QueueAsyncClient> response = Utility.blockWithOptionalTimeout(asyncResponse, timeout);
-        return new SimpleResponse<>(response, new QueueClient(response.value()));
+        return new SimpleResponse<>(response, new QueueClient(response.getValue()));
     }
 
     /**
@@ -229,7 +229,7 @@ public final class QueueServiceClient {
      * @return Storage account Queue service properties
      */
     public StorageServiceProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -349,7 +349,7 @@ public final class QueueServiceClient {
      * @return The geo replication information about the Queue service
      */
     public StorageServiceStats getStatistics() {
-        return getStatisticsWithResponse(null, Context.NONE).value();
+        return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
     /**

@@ -327,8 +327,8 @@ public final class ContainerAsyncClient {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
-                HttpResponse response = ((StorageException) t).response();
-                return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
+                HttpResponse response = ((StorageException) t).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.statusCode(), response.getHeaders(), false));
             });
     }
 
@@ -427,7 +427,7 @@ public final class ContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getProperties}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} containing the
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * container properties.
      */
     public Mono<ContainerProperties> getProperties() {
@@ -453,7 +453,7 @@ public final class ContainerAsyncClient {
     Mono<Response<ContainerProperties>> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.containers().getPropertiesWithRestResponseAsync(null, null, null,
             leaseAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -465,7 +465,7 @@ public final class ContainerAsyncClient {
      * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.setMetadata#Metadata}
      *
      * @param metadata {@link Metadata}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains signalling
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains signalling
      * completion.
      */
     public Mono<Void> setMetadata(Metadata metadata) {
@@ -541,7 +541,7 @@ public final class ContainerAsyncClient {
     Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null,
             null, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response,
-            new ContainerAccessPolicies(response.deserializedHeaders().blobPublicAccess(), response.value()))));
+            new ContainerAccessPolicies(response.getDeserializedHeaders().blobPublicAccess(), response.getValue()))));
     }
 
     /**
@@ -695,17 +695,17 @@ public final class ContainerAsyncClient {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
-                    List<BlobItem> value = response.value().segment() == null
+                    List<BlobItem> value = response.getValue().segment() == null
                         ? new ArrayList<>(0)
-                        : response.value().segment().blobItems();
+                        : response.getValue().segment().blobItems();
 
                     return new PagedResponseBase<>(
-                        response.request(),
+                        response.getRequest(),
                         response.statusCode(),
-                        response.headers(),
+                        response.getHeaders(),
                         value,
-                        response.value().nextMarker(),
-                        response.deserializedHeaders());
+                        response.getValue().nextMarker(),
+                        response.getDeserializedHeaders());
                 });
 
         return new PagedFlux<>(
@@ -828,21 +828,21 @@ public final class ContainerAsyncClient {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
             marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
                 .map(response ->  {
-                    List<BlobItem> value = response.value().segment() == null
+                    List<BlobItem> value = response.getValue().segment() == null
                         ? new ArrayList<>(0)
                         : Stream.concat(
-                            response.value().segment().blobItems().stream(),
-                            response.value().segment().blobPrefixes().stream()
+                            response.getValue().segment().blobItems().stream(),
+                            response.getValue().segment().blobPrefixes().stream()
                                 .map(blobPrefix -> new BlobItem().name(blobPrefix.name()).isPrefix(true))
                         ).collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
-                        response.request(),
+                        response.getRequest(),
                         response.statusCode(),
-                        response.headers(),
+                        response.getHeaders(),
                         value,
-                        response.value().nextMarker(),
-                        response.deserializedHeaders());
+                        response.getValue().nextMarker(),
+                        response.getDeserializedHeaders());
                 });
 
         return new PagedFlux<>(
@@ -938,7 +938,7 @@ public final class ContainerAsyncClient {
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().acquireLeaseWithRestResponseAsync(null, null, duration, proposedID,
-            null, modifiedAccessConditions, context)).map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
+            null, modifiedAccessConditions, context)).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().leaseId()));
     }
 
     /**
@@ -983,7 +983,7 @@ public final class ContainerAsyncClient {
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().renewLeaseWithRestResponseAsync(null, leaseID, null, null,
-            modifiedAccessConditions, context)).map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
+            modifiedAccessConditions, context)).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().leaseId()));
     }
 
     /**
@@ -1080,7 +1080,7 @@ public final class ContainerAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.containers().breakLeaseWithRestResponseAsync(null,
             null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, Duration.ofSeconds(rb.deserializedHeaders().leaseTime())));
+            .map(rb -> new SimpleResponse<>(rb, Duration.ofSeconds(rb.getDeserializedHeaders().leaseTime())));
     }
 
     /**
@@ -1129,7 +1129,7 @@ public final class ContainerAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.containers().changeLeaseWithRestResponseAsync(null,
             leaseId, proposedID, null, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
+            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().leaseId()));
     }
 
     /**
@@ -1163,7 +1163,7 @@ public final class ContainerAsyncClient {
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return postProcessResponse(
             this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context))
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
     }
 
 

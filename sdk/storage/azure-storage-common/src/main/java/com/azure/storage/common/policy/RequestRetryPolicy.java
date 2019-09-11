@@ -42,9 +42,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.secondaryHost() != null)
-            && (HttpMethod.GET.equals(context.httpRequest().httpMethod()) || HttpMethod.HEAD.equals(context.httpRequest().httpMethod()));
+            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod()) || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
-        return this.attemptAsync(context, next, context.httpRequest(), considerSecondary, 1, 1);
+        return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
     }
 
     /**
@@ -91,14 +91,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
          duplicates the ByteBuffer object, not the underlying data.
          */
-        context.httpRequest(originalRequest.buffer());
-        Flux<ByteBuffer> bufferedBody = (context.httpRequest().body() == null) ? null : context.httpRequest().body().map(ByteBuffer::duplicate);
-        context.httpRequest().body(bufferedBody);
+        context.setHttpRequest(originalRequest.buffer());
+        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().body() == null) ? null : context.getHttpRequest().body().map(ByteBuffer::duplicate);
+        context.getHttpRequest().body(bufferedBody);
         if (!tryingPrimary) {
-            UrlBuilder builder = UrlBuilder.parse(context.httpRequest().url());
-            builder.host(this.requestRetryOptions.secondaryHost());
+            UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            builder.setHost(this.requestRetryOptions.secondaryHost());
             try {
-                context.httpRequest().url(builder.toURL());
+                context.getHttpRequest().setUrl(builder.toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

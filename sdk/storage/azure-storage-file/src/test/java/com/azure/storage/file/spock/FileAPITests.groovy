@@ -8,17 +8,13 @@ import com.azure.core.http.rest.Response
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
-import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.storage.common.Constants
-import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.FileSASPermission
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileCopyInfo
-import com.azure.storage.file.models.FileDownloadInfo
 import com.azure.storage.file.models.FileHTTPHeaders
-import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.NtfsFileAttributes

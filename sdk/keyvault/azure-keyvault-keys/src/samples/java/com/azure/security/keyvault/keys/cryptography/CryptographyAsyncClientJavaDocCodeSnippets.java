@@ -89,7 +89,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         cryptographyAsyncClient.getKeyWithResponse()
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->  System.out.printf("Key is returned with name %s and id %s \n",
-                keyResponse.value().name(), keyResponse.value().id()));
+                keyResponse.getValue().name(), keyResponse.getValue().id()));
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse
     }
 

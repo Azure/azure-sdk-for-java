@@ -3,9 +3,8 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.Response
+
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
@@ -14,7 +13,6 @@ import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import spock.lang.Unroll
 

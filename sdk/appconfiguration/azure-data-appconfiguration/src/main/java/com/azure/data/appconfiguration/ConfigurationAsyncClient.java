@@ -88,7 +88,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> addSetting(String key, String value) {
         return withContext(
             context -> addSetting(new ConfigurationSetting().key(key).value(value), context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -112,7 +112,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return withContext(context -> addSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -154,7 +154,7 @@ public final class ConfigurationAsyncClient {
                 getETagValue(ETAG_ANY),
                 context)
             .doOnRequest(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.value()))
+            .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
     }
@@ -180,7 +180,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> setSetting(String key, String value) {
         return withContext(
             context -> setSetting(new ConfigurationSetting().key(key).value(value), context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -211,7 +211,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
         return withContext(context -> setSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -257,7 +257,7 @@ public final class ConfigurationAsyncClient {
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.value()))
+            .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
     }
 
@@ -283,7 +283,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> updateSetting(String key, String value) {
         return withContext(
             context -> updateSetting(new ConfigurationSetting().key(key).value(value), context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -312,7 +312,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
         return withContext(context -> updateSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -353,7 +353,7 @@ public final class ConfigurationAsyncClient {
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Updating ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.value()))
+            .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to update ConfigurationSetting - {}", setting, error));
     }
 
@@ -377,7 +377,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> getSetting(String key) {
         return withContext(
             context -> getSetting(new ConfigurationSetting().key(key), context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -400,7 +400,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
         return withContext(context -> getSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -432,7 +432,7 @@ public final class ConfigurationAsyncClient {
 
         return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.value()))
+            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
     }
 
@@ -456,7 +456,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> deleteSetting(String key) {
         return withContext(
             context -> deleteSetting(new ConfigurationSetting().key(key), context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -486,7 +486,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
         return withContext(context -> deleteSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -525,7 +525,7 @@ public final class ConfigurationAsyncClient {
         return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.value()))
+            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
     }
 
@@ -702,6 +702,6 @@ public final class ConfigurationAsyncClient {
         }
 
         ResourceNotFoundException notFoundException = (ResourceNotFoundException) throwable;
-        return new ResourceModifiedException(notFoundException.getMessage(), notFoundException.response());
+        return new ResourceModifiedException(notFoundException.getMessage(), notFoundException.getResponse());
     }
 }

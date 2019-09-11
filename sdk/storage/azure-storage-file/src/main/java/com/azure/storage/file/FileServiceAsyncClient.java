@@ -190,12 +190,12 @@ public final class FileServiceAsyncClient {
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
                 .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value().shareItems(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                    response.getHeaders(),
+                    response.getValue().shareItems(),
+                    response.getValue().nextMarker(),
+                    response.getDeserializedHeaders())));
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
@@ -239,7 +239,7 @@ public final class FileServiceAsyncClient {
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**

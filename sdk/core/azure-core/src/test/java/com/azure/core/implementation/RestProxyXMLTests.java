@@ -54,9 +54,9 @@ public class RestProxyXMLTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             try {
-                if (request.url().toString().endsWith("GetContainerACLs")) {
+                if (request.getUrl().toString().endsWith("GetContainerACLs")) {
                     return Mono.just(response(request, "GetContainerACLs.xml"));
-                } else if (request.url().toString().endsWith("GetXMLWithAttributes")) {
+                } else if (request.getUrl().toString().endsWith("GetXMLWithAttributes")) {
                     return Mono.just(response(request, "GetXMLWithAttributes.xml"));
                 } else {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
@@ -98,7 +98,7 @@ public class RestProxyXMLTests {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            if (request.url().toString().endsWith("SetContainerACLs")) {
+            if (request.getUrl().toString().endsWith("SetContainerACLs")) {
                 return FluxUtil.collectBytesInByteBufferStream(request.body())
                         .map(bytes -> {
                             receivedBytes = bytes;

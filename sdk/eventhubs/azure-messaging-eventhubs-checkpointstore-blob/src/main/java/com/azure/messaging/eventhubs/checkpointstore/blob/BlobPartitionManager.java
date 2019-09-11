@@ -118,7 +118,7 @@ public class BlobPartitionManager implements PartitionManager {
                         .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
                             blobAccessConditions)
                         .flatMapMany(response -> {
-                            partitionOwnership.eTag(response.headers().get(ETAG).value());
+                            partitionOwnership.eTag(response.getHeaders().get(ETAG).value());
                             return Mono.just(partitionOwnership);
                         }, error -> {
                                 logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
@@ -131,7 +131,7 @@ public class BlobPartitionManager implements PartitionManager {
                         .ifMatch(partitionOwnership.eTag()));
                     return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
                         .flatMapMany(response -> {
-                            partitionOwnership.eTag(response.headers().get(ETAG).value());
+                            partitionOwnership.eTag(response.getHeaders().get(ETAG).value());
                             return Mono.just(partitionOwnership);
                         }, error -> {
                                 logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
@@ -176,7 +176,7 @@ public class BlobPartitionManager implements PartitionManager {
             .modifiedAccessConditions(new ModifiedAccessConditions().ifMatch(checkpoint.eTag()));
 
         return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
-            .map(response -> response.headers().get(ETAG).value());
+            .map(response -> response.getHeaders().get(ETAG).value());
     }
 
     private String getBlobPrefix(String eventHubName, String consumerGroupName) {

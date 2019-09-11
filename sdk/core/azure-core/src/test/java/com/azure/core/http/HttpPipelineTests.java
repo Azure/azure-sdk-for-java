@@ -82,9 +82,9 @@ public class HttpPipelineTests {
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    assertEquals(0, request.headers().size());
-                    assertEquals(expectedHttpMethod, request.httpMethod());
-                    assertEquals(expectedUrl, request.url());
+                    assertEquals(0, request.getHeaders().size());
+                    assertEquals(expectedHttpMethod, request.getHttpMethod());
+                    assertEquals(expectedUrl, request.getUrl());
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })
@@ -103,10 +103,10 @@ public class HttpPipelineTests {
         final HttpClient httpClient = new NoOpHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                assertEquals(1, request.headers().size());
-                assertEquals(expectedUserAgent, request.headers().value("User-Agent"));
-                assertEquals(expectedHttpMethod, request.httpMethod());
-                assertEquals(expectedUrl, request.url());
+                assertEquals(1, request.getHeaders().size());
+                assertEquals(expectedUserAgent, request.getHeaders().value("User-Agent"));
+                assertEquals(expectedHttpMethod, request.getHttpMethod());
+                assertEquals(expectedUrl, request.getUrl());
                 return Mono.just(new MockHttpResponse(request, 200));
             }
         };
@@ -129,13 +129,13 @@ public class HttpPipelineTests {
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    assertEquals(1, request.headers().size());
-                    final String requestId = request.headers().value("x-ms-client-request-id");
+                    assertEquals(1, request.getHeaders().size());
+                    final String requestId = request.getHeaders().value("x-ms-client-request-id");
                     assertNotNull(requestId);
                     assertFalse(requestId.isEmpty());
 
-                    assertEquals(expectedHttpMethod, request.httpMethod());
-                    assertEquals(expectedUrl, request.url());
+                    assertEquals(expectedHttpMethod, request.getHttpMethod());
+                    assertEquals(expectedUrl, request.getUrl());
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
             })

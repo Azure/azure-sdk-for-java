@@ -313,7 +313,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
         directoryAsyncClient.getPropertiesWithResponse().subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.getValue().lastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
     }
@@ -341,7 +341,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.getValue().lastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
     }

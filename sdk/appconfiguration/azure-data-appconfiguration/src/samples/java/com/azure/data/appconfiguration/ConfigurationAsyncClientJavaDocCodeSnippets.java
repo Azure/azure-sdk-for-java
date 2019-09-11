@@ -53,7 +53,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             .value("db_connection"))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting responseSetting = response.value();
+                ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Value: %s", responseSetting.key(), responseSetting.value());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.addSettingWithResponse#ConfigurationSetting
@@ -102,14 +102,14 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             .value("db_connection"))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting result = response.value();
+                ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Value: %s", result.key(), result.value());
             });
         // Update the value of the setting to "updated_db_connection"
         client.setSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS")
             .value("updated_db_connection"))
             .subscribe(response -> {
-                ConfigurationSetting responseSetting = response.value();
+                ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Value: %s", responseSetting.key(), responseSetting.value());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting
@@ -148,7 +148,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             .value("updated_db_connection"))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting responseSetting = response.value();
+                ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Value: %s", responseSetting.key(), responseSetting.value());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting
@@ -185,7 +185,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         client.getSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting result = response.value();
+                ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Value: %s", result.key(), result.value());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting
@@ -222,7 +222,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         client.deleteSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting result = response.value();
+                ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Value: %s", result.key(), result.value());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting

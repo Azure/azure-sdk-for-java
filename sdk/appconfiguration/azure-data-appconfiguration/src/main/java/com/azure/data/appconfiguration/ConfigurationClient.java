@@ -63,7 +63,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).value();
+        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).getValue();
     }
 
     /**
@@ -86,7 +86,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, Context.NONE).value();
+        return addSetting(setting, Context.NONE).getValue();
     }
 
     /**
@@ -137,7 +137,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).value();
+        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).getValue();
     }
 
     /**
@@ -167,7 +167,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting setSetting(ConfigurationSetting setting) {
-        return setSetting(setting, Context.NONE).value();
+        return setSetting(setting, Context.NONE).getValue();
     }
 
     /**
@@ -225,7 +225,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).value();
+        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).getValue();
     }
 
     /**
@@ -254,7 +254,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, Context.NONE).value();
+        return updateSetting(setting, Context.NONE).getValue();
     }
 
     /**
@@ -309,7 +309,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), Context.NONE).value();
+        return getSetting(new ConfigurationSetting().key(key), Context.NONE).getValue();
     }
 
     /**
@@ -331,7 +331,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE).value();
+        return getSetting(setting, Context.NONE).getValue();
     }
 
     /**
@@ -380,7 +380,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE).value();
+        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE).getValue();
     }
 
     /**
@@ -409,7 +409,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE).value();
+        return deleteSetting(setting, Context.NONE).getValue();
     }
 
     /**

@@ -379,7 +379,7 @@ public class RestProxyStressTests {
                         Flux<ByteBuffer> content;
                         try {
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-                            content = response.value()
+                            content = response.getValue()
                                     .doOnNext(buf -> messageDigest.update(buf.slice()));
 
                             return content.last().doOnSuccess(b -> {
@@ -422,7 +422,7 @@ public class RestProxyStressTests {
                     Flux<ByteBuffer> downloadContent = service.download100M(String.valueOf(id), sas)
                             // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
                             // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
-                            .flatMapMany(StreamResponse::value)
+                            .flatMapMany(StreamResponse::getValue)
                             .map(reactorNettybb -> {
                                 //
                                 // This test 'downloadUploadStreamingTest' exercises piping scenario.
@@ -455,7 +455,7 @@ public class RestProxyStressTests {
                     //
                     return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)
                             .flatMap(uploadResponse -> {
-                                String base64MD5 = uploadResponse.headers().value("Content-MD5");
+                                String base64MD5 = uploadResponse.getHeaders().value("Content-MD5");
                                 byte[] uploadMD5 = Base64.getDecoder().decode(base64MD5);
                                 assertArrayEquals(md5, uploadMD5);
                                 LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);
@@ -475,7 +475,7 @@ public class RestProxyStressTests {
         final Disposable d = Flux.range(0, NUM_FILES)
                 .flatMap(integer ->
                         service.download100M(String.valueOf(integer), sas)
-                                .flatMapMany(StreamResponse::value))
+                                .flatMapMany(StreamResponse::getValue))
                 .subscribe();
 
         Mono.delay(Duration.ofSeconds(10)).then(Mono.defer(() -> {
@@ -516,7 +516,7 @@ public class RestProxyStressTests {
                                 .onErrorResume(throwable -> {
                                     if (throwable instanceof HttpResponseException) {
                                         HttpResponseException restException = (HttpResponseException) throwable;
-                                        if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
+                                        if ((restException.getResponse().statusCode() == 409 || restException.getResponse().statusCode() == 404)) {
                                             return Mono.empty();
                                         }
                                     }

@@ -49,7 +49,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -319,7 +319,7 @@ public abstract class KeyClientTestBase extends TestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.statusCode());
 
-        assertKeyEquals(expected, response.value());
+        assertKeyEquals(expected, response.getValue());
     }
 
     /**
@@ -368,7 +368,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().statusCode());
     }
 
     /**

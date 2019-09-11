@@ -116,12 +116,12 @@ class RequestRetryTestFactory {
         }
 
         @Override
-        public String headerValue(String headerName) {
+        public String getHeaderValue(String headerName) {
             return null;
         }
 
         @Override
-        public HttpHeaders headers() {
+        public HttpHeaders getHeaders() {
             return null;
         }
 
@@ -131,17 +131,17 @@ class RequestRetryTestFactory {
         }
 
         @Override
-        public Mono<byte[]> bodyAsByteArray() {
+        public Mono<byte[]> getBodyAsByteArray() {
             return null;
         }
 
         @Override
-        public Mono<String> bodyAsString() {
+        public Mono<String> getBodyAsString() {
             return null;
         }
 
         @Override
-        public Mono<String> bodyAsString(Charset charset) {
+        public Mono<String> getBodyAsString(Charset charset) {
             return null;
         }
     }
@@ -176,7 +176,7 @@ class RequestRetryTestFactory {
                 }
             }
 
-            if (!request.url().getHost().equals(expectedHost)) {
+            if (!request.getUrl().getHost().equals(expectedHost)) {
                 throw new IllegalArgumentException("The host does not match the expected host");
             }
 
@@ -184,10 +184,10 @@ class RequestRetryTestFactory {
              This policy will add test headers and query parameters. Ensure they are removed/reset for each retry.
              The retry policy should be starting with a fresh copy of the request for every try.
              */
-            if (request.headers().value(RETRY_TEST_HEADER) != null) {
+            if (request.getHeaders().value(RETRY_TEST_HEADER) != null) {
                 throw new IllegalArgumentException("Headers not reset.");
             }
-            if ((request.url().getQuery() != null && request.url().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
+            if ((request.getUrl().getQuery() != null && request.getUrl().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
                 throw new IllegalArgumentException("Query params not reset.");
             }
 
@@ -211,11 +211,11 @@ class RequestRetryTestFactory {
             Modify the request as policies downstream of the retry policy are likely to do. These must be reset on each
             try.
              */
-            request.headers().put(RETRY_TEST_HEADER, "testheader");
-            UrlBuilder builder = UrlBuilder.parse(request.url());
+            request.getHeaders().put(RETRY_TEST_HEADER, "testheader");
+            UrlBuilder builder = UrlBuilder.parse(request.getUrl());
             builder.setQueryParameter(RETRY_TEST_QUERY_PARAM, "testquery");
             try {
-                request.url(builder.toURL());
+                request.setUrl(builder.toURL());
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("The URL has been mangled");
             }

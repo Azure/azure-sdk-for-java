@@ -35,14 +35,14 @@ public class UnexpectedExceptionInformation {
     /**
      * @return the exception type.
      */
-    public Class<? extends HttpResponseException> exceptionType() {
+    public Class<? extends HttpResponseException> getExceptionType() {
         return exceptionType;
     }
 
     /**
      * @return the exception's response body.
      */
-    public Class<?> exceptionBodyType() {
+    public Class<?> getExceptionBodyType() {
         return exceptionBodyType;
     }
 }

@@ -434,13 +434,13 @@ public final class Utility {
     public static URL appendToURLPath(URL baseURL, String name) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
-        if (builder.path() == null) {
-            builder.path("/");
-        } else if (!builder.path().endsWith("/")) {
-            builder.path(builder.path() + "/");
+        if (builder.getPath() == null) {
+            builder.setPath("/");
+        } else if (!builder.getPath().endsWith("/")) {
+            builder.setPath(builder.getPath() + "/");
         }
 
-        builder.path(builder.path() + name);
+        builder.setPath(builder.getPath() + name);
 
         try {
             return builder.toURL();
@@ -460,11 +460,11 @@ public final class Utility {
     public static URL stripLastPathSegment(URL baseURL) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
-        if (builder.path() == null || !builder.path().contains("/")) {
+        if (builder.getPath() == null || !builder.getPath().contains("/")) {
             throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
         }
 
-        builder.path(builder.path().substring(0, builder.path().lastIndexOf("/")));
+        builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
         try {
             return builder.toURL();
         } catch (MalformedURLException ex) {

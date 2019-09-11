@@ -58,7 +58,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public TestName testName = new TestName();
 
     @Override
-    public String testName() {
+    public String getTestName() {
         return testName.getMethodName();
     }
 
@@ -467,7 +467,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.statusCode());
 
-        assertConfigurationEquals(expected, response.value());
+        assertConfigurationEquals(expected, response.getValue());
     }
 
     /**
@@ -539,7 +539,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().statusCode());
     }
 
     /**

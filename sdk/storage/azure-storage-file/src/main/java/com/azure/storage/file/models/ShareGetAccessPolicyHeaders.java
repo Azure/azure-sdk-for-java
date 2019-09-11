@@ -92,7 +92,7 @@ public final class ShareGetAccessPolicyHeaders {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -167,7 +167,7 @@ public final class ShareGetAccessPolicyHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**

@@ -73,10 +73,10 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         request.setApplicationProperties(applicationProperties);
 
         return credential.getToken(tokenAudience).flatMap(accessToken -> {
-            request.setBody(new AmqpValue(accessToken.token()));
+            request.setBody(new AmqpValue(accessToken.getToken()));
 
             return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher()))
-                .then(Mono.fromCallable(() -> accessToken.expiresOn()));
+                .then(Mono.fromCallable(() -> accessToken.getExpiresOn()));
         });
     }
 

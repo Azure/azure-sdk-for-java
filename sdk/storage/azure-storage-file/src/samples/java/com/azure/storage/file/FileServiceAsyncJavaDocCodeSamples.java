@@ -214,7 +214,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         fileServiceAsyncClient.getPropertiesWithResponse()
             .subscribe(properties -> {
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.value().hourMetrics().enabled(), properties.value().minuteMetrics().enabled());
+                    properties.getValue().hourMetrics().enabled(), properties.getValue().minuteMetrics().enabled());
             });
         // END: com.azure.storage.file.fileServiceAsyncClient.getPropertiesWithResponse
     }
@@ -243,7 +243,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties
         fileServiceAsyncClient.getPropertiesWithResponse().subscribe(response -> {
-            FileServiceProperties properties = response.value();
+            FileServiceProperties properties = response.getValue();
             properties.minuteMetrics().enabled(true);
             properties.hourMetrics().enabled(true);
 

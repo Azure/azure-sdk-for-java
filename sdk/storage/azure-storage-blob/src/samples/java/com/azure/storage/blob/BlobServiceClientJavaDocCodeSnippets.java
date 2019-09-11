@@ -101,7 +101,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
             "containerName",
             metadata,
             PublicAccessType.CONTAINER,
-            context).value();
+            context).getValue();
         // END: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Metadata-PublicAccessType-Context
     }
 
@@ -167,7 +167,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
     public void getPropertiesWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.getPropertiesWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
-        StorageServiceProperties properties = client.getPropertiesWithResponse(timeout, context).value();
+        StorageServiceProperties properties = client.getPropertiesWithResponse(timeout, context).getValue();
 
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
             properties.hourMetrics().enabled(),
@@ -262,7 +262,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobServiceClient.getStatisticsWithResponse#Duration-Context
         System.out.printf("Geo-replication status: %s%n",
-            client.getStatisticsWithResponse(timeout, context).value().geoReplication().status());
+            client.getStatisticsWithResponse(timeout, context).getValue().geoReplication().status());
         // END: com.azure.storage.blob.BlobServiceClient.getStatisticsWithResponse#Duration-Context
     }
 
@@ -283,7 +283,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
     public void getAccountInfoWithResponse() {
         Context context = new Context("Key", "Value");
         // BEGIN: com.azure.storage.blob.BlobServiceClient.getAccountInfoWithResponse#Duration-Context
-        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).value();
+        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).getValue();
         // END: com.azure.storage.blob.BlobServiceClient.getAccountInfoWithResponse#Duration-Context
     }
 }

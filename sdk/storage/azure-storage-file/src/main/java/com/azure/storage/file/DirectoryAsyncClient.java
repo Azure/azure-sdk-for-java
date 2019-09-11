@@ -459,12 +459,12 @@ public class DirectoryAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResults, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
+                    response.getHeaders(),
                     convertResponseAndGetNumOfResults(response),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                    response.getValue().nextMarker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -504,12 +504,12 @@ public class DirectoryAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
                     context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value().handleList(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                    response.getHeaders(),
+                    response.getValue().handleList(),
+                    response.getValue().nextMarker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -553,12 +553,12 @@ public class DirectoryAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
                     recursive, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
-                    response.deserializedHeaders().marker(),
-                    response.deserializedHeaders())));
+                    response.getHeaders(),
+                    Collections.singletonList(response.getDeserializedHeaders().numberOfHandlesClosed()),
+                    response.getDeserializedHeaders().marker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -778,44 +778,44 @@ public class DirectoryAsyncClient {
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectoryProperties> getPropertiesResponse(DirectorysGetPropertiesResponse response) {
-        Map<String, String> metadata = response.deserializedHeaders().metadata();
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime offsetDateTime = response.deserializedHeaders().lastModified();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        Map<String, String> metadata = response.getDeserializedHeaders().metadata();
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().lastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
     }
 
     private Response<DirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
+        String eTag = response.getDeserializedHeaders().eTag();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
         Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::name));
-        if (response.value().segment() != null) {
-            response.value().segment().directoryItems()
+        if (response.getValue().segment() != null) {
+            response.getValue().segment().directoryItems()
                 .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-            response.value().segment().fileItems()
+            response.getValue().segment().fileItems()
                 .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
         }
 

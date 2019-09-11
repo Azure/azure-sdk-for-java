@@ -45,7 +45,7 @@ public class Resource {
      *
      * @return the id value
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -54,7 +54,7 @@ public class Resource {
      *
      * @return the name value
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -63,7 +63,7 @@ public class Resource {
      *
      * @return the type value
      */
-    public String type() {
+    public String getType() {
         return this.type;
     }
 
@@ -72,7 +72,7 @@ public class Resource {
      *
      * @return the location value
      */
-    public String location() {
+    public String getLocation() {
         return this.location;
     }
 
@@ -82,7 +82,7 @@ public class Resource {
      * @param location the location value to set
      * @return the resource itself
      */
-    public Resource withLocation(String location) {
+    public Resource setLocation(String location) {
         this.location = location;
         return this;
     }
@@ -102,7 +102,7 @@ public class Resource {
      * @param tags the tags value to set
      * @return the resource itself
      */
-    public Resource withTags(Map<String, String> tags) {
+    public Resource setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

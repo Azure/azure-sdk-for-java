@@ -58,7 +58,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 

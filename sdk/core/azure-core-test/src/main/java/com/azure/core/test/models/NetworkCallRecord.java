@@ -31,7 +31,7 @@ public class NetworkCallRecord {
      *
      * @return The HTTP method.
      */
-    public String method() {
+    public String getMethod() {
         return method;
     }
 
@@ -40,7 +40,7 @@ public class NetworkCallRecord {
      *
      * @param method HTTP method for this network call.
      */
-    public void method(String method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
@@ -49,7 +49,7 @@ public class NetworkCallRecord {
      *
      * @return The URL for this network call.
      */
-    public String uri() {
+    public String getUri() {
         return uri;
     }
 
@@ -58,7 +58,7 @@ public class NetworkCallRecord {
      *
      * @param uri The URL for this network call.
      */
-    public void uri(String uri) {
+    public void setUri(String uri) {
         this.uri = uri;
     }
 
@@ -67,7 +67,7 @@ public class NetworkCallRecord {
      *
      * @return The HTTP headers for the network call.
      */
-    public Map<String, String> headers() {
+    public Map<String, String> getHeaders() {
         return headers;
     }
 
@@ -76,7 +76,7 @@ public class NetworkCallRecord {
      *
      * @param headers The HTTP headers for the network call.
      */
-    public void headers(Map<String, String> headers) {
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 
@@ -86,7 +86,7 @@ public class NetworkCallRecord {
      *
      * @return Contents of the HTTP response.
      */
-    public Map<String, String> response() {
+    public Map<String, String> getResponse() {
         return response;
     }
 
@@ -96,7 +96,7 @@ public class NetworkCallRecord {
      *
      * @param response Contents of the HTTP response.
      */
-    public void response(Map<String, String> response) {
+    public void setResponse(Map<String, String> response) {
         this.response = response;
     }
 
@@ -105,7 +105,7 @@ public class NetworkCallRecord {
      *
      * @return Throwable thrown during the network call.
      */
-    public NetworkCallError exception() {
+    public NetworkCallError getException() {
         return exception;
     }
 
@@ -114,7 +114,7 @@ public class NetworkCallRecord {
      *
      * @param exception Throwable thrown during the network call.
      */
-    public void exception(NetworkCallError exception) {
+    public void setException(NetworkCallError exception) {
         this.exception = exception;
     }
 }

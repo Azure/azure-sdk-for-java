@@ -23,7 +23,7 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link QueueServiceAsyncClient}.
  */
 public class QueueServiceAsyncJavaDocCodeSamples {
-    
+
     private QueueServiceAsyncClient client = createAsyncClientWithSASToken();
 
     /**
@@ -177,7 +177,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse()
             .subscribe(response -> {
-                StorageServiceProperties properties = response.value();
+                StorageServiceProperties properties = response.getValue();
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
                     properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
             });
@@ -255,7 +255,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse
         client.getStatisticsWithResponse()
             .subscribe(response -> {
-                StorageServiceStats stats = response.value();
+                StorageServiceStats stats = response.getValue();
                 System.out.printf("Geo replication status: %s, Last synced: %s",
                     stats.geoReplication().status(), stats.geoReplication().lastSyncTime());
             });

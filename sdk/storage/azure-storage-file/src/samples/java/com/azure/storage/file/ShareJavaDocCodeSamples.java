@@ -200,7 +200,7 @@ public class ShareJavaDocCodeSamples {
         Response<ShareSnapshotInfo> response =
             shareClient.createSnapshotWithResponse(Collections.singletonMap("snpashot", "metadata"),
                 Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete creating the share snpashot with snapshot id: " + response.value().snapshot());
+        System.out.println("Complete creating the share snpashot with snapshot id: " + response.getValue().snapshot());
         // END: com.azure.storage.file.shareClient.createSnapshotWithResponse#map-duration-context
     }
 
@@ -316,7 +316,7 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getPropertiesWithResponse#duration-context
         ShareProperties properties = shareClient.getPropertiesWithResponse(
-            Duration.ofSeconds(1), new Context(key1, value1)).value();
+            Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
         // END: com.azure.storage.file.shareClient.getPropertiesWithResponse#duration-context
     }
@@ -448,7 +448,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getStatisticsWithResponse#duration-context
         Response<ShareStatistics> response = shareClient.getStatisticsWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("The share is using %d GB", response.value().getShareUsageInGB());
+        System.out.printf("The share is using %d GB", response.getValue().getShareUsageInGB());
         // END: com.azure.storage.file.shareClient.getStatisticsWithResponse#duration-context
     }
 
@@ -470,7 +470,7 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createPermissionWithResponse#string-context
         Response<String> response = shareClient.createPermissionWithResponse("filePermission", Context.NONE);
-        System.out.printf("The file permission key is %s", response.value());
+        System.out.printf("The file permission key is %s", response.getValue());
         // END: com.azure.storage.file.shareClient.createPermissionWithResponse#string-context
     }
 
@@ -492,7 +492,7 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getPermissionWithResponse#string-context
         Response<String> response = shareClient.getPermissionWithResponse("filePermissionKey", Context.NONE);
-        System.out.printf("The file permission is %s", response.value());
+        System.out.printf("The file permission is %s", response.getValue());
         // END: com.azure.storage.file.shareClient.getPermissionWithResponse#string-context
     }
 

@@ -53,7 +53,7 @@ public final class SourceModifiedAccessConditions {
         if (this.sourceIfModifiedSince == null) {
             return null;
         }
-        return this.sourceIfModifiedSince.dateTime();
+        return this.sourceIfModifiedSince.getDateTime();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class SourceModifiedAccessConditions {
         if (this.sourceIfUnmodifiedSince == null) {
             return null;
         }
-        return this.sourceIfUnmodifiedSince.dateTime();
+        return this.sourceIfUnmodifiedSince.getDateTime();
     }
 
     /**

@@ -52,7 +52,7 @@ public final class ModifiedAccessConditions {
         if (this.ifModifiedSince == null) {
             return null;
         }
-        return this.ifModifiedSince.dateTime();
+        return this.ifModifiedSince.getDateTime();
     }
 
     /**
@@ -82,7 +82,7 @@ public final class ModifiedAccessConditions {
         if (this.ifUnmodifiedSince == null) {
             return null;
         }
-        return this.ifUnmodifiedSince.dateTime();
+        return this.ifUnmodifiedSince.getDateTime();
     }
 
     /**

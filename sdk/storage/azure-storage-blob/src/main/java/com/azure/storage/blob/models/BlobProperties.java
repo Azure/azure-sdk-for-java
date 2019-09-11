@@ -215,7 +215,7 @@ public final class BlobProperties {
         if (this.creationTime == null) {
             return null;
         }
-        return this.creationTime.dateTime();
+        return this.creationTime.getDateTime();
     }
 
     /**
@@ -242,7 +242,7 @@ public final class BlobProperties {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -619,7 +619,7 @@ public final class BlobProperties {
         if (this.copyCompletionTime == null) {
             return null;
         }
-        return this.copyCompletionTime.dateTime();
+        return this.copyCompletionTime.getDateTime();
     }
 
     /**
@@ -728,7 +728,7 @@ public final class BlobProperties {
         if (this.deletedTime == null) {
             return null;
         }
-        return this.deletedTime.dateTime();
+        return this.deletedTime.getDateTime();
     }
 
     /**
@@ -867,7 +867,7 @@ public final class BlobProperties {
         if (this.accessTierChangeTime == null) {
             return null;
         }
-        return this.accessTierChangeTime.dateTime();
+        return this.accessTierChangeTime.getDateTime();
     }
 
     /**

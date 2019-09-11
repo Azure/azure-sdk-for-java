@@ -97,7 +97,7 @@ class PipelineSample {
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            tracker.increment(context.httpRequest().httpMethod());
+            tracker.increment(context.getHttpRequest().getHttpMethod());
             return next.process();
         }
     }

@@ -140,8 +140,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponse#string-duration-duration
         client.enqueueMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null).subscribe(
-                response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
-                    response.value().expirationTime()),
+                response -> System.out.printf("Message %s expires at %s", response.getValue().messageId(),
+                    response.getValue().expirationTime()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete enqueuing the message!")
         );
@@ -155,8 +155,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration
         client.enqueueMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5)).subscribe(
-                response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
-                    response.value().expirationTime()),
+                response -> System.out.printf("Message %s expires at %s", response.getValue().messageId(),
+                    response.getValue().expirationTime()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete enqueuing the message!")
         );
@@ -355,7 +355,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse()
             .subscribe(response -> {
-                QueueProperties properties = response.value();
+                QueueProperties properties = response.getValue();
                 System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
                     properties.approximateMessagesCount());
             });

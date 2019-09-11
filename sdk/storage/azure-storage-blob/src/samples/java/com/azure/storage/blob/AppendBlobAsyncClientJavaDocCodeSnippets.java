@@ -68,7 +68,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
                 .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.createWithResponse(headers, metadata, accessConditions).subscribe(response ->
-            System.out.printf("Created AppendBlob at %s%n", response.value().lastModified()));
+            System.out.printf("Created AppendBlob at %s%n", response.getValue().lastModified()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions
     }
 
@@ -93,7 +93,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
                 .maxSize(maxSize));
 
         client.appendBlockWithResponse(data, length, accessConditions).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n", response.value().blobCommittedBlockCount()));
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().blobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
     }
 
@@ -122,7 +122,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
 
         client.appendBlockFromUrlWithResponse(sourceUrl, new BlobRange(offset, count), null,
             appendBlobAccessConditions, modifiedAccessConditions).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n", response.value().blobCommittedBlockCount()));
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().blobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions
     }
 }

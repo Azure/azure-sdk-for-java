@@ -170,7 +170,7 @@ public class QueueServiceJavaDocCodeSamples {
     public void getPropertiesWithResponse() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context
         StorageServiceProperties properties = client.getPropertiesWithResponse(Duration.ofSeconds(1),
-            new Context(key1, value1)).value();
+            new Context(key1, value1)).getValue();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
             properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
         // END: com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context
@@ -248,7 +248,7 @@ public class QueueServiceJavaDocCodeSamples {
     public void getStatisticsWithResponse() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context
         StorageServiceStats stats = client.getStatisticsWithResponse(Duration.ofSeconds(1),
-            new Context(key1, value1)).value();
+            new Context(key1, value1)).getValue();
         System.out.printf("Geo replication status: %s, Last synced: %s",
             stats.geoReplication().status(), stats.geoReplication().lastSyncTime());
         // END: com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context

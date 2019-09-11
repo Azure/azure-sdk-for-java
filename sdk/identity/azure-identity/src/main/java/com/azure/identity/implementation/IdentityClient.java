@@ -449,13 +449,13 @@ public class IdentityClient {
     }
 
     private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {
-        switch (options.type()) {
+        switch (options.getType()) {
             case SOCKS4:
             case SOCKS5:
-                return new Proxy(Type.SOCKS, options.address());
+                return new Proxy(Type.SOCKS, options.getAddress());
             case HTTP:
             default:
-                return new Proxy(Type.HTTP, options.address());
+                return new Proxy(Type.HTTP, options.getAddress());
         }
     }
 }

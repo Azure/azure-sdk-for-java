@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
-import java.util.Map;
+
 import reactor.core.publisher.Flux;
 
 /**
@@ -33,8 +33,8 @@ public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeader
      * @return the response content stream.
      */
     @Override
-    public Flux<ByteBuffer> value() {
-        return super.value();
+    public Flux<ByteBuffer> getValue() {
+        return super.getValue();
     }
 
     /**
@@ -42,6 +42,6 @@ public final class FilesDownloadResponse extends ResponseBase<FileDownloadHeader
      */
     @Override
     public void close() {
-        value().subscribe(bb -> { }, t -> { }).dispose();
+        getValue().subscribe(bb -> { }, t -> { }).dispose();
     }
 }

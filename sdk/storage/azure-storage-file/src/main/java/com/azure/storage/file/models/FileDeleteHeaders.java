@@ -96,7 +96,7 @@ public final class FileDeleteHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**

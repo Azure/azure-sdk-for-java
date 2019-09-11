@@ -160,7 +160,7 @@ public final class ContainerListBlobFlatSegmentHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**

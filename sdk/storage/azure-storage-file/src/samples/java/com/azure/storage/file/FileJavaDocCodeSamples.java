@@ -165,7 +165,7 @@ public class FileJavaDocCodeSamples {
         Response<FileCopyInfo> response = fileClient.startCopyWithResponse(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete copying the file with copy Id: " + response.value().copyId());
+        System.out.println("Complete copying the file with copy Id: " + response.getValue().copyId());
         // END: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
     }
 
@@ -305,7 +305,7 @@ public class FileJavaDocCodeSamples {
         Response<FileDownloadInfo> response = fileClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L),
             false, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete downloading the data with status code: " + response.statusCode());
-        response.value().body().subscribe(
+        response.getValue().body().subscribe(
             byteBuffer ->  System.out.println("Complete downloading the data with body: "
                 + new String(byteBuffer.array(), StandardCharsets.UTF_8)),
             error -> System.err.print(error.toString()),
@@ -406,7 +406,7 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileClient.getPropertiesWithResponse#duration-context
         Response<FileProperties> response = fileClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("File latest modified date is %s.", response.value().lastModified());
+        System.out.printf("File latest modified date is %s.", response.getValue().lastModified());
         // END: com.azure.storage.file.fileClient.getPropertiesWithResponse#duration-context
     }
 

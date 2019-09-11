@@ -173,7 +173,7 @@ public class BlobClient {
      * @return true if the container exists, false if it doesn't
      */
     public Boolean exists() {
-        return existsWithResponse(null, Context.NONE).value();
+        return existsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -207,7 +207,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).value();
+        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -297,7 +297,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).value();
+        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -374,7 +374,7 @@ public class BlobClient {
                                              BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         Mono<VoidResponse> download = blobAsyncClient
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
-            .flatMapMany(res -> res.value()
+            .flatMapMany(res -> res.getValue()
                 .doOnNext(bf -> {
                     try {
                         stream.write(bf.array());
@@ -501,7 +501,7 @@ public class BlobClient {
      * @return The blob properties and metadata.
      */
     public BlobProperties getProperties() {
-        return getPropertiesWithResponse(null, null, Context.NONE).value();
+        return getPropertiesWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -621,7 +621,7 @@ public class BlobClient {
      * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
     public BlobClient createSnapshot() {
-        return createSnapshotWithResponse(null, null, null, Context.NONE).value();
+        return createSnapshotWithResponse(null, null, null, Context.NONE).getValue();
     }
 
 
@@ -645,7 +645,7 @@ public class BlobClient {
     public Response<BlobClient> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<BlobClient>> response = blobAsyncClient
             .createSnapshotWithResponse(metadata, accessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, new BlobClient(rb.value())));
+            .map(rb -> new SimpleResponse<>(rb, new BlobClient(rb.getValue())));
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -749,7 +749,7 @@ public class BlobClient {
      * @return The lease ID.
      */
     public String acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).value();
+        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -794,7 +794,7 @@ public class BlobClient {
      * @return The renewed lease ID.
      */
     public String renewLease(String leaseId) {
-        return renewLeaseWithResponse(leaseId, null, null, Context.NONE).value();
+        return renewLeaseWithResponse(leaseId, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -876,7 +876,7 @@ public class BlobClient {
      * @return The remaining time in the broken lease in seconds.
      */
     public Integer breakLease() {
-        return breakLeaseWithResponse(null, null, null, Context.NONE).value();
+        return breakLeaseWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -924,7 +924,7 @@ public class BlobClient {
      * @return The new lease ID.
      */
     public String changeLease(String leaseId, String proposedId) {
-        return changeLeaseWithResponse(leaseId, proposedId, null, null, Context.NONE).value();
+        return changeLeaseWithResponse(leaseId, proposedId, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -965,7 +965,7 @@ public class BlobClient {
      * @return The sku name and account kind.
      */
     public StorageAccountInfo getAccountInfo() {
-        return getAccountInfoWithResponse(null, Context.NONE).value();
+        return getAccountInfoWithResponse(null, Context.NONE).getValue();
     }
 
     /**

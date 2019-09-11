@@ -53,7 +53,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @Before
     public void setupTest() {
-        logger.info("[{}]: Performing integration test set-up.", testName());
+        logger.info("[{}]: Performing integration test set-up.", getTestName());
 
         skipIfNotRecordMode();
 
@@ -79,7 +79,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @After
     public void teardownTest() {
-        logger.info("[{}]: Performing test clean-up.", testName());
+        logger.info("[{}]: Performing test clean-up.", getTestName());
         afterTest();
 
         if (scheduler != null) {
@@ -155,7 +155,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 closeable.close();
             } catch (IOException error) {
                 logger.error(String.format("[%s]: %s didn't close properly.",
-                    testName(), closeable.getClass().getSimpleName()), error);
+                    getTestName(), closeable.getClass().getSimpleName()), error);
             }
         }
     }

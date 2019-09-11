@@ -76,9 +76,9 @@ public class OkHttpClientTests {
     public void testMultipleSubscriptionsEmitsError() {
         HttpResponse response = getResponse("/short");
         // Subscription:1
-        response.bodyAsByteArray().block();
+        response.getBodyAsByteArray().block();
         // Subscription:2
-        StepVerifier.create(response.bodyAsByteArray())
+        StepVerifier.create(response.getBodyAsByteArray())
                 .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
                 .verifyError(IllegalStateException.class);
 
@@ -87,7 +87,7 @@ public class OkHttpClientTests {
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpResponse response = getResponse("/error");
-        StepVerifier.create(response.bodyAsString())
+        StepVerifier.create(response.getBodyAsString())
                 .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
                 .verifyComplete();
         Assert.assertEquals(500, response.statusCode());
@@ -116,7 +116,7 @@ public class OkHttpClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .header("Content-Length", "123")
+                .setHeader("Content-Length", "123")
                 .body(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
@@ -130,7 +130,7 @@ public class OkHttpClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .header("Content-Length", String.valueOf(contentChunk.length() * repetitions))
+                .setHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
                 .body(Flux.just(contentChunk)
                         .repeat(repetitions)
                         .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
@@ -181,7 +181,7 @@ public class OkHttpClientTests {
             Assert.assertEquals(200, response.statusCode());
             System.out.println("reading body");
             //
-            StepVerifier.create(response.bodyAsByteArray())
+            StepVerifier.create(response.getBodyAsByteArray())
                 // .awaitDone(20, TimeUnit.SECONDS)
                 .verifyError(IOException.class);
         } finally {
@@ -284,7 +284,7 @@ public class OkHttpClientTests {
     private void checkBodyReceived(String expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         HttpResponse response = doRequest(client, path);
-        String s = new String(response.bodyAsByteArray().block(),
+        String s = new String(response.getBodyAsByteArray().block(),
                 StandardCharsets.UTF_8);
         Assert.assertEquals(expectedBody, s);
     }

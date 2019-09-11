@@ -100,7 +100,7 @@ public final class ServiceListQueuesSegmentHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**

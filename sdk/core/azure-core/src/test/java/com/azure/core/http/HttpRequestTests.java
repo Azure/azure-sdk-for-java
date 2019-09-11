@@ -18,8 +18,8 @@ public class HttpRequestTests {
     @Test
     public void constructor() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
-        assertEquals(HttpMethod.POST, request.httpMethod());
-        assertEquals(new URL("http://request.url"), request.url());
+        assertEquals(HttpMethod.POST, request.getHttpMethod());
+        assertEquals(new URL("http://request.url"), request.getUrl());
     }
 
     @Test
@@ -37,17 +37,17 @@ public class HttpRequestTests {
 
         assertNotSame(request, bufferedRequest);
 
-        assertEquals(request.httpMethod(), bufferedRequest.httpMethod());
-        assertEquals(request.url(), bufferedRequest.url());
+        assertEquals(request.getHttpMethod(), bufferedRequest.getHttpMethod());
+        assertEquals(request.getUrl(), bufferedRequest.getUrl());
 
-        assertNotSame(request.headers(), bufferedRequest.headers());
-        assertEquals(request.headers().size(), bufferedRequest.headers().size());
-        for (HttpHeader clonedHeader : bufferedRequest.headers()) {
-            for (HttpHeader originalHeader : request.headers()) {
+        assertNotSame(request.getHeaders(), bufferedRequest.getHeaders());
+        assertEquals(request.getHeaders().size(), bufferedRequest.getHeaders().size());
+        for (HttpHeader clonedHeader : bufferedRequest.getHeaders()) {
+            for (HttpHeader originalHeader : request.getHeaders()) {
                 assertNotSame(clonedHeader, originalHeader);
             }
 
-            assertEquals(clonedHeader.value(), request.headers().value(clonedHeader.name()));
+            assertEquals(clonedHeader.value(), request.getHeaders().value(clonedHeader.getName()));
         }
 
         assertSame(request.body(), bufferedRequest.body());

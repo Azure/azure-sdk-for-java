@@ -203,7 +203,7 @@ public final class HandleItem {
         if (this.openTime == null) {
             return null;
         }
-        return this.openTime.dateTime();
+        return this.openTime.getDateTime();
     }
 
     /**
@@ -232,7 +232,7 @@ public final class HandleItem {
         if (this.lastReconnectTime == null) {
             return null;
         }
-        return this.lastReconnectTime.dateTime();
+        return this.lastReconnectTime.getDateTime();
     }
 
     /**

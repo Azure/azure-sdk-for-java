@@ -168,12 +168,12 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                             }
 
                             @Override
-                            public String headerValue(String s) {
+                            public String getHeaderValue(String s) {
                                 return null;
                             }
 
                             @Override
-                            public HttpHeaders headers() {
+                            public HttpHeaders getHeaders() {
                                 return null;
                             }
 
@@ -183,17 +183,17 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                             }
 
                             @Override
-                            public Mono<byte[]> bodyAsByteArray() {
+                            public Mono<byte[]> getBodyAsByteArray() {
                                 return null;
                             }
 
                             @Override
-                            public Mono<String> bodyAsString() {
+                            public Mono<String> getBodyAsString() {
                                 return null;
                             }
 
                             @Override
-                            public Mono<String> bodyAsString(Charset charset) {
+                            public Mono<String> getBodyAsString(Charset charset) {
                                 return null;
                             }
                         });

@@ -104,7 +104,7 @@ public class DirectoryClient {
      * @throws StorageException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
     public DirectoryInfo create() {
-        return createWithResponse(null, null, null, null, Context.NONE).value();
+        return createWithResponse(null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -191,7 +191,7 @@ public class DirectoryClient {
      * @return Storage directory properties
      */
     public DirectoryProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -235,7 +235,7 @@ public class DirectoryClient {
      * @return The storage directory SMB properties
      */
     public DirectoryInfo setProperties(FileSmbProperties smbProperties, String filePermission) {
-        return setPropertiesWithResponse(smbProperties, filePermission, null, Context.NONE).value();
+        return setPropertiesWithResponse(smbProperties, filePermission, null, Context.NONE).getValue();
     }
 
     /**
@@ -285,7 +285,7 @@ public class DirectoryClient {
      * @throws StorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public DirectorySetMetadataInfo setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, null, Context.NONE).value();
+        return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
     }
 
     /**
@@ -424,7 +424,7 @@ public class DirectoryClient {
      * @throws StorageException If the subdirectory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
     public DirectoryClient createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, null, null, null, Context.NONE).value();
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -516,7 +516,7 @@ public class DirectoryClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public FileClient createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null, null, null, Context.NONE).value();
+        return createFileWithResponse(fileName, maxSize, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**

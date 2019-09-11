@@ -431,7 +431,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         while (pendingPollCount < 30) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKeyWithResponse(keyName).block().value();
+                deletedKey = client.getDeletedKeyWithResponse(keyName).block().getValue();
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey == null) {
@@ -449,7 +449,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKeyWithResponse(keyName).block().value();
+                deletedKey = client.getDeletedKeyWithResponse(keyName).block().getValue();
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey != null) {

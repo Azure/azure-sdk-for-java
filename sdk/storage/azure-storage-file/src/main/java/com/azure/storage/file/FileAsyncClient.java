@@ -339,7 +339,7 @@ public class FileAsyncClient {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel -> sliceFileRange(range)
                 .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-                    .map(dar -> dar.value().body())
+                    .map(dar -> dar.getValue().body())
                     .subscribeOn(Schedulers.elastic())
                     .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
                         .subscribeOn(Schedulers.elastic())
@@ -967,12 +967,12 @@ public class FileAsyncClient {
         Function<String, Mono<PagedResponse<FileRange>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value().stream().map(FileRange::new).collect(Collectors.toList()),
+                    response.getHeaders(),
+                    response.getValue().stream().map(FileRange::new).collect(Collectors.toList()),
                     null,
-                    response.deserializedHeaders())));
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -1029,12 +1029,12 @@ public class FileAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResults, null, snapshot,
                     context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value().handleList(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                    response.getHeaders(),
+                    response.getValue().handleList(),
+                    response.getValue().nextMarker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -1078,12 +1078,12 @@ public class FileAsyncClient {
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
                     snapshot, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
-                    response.deserializedHeaders().marker(),
-                    response.deserializedHeaders())));
+                    response.getHeaders(),
+                    Collections.singletonList(response.getDeserializedHeaders().numberOfHandlesClosed()),
+                    response.getDeserializedHeaders().marker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -1208,47 +1208,47 @@ public class FileAsyncClient {
     }
 
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
     }
 
     private Response<FileCopyInfo> startCopyResponse(final FilesStartCopyResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        String copyId = response.deserializedHeaders().copyId();
-        CopyStatusType copyStatus = response.deserializedHeaders().copyStatus();
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        String copyId = response.getDeserializedHeaders().copyId();
+        CopyStatusType copyStatus = response.getDeserializedHeaders().copyStatus();
         FileCopyInfo fileCopyInfo = new FileCopyInfo(eTag, lastModified, copyId, copyStatus);
         return new SimpleResponse<>(response, fileCopyInfo);
     }
 
     private Response<FileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
     }
 
     private Response<FileDownloadInfo> downloadWithPropertiesResponse(final FilesDownloadResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        Map<String, String> metadata = response.deserializedHeaders().metadata();
-        Long contentLength = response.deserializedHeaders().contentLength();
-        String contentType = response.deserializedHeaders().contentType();
-        String contentRange = response.deserializedHeaders().contentRange();
-        Flux<ByteBuffer> body = response.value();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        String eTag = response.getDeserializedHeaders().eTag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        Map<String, String> metadata = response.getDeserializedHeaders().metadata();
+        Long contentLength = response.getDeserializedHeaders().contentLength();
+        String contentType = response.getDeserializedHeaders().contentType();
+        String contentRange = response.getDeserializedHeaders().contentRange();
+        Flux<ByteBuffer> body = response.getValue();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body, smbProperties);
         return new SimpleResponse<>(response, fileDownloadInfo);
     }
 
     private Response<FileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {
-        FileGetPropertiesHeaders headers = response.deserializedHeaders();
+        FileGetPropertiesHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.eTag();
         OffsetDateTime lastModified = headers.lastModified();
         Map<String, String> metadata = headers.metadata();
@@ -1271,7 +1271,7 @@ public class FileAsyncClient {
         String copySource = headers.copySource();
         CopyStatusType copyStatus = headers.copyStatus();
         Boolean isServerEncrpted = headers.isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileProperties fileProperties = new FileProperties(eTag, lastModified, metadata, fileType, contentLength,
             contentType, contentMD5, contentEncoding, cacheControl, contentDisposition, copyCompletionTime, copyStatusDescription,
             copyId, copyProgress, copySource, copyStatus, isServerEncrpted, smbProperties);
@@ -1279,7 +1279,7 @@ public class FileAsyncClient {
     }
 
     private Response<FileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
-        FileUploadRangeHeaders headers = response.deserializedHeaders();
+        FileUploadRangeHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.eTag();
         OffsetDateTime lastModified = headers.lastModified();
         byte[] contentMD5;
@@ -1294,7 +1294,7 @@ public class FileAsyncClient {
     }
 
     private Response<FileUploadRangeFromURLInfo> uploadRangeFromURLResponse(final FilesUploadRangeFromURLResponse response) {
-        FileUploadRangeFromURLHeaders headers = response.deserializedHeaders();
+        FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.eTag();
         OffsetDateTime lastModified = headers.lastModified();
         Boolean isServerEncrypted = headers.isServerEncrypted();
@@ -1303,8 +1303,8 @@ public class FileAsyncClient {
     }
 
     private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
+        String eTag = response.getDeserializedHeaders().eTag();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileMetadataInfo fileMetadataInfo = new FileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, fileMetadataInfo);
     }

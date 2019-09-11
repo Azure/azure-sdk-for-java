@@ -189,7 +189,7 @@ public class ContainerClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
-        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).value());
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
         // END: com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context
     }
 
@@ -275,7 +275,7 @@ public class ContainerClientJavaDocCodeSnippets {
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
         Context context = new Context("Key", "Value");
 
-        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context).value();
+        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context).getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
             properties.blobPublicAccess(),
             properties.hasLegalHold(),
@@ -340,7 +340,7 @@ public class ContainerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
         Context context = new Context("Key", "Value");
-        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context).value();
+        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context).getValue();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
         for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
@@ -483,7 +483,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Lease ID: %s%n",
-            client.acquireLeaseWithResponse(proposedId, leaseDuration, accessConditions, timeout, context).value());
+            client.acquireLeaseWithResponse(proposedId, leaseDuration, accessConditions, timeout, context).getValue());
         // END: com.azure.storage.blob.ContainerClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
     }
 
@@ -575,7 +575,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Broken lease had %d seconds remaining on the lease%n",
-            client.breakLeaseWithResponse(10, accessConditions, timeout, context).value().getSeconds());
+            client.breakLeaseWithResponse(10, accessConditions, timeout, context).getValue().getSeconds());
         // END: com.azure.storage.blob.ContainerClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
     }
 
@@ -600,7 +600,7 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Changed Lease ID: %s%n",
-            client.changeLeaseWithResponse(leaseId, proposedId, accessConditions, timeout, context).value());
+            client.changeLeaseWithResponse(leaseId, proposedId, accessConditions, timeout, context).getValue());
         // END: com.azure.storage.blob.ContainerClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -620,7 +620,7 @@ public class ContainerClientJavaDocCodeSnippets {
     public void getAccountInfo2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
-        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).value();
+        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).getValue();
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
         // END: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
     }

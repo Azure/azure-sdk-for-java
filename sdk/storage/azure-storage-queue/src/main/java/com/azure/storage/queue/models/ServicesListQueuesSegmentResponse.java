@@ -29,7 +29,7 @@ public final class ServicesListQueuesSegmentResponse extends ResponseBase<Servic
      * @return the deserialized response body.
      */
     @Override
-    public ListQueuesSegmentResponse value() {
-        return super.value();
+    public ListQueuesSegmentResponse getValue() {
+        return super.getValue();
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.http.rest.PagedResponse;
@@ -108,7 +109,7 @@ public final class SecretAsyncClient {
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties
      *     secret.name and secret.value must be non null.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     Secret created secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
@@ -130,7 +131,7 @@ public final class SecretAsyncClient {
         return service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.name()))
-            .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Set secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to set secret - {}", secret.name(), error));
     }
 
@@ -160,7 +161,7 @@ public final class SecretAsyncClient {
         return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Setting secret - {}", name))
-            .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Set secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
     }
 
@@ -177,7 +178,7 @@ public final class SecretAsyncClient {
      * @param version The version of the secret to retrieve. If this is an empty String or null, this
      *     call is equivalent to calling {@link #getSecret(String)}, with the latest version being
      *     retrieved.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
      *     contains the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't
      *     exist in the key vault.
@@ -200,7 +201,7 @@ public final class SecretAsyncClient {
      * @param name The name of the secret, cannot be null
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent
      *     to calling {@link #getSecret(String)}, with the latest version being retrieved.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
      *     vault.
@@ -215,7 +216,7 @@ public final class SecretAsyncClient {
         return service.getSecret(endpoint, name, version == null ? "" : version, API_VERSION, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
     }
 
@@ -258,7 +259,7 @@ public final class SecretAsyncClient {
      *
      * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the secret being
      *     requested.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
      *     SecretBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty
@@ -337,7 +338,7 @@ public final class SecretAsyncClient {
      * version} cannot be null.</p>
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     SecretBase updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
@@ -360,7 +361,7 @@ public final class SecretAsyncClient {
         return service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE,
             parameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating secret - {}", secret.name()))
-            .doOnSuccess(response -> logger.info("Updated secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Updated secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to update secret - {}", secret.name(), error));
     }
 
@@ -397,7 +398,7 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecretWithResponse#string}
      *
      * @param name The name of the secret to be deleted.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
@@ -410,7 +411,7 @@ public final class SecretAsyncClient {
     Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name, Context context) {
         return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Deleting secret - {}", name))
-            .doOnSuccess(response -> logger.info("Deleted secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Deleted secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
     }
 
@@ -447,7 +448,7 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string}
      *
      * @param name The name of the deleted secret.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      *     {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
@@ -461,7 +462,7 @@ public final class SecretAsyncClient {
         return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error));
     }
 
@@ -530,7 +531,7 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string}
      *
      * @param name The name of the deleted secret to be recovered.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     Secret recovered secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
@@ -544,7 +545,7 @@ public final class SecretAsyncClient {
         return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Recovering deleted secret - {}", name))
-            .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error));
     }
 
@@ -578,7 +579,7 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecretWithResponse#string}
      *
      * @param name The name of the secret.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
      *     contains the backed up secret blob.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key
      *     vault.
@@ -594,8 +595,8 @@ public final class SecretAsyncClient {
             .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
             .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
             .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
-            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
-                base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
+            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
+                base64URLResponse.statusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
     }
 
     /**
@@ -630,7 +631,7 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte}
      *
      * @param backup The backup blob associated with the secret.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
      *     contains the {@link Secret restored secret}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
@@ -644,7 +645,7 @@ public final class SecretAsyncClient {
         return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Attempting to restore secret"))
-            .doOnSuccess(response -> logger.info("Restored secret - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Restored secret - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to restore secret", error));
     }
 
@@ -734,7 +735,7 @@ public final class SecretAsyncClient {
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
+     * @param continuationToken The {@link Page#getNextLink()} from a previous, successful call to one of the
      *     list operations.
      * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of
      * results.

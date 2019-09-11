@@ -49,11 +49,11 @@ public class ClientSecretCredentialTest {
         // test
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes1).block();
-        Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(token1, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
         token = credential.getToken(scopes2).block();
-        Assert.assertEquals(token2, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(token2, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 
     @Test
@@ -74,8 +74,8 @@ public class ClientSecretCredentialTest {
         // test
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
         AccessToken token = credential.getToken(scopes).block();
-        Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(token1, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
         try {
             credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(badSecret).build();
             credential.getToken(scopes).block();

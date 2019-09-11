@@ -95,7 +95,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
 
         ContainerAsyncClient containerClient =
-            client.createContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().value();
+            client.createContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType
     }
 
@@ -158,8 +158,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-                response.value().hourMetrics().enabled(),
-                response.value().minuteMetrics().enabled()));
+                response.getValue().hourMetrics().enabled(),
+                response.getValue().minuteMetrics().enabled()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
     }
 
@@ -234,7 +234,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         OffsetDateTime delegationKeyExpiryTime = OffsetDateTime.now().plusDays(7);
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime
         client.getUserDelegationKeyWithResponse(delegationKeyStartTime, delegationKeyExpiryTime).subscribe(response ->
-            System.out.printf("User delegation key: %s%n", response.value().value()));
+            System.out.printf("User delegation key: %s%n", response.getValue().value()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime
     }
 
@@ -254,7 +254,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void getStatisticsWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse
         client.getStatisticsWithResponse().subscribe(response ->
-            System.out.printf("Geo-replication status: %s%n", response.value().geoReplication().status()));
+            System.out.printf("Geo-replication status: %s%n", response.getValue().geoReplication().status()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse
     }
 
@@ -274,7 +274,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void getAccountInfoWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
         client.getAccountInfoWithResponse().subscribe(response ->
-            System.out.printf("Account kind: %s, SKU: %s%n", response.value().accountKind(), response.value().skuName()));
+            System.out.printf("Account kind: %s, SKU: %s%n", response.getValue().accountKind(), response.getValue().skuName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
     }
 }

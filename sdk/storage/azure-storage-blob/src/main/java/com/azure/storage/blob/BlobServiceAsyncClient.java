@@ -138,7 +138,7 @@ public final class BlobServiceAsyncClient {
      * @param metadata {@link Metadata}
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains a {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * ContainerAsyncClient} used to interact with the container created.
      */
     public Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType) {
@@ -244,12 +244,12 @@ public final class BlobServiceAsyncClient {
         Function<String, Mono<PagedResponse<ContainerItem>>> func =
             marker -> listContainersSegment(marker, options, timeout)
                 .map(response -> new PagedResponseBase<>(
-                    response.request(),
+                    response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value().containerItems(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders()));
+                    response.getHeaders(),
+                    response.getValue().containerItems(),
+                    response.getValue().nextMarker(),
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(
             () -> func.apply(null),
@@ -308,7 +308,7 @@ public final class BlobServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the storage
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the storage
      * account properties.
      */
     public Mono<Response<StorageServiceProperties>> getPropertiesWithResponse() {
@@ -318,7 +318,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(
             this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.value()));
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -387,7 +387,7 @@ public final class BlobServiceAsyncClient {
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} containing the user
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
      * delegation key.
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      */
@@ -407,7 +407,7 @@ public final class BlobServiceAsyncClient {
                     .start(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .expiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context)
-        ).map(rb -> new SimpleResponse<>(rb, rb.value()));
+        ).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -436,7 +436,7 @@ public final class BlobServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} containing the storage
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the storage
      * account statistics.
      */
     public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
@@ -446,7 +446,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(
             this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.value()));
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -470,7 +470,7 @@ public final class BlobServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} the storage account
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} the storage account
      * info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
@@ -479,7 +479,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return postProcessResponse(this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context))
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
     }
 
     /**

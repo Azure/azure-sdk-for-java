@@ -120,7 +120,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKeyWithResponse#keyCreateOptions}
      *
      * @param keyCreateOptions The key configuration object containing information about the key being created.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -135,7 +135,7 @@ public final class KeyAsyncClient {
         return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", name))
-            .doOnSuccess(response -> logger.info("Created key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to create key - {}", name, error));
     }
 
@@ -178,7 +178,7 @@ public final class KeyAsyncClient {
         return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", keyCreateOptions.name()))
-            .doOnSuccess(response -> logger.info("Created key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to create key - {}", keyCreateOptions.name(), error));
     }
 
@@ -230,7 +230,7 @@ public final class KeyAsyncClient {
      *
      * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being
      *     created.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
@@ -251,7 +251,7 @@ public final class KeyAsyncClient {
         return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", rsaKeyCreateOptions.name()))
-            .doOnSuccess(response -> logger.info("Created Rsa key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Created Rsa key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to create Rsa key - {}", rsaKeyCreateOptions.name(), error));
     }
 
@@ -309,7 +309,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
@@ -330,7 +330,7 @@ public final class KeyAsyncClient {
         return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating Ec key - {}", ecKeyCreateOptions.name()))
-            .doOnSuccess(response -> logger.info("Created Ec key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Created Ec key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to create Ec key - {}", ecKeyCreateOptions.name(), error));
     }
 
@@ -351,7 +351,7 @@ public final class KeyAsyncClient {
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     imported key}.
      * @throws HttpRequestException if {@code name} is empty string.
      */
@@ -365,7 +365,7 @@ public final class KeyAsyncClient {
         return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", name))
-            .doOnSuccess(response -> logger.info("Imported key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to import key - {}", name, error));
     }
 
@@ -432,7 +432,7 @@ public final class KeyAsyncClient {
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key
      *     being imported.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -451,7 +451,7 @@ public final class KeyAsyncClient {
         return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", keyImportOptions.name()))
-            .doOnSuccess(response -> logger.info("Imported key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to import key - {}", keyImportOptions.name(), error));
     }
 
@@ -491,7 +491,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
      *     vault.
@@ -505,7 +505,7 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> getKeyWithResponse(String name, String version, Context context) {
         return service.getKey(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving key - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
@@ -562,7 +562,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyBase}
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
      *     version} doesn't exist in the key vault.
@@ -610,7 +610,7 @@ public final class KeyAsyncClient {
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating key - {}", key.name()))
-            .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
     }
 
@@ -629,7 +629,7 @@ public final class KeyAsyncClient {
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     KeyBase updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
@@ -678,7 +678,7 @@ public final class KeyAsyncClient {
         return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating key - {}", key.name()))
-            .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
     }
 
@@ -721,7 +721,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string}
      *
      * @param name The name of the key to be deleted.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
@@ -734,7 +734,7 @@ public final class KeyAsyncClient {
     Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
         return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Deleting key - {}", name))
-            .doOnSuccess(response -> logger.info("Deleted key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Deleted key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to delete key - {}", name, error));
     }
 
@@ -771,7 +771,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKeyWithResponse#string}
      *
      * @param name The name of the deleted key.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
@@ -784,7 +784,7 @@ public final class KeyAsyncClient {
     Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
         return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
@@ -849,7 +849,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
@@ -863,7 +863,7 @@ public final class KeyAsyncClient {
         return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Recovering deleted key - {}", name))
-            .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to recover deleted key - {}", name, error));
     }
 
@@ -914,7 +914,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.backupKeyWithResponse#string}
      *
      * @param name The name of the key.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the backed up
      *     key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
@@ -929,8 +929,8 @@ public final class KeyAsyncClient {
             .doOnRequest(ignored -> logger.info("Backing up key - {}", name))
             .doOnSuccess(response -> logger.info("Backed up key - {}", name))
             .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
-            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
-                base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
+            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
+                base64URLResponse.statusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().value())));
     }
 
     /**
@@ -979,7 +979,7 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte}
      *
      * @param backup The backup blob associated with the key.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     restored key}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
@@ -993,7 +993,7 @@ public final class KeyAsyncClient {
         return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Attempting to restore key"))
-            .doOnSuccess(response -> logger.info("Restored Key - {}", response.value().name()))
+            .doOnSuccess(response -> logger.info("Restored Key - {}", response.getValue().name()))
             .doOnError(error -> logger.warning("Failed to restore key - {}", error));
     }
 

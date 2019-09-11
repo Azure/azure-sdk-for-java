@@ -48,12 +48,12 @@ public abstract class PagedList<E> implements List<E> {
         if (page == null) {
             return;
         }
-        List<E> retrievedItems = page.items();
+        List<E> retrievedItems = page.getItems();
         if (retrievedItems != null) {
             items.addAll(retrievedItems);
         }
         currentPage = page;
-        cachePage(page.nextPageLink());
+        cachePage(page.getNextPageLink());
     }
 
     private void cachePage(String nextPageLink) {
@@ -63,7 +63,7 @@ public abstract class PagedList<E> implements List<E> {
                 if (cachedPage == null) {
                     break;
                 }
-                nextPageLink = cachedPage.nextPageLink();
+                nextPageLink = cachedPage.getNextPageLink();
                 if (hasNextPage()) {
                     // a legit, non-empty page has been fetched, otherwise keep fetching
                     break;
@@ -90,7 +90,7 @@ public abstract class PagedList<E> implements List<E> {
      * @return true if there are more pages to load. False otherwise.
      */
     public boolean hasNextPage() {
-        return this.cachedPage != null && this.cachedPage.items() != null && !this.cachedPage.items().isEmpty();
+        return this.cachedPage != null && this.cachedPage.getItems() != null && !this.cachedPage.getItems().isEmpty();
     }
 
     /**
@@ -100,8 +100,8 @@ public abstract class PagedList<E> implements List<E> {
     public void loadNextPage() {
         this.currentPage = cachedPage;
         cachedPage = null;
-        this.items.addAll(currentPage.items());
-        cachePage(currentPage.nextPageLink());
+        this.items.addAll(currentPage.getItems());
+        cachePage(currentPage.getNextPageLink());
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class PagedList<E> implements List<E> {
      *
      * @return the latest page.
      */
-    public Page<E> currentPage() {
+    public Page<E> getCurrentPage() {
         return currentPage;
     }
 
@@ -129,11 +129,11 @@ public abstract class PagedList<E> implements List<E> {
      */
     protected void setCurrentPage(Page<E> currentPage) {
         this.currentPage = currentPage;
-        List<E> retrievedItems = currentPage.items();
+        List<E> retrievedItems = currentPage.getItems();
         if (retrievedItems != null) {
             items.addAll(retrievedItems);
         }
-        cachePage(currentPage.nextPageLink());
+        cachePage(currentPage.getNextPageLink());
     }
 
     /**

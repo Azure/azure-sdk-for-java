@@ -77,7 +77,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.value().contentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().contentMD5())));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
@@ -110,7 +110,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
         client.uploadWithResponse(data, blockSize, numBuffers, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.value().contentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().contentMD5())));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
@@ -221,7 +221,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
 
         client.listBlocksWithResponse(BlockListType.ALL, accessConditions).subscribe(response -> {
-            BlockList block = response.value();
+            BlockList block = response.getValue();
             System.out.println("Committed Blocks:");
             block.committedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
 

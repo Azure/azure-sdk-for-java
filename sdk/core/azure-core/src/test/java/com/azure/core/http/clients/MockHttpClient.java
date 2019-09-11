@@ -45,21 +45,21 @@ public class MockHttpClient extends NoOpHttpClient {
         HttpResponse response = null;
 
         try {
-            final URL requestUrl = request.url();
+            final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
-            final String contentType = request.headers().value("Content-Type");
+            final String contentType = request.getHeaders().value("Content-Type");
             if ("httpbin.org".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
                 if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
-                    if ("HEAD".equals(request.httpMethod())) {
+                    if ("HEAD".equals(request.getHttpMethod())) {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.url().toString()
+                        json.url(request.getUrl().toString()
                                 // This is just to mimic the behavior we've seen with httpbin.org.
                                 .replace("%20", " "));
-                        json.headers(toMap(request.headers()));
+                        json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.startsWith("/bytes/")) {
@@ -130,17 +130,17 @@ public class MockHttpClient extends NoOpHttpClient {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
-                    json.headers(toMap(request.headers()));
+                    json.url(request.getUrl().toString());
+                    json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
@@ -157,16 +157,16 @@ public class MockHttpClient extends NoOpHttpClient {
                         response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.url().toString());
+                        json.url(request.getUrl().toString());
                         json.data(createHttpBinResponseDataForRequest(request));
-                        json.headers(toMap(request.headers()));
+                        json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.url().toString());
+                    json.url(request.getUrl().toString());
                     json.data(createHttpBinResponseDataForRequest(request));
-                    json.headers(toMap(request.headers()));
+                    json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                 } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
@@ -175,7 +175,7 @@ public class MockHttpClient extends NoOpHttpClient {
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
                 return FluxUtil.collectBytesInByteBufferStream(request.body())
-                    .map(bytes -> new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes));
+                    .map(bytes -> new MockHttpResponse(request, 200, new HttpHeaders(request.getHeaders()), bytes));
             }
         } catch (Exception ex) {
             return Mono.error(ex);
@@ -210,7 +210,7 @@ public class MockHttpClient extends NoOpHttpClient {
     private static Map<String, String> toMap(HttpHeaders headers) {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers) {
-            result.put(header.name(), header.value());
+            result.put(header.getName(), header.value());
         }
         return result;
     }

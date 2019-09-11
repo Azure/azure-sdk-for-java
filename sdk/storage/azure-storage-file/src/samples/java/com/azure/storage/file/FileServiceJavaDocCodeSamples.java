@@ -205,7 +205,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
-            Duration.ofSeconds(1), new Context(key1, value1)).value();
+            Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
             properties.minuteMetrics().enabled());
         // END: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
@@ -234,7 +234,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
-            Duration.ofSeconds(1), new Context(key1, value1)).value();
+            Duration.ofSeconds(1), new Context(key1, value1)).getValue();
 
         properties.minuteMetrics().enabled(true);
         properties.hourMetrics().enabled(true);

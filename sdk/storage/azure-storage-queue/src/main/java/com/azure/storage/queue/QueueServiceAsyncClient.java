@@ -247,12 +247,12 @@ public final class QueueServiceAsyncClient {
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
                     null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.statusCode(),
-                    response.headers(),
-                    response.value().queueItems(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                    response.getHeaders(),
+                    response.getValue().queueItems(),
+                    response.getValue().nextMarker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
@@ -297,7 +297,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(client.services().getPropertiesWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
@@ -419,7 +419,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**

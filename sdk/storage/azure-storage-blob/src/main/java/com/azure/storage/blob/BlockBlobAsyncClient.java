@@ -170,7 +170,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, metadata, opTier, null, headers, accessConditions.leaseAccessConditions(), cpk,
             accessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -563,7 +563,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the list of blocks.
      */
     public Mono<BlockList> listBlocks(BlockListType listType) {
-        return this.listBlocksWithResponse(listType, null).map(Response::value);
+        return this.listBlocksWithResponse(listType, null).map(Response::getValue);
     }
 
     /**
@@ -592,7 +592,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(null,
             null, listType, snapshot, null, null, leaseAccessConditions, context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
@@ -653,6 +653,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata, tierOp, null, headers,
             accessConditions.leaseAccessConditions(), cpk, accessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }

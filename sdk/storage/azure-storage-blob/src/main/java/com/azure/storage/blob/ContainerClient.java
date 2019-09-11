@@ -248,7 +248,7 @@ public final class ContainerClient {
      * @return true if the container exists, false if it doesn't
      */
     public Boolean exists() {
-        return existsWithResponse(null, Context.NONE).value();
+        return existsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -350,7 +350,7 @@ public final class ContainerClient {
      * @return The container properties.
      */
     public ContainerProperties getProperties() {
-        return getPropertiesWithResponse(null, null, Context.NONE).value();
+        return getPropertiesWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -424,7 +424,7 @@ public final class ContainerClient {
      * @return The container access policy.
      */
     public ContainerAccessPolicies getAccessPolicy() {
-        return getAccessPolicyWithResponse(null, null, Context.NONE).value();
+        return getAccessPolicyWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -636,7 +636,7 @@ public final class ContainerClient {
      * @return The lease ID.
      */
     public String acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).value();
+        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -698,7 +698,7 @@ public final class ContainerClient {
      */
     public String renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
                              Duration timeout) {
-        return renewLeaseWithResponse(leaseID, modifiedAccessConditions, timeout, Context.NONE).value();
+        return renewLeaseWithResponse(leaseID, modifiedAccessConditions, timeout, Context.NONE).getValue();
     }
 
     /**
@@ -773,7 +773,7 @@ public final class ContainerClient {
      * @return The remaining time in the broken lease.
      */
     public Duration breakLease() {
-        return breakLeaseWithResponse(null, null, null, Context.NONE).value();
+        return breakLeaseWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -818,7 +818,7 @@ public final class ContainerClient {
      * @return The new lease ID.
      */
     public String changeLease(String leaseId, String proposedID) {
-        return changeLeaseWithResponse(leaseId, proposedID, null, null, Context.NONE).value();
+        return changeLeaseWithResponse(leaseId, proposedID, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -859,7 +859,7 @@ public final class ContainerClient {
      * @return The account info.
      */
     public StorageAccountInfo getAccountInfo(Duration timeout) {
-        return getAccountInfoWithResponse(timeout, Context.NONE).value();
+        return getAccountInfoWithResponse(timeout, Context.NONE).getValue();
     }
 
     /**

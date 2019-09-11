@@ -61,7 +61,7 @@ public final class DownloadAsyncResponse {
     public Flux<ByteBuffer> body(ReliableDownloadOptions options) {
         ReliableDownloadOptions optionsReal = options == null ? new ReliableDownloadOptions() : options;
         if (optionsReal.maxRetryRequests() == 0) {
-            return this.rawResponse.value();
+            return this.rawResponse.getValue();
         }
 
         /*
@@ -69,7 +69,7 @@ public final class DownloadAsyncResponse {
         retries as we have not actually retried yet, only made the initial try. Because applyReliableDownload() will
         add 1 before calling into tryContinueFlux, we set the initial value to -1.
          */
-        return this.applyReliableDownload(this.rawResponse.value(), -1, optionsReal);
+        return this.applyReliableDownload(this.rawResponse.getValue(), -1, optionsReal);
     }
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, ReliableDownloadOptions options) {
@@ -88,7 +88,7 @@ public final class DownloadAsyncResponse {
                 Do not compound the number of retries by passing in another set of downloadOptions; just get
                 the raw body.
                 */
-                return getter.apply(this.info).flatMapMany(response -> this.applyReliableDownload(this.rawResponse.value(), retryCount, options));
+                return getter.apply(this.info).flatMapMany(response -> this.applyReliableDownload(this.rawResponse.getValue(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flux.error(e);
@@ -123,14 +123,14 @@ public final class DownloadAsyncResponse {
      * @return HTTP headers associated to the download
      */
     public BlobDownloadHeaders headers() {
-        return this.rawResponse.deserializedHeaders();
+        return this.rawResponse.getDeserializedHeaders();
     }
 
     /**
      * @return all HTTP headers from the response
      */
     public Map<String, String> rawHeaders() {
-        return this.rawResponse.headers().toMap();
+        return this.rawResponse.getHeaders().toMap();
     }
 
     /**

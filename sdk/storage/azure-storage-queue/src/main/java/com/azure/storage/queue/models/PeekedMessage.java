@@ -77,7 +77,7 @@ public final class PeekedMessage {
         if (this.insertionTime == null) {
             return null;
         }
-        return this.insertionTime.dateTime();
+        return this.insertionTime.getDateTime();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class PeekedMessage {
         if (this.expirationTime == null) {
             return null;
         }
-        return this.expirationTime.dateTime();
+        return this.expirationTime.getDateTime();
     }
 
     /**

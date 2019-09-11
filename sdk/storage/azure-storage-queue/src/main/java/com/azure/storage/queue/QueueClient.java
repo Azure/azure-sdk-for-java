@@ -162,7 +162,7 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist
      */
     public QueueProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -368,7 +368,7 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist
      */
     public EnqueuedMessage enqueueMessage(String messageText) {
-        return enqueueMessageWithResponse(messageText, null, null, null, Context.NONE).value();
+        return enqueueMessageWithResponse(messageText, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -558,7 +558,7 @@ public final class QueueClient {
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
     public UpdatedMessage updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, null, Context.NONE).value();
+        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, null, Context.NONE).getValue();
     }
 
     /**

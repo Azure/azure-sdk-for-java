@@ -455,7 +455,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.getPropertiesWithResponse
         fileAsyncClient.getPropertiesWithResponse()
             .subscribe(response -> {
-                FileProperties properties = response.value();
+                FileProperties properties = response.getValue();
                 System.out.printf("File latest modified date is %s.", properties.lastModified());
             });
         // END: com.azure.storage.file.fileAsyncClient.getPropertiesWithResponse

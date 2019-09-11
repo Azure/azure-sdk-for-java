@@ -113,7 +113,7 @@ public final class MessageIdUpdateHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -162,7 +162,7 @@ public final class MessageIdUpdateHeaders {
         if (this.timeNextVisible == null) {
             return null;
         }
-        return this.timeNextVisible.dateTime();
+        return this.timeNextVisible.getDateTime();
     }
 
     /**

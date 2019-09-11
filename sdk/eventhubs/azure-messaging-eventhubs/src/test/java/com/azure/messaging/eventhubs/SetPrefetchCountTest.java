@@ -57,7 +57,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 

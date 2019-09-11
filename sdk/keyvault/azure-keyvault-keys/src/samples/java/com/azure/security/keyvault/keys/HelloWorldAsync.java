@@ -39,7 +39,7 @@ public class HelloWorldAsync {
 
         // Let's validate create key operation succeeded using the status code information in the response.
         System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.statusCode());
-        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.value().name(), createKeyResponse.value().keyMaterial().kty());
+        System.out.printf("Key is created with name %s and type %s \n", createKeyResponse.getValue().name(), createKeyResponse.getValue().keyMaterial().kty());
 
         Thread.sleep(2000);
 

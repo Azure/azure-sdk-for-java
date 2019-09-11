@@ -29,17 +29,17 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public String headerValue(String name) {
+        public String getHeaderValue(String name) {
             return null;
         }
 
         @Override
-        public HttpHeaders headers() {
+        public HttpHeaders getHeaders() {
             return new HttpHeaders();
         }
 
         @Override
-        public Mono<byte[]> bodyAsByteArray() {
+        public Mono<byte[]> getBodyAsByteArray() {
             return Mono.empty();
         }
 
@@ -49,12 +49,12 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Mono<String> bodyAsString() {
+        public Mono<String> getBodyAsString() {
             return Mono.empty();
         }
 
         @Override
-        public Mono<String> bodyAsString(Charset charset) {
+        public Mono<String> getBodyAsString(Charset charset) {
             return Mono.empty();
         }
     };
@@ -69,12 +69,12 @@ public class RequestIdPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
-                        String newRequestId = request.headers().value(REQUEST_ID_HEADER);
+                        String newRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
                         Assert.assertNotNull(newRequestId);
                         Assert.assertNotEquals(newRequestId, firstRequestId);
                     }
 
-                    firstRequestId = request.headers().value(REQUEST_ID_HEADER);
+                    firstRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
                         Assert.fail();
                     }
@@ -97,11 +97,11 @@ public class RequestIdPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
-                        String newRequestId = request.headers().value(REQUEST_ID_HEADER);
+                        String newRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
                         Assert.assertNotNull(newRequestId);
                         Assert.assertEquals(newRequestId, firstRequestId);
                     }
-                    firstRequestId = request.headers().value(REQUEST_ID_HEADER);
+                    firstRequestId = request.getHeaders().value(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
                         Assert.fail();
                     }

@@ -251,7 +251,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void existsWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobClient.existsWithResponse#Duration-Context
-        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, new Context(key2, value2)).value());
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, new Context(key2, value2)).getValue());
         // END: com.azure.storage.blob.BlobClient.existsWithResponse#Duration-Context
     }
 
@@ -304,7 +304,7 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.printf("Copy identifier: %s%n",
             client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
                 blobAccessConditions, timeout,
-                new Context(key1, value1)).value());
+                new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
@@ -348,7 +348,7 @@ public class BlobClientJavaDocCodeSnippets {
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId));
 
         BlobProperties properties = client.getPropertiesWithResponse(accessConditions, timeout,
-            new Context(key2, value2)).value();
+            new Context(key2, value2)).getValue();
         System.out.printf("Type: %s, Size: %d%n", properties.blobType(), properties.blobSize());
         // END: com.azure.storage.blob.BlobClient.getPropertiesWithResponse#BlobAccessConditions-Duration-Context
     }
@@ -398,7 +398,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Identifier for the snapshot is %s%n",
             client.createSnapshotWithResponse(snapshotMetadata, accessConditions, timeout,
-                new Context(key1, value1)).value());
+                new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.createSnapshotWithResponse#Metadata-BlobAccessConditions-Duration-Context
     }
 
@@ -438,7 +438,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Lease ID is %s%n",
             client.acquireLeaseWithResponse("proposedId", 60, modifiedAccessConditions, timeout,
-                new Context(key1, value1)).value());
+                new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
     }
 
@@ -453,7 +453,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Renewed lease ID is %s%n",
             client.renewLeaseWithResponse(leaseId, modifiedAccessConditions, timeout,
-                new Context(key1, value1)).value());
+                new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -484,7 +484,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("The broken lease has %d seconds remaining on the lease",
             client.breakLeaseWithResponse(retainLeaseInSeconds, modifiedAccessConditions, timeout,
-                new Context(key1, value1)).value());
+                new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
     }
 
@@ -501,7 +501,7 @@ public class BlobClientJavaDocCodeSnippets {
 
         System.out.printf("Changed lease ID is %s%n",
             client.changeLeaseWithResponse(leaseId, "proposedId", modifiedAccessConditions, timeout,
-                new Context(key1, value1)).value());
+                new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -510,7 +510,7 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void getAccountInfoWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.getAccountInfoWithResponse#Duration-Context
-        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, new Context(key1, value1)).value();
+        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, new Context(key1, value1)).getValue();
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
         // END: com.azure.storage.blob.BlobClient.getAccountInfoWithResponse#Duration-Context
     }

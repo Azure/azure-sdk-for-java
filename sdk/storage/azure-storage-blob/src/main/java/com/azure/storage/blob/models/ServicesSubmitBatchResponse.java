@@ -32,8 +32,8 @@ public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmi
      * @return the response content stream.
      */
     @Override
-    public Flux<ByteBuffer> value() {
-        return super.value();
+    public Flux<ByteBuffer> getValue() {
+        return super.getValue();
     }
 
     /**
@@ -41,6 +41,6 @@ public final class ServicesSubmitBatchResponse extends ResponseBase<ServiceSubmi
      */
     @Override
     public void close() {
-        value().subscribe(bb -> { }, t -> { }).dispose();
+        getValue().subscribe(bb -> { }, t -> { }).dispose();
     }
 }

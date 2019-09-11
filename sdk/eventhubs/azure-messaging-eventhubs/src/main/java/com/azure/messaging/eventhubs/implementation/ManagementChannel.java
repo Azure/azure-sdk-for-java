@@ -124,7 +124,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         final String tokenAudience = audienceProvider.getResourceString(eventHubName);
 
         return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
-            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.token());
+            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
 
             final Message request = Proton.message();
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);

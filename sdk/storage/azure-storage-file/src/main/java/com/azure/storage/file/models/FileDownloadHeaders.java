@@ -246,7 +246,7 @@ public final class FileDownloadHeaders {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -576,7 +576,7 @@ public final class FileDownloadHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -607,7 +607,7 @@ public final class FileDownloadHeaders {
         if (this.copyCompletionTime == null) {
             return null;
         }
-        return this.copyCompletionTime.dateTime();
+        return this.copyCompletionTime.getDateTime();
     }
 
     /**

@@ -66,7 +66,7 @@ public final class GeoReplication {
         if (this.lastSyncTime == null) {
             return null;
         }
-        return this.lastSyncTime.dateTime();
+        return this.lastSyncTime.getDateTime();
     }
 
     /**

@@ -416,17 +416,17 @@ public class NettyFluxTests {
             }
 
             @Override
-            public HttpHeaders headers() {
+            public HttpHeaders getHeaders() {
                 return null;
             }
 
             @Override
-            public HttpRequest request() {
+            public HttpRequest getRequest() {
                 return null;
             }
 
             @Override
-            public T value() {
+            public T getValue() {
                 return value;
             }
         };

@@ -90,7 +90,7 @@ public final class DequeuedMessage {
         if (this.insertionTime == null) {
             return null;
         }
-        return this.insertionTime.dateTime();
+        return this.insertionTime.getDateTime();
     }
 
     /**
@@ -119,7 +119,7 @@ public final class DequeuedMessage {
         if (this.expirationTime == null) {
             return null;
         }
-        return this.expirationTime.dateTime();
+        return this.expirationTime.getDateTime();
     }
 
     /**
@@ -172,7 +172,7 @@ public final class DequeuedMessage {
         if (this.timeNextVisible == null) {
             return null;
         }
-        return this.timeNextVisible.dateTime();
+        return this.timeNextVisible.getDateTime();
     }
 
     /**

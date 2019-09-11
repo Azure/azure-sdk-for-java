@@ -176,7 +176,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.createSnapshotWithResponse#map
         shareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("snapshot", "metadata")).subscribe(
             response -> System.out.println("Successfully creating the share snapshot with snapshot id: "
-                + response.value().snapshot()),
+                + response.getValue().snapshot()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Complete creating the share snapshot.")
         );
@@ -313,7 +313,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.getPropertiesWithResponse
         shareAsyncClient.getPropertiesWithResponse()
             .subscribe(properties -> {
-                System.out.printf("Share quota: %d, Metadata: %s", properties.value().quota(), properties.value().metadata());
+                System.out.printf("Share quota: %d, Metadata: %s", properties.getValue().quota(), properties.getValue().metadata());
             });
         // END: com.azure.storage.file.shareAsyncClient.getPropertiesWithResponse
     }
@@ -456,7 +456,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string
         shareAsyncClient.createPermissionWithResponse("filePermission").subscribe(
-            response -> System.out.printf("The file permission key is %s", response.value()));
+            response -> System.out.printf("The file permission key is %s", response.getValue()));
         // END: com.azure.storage.file.shareAsyncClient.createPermissionWithResponse#string
     }
 
@@ -478,7 +478,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string
         shareAsyncClient.getPermissionWithResponse("filePermissionKey").subscribe(
-            response -> System.out.printf("The file permission is %s", response.value()));
+            response -> System.out.printf("The file permission is %s", response.getValue()));
         // END: com.azure.storage.file.shareAsyncClient.getPermissionWithResponse#string
     }
 
@@ -489,7 +489,7 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareAsyncClient.getStatisticsWithResponse
         shareAsyncClient.getStatisticsWithResponse().subscribe(response -> System.out.printf("The share is using %d GB",
-            response.value().getShareUsageInGB()));
+            response.getValue().getShareUsageInGB()));
         // END: com.azure.storage.file.shareAsyncClient.getStatisticsWithResponse
     }
 

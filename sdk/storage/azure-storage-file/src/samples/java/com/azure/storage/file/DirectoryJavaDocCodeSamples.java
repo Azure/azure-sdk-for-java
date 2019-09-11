@@ -295,7 +295,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context
         Response<DirectoryProperties> response = directoryClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getValue().lastModified());
         // END: com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context
     }
 
@@ -322,7 +322,7 @@ public class DirectoryJavaDocCodeSamples {
         String filePermission = "filePermission";
         Response<DirectoryInfo> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getValue().lastModified());
         // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-duration-Context
     }
 

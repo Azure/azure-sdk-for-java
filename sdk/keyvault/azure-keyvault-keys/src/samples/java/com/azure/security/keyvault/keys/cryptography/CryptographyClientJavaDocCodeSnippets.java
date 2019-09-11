@@ -52,7 +52,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
     public void getKeyWithResponseSnippets() {
         CryptographyClient cryptographyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context
-        Key keyWithVersion = cryptographyClient.getKeyWithResponse(new Context(key1, value1)).value();
+        Key keyWithVersion = cryptographyClient.getKeyWithResponse(new Context(key1, value1)).getValue();
         System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context
     }

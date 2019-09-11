@@ -109,7 +109,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The information of the created page blob.
      */
     public PageBlobItem create(long size) {
-        return createWithResponse(size, null, null, null, null, null, Context.NONE).value();
+        return createWithResponse(size, null, null, null, null, null, Context.NONE).getValue();
     }
 
 
@@ -152,7 +152,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
-        return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).value();
+        return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -206,7 +206,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE).value();
+        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -253,7 +253,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The information of the cleared pages.
      */
     public PageBlobItem clearPages(PageRange pageRange) {
-        return clearPagesWithResponse(pageRange, null, null, Context.NONE).value();
+        return clearPagesWithResponse(pageRange, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -286,7 +286,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The information of the cleared pages.
      */
     public PageList getPageRanges(BlobRange blobRange) {
-        return getPageRangesWithResponse(blobRange, null, null, Context.NONE).value();
+        return getPageRangesWithResponse(blobRange, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -316,7 +316,7 @@ public final class PageBlobClient extends BlobClient {
      * @return All the different page ranges.
      */
     public PageList getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, null, Context.NONE).value();
+        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -347,7 +347,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The resized page blob.
      */
     public PageBlobItem resize(long size) {
-        return resizeWithResponse(size, null, null, Context.NONE).value();
+        return resizeWithResponse(size, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -379,7 +379,7 @@ public final class PageBlobClient extends BlobClient {
      */
     public PageBlobItem updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
-        return updateSequenceNumberWithResponse(action, sequenceNumber, null, null, Context.NONE).value();
+        return updateSequenceNumberWithResponse(action, sequenceNumber, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -415,7 +415,7 @@ public final class PageBlobClient extends BlobClient {
      * @return The copy status.
      */
     public CopyStatusType copyIncremental(URL source, String snapshot) {
-        return copyIncrementalWithResponse(source, snapshot, null, null, Context.NONE).value();
+        return copyIncrementalWithResponse(source, snapshot, null, null, Context.NONE).getValue();
     }
 
     /**

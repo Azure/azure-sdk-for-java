@@ -320,7 +320,7 @@ public final class BlobGetPropertiesHeaders {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -351,7 +351,7 @@ public final class BlobGetPropertiesHeaders {
         if (this.creationTime == null) {
             return null;
         }
-        return this.creationTime.dateTime();
+        return this.creationTime.getDateTime();
     }
 
     /**
@@ -427,7 +427,7 @@ public final class BlobGetPropertiesHeaders {
         if (this.copyCompletionTime == null) {
             return null;
         }
-        return this.copyCompletionTime.dateTime();
+        return this.copyCompletionTime.getDateTime();
     }
 
     /**
@@ -1001,7 +1001,7 @@ public final class BlobGetPropertiesHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -1209,7 +1209,7 @@ public final class BlobGetPropertiesHeaders {
         if (this.accessTierChangeTime == null) {
             return null;
         }
-        return this.accessTierChangeTime.dateTime();
+        return this.accessTierChangeTime.getDateTime();
     }
 
     /**

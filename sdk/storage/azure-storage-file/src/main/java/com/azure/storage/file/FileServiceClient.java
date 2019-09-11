@@ -147,7 +147,7 @@ public final class FileServiceClient {
      * @return Storage account {@link FileServiceProperties File service properties}
      */
     public FileServiceProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -269,7 +269,7 @@ public final class FileServiceClient {
      * @throws StorageException If a share with the same name already exists
      */
     public ShareClient createShare(String shareName) {
-        return createShareWithResponse(shareName, null, null, null, Context.NONE).value();
+        return createShareWithResponse(shareName, null, null, null, Context.NONE).getValue();
     }
 
     /**

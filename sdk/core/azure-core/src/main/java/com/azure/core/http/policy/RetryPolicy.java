@@ -45,12 +45,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptAsync(context, next, context.httpRequest(), 0);
+        return attemptAsync(context, next, context.getHttpRequest(), 0);
     }
 
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
                                             final HttpRequest originalHttpRequest, final int tryCount) {
-        context.httpRequest(originalHttpRequest.buffer());
+        context.setHttpRequest(originalHttpRequest.buffer());
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
@@ -94,7 +94,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return this.delayDuration;
         }
 
-        String retryHeader = response.headerValue(RETRY_AFTER_MS_HEADER);
+        String retryHeader = response.getHeaderValue(RETRY_AFTER_MS_HEADER);
 
         // Retry header is missing or empty, return the default delay duration.
         if (retryHeader == null || retryHeader.isEmpty()) {
