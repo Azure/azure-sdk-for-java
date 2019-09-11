@@ -167,8 +167,8 @@ class FileSASTests extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -214,8 +214,8 @@ class FileSASTests extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -290,7 +290,7 @@ class FileSASTests extends APISpec {
     def "AccountSAS FileService network test create delete share succeeds"() {
         setup:
         def service = new AccountSASService()
-            .file(true)
+            .setFile(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)

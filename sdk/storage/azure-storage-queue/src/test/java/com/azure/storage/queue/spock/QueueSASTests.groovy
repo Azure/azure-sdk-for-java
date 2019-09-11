@@ -106,8 +106,8 @@ class QueueSASTests extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
 
         when:
@@ -147,8 +147,8 @@ class QueueSASTests extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
 
         when:
@@ -215,7 +215,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSASService()
-            .queue(true)
+            .setQueue(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)
@@ -248,7 +248,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS list queues"() {
         def service = new AccountSASService()
-            .queue(true)
+            .setQueue(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)

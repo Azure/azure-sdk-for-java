@@ -67,7 +67,7 @@ public final class AccountSASService {
     /**
      * @return the access status for blob resources.
      */
-    public boolean blob() {
+    public boolean getBlob() {
         return blob;
     }
 
@@ -77,7 +77,7 @@ public final class AccountSASService {
      * @param blob Access status to set
      * @return the updated AccountSASService object.
      */
-    public AccountSASService blob(boolean blob) {
+    public AccountSASService setBlob(boolean blob) {
         this.blob = blob;
         return this;
     }
@@ -85,7 +85,7 @@ public final class AccountSASService {
     /**
      * @return the access status for file resources.
      */
-    public boolean file() {
+    public boolean getFile() {
         return file;
     }
 
@@ -95,7 +95,7 @@ public final class AccountSASService {
      * @param file Access status to set
      * @return the updated AccountSASService object.
      */
-    public AccountSASService file(boolean file) {
+    public AccountSASService setFile(boolean file) {
         this.file = file;
         return this;
     }
@@ -103,7 +103,7 @@ public final class AccountSASService {
     /**
      * @return the access status for queue resources.
      */
-    public boolean queue() {
+    public boolean getQueue() {
         return queue;
     }
 
@@ -113,7 +113,7 @@ public final class AccountSASService {
      * @param queue Access status to set
      * @return the updated AccountSASService object.
      */
-    public AccountSASService queue(boolean queue) {
+    public AccountSASService setQueue(boolean queue) {
         this.queue = queue;
         return this;
     }
@@ -121,7 +121,7 @@ public final class AccountSASService {
     /**
      * @return the access status for table resources.
      */
-    public boolean table() {
+    public boolean getTable() {
         return table;
     }
 
@@ -131,7 +131,7 @@ public final class AccountSASService {
      * @param table Access status to set
      * @return the updated AccountSASService object.
      */
-    public AccountSASService table(boolean table) {
+    public AccountSASService setTable(boolean table) {
         this.table = table;
         return this;
     }

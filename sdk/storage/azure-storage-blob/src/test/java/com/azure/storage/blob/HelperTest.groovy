@@ -106,7 +106,7 @@ class HelperTest extends APISpec {
         }
 
         if (ipRange != null) {
-            v.setIpRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         v.setIdentifier(identifier)
@@ -131,7 +131,7 @@ class HelperTest extends APISpec {
         }
 
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -182,7 +182,7 @@ class HelperTest extends APISpec {
         }
 
         if (ipRange != null) {
-            v.setIpRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         v.setProtocol(protocol)
@@ -206,7 +206,7 @@ class HelperTest extends APISpec {
         expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.getExpiryTime()), primaryCredential.accountName())
 
         then:
-        token.signature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
+        token.getSignature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
@@ -254,7 +254,7 @@ class HelperTest extends APISpec {
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
         token.getResource() == expectedResource
 
         where:
@@ -406,8 +406,8 @@ class HelperTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-            .ipMin(min)
-            .ipMax(max)
+            .setIpMin(min)
+            .setIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -425,8 +425,8 @@ class HelperTest extends APISpec {
         IPRange ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin() == min
-        ip.ipMax() == max
+        ip.getIpMin() == min
+        ip.getIpMax() == max
 
         where:
         rangeStr || min | max
@@ -464,7 +464,7 @@ class HelperTest extends APISpec {
             .setProtocol(protocol)
 
         if (ipRange != null) {
-            v.setIpRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         def token = v.generateSASQueryParameters(primaryCredential)
@@ -472,7 +472,7 @@ class HelperTest extends APISpec {
         expectedStringToSign = String.format(expectedStringToSign, primaryCredential.accountName())
 
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign
@@ -659,9 +659,9 @@ class HelperTest extends APISpec {
         parts.getContainerName() == "container"
         parts.getBlobName() == "blob"
         parts.getSnapshot() == "snapshot"
-        parts.getSasQueryParameters().permissions() == "r"
+        parts.getSasQueryParameters().getPermissions() == "r"
         parts.getSasQueryParameters().getKeyVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
-        parts.getSasQueryParameters().signature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }

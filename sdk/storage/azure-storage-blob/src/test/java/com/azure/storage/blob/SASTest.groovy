@@ -107,8 +107,8 @@ class SASTest extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -154,8 +154,8 @@ class SASTest extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -237,8 +237,8 @@ class SASTest extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
 
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
         String cacheControl = "cache"
@@ -290,8 +290,8 @@ class SASTest extends APISpec {
         OffsetDateTime startTime = getUTCNow().minusDays(1)
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
         String cacheControl = "cache"
         String contentDisposition = "disposition"
@@ -352,8 +352,8 @@ class SASTest extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
 
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
         String cacheControl = "cache"
@@ -428,7 +428,7 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)
@@ -456,7 +456,7 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)
@@ -478,7 +478,7 @@ class SASTest extends APISpec {
     def "accountSAS network create container fails"() {
         setup:
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)
@@ -501,7 +501,7 @@ class SASTest extends APISpec {
     def "accountSAS network create container succeeds"() {
         setup:
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
             .setContainer(true)
             .setService(true)
@@ -543,7 +543,7 @@ class SASTest extends APISpec {
             .setSnapshotId(snapId)
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
+            ipR.setIpMin("ip")
             v.setIpRange(ipR)
         }
         v.setIdentifier(identifier)
@@ -557,7 +557,7 @@ class SASTest extends APISpec {
 
         def token = v.generateSASQueryParameters(primaryCredential)
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -596,7 +596,7 @@ class SASTest extends APISpec {
             .setSnapshotId(snapId)
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
+            ipR.setIpMin("ip")
             v.setIpRange(ipR)
         }
         v.setProtocol(protocol)
@@ -617,7 +617,7 @@ class SASTest extends APISpec {
         def token = v.generateSASQueryParameters(key)
 
         then:
-        token.signature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
+        token.getSignature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
@@ -790,8 +790,8 @@ class SASTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-            .ipMin(min)
-            .ipMax(max)
+            .setIpMin(min)
+            .setIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -809,8 +809,8 @@ class SASTest extends APISpec {
         def ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin() == min
-        ip.ipMax() == max
+        ip.getIpMin() == min
+        ip.getIpMax() == max
 
         where:
         rangeStr || min | max
@@ -882,7 +882,7 @@ class SASTest extends APISpec {
             .setExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
+            ipR.setIpMin("ip")
             v.setIpRange(ipR)
         }
         v.setProtocol(protocol)
@@ -890,7 +890,7 @@ class SASTest extends APISpec {
         def token = v.generateSASQueryParameters(primaryCredential)
 
         then:
-        token.signature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.accountName()))
+        token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.accountName()))
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign
@@ -1075,9 +1075,9 @@ class SASTest extends APISpec {
         parts.getContainerName() == "container"
         parts.getBlobName() == "blob"
         parts.getSnapshot() == "snapshot"
-        parts.getSasQueryParameters().permissions() == "r"
+        parts.getSasQueryParameters().getPermissions() == "r"
         parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
-        parts.getSasQueryParameters().signature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }
