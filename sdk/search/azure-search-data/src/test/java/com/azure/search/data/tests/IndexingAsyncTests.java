@@ -5,14 +5,11 @@ package com.azure.search.data.tests;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.env.SearchIndexService;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.models.Book;
-import com.azure.search.service.models.DataType;
-import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -25,7 +22,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -66,14 +67,20 @@ public class IndexingAsyncTests extends IndexingTestBase {
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws IOException {
         // Book 1's publish date is in UTC format, and book 2's is unspecified.
         List<HashMap<String, Object>> books = Arrays.asList(
-            new HashMap<String, Object>() {{
-                put(ISBN_FIELD, ISBN1);
-                put(PUBLISH_DATE_FIELD, DATE_UTC);
-            }},
-            new HashMap<String, Object>() {{
-                put(ISBN_FIELD, ISBN2);
-                put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
-            }}
+            new HashMap<String, Object>()
+            {
+                {
+                    put(ISBN_FIELD, ISBN1);
+                    put(PUBLISH_DATE_FIELD, DATE_UTC);
+                }
+            },
+            new HashMap<String, Object>()
+            {
+                {
+                    put(ISBN_FIELD, ISBN2);
+                    put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
+                }
+            }
         );
 
         // Create 'books' index
