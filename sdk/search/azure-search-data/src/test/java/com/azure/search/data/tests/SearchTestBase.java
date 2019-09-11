@@ -14,6 +14,9 @@ import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
+import com.azure.search.service.SearchServiceClient;
+import com.azure.search.service.models.Index;
+import com.azure.search.service.models.SynonymMap;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -211,6 +214,32 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         }
     }
 
+    void prepareHotelsSynonymMap(String name, String synonyms, String fieldName) {
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchServiceClient searchServiceClient = searchServiceHotelsIndex.searchServiceClient();
+
+            // Create a new SynonymMap
+            searchServiceClient.synonymMaps().create(new SynonymMap().withName(name).withSynonyms(synonyms));
+
+            // Attach index field to SynonymMap
+            Index hotelsIndex = searchServiceClient.indexes().get(HOTELS_INDEX_NAME);
+            hotelsIndex.fields().stream()
+                .filter(f -> fieldName.equals(f.name()))
+                .findFirst().get().withSynonymMaps(Collections.singletonList(name));
+
+            // Update the index with the SynonymMap
+            searchServiceClient.indexes().createOrUpdate(HOTELS_INDEX_NAME, hotelsIndex);
+
+            // Wait for the index to update with the SynonymMap
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Test
     public void searchThrowsWhenRequestIsMalformed() {
         thrown.expect(HttpResponseException.class);
@@ -295,6 +324,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canSearchWithDateInStaticModel() throws ParseException;
+
+    @Test
+    public abstract void canSearchWithSynonyms();
 
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 

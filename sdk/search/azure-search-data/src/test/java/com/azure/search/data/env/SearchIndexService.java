@@ -75,4 +75,8 @@ public class SearchIndexService {
     public String indexName() {
         return this.indexName;
     }
+
+    public SearchServiceClient searchServiceClient() {
+        return searchServiceClient;
+    }
 }
