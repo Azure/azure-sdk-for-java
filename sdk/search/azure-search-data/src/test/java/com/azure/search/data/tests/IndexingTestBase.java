@@ -9,8 +9,6 @@ import com.azure.search.data.generated.models.IndexingResult;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.service.SearchServiceClient;
 import com.azure.search.service.customization.SearchCredentials;
 import com.azure.search.service.implementation.SearchServiceClientImpl;

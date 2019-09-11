@@ -16,7 +16,6 @@ import com.azure.search.data.models.Book;
 import com.azure.search.service.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.search.data.models.Hotel;
-import com.azure.core.exception.HttpResponseException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,12 +30,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
