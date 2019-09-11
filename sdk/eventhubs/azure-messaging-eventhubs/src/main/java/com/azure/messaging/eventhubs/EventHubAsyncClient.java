@@ -368,5 +368,13 @@ public class EventHubAsyncClient implements Closeable {
                 ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
                 (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
         }
+
+        @Override
+        public <T> T deserialize(Map<?, ?> amqpBody, Class<T> deserializedType) {
+            if (deserializedType == PartitionProperties.class) {
+
+            }
+            return null;
+        }
     }
 }
