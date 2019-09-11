@@ -38,14 +38,14 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void generateAccountSAS() {
         // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
         AccountSASService service = new AccountSASService()
-            .blob(true)
-            .file(true)
-            .queue(true)
-            .table(true);
+            .setBlob(true)
+            .setFile(true)
+            .setQueue(true)
+            .setTable(true);
         AccountSASResourceType resourceType = new AccountSASResourceType()
-            .container(true)
-            .object(true)
-            .service(true);
+            .setContainer(true)
+            .setObject(true)
+            .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
             .setRead(true)
             .setAdd(true)
@@ -58,8 +58,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 

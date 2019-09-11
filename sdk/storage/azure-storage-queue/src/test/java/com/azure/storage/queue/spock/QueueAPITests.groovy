@@ -8,7 +8,6 @@ import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageException
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -57,8 +56,8 @@ class QueueAPITests extends APISpec {
         def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().approximateMessagesCount() == 0
-        testMetadata.equals(getPropertiesResponse.value().metadata())
+        getPropertiesResponse.value().getApproximateMessagesCount() == 0
+        testMetadata.equals(getPropertiesResponse.value().getMetadata())
     }
 
     def "Get properties error"() {
@@ -79,10 +78,10 @@ class QueueAPITests extends APISpec {
         def getPropertiesResponseAfter = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseBefore, 200)
-        expectMetadataInCreate.equals(getPropertiesResponseBefore.value().metadata())
+        expectMetadataInCreate.equals(getPropertiesResponseBefore.value().getMetadata())
         QueueTestHelper.assertResponseStatusCode(setMetadataResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseAfter, 200)
-        expectMetadataInSet.equals(getPropertiesResponseAfter.value().metadata())
+        expectMetadataInSet.equals(getPropertiesResponseAfter.value().getMetadata())
         where:
         matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
         null             | testMetadata  | Collections.emptyMap() | testMetadata
@@ -344,10 +343,10 @@ class QueueAPITests extends APISpec {
         def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().approximateMessagesCount() == 3
+        getPropertiesResponse.value().getApproximateMessagesCount() == 3
         QueueTestHelper.assertResponseStatusCode(clearMsgResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        getPropertiesAfterResponse.value().approximateMessagesCount() == 0
+        getPropertiesAfterResponse.value().getApproximateMessagesCount() == 0
     }
 
     def "Clear messages error"() {
@@ -372,10 +371,10 @@ class QueueAPITests extends APISpec {
         def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().approximateMessagesCount() == 3
+        getPropertiesResponse.value().getApproximateMessagesCount() == 3
         QueueTestHelper.assertResponseStatusCode(deleteMsgResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        getPropertiesAfterResponse.value().approximateMessagesCount() == 2
+        getPropertiesAfterResponse.value().getApproximateMessagesCount() == 2
     }
 
     @Unroll

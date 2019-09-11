@@ -106,7 +106,7 @@ class HelperTest extends APISpec {
         }
 
         if (ipRange != null) {
-            v.setIpRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         v.setIdentifier(identifier)
@@ -182,7 +182,7 @@ class HelperTest extends APISpec {
         }
 
         if (ipRange != null) {
-            v.setIpRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         v.setProtocol(protocol)
@@ -406,8 +406,8 @@ class HelperTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-            .ipMin(min)
-            .ipMax(max)
+            .setIpMin(min)
+            .setIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -425,8 +425,8 @@ class HelperTest extends APISpec {
         IPRange ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin() == min
-        ip.ipMax() == max
+        ip.getIpMin() == min
+        ip.getIpMax() == max
 
         where:
         rangeStr || min | max
@@ -464,7 +464,7 @@ class HelperTest extends APISpec {
             .setProtocol(protocol)
 
         if (ipRange != null) {
-            v.setIpRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         def token = v.generateSASQueryParameters(primaryCredential)
@@ -578,9 +578,9 @@ class HelperTest extends APISpec {
     def "AccountSASResourceType toString"() {
         setup:
         AccountSASResourceType resourceTypes = new AccountSASResourceType()
-            .service(service)
-            .container(container)
-            .object(object)
+            .setService(service)
+            .setContainer(container)
+            .setObject(object)
 
         expect:
         resourceTypes.toString() == expectedString
@@ -599,9 +599,9 @@ class HelperTest extends APISpec {
         AccountSASResourceType resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.service() == service
-        resourceTypes.container() == container
-        resourceTypes.object() == object
+        resourceTypes.getService() == service
+        resourceTypes.getContainer() == container
+        resourceTypes.getObject() == object
 
         where:
         resourceTypeString || service | container | object

@@ -68,7 +68,7 @@ public final class QueueSASPermission {
     /**
      * @return the read permission status.
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -78,7 +78,7 @@ public final class QueueSASPermission {
      * @param read Permission status to set
      * @return the updated QueueSASPermission object.
      */
-    public QueueSASPermission read(boolean read) {
+    public QueueSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -86,7 +86,7 @@ public final class QueueSASPermission {
     /**
      * @return the add permission status.
      */
-    public boolean add() {
+    public boolean getAdd() {
         return add;
     }
 
@@ -96,7 +96,7 @@ public final class QueueSASPermission {
      * @param add Permission status to set
      * @return the updated QueueSASPermission object.
      */
-    public QueueSASPermission add(boolean add) {
+    public QueueSASPermission setAdd(boolean add) {
         this.add = add;
         return this;
     }
@@ -104,7 +104,7 @@ public final class QueueSASPermission {
     /**
      * @return the update permission status.
      */
-    public boolean update() {
+    public boolean getUpdate() {
         return update;
     }
 
@@ -114,14 +114,14 @@ public final class QueueSASPermission {
      * @param update Permission status to set
      * @return the updated QueueSASPermission object.
      */
-    public QueueSASPermission update(boolean update) {
+    public QueueSASPermission setUpdate(boolean update) {
         this.update = update;
         return this;
     }
     /**
      * @return the process permission status.
      */
-    public boolean process() {
+    public boolean getProcess() {
         return process;
     }
 
@@ -131,7 +131,7 @@ public final class QueueSASPermission {
      * @param process Permission status to set
      * @return the updated QueueSASPermission object.
      */
-    public QueueSASPermission process(boolean process) {
+    public QueueSASPermission setProcess(boolean process) {
         this.process = process;
         return this;
     }

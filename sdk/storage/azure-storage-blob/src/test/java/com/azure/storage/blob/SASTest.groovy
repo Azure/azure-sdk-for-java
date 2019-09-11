@@ -107,8 +107,8 @@ class SASTest extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -154,8 +154,8 @@ class SASTest extends APISpec {
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -237,8 +237,8 @@ class SASTest extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
 
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
         String cacheControl = "cache"
@@ -290,8 +290,8 @@ class SASTest extends APISpec {
         OffsetDateTime startTime = getUTCNow().minusDays(1)
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
         String cacheControl = "cache"
         String contentDisposition = "disposition"
@@ -352,8 +352,8 @@ class SASTest extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
 
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
         String cacheControl = "cache"
@@ -428,11 +428,11 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
         def expiryTime = getUTCNow().plusDays(1)
@@ -456,11 +456,11 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
         def expiryTime = getUTCNow().plusDays(1)
@@ -478,11 +478,11 @@ class SASTest extends APISpec {
     def "accountSAS network create container fails"() {
         setup:
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
             .setCreate(false)
@@ -501,11 +501,11 @@ class SASTest extends APISpec {
     def "accountSAS network create container succeeds"() {
         setup:
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .setRead(true)
             .setCreate(true)
@@ -543,7 +543,7 @@ class SASTest extends APISpec {
             .setSnapshotId(snapId)
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
+            ipR.setIpMin("ip")
             v.setIpRange(ipR)
         }
         v.setIdentifier(identifier)
@@ -596,7 +596,7 @@ class SASTest extends APISpec {
             .setSnapshotId(snapId)
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
+            ipR.setIpMin("ip")
             v.setIpRange(ipR)
         }
         v.setProtocol(protocol)
@@ -790,8 +790,8 @@ class SASTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-            .ipMin(min)
-            .ipMax(max)
+            .setIpMin(min)
+            .setIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -809,8 +809,8 @@ class SASTest extends APISpec {
         def ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin() == min
-        ip.ipMax() == max
+        ip.getIpMin() == min
+        ip.getIpMax() == max
 
         where:
         rangeStr || min | max
@@ -882,7 +882,7 @@ class SASTest extends APISpec {
             .setExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
+            ipR.setIpMin("ip")
             v.setIpRange(ipR)
         }
         v.setProtocol(protocol)
@@ -996,9 +996,9 @@ class SASTest extends APISpec {
     def "AccountSASResourceType toString"() {
         setup:
         def resourceTypes = new AccountSASResourceType()
-            .service(service)
-            .container(container)
-            .object(object)
+            .setService(service)
+            .setContainer(container)
+            .setObject(object)
 
         expect:
         resourceTypes.toString() == expectedString
@@ -1017,9 +1017,9 @@ class SASTest extends APISpec {
         def resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.service() == service
-        resourceTypes.container() == container
-        resourceTypes.object() == object
+        resourceTypes.getService() == service
+        resourceTypes.getContainer() == container
+        resourceTypes.getObject() == object
 
         where:
         resourceTypeString || service | container | object

@@ -552,7 +552,7 @@ public final class QueueClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to interact
      * with the message, additionally contains the updated metadata about the message.
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
@@ -580,7 +580,7 @@ public final class QueueClient {
      * timeout period must be between 1 second and 7 days.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * @return A response containing the {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to interact
      * with the message, additionally contains the updated metadata about the message.
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds

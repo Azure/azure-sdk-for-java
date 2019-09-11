@@ -161,7 +161,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.createSnapshot
         shareAsyncClient.createSnapshot().subscribe(
             response -> System.out.println("Successfully creating the share snapshot with snapshot id: "
-                + response.snapshot()),
+                + response.getSnapshot()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Complete creating the share snapshot.")
         );
@@ -176,7 +176,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.createSnapshotWithResponse#map
         shareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("snapshot", "metadata")).subscribe(
             response -> System.out.println("Successfully creating the share snapshot with snapshot id: "
-                + response.value().snapshot()),
+                + response.value().getSnapshot()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Complete creating the share snapshot.")
         );
@@ -222,10 +222,10 @@ public class ShareAsyncJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties, filePermission,
@@ -518,16 +518,16 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         String identifier = "identifier";
         ShareSASPermission permissions = new ShareSASPermission()
-            .read(true)
-            .create(true)
-            .delete(true)
-            .write(true)
-            .list(true);
+            .setRead(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setWrite(true)
+            .setList(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";

@@ -187,15 +187,15 @@ public class FileAsyncClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, smbProperties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = smbProperties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = smbProperties.filePermissionKey();
+        filePermission = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
 
-        String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = smbProperties.fileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = smbProperties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
         return postProcessResponse(azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes,
             fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context))
@@ -339,9 +339,9 @@ public class FileAsyncClient {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel -> sliceFileRange(range)
                 .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-                    .map(dar -> dar.value().body())
+                    .map(dar -> dar.value().getBody())
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
+                    .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                         .subscribeOn(Schedulers.elastic())
                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                         .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
@@ -365,14 +365,14 @@ public class FileAsyncClient {
     }
 
     private Flux<FileRange> sliceFileRange(FileRange fileRange) {
-        long offset = fileRange == null ? 0L : fileRange.start();
+        long offset = fileRange == null ? 0L : fileRange.getStart();
         Mono<Long> end;
         if (fileRange != null) {
-            end = Mono.just(fileRange.end());
+            end = Mono.just(fileRange.getEnd());
         } else {
             end = Mono.empty();
         }
-        end = end.switchIfEmpty(getProperties().map(FileProperties::contentLength));
+        end = end.switchIfEmpty(getProperties().map(FileProperties::getContentLength));
         return end
             .map(e -> {
                 List<FileRange> chunks = new ArrayList<>();
@@ -588,15 +588,15 @@ public class FileAsyncClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, smbProperties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = smbProperties.filePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = smbProperties.filePermissionKey();
+        filePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
 
-        String fileAttributes = smbProperties.ntfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = smbProperties.fileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = smbProperties.fileLastWriteTime(FileConstants.PRESERVE);
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         return postProcessResponse(azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes,
             fileCreationTime, fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context))
@@ -896,7 +896,7 @@ public class FileAsyncClient {
     public Mono<Void> uploadFromFile(String uploadFilePath) {
         return Mono.using(() -> channelSetup(uploadFilePath, StandardOpenOption.READ),
             channel -> Flux.fromIterable(sliceFile(uploadFilePath)).flatMap(chunk -> upload(FluxUtil.readFile(channel,
-                chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start())
+                chunk.getStart(), chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1, chunk.getStart())
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
                 .then(), this::channelCleanUp);
@@ -1199,10 +1199,10 @@ public class FileAsyncClient {
         String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.canonicalName(this.shareName, this.filePath, accountName);
+        fileServiceSASSignatureValues.setCanonicalName(this.shareName, this.filePath, accountName);
 
         // Set resource
-        fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_FILE_CONSTANT);
+        fileServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_FILE_CONSTANT);
 
         return fileServiceSASSignatureValues;
     }

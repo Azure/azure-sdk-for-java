@@ -141,10 +141,10 @@ class QueueServiceAPITests extends APISpec {
         testQueues.size() == 0
 
         where:
-        options                                                                                   | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues")                       | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").maxResults(2)         | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").includeMetadata(true) | _
+        options                                                                                         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues")                          | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setMaxResults(2)         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setIncludeMetadata(true) | _
     }
 
     def "List empty queues"() {
@@ -152,7 +152,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
 
         then:
-        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName), null, null).iterator().hasNext()
+        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName), null, null).iterator().hasNext()
     }
 
     def "Get and set properties"() {
@@ -167,7 +167,7 @@ class QueueServiceAPITests extends APISpec {
         def metrics = new Metrics().enabled(true)
             .includeAPIs(false)
             .retentionPolicy(retentionPolicy)
-            .version("1.0")
+            .setVersion("1.0")
         def updatedProperties = new StorageServiceProperties().logging(logging)
             .hourMetrics(metrics)
             .minuteMetrics(metrics)

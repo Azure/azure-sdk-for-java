@@ -17,12 +17,12 @@ package com.azure.storage.file.models;
  *     </li>
  *     <li>
  *         Setting {@link ListSharesOptions#includeMetadata(boolean) includeMetadata} to true will include the metadata
- *         of each {@link ShareItem share}, if false {@link ShareItem#metadata() metadata} for each share will be {@code null}.
+ *         of each {@link ShareItem share}, if false {@link ShareItem#getMetadata()}  metadata} for each share will be {@code null}.
  *     </li>
  *     <li>
  *         Setting {@link ListSharesOptions#includeSnapshots(boolean) includeSnapshots} to true will include snapshots
  *         of each {@link ShareItem share}, the snapshot will be included as separate items in the response and will be
- *         identifiable by {@link ShareItem#snapshot() snapshot} having a value. The base share will contain {@code null}
+ *         identifiable by {@link ShareItem#getSnapshot()}  snapshot} having a value. The base share will contain {@code null}
  *         for the snapshot.
  *     </li>
  * </ul>

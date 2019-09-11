@@ -14,7 +14,6 @@ import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -34,7 +33,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient = primaryFileServiceClient.getShareClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get share URL"() {
@@ -106,10 +105,10 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.value().snapshot()).buildClient()
+            .snapshot(createSnapshotResponse.value().getSnapshot()).buildClient()
 
         then:
-        Objects.equals(createSnapshotResponse.value().snapshot(),
+        Objects.equals(createSnapshotResponse.value().getSnapshot(),
             shareSnapshotClient.getSnapshotId())
     }
 
@@ -130,10 +129,10 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.value().snapshot()).buildClient()
+            .snapshot(createSnapshotResponse.value().getSnapshot()).buildClient()
 
         then:
-        Objects.equals(createSnapshotResponse.value().snapshot(),
+        Objects.equals(createSnapshotResponse.value().getSnapshot(),
             shareSnapshotClient.getSnapshotId())
     }
 
@@ -254,9 +253,9 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .getFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryShareClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null, null, null), 201)
@@ -316,9 +315,9 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .getFilePermissionKey(filePermissionKey)
 
         expect:
         FileTestHelper.assertResponseStatusCode(
@@ -346,8 +345,8 @@ class ShareAPITests extends APISpec {
     def "Create file maxOverload"() {
         given:
         primaryShareClient.create()
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, filePermission, testMetadata, null, null), 201)

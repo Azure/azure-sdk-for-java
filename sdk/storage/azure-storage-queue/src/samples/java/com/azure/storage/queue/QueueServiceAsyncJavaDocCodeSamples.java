@@ -125,7 +125,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
      */
     public void listQueuesAsyncWithOverload() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions
-        client.listQueues(new QueuesSegmentOptions().prefix("azure")).subscribe(
+        client.listQueues(new QueuesSegmentOptions().setPrefix("azure")).subscribe(
             queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
                 queueItem.getName(), queueItem.getMetadata()),
             error -> System.err.print(error.toString()),
@@ -269,28 +269,28 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void generateAccountSAS() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
         AccountSASService service = new AccountSASService()
-            .blob(true)
-            .file(true)
-            .queue(true)
-            .table(true);
+            .setBlob(true)
+            .setFile(true)
+            .setQueue(true)
+            .setTable(true);
         AccountSASResourceType resourceType = new AccountSASResourceType()
-            .container(true)
-            .object(true)
-            .service(true);
+            .setContainer(true)
+            .setObject(true)
+            .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .read(true)
-            .add(true)
-            .create(true)
-            .write(true)
-            .delete(true)
-            .list(true)
-            .processMessages(true)
-            .update(true);
+            .setRead(true)
+            .setAdd(true)
+            .setCreate(true)
+            .setWrite(true)
+            .setDelete(true)
+            .setList(true)
+            .setProcessMessages(true)
+            .setUpdate(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 

@@ -175,7 +175,7 @@ public final class QueueServiceClient {
     /**
      * Lists the queues in the storage account that pass the filter.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * <p><strong>Code Samples</strong></p>
@@ -200,7 +200,7 @@ public final class QueueServiceClient {
     /**
      * Lists the queues in the storage account that pass the filter starting at the specified marker.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * @param marker Starting point to list the queues

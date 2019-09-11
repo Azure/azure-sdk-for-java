@@ -25,8 +25,8 @@ class QueueTestHelper {
 
     static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, StorageErrorCode errMessage) {
         return throwable instanceof StorageException &&
-            ((StorageException) throwable).statusCode() == expectedStatusCode &&
-            ((StorageException) throwable).errorCode() == errMessage
+            ((StorageException) throwable).getStatusCode() == expectedStatusCode &&
+            ((StorageException) throwable).getErrorCode() == errMessage
     }
 
     static boolean assertQueuesAreEqual(QueueItem expected, QueueItem actual) {
