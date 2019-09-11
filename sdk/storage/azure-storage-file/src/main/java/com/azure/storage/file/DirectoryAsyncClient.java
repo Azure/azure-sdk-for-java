@@ -179,15 +179,15 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = properties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = properties.filePermissionKey();
+        filePermission = properties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = properties.getFilePermissionKey();
 
-        String fileAttributes = properties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = properties.fileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
         return postProcessResponse(azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes,
             fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, context))
@@ -330,15 +330,15 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = properties.filePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = properties.filePermissionKey();
+        filePermission = properties.setFilePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = properties.getFilePermissionKey();
 
-        String fileAttributes = properties.ntfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = properties.fileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.PRESERVE);
+        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         return postProcessResponse(azureFileStorageClient.directorys()
             .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
@@ -463,7 +463,7 @@ public class DirectoryAsyncClient {
                     response.getStatusCode(),
                     response.getHeaders(),
                     convertResponseAndGetNumOfResults(response),
-                    response.getValue().nextMarker(),
+                    response.getValue().getNextMarker(),
                     response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -507,8 +507,8 @@ public class DirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().handleList(),
-                    response.getValue().nextMarker(),
+                    response.getValue().getHandleList(),
+                    response.getValue().getNextMarker(),
                     response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -556,8 +556,8 @@ public class DirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    Collections.singletonList(response.getDeserializedHeaders().numberOfHandlesClosed()),
-                    response.getDeserializedHeaders().marker(),
+                    Collections.singletonList(response.getDeserializedHeaders().getNumberOfHandlesClosed()),
+                    response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -778,45 +778,45 @@ public class DirectoryAsyncClient {
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
-        String eTag = response.getDeserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectoryProperties> getPropertiesResponse(DirectorysGetPropertiesResponse response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().metadata();
-        String eTag = response.getDeserializedHeaders().eTag();
-        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().lastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        Map<String, String> metadata = response.getDeserializedHeaders().getMetadata();
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
     }
 
     private Response<DirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
-        String eTag = response.getDeserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().lastModified();
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
-        String eTag = response.getDeserializedHeaders().eTag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        String eTag = response.getDeserializedHeaders().getETag();
+        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
         DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::name));
-        if (response.getValue().segment() != null) {
-            response.getValue().segment().directoryItems()
-                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-            response.getValue().segment().fileItems()
-                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::getName));
+        if (response.getValue().getSegment() != null) {
+            response.getValue().getSegment().getDirectoryItems()
+                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.getName(), true, null)));
+            response.getValue().getSegment().getFileItems()
+                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.getName(), false, fileItem.getProperties())));
         }
 
         return new ArrayList<>(fileRefs);

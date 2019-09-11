@@ -225,7 +225,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -240,7 +240,7 @@ public final class FileGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders lastModified(OffsetDateTime lastModified) {
+    public FileGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -254,7 +254,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -264,7 +264,7 @@ public final class FileGetPropertiesHeaders {
      * @param metadata the metadata value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders metadata(Map<String, String> metadata) {
+    public FileGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -275,7 +275,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileType value.
      */
-    public String fileType() {
+    public String getFileType() {
         return this.fileType;
     }
 
@@ -286,7 +286,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileType the fileType value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileType(String fileType) {
+    public FileGetPropertiesHeaders setFileType(String fileType) {
         this.fileType = fileType;
         return this;
     }
@@ -298,7 +298,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -310,7 +310,7 @@ public final class FileGetPropertiesHeaders {
      * @param contentLength the contentLength value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders contentLength(Long contentLength) {
+    public FileGetPropertiesHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -321,7 +321,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -332,7 +332,7 @@ public final class FileGetPropertiesHeaders {
      * @param contentType the contentType value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders contentType(String contentType) {
+    public FileGetPropertiesHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -343,7 +343,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -354,7 +354,7 @@ public final class FileGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders eTag(String eTag) {
+    public FileGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -366,7 +366,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -378,7 +378,7 @@ public final class FileGetPropertiesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders contentMD5(byte[] contentMD5) {
+    public FileGetPropertiesHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -390,7 +390,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -402,7 +402,7 @@ public final class FileGetPropertiesHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders contentEncoding(String contentEncoding) {
+    public FileGetPropertiesHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -414,7 +414,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -426,7 +426,7 @@ public final class FileGetPropertiesHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders cacheControl(String cacheControl) {
+    public FileGetPropertiesHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -438,7 +438,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -450,7 +450,7 @@ public final class FileGetPropertiesHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders contentDisposition(String contentDisposition) {
+    public FileGetPropertiesHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -461,7 +461,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -472,7 +472,7 @@ public final class FileGetPropertiesHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders contentLanguage(String contentLanguage) {
+    public FileGetPropertiesHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -483,7 +483,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -494,7 +494,7 @@ public final class FileGetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders requestId(String requestId) {
+    public FileGetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -505,7 +505,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -516,7 +516,7 @@ public final class FileGetPropertiesHeaders {
      * @param version the version value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders version(String version) {
+    public FileGetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -527,7 +527,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -541,7 +541,7 @@ public final class FileGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -558,7 +558,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the copyCompletionTime value.
      */
-    public OffsetDateTime copyCompletionTime() {
+    public OffsetDateTime getCopyCompletionTime() {
         if (this.copyCompletionTime == null) {
             return null;
         }
@@ -574,7 +574,7 @@ public final class FileGetPropertiesHeaders {
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders copyCompletionTime(OffsetDateTime copyCompletionTime) {
+    public FileGetPropertiesHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
         if (copyCompletionTime == null) {
             this.copyCompletionTime = null;
         } else {
@@ -590,7 +590,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the copyStatusDescription value.
      */
-    public String copyStatusDescription() {
+    public String getCopyStatusDescription() {
         return this.copyStatusDescription;
     }
 
@@ -602,7 +602,7 @@ public final class FileGetPropertiesHeaders {
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders copyStatusDescription(String copyStatusDescription) {
+    public FileGetPropertiesHeaders setCopyStatusDescription(String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
         return this;
     }
@@ -613,7 +613,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the copyId value.
      */
-    public String copyId() {
+    public String getCopyId() {
         return this.copyId;
     }
 
@@ -624,7 +624,7 @@ public final class FileGetPropertiesHeaders {
      * @param copyId the copyId value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders copyId(String copyId) {
+    public FileGetPropertiesHeaders setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -637,7 +637,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the copyProgress value.
      */
-    public String copyProgress() {
+    public String getCopyProgress() {
         return this.copyProgress;
     }
 
@@ -650,7 +650,7 @@ public final class FileGetPropertiesHeaders {
      * @param copyProgress the copyProgress value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders copyProgress(String copyProgress) {
+    public FileGetPropertiesHeaders setCopyProgress(String copyProgress) {
         this.copyProgress = copyProgress;
         return this;
     }
@@ -662,7 +662,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the copySource value.
      */
-    public String copySource() {
+    public String getCopySource() {
         return this.copySource;
     }
 
@@ -674,7 +674,7 @@ public final class FileGetPropertiesHeaders {
      * @param copySource the copySource value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders copySource(String copySource) {
+    public FileGetPropertiesHeaders setCopySource(String copySource) {
         this.copySource = copySource;
         return this;
     }
@@ -686,7 +686,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the copyStatus value.
      */
-    public CopyStatusType copyStatus() {
+    public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
 
@@ -698,7 +698,7 @@ public final class FileGetPropertiesHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders copyStatus(CopyStatusType copyStatus) {
+    public FileGetPropertiesHeaders setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -712,7 +712,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean isServerEncrypted() {
+    public Boolean getIsServerEncrypted() {
         return this.isServerEncrypted;
     }
 
@@ -726,7 +726,7 @@ public final class FileGetPropertiesHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public FileGetPropertiesHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -736,7 +736,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileAttributes value.
      */
-    public String fileAttributes() {
+    public String getFileAttributes() {
         return this.fileAttributes;
     }
 
@@ -746,7 +746,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileAttributes the fileAttributes value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileAttributes(String fileAttributes) {
+    public FileGetPropertiesHeaders setFileAttributes(String fileAttributes) {
         this.fileAttributes = fileAttributes;
         return this;
     }
@@ -756,7 +756,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileCreationTime value.
      */
-    public OffsetDateTime fileCreationTime() {
+    public OffsetDateTime getFileCreationTime() {
         return this.fileCreationTime;
     }
 
@@ -766,7 +766,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileCreationTime the fileCreationTime value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
+    public FileGetPropertiesHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -776,7 +776,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileLastWriteTime value.
      */
-    public OffsetDateTime fileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return this.fileLastWriteTime;
     }
 
@@ -786,7 +786,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileLastWriteTime the fileLastWriteTime value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public FileGetPropertiesHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -796,7 +796,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileChangeTime value.
      */
-    public OffsetDateTime fileChangeTime() {
+    public OffsetDateTime getFileChangeTime() {
         return this.fileChangeTime;
     }
 
@@ -806,7 +806,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileChangeTime the fileChangeTime value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
+    public FileGetPropertiesHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
         this.fileChangeTime = fileChangeTime;
         return this;
     }
@@ -817,7 +817,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the filePermissionKey value.
      */
-    public String filePermissionKey() {
+    public String getFilePermissionKey() {
         return this.filePermissionKey;
     }
 
@@ -828,7 +828,7 @@ public final class FileGetPropertiesHeaders {
      * @param filePermissionKey the filePermissionKey value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders filePermissionKey(String filePermissionKey) {
+    public FileGetPropertiesHeaders setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -838,7 +838,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileId value.
      */
-    public String fileId() {
+    public String getFileId() {
         return this.fileId;
     }
 
@@ -848,7 +848,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileId the fileId value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileId(String fileId) {
+    public FileGetPropertiesHeaders setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -858,7 +858,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the fileParentId value.
      */
-    public String fileParentId() {
+    public String getFileParentId() {
         return this.fileParentId;
     }
 
@@ -868,7 +868,7 @@ public final class FileGetPropertiesHeaders {
      * @param fileParentId the fileParentId value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders fileParentId(String fileParentId) {
+    public FileGetPropertiesHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
         return this;
     }
@@ -878,7 +878,7 @@ public final class FileGetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -888,7 +888,7 @@ public final class FileGetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileGetPropertiesHeaders object itself.
      */
-    public FileGetPropertiesHeaders errorCode(String errorCode) {
+    public FileGetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

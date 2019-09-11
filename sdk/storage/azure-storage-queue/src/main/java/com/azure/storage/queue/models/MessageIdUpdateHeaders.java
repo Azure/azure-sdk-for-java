@@ -63,7 +63,7 @@ public final class MessageIdUpdateHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -74,7 +74,7 @@ public final class MessageIdUpdateHeaders {
      * @param requestId the requestId value to set.
      * @return the MessageIdUpdateHeaders object itself.
      */
-    public MessageIdUpdateHeaders requestId(String requestId) {
+    public MessageIdUpdateHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,7 +86,7 @@ public final class MessageIdUpdateHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -98,7 +98,7 @@ public final class MessageIdUpdateHeaders {
      * @param version the version value to set.
      * @return the MessageIdUpdateHeaders object itself.
      */
-    public MessageIdUpdateHeaders version(String version) {
+    public MessageIdUpdateHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -109,7 +109,7 @@ public final class MessageIdUpdateHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -123,7 +123,7 @@ public final class MessageIdUpdateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the MessageIdUpdateHeaders object itself.
      */
-    public MessageIdUpdateHeaders dateProperty(OffsetDateTime dateProperty) {
+    public MessageIdUpdateHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -137,7 +137,7 @@ public final class MessageIdUpdateHeaders {
      *
      * @return the popReceipt value.
      */
-    public String popReceipt() {
+    public String getPopReceipt() {
         return this.popReceipt;
     }
 
@@ -147,7 +147,7 @@ public final class MessageIdUpdateHeaders {
      * @param popReceipt the popReceipt value to set.
      * @return the MessageIdUpdateHeaders object itself.
      */
-    public MessageIdUpdateHeaders popReceipt(String popReceipt) {
+    public MessageIdUpdateHeaders setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
     }
@@ -158,7 +158,7 @@ public final class MessageIdUpdateHeaders {
      *
      * @return the timeNextVisible value.
      */
-    public OffsetDateTime timeNextVisible() {
+    public OffsetDateTime getTimeNextVisible() {
         if (this.timeNextVisible == null) {
             return null;
         }
@@ -172,7 +172,7 @@ public final class MessageIdUpdateHeaders {
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the MessageIdUpdateHeaders object itself.
      */
-    public MessageIdUpdateHeaders timeNextVisible(OffsetDateTime timeNextVisible) {
+    public MessageIdUpdateHeaders setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
         } else {
@@ -186,7 +186,7 @@ public final class MessageIdUpdateHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -196,7 +196,7 @@ public final class MessageIdUpdateHeaders {
      * @param errorCode the errorCode value to set.
      * @return the MessageIdUpdateHeaders object itself.
      */
-    public MessageIdUpdateHeaders errorCode(String errorCode) {
+    public MessageIdUpdateHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

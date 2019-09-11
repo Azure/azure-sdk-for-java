@@ -45,7 +45,7 @@ public final class Metrics {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -55,7 +55,7 @@ public final class Metrics {
      * @param version the version value to set.
      * @return the Metrics object itself.
      */
-    public Metrics version(String version) {
+    public Metrics setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -66,7 +66,7 @@ public final class Metrics {
      *
      * @return the enabled value.
      */
-    public boolean enabled() {
+    public boolean getEnabled() {
         return this.enabled;
     }
 
@@ -77,7 +77,7 @@ public final class Metrics {
      * @param enabled the enabled value to set.
      * @return the Metrics object itself.
      */
-    public Metrics enabled(boolean enabled) {
+    public Metrics setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -88,7 +88,7 @@ public final class Metrics {
      *
      * @return the includeAPIs value.
      */
-    public Boolean includeAPIs() {
+    public Boolean getIncludeAPIs() {
         return this.includeAPIs;
     }
 
@@ -99,7 +99,7 @@ public final class Metrics {
      * @param includeAPIs the includeAPIs value to set.
      * @return the Metrics object itself.
      */
-    public Metrics includeAPIs(Boolean includeAPIs) {
+    public Metrics setIncludeAPIs(Boolean includeAPIs) {
         this.includeAPIs = includeAPIs;
         return this;
     }
@@ -109,7 +109,7 @@ public final class Metrics {
      *
      * @return the retentionPolicy value.
      */
-    public RetentionPolicy retentionPolicy() {
+    public RetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -119,7 +119,7 @@ public final class Metrics {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Metrics object itself.
      */
-    public Metrics retentionPolicy(RetentionPolicy retentionPolicy) {
+    public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

@@ -69,7 +69,7 @@ public final class ListQueuesSegmentResponse {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -79,7 +79,7 @@ public final class ListQueuesSegmentResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
-    public ListQueuesSegmentResponse serviceEndpoint(String serviceEndpoint) {
+    public ListQueuesSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -89,7 +89,7 @@ public final class ListQueuesSegmentResponse {
      *
      * @return the prefix value.
      */
-    public String prefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -99,7 +99,7 @@ public final class ListQueuesSegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
-    public ListQueuesSegmentResponse prefix(String prefix) {
+    public ListQueuesSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -109,7 +109,7 @@ public final class ListQueuesSegmentResponse {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -119,7 +119,7 @@ public final class ListQueuesSegmentResponse {
      * @param marker the marker value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
-    public ListQueuesSegmentResponse marker(String marker) {
+    public ListQueuesSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -129,7 +129,7 @@ public final class ListQueuesSegmentResponse {
      *
      * @return the maxResults value.
      */
-    public int maxResults() {
+    public int getMaxResults() {
         return this.maxResults;
     }
 
@@ -139,7 +139,7 @@ public final class ListQueuesSegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
-    public ListQueuesSegmentResponse maxResults(int maxResults) {
+    public ListQueuesSegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -149,7 +149,7 @@ public final class ListQueuesSegmentResponse {
      *
      * @return the queueItems value.
      */
-    public List<QueueItem> queueItems() {
+    public List<QueueItem> getQueueItems() {
         if (this.queueItems == null) {
             this.queueItems = new QueuesWrapper(new ArrayList<QueueItem>());
         }
@@ -162,7 +162,7 @@ public final class ListQueuesSegmentResponse {
      * @param queueItems the queueItems value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
-    public ListQueuesSegmentResponse queueItems(List<QueueItem> queueItems) {
+    public ListQueuesSegmentResponse setQueueItems(List<QueueItem> queueItems) {
         this.queueItems = new QueuesWrapper(queueItems);
         return this;
     }
@@ -172,7 +172,7 @@ public final class ListQueuesSegmentResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -182,7 +182,7 @@ public final class ListQueuesSegmentResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListQueuesSegmentResponse object itself.
      */
-    public ListQueuesSegmentResponse nextMarker(String nextMarker) {
+    public ListQueuesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

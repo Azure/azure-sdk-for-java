@@ -68,8 +68,8 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 0
-            assert testMetadata.equals(it.value().metadata())
+            assert it.value().getApproximateMessagesCount() == 0
+            assert testMetadata.equals(it.value().getMetadata())
         }.verifyComplete()
     }
 
@@ -93,7 +93,7 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifierBefore.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert expectMetadataInCreate.equals(it.value().metadata())
+            assert expectMetadataInCreate.equals(it.value().getMetadata())
         }.verifyComplete()
         setMetadataVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204) }
@@ -399,14 +399,14 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 3
+            assert it.value().getApproximateMessagesCount() == 3
         }.verifyComplete()
         clearMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 0
+            assert it.value().getApproximateMessagesCount() == 0
         }.verifyComplete()
     }
 
@@ -433,7 +433,7 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 3
+            assert it.value().getApproximateMessagesCount() == 3
 
         }.verifyComplete()
         deleteMsgVerifier.assertNext {
@@ -441,7 +441,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 2
+            assert it.value().getApproximateMessagesCount() == 2
         }.verifyComplete()
     }
 

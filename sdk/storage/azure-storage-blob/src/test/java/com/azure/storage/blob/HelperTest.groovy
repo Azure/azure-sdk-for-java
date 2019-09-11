@@ -29,8 +29,8 @@ class HelperTest extends APISpec {
 
         then:
         def e = thrown(StorageException)
-        e.errorCode() == StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
-        e.statusCode() == 400
+        e.getErrorCode() == StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
+        e.getStatusCode() == 400
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
         e.getServiceMessage().contains("<?xml") // Ensure that the details in the payload are printable
     }*/
@@ -84,38 +84,38 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.permissions(new BlobSASPermission().read(true).toString())
+            v.setPermissions(new BlobSASPermission().setRead(true).toString())
         } else {
-            v.permissions("")
+            v.setPermissions("")
         }
 
         if (snapId != null) {
-            v.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            v.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
         } else {
-            v.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            v.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
         }
 
-        v.startTime(startTime)
-            .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
-            .snapshotId(snapId)
+        v.setStartTime(startTime)
+            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
+            .setSnapshotId(snapId)
 
         if (expiryTime == null) {
-            v.expiryTime(OffsetDateTime.now())
+            v.setExpiryTime(OffsetDateTime.now())
         } else {
-            v.expiryTime(expiryTime)
+            v.setExpiryTime(expiryTime)
         }
 
         if (ipRange != null) {
-            v.ipRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
-        v.identifier(identifier)
-            .protocol(protocol)
-            .cacheControl(cacheControl)
-            .contentDisposition(disposition)
-            .contentEncoding(encoding)
-            .contentLanguage(language)
-            .contentType(type)
+        v.setIdentifier(identifier)
+            .setProtocol(protocol)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(disposition)
+            .setContentEncoding(encoding)
+            .setContentLanguage(language)
+            .setContentType(type)
 
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
@@ -131,7 +131,7 @@ class HelperTest extends APISpec {
         }
 
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -160,53 +160,53 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.permissions(new BlobSASPermission().read(true).toString())
+            v.setPermissions(new BlobSASPermission().setRead(true).toString())
         } else {
-            v.permissions("")
+            v.setPermissions("")
         }
 
-        v.startTime(startTime)
-            .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
-            .snapshotId(snapId)
+        v.setStartTime(startTime)
+            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
+            .setSnapshotId(snapId)
 
         if (expiryTime == null) {
-            v.expiryTime(OffsetDateTime.now())
+            v.setExpiryTime(OffsetDateTime.now())
         } else {
-            v.expiryTime(expiryTime)
+            v.setExpiryTime(expiryTime)
         }
 
         if (snapId != null) {
-            v.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            v.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
         } else {
-            v.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            v.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
         }
 
         if (ipRange != null) {
-            v.ipRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
-        v.protocol(protocol)
-            .cacheControl(cacheControl)
-            .contentDisposition(disposition)
-            .contentEncoding(encoding)
-            .contentLanguage(language)
-            .contentType(type)
+        v.setProtocol(protocol)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(disposition)
+            .setContentEncoding(encoding)
+            .setContentLanguage(language)
+            .setContentType(type)
 
         UserDelegationKey key = new UserDelegationKey()
-            .signedOid(keyOid)
-            .signedTid(keyTid)
-            .signedStart(keyStart)
-            .signedExpiry(keyExpiry)
-            .signedService(keyService)
-            .signedVersion(keyVersion)
-            .value(keyValue)
+            .setSignedOid(keyOid)
+            .setSignedTid(keyTid)
+            .setSignedStart(keyStart)
+            .setSignedExpiry(keyExpiry)
+            .setSignedService(keyService)
+            .setSignedVersion(keyVersion)
+            .setValue(keyValue)
 
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(key)
 
-        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.expiryTime()), primaryCredential.accountName())
+        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.getExpiryTime()), primaryCredential.accountName())
 
         then:
-        token.signature() == Utility.computeHMac256(key.value(), expectedStringToSign)
+        token.getSignature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
@@ -236,14 +236,14 @@ class HelperTest extends APISpec {
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
-            .expiryTime(expiryTime)
-            .permissions(new BlobSASPermission().toString())
-            .resource(expectedResource)
-            .canonicalName(String.format("/blob/%s/%s", primaryCredential.accountName(), containerName))
-            .snapshotId(snapId)
+            .setExpiryTime(expiryTime)
+            .setPermissions(new BlobSASPermission().toString())
+            .setResource(expectedResource)
+            .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.accountName(), containerName))
+            .setSnapshotId(snapId)
 
         if (blobName != null) {
-            v.canonicalName(v.canonicalName() + "/" + blobName)
+            v.setCanonicalName(v.getCanonicalName() + "/" + blobName)
         }
 
         expectedStringToSign = String.format(expectedStringToSign,
@@ -254,8 +254,8 @@ class HelperTest extends APISpec {
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
 
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
-        token.resource() == expectedResource
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getResource() == expectedResource
 
         where:
         containerName | blobName | snapId | expiryTime           || expectedResource | expectedStringToSign
@@ -269,12 +269,12 @@ class HelperTest extends APISpec {
     def "serviceSasSignatureValues IA"() {
         setup:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
-            .permissions(new AccountSASPermission().toString())
-            .expiryTime(OffsetDateTime.now())
-            .resource(containerName)
-            .canonicalName(blobName)
-            .snapshotId("2018-01-01T00:00:00.0000000Z")
-            .version(version)
+            .setPermissions(new AccountSASPermission().toString())
+            .setExpiryTime(OffsetDateTime.now())
+            .setResource(containerName)
+            .setCanonicalName(blobName)
+            .setSnapshotId("2018-01-01T00:00:00.0000000Z")
+            .setVersion(version)
 
         when:
         v.generateSASQueryParameters((SharedKeyCredential)creds)
@@ -294,11 +294,11 @@ class HelperTest extends APISpec {
     def "BlobSASPermissions toString"() {
         setup:
         BlobSASPermission perms = new BlobSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .create(create)
-            .add(add)
+            .setRead(read)
+            .setWrite(write)
+            .setDelete(delete)
+            .setCreate(create)
+            .setAdd(add)
 
         expect:
         perms.toString() == expectedString
@@ -319,11 +319,11 @@ class HelperTest extends APISpec {
         BlobSASPermission perms = BlobSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.create() == create
-        perms.add() == add
+        perms.getRead() == read
+        perms.getWrite() == write
+        perms.getDelete() == delete
+        perms.getCreate() == create
+        perms.getAdd() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -348,12 +348,12 @@ class HelperTest extends APISpec {
     def "ContainerSASPermissions toString"() {
         setup:
         ContainerSASPermission perms = new ContainerSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .create(create)
-            .add(add)
-            .list(list)
+            .setRead(read)
+            .setWrite(write)
+            .setDelete(delete)
+            .setCreate(create)
+            .setAdd(add)
+            .setList(list)
 
         expect:
         perms.toString() == expectedString
@@ -375,12 +375,12 @@ class HelperTest extends APISpec {
         ContainerSASPermission perms = ContainerSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.create() == create
-        perms.add() == add
-        perms.list() == list
+        perms.getRead() == read
+        perms.getWrite() == write
+        perms.getDelete() == delete
+        perms.getCreate() == create
+        perms.getAdd() == add
+        perms.getList() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -406,8 +406,8 @@ class HelperTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-            .ipMin(min)
-            .ipMax(max)
+            .setIpMin(min)
+            .setIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -425,8 +425,8 @@ class HelperTest extends APISpec {
         IPRange ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin() == min
-        ip.ipMax() == max
+        ip.getIpMin() == min
+        ip.getIpMax() == max
 
         where:
         rangeStr || min | max
@@ -456,15 +456,15 @@ class HelperTest extends APISpec {
     def "accountSasSignatures string to sign"() {
         when:
         AccountSASSignatureValues v = new AccountSASSignatureValues()
-            .permissions(new AccountSASPermission().read(true).toString())
-            .services("b")
-            .resourceTypes("o")
-            .startTime(startTime)
-            .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-            .protocol(protocol)
+            .setPermissions(new AccountSASPermission().setRead(true).toString())
+            .setServices("b")
+            .setResourceTypes("o")
+            .setStartTime(startTime)
+            .setExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setProtocol(protocol)
 
         if (ipRange != null) {
-            v.ipRange(new IPRange().ipMin("ip"))
+            v.setIpRange(new IPRange().setIpMin("ip"))
         }
 
         def token = v.generateSASQueryParameters(primaryCredential)
@@ -472,7 +472,7 @@ class HelperTest extends APISpec {
         expectedStringToSign = String.format(expectedStringToSign, primaryCredential.accountName())
 
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign
@@ -485,11 +485,11 @@ class HelperTest extends APISpec {
     def "accountSasSignatureValues IA"() {
         setup:
         AccountSASSignatureValues v = new AccountSASSignatureValues()
-            .permissions(permissions)
-            .services(service)
-            .resourceTypes(resourceType)
-            .expiryTime(expiryTime)
-            .version(version)
+            .setPermissions(permissions)
+            .setServices(service)
+            .setResourceTypes(resourceType)
+            .setExpiryTime(expiryTime)
+            .setVersion(version)
 
         when:
         v.generateSASQueryParameters(creds)
@@ -512,14 +512,14 @@ class HelperTest extends APISpec {
     def "AccountSASPermissions toString"() {
         setup:
         AccountSASPermission perms = new AccountSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .list(list)
-            .add(add)
-            .create(create)
-            .update(update)
-            .processMessages(process)
+            .setRead(read)
+            .setWrite(write)
+            .setDelete(delete)
+            .setList(list)
+            .setAdd(add)
+            .setCreate(create)
+            .setUpdate(update)
+            .setProcessMessages(process)
 
         expect:
         perms.toString() == expectedString
@@ -543,14 +543,14 @@ class HelperTest extends APISpec {
         AccountSASPermission perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.list() == list
-        perms.add() == add
-        perms.create() == create
-        perms.update() == update
-        perms.processMessages() == process
+        perms.getRead() == read
+        perms.getWrite() == write
+        perms.getDelete() == delete
+        perms.getList() == list
+        perms.getAdd() == add
+        perms.getCreate() == create
+        perms.getUpdate() == update
+        perms.getProcessMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process
@@ -578,9 +578,9 @@ class HelperTest extends APISpec {
     def "AccountSASResourceType toString"() {
         setup:
         AccountSASResourceType resourceTypes = new AccountSASResourceType()
-            .service(service)
-            .container(container)
-            .object(object)
+            .setService(service)
+            .setContainer(container)
+            .setObject(object)
 
         expect:
         resourceTypes.toString() == expectedString
@@ -599,9 +599,9 @@ class HelperTest extends APISpec {
         AccountSASResourceType resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.service() == service
-        resourceTypes.container() == container
-        resourceTypes.object() == object
+        resourceTypes.getService() == service
+        resourceTypes.getContainer() == container
+        resourceTypes.getObject() == object
 
         where:
         resourceTypeString || service | container | object
@@ -623,19 +623,19 @@ class HelperTest extends APISpec {
     def "BlobURLParts"() {
         setup:
         BlobURLParts parts = new BlobURLParts()
-            .scheme("http")
-            .host("host")
-            .containerName("container")
-            .blobName("blob")
-            .snapshot("snapshot")
+            .setScheme("http")
+            .setHost("host")
+            .setContainerName("container")
+            .setBlobName("blob")
+            .setSnapshot("snapshot")
 
         BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
-            .expiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
-            .permissions("r")
-            .canonicalName(String.format("/blob/%s/container/blob", primaryCredential.accountName()))
-            .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
+            .setPermissions("r")
+            .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.accountName()))
+            .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 
-        parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
+        parts.setSasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
 
         when:
         String[] splitParts = parts.toURL().toString().split("\\?")
@@ -654,14 +654,14 @@ class HelperTest extends APISpec {
         BlobURLParts parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
-        parts.scheme() == "http"
-        parts.host() == "host"
-        parts.containerName() == "container"
-        parts.blobName() == "blob"
-        parts.snapshot() == "snapshot"
-        parts.sasQueryParameters().permissions() == "r"
-        parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
-        parts.sasQueryParameters().resource() == "c"
-        parts.sasQueryParameters().signature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.getScheme() == "http"
+        parts.getHost() == "host"
+        parts.getContainerName() == "container"
+        parts.getBlobName() == "blob"
+        parts.getSnapshot() == "snapshot"
+        parts.getSasQueryParameters().getPermissions() == "r"
+        parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
+        parts.getSasQueryParameters().getResource() == "c"
+        parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }

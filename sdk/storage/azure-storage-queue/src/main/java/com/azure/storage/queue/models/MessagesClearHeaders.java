@@ -50,7 +50,7 @@ public final class MessagesClearHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class MessagesClearHeaders {
      * @param requestId the requestId value to set.
      * @return the MessagesClearHeaders object itself.
      */
-    public MessagesClearHeaders requestId(String requestId) {
+    public MessagesClearHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class MessagesClearHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class MessagesClearHeaders {
      * @param version the version value to set.
      * @return the MessagesClearHeaders object itself.
      */
-    public MessagesClearHeaders version(String version) {
+    public MessagesClearHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,7 +96,7 @@ public final class MessagesClearHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -110,7 +110,7 @@ public final class MessagesClearHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the MessagesClearHeaders object itself.
      */
-    public MessagesClearHeaders dateProperty(OffsetDateTime dateProperty) {
+    public MessagesClearHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class MessagesClearHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class MessagesClearHeaders {
      * @param errorCode the errorCode value to set.
      * @return the MessagesClearHeaders object itself.
      */
-    public MessagesClearHeaders errorCode(String errorCode) {
+    public MessagesClearHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

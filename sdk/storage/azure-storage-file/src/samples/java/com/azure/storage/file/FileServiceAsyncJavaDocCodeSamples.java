@@ -130,7 +130,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares
         fileServiceAsyncClient.listShares().subscribe(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
+            shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete listing the shares!")
         );
@@ -144,7 +144,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
         fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure")).subscribe(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
+            shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete listing the shares!")
         );
@@ -159,7 +159,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
         fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true).includeSnapshots(true))
             .subscribe(
-                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete listing the shares!")
             );
@@ -200,7 +200,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         fileServiceAsyncClient.getProperties()
             .subscribe(properties -> {
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
+                    properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
             });
         // END: com.azure.storage.file.fileServiceAsyncClient.getProperties
     }
@@ -212,10 +212,9 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.getPropertiesWithResponse
         fileServiceAsyncClient.getPropertiesWithResponse()
-            .subscribe(properties -> {
-                System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.getValue().hourMetrics().enabled(), properties.getValue().minuteMetrics().enabled());
-            });
+            .subscribe(properties -> System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
+                properties.getValue().getHourMetrics().getEnabled(),
+                properties.getValue().getMinuteMetrics().getEnabled()));
         // END: com.azure.storage.file.fileServiceAsyncClient.getPropertiesWithResponse
     }
 
@@ -226,8 +225,8 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
         fileServiceAsyncClient.getProperties().subscribe(properties -> {
-            properties.minuteMetrics().enabled(true);
-            properties.hourMetrics().enabled(true);
+            properties.getMinuteMetrics().setEnabled(true);
+            properties.getHourMetrics().setEnabled(true);
 
             fileServiceAsyncClient.setProperties(properties)
                 .subscribe(r -> System.out.println("Setting File service properties completed."));
@@ -244,8 +243,8 @@ public class FileServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties
         fileServiceAsyncClient.getPropertiesWithResponse().subscribe(response -> {
             FileServiceProperties properties = response.getValue();
-            properties.minuteMetrics().enabled(true);
-            properties.hourMetrics().enabled(true);
+            properties.getMinuteMetrics().setEnabled(true);
+            properties.getHourMetrics().setEnabled(true);
 
             fileServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(r ->
                 System.out.printf("Setting File service properties completed with status code %d", r.getStatusCode()));
@@ -260,7 +259,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
         fileServiceAsyncClient.getProperties().subscribe(properties -> {
-            properties.cors(Collections.emptyList());
+            properties.setCors(Collections.emptyList());
 
             fileServiceAsyncClient.setPropertiesWithResponse(properties).subscribe(response ->
                 System.out.printf("Setting File service properties completed with status code %d",
@@ -277,28 +276,28 @@ public class FileServiceAsyncJavaDocCodeSamples {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
         AccountSASService service = new AccountSASService()
-            .blob(true)
-            .file(true)
-            .queue(true)
-            .table(true);
+            .setBlob(true)
+            .setFile(true)
+            .setQueue(true)
+            .setTable(true);
         AccountSASResourceType resourceType = new AccountSASResourceType()
-            .container(true)
-            .object(true)
-            .service(true);
+            .setContainer(true)
+            .setObject(true)
+            .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .read(true)
-            .add(true)
-            .create(true)
-            .write(true)
-            .delete(true)
-            .list(true)
-            .processMessages(true)
-            .update(true);
+            .setRead(true)
+            .setAdd(true)
+            .setCreate(true)
+            .setWrite(true)
+            .setDelete(true)
+            .setList(true)
+            .setProcessMessages(true)
+            .setUpdate(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 

@@ -12,12 +12,11 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -49,7 +48,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void create() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.create
         client.create().subscribe(response ->
-            System.out.printf("Created AppendBlob at %s%n", response.lastModified()));
+            System.out.printf("Created AppendBlob at %s%n", response.getLastModified()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.create
     }
 
@@ -59,16 +58,16 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void create2() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentType("binary")
-            .blobContentLanguage("en-US");
+            .setBlobContentType("binary")
+            .setBlobContentLanguage("en-US");
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.createWithResponse(headers, metadata, accessConditions).subscribe(response ->
-            System.out.printf("Created AppendBlob at %s%n", response.getValue().lastModified()));
+            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions
     }
 
@@ -78,7 +77,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void appendBlock() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#Flux-long
         client.appendBlock(data, length).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n", response.blobCommittedBlockCount()));
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#Flux-long
     }
 
@@ -88,12 +87,12 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void appendBlock2() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
         AppendBlobAccessConditions accessConditions = new AppendBlobAccessConditions()
-            .appendPositionAccessConditions(new AppendPositionAccessConditions()
-                .appendPosition(POSITION)
-                .maxSize(maxSize));
+            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
+                .setAppendPosition(POSITION)
+                .setMaxSize(maxSize));
 
         client.appendBlockWithResponse(data, length, accessConditions).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().blobCommittedBlockCount()));
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
     }
 
@@ -103,7 +102,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void appendBlockFromUrl() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrl#URL-BlobRange
         client.appendBlockFromUrl(sourceUrl, new BlobRange(offset, count)).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n", response.blobCommittedBlockCount()));
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrl#URL-BlobRange
     }
 
@@ -113,16 +112,16 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     public void appendBlockFromUrl2() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions
         AppendBlobAccessConditions appendBlobAccessConditions = new AppendBlobAccessConditions()
-            .appendPositionAccessConditions(new AppendPositionAccessConditions()
-                .appendPosition(POSITION)
-                .maxSize(maxSize));
+            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
+                .setAppendPosition(POSITION)
+                .setMaxSize(maxSize));
 
         SourceModifiedAccessConditions modifiedAccessConditions = new SourceModifiedAccessConditions()
-            .sourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.appendBlockFromUrlWithResponse(sourceUrl, new BlobRange(offset, count), null,
             appendBlobAccessConditions, modifiedAccessConditions).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().blobCommittedBlockCount()));
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions
     }
 }

@@ -363,13 +363,13 @@ public final class QueueAsyncClient {
          */
         if (permissions != null) {
             for (SignedIdentifier permission : permissions) {
-                if (permission.accessPolicy() != null && permission.accessPolicy().start() != null) {
-                    permission.accessPolicy().start(
-                        permission.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStart() != null) {
+                    permission.getAccessPolicy().setStart(
+                        permission.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
                 }
-                if (permission.accessPolicy() != null && permission.accessPolicy().expiry() != null) {
-                    permission.accessPolicy().expiry(
-                        permission.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiry() != null) {
+                    permission.getAccessPolicy().setExpiry(
+                        permission.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         }
@@ -435,8 +435,8 @@ public final class QueueAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
-     * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
+     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#getMessageId() messageId} and
+     * {@link EnqueuedMessage#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
      * about the enqueued message.
      * @throws StorageException If the queue doesn't exist
      */
@@ -466,8 +466,8 @@ public final class QueueAsyncClient {
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will
      * default to 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
-     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
-     * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
+     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#getMessageId() messageId} and
+     * {@link EnqueuedMessage#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
      * about the enqueued message.
      * @throws StorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
      * are outside of the allowed limits.
@@ -479,7 +479,7 @@ public final class QueueAsyncClient {
     Mono<Response<EnqueuedMessage>> enqueueMessageWithResponse(String messageText, Duration visibilityTimeout, Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
-        QueueMessage message = new QueueMessage().messageText(messageText);
+        QueueMessage message = new QueueMessage().setMessageText(messageText);
 
         return postProcessResponse(client.messages()
             .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
@@ -500,7 +500,7 @@ public final class QueueAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @return The first {@link DequeuedMessage} in the queue, it contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
+     * {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact
      * with the message, additionally it contains other metadata about the message.
      * @throws StorageException If the queue doesn't exist
      */
@@ -524,7 +524,7 @@ public final class QueueAsyncClient {
      * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
      * messages.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DequeuedMessage contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
+     * {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
@@ -551,7 +551,7 @@ public final class QueueAsyncClient {
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue.
      * If left empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
+     * {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
@@ -681,7 +681,7 @@ public final class QueueAsyncClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to interact
      * with the message, additionally contains the updated metadata about the message.
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
@@ -707,7 +707,7 @@ public final class QueueAsyncClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to interact
      * with the message, additionally contains the updated metadata about the message.
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
@@ -717,7 +717,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<UpdatedMessage>> updateMessageWithResponse(String messageText, String messageId, String popReceipt, Duration visibilityTimeout, Context context) {
-        QueueMessage message = new QueueMessage().messageText(messageText);
+        QueueMessage message = new QueueMessage().setMessageText(messageText);
         return postProcessResponse(client.messageIds()
             .updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
                 (int) visibilityTimeout.getSeconds(), context))
@@ -826,7 +826,7 @@ public final class QueueAsyncClient {
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
         // Set canonical name
-        QueueServiceSASSignatureValues values = queueServiceSASSignatureValues.canonicalName(this.queueName, sharedKeyCredential.accountName());
+        QueueServiceSASSignatureValues values = queueServiceSASSignatureValues.setCanonicalName(this.queueName, sharedKeyCredential.accountName());
 
         QueueServiceSASQueryParameters queueServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
@@ -840,7 +840,7 @@ public final class QueueAsyncClient {
      */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
         QueueGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
-        QueueProperties properties = new QueueProperties(propertiesHeaders.metadata(), propertiesHeaders.approximateMessagesCount());
+        QueueProperties properties = new QueueProperties(propertiesHeaders.getMetadata(), propertiesHeaders.getApproximateMessagesCount());
         return new SimpleResponse<>(response, properties);
     }
 
@@ -851,7 +851,7 @@ public final class QueueAsyncClient {
      */
     private Response<UpdatedMessage> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
         MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdatedMessage updatedMessage = new UpdatedMessage(headers.popReceipt(), headers.timeNextVisible());
+        UpdatedMessage updatedMessage = new UpdatedMessage(headers.getPopReceipt(), headers.getTimeNextVisible());
         return new SimpleResponse<>(response, updatedMessage);
     }
 }

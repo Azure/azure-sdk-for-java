@@ -68,7 +68,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -79,7 +79,7 @@ public final class DirectoryCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders eTag(String eTag) {
+    public DirectoryCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -91,7 +91,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -106,7 +106,7 @@ public final class DirectoryCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders lastModified(OffsetDateTime lastModified) {
+    public DirectoryCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -122,7 +122,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -134,7 +134,7 @@ public final class DirectoryCreateHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders clientRequestId(String clientRequestId) {
+    public DirectoryCreateHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -145,7 +145,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -156,7 +156,7 @@ public final class DirectoryCreateHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders requestId(String requestId) {
+    public DirectoryCreateHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -167,7 +167,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -178,7 +178,7 @@ public final class DirectoryCreateHeaders {
      * @param version the version value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders version(String version) {
+    public DirectoryCreateHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -188,7 +188,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -198,7 +198,7 @@ public final class DirectoryCreateHeaders {
      * @param contentLength the contentLength value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders contentLength(Long contentLength) {
+    public DirectoryCreateHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -209,7 +209,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -223,7 +223,7 @@ public final class DirectoryCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectoryCreateHeaders object itself.
      */
-    public DirectoryCreateHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryCreateHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

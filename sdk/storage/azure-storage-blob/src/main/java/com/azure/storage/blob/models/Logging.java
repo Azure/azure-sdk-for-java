@@ -49,7 +49,7 @@ public final class Logging {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -59,7 +59,7 @@ public final class Logging {
      * @param version the version value to set.
      * @return the Logging object itself.
      */
-    public Logging version(String version) {
+    public Logging setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -70,7 +70,7 @@ public final class Logging {
      *
      * @return the delete value.
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return this.delete;
     }
 
@@ -81,7 +81,7 @@ public final class Logging {
      * @param delete the delete value to set.
      * @return the Logging object itself.
      */
-    public Logging delete(boolean delete) {
+    public Logging setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -92,7 +92,7 @@ public final class Logging {
      *
      * @return the read value.
      */
-    public boolean read() {
+    public boolean getRead() {
         return this.read;
     }
 
@@ -103,7 +103,7 @@ public final class Logging {
      * @param read the read value to set.
      * @return the Logging object itself.
      */
-    public Logging read(boolean read) {
+    public Logging setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -114,7 +114,7 @@ public final class Logging {
      *
      * @return the write value.
      */
-    public boolean write() {
+    public boolean getWrite() {
         return this.write;
     }
 
@@ -125,7 +125,7 @@ public final class Logging {
      * @param write the write value to set.
      * @return the Logging object itself.
      */
-    public Logging write(boolean write) {
+    public Logging setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -135,7 +135,7 @@ public final class Logging {
      *
      * @return the retentionPolicy value.
      */
-    public RetentionPolicy retentionPolicy() {
+    public RetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -145,7 +145,7 @@ public final class Logging {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Logging object itself.
      */
-    public Logging retentionPolicy(RetentionPolicy retentionPolicy) {
+    public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

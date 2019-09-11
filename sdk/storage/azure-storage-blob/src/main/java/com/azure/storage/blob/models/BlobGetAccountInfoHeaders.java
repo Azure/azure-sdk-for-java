@@ -73,7 +73,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -85,7 +85,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders clientRequestId(String clientRequestId) {
+    public BlobGetAccountInfoHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -96,7 +96,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -107,7 +107,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders requestId(String requestId) {
+    public BlobGetAccountInfoHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -119,7 +119,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -131,7 +131,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param version the version value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders version(String version) {
+    public BlobGetAccountInfoHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -142,7 +142,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -156,7 +156,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobGetAccountInfoHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -172,7 +172,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the skuName value.
      */
-    public SkuName skuName() {
+    public SkuName getSkuName() {
         return this.skuName;
     }
 
@@ -184,7 +184,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param skuName the skuName value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders skuName(SkuName skuName) {
+    public BlobGetAccountInfoHeaders setSkuName(SkuName skuName) {
         this.skuName = skuName;
         return this;
     }
@@ -195,7 +195,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the accountKind value.
      */
-    public AccountKind accountKind() {
+    public AccountKind getAccountKind() {
         return this.accountKind;
     }
 
@@ -206,7 +206,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param accountKind the accountKind value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders accountKind(AccountKind accountKind) {
+    public BlobGetAccountInfoHeaders setAccountKind(AccountKind accountKind) {
         this.accountKind = accountKind;
         return this;
     }
@@ -216,7 +216,7 @@ public final class BlobGetAccountInfoHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -226,7 +226,7 @@ public final class BlobGetAccountInfoHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobGetAccountInfoHeaders object itself.
      */
-    public BlobGetAccountInfoHeaders errorCode(String errorCode) {
+    public BlobGetAccountInfoHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

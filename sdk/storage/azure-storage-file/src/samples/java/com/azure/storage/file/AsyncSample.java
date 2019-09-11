@@ -42,13 +42,13 @@ public class AsyncSample {
         // List all shares and delete them.
         fileServiceAsyncClient.listShares().subscribe(
             shareItem -> {
-                System.out.println("There is a share named: " + shareItem.name());
-                fileServiceAsyncClient.deleteShare(shareItem.name()).subscribe(
+                System.out.println("There is a share named: " + shareItem.getName());
+                fileServiceAsyncClient.deleteShare(shareItem.getName()).subscribe(
                     response -> {
-                        System.out.printf("Successfully delete the share: %s.", shareItem.name());
+                        System.out.printf("Successfully delete the share: %s.", shareItem.getName());
                     },
                     err -> {
-                        System.out.printf("Failed to delete the share: %s. Reasons: %s.", shareItem.name(), err.getMessage());
+                        System.out.printf("Failed to delete the share: %s. Reasons: %s.", shareItem.getName(), err.getMessage());
                     },
                     () -> {
                         System.out.println("Completed deleting the share.");

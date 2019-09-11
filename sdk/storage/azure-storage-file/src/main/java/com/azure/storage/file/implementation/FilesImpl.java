@@ -39,10 +39,11 @@ import com.azure.storage.file.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.models.StorageErrorException;
-import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -193,27 +194,27 @@ public final class FilesImpl {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
-            fileContentType = fileHTTPHeaders.fileContentType();
+            fileContentType = fileHTTPHeaders.getFileContentType();
         }
         String fileContentEncoding = null;
         if (fileHTTPHeaders != null) {
-            fileContentEncoding = fileHTTPHeaders.fileContentEncoding();
+            fileContentEncoding = fileHTTPHeaders.getFileContentEncoding();
         }
         String fileContentLanguage = null;
         if (fileHTTPHeaders != null) {
-            fileContentLanguage = fileHTTPHeaders.fileContentLanguage();
+            fileContentLanguage = fileHTTPHeaders.getFileContentLanguage();
         }
         String fileCacheControl = null;
         if (fileHTTPHeaders != null) {
-            fileCacheControl = fileHTTPHeaders.fileCacheControl();
+            fileCacheControl = fileHTTPHeaders.getFileCacheControl();
         }
         byte[] fileContentMD5 = null;
         if (fileHTTPHeaders != null) {
-            fileContentMD5 = fileHTTPHeaders.fileContentMD5();
+            fileContentMD5 = fileHTTPHeaders.getFileContentMD5();
         }
         String fileContentDisposition = null;
         if (fileHTTPHeaders != null) {
-            fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
+            fileContentDisposition = fileHTTPHeaders.getFileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
         return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
@@ -365,27 +366,27 @@ public final class FilesImpl {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
-            fileContentType = fileHTTPHeaders.fileContentType();
+            fileContentType = fileHTTPHeaders.getFileContentType();
         }
         String fileContentEncoding = null;
         if (fileHTTPHeaders != null) {
-            fileContentEncoding = fileHTTPHeaders.fileContentEncoding();
+            fileContentEncoding = fileHTTPHeaders.getFileContentEncoding();
         }
         String fileContentLanguage = null;
         if (fileHTTPHeaders != null) {
-            fileContentLanguage = fileHTTPHeaders.fileContentLanguage();
+            fileContentLanguage = fileHTTPHeaders.getFileContentLanguage();
         }
         String fileCacheControl = null;
         if (fileHTTPHeaders != null) {
-            fileCacheControl = fileHTTPHeaders.fileCacheControl();
+            fileCacheControl = fileHTTPHeaders.getFileCacheControl();
         }
         byte[] fileContentMD5 = null;
         if (fileHTTPHeaders != null) {
-            fileContentMD5 = fileHTTPHeaders.fileContentMD5();
+            fileContentMD5 = fileHTTPHeaders.getFileContentMD5();
         }
         String fileContentDisposition = null;
         if (fileHTTPHeaders != null) {
-            fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
+            fileContentDisposition = fileHTTPHeaders.getFileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
         return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
@@ -514,11 +515,11 @@ public final class FilesImpl {
         final String comp = "range";
         byte[] sourceIfMatchCrc64 = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64 = sourceModifiedAccessConditions.sourceIfMatchCrc64();
+            sourceIfMatchCrc64 = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
         }
         byte[] sourceIfNoneMatchCrc64 = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64 = sourceModifiedAccessConditions.sourceIfNoneMatchCrc64();
+            sourceIfNoneMatchCrc64 = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
         }
         String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
         String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);

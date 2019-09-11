@@ -200,12 +200,12 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
             URL url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
 
-            this.endpoint = parts.scheme() + "://" + parts.host();
-            this.containerName = parts.containerName();
-            this.blobName = parts.blobName();
-            this.snapshot = parts.snapshot();
+            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.containerName = parts.getContainerName();
+            this.blobName = parts.getBlobName();
+            this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

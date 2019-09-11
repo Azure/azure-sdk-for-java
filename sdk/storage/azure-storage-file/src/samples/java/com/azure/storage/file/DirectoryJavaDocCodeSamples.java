@@ -4,8 +4,8 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
@@ -13,9 +13,9 @@ import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
-import java.time.Duration;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -45,6 +45,7 @@ public class DirectoryJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link DirectoryClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link DirectoryClient}
      */
     public DirectoryClient createClientWithSASToken() {
@@ -60,6 +61,7 @@ public class DirectoryJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link DirectoryClient} with {@link SASTokenCredential}
+     *
      * @return An instance of {@link DirectoryClient}
      */
     public DirectoryClient createClientWithCredential() {
@@ -76,7 +78,9 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link DirectoryClient} with {@code connectionString} which turns into
+     * {@link SharedKeyCredential}
+     *
      * @return An instance of {@link DirectoryClient}
      */
     public DirectoryClient createClientWithConnectionString() {
@@ -130,7 +134,8 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String, FileSmbProperties, String, Map, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createSubDirectoryWithResponse(String,
+     * FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createSubDirectoryMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
@@ -156,22 +161,23 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders,
+     * FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
@@ -189,21 +195,22 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories
         directoryClient.listFilesAndDirectories().forEach(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name())
+                fileRef.isDirectory(), fileRef.getName())
         );
         // END: com.azure.storage.file.directoryClient.listFilesAndDirectories
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#listFilesAndDirectories(String, Integer, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#listFilesAndDirectories(String, Integer, Duration,
+     * Context)}
      */
     public void listDirectoriesAndFilesMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
         directoryClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
-                fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                    fileRef.isDirectory(), fileRef.name())
+            fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
+                fileRef.isDirectory(), fileRef.getName())
         );
         // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
     }
@@ -243,7 +250,8 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#deleteSubDirectoryWithResponse(String, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#deleteSubDirectoryWithResponse(String, Duration,
+     * Context)}
      */
     public void deleteSubDirectoryWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
@@ -283,7 +291,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.getProperties
         DirectoryProperties response = directoryClient.getProperties();
-        System.out.printf("Directory latest modified date is %s.", response.lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getLastModified());
         // END: com.azure.storage.file.directoryClient.getProperties
     }
 
@@ -295,7 +303,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context
         Response<DirectoryProperties> response = directoryClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.getValue().lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getValue().getLastModified());
         // END: com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context
     }
 
@@ -308,12 +316,13 @@ public class DirectoryJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         DirectoryInfo response = directoryClient.setProperties(smbProperties, filePermission);
-        System.out.printf("Directory latest modified date is %s.", response.lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getLastModified());
         // END: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#setPropertiesWithResponse(FileSmbProperties, String, Duration, Context)}
+     * Generates a code sample for using {@link DirectoryClient#setPropertiesWithResponse(FileSmbProperties, String,
+     * Duration, Context)}
      */
     public void setPropertiesWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
@@ -322,7 +331,7 @@ public class DirectoryJavaDocCodeSamples {
         String filePermission = "filePermission";
         Response<DirectoryInfo> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.getValue().lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getValue().getLastModified());
         // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-duration-Context
     }
 
@@ -334,7 +343,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.setMetadata#map
         DirectorySetMetadataInfo response =
             directoryClient.setMetadata(Collections.singletonMap("directory", "updatedMetadata"));
-        System.out.printf("Setting the directory metadata completed with updated etag %d", response.eTag());
+        System.out.printf("Setting the directory metadata completed with updated etag %s", response.getETag());
         // END: com.azure.storage.file.directoryClient.setMetadata#map
     }
 
@@ -382,7 +391,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context
         Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
             new Context(key1, value1));
-        System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
+        System.out.printf("Get handles completed with handle id %s", result.iterator().next().getHandleId());
         // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context
     }
 
@@ -394,12 +403,10 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
         Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
             new Context(key1, value1));
-        result.forEach(handleItem ->  {
-            directoryClient.forceCloseHandles(handleItem.handleId(), true, Duration.ofSeconds(1),
-                new Context(key1, value1))
-                .forEach(numOfClosedHandles ->
-                System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
-        });
+        result.forEach(handleItem -> directoryClient
+            .forceCloseHandles(handleItem.getHandleId(), true, Duration.ofSeconds(1), new Context(key1, value1))
+            .forEach(numOfClosedHandles ->
+                System.out.printf("Get handles completed with handle id %s", handleItem.getHandleId())));
         // END: com.azure.storage.file.directoryClient.forceCloseHandles
     }
 

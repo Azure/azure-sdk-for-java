@@ -48,7 +48,7 @@ public final class ModifiedAccessConditions {
      *
      * @return the ifModifiedSince value.
      */
-    public OffsetDateTime ifModifiedSince() {
+    public OffsetDateTime getIfModifiedSince() {
         if (this.ifModifiedSince == null) {
             return null;
         }
@@ -62,7 +62,7 @@ public final class ModifiedAccessConditions {
      * @param ifModifiedSince the ifModifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions ifModifiedSince(OffsetDateTime ifModifiedSince) {
+    public ModifiedAccessConditions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         if (ifModifiedSince == null) {
             this.ifModifiedSince = null;
         } else {
@@ -78,7 +78,7 @@ public final class ModifiedAccessConditions {
      *
      * @return the ifUnmodifiedSince value.
      */
-    public OffsetDateTime ifUnmodifiedSince() {
+    public OffsetDateTime getIfUnmodifiedSince() {
         if (this.ifUnmodifiedSince == null) {
             return null;
         }
@@ -93,7 +93,7 @@ public final class ModifiedAccessConditions {
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions ifUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public ModifiedAccessConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         if (ifUnmodifiedSince == null) {
             this.ifUnmodifiedSince = null;
         } else {
@@ -108,7 +108,7 @@ public final class ModifiedAccessConditions {
      *
      * @return the ifMatch value.
      */
-    public String ifMatch() {
+    public String getIfMatch() {
         return this.ifMatch;
     }
 
@@ -119,7 +119,7 @@ public final class ModifiedAccessConditions {
      * @param ifMatch the ifMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions ifMatch(String ifMatch) {
+    public ModifiedAccessConditions setIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
     }
@@ -130,7 +130,7 @@ public final class ModifiedAccessConditions {
      *
      * @return the ifNoneMatch value.
      */
-    public String ifNoneMatch() {
+    public String getIfNoneMatch() {
         return this.ifNoneMatch;
     }
 
@@ -141,7 +141,7 @@ public final class ModifiedAccessConditions {
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
-    public ModifiedAccessConditions ifNoneMatch(String ifNoneMatch) {
+    public ModifiedAccessConditions setIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }

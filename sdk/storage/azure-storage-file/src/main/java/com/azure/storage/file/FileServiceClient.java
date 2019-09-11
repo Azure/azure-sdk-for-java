@@ -177,8 +177,8 @@ public final class FileServiceClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -200,10 +200,10 @@ public final class FileServiceClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
     public void setProperties(FileServiceProperties properties) {
@@ -214,8 +214,8 @@ public final class FileServiceClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -240,10 +240,10 @@ public final class FileServiceClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */

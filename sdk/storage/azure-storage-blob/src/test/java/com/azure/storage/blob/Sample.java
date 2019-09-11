@@ -46,7 +46,7 @@ public class Sample {
         // list containers in account
         System.out.println("Listing containers in account:");
         for (ContainerItem item : serviceClient.listContainers()) {
-            System.out.println(item.name());
+            System.out.println(item.getName());
         }
         System.out.println();
 
@@ -64,16 +64,16 @@ public class Sample {
         System.out.println("Listing/downloading blobs:");
         for (BlobItem item : containerClient.listBlobsFlat()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            containerClient.getBlobClient(item.name()).download(stream);
-            System.out.println(item.name() + ": " + new String(stream.toByteArray()));
+            containerClient.getBlobClient(item.getName()).download(stream);
+            System.out.println(item.getName() + ": " + new String(stream.toByteArray()));
         }
         System.out.println();
 
         // cleanup
         for (ContainerItem item : serviceClient.listContainers()) {
-            containerClient = serviceClient.getContainerClient(item.name());
-            containerClient.delete();
-            System.out.println("Deleted container: " + item.name());
+            containerClient = serviceClient.getContainerClient(item.getName());
+            containerClient.setDelete();
+            System.out.println("Deleted container: " + item.getName());
         }
     }
 
@@ -105,7 +105,7 @@ public class Sample {
                 System.out.println("Listing containers in account:");
                 return serviceClient.listContainers()
                     .flatMap(containerItem -> {
-                        System.out.println(containerItem.name());
+                        System.out.println(containerItem.getName());
                         return Mono.empty();
                     });
             }))
@@ -134,16 +134,16 @@ public class Sample {
             }))
             // download results
             .flatMap(listItem ->
-                finalContainerClient.getBlobAsyncClient(listItem.name())
+                finalContainerClient.getBlobAsyncClient(listItem.getName())
                     .download()
                     .flatMapMany(flux -> flux)
                     .map(buffer -> new String(buffer.array()))
-                    .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
+                    .doOnNext(string -> System.out.println(listItem.getName() + ": " + string)))
             // cleanup
             .thenMany(serviceClient.listContainers())
             .flatMap(containerItem -> serviceClient
-                .getContainerAsyncClient(containerItem.name())
-                .delete())
+                .getContainerAsyncClient(containerItem.getName())
+                .setDelete())
             .blockLast();
     }
 

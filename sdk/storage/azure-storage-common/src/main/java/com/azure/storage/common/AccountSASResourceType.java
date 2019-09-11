@@ -62,7 +62,7 @@ public final class AccountSASResourceType {
     /**
      * @return the access status for service level APIs.
      */
-    public boolean service() {
+    public boolean getService() {
         return service;
     }
 
@@ -72,7 +72,7 @@ public final class AccountSASResourceType {
      * @param service Access status to set
      * @return the updated AccountSASResourceType object.
      */
-    public AccountSASResourceType service(boolean service) {
+    public AccountSASResourceType setService(boolean service) {
         this.service = service;
         return this;
     }
@@ -81,7 +81,7 @@ public final class AccountSASResourceType {
      * @return the access status for container level APIs, this grants access to Blob Containers, Tables, Queues,
      * and File Shares.
      */
-    public boolean container() {
+    public boolean getContainer() {
         return container;
     }
 
@@ -91,7 +91,7 @@ public final class AccountSASResourceType {
      * @param container Access status to set
      * @return the updated AccountSASResourceType object.
      */
-    public AccountSASResourceType container(boolean container) {
+    public AccountSASResourceType setContainer(boolean container) {
         this.container = container;
         return this;
     }
@@ -100,7 +100,7 @@ public final class AccountSASResourceType {
      * @return the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages,
      * Files.
      */
-    public boolean object() {
+    public boolean getObject() {
         return object;
     }
 
@@ -110,7 +110,7 @@ public final class AccountSASResourceType {
      * @param object Access status to set
      * @return the updated AccountSASResourceType object.
      */
-    public AccountSASResourceType object(boolean object) {
+    public AccountSASResourceType setObject(boolean object) {
         this.object = object;
         return this;
     }

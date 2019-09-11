@@ -64,7 +64,7 @@ public final class ShareGetAccessPolicyHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -75,7 +75,7 @@ public final class ShareGetAccessPolicyHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareGetAccessPolicyHeaders object itself.
      */
-    public ShareGetAccessPolicyHeaders eTag(String eTag) {
+    public ShareGetAccessPolicyHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ShareGetAccessPolicyHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -104,7 +104,7 @@ public final class ShareGetAccessPolicyHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareGetAccessPolicyHeaders object itself.
      */
-    public ShareGetAccessPolicyHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareGetAccessPolicyHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -119,7 +119,7 @@ public final class ShareGetAccessPolicyHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -130,7 +130,7 @@ public final class ShareGetAccessPolicyHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareGetAccessPolicyHeaders object itself.
      */
-    public ShareGetAccessPolicyHeaders requestId(String requestId) {
+    public ShareGetAccessPolicyHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -141,7 +141,7 @@ public final class ShareGetAccessPolicyHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -152,7 +152,7 @@ public final class ShareGetAccessPolicyHeaders {
      * @param version the version value to set.
      * @return the ShareGetAccessPolicyHeaders object itself.
      */
-    public ShareGetAccessPolicyHeaders version(String version) {
+    public ShareGetAccessPolicyHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -163,7 +163,7 @@ public final class ShareGetAccessPolicyHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -177,7 +177,7 @@ public final class ShareGetAccessPolicyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareGetAccessPolicyHeaders object itself.
      */
-    public ShareGetAccessPolicyHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareGetAccessPolicyHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -191,7 +191,7 @@ public final class ShareGetAccessPolicyHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -201,7 +201,7 @@ public final class ShareGetAccessPolicyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareGetAccessPolicyHeaders object itself.
      */
-    public ShareGetAccessPolicyHeaders errorCode(String errorCode) {
+    public ShareGetAccessPolicyHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

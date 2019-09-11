@@ -10,8 +10,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -43,8 +43,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.function.Function;
 
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -247,13 +247,11 @@ public final class BlobServiceAsyncClient {
                     response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().containerItems(),
-                    response.getValue().nextMarker(),
+                    response.getValue().getContainerItems(),
+                    response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
-        return new PagedFlux<>(
-            () -> func.apply(null),
-            marker -> func.apply(marker));
+        return new PagedFlux<>(() -> func.apply(null), func);
     }
 
     /*
@@ -266,7 +264,7 @@ public final class BlobServiceAsyncClient {
      * @param marker
      *         Identifies the portion of the list to be returned with the next list operation.
      *         This value is returned in the response of a previous list operation as the
-     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
+     *         ListContainersSegmentResponse.body().getNextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
      *
@@ -282,7 +280,7 @@ public final class BlobServiceAsyncClient {
 
         return postProcessResponse(Utility.applyOptionalTimeout(
             this.azureBlobStorage.services().listContainersSegmentWithRestResponseAsync(
-                options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null,
+                options.getPrefix(), marker, options.getMaxResults(), options.getDetails().toIncludeType(), null,
                 null, Context.NONE), timeout));
     }
 
@@ -312,7 +310,7 @@ public final class BlobServiceAsyncClient {
      * account properties.
      */
     public Mono<Response<StorageServiceProperties>> getPropertiesWithResponse() {
-        return withContext(context -> getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
@@ -404,8 +402,8 @@ public final class BlobServiceAsyncClient {
         return postProcessResponse(
             this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
-                    .start(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .expiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    .setStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context)
         ).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
@@ -440,7 +438,7 @@ public final class BlobServiceAsyncClient {
      * account statistics.
      */
     public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
-        return withContext(context -> getStatisticsWithResponse(context));
+        return withContext(this::getStatisticsWithResponse);
     }
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
@@ -474,7 +472,7 @@ public final class BlobServiceAsyncClient {
      * info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
-        return withContext(context -> getAccountInfoWithResponse(context));
+        return withContext(this::getAccountInfoWithResponse);
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {

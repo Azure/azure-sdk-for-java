@@ -74,7 +74,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -86,7 +86,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders eTag(String eTag) {
+    public ContainerSetAccessPolicyHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -99,7 +99,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -115,7 +115,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders lastModified(OffsetDateTime lastModified) {
+    public ContainerSetAccessPolicyHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -131,7 +131,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -143,7 +143,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders clientRequestId(String clientRequestId) {
+    public ContainerSetAccessPolicyHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -154,7 +154,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -165,7 +165,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders requestId(String requestId) {
+    public ContainerSetAccessPolicyHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -177,7 +177,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -189,7 +189,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param version the version value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders version(String version) {
+    public ContainerSetAccessPolicyHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -200,7 +200,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -214,7 +214,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerSetAccessPolicyHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -228,7 +228,7 @@ public final class ContainerSetAccessPolicyHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -238,7 +238,7 @@ public final class ContainerSetAccessPolicyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerSetAccessPolicyHeaders object itself.
      */
-    public ContainerSetAccessPolicyHeaders errorCode(String errorCode) {
+    public ContainerSetAccessPolicyHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

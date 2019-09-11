@@ -19,9 +19,9 @@ abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends Bas
     @SuppressWarnings("unchecked")
     public T customerProvidedKey(CustomerProvidedKey key) {
         cpk = new CpkInfo()
-            .encryptionKey(key.key())
-            .encryptionKeySha256(key.keySHA256())
-            .encryptionAlgorithm(key.encryptionAlgorithm());
+            .setEncryptionKey(key.getKey())
+            .setEncryptionKeySha256(key.getKeySHA256())
+            .setEncryptionAlgorithm(key.getEncryptionAlgorithm());
 
         return (T) this;
     }

@@ -362,8 +362,8 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
-     * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
+     * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#getMessageId() messageId} and
+     * {@link EnqueuedMessage#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
      * about the enqueued message.
      * @throws StorageException If the queue doesn't exist
      */
@@ -395,8 +395,8 @@ public final class QueueClient {
      * default to 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#messageId() messageId} and
-     * {@link EnqueuedMessage#popReceipt() popReceipt} that are used to interact with the message and other metadata
+     * @return A response containing the {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#getMessageId() messageId} and
+     * {@link EnqueuedMessage#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
      * about the enqueued message.
      * @throws StorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
      * are outside of the allowed limits.
@@ -422,7 +422,7 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @return The first {@link DequeuedMessage} in the queue, it contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
+     * {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact
      * with the message, additionally it contains other metadata about the message.
      * @throws StorageException If the queue doesn't exist
      */
@@ -446,7 +446,7 @@ public final class QueueClient {
      * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
      * messages.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DequeuedMessage contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
+     * {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
@@ -475,7 +475,7 @@ public final class QueueClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage contains
-     * {@link DequeuedMessage#messageId() messageId} and {@link DequeuedMessage#popReceipt() popReceipt} used to interact
+     * {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact
      * with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
@@ -552,7 +552,7 @@ public final class QueueClient {
      * @param popReceipt Unique identifier that must match for the message to be updated
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to interact
      * with the message, additionally contains the updated metadata about the message.
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
@@ -580,7 +580,7 @@ public final class QueueClient {
      * timeout period must be between 1 second and 7 days.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link UpdatedMessage} that contains the new {@link UpdatedMessage#popReceipt() popReceipt} to interact
+     * @return A response containing the {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to interact
      * with the message, additionally contains the updated metadata about the message.
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds

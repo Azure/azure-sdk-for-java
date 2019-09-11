@@ -106,7 +106,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -118,7 +118,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param eTag the eTag value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders eTag(String eTag) {
+    public AppendBlobAppendBlockFromUrlHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -131,7 +131,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -147,7 +147,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param lastModified the lastModified value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders lastModified(OffsetDateTime lastModified) {
+    public AppendBlobAppendBlockFromUrlHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -163,7 +163,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -175,7 +175,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders contentMD5(byte[] contentMD5) {
+    public AppendBlobAppendBlockFromUrlHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -188,7 +188,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the xMsContentCrc64 value.
      */
-    public byte[] xMsContentCrc64() {
+    public byte[] getXMsContentCrc64() {
         return ImplUtils.clone(this.xMsContentCrc64);
     }
 
@@ -201,7 +201,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+    public AppendBlobAppendBlockFromUrlHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -212,7 +212,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -223,7 +223,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param requestId the requestId value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders requestId(String requestId) {
+    public AppendBlobAppendBlockFromUrlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -235,7 +235,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -247,7 +247,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param version the version value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders version(String version) {
+    public AppendBlobAppendBlockFromUrlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -258,7 +258,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -272,7 +272,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders dateProperty(OffsetDateTime dateProperty) {
+    public AppendBlobAppendBlockFromUrlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -288,7 +288,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the blobAppendOffset value.
      */
-    public String blobAppendOffset() {
+    public String getBlobAppendOffset() {
         return this.blobAppendOffset;
     }
 
@@ -300,7 +300,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param blobAppendOffset the blobAppendOffset value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders blobAppendOffset(String blobAppendOffset) {
+    public AppendBlobAppendBlockFromUrlHeaders setBlobAppendOffset(String blobAppendOffset) {
         this.blobAppendOffset = blobAppendOffset;
         return this;
     }
@@ -311,7 +311,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the blobCommittedBlockCount value.
      */
-    public Integer blobCommittedBlockCount() {
+    public Integer getBlobCommittedBlockCount() {
         return this.blobCommittedBlockCount;
     }
 
@@ -322,7 +322,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders blobCommittedBlockCount(Integer blobCommittedBlockCount) {
+    public AppendBlobAppendBlockFromUrlHeaders setBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }
@@ -334,7 +334,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -346,7 +346,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public AppendBlobAppendBlockFromUrlHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -356,7 +356,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -366,7 +366,7 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      * @param errorCode the errorCode value to set.
      * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockFromUrlHeaders errorCode(String errorCode) {
+    public AppendBlobAppendBlockFromUrlHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -28,21 +28,21 @@ public final class FileRange {
      * @param range Range object containing start and end of the file.
      */
     public FileRange(final Range range) {
-        this.start = range.start();
-        this.end = range.end();
+        this.start = range.getStart();
+        this.end = range.getEnd();
     }
 
     /**
      * @return The start of bytes to be written.
      */
-    public long start() {
+    public long getStart() {
         return start;
     }
 
     /**
      * @return The end of bytes to be written.
      */
-    public Long end() {
+    public Long getEnd() {
         return end;
     }
 

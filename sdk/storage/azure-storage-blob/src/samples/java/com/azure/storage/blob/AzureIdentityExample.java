@@ -36,7 +36,7 @@ public class AzureIdentityExample {
                 .buildClient();
 
         System.out.println("Successfully setup client using the Azure Identity, please check the service version: "
-            + storageClient.getProperties().defaultServiceVersion());
+            + storageClient.getProperties().getDefaultServiceVersion());
 
     }
 }

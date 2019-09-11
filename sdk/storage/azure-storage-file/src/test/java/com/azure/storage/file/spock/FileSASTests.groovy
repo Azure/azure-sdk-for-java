@@ -40,10 +40,10 @@ class FileSASTests extends APISpec {
     def "FileSASPermissions toString"() {
         setup:
         def perms = new FileSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .create(create)
+            .setRead(read)
+            .setWrite(write)
+            .setDelete(delete)
+            .setCreate(create)
 
         expect:
         perms.toString() == expectedString
@@ -63,10 +63,10 @@ class FileSASTests extends APISpec {
         def perms = FileSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.create() == create
+        perms.getRead() == read
+        perms.getWrite() == write
+        perms.getDelete() == delete
+        perms.getCreate() == create
 
         where:
         permString || read  | write | delete | create
@@ -90,11 +90,11 @@ class FileSASTests extends APISpec {
     def "ShareSASPermissions toString"() {
         setup:
         def perms = new ShareSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .create(create)
-            .list(list)
+            .setRead(read)
+            .setWrite(write)
+            .setDelete(delete)
+            .setCreate(create)
+            .setList(list)
 
         expect:
         perms.toString() == expectedString
@@ -115,11 +115,11 @@ class FileSASTests extends APISpec {
         def perms = ShareSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.create() == create
-        perms.list() == list
+        perms.getRead() == read
+        perms.getWrite() == write
+        perms.getDelete() == delete
+        perms.getCreate() == create
+        perms.getList() == list
 
         where:
         permString || read  | write | delete | create | list
@@ -150,7 +150,7 @@ class FileSASTests extends APISpec {
         def serviceSASSignatureValues = primaryFileClient.fileAsyncClient.configureServiceSASSignatureValues(new FileServiceSASSignatureValues(), accountName)
 
         then:
-        serviceSASSignatureValues.canonicalName() == "/file/" + accountName  + "/" + shareName + "/" + fileName
+        serviceSASSignatureValues.getCanonicalName() == "/file/" + accountName  + "/" + shareName + "/" + fileName
     }
 
     def "FileSAS network test download upload"() {
@@ -160,15 +160,15 @@ class FileSASTests extends APISpec {
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         def permissions = new FileSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
+            .setRead(true)
+            .setWrite(true)
+            .setCreate(true)
+            .setDelete(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -190,7 +190,7 @@ class FileSASTests extends APISpec {
 
         def downloadResponse = client.downloadWithProperties()
 
-        def responseBody = downloadResponse.body().toIterable().iterator().next()
+        def responseBody = downloadResponse.getBody().toIterable().iterator().next()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
@@ -207,15 +207,15 @@ class FileSASTests extends APISpec {
         primaryFileClient.create(Constants.KB)
 
         def permissions = new FileSASPermission()
-            .read(true)
-            .write(false)
-            .create(true)
-            .delete(true)
+            .setRead(true)
+            .setWrite(false)
+            .setCreate(true)
+            .setDelete(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -254,11 +254,11 @@ class FileSASTests extends APISpec {
 
         // Check containerSASPermissions
         ShareSASPermission permissions = new ShareSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .list(true)
+            .setRead(true)
+            .setWrite(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setList(true)
 
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
@@ -290,11 +290,11 @@ class FileSASTests extends APISpec {
     def "AccountSAS FileService network test create delete share succeeds"() {
         setup:
         def service = new AccountSASService()
-            .file(true)
+            .setFile(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .read(true)
             .create(true)

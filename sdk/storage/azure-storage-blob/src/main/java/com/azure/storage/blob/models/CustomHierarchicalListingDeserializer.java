@@ -36,7 +36,7 @@ final class CustomHierarchicalListingDeserializer extends JsonDeserializer<BlobH
             }
         }
 
-        return new BlobHierarchyListSegment().blobItems(blobItems).blobPrefixes(blobPrefixes);
+        return new BlobHierarchyListSegment().setBlobItems(blobItems).setBlobPrefixes(blobPrefixes);
     }
 }
 

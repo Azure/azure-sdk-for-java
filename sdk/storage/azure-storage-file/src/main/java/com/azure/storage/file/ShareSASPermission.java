@@ -73,7 +73,7 @@ public final class ShareSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -83,7 +83,7 @@ public final class ShareSASPermission {
      * @param read Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission read(boolean read) {
+    public ShareSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -91,7 +91,7 @@ public final class ShareSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean create() {
+    public boolean getCreate() {
         return create;
     }
 
@@ -101,7 +101,7 @@ public final class ShareSASPermission {
      * @param create Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission create(boolean create) {
+    public ShareSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -109,7 +109,7 @@ public final class ShareSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean write() {
+    public boolean getWrite() {
         return write;
     }
 
@@ -119,7 +119,7 @@ public final class ShareSASPermission {
      * @param write Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission write(boolean write) {
+    public ShareSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -127,7 +127,7 @@ public final class ShareSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return delete;
     }
 
@@ -137,7 +137,7 @@ public final class ShareSASPermission {
      * @param delete Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission delete(boolean delete) {
+    public ShareSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -145,7 +145,7 @@ public final class ShareSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean list() {
+    public boolean getList() {
         return list;
     }
 
@@ -155,7 +155,7 @@ public final class ShareSASPermission {
      * @param list Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission list(boolean list) {
+    public ShareSASPermission setList(boolean list) {
         this.list = list;
         return this;
     }

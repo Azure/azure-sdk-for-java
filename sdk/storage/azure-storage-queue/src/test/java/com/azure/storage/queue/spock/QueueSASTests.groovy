@@ -34,10 +34,10 @@ class QueueSASTests extends APISpec {
         def perms = QueueSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.add() == add
-        perms.update() == update
-        perms.process() == process
+        perms.getRead() == read
+        perms.getAdd() == add
+        perms.getUpdate() == update
+        perms.getProcess() == process
 
         where:
         permString || read  | add   | update | process
@@ -55,10 +55,10 @@ class QueueSASTests extends APISpec {
     def "QueueSASPermission toString"() {
         setup:
         def perms = new QueueSASPermission()
-            .read(read)
-            .add(add)
-            .update(update)
-            .process(process)
+            .setRead(read)
+            .setAdd(add)
+            .setUpdate(update)
+            .setProcess(process)
 
         expect:
         perms.toString() == expectedString
@@ -87,10 +87,10 @@ class QueueSASTests extends APISpec {
         def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = new QueueServiceSASSignatureValues().canonicalName(queueName, accountName)
+        def serviceSASSignatureValues = new QueueServiceSASSignatureValues().setCanonicalName(queueName, accountName)
 
         then:
-        serviceSASSignatureValues.canonicalName() == "/queue/" + accountName + "/" + queueName
+        serviceSASSignatureValues.getCanonicalName() == "/queue/" + accountName + "/" + queueName
     }
 
     @Test
@@ -100,14 +100,14 @@ class QueueSASTests extends APISpec {
         EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
-            .read(true)
-            .add(true)
-            .process(true)
+            .setRead(true)
+            .setAdd(true)
+            .setProcess(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
 
         when:
@@ -140,15 +140,15 @@ class QueueSASTests extends APISpec {
         EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
-            .read(true)
-            .add(true)
-            .process(true)
-            .update(true)
+            .setRead(true)
+            .setAdd(true)
+            .setProcess(true)
+            .setUpdate(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
 
         when:
@@ -181,10 +181,10 @@ class QueueSASTests extends APISpec {
         queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
-            .read(true)
-            .add(true)
-            .update(true)
-            .process(true)
+            .setRead(true)
+            .setAdd(true)
+            .setUpdate(true)
+            .setProcess(true)
         def expiryTime = getUTCNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
         def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
@@ -215,11 +215,11 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSASService()
-            .queue(true)
+            .setQueue(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .read(true)
             .create(true)
@@ -248,11 +248,11 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS list queues"() {
         def service = new AccountSASService()
-            .queue(true)
+            .setQueue(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
             .list(true)
         def expiryTime = getUTCNow().plusDays(1)

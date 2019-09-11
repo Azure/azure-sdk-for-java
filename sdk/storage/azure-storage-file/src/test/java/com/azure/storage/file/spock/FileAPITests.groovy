@@ -53,7 +53,7 @@ class FileAPITests extends APISpec {
         httpHeaders = new FileHTTPHeaders().fileContentLanguage("en")
             .fileContentType("application/octet-stream")
         smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL) as EnumSet<NtfsFileAttributes>)
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL) as EnumSet<NtfsFileAttributes>)
     }
 
     def "Get file URL"() {
@@ -86,42 +86,42 @@ class FileAPITests extends APISpec {
         when:
         def filePermissionKey = shareClient.createPermission(filePermission)
         // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .getFilePermissionKey(filePermissionKey)
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
-        resp.value().eTag()
-        resp.value().lastModified()
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.value().getETag()
+        resp.value().getLastModified()
+        resp.value().getSmbProperties()
+        resp.value().getSmbProperties().getFilePermissionKey()
+        resp.value().getSmbProperties().getNtfsFileAttributes()
+        resp.value().getSmbProperties().getFileLastWriteTime()
+        resp.value().getSmbProperties().getFileCreationTime()
+        resp.value().getSmbProperties().getFileChangeTime()
+        resp.value().getSmbProperties().getParentId()
+        resp.value().getSmbProperties().getFileId()
     }
 
     def "Create file with args fp"() {
         when:
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
-        resp.value().eTag()
-        resp.value().lastModified()
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.value().getETag()
+        resp.value().getLastModified()
+        resp.value().getSmbProperties()
+        resp.value().getSmbProperties().getFilePermissionKey()
+        resp.value().getSmbProperties().getNtfsFileAttributes()
+        resp.value().getSmbProperties().getFileLastWriteTime()
+        resp.value().getSmbProperties().getFileCreationTime()
+        resp.value().getSmbProperties().getFileChangeTime()
+        resp.value().getSmbProperties().getParentId()
+        resp.value().getSmbProperties().getFileId()
     }
 
     @Unroll
@@ -141,7 +141,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Create file permission and key error"() {
         when:
-        FileSmbProperties smbProperties = new FileSmbProperties().filePermissionKey(filePermissionKey)
+        FileSmbProperties smbProperties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
         primaryFileClient.createWithResponse(1024, null, smbProperties, permission, null, null, null)
         then:
         thrown(IllegalArgumentException)
@@ -165,19 +165,19 @@ class FileAPITests extends APISpec {
         then:
         FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
         FileTestHelper.assertResponseStatusCode(downloadResponse, 200)
-        downloadResponse.value().contentLength() == dataLength
-        downloadResponse.value().eTag()
-        downloadResponse.value().lastModified()
-        downloadResponse.value().smbProperties()
-        downloadResponse.value().smbProperties().filePermissionKey()
-        downloadResponse.value().smbProperties().ntfsFileAttributes()
-        downloadResponse.value().smbProperties().fileLastWriteTime()
-        downloadResponse.value().smbProperties().fileCreationTime()
-        downloadResponse.value().smbProperties().fileChangeTime()
-        downloadResponse.value().smbProperties().parentId()
-        downloadResponse.value().smbProperties().fileId()
+        downloadResponse.value().getContentLength() == dataLength
+        downloadResponse.value().getETag()
+        downloadResponse.value().getLastModified()
+        downloadResponse.value().getSmbProperties()
+        downloadResponse.value().getSmbProperties().getFilePermissionKey()
+        downloadResponse.value().getSmbProperties().getNtfsFileAttributes()
+        downloadResponse.value().getSmbProperties().getFileLastWriteTime()
+        downloadResponse.value().getSmbProperties().getFileCreationTime()
+        downloadResponse.value().getSmbProperties().getFileChangeTime()
+        downloadResponse.value().getSmbProperties().getParentId()
+        downloadResponse.value().getSmbProperties().getFileId()
 
-        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
+        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block())
 
         cleanup:
         defaultData.clear()
@@ -197,9 +197,9 @@ class FileAPITests extends APISpec {
         then:
         FileTestHelper.assertResponseStatusCode(uploadResponse, 201)
         FileTestHelper.assertResponseStatusCode(downloadResponse, 206)
-        downloadResponse.value().contentLength() == dataLength
+        downloadResponse.value().getContentLength() == dataLength
 
-        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block())
+        Arrays.equals(dataBytes, FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block())
 
         cleanup:
         defaultData.clear()
@@ -229,7 +229,7 @@ class FileAPITests extends APISpec {
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false, null, null)
 
         then:
-        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block()
         downloadArray.eachByte {
             assert it == 0
         }
@@ -250,7 +250,7 @@ class FileAPITests extends APISpec {
         def downloadResponse = primaryFileClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false, null, null)
 
         then:
-        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().body()).block()
+        def downloadArray = FluxUtil.collectBytesInByteBufferStream(downloadResponse.value().getBody()).block()
         downloadArray.eachByte {
             assert it == 0
         }
@@ -387,7 +387,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
-        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().read(true))
+        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().setRead(true))
 
         when:
         FileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
@@ -398,7 +398,7 @@ class FileAPITests extends APISpec {
         client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI())
 
         then:
-        def result = new String(client.downloadWithProperties().body().blockLast().array())
+        def result = new String(client.downloadWithProperties().getBody().blockLast().array())
 
         for(int i = 0; i < length; i++) {
             result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
@@ -417,7 +417,7 @@ class FileAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(copyInfoResponse, 202)
-        copyInfoResponse.value().copyId() != null
+        copyInfoResponse.value().getCopyId() != null
     }
 
     def "Start copy error"() {
@@ -459,22 +459,22 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
         def resp = primaryFileClient.getPropertiesWithResponse(null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().eTag()
-        resp.value().lastModified()
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.value().getETag()
+        resp.value().getLastModified()
+        resp.value().getSmbProperties()
+        resp.value().getSmbProperties().getFilePermissionKey()
+        resp.value().getSmbProperties().getNtfsFileAttributes()
+        resp.value().getSmbProperties().getFileLastWriteTime()
+        resp.value().getSmbProperties().getFileCreationTime()
+        resp.value().getSmbProperties().getFileChangeTime()
+        resp.value().getSmbProperties().getParentId()
+        resp.value().getSmbProperties().getFileId()
     }
 
     def "Get properties error"() {
@@ -490,45 +490,45 @@ class FileAPITests extends APISpec {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
         def filePermissionKey = shareClient.createPermission(filePermission)
         when:
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .getFilePermissionKey(filePermissionKey)
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().eTag()
-        resp.value().lastModified()
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.value().getETag()
+        resp.value().getLastModified()
+        resp.value().getSmbProperties()
+        resp.value().getSmbProperties().getFilePermissionKey()
+        resp.value().getSmbProperties().getNtfsFileAttributes()
+        resp.value().getSmbProperties().getFileLastWriteTime()
+        resp.value().getSmbProperties().getFileCreationTime()
+        resp.value().getSmbProperties().getFileChangeTime()
+        resp.value().getSmbProperties().getParentId()
+        resp.value().getSmbProperties().getFileId()
     }
 
     def "Set httpHeaders fp"() {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
         when:
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission, null, null)
         then:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().eTag()
-        resp.value().lastModified()
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.value().getETag()
+        resp.value().getLastModified()
+        resp.value().getSmbProperties()
+        resp.value().getSmbProperties().getFilePermissionKey()
+        resp.value().getSmbProperties().getNtfsFileAttributes()
+        resp.value().getSmbProperties().getFileLastWriteTime()
+        resp.value().getSmbProperties().getFileCreationTime()
+        resp.value().getSmbProperties().getFileChangeTime()
+        resp.value().getSmbProperties().getParentId()
+        resp.value().getSmbProperties().getFileId()
     }
 
     def "Set httpHeaders error"() {
@@ -552,9 +552,9 @@ class FileAPITests extends APISpec {
         def getPropertiesAfter = primaryFileClient.getProperties()
 
         then:
-        testMetadata.equals(getPropertiesBefore.metadata())
+        testMetadata.equals(getPropertiesBefore.getMetadata())
         FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 200)
-        updatedMetadata.equals(getPropertiesAfter.metadata())
+        updatedMetadata.equals(getPropertiesAfter.getMetadata())
     }
 
     def "Set metadata error"() {
@@ -579,8 +579,8 @@ class FileAPITests extends APISpec {
 
         expect:
         primaryFileClient.listRanges().each {
-            assert it.start() == 0
-            assert it.end() == 1023
+            assert it.getStart() == 0
+            assert it.getEnd() == 1023
         }
 
         cleanup:
@@ -596,8 +596,8 @@ class FileAPITests extends APISpec {
 
         expect:
         primaryFileClient.listRanges(new FileRange(0, 511L), null, null).each {
-            assert it.start() == 0
-            assert it.end() == 511
+            assert it.getStart() == 0
+            assert it.getEnd() == 511
         }
 
         cleanup:

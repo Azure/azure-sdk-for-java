@@ -58,7 +58,7 @@ public final class ServiceGetStatisticsHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -70,7 +70,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders clientRequestId(String clientRequestId) {
+    public ServiceGetStatisticsHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -81,7 +81,7 @@ public final class ServiceGetStatisticsHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -92,7 +92,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders requestId(String requestId) {
+    public ServiceGetStatisticsHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -104,7 +104,7 @@ public final class ServiceGetStatisticsHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -116,7 +116,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param version the version value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders version(String version) {
+    public ServiceGetStatisticsHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -127,7 +127,7 @@ public final class ServiceGetStatisticsHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -141,7 +141,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ServiceGetStatisticsHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -155,7 +155,7 @@ public final class ServiceGetStatisticsHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -165,7 +165,7 @@ public final class ServiceGetStatisticsHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceGetStatisticsHeaders object itself.
      */
-    public ServiceGetStatisticsHeaders errorCode(String errorCode) {
+    public ServiceGetStatisticsHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

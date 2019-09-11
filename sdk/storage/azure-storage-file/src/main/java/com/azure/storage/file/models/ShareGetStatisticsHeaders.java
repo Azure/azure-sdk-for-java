@@ -64,7 +64,7 @@ public final class ShareGetStatisticsHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -75,7 +75,7 @@ public final class ShareGetStatisticsHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareGetStatisticsHeaders object itself.
      */
-    public ShareGetStatisticsHeaders eTag(String eTag) {
+    public ShareGetStatisticsHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ShareGetStatisticsHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -104,7 +104,7 @@ public final class ShareGetStatisticsHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareGetStatisticsHeaders object itself.
      */
-    public ShareGetStatisticsHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareGetStatisticsHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -119,7 +119,7 @@ public final class ShareGetStatisticsHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -130,7 +130,7 @@ public final class ShareGetStatisticsHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareGetStatisticsHeaders object itself.
      */
-    public ShareGetStatisticsHeaders requestId(String requestId) {
+    public ShareGetStatisticsHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -141,7 +141,7 @@ public final class ShareGetStatisticsHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -152,7 +152,7 @@ public final class ShareGetStatisticsHeaders {
      * @param version the version value to set.
      * @return the ShareGetStatisticsHeaders object itself.
      */
-    public ShareGetStatisticsHeaders version(String version) {
+    public ShareGetStatisticsHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -163,7 +163,7 @@ public final class ShareGetStatisticsHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -177,7 +177,7 @@ public final class ShareGetStatisticsHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareGetStatisticsHeaders object itself.
      */
-    public ShareGetStatisticsHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareGetStatisticsHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -191,7 +191,7 @@ public final class ShareGetStatisticsHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -201,7 +201,7 @@ public final class ShareGetStatisticsHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareGetStatisticsHeaders object itself.
      */
-    public ShareGetStatisticsHeaders errorCode(String errorCode) {
+    public ShareGetStatisticsHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

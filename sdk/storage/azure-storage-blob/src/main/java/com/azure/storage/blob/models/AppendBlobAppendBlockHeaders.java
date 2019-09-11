@@ -121,7 +121,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -133,7 +133,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param eTag the eTag value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders eTag(String eTag) {
+    public AppendBlobAppendBlockHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -146,7 +146,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -162,7 +162,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param lastModified the lastModified value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders lastModified(OffsetDateTime lastModified) {
+    public AppendBlobAppendBlockHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -178,7 +178,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -190,7 +190,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders contentMD5(byte[] contentMD5) {
+    public AppendBlobAppendBlockHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -203,7 +203,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the xMsContentCrc64 value.
      */
-    public byte[] xMsContentCrc64() {
+    public byte[] getXMsContentCrc64() {
         return ImplUtils.clone(this.xMsContentCrc64);
     }
 
@@ -216,7 +216,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+    public AppendBlobAppendBlockHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -228,7 +228,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -240,7 +240,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders clientRequestId(String clientRequestId) {
+    public AppendBlobAppendBlockHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -251,7 +251,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -262,7 +262,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param requestId the requestId value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders requestId(String requestId) {
+    public AppendBlobAppendBlockHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -274,7 +274,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -286,7 +286,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param version the version value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders version(String version) {
+    public AppendBlobAppendBlockHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -297,7 +297,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -311,7 +311,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders dateProperty(OffsetDateTime dateProperty) {
+    public AppendBlobAppendBlockHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -327,7 +327,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the blobAppendOffset value.
      */
-    public String blobAppendOffset() {
+    public String getBlobAppendOffset() {
         return this.blobAppendOffset;
     }
 
@@ -339,7 +339,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param blobAppendOffset the blobAppendOffset value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders blobAppendOffset(String blobAppendOffset) {
+    public AppendBlobAppendBlockHeaders setBlobAppendOffset(String blobAppendOffset) {
         this.blobAppendOffset = blobAppendOffset;
         return this;
     }
@@ -350,7 +350,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the blobCommittedBlockCount value.
      */
-    public Integer blobCommittedBlockCount() {
+    public Integer getBlobCommittedBlockCount() {
         return this.blobCommittedBlockCount;
     }
 
@@ -361,7 +361,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders blobCommittedBlockCount(Integer blobCommittedBlockCount) {
+    public AppendBlobAppendBlockHeaders setBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }
@@ -373,7 +373,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean isServerEncrypted() {
+    public Boolean getIsServerEncrypted() {
         return this.isServerEncrypted;
     }
 
@@ -385,7 +385,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public AppendBlobAppendBlockHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -397,7 +397,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -409,7 +409,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public AppendBlobAppendBlockHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -419,7 +419,7 @@ public final class AppendBlobAppendBlockHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -429,7 +429,7 @@ public final class AppendBlobAppendBlockHeaders {
      * @param errorCode the errorCode value to set.
      * @return the AppendBlobAppendBlockHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders errorCode(String errorCode) {
+    public AppendBlobAppendBlockHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

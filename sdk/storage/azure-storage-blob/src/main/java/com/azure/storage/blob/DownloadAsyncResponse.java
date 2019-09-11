@@ -44,7 +44,7 @@ public final class DownloadAsyncResponse {
                           HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
-        Utility.assertNotNull("info.eTag", info.eTag());
+        Utility.assertNotNull("info.eTag", info.getETag());
         this.rawResponse = response;
         this.info = info;
         this.getter = getter;
@@ -102,9 +102,9 @@ public final class DownloadAsyncResponse {
             Update how much data we have received in case we need to retry and propagate to the user the data we
             have received.
              */
-            this.info.offset(this.info.offset() + buffer.remaining());
-            if (this.info.count() != null) {
-                this.info.count(this.info.count() - buffer.remaining());
+            this.info.setOffset(this.info.getOffset() + buffer.remaining());
+            if (this.info.getCount() != null) {
+                this.info.setCount(this.info.getCount() - buffer.remaining());
             }
         }).onErrorResume(t2 -> {
             // Increment the retry count and try again with the new exception.
@@ -115,28 +115,28 @@ public final class DownloadAsyncResponse {
     /**
      * @return HTTP status of the download
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return this.rawResponse.getStatusCode();
     }
 
     /**
      * @return HTTP headers associated to the download
      */
-    public BlobDownloadHeaders headers() {
+    public BlobDownloadHeaders getHeaders() {
         return this.rawResponse.getDeserializedHeaders();
     }
 
     /**
      * @return all HTTP headers from the response
      */
-    public Map<String, String> rawHeaders() {
+    public Map<String, String> getRawHeaders() {
         return this.rawResponse.getHeaders().toMap();
     }
 
     /**
      * @return the raw response
      */
-    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse() {
+    public ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> getRawResponse() {
         return this.rawResponse;
     }
 }
