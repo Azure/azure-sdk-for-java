@@ -971,10 +971,10 @@ public class ShareAsyncClient {
         String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.canonicalName(this.shareName, accountName);
+        fileServiceSASSignatureValues.setCanonicalName(this.shareName, accountName);
 
         // Set resource
-        fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_SHARE_CONSTANT);
+        fileServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_SHARE_CONSTANT);
 
         return fileServiceSASSignatureValues;
     }

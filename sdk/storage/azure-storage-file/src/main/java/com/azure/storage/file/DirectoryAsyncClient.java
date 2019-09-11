@@ -179,15 +179,15 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = properties.filePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = properties.filePermissionKey();
+        filePermission = properties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = properties.getFilePermissionKey();
 
-        String fileAttributes = properties.ntfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = properties.fileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
         return postProcessResponse(azureFileStorageClient.directorys().createWithRestResponseAsync(shareName, directoryPath, fileAttributes,
             fileCreationTime, fileLastWriteTime, null, metadata, filePermission, filePermissionKey, context))
@@ -330,15 +330,15 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.filePermissionKey());
+        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        filePermission = properties.filePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = properties.filePermissionKey();
+        filePermission = properties.setFilePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = properties.getFilePermissionKey();
 
-        String fileAttributes = properties.ntfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = properties.fileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = properties.fileLastWriteTime(FileConstants.PRESERVE);
+        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
 
         return postProcessResponse(azureFileStorageClient.directorys()
             .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
@@ -811,7 +811,7 @@ public class DirectoryAsyncClient {
     }
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::name));
+        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::getName));
         if (response.value().getSegment() != null) {
             response.value().getSegment().getDirectoryItems()
                 .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.getName(), true, null)));

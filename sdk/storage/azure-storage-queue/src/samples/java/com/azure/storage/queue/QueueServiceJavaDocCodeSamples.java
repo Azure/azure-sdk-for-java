@@ -124,7 +124,7 @@ public class QueueServiceJavaDocCodeSamples {
      */
     public void listQueuesWithOverload() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context
-        client.listQueues(new QueuesSegmentOptions().prefix("azure"), Duration.ofSeconds(1),
+        client.listQueues(new QueuesSegmentOptions().setPrefix("azure"), Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
                 queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
                 queueItem.getName(), queueItem.getMetadata())

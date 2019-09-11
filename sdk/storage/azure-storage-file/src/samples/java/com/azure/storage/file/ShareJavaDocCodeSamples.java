@@ -187,7 +187,7 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createSnapshot
         ShareSnapshotInfo response = shareClient.createSnapshot();
-        System.out.println("Complete creating the share snpashot with snapshot id: " + response.snapshot());
+        System.out.println("Complete creating the share snpashot with snapshot id: " + response.getSnapshot());
         // END: com.azure.storage.file.shareClient.createSnapshot
     }
 
@@ -200,7 +200,7 @@ public class ShareJavaDocCodeSamples {
         Response<ShareSnapshotInfo> response =
             shareClient.createSnapshotWithResponse(Collections.singletonMap("snpashot", "metadata"),
                 Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete creating the share snpashot with snapshot id: " + response.value().snapshot());
+        System.out.println("Complete creating the share snpashot with snapshot id: " + response.value().getSnapshot());
         // END: com.azure.storage.file.shareClient.createSnapshotWithResponse#map-duration-context
     }
 
@@ -217,10 +217,10 @@ public class ShareJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         Response<FileClient> response = shareClient.createFileWithResponse("myfile", 1024,
@@ -521,11 +521,11 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         String identifier = "identifier";
         ShareSASPermission permissions = new ShareSASPermission()
-            .read(true)
-            .create(true)
-            .delete(true)
-            .write(true)
-            .list(true);
+            .setRead(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setWrite(true)
+            .setList(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

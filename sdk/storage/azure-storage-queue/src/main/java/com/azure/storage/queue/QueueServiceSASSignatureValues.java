@@ -89,7 +89,7 @@ final class QueueServiceSASSignatureValues {
      * @return the version of the service this SAS will target. If not specified, it will default to the version targeted
      * by the library.
      */
-    public String version() {
+    public String getVersion() {
         return version;
     }
 
@@ -100,7 +100,7 @@ final class QueueServiceSASSignatureValues {
      * @param version Version to target
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues version(String version) {
+    public QueueServiceSASSignatureValues setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -108,7 +108,7 @@ final class QueueServiceSASSignatureValues {
     /**
      * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol protocol() {
+    public SASProtocol getProtocol() {
         return protocol;
     }
 
@@ -118,7 +118,7 @@ final class QueueServiceSASSignatureValues {
      * @param protocol Protocol for the SAS
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues protocol(SASProtocol protocol) {
+    public QueueServiceSASSignatureValues setProtocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -126,7 +126,7 @@ final class QueueServiceSASSignatureValues {
     /**
      * @return when the SAS will take effect.
      */
-    public OffsetDateTime startTime() {
+    public OffsetDateTime getStartTime() {
         return startTime;
     }
 
@@ -136,7 +136,7 @@ final class QueueServiceSASSignatureValues {
      * @param startTime When the SAS takes effect
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues startTime(OffsetDateTime startTime) {
+    public QueueServiceSASSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -144,7 +144,7 @@ final class QueueServiceSASSignatureValues {
     /**
      * @return the time after which the SAS will no longer work.
      */
-    public OffsetDateTime expiryTime() {
+    public OffsetDateTime getExpiryTime() {
         return expiryTime;
     }
 
@@ -154,7 +154,7 @@ final class QueueServiceSASSignatureValues {
      * @param expiryTime When the SAS will no longer work
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues expiryTime(OffsetDateTime expiryTime) {
+    public QueueServiceSASSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -163,7 +163,7 @@ final class QueueServiceSASSignatureValues {
      * @return the permissions string allowed by the SAS. Please refer to {@link QueueSASPermission} for help
      * determining the permissions allowed.
      */
-    public String permissions() {
+    public String getPermissions() {
         return permissions;
     }
 
@@ -174,7 +174,7 @@ final class QueueServiceSASSignatureValues {
      * @param permissions Permissions string for the SAS
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues permissions(String permissions) {
+    public QueueServiceSASSignatureValues setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -182,7 +182,7 @@ final class QueueServiceSASSignatureValues {
     /**
      * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange ipRange() {
+    public IPRange getIpRange() {
         return ipRange;
     }
 
@@ -192,7 +192,7 @@ final class QueueServiceSASSignatureValues {
      * @param ipRange Allowed IP range to set
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues ipRange(IPRange ipRange) {
+    public QueueServiceSASSignatureValues setIpRange(IPRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -200,7 +200,7 @@ final class QueueServiceSASSignatureValues {
     /**
      * @return the canonical name of the object the SAS user may access.
      */
-    public String canonicalName() {
+    public String getCanonicalName() {
         return canonicalName;
     }
 
@@ -210,7 +210,7 @@ final class QueueServiceSASSignatureValues {
      * @param canonicalName Canonical name of the object the SAS grants access
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues canonicalName(String canonicalName) {
+    public QueueServiceSASSignatureValues setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
         return this;
     }
@@ -223,7 +223,7 @@ final class QueueServiceSASSignatureValues {
      * @param accountName Name of the account that contains the object
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues canonicalName(String queueName, String accountName) {
+    public QueueServiceSASSignatureValues setCanonicalName(String queueName, String accountName) {
         this.canonicalName = String.format("/queue/%s/%s", accountName, queueName);
         return this;
     }
@@ -233,7 +233,7 @@ final class QueueServiceSASSignatureValues {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return identifier;
     }
 
@@ -245,7 +245,7 @@ final class QueueServiceSASSignatureValues {
      * @param identifier Name of the access policy
      * @return the updated QueueServiceSASSignatureValues object
      */
-    public QueueServiceSASSignatureValues identifier(String identifier) {
+    public QueueServiceSASSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }

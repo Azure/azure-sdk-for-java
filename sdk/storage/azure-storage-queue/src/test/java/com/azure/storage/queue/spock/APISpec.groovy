@@ -71,7 +71,7 @@ class APISpec extends Specification {
             QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName.toLowerCase()),
+            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
                 Duration.ofSeconds(30), Context.NONE).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
             }

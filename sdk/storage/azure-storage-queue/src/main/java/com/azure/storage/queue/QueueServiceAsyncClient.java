@@ -201,7 +201,7 @@ public final class QueueServiceAsyncClient {
     /**
      * Lists the queues in the storage account that pass the filter.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * <p><strong>Code Samples</strong></p>
@@ -223,7 +223,7 @@ public final class QueueServiceAsyncClient {
     /**
      * Lists the queues in the storage account that pass the filter starting at the specified marker.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * @param marker Starting point to list the queues
@@ -233,12 +233,12 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
     PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout, Context context) {
-        final String prefix = (options != null) ? options.prefix() : null;
-        final Integer maxResults = (options != null) ? options.maxResults() : null;
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            if (options.includeMetadata()) {
+            if (options.getIncludeMetadata()) {
                 include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
             }
         }

@@ -125,7 +125,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
      */
     public void listQueuesAsyncWithOverload() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions
-        client.listQueues(new QueuesSegmentOptions().prefix("azure")).subscribe(
+        client.listQueues(new QueuesSegmentOptions().setPrefix("azure")).subscribe(
             queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
                 queueItem.getName(), queueItem.getMetadata()),
             error -> System.err.print(error.toString()),

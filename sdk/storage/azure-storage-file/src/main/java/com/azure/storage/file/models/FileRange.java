@@ -35,14 +35,14 @@ public final class FileRange {
     /**
      * @return The start of bytes to be written.
      */
-    public long start() {
+    public long getStart() {
         return start;
     }
 
     /**
      * @return The end of bytes to be written.
      */
-    public Long end() {
+    public Long getEnd() {
         return end;
     }
 

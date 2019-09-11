@@ -168,10 +168,10 @@ public class DirectoryJavaDocCodeSamples {
             .setFileCacheControl("no-transform")
             .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         Response<FileClient> response = directoryClient.createFileWithResponse("myFile", 1024,
@@ -189,7 +189,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.listFilesAndDirectories
         directoryClient.listFilesAndDirectories().forEach(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name())
+                fileRef.isDirectory(), fileRef.getName())
         );
         // END: com.azure.storage.file.directoryClient.listFilesAndDirectories
     }
@@ -203,7 +203,7 @@ public class DirectoryJavaDocCodeSamples {
         directoryClient.listFilesAndDirectories("subdir", 10, Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
                 fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                    fileRef.isDirectory(), fileRef.name())
+                    fileRef.isDirectory(), fileRef.getName())
         );
         // END: com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer-duration-context
     }
@@ -283,7 +283,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.getProperties
         DirectoryProperties response = directoryClient.getProperties();
-        System.out.printf("Directory latest modified date is %s.", response.lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getLastModified());
         // END: com.azure.storage.file.directoryClient.getProperties
     }
 
@@ -295,7 +295,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context
         Response<DirectoryProperties> response = directoryClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.value().getLastModified());
         // END: com.azure.storage.file.DirectoryClient.getPropertiesWithResponse#duration-Context
     }
 
@@ -308,7 +308,7 @@ public class DirectoryJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         DirectoryInfo response = directoryClient.setProperties(smbProperties, filePermission);
-        System.out.printf("Directory latest modified date is %s.", response.lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.getLastModified());
         // END: com.azure.storage.file.directoryClient.setProperties#filesmbproperties-string
     }
 
@@ -322,7 +322,7 @@ public class DirectoryJavaDocCodeSamples {
         String filePermission = "filePermission";
         Response<DirectoryInfo> response = directoryClient.setPropertiesWithResponse(smbProperties, filePermission,
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response.value().lastModified());
+        System.out.printf("Directory latest modified date is %s.", response.value().getLastModified());
         // END: com.azure.storage.file.directoryClient.setPropertiesWithResponse#filesmbproperties-string-duration-Context
     }
 
@@ -334,7 +334,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.setMetadata#map
         DirectorySetMetadataInfo response =
             directoryClient.setMetadata(Collections.singletonMap("directory", "updatedMetadata"));
-        System.out.printf("Setting the directory metadata completed with updated etag %d", response.eTag());
+        System.out.printf("Setting the directory metadata completed with updated etag %d", response.getETag());
         // END: com.azure.storage.file.directoryClient.setMetadata#map
     }
 

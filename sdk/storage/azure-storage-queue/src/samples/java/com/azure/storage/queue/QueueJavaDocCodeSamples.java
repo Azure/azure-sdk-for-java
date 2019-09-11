@@ -308,8 +308,8 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.getProperties
         QueueProperties properties = client.getProperties();
-        System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
-            properties.approximateMessagesCount());
+        System.out.printf("Metadata: %s, Approximate message count: %d", properties.getMetadata(),
+            properties.getApproximateMessagesCount());
         // END: com.azure.storage.queue.queueClient.getProperties
     }
 
@@ -321,8 +321,8 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context
         QueueProperties properties = client.getPropertiesWithResponse(Duration.ofSeconds(1),
             new Context(key1, value1)).value();
-        System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(),
-            properties.approximateMessagesCount());
+        System.out.printf("Metadata: %s, Approximate message count: %d", properties.getMetadata(),
+            properties.getApproximateMessagesCount());
         // END: com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context
     }
 
@@ -446,10 +446,10 @@ public class QueueJavaDocCodeSamples {
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.queue.queueClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
         QueueSASPermission permissions = new QueueSASPermission()
-            .read(true)
-            .add(true)
-            .update(true)
-            .process(true);
+            .setRead(true)
+            .setAdd(true)
+            .setUpdate(true)
+            .setProcess(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

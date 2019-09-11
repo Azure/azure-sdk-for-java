@@ -38,21 +38,21 @@ public final class DirectoryProperties {
     /**
      * @return A set of name-value pairs that contain metadata for the directory.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
@@ -66,7 +66,7 @@ public final class DirectoryProperties {
     /**
      * @return The SMB Properties of the directory.
      */
-    public FileSmbProperties smbProperties() {
+    public FileSmbProperties getSmbProperties() {
         return smbProperties;
     }
 }

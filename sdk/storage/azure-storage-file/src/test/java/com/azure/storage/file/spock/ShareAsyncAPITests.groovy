@@ -10,12 +10,10 @@ import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.ShareAsyncClient
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
-import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -35,7 +33,7 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get share URL"() {
@@ -112,8 +110,8 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-                .snapshot(it.value().snapshot()).buildClient()
-            assert Objects.equals(it.value().snapshot(),
+                .snapshot(it.value().getSnapshot()).buildClient()
+            assert Objects.equals(it.value().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
 
@@ -138,8 +136,8 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-                .snapshot(it.value().snapshot()).buildClient()
-            assert Objects.equals(it.value().snapshot(),
+                .snapshot(it.value().getSnapshot()).buildClient()
+            assert Objects.equals(it.value().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
     }
@@ -292,9 +290,9 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(permissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .getFilePermissionKey(permissionKey)
         expect:
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null))
             .assertNext {
@@ -338,9 +336,9 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(permissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .getFilePermissionKey(permissionKey)
 
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, null, null))
@@ -370,8 +368,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("txt")
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
                 .assertNext {
