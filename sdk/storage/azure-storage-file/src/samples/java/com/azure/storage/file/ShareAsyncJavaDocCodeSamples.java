@@ -228,8 +228,8 @@ public class ShareAsyncJavaDocCodeSamples {
             .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
-        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties, filePermission,
-            Collections.singletonMap("directory", "metadata"))
+        shareAsyncClient.createFileWithResponse("myfile", 1024, httpHeaders, smbProperties,
+            filePermission, Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
                 response.statusCode()));
         // END: com.azure.storage.file.shareAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
@@ -313,7 +313,8 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.getPropertiesWithResponse
         shareAsyncClient.getPropertiesWithResponse()
             .subscribe(properties -> {
-                System.out.printf("Share quota: %d, Metadata: %s", properties.value().getQuota(), properties.value().getMetadata());
+                System.out.printf("Share quota: %d, Metadata: %s", properties.value().getQuota(),
+                    properties.value().getMetadata());
             });
         // END: com.azure.storage.file.shareAsyncClient.getPropertiesWithResponse
     }
@@ -499,7 +500,8 @@ public class ShareAsyncJavaDocCodeSamples {
     public void getSnapshotIdAsync() {
         // BEGIN: com.azure.storage.file.shareAsyncClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        ShareAsyncClient shareAysncClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
+        ShareAsyncClient shareAysncClient = new ShareClientBuilder().endpoint(
+            "https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .snapshot(currentTime.toString())
