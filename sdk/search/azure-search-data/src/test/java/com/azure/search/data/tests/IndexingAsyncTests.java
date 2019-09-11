@@ -18,6 +18,8 @@ import java.text.ParseException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -188,6 +190,36 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
                 assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
             });
+    }
+
+    @Override
+    public void canRoundtripBoundaryValues() throws Exception {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
+        List<Hotel> boundaryConditionDocs = getBoundaryValues();
+
+        List<IndexAction> actions = boundaryConditionDocs.stream()
+            .map(h -> new IndexAction()
+                .actionType(IndexActionType.UPLOAD)
+                .additionalProperties((Map<String, Object>) jsonApi.convertObjectToType(h, Map.class)))
+            .collect(Collectors.toList());
+        IndexBatch batch = new IndexBatch()
+            .actions(actions);
+
+        client.index(batch).block();
+
+        // Wait 2 secs to allow index request to finish
+        Thread.sleep(2000);
+
+        for (Hotel expected : boundaryConditionDocs) {
+            StepVerifier.create(client.getDocument(expected.hotelId()))
+                .expectNextMatches(d -> {
+                    Hotel actual = d.as(Hotel.class);
+                    return actual.equals(expected);
+                })
+                .verifyComplete();
+        }
     }
 
     @Override

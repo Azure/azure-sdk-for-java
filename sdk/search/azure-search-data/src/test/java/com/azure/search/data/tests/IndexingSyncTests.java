@@ -8,7 +8,9 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
+
 import com.azure.search.data.generated.models.*;
+
 import com.azure.search.data.models.Hotel;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -17,6 +19,7 @@ import org.junit.rules.ExpectedException;
 import java.util.*;
 
 import java.text.ParseException;
+import java.util.stream.Collectors;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
@@ -152,6 +155,33 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<IndexAction> indexActions = new LinkedList<>();
         addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, new Document());
         client.index(new IndexBatch().actions(indexActions));
+    }
+
+    @Override
+    public void canRoundtripBoundaryValues() throws Exception {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
+        List<Hotel> boundaryConditionDocs = getBoundaryValues();
+
+        List<IndexAction> actions = boundaryConditionDocs.stream()
+            .map(h -> new IndexAction()
+                .actionType(IndexActionType.UPLOAD)
+                .additionalProperties((Map<String, Object>) jsonApi.convertObjectToType(h, Map.class)))
+            .collect(Collectors.toList());
+        IndexBatch batch = new IndexBatch()
+            .actions(actions);
+
+        client.index(batch);
+
+        // Wait 2 secs to allow index request to finish
+        Thread.sleep(2000);
+
+        for (Hotel expected : boundaryConditionDocs) {
+            Document doc = client.getDocument(expected.hotelId());
+            Hotel actual = doc.as(Hotel.class);
+            Assert.assertEquals(expected, actual);
+        }
     }
 
     @Override
