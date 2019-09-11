@@ -18,10 +18,11 @@ public class IndexBatchBuilder {
     private JsonApi jsonApi;
 
     /**
-     * Package private constructor to be used by {@link SearchIndexClientImpl}
+     * Package private constructor to be used by {@link SearchIndexClientImpl} or {@link SearchIndexAsyncClientImpl}
      */
     IndexBatchBuilder() {
         jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
     }
 
     /**
@@ -62,8 +63,6 @@ public class IndexBatchBuilder {
     }
 
     private <T> Map<String, Object> entityToMap(T entity) {
-        this.jsonApi.configureTimezone();
-
         return this.jsonApi.convertObjectToType(entity, Map.class);
     }
 }
