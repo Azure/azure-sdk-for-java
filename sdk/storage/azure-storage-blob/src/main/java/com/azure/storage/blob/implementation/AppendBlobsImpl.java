@@ -141,59 +141,59 @@ public final class AppendBlobsImpl {
         final String blobType = "AppendBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
-            blobContentType = blobHTTPHeaders.blobContentType();
+            blobContentType = blobHTTPHeaders.getBlobContentType();
         }
         String blobContentEncoding = null;
         if (blobHTTPHeaders != null) {
-            blobContentEncoding = blobHTTPHeaders.blobContentEncoding();
+            blobContentEncoding = blobHTTPHeaders.getBlobContentEncoding();
         }
         String blobContentLanguage = null;
         if (blobHTTPHeaders != null) {
-            blobContentLanguage = blobHTTPHeaders.blobContentLanguage();
+            blobContentLanguage = blobHTTPHeaders.getBlobContentLanguage();
         }
         byte[] blobContentMD5 = null;
         if (blobHTTPHeaders != null) {
-            blobContentMD5 = blobHTTPHeaders.blobContentMD5();
+            blobContentMD5 = blobHTTPHeaders.getBlobContentMD5();
         }
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
-            blobCacheControl = blobHTTPHeaders.blobCacheControl();
+            blobCacheControl = blobHTTPHeaders.getBlobCacheControl();
         }
         String blobContentDisposition = null;
         if (blobHTTPHeaders != null) {
-            blobContentDisposition = blobHTTPHeaders.blobContentDisposition();
+            blobContentDisposition = blobHTTPHeaders.getBlobContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -256,43 +256,43 @@ public final class AppendBlobsImpl {
         final String comp = "appendblock";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         Long maxSize = null;
         if (appendPositionAccessConditions != null) {
-            maxSize = appendPositionAccessConditions.maxSize();
+            maxSize = appendPositionAccessConditions.getMaxSize();
         }
         Long appendPosition = null;
         if (appendPositionAccessConditions != null) {
-            appendPosition = appendPositionAccessConditions.appendPosition();
+            appendPosition = appendPositionAccessConditions.getAppendPosition();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
@@ -365,59 +365,59 @@ public final class AppendBlobsImpl {
         final String comp = "appendblock";
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         Long maxSize = null;
         if (appendPositionAccessConditions != null) {
-            maxSize = appendPositionAccessConditions.maxSize();
+            maxSize = appendPositionAccessConditions.getMaxSize();
         }
         Long appendPosition = null;
         if (appendPositionAccessConditions != null) {
-            appendPosition = appendPositionAccessConditions.appendPosition();
+            appendPosition = appendPositionAccessConditions.getAppendPosition();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
