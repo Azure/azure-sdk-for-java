@@ -1,27 +1,27 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://azs-sdk9cb546626e12.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
-    "Headers" : {
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "b2f0825f-a0b3-466f-ad1c-ac82b6280a82",
-      "StatusCode" : "400",
-      "Date" : "Sat, 07 Sep 2019 14:34:57 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "elapsed-time" : "88",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "124",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: actions : 0: Document key cannot be missing or empty.\\r\\n\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    }
-  } ],
-  "variables" : [ ]
+    "networkCallRecords" : [ {
+        "Method" : "POST",
+        "Uri" : "https://azs-sdkdc03813479a4.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+        "Headers" : {
+            "Content-Type" : "application/json; charset=utf-8"
+        },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "db0e723a-a8ae-460a-bf19-fe4b94091110",
+            "StatusCode" : "400",
+            "Date" : "Wed, 11 Sep 2019 21:35:02 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "450",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "124",
+            "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: actions : 0: Document key cannot be missing or empty.\\r\\n\"}}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Language" : "en",
+            "Content-Type" : "application/json; odata.metadata=minimal"
+        }
+    } ],
+    "variables" : [ ]
 }

@@ -1,0 +1,33 @@
+{
+    "name": "books",
+    "fields": [
+        {
+            "name": "ISBN",
+            "type": "Edm.String",
+            "key": true
+        },
+        {
+            "name": "Title",
+            "type": "Edm.String",
+            "searchable": true
+        },
+        {
+            "name": "Author",
+            "type": "Edm.ComplexType",
+            "fields": [
+                {
+                    "name": "FirstName",
+                    "type": "Edm.String"
+                },
+                {
+                    "name": "LastName",
+                    "type": "Edm.String"
+                }
+            ]
+        },
+        {
+            "name": "PublishDate",
+            "type": "Edm.DateTimeOffset"
+        }
+    ]
+}

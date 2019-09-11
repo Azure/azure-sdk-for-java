@@ -6,6 +6,9 @@ import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.service.SearchServiceClient;
+import com.azure.search.service.customization.SearchCredentials;
+import com.azure.search.service.implementation.SearchServiceClientImpl;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
 import com.azure.search.data.models.HotelRoom;
@@ -18,11 +21,25 @@ import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected static final String INDEX_NAME = "hotels";
+    protected static final String BOOKS_INDEX_NAME = "books";
+    protected static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    protected static final String PUBLISH_DATE_FIELD = "PublishDate";
+    protected static final String ISBN_FIELD = "ISBN";
+    protected static final String ISBN1 = "1";
+    protected static final String ISBN2 = "2";
+    protected static final String DATE_UTC = "2010-06-27T00:00:00Z";
+    protected SearchServiceClient searchServiceClient;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         initializeClient();
+
+        if (searchServiceClient == null) {
+            SearchCredentials searchCredentials = new SearchCredentials(apiKey);
+            searchServiceClient = new SearchServiceClientImpl(searchCredentials)
+                .withSearchServiceName(searchServiceName);
+        }
     }
 
     @Test
@@ -33,6 +50,12 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canRoundtripBoundaryValues() throws Exception;
+
+    @Test
+    public abstract void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception;
+
+    @Test
+    public abstract void staticallyTypedDateTimesRoundTripAsUtc() throws Exception;
 
     protected abstract void initializeClient();
 
@@ -55,9 +78,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .tags(Arrays.asList())
                 .address(new HotelAddress())
                 .rooms(Arrays.asList(
-                new HotelRoom()
-                    .baseRate(Double.MIN_VALUE)
-            )),
+                    new HotelRoom()
+                        .baseRate(Double.MIN_VALUE)
+                )),
             // Maximimum values
             new Hotel()
                 .hotelId("2")
@@ -70,9 +93,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .address(new HotelAddress()
                     .city("Maximum"))
                 .rooms(Arrays.asList(
-                new HotelRoom()
-                    .baseRate(Double.MAX_VALUE)
-            )),
+                    new HotelRoom()
+                        .baseRate(Double.MAX_VALUE)
+                )),
             // Other boundary values #1
             new Hotel()
                 .hotelId("3")
@@ -85,26 +108,26 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .address(new HotelAddress()
                     .city("Maximum"))
                 .rooms(Arrays.asList(
-                new HotelRoom()
-                    .baseRate(Double.NEGATIVE_INFINITY)
-            )),
+                    new HotelRoom()
+                        .baseRate(Double.NEGATIVE_INFINITY)
+                )),
             // Other boundary values #2
             new Hotel()
                 .hotelId("4")
                 .location(null)
                 .tags(Arrays.asList())
                 .rooms(Arrays.asList(
-                new HotelRoom()
-                    .baseRate(Double.POSITIVE_INFINITY)
-            )),
+                    new HotelRoom()
+                        .baseRate(Double.POSITIVE_INFINITY)
+                )),
             // Other boundary values #3
             new Hotel()
                 .hotelId("5")
                 .tags(Arrays.asList())
                 .rooms(Arrays.asList(
-                new HotelRoom()
-                    .baseRate(Double.NaN)
-            )),
+                    new HotelRoom()
+                        .baseRate(Double.NaN)
+                )),
             // Other boundary values #4
             new Hotel()
                 .hotelId("6")
