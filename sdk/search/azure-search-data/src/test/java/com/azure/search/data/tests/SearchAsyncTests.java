@@ -30,6 +30,7 @@ import reactor.test.StepVerifier;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -444,6 +445,33 @@ public class SearchAsyncTests extends SearchTestBase {
             Date actual = res.items().get(0).additionalProperties().as(Hotel.class).lastRenovationDate();
             Assert.assertEquals(expected, actual);
         }).verifyComplete();
+    }
+
+    @Override
+    public void canSearchWithSynonyms() {
+        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        String fieldName = "HotelName";
+        prepareHotelsSynonymMap("names", "luxury,fancy", fieldName);
+
+        SearchParameters searchParameters = new SearchParameters()
+            .queryType(QueryType.FULL)
+            .searchFields(Collections.singletonList(fieldName))
+            .select(Arrays.asList("HotelName", "Rating"));
+
+        PagedFlux<SearchResult> results = client.search("luxury", searchParameters, new SearchRequestOptions());
+        Assert.assertNotNull(results);
+
+        StepVerifier.create(results.byPage())
+            .assertNext(res -> {
+                SearchPagedResponse response = (SearchPagedResponse) res;
+                Assert.assertNotNull(response.items());
+                Assert.assertEquals(1, response.items().size());
+
+                Hotel hotel = response.items().get(0).additionalProperties().as(Hotel.class);
+                Assert.assertEquals(5, hotel.rating(), 0);
+                Assert.assertEquals("Fancy Stay", hotel.hotelName());
+            }).verifyComplete();
     }
 
     @Override
