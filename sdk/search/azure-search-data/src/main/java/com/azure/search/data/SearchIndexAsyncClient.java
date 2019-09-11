@@ -67,7 +67,8 @@ public interface SearchIndexAsyncClient {
      * Uploads a collection of documents to the target index
      *
      * @param documents collection of documents to upload to the target Index.
-     * @return document index result
+     * @param <T> The type of object to serialize.
+     * @return document index result.
      */
     <T> Mono<DocumentIndexResult>  uploadDocuments(List<T> documents);
 

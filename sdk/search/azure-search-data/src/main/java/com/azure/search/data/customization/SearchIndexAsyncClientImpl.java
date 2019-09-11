@@ -11,17 +11,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
-import com.azure.search.data.common.jsonwrapper.JsonWrapper;
-import com.azure.search.data.common.jsonwrapper.api.JsonApi;
-import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.data.generated.models.*;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements SearchIndexAsyncClient {
 

@@ -39,7 +39,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(expectedStatusCode, result.statusCode());
     }
 
-    protected void waitFor(int seconds){
+    protected void waitFor(int seconds) {
         seconds = seconds * 1000;
         try {
             Thread.sleep(seconds);

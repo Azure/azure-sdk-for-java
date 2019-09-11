@@ -8,7 +8,6 @@ import com.azure.search.data.models.Hotel;
 import org.junit.Assert;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.azure.core.exception.HttpResponseException;

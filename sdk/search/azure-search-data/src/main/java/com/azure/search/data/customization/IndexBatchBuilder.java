@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.search.data.customization;
 
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
@@ -15,10 +17,20 @@ import java.util.Map;
 public class IndexBatchBuilder {
     private JsonApi jsonApi;
 
-    public IndexBatchBuilder() {
+    /**
+     * Package private constructor to be used by {@link SearchIndexClientImpl}
+     */
+    IndexBatchBuilder() {
         jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
     }
 
+    /**
+     * Uploads a document to the index.
+     *
+     * @param document The document to be uploaded.
+     * @param <T> The type of object to serialize
+     * @return An IndexBatch with the desired actions.
+     */
     public <T> IndexBatch upload(T document) {
         IndexAction action =
             new IndexAction().
@@ -28,8 +40,14 @@ public class IndexBatchBuilder {
         return assembleBatch(action);
     }
 
+    /**
+     * Uploads a collection of documents to the index.
+     *
+     * @param documents The document collection to be uploaded.
+     * @param <T> The type of object to serialize
+     * @return An IndexBatch with the desired actions.
+     */
     public <T> IndexBatch upload(List<T> documents) {
-
         IndexAction[] actions = documents.stream()
             .map(doc -> new IndexAction()
                 .actionType(IndexActionType.UPLOAD)
