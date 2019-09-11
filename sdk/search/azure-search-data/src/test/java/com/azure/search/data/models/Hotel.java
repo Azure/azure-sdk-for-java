@@ -183,7 +183,7 @@ public class Hotel {
             Objects.equals(description, hotel.description) &&
             Objects.equals(descriptionFr, hotel.descriptionFr) &&
             Objects.equals(category, hotel.category) &&
-            ModelComparer.collectionEquals(rooms, hotel.rooms) &&
+            ModelComparer.collectionEquals(tags, hotel.tags) &&
             Objects.equals(parkingIncluded, hotel.parkingIncluded) &&
             Objects.equals(smokingAllowed, hotel.smokingAllowed) &&
             Objects.equals(lastRenovationDate, hotel.lastRenovationDate) &&
