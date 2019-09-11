@@ -28,8 +28,8 @@
     <azure-core-http-netty.version>1.0.0-preview.5</azure-core-http-netty.version>
     <azure-core-management.version>1.0.0-preview.5</azure-core-management.version>
     <azure-core-test.version>1.0.0-preview.5</azure-core-test.version>
-    <azure-data-appconfiguration.version>1.0.0-preview.3</azure-data-appconfiguration.version>
-    <azure-identity.version>1.0.0-preview.3</azure-identity.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.4</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.4</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.3</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.3</azure-messaging-eventhubs.version>
     <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.1</azure-messaging-eventhubs-checkpointstore-blob.version>
