@@ -580,7 +580,7 @@ class ContainerAPITest extends APISpec {
 //        response.getStatusCode() == 200
 //        headers.contentType() != null
 //        headers.requestId() != null
-//        headers.version() != null
+//        headers.getVersion() != null
 //        headers.date() != null
         BlobItem blob = blobs.next()
         !blobs.hasNext()
@@ -896,7 +896,7 @@ class ContainerAPITest extends APISpec {
 //        response.getStatusCode() == 200
 //        headers.contentType() != null
 //        headers.requestId() != null
-//        headers.version() != null
+//        headers.getVersion() != null
 //        headers.date() != null
         blobs.next().getName() == name
         !blobs.hasNext()

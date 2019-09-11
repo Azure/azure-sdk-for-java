@@ -30,31 +30,31 @@ class ServiceAPITest extends APISpec {
     def setup() {
         RetentionPolicy disabled = new RetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .staticWebsite(new StaticWebsite().setEnabled(false))
-            .deleteRetentionPolicy(disabled)
-            .cors(null)
-            .hourMetrics(new Metrics().version("1.0").setEnabled(false)
+            .setStaticWebsite(new StaticWebsite().setEnabled(false))
+            .setDeleteRetentionPolicy(disabled)
+            .setCors(null)
+            .setHourMetrics(new Metrics().setVersion("1.0").setEnabled(false)
                 .setRetentionPolicy(disabled))
-            .minuteMetrics(new Metrics().version("1.0").setEnabled(false)
+            .setMinuteMetrics(new Metrics().setVersion("1.0").setEnabled(false)
                 .setRetentionPolicy(disabled))
-            .logging(new Logging().version("1.0")
+            .setLogging(new Logging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
-            .defaultServiceVersion("2018-03-28"))
+            .setDefaultServiceVersion("2018-03-28"))
     }
 
     def cleanup() {
         RetentionPolicy disabled = new RetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .staticWebsite(new StaticWebsite().setEnabled(false))
-            .deleteRetentionPolicy(disabled)
-            .cors(null)
-            .hourMetrics(new Metrics().version("1.0").setEnabled(false)
+            .setStaticWebsite(new StaticWebsite().setEnabled(false))
+            .setDeleteRetentionPolicy(disabled)
+            .setCors(null)
+            .setHourMetrics(new Metrics().setVersion("1.0").setEnabled(false)
                 .setRetentionPolicy(disabled))
-            .minuteMetrics(new Metrics().version("1.0").setEnabled(false)
+            .setMinuteMetrics(new Metrics().setVersion("1.0").setEnabled(false)
                 .setRetentionPolicy(disabled))
-            .logging(new Logging().version("1.0")
+            .setLogging(new Logging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
-            .defaultServiceVersion("2018-03-28"))
+            .setDefaultServiceVersion("2018-03-28"))
     }
 
     def "List containers"() {
@@ -66,13 +66,13 @@ class ServiceAPITest extends APISpec {
         for (ContainerItem c : response) {
             assert c.getName().startsWith(containerPrefix)
             assert c.getProperties().getLastModified() != null
-            assert c.getProperties().etag() != null
-            assert c.getProperties().leaseStatus() != null
+            assert c.getProperties().getEtag() != null
+            assert c.getProperties().getLeaseStatus() != null
             assert c.getProperties().getLeaseState() != null
             assert c.getProperties().getLeaseDuration() == null
-            assert c.getProperties().publicAccess() == null
-            assert !c.getProperties().hasLegalHold()
-            assert !c.getProperties().hasImmutabilityPolicy()
+            assert c.getProperties().getPublicAccess() == null
+            assert !c.getProperties().getHasLegalHold()
+            assert !c.getProperties().getHasImmutabilityPolicy()
         }
     }
 
@@ -111,7 +111,7 @@ class ServiceAPITest extends APISpec {
             .iterator().next().getMetadata() == metadata
 
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cc.deleteWithResponse(null, null, null).getStatusCode() == 202
+        cc.deleteWithResponse(null, null, null).statusCode() == 202
     }
 
     def "List containers maxResults"() {
@@ -134,7 +134,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers error"() {
         when:
-        primaryBlobServiceClient.listContainers().streamByPage("garbage continuation token").getCount()
+        primaryBlobServiceClient.listContainers().streamByPage("garbage continuation token").count()
 
         then:
         thrown(StorageException)
@@ -161,67 +161,67 @@ class ServiceAPITest extends APISpec {
     }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
-        return received.logging().setRead() == sent.logging().read() &&
-            received.logging().setDelete() == sent.logging().delete() &&
-            received.logging().setWrite() == sent.logging().write() &&
-            received.logging().version() == sent.logging().version() &&
-            received.logging().retentionPolicy().days() == sent.logging().retentionPolicy().days() &&
-            received.logging().retentionPolicy().getEnabled() == sent.logging().retentionPolicy().getEnabled() &&
+        return received.getLogging().getRead() == sent.getLogging().getRead() &&
+            received.getLogging().getDelete() == sent.getLogging().getDelete() &&
+            received.getLogging().getWrite() == sent.getLogging().getWrite() &&
+            received.getLogging().getVersion() == sent.getLogging().getVersion() &&
+            received.getLogging().getRetentionPolicy().getDays() == sent.getLogging().getRetentionPolicy().getDays() &&
+            received.getLogging().getRetentionPolicy().getEnabled() == sent.getLogging().getRetentionPolicy().getEnabled() &&
 
-            received.cors().size() == sent.cors().size() &&
-            received.cors().get(0).allowedMethods() == sent.cors().get(0).allowedMethods() &&
-            received.cors().get(0).allowedHeaders() == sent.cors().get(0).allowedHeaders() &&
-            received.cors().get(0).allowedOrigins() == sent.cors().get(0).allowedOrigins() &&
-            received.cors().get(0).exposedHeaders() == sent.cors().get(0).exposedHeaders() &&
-            received.cors().get(0).maxAgeInSeconds() == sent.cors().get(0).maxAgeInSeconds() &&
+            received.getCors().size() == sent.getCors().size() &&
+            received.getCors().get(0).getAllowedMethods() == sent.getCors().get(0).getAllowedMethods() &&
+            received.getCors().get(0).getAllowedHeaders() == sent.getCors().get(0).getAllowedHeaders() &&
+            received.getCors().get(0).getAllowedOrigins() == sent.getCors().get(0).getAllowedOrigins() &&
+            received.getCors().get(0).getExposedHeaders() == sent.getCors().get(0).getExposedHeaders() &&
+            received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds() &&
 
-            received.defaultServiceVersion() == sent.defaultServiceVersion() &&
+            received.getDefaultServiceVersion() == sent.getDefaultServiceVersion() &&
 
             received.getHourMetrics().getEnabled() == sent.getHourMetrics().getEnabled() &&
-            received.getHourMetrics().includeAPIs() == sent.getHourMetrics().includeAPIs() &&
-            received.getHourMetrics().retentionPolicy().getEnabled() == sent.getHourMetrics().retentionPolicy().getEnabled() &&
-            received.getHourMetrics().retentionPolicy().days() == sent.getHourMetrics().retentionPolicy().days() &&
-            received.getHourMetrics().version() == sent.getHourMetrics().version() &&
+            received.getHourMetrics().getIncludeAPIs() == sent.getHourMetrics().getIncludeAPIs() &&
+            received.getHourMetrics().getRetentionPolicy().getEnabled() == sent.getHourMetrics().getRetentionPolicy().getEnabled() &&
+            received.getHourMetrics().getRetentionPolicy().getDays() == sent.getHourMetrics().getRetentionPolicy().getDays() &&
+            received.getHourMetrics().getVersion() == sent.getHourMetrics().getVersion() &&
 
             received.getMinuteMetrics().getEnabled() == sent.getMinuteMetrics().getEnabled() &&
-            received.getMinuteMetrics().includeAPIs() == sent.getMinuteMetrics().includeAPIs() &&
-            received.getMinuteMetrics().retentionPolicy().getEnabled() == sent.getMinuteMetrics().retentionPolicy().getEnabled() &&
-            received.getMinuteMetrics().retentionPolicy().days() == sent.getMinuteMetrics().retentionPolicy().days() &&
-            received.getMinuteMetrics().version() == sent.getMinuteMetrics().version() &&
+            received.getMinuteMetrics().getIncludeAPIs() == sent.getMinuteMetrics().getIncludeAPIs() &&
+            received.getMinuteMetrics().getRetentionPolicy().getEnabled() == sent.getMinuteMetrics().getRetentionPolicy().getEnabled() &&
+            received.getMinuteMetrics().getRetentionPolicy().getDays() == sent.getMinuteMetrics().getRetentionPolicy().getDays() &&
+            received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion() &&
 
-            received.deleteRetentionPolicy().getEnabled() == sent.deleteRetentionPolicy().getEnabled() &&
-            received.deleteRetentionPolicy().days() == sent.deleteRetentionPolicy().days() &&
+            received.getDeleteRetentionPolicy().getEnabled() == sent.getDeleteRetentionPolicy().getEnabled() &&
+            received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays() &&
 
-            received.staticWebsite().getEnabled() == sent.staticWebsite().getEnabled() &&
-            received.staticWebsite().indexDocument() == sent.staticWebsite().indexDocument() &&
-            received.staticWebsite().errorDocument404Path() == sent.staticWebsite().errorDocument404Path()
+            received.getStaticWebsite().getEnabled() == sent.getStaticWebsite().getEnabled() &&
+            received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument() &&
+            received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path()
     }
 
     def "Set get properties"() {
         when:
         RetentionPolicy retentionPolicy = new RetentionPolicy().setDays(5).setEnabled(true)
-        Logging logging = new Logging().setRead(true).version("1.0")
+        Logging logging = new Logging().setRead(true).setVersion("1.0")
             .setRetentionPolicy(retentionPolicy)
         ArrayList<CorsRule> corsRules = new ArrayList<>()
-        corsRules.setAdd(new CorsRule().allowedMethods("GET,PUT,HEAD")
-            .allowedOrigins("*")
-            .allowedHeaders("x-ms-version")
-            .exposedHeaders("x-ms-client-request-id")
-            .maxAgeInSeconds(10))
+        corsRules.add(new CorsRule().setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10))
         String defaultServiceVersion = "2016-05-31"
-        Metrics hourMetrics = new Metrics().setEnabled(true).version("1.0")
-            .setRetentionPolicy(retentionPolicy).includeAPIs(true)
-        Metrics minuteMetrics = new Metrics().setEnabled(true).version("1.0")
-            .setRetentionPolicy(retentionPolicy).includeAPIs(true)
+        Metrics hourMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+        Metrics minuteMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
         StaticWebsite website = new StaticWebsite().setEnabled(true)
-            .indexDocument("myIndex.html")
-            .errorDocument404Path("custom/error/path.html")
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html")
 
         StorageServiceProperties sentProperties = new StorageServiceProperties()
-            .setLogging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
-            .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
-            .deleteRetentionPolicy(retentionPolicy)
-            .staticWebsite(website)
+            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website)
 
         HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).headers()
 
@@ -241,28 +241,28 @@ class ServiceAPITest extends APISpec {
     def "Set props min"() {
         setup:
         RetentionPolicy retentionPolicy = new RetentionPolicy().setDays(5).setEnabled(true)
-        Logging logging = new Logging().setRead(true).version("1.0")
+        Logging logging = new Logging().setRead(true).setVersion("1.0")
             .setRetentionPolicy(retentionPolicy)
         ArrayList<CorsRule> corsRules = new ArrayList<>()
-        corsRules.setAdd(new CorsRule().allowedMethods("GET,PUT,HEAD")
-            .allowedOrigins("*")
-            .allowedHeaders("x-ms-version")
-            .exposedHeaders("x-ms-client-request-id")
-            .maxAgeInSeconds(10))
+        corsRules.add(new CorsRule().setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10))
         String defaultServiceVersion = "2016-05-31"
-        Metrics hourMetrics = new Metrics().setEnabled(true).version("1.0")
-            .setRetentionPolicy(retentionPolicy).includeAPIs(true)
-        Metrics minuteMetrics = new Metrics().setEnabled(true).version("1.0")
-            .setRetentionPolicy(retentionPolicy).includeAPIs(true)
+        Metrics hourMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+        Metrics minuteMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
         StaticWebsite website = new StaticWebsite().setEnabled(true)
-            .indexDocument("myIndex.html")
-            .errorDocument404Path("custom/error/path.html")
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html")
 
         StorageServiceProperties sentProperties = new StorageServiceProperties()
-            .setLogging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
-            .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
-            .deleteRetentionPolicy(retentionPolicy)
-            .staticWebsite(website)
+            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website)
 
         expect:
         primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
@@ -279,7 +279,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props min"() {
         expect:
-        primaryBlobServiceClient.getPropertiesWithResponse(null, null).getStatusCode() == 200
+        primaryBlobServiceClient.getPropertiesWithResponse(null, null).statusCode() == 200
     }
 
     def "Get props error"() {
@@ -299,15 +299,15 @@ class ServiceAPITest extends APISpec {
         Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKeyWithResponse(start, expiry, null, null)
 
         expect:
-        response.getStatusCode() == 200
+        response.statusCode() == 200
         response.value() != null
-        response.value().signedOid() != null
-        response.value().signedTid() != null
-        response.value().signedStart() != null
-        response.value().signedExpiry() != null
-        response.value().signedService() != null
-        response.value().signedVersion() != null
-        response.value().value() != null
+        response.value().getSignedOid() != null
+        response.value().getSignedTid() != null
+        response.value().getSignedStart() != null
+        response.value().getSignedExpiry() != null
+        response.value().getSignedService() != null
+        response.value().getSignedVersion() != null
+        response.value().getValue() != null
     }
 
     def "Get UserDelegationKey min"() {
@@ -317,7 +317,7 @@ class ServiceAPITest extends APISpec {
         def response = getOAuthServiceClient().getUserDelegationKeyWithResponse(null, expiry, null, null)
 
         expect:
-        response.getStatusCode() == 200
+        response.statusCode() == 200
     }
 
     def "Get UserDelegationKey error"() {
@@ -344,7 +344,7 @@ class ServiceAPITest extends APISpec {
         response.headers().value("x-ms-request-id") != null
         response.headers().value("Date") != null
         response.value().getGeoReplication().getStatus() != null
-        response.value().getGeoReplication().lastSyncTime() != null
+        response.value().getGeoReplication().getLastSyncTime() != null
     }
 
     def "Get stats min"() {
@@ -353,7 +353,7 @@ class ServiceAPITest extends APISpec {
         BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
 
         expect:
-        serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
+        serviceClient.getStatisticsWithResponse(null, null).statusCode() == 200
     }
 
     def "Get stats error"() {
@@ -378,7 +378,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
+        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).statusCode() == 200
     }
 
     def "Get account info error"() {
