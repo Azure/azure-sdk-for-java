@@ -191,4 +191,7 @@
 
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
+
+  <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
 </suppressions>

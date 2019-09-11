@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SearchIndexClientImpl extends SearchIndexBaseClient implements SearchIndexClient {
 
-    private SearchIndexAsyncClientImpl asyncClient;
+    private final SearchIndexAsyncClientImpl asyncClient;
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
@@ -75,7 +75,9 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public PagedIterable<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+    public PagedIterable<SearchResult> search(String searchText,
+                                              SearchParameters searchParameters,
+                                              SearchRequestOptions searchRequestOptions) {
         PagedFlux<SearchResult> result = asyncClient.search(searchText, searchParameters, searchRequestOptions);
         return new PagedIterable<>(result);
     }
@@ -98,7 +100,10 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public DocumentSuggestResult suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions) {
+    public DocumentSuggestResult suggest(String searchText,
+                                         String suggesterName,
+                                         SuggestParameters suggestParameters,
+                                         SearchRequestOptions searchRequestOptions) {
         return null;
     }
 
@@ -114,7 +119,10 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public AutocompleteResult autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters) {
+    public AutocompleteResult autocomplete(String searchText,
+                                           String suggesterName,
+                                           SearchRequestOptions searchRequestOptions,
+                                           AutocompleteParameters autocompleteParameters) {
         return null;
     }
 

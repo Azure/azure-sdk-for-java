@@ -10,7 +10,7 @@ import java.util.ServiceLoader;
 
 public class JsonWrapper {
 
-    private static ServiceLoader<JsonPlugin> pluginLoader = ServiceLoader.load(JsonPlugin.class);
+    private final static ServiceLoader<JsonPlugin> pluginLoader = ServiceLoader.load(JsonPlugin.class);
 
     /**
      * Create new instance of JsonApi

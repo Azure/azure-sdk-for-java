@@ -40,7 +40,7 @@ public class SearchIndexClientBuilder {
     private String indexName;
     private String searchDnsSuffix;
     private HttpClient httpClient;
-    private List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> policies;
 
     /**
      * Default Constructor
@@ -129,6 +129,11 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
-        return new SearchIndexAsyncClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, httpClient, policies);
+        return new SearchIndexAsyncClientImpl(serviceName,
+            searchDnsSuffix,
+            indexName,
+            apiVersion,
+            httpClient,
+            policies);
     }
 }

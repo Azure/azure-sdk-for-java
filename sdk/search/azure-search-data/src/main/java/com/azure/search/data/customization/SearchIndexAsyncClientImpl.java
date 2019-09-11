@@ -25,6 +25,8 @@ import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.List;
 
 public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements SearchIndexAsyncClient {
@@ -32,17 +34,17 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     /**
      * Search Service dns suffix
      */
-    private String searchDnsSuffix;
+    private final String searchDnsSuffix;
 
     /**
      * Search REST API Version
      */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * The name of the Azure Search service.
      */
-    private String searchServiceName;
+    private final String searchServiceName;
 
     /**
      * The name of the Azure Search index.
@@ -52,14 +54,16 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     /**
      * The Http Client to be used.
      */
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
 
     /**
      * The Http Client to be used.
      */
-    private List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> policies;
 
     private Integer skip;
+
+    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClientImpl.class);
 
 
     /**
@@ -159,12 +163,15 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 }
                 return new SearchPagedResponse(res);
             });
-        return new PagedFlux<>(() -> first, nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
+        return new PagedFlux<>(() -> first,
+            nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
 
     }
 
     @Override
-    public PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+    public PagedFlux<SearchResult> search(String searchText,
+                                          SearchParameters searchParameters,
+                                          SearchRequestOptions searchRequestOptions) {
         SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
         Mono<PagedResponse<SearchResult>> first = restClient.documents()
             .searchPostWithRestResponseAsync(searchRequest, searchRequestOptions)
@@ -174,7 +181,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 }
                 return new SearchPagedResponse(res);
             });
-        return new PagedFlux(() -> first, nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
+        return new PagedFlux<>(() -> first,
+            nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
     }
 
     @Override
@@ -184,8 +192,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .getAsync(key)
             .map(DocumentResponseConversions::cleanupDocument)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .doOnSuccess(s -> System.out.println("Document with key: " + key + " was retrieved successfully"))
-            .doOnError(e -> System.out.println("An error occurred in getDocument(key): " + e.getMessage()));
+            .doOnSuccess(s -> logger.info("Document with key: " + key + " was retrieved successfully"))
+            .doOnError(e -> logger.error("An error occurred in getDocument(key): " + e.getMessage()));
     }
 
     @Override
@@ -197,8 +205,12 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .getAsync(key, selectedFields, searchRequestOptions)
             .map(DocumentResponseConversions::cleanupDocument)
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            .doOnSuccess(s -> System.out.println("Document with key: " + key + "and selectedFields: " + selectedFields.toString()  + " was retrieved successfully"))
-            .doOnError(e -> System.out.println("An error occurred in getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
+            .doOnSuccess(s -> logger.info(
+                "Document with key: " + key +
+                    "and selectedFields: " + selectedFields.toString() +
+                    " was retrieved successfully"))
+            .doOnError(e -> logger.error("An error occurred in " +
+                "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 
     @Override
@@ -245,7 +257,8 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
-    private Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(SearchRequest searchRequest, String nextLink) {
+    private Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(SearchRequest searchRequest,
+                                                                                  String nextLink) {
         if (nextLink == null || nextLink.isEmpty()) {
             return Mono.empty();
         }
@@ -268,7 +281,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     /**
      * Create search request from search text and parameters
      *
-     * @param searchText search text
+     * @param searchText       search text
      * @param searchParameters search parameters
      * @return SearchRequest
      */

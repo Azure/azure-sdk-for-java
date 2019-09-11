@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data.common.jsonwrapper.jacksonwrapper;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.common.jsonwrapper.api.Config;
 import com.azure.search.data.common.jsonwrapper.api.Deserializer;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
@@ -31,6 +32,8 @@ import java.util.TimeZone;
 public class JacksonDeserializer implements JsonApi {
 
     private static final Map<Config, DeserializationFeature> CONFIG_MAP;
+    private final ClientLogger logger = new ClientLogger(JacksonDeserializer.class);
+
 
     static {
         CONFIG_MAP = new HashMap<>();
@@ -41,13 +44,14 @@ public class JacksonDeserializer implements JsonApi {
     }
 
     private ObjectMapper objectMapper = new ObjectMapper();
-    private TypeFactory typeFactory = objectMapper.getTypeFactory();
+    private final TypeFactory typeFactory = objectMapper.getTypeFactory();
 
     @Override
     public void configure(Config key, boolean value) {
         DeserializationFeature feature = CONFIG_MAP.get(key);
         if (feature == null) {
-            throw new IllegalArgumentException("Internal error: configuration key " + key.name() + " was not set");
+            logger.logExceptionAsError(
+                new IllegalArgumentException("Internal error: configuration key " + key.name() + " was not set"));
         }
         this.objectMapper = objectMapper.configure(feature, value);
     }

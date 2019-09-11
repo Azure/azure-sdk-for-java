@@ -79,12 +79,15 @@ public interface SearchIndexAsyncClient {
 
     /**
      * Searches for documents in the Azure Search index
-     * @param searchText Search Test
-     * @param searchParameters Search Parameters
-     * @param  searchRequestOptions Search Request Options
+     *
+     * @param searchText           Search Test
+     * @param searchParameters     Search Parameters
+     * @param searchRequestOptions Search Request Options
      * @return PagedFlux of the search result.
      */
-    PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
+    PagedFlux<SearchResult> search(String searchText,
+                                   SearchParameters searchParameters,
+                                   SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -97,17 +100,19 @@ public interface SearchIndexAsyncClient {
     /**
      * Retrieves a document from the Azure Search index.
      *
-     * @param key document key
-     * @param selectedFields selected fields to return
+     * @param key                  document key
+     * @param selectedFields       selected fields to return
      * @param searchRequestOptions search request options
      * @return document object
      */
-    Mono<Document> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<Document> getDocument(String key,
+                               List<String> selectedFields,
+                               SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param suggesterName suggester name
      * @return suggests result
      */
@@ -116,13 +121,16 @@ public interface SearchIndexAsyncClient {
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param suggestParameters suggest parameters
+     * @param searchText           search text
+     * @param suggesterName        suggester name
+     * @param suggestParameters    suggest parameters
      * @param searchRequestOptions search request options
      * @return suggests results
      */
-    PagedFlux<SuggestResult> suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
+    PagedFlux<SuggestResult> suggest(String searchText,
+                                     String suggesterName,
+                                     SuggestParameters suggestParameters,
+                                     SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -135,7 +143,7 @@ public interface SearchIndexAsyncClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param suggesterName suggester name
      * @return auto complete result
      */
@@ -144,11 +152,14 @@ public interface SearchIndexAsyncClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param searchRequestOptions search request options
+     * @param searchText             search text
+     * @param suggesterName          suggester name
+     * @param searchRequestOptions   search request options
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */
-    Mono<AutocompleteResult> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
+    Mono<AutocompleteResult> autocomplete(String searchText,
+                                          String suggesterName,
+                                          SearchRequestOptions searchRequestOptions,
+                                          AutocompleteParameters autocompleteParameters);
 }

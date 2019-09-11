@@ -6,9 +6,9 @@ package com.azure.search.data.customization;
 import com.azure.search.data.generated.models.FacetResult;
 
 public class RangeFacetResult {
-    private Long count;
-    private Object from;
-    private Object to;
+    private final Long count;
+    private final Object from;
+    private final Object to;
 
     /**
      * Constructor

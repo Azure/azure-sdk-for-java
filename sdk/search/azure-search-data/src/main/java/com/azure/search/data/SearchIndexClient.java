@@ -22,6 +22,7 @@ import java.util.List;
  */
 public interface SearchIndexClient {
     // Indices
+
     /**
      * Gets Client Api Version.
      *
@@ -77,12 +78,15 @@ public interface SearchIndexClient {
 
     /**
      * Searches for documents in the Azure Search index
-     * @param searchText Search Test
-     * @param searchParameters Search Parameters
-     * @param  searchRequestOptions Search Request Options
+     *
+     * @param searchText           Search Test
+     * @param searchParameters     Search Parameters
+     * @param searchRequestOptions Search Request Options
      * @return A {@link PagedIterable} of SearchResults
      */
-    PagedIterable<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
+    PagedIterable<SearchResult> search(String searchText,
+                                       SearchParameters searchParameters,
+                                       SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -95,8 +99,8 @@ public interface SearchIndexClient {
     /**
      * Retrieves a document from the Azure Search index.
      *
-     * @param key document key
-     * @param selectedFields selected fields to return
+     * @param key                  document key
+     * @param selectedFields       selected fields to return
      * @param searchRequestOptions search request options
      * @return document object
      */
@@ -105,7 +109,7 @@ public interface SearchIndexClient {
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param suggesterName suggester name
      * @return suggests result
      */
@@ -114,13 +118,16 @@ public interface SearchIndexClient {
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param suggestParameters suggest parameters
+     * @param searchText           search text
+     * @param suggesterName        suggester name
+     * @param suggestParameters    suggest parameters
      * @param searchRequestOptions search request options
      * @return suggests results
      */
-    DocumentSuggestResult suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
+    DocumentSuggestResult suggest(String searchText,
+                                  String suggesterName,
+                                  SuggestParameters suggestParameters,
+                                  SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -133,7 +140,7 @@ public interface SearchIndexClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText search text
+     * @param searchText    search text
      * @param suggesterName suggester name
      * @return auto complete result
      */
@@ -142,11 +149,14 @@ public interface SearchIndexClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
-     * @param searchText search text
-     * @param suggesterName suggester name
-     * @param searchRequestOptions search request options
+     * @param searchText             search text
+     * @param suggesterName          suggester name
+     * @param searchRequestOptions   search request options
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */
-    AutocompleteResult autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
+    AutocompleteResult autocomplete(String searchText,
+                                    String suggesterName,
+                                    SearchRequestOptions searchRequestOptions,
+                                    AutocompleteParameters autocompleteParameters);
 }
