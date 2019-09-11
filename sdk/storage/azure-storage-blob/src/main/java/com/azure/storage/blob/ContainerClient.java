@@ -314,7 +314,7 @@ public final class ContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.ContainerClient.delete}
      */
-    public void delete() {
+    public void setDelete() {
         deleteWithResponse(null, null, Context.NONE);
     }
 
@@ -549,7 +549,7 @@ public final class ContainerClient {
 
     /**
      * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under the given directory
-     * (prefix). Directories will have {@link BlobItem#isPrefix()} set to true.
+     * (prefix). Directories will have {@link BlobItem#getIsPrefix()} set to true.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
@@ -580,12 +580,12 @@ public final class ContainerClient {
      * @return A reactive response emitting the prefixes and blobs.
      */
     public PagedIterable<BlobItem> listBlobsHierarchy(String directory) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory), null);
     }
 
     /**
      * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under the given prefix
-     * (directory). Directories will have {@link BlobItem#isPrefix()} set to true.
+     * (directory). Directories will have {@link BlobItem#getIsPrefix()} set to true.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the

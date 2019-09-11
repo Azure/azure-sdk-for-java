@@ -14,11 +14,11 @@ class BlobOutputStreamTest extends APISpec {
 
         when:
         BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream()
-        outputStream.write(data)
+        outputStream.setWrite(data)
         outputStream.close()
 
         then:
-        blockBlobClient.getProperties().blobSize() == data.length
+        blockBlobClient.getProperties().getBlobSize() == data.length
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
@@ -27,12 +27,12 @@ class BlobOutputStreamTest extends APISpec {
         setup:
         byte[] data = getRandomByteArray(1024 * Constants.MB - 512)
         PageBlobClient pageBlobClient = cu.getPageBlobClient(generateBlobName())
-        pageBlobClient.create(data.length)
+        pageBlobClient.setCreate(data.length)
 
 
         when:
         BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(data.length)
-        outputStream.write(data)
+        outputStream.setWrite(data)
         outputStream.close()
 
         then:
@@ -44,17 +44,17 @@ class BlobOutputStreamTest extends APISpec {
         setup:
         byte[] data = getRandomByteArray(64 * FOUR_MB)
         AppendBlobClient appendBlobClient = cu.getAppendBlobClient(generateBlobName())
-        appendBlobClient.create()
+        appendBlobClient.setCreate()
 
         when:
         BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream()
         for (int i = 0; i != 64; i++) {
-            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
+            outputStream.setWrite(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
         }
         outputStream.close()
 
         then:
-        appendBlobClient.getProperties().blobSize() == data.length
+        appendBlobClient.getProperties().getBlobSize() == data.length
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
     }
 
@@ -62,8 +62,8 @@ class BlobOutputStreamTest extends APISpec {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b)
+            while ((b = inputStream.setRead()) != -1) {
+                outputStream.setWrite(b)
             }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)

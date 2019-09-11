@@ -59,7 +59,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void upload() throws IOException {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.upload#InputStream-long
         System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-            Base64.getEncoder().encodeToString(client.upload(data, length).contentMD5()));
+            Base64.getEncoder().encodeToString(client.upload(data, length).getContentMD5()));
         // END: com.azure.storage.blob.BlockBlobClient.upload#InputStream-long
     }
 
@@ -71,22 +71,22 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void upload2() throws IOException {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("key", "value");
 
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
             .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
                 accessConditions, timeout, context)
                 .value()
-                .contentMD5()));
+                .getContentMD5()));
         // END: com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
     }
 
@@ -114,15 +114,15 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void uploadFromFile2() throws IOException {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         try {
             client.uploadFromFile(filePath, headers, metadata, AccessTier.HOT, accessConditions, timeout);
@@ -147,7 +147,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
      */
     public void stageBlock2() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("key", "value");
         System.out.printf("Staging block completed with status %d%n",
             client.stageBlockWithResponse(base64BlockID, data, length, accessConditions, timeout, context).statusCode());
@@ -168,9 +168,9 @@ public class BlockBlobClientJavaDocCodeSnippets {
      */
     public void stageBlockFromURL2() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
-        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()
-            .sourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
 
         System.out.printf("Staging block from URL completed with status %d%n",
@@ -187,10 +187,10 @@ public class BlockBlobClientJavaDocCodeSnippets {
         BlockList block = client.listBlocks(BlockListType.ALL);
 
         System.out.println("Committed Blocks:");
-        block.committedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+        block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
 
         System.out.println("Uncommitted Blocks:");
-        block.uncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+        block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         // END: com.azure.storage.blob.BlockBlobClient.listBlocks#BlockListType
     }
 
@@ -199,15 +199,15 @@ public class BlockBlobClientJavaDocCodeSnippets {
      */
     public void listBlocks2() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("key", "value");
         BlockList block = client.listBlocksWithResponse(BlockListType.ALL, accessConditions, timeout, context).value();
 
         System.out.println("Committed Blocks:");
-        block.committedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+        block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
 
         System.out.println("Uncommitted Blocks:");
-        block.uncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+        block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         // END: com.azure.storage.blob.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context
     }
 
@@ -217,7 +217,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void commitBlockList() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.commitBlockList#List
         System.out.printf("Committing block list completed. Last modified: %s%n",
-            client.commitBlockList(Collections.singletonList(base64BlockID)).lastModified());
+            client.commitBlockList(Collections.singletonList(base64BlockID)).getLastModified());
         // END: com.azure.storage.blob.BlockBlobClient.commitBlockList#List
     }
 
@@ -227,15 +227,15 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void commitBlockList2() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("key", "value");
 
         System.out.printf("Committing block list completed with status %d%n",

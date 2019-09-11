@@ -47,12 +47,12 @@ public class ListContainersExample {
          * List the containers' name under the Azure storage account.
          */
         storageClient.listContainers().forEach(containerItem -> {
-            System.out.println("Container name: " + containerItem.name());
+            System.out.println("Container name: " + containerItem.getName());
 
             /*
              * Clean up the containers at the same time.
              */
-            storageClient.getContainerClient(containerItem.name()).delete();
+            storageClient.getContainerClient(containerItem.getName()).setDelete();
         });
     }
 }

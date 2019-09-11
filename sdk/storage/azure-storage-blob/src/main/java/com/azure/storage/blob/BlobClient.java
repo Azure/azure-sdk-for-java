@@ -160,7 +160,7 @@ public class BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobAccessConditions accessConditions) {
-        return new BlobInputStream(blobAsyncClient, range.offset(), range.count(), accessConditions);
+        return new BlobInputStream(blobAsyncClient, range.getOffset(), range.getCount(), accessConditions);
     }
 
     /**
@@ -458,7 +458,7 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
      */
-    public void delete() {
+    public void setDelete() {
         deleteWithResponse(null, null, null, Context.NONE);
     }
 
@@ -708,7 +708,7 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
      *
      */
-    public void undelete() {
+    public void unsetDelete() {
         undeleteWithResponse(null, Context.NONE);
     }
 

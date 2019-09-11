@@ -72,7 +72,7 @@ class ContainerAPITest extends APISpec {
         def response = cc.getPropertiesWithResponse(null, null, null)
 
         then:
-        response.value().metadata() == metadata
+        response.value().getMetadata() == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -87,7 +87,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc.createWithResponse(null, publicAccess, null, null)
-        def access = cc.getProperties().blobPublicAccess()
+        def access = cc.getProperties().getBlobPublicAccess()
 
         then:
         access == publicAccess
@@ -106,8 +106,8 @@ class ContainerAPITest extends APISpec {
         then:
         def e = thrown(StorageException)
         e.response().statusCode() == 409
-        e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
-        e.serviceMessage().contains("The specified container already exists.")
+        e.getErrorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
+        e.getServiceMessage().contains("The specified container already exists.")
     }
 
     def "Get properties null"() {
@@ -116,13 +116,13 @@ class ContainerAPITest extends APISpec {
 
         then:
         validateBasicHeaders(response.headers())
-        response.value().blobPublicAccess() == null
+        response.value().getBlobPublicAccess() == null
         !response.value().hasImmutabilityPolicy()
         !response.value().hasLegalHold()
-        response.value().leaseDuration() == null
-        response.value().leaseState() == LeaseStateType.AVAILABLE
-        response.value().leaseStatus() == LeaseStatusType.UNLOCKED
-        response.value().metadata().size() == 0
+        response.value().getLeaseDuration() == null
+        response.value().getLeaseState() == LeaseStateType.AVAILABLE
+        response.value().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        response.value().getMetadata().size() == 0
     }
 
     def "Get properties min"() {
@@ -135,12 +135,12 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.getPropertiesWithResponse(new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 200
+        cc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId(leaseID), null, null).statusCode() == 200
     }
 
     def "Get properties lease fail"() {
         when:
-        cc.getPropertiesWithResponse(new LeaseAccessConditions().leaseId("garbage"), null, null)
+        cc.getPropertiesWithResponse(new LeaseAccessConditions().setLeaseId("garbage"), null, null)
 
         then:
         thrown(StorageException)
@@ -170,7 +170,7 @@ class ContainerAPITest extends APISpec {
         then:
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
-        cc.getPropertiesWithResponse(null, null, null).value().metadata().size() == 0
+        cc.getPropertiesWithResponse(null, null, null).value().getMetadata().size() == 0
     }
 
     def "Set metadata min"() {
@@ -182,7 +182,7 @@ class ContainerAPITest extends APISpec {
         cc.setMetadata(metadata)
 
         then:
-        cc.getPropertiesWithResponse(null, null, null).value().metadata() == metadata
+        cc.getPropertiesWithResponse(null, null, null).value().getMetadata() == metadata
     }
 
     @Unroll
@@ -198,7 +198,7 @@ class ContainerAPITest extends APISpec {
 
         expect:
         cc.setMetadataWithResponse(metadata, null, null, null).statusCode() == 200
-        cc.getPropertiesWithResponse(null, null, null).value().metadata() == metadata
+        cc.getPropertiesWithResponse(null, null, null).value().getMetadata() == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -211,9 +211,9 @@ class ContainerAPITest extends APISpec {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
         ContainerAccessConditions cac = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified))
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified))
 
         expect:
         cc.setMetadataWithResponse(null, cac, null, null).statusCode() == 200
@@ -229,9 +229,9 @@ class ContainerAPITest extends APISpec {
     def "Set metadata AC fail"() {
         setup:
         ContainerAccessConditions cac = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified))
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified))
 
         when:
         cc.setMetadataWithResponse(null, cac, null, null)
@@ -249,12 +249,12 @@ class ContainerAPITest extends APISpec {
     def "Set metadata AC illegal"() {
         setup:
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(unmodified)
-            .ifMatch(match)
-            .ifNoneMatch(noneMatch)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
 
         when:
-        cc.setMetadataWithResponse(null, new ContainerAccessConditions().modifiedAccessConditions(mac), null, null)
+        cc.setMetadataWithResponse(null, new ContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -284,7 +284,7 @@ class ContainerAPITest extends APISpec {
 
         expect:
         validateBasicHeaders(response.headers())
-        cc.getProperties().blobPublicAccess() == access
+        cc.getProperties().getBlobPublicAccess() == access
 
         where:
         access                     | _
@@ -298,18 +298,18 @@ class ContainerAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
         then:
-        cc.getProperties().blobPublicAccess() == PublicAccessType.CONTAINER
+        cc.getProperties().getBlobPublicAccess() == PublicAccessType.CONTAINER
     }
 
     def "Set access policy min ids"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-            .id("0000")
-            .accessPolicy(new AccessPolicy()
-                .start(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .expiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+            .setId("0000")
+            .setAccessPolicy(new AccessPolicy()
+                .setStart(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
                     .plusDays(1))
-                .permission("r"))
+                .setPermission("r"))
 
         def ids = []
         ids.push(identifier)
@@ -318,23 +318,23 @@ class ContainerAPITest extends APISpec {
         cc.setAccessPolicy(null, ids)
 
         then:
-        cc.getAccessPolicy().getIdentifiers().get(0).id() == "0000"
+        cc.getAccessPolicy().getIdentifiers().get(0).getId() == "0000"
     }
 
     def "Set access policy ids"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-            .id("0000")
-            .accessPolicy(new AccessPolicy()
-                .start(getUTCNow())
-                .expiry(getUTCNow().plusDays(1))
-                .permission("r"))
+            .setId("0000")
+            .setAccessPolicy(new AccessPolicy()
+                .setStart(getUTCNow())
+                .setExpiry(getUTCNow().plusDays(1))
+                .setPermission("r"))
         SignedIdentifier identifier2 = new SignedIdentifier()
-            .id("0001")
-            .accessPolicy(new AccessPolicy()
-                .start(getUTCNow())
-                .expiry(getUTCNow().plusDays(2))
-                .permission("w"))
+            .setId("0001")
+            .setAccessPolicy(new AccessPolicy()
+                .setStart(getUTCNow())
+                .setExpiry(getUTCNow().plusDays(2))
+                .setPermission("w"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.add(identifier)
         ids.add(identifier2)
@@ -346,12 +346,12 @@ class ContainerAPITest extends APISpec {
         then:
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
-        receivedIdentifiers.get(0).accessPolicy().expiry() == identifier.accessPolicy().expiry()
-        receivedIdentifiers.get(0).accessPolicy().start() == identifier.accessPolicy().start()
-        receivedIdentifiers.get(0).accessPolicy().permission() == identifier.accessPolicy().permission()
-        receivedIdentifiers.get(1).accessPolicy().expiry() == identifier2.accessPolicy().expiry()
-        receivedIdentifiers.get(1).accessPolicy().start() == identifier2.accessPolicy().start()
-        receivedIdentifiers.get(1).accessPolicy().permission() == identifier2.accessPolicy().permission()
+        receivedIdentifiers.get(0).getAccessPolicy().getExpiry() == identifier.getAccessPolicy().getExpiry()
+        receivedIdentifiers.get(0).getAccessPolicy().getStart() == identifier.getAccessPolicy().getStart()
+        receivedIdentifiers.get(0).getAccessPolicy().getPermission() == identifier.getAccessPolicy().getPermission()
+        receivedIdentifiers.get(1).getAccessPolicy().getExpiry() == identifier2.getAccessPolicy().getExpiry()
+        receivedIdentifiers.get(1).getAccessPolicy().getStart() == identifier2.getAccessPolicy().getStart()
+        receivedIdentifiers.get(1).getAccessPolicy().getPermission() == identifier2.getAccessPolicy().getPermission()
     }
 
     @Unroll
@@ -359,10 +359,10 @@ class ContainerAPITest extends APISpec {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
         ContainerAccessConditions cac = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified))
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified))
 
         expect:
         cc.setAccessPolicyWithResponse(null, null, cac, null, null).statusCode() == 200
@@ -379,10 +379,10 @@ class ContainerAPITest extends APISpec {
     def "Set access policy AC fail"() {
         setup:
         ContainerAccessConditions cac = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified))
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified))
 
         when:
         cc.setAccessPolicyWithResponse(null, null, cac, null, null)
@@ -400,10 +400,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC illegal"() {
         setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        cc.setAccessPolicyWithResponse(null, null, new ContainerAccessConditions().modifiedAccessConditions(mac), null, null)
+        cc.setAccessPolicyWithResponse(null, null, new ContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -428,11 +428,11 @@ class ContainerAPITest extends APISpec {
     def "Get access policy"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-            .id("0000")
-            .accessPolicy(new AccessPolicy()
-                .start(getUTCNow())
-                .expiry(getUTCNow().plusDays(1))
-                .permission("r"))
+            .setId("0000")
+            .setAccessPolicy(new AccessPolicy()
+                .setStart(getUTCNow())
+                .setExpiry(getUTCNow().plusDays(1))
+                .setPermission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
         cc.setAccessPolicy(PublicAccessType.BLOB, ids)
@@ -442,9 +442,9 @@ class ContainerAPITest extends APISpec {
         response.statusCode() == 200
         response.value().getBlobAccessType() == PublicAccessType.BLOB
         validateBasicHeaders(response.headers())
-        response.value().getIdentifiers().get(0).accessPolicy().expiry() == identifier.accessPolicy().expiry()
-        response.value().getIdentifiers().get(0).accessPolicy().start() == identifier.accessPolicy().start()
-        response.value().getIdentifiers().get(0).accessPolicy().permission() == identifier.accessPolicy().permission()
+        response.value().getIdentifiers().get(0).getAccessPolicy().getExpiry() == identifier.getAccessPolicy().getExpiry()
+        response.value().getIdentifiers().get(0).getAccessPolicy().getStart() == identifier.getAccessPolicy().getStart()
+        response.value().getIdentifiers().get(0).getAccessPolicy().getPermission() == identifier.getAccessPolicy().getPermission()
     }
 
     def "Get access policy lease"() {
@@ -452,12 +452,12 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().leaseId(leaseID), null, null).statusCode() == 200
+        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().setLeaseId(leaseID), null, null).statusCode() == 200
     }
 
     def "Get access policy lease fail"() {
         when:
-        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().leaseId(garbageLeaseID), null, null)
+        cc.getAccessPolicyWithResponse(new LeaseAccessConditions().setLeaseId(garbageLeaseID), null, null)
 
         then:
         thrown(StorageException)
@@ -487,7 +487,7 @@ class ContainerAPITest extends APISpec {
 
     def "Delete min"() {
         when:
-        cc.delete()
+        cc.setDelete()
 
         then:
         !cc.exists()
@@ -498,10 +498,10 @@ class ContainerAPITest extends APISpec {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
         ContainerAccessConditions cac = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified))
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified))
 
         expect:
         cc.deleteWithResponse(cac, null, null).statusCode() == 202
@@ -518,10 +518,10 @@ class ContainerAPITest extends APISpec {
     def "Delete AC fail"() {
         setup:
         ContainerAccessConditions cac = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifModifiedSince(modified)
-                .ifUnmodifiedSince(unmodified))
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified))
 
         when:
         cc.deleteWithResponse(cac, null, null)
@@ -539,10 +539,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC illegal"() {
         setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        cc.deleteWithResponse(new ContainerAccessConditions().modifiedAccessConditions(mac), null, null)
+        cc.deleteWithResponse(new ContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -558,7 +558,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
 
         when:
-        cc.delete()
+        cc.setDelete()
 
         then:
         thrown(StorageException)
@@ -568,7 +568,7 @@ class ContainerAPITest extends APISpec {
         setup:
         String name = generateBlobName()
         PageBlobClient bu = cc.getPageBlobClient(name)
-        bu.create(512)
+        bu.setCreate(512)
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()
@@ -577,39 +577,39 @@ class ContainerAPITest extends APISpec {
         //List<BlobItem> blobs = responseiterator()()
 
         then:
-//        response.statusCode() == 200
+//        response.getStatusCode() == 200
 //        headers.contentType() != null
 //        headers.requestId() != null
 //        headers.version() != null
 //        headers.date() != null
         BlobItem blob = blobs.next()
         !blobs.hasNext()
-        blob.name() == name
-        blob.properties().blobType() == BlobType.PAGE_BLOB
-        blob.properties().copyCompletionTime() == null
-        blob.properties().copyStatusDescription() == null
-        blob.properties().copyId() == null
-        blob.properties().copyProgress() == null
-        blob.properties().copySource() == null
-        blob.properties().copyStatus() == null
-        blob.properties().incrementalCopy() == null
-        blob.properties().destinationSnapshot() == null
-        blob.properties().leaseDuration() == null
-        blob.properties().leaseState() == LeaseStateType.AVAILABLE
-        blob.properties().leaseStatus() == LeaseStatusType.UNLOCKED
-        blob.properties().contentLength() != null
-        blob.properties().contentType() != null
-        blob.properties().contentMD5() == null
-        blob.properties().contentEncoding() == null
-        blob.properties().contentDisposition() == null
-        blob.properties().contentLanguage() == null
-        blob.properties().cacheControl() == null
-        blob.properties().blobSequenceNumber() == 0
-        blob.properties().serverEncrypted()
-        blob.properties().accessTierInferred()
-        blob.properties().accessTier() == AccessTier.HOT
-        blob.properties().archiveStatus() == null
-        blob.properties().creationTime() != null
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.PAGE_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().getIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMD5() == null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == 0
+        blob.getProperties().getServerEncrypted()
+        blob.getProperties().getAccessTierInferred()
+        blob.getProperties().getAccessTier() == AccessTier.HOT
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
     }
 
     def "List blobs flat min"() {
@@ -622,7 +622,7 @@ class ContainerAPITest extends APISpec {
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
         def normal = cc.getPageBlobClient(normalName)
-        normal.create(512)
+        normal.setCreate(512)
 
         def copyBlob = cc.getPageBlobClient(copyName)
 
@@ -630,7 +630,7 @@ class ContainerAPITest extends APISpec {
         def start = OffsetDateTime.now()
         def status = CopyStatusType.PENDING
         while (status != CopyStatusType.SUCCESS) {
-            status = copyBlob.getProperties().copyStatus()
+            status = copyBlob.getProperties().getCopyStatus()
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -663,7 +663,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options copy"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().copy(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -674,20 +674,20 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(1).name() == copyName
-        blobs.get(1).properties().copyId() != null
+        blobs.get(0).getName() == normalName
+        blobs.get(1).getName() == copyName
+        blobs.get(1).getProperties().getCopyId() != null
         // Comparing the urls isn't reliable because the service may use https.
-        blobs.get(1).properties().copySource().contains(normalName)
-        blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
-        blobs.get(1).properties().copyProgress() != null
-        blobs.get(1).properties().copyCompletionTime() != null
+        blobs.get(1).getProperties().getCopySource().contains(normalName)
+        blobs.get(1).getProperties().getCopyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
+        blobs.get(1).getProperties().getCopyProgress() != null
+        blobs.get(1).getProperties().getCopyCompletionTime() != null
         blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs flat options metadata"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().metadata(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setMetadata(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -698,17 +698,17 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(1).name() == copyName
-        blobs.get(1).properties().copyCompletionTime() == null
-        blobs.get(2).name() == metadataName
-        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.get(0).getName() == normalName
+        blobs.get(1).getName() == copyName
+        blobs.get(1).getProperties().getCopyCompletionTime() == null
+        blobs.get(2).getName() == metadataName
+        blobs.get(2).getMetadata().get("foo") == "bar"
         blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs flat options snapshots"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().snapshots(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setSnapshots(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -719,15 +719,15 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(0).snapshot() == snapshotTime
-        blobs.get(1).name() == normalName
+        blobs.get(0).getName() == normalName
+        blobs.get(0).getSnapshot() == snapshotTime
+        blobs.get(1).getName() == normalName
         blobs.size() == 4 // Normal, snapshot, copy, metadata
     }
 
     def "List blobs flat options uncommitted"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().uncommittedBlobs(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setUncommittedBlobs(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -738,8 +738,8 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(3).name() == uncommittedName
+        blobs.get(0).getName() == normalName
+        blobs.get(3).getName() == uncommittedName
         blobs.size() == 4 // Normal, copy, metadata, uncommitted
     }
 
@@ -749,14 +749,14 @@ class ContainerAPITest extends APISpec {
         String name = generateBlobName()
         AppendBlobClient bu = cc.getAppendBlobClient(name)
         bu.create()
-        bu.delete()
+        bu.setDelete()
 
         when:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().deletedBlobs(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
         Iterator<BlobItem> blobs = cc.listBlobsFlat(options, null).iterator()
 
         then:
-        blobs.next().name() == name
+        blobs.next().getName() == name
         !blobs.hasNext()
 
         disableSoftDelete() == null // Must produce a true value or test will fail.
@@ -764,7 +764,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options prefix"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().prefix("a")
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix("a")
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -775,15 +775,15 @@ class ContainerAPITest extends APISpec {
         Iterator<BlobItem> blobs = cc.listBlobsFlat(options, null).iterator()
 
         then:
-        blobs.next().name() == normalName
+        blobs.next().getName() == normalName
         !blobs.hasNext() // Normal
     }
 
     def "List blobs flat options maxResults"() {
         setup:
         def PAGE_SIZE = 2
-        def options = new ListBlobsOptions().details(new BlobListDetails().copy(true)
-            .snapshots(true).uncommittedBlobs(true)).maxResults(PAGE_SIZE)
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true)
+            .setSnapshots(true).setUncommittedBlobs(true)).setMaxResults(PAGE_SIZE)
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -797,7 +797,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options fail"() {
         when:
-        new ListBlobsOptions().maxResults(0)
+        new ListBlobsOptions().setMaxResults(0)
 
         then:
         thrown(IllegalArgumentException)
@@ -809,11 +809,11 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS ; i++) {
             PageBlobClient bc = cc.getPageBlobClient(generateBlobName())
-            bc.create(512)
+            bc.setCreate(512)
         }
 
         when: "list blobs with sync client"
-        def pagedIterable = cc.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_SIZE), null)
+        def pagedIterable = cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
         def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
         def pagedSyncResponse2 = pagedIterable.iterableByPage(pagedSyncResponse1.nextLink()).iterator().next()
 
@@ -824,7 +824,7 @@ class ContainerAPITest extends APISpec {
 
 
         when: "list blobs with async client"
-        def pagedFlux = ccAsync.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_SIZE))
+        def pagedFlux = ccAsync.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE))
         def pagedResponse1 = pagedFlux.byPage().blockFirst()
         def pagedResponse2 = pagedFlux.byPage(pagedResponse1.nextLink()).blockFirst()
 
@@ -858,7 +858,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        cc.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -877,7 +877,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        cc.listBlobsHierarchy("/", new ListBlobsOptions().maxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -887,18 +887,18 @@ class ContainerAPITest extends APISpec {
         setup:
         String name = generateBlobName()
         PageBlobClient bu = cc.getPageBlobClient(name)
-        bu.create(512)
+        bu.setCreate(512)
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobsHierarchy(null).iterator()
 
         then:
-//        response.statusCode() == 200
+//        response.getStatusCode() == 200
 //        headers.contentType() != null
 //        headers.requestId() != null
 //        headers.version() != null
 //        headers.date() != null
-        blobs.next().name() == name
+        blobs.next().getName() == name
         !blobs.hasNext()
     }
 
@@ -912,7 +912,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options copy"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().copy(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -923,20 +923,20 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsHierarchy("", options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(1).name() == copyName
-        blobs.get(1).properties().copyId() != null
+        blobs.get(0).getName() == normalName
+        blobs.get(1).getName() == copyName
+        blobs.get(1).getProperties().getCopyId() != null
         // Comparing the urls isn't reliable because the service may use https.
-        blobs.get(1).properties().copySource().contains(normalName)
-        blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
-        blobs.get(1).properties().copyProgress() != null
-        blobs.get(1).properties().copyCompletionTime() != null
+        blobs.get(1).getProperties().getCopySource().contains(normalName)
+        blobs.get(1).getProperties().getCopyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
+        blobs.get(1).getProperties().getCopyProgress() != null
+        blobs.get(1).getProperties().getCopyCompletionTime() != null
         blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs hier options metadata"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().metadata(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setMetadata(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -947,17 +947,17 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsHierarchy("", options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(1).name() == copyName
-        blobs.get(1).properties().copyCompletionTime() == null
-        blobs.get(2).name() == metadataName
-        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.get(0).getName() == normalName
+        blobs.get(1).getName() == copyName
+        blobs.get(1).getProperties().getCopyCompletionTime() == null
+        blobs.get(2).getName() == metadataName
+        blobs.get(2).getMetadata().get("foo") == "bar"
         blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs hier options uncommitted"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().uncommittedBlobs(true))
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setUncommittedBlobs(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -968,8 +968,8 @@ class ContainerAPITest extends APISpec {
         List<BlobItem> blobs = blobListResponseToList(cc.listBlobsHierarchy("", options, null).iterator())
 
         then:
-        blobs.get(0).name() == normalName
-        blobs.get(3).name() == uncommittedName
+        blobs.get(0).getName() == normalName
+        blobs.get(3).getName() == uncommittedName
         blobs.size() == 4 // Normal, copy, metadata, uncommitted
     }
 
@@ -979,14 +979,14 @@ class ContainerAPITest extends APISpec {
         def name = generateBlobName()
         def bc = cc.getAppendBlobClient(name)
         bc.create()
-        bc.delete()
+        bc.setDelete()
 
         when:
-        def options = new ListBlobsOptions().details(new BlobListDetails().deletedBlobs(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
         def blobs = cc.listBlobsHierarchy("", options, null).iterator()
 
         then:
-        blobs.next().name() == name
+        blobs.next().getName() == name
         !blobs.hasNext()
 
         disableSoftDelete() == null
@@ -994,7 +994,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options prefix"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().prefix("a")
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix("a")
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -1005,15 +1005,15 @@ class ContainerAPITest extends APISpec {
         Iterator<BlobItem> blobs = cc.listBlobsHierarchy("", options, null).iterator()
 
         then:
-        blobs.next().name() == normalName
+        blobs.next().getName() == normalName
         !blobs.hasNext() // Normal
     }
 
 
     def "List blobs hier options maxResults"() {
         setup:
-        def options = new ListBlobsOptions().details(new BlobListDetails().copy(true)
-                .uncommittedBlobs(true)).maxResults(1)
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true)
+                .setUncommittedBlobs(true)).setMaxResults(1)
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -1031,8 +1031,8 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "List blobs hier options fail"() {
         when:
-        def options = new ListBlobsOptions().details(new BlobListDetails().snapshots(snapshots))
-                .maxResults(maxResults)
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setSnapshots(snapshots))
+                .setMaxResults(maxResults)
         cc.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
         then:
@@ -1057,11 +1057,11 @@ class ContainerAPITest extends APISpec {
         def foundPrefixes = [] as Set
         cc.listBlobsHierarchy(null).stream().collect(Collectors.toList())
             .forEach { blobItem ->
-            if (blobItem.isPrefix()) {
-                foundPrefixes << blobItem.name()
+            if (blobItem.getIsPrefix()) {
+                foundPrefixes << blobItem.getName()
             }
             else {
-                foundBlobs << blobItem.name()
+                foundBlobs << blobItem.getName()
             }
         }
 
@@ -1080,10 +1080,10 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS; i++) {
             PageBlobClient bc = cc.getPageBlobClient(generateBlobName())
-            bc.create(512)
+            bc.setCreate(512)
         }
 
-        def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().maxResults(PAGE_SIZE), null)
+        def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
 
         when:
         def firstPage = blobs.iterableByPage().iterator().next()
@@ -1106,11 +1106,11 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 3
         for (int i = 0; i < NUM_BLOBS; i++) {
             def bc = cc.getPageBlobClient(generateBlobName())
-            bc.create(512)
+            bc.setCreate(512)
         }
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
-        cc.listBlobsFlat(new ListBlobsOptions().maxResults(PAGE_SIZE), null).stream().count() == NUM_BLOBS
+        cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null).stream().count() == NUM_BLOBS
     }
 
     def "List blobs hier error"() {
@@ -1135,8 +1135,8 @@ class ContainerAPITest extends APISpec {
         then:
         leaseResponse.value() != null
         validateBasicHeaders(leaseResponse.headers())
-        properties.leaseState() == leaseState
-        properties.leaseDuration() == leaseDuration
+        properties.getLeaseState() == leaseState
+        properties.getLeaseDuration() == leaseDuration
 
         where:
         proposedID                   | leaseTime || leaseState            | leaseDuration
@@ -1153,7 +1153,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC"() {
         setup:
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.acquireLeaseWithResponse(null, -1, mac, null, null).statusCode() == 201
@@ -1168,7 +1168,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC fail"() {
         setup:
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         cc.acquireLeaseWithResponse(null, -1, mac, null, null)
@@ -1185,7 +1185,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC illegal"() {
         setup:
-        def mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         cc.acquireLeaseWithResponse(null, -1, mac, null, null)
@@ -1219,7 +1219,7 @@ class ContainerAPITest extends APISpec {
         def renewLeaseResponse = cc.renewLeaseWithResponse(leaseID, null, null, null)
 
         expect:
-        cc.getProperties().leaseState() == LeaseStateType.LEASED
+        cc.getProperties().getLeaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.headers())
     }
 
@@ -1235,7 +1235,7 @@ class ContainerAPITest extends APISpec {
     def "Renew lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.renewLeaseWithResponse(leaseID, mac, null, null).statusCode() == 200
@@ -1251,7 +1251,7 @@ class ContainerAPITest extends APISpec {
     def "Renew lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         cc.renewLease(leaseID, mac, null)
@@ -1268,7 +1268,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Renew lease AC illegal"() {
         setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         cc.renewLease(receivedLeaseID, mac, null)
@@ -1300,7 +1300,7 @@ class ContainerAPITest extends APISpec {
         def releaseLeaseResponse = cc.releaseLeaseWithResponse(leaseID, null, null, null)
 
         expect:
-        cc.getProperties().leaseState() == LeaseStateType.AVAILABLE
+        cc.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(releaseLeaseResponse.headers())
     }
 
@@ -1316,7 +1316,7 @@ class ContainerAPITest extends APISpec {
     def "Release lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.releaseLeaseWithResponse(leaseID, mac, null, null).statusCode() == 200
@@ -1332,7 +1332,7 @@ class ContainerAPITest extends APISpec {
     def "Release lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         cc.releaseLeaseWithResponse(leaseID, mac, null, null)
@@ -1349,7 +1349,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Release lease AC illegal"() {
         setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         cc.releaseLeaseWithResponse(receivedLeaseID, mac, null, null)
@@ -1380,7 +1380,7 @@ class ContainerAPITest extends APISpec {
         cc.acquireLease(getRandomUUID(), leaseTime)
 
         def breakLeaseResponse = cc.breakLeaseWithResponse(breakPeriod, null, null, null)
-        def state = cc.getProperties().leaseState()
+        def state = cc.getProperties().getLeaseState()
 
         expect:
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
@@ -1411,7 +1411,7 @@ class ContainerAPITest extends APISpec {
     def "Break lease AC"() {
         setup:
         setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.breakLeaseWithResponse(null, mac, null, null).statusCode() == 202
@@ -1427,7 +1427,7 @@ class ContainerAPITest extends APISpec {
     def "Break lease AC fail"() {
         setup:
         setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         cc.breakLeaseWithResponse(null, mac, null, null)
@@ -1444,7 +1444,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Break lease AC illegal"() {
         setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         cc.breakLeaseWithResponse(null, mac, null, null)
@@ -1492,7 +1492,7 @@ class ContainerAPITest extends APISpec {
     def "Change lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
         cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).statusCode() == 200
@@ -1508,7 +1508,7 @@ class ContainerAPITest extends APISpec {
     def "Change lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().ifModifiedSince(modified).ifUnmodifiedSince(unmodified)
+        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
         cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null)
@@ -1525,7 +1525,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Change lease AC illegal"() {
         setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().ifMatch(match).ifNoneMatch(noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
         cc.changeLeaseWithResponse(receivedLeaseID, garbageLeaseID, mac, null, null)
@@ -1569,9 +1569,9 @@ class ContainerAPITest extends APISpec {
         Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()
 
         then:
-        blobs.next().name() == name
-        blobs.next().name() == name + "2"
-        blobs.next().name() == name + "3"
+        blobs.next().getName() == name
+        blobs.next().getName() == name + "2"
+        blobs.next().getName() == name + "3"
 
         where:
         name          | _
@@ -1615,7 +1615,7 @@ class ContainerAPITest extends APISpec {
         then:
         createResponse.statusCode() == 201
         propsResponse.statusCode() == 200
-        propsResponse.value().blobType() == BlobType.APPEND_BLOB
+        propsResponse.value().getBlobType() == BlobType.APPEND_BLOB
     }
 
     /*
@@ -1624,7 +1624,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cc.exists().value()) {
-            cc.create()
+            cc.setCreate()
         }
 
         AppendBlobClient bc = new BlobClientBuilder()
@@ -1634,14 +1634,14 @@ class ContainerAPITest extends APISpec {
             .buildAppendBlobClient()
 
         when:
-        Response<AppendBlobItem> createResponse = bc.create()
+        Response<AppendBlobItem> createResponse = bc.setCreate()
 
         Response<BlobProperties> propsResponse = bc.getProperties()
 
         then:
-        createResponse.statusCode() == 201
-        propsResponse.statusCode() == 200
-        propsResponse.value().blobType() == BlobType.APPEND_BLOB
+        createResponse.getStatusCode() == 201
+        propsResponse.getStatusCode() == 200
+        propsResponse.value().getBlobType() == BlobType.APPEND_BLOB
     }
     */
 
@@ -1653,7 +1653,7 @@ class ContainerAPITest extends APISpec {
             cc.create()
         }
         catch (StorageException se) {
-            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+            if (se.getErrorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
                 throw se
             }
         }
@@ -1675,8 +1675,8 @@ class ContainerAPITest extends APISpec {
         response.headers().value("Date") != null
         response.headers().value("x-ms-version") != null
         response.headers().value("x-ms-request-id") != null
-        response.value().accountKind() != null
-        response.value().skuName() != null
+        response.value().getAccountKind() != null
+        response.value().getSkuName() != null
     }
 
     def "Get account info min"() {

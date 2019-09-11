@@ -71,8 +71,8 @@ public class SetMetadataAndHTTPHeadersExample {
          * Create a blob with blob's blobMetadata and BlobHttpHeaders.
          */
         Metadata blobMetadata = new Metadata(Collections.singletonMap("myblobmetadata", "sample"));
-        BlobHTTPHeaders blobHTTPHeaders = new BlobHTTPHeaders().blobContentDisposition("attachment")
-            .blobContentType("text/html; charset=utf-8");
+        BlobHTTPHeaders blobHTTPHeaders = new BlobHTTPHeaders().setBlobContentDisposition("attachment")
+            .setBlobContentType("text/html; charset=utf-8");
 
         /*
          * Data which will upload to block blob.
@@ -84,7 +84,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Clean up the container and blob.
          */
-        blobClient.delete();
-        containerClient.delete();
+        blobClient.setDelete();
+        containerClient.setDelete();
     }
 }

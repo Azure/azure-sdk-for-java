@@ -34,7 +34,7 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if copy information will be returned in the listing
      */
-    public boolean copy() {
+    public boolean getCopy() {
         return copy;
     }
 
@@ -45,7 +45,7 @@ public final class BlobListDetails {
      * @param copy Flag indicating whether copy information should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails copy(boolean copy) {
+    public BlobListDetails setCopy(boolean copy) {
         this.copy = copy;
         return this;
     }
@@ -55,7 +55,7 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if metadata will be returned in the listing
      */
-    public boolean metadata() {
+    public boolean getMetadata() {
         return metadata;
     }
 
@@ -65,7 +65,7 @@ public final class BlobListDetails {
      * @param metadata Flag indicating whether metadata should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails metadata(boolean metadata) {
+    public BlobListDetails setMetadata(boolean metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -75,7 +75,7 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if snapshots will be returned in the listing
      */
-    public boolean snapshots() {
+    public boolean getSnapshots() {
         return snapshots;
     }
 
@@ -85,7 +85,7 @@ public final class BlobListDetails {
      * @param snapshots Flag indicating whether snapshots should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails snapshots(boolean snapshots) {
+    public BlobListDetails setSnapshots(boolean snapshots) {
         this.snapshots = snapshots;
         return this;
     }
@@ -96,7 +96,7 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if uncommitted blobs will be returned in the listing
      */
-    public boolean uncommittedBlobs() {
+    public boolean getUncommittedBlobs() {
         return uncommittedBlobs;
     }
 
@@ -107,7 +107,7 @@ public final class BlobListDetails {
      * @param uncommittedBlobs Flag indicating whether uncommitted blobs should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails uncommittedBlobs(boolean uncommittedBlobs) {
+    public BlobListDetails setUncommittedBlobs(boolean uncommittedBlobs) {
         this.uncommittedBlobs = uncommittedBlobs;
         return this;
     }
@@ -117,7 +117,7 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if deleted blobs will be returned in the listing
      */
-    public boolean deletedBlobs() {
+    public boolean getDeletedBlobs() {
         return deletedBlobs;
     }
 
@@ -127,7 +127,7 @@ public final class BlobListDetails {
      * @param deletedBlobs Flag indicating whether deleted blobs should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails deletedBlobs(boolean deletedBlobs) {
+    public BlobListDetails setDeletedBlobs(boolean deletedBlobs) {
         this.deletedBlobs = deletedBlobs;
         return this;
     }
@@ -136,7 +136,7 @@ public final class BlobListDetails {
      * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {
-        ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();
+        ArrayList<ListBlobsIncludeItem> details = new ArrayList<>();
         if (this.copy) {
             details.add(ListBlobsIncludeItem.COPY);
         }

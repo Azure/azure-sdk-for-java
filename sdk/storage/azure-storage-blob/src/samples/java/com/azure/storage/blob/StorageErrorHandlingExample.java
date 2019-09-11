@@ -35,26 +35,26 @@ public class StorageErrorHandlingExample {
             /*
              * StorageErrorCode defines constants corresponding to all error codes returned by the service.
              */
-            if (e.errorCode() == StorageErrorCode.RESOURCE_NOT_FOUND) {
+            if (e.getErrorCode() == StorageErrorCode.RESOURCE_NOT_FOUND) {
 
                 /*
                  * Log more detailed information.
                  */
-                System.out.println("Extended details: " + e.serviceMessage());
+                System.out.println("Extended details: " + e.getStatusCode());
 
                 /*
                  * Examine the raw response.
                  */
                 HttpResponse response = e.response();
                 System.out.println("Error creating the container with status code: " + response.statusCode());
-            } else if (e.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
+            } else if (e.getErrorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
 
                 /*
                  * Log more detailed information.
                  */
-                System.out.println("Extended details: " + e.serviceMessage());
+                System.out.println("Extended details: " + e.getServiceMessage());
 
-            } else if (e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+            } else if (e.getErrorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
 
                 /*
                  * Process the error.
