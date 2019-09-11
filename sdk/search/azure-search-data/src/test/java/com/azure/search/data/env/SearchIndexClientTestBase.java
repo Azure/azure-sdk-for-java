@@ -49,6 +49,7 @@ public class SearchIndexClientTestBase extends TestBase {
     protected String searchServiceName;
     protected String apiKey;
     protected String indexName;
+    protected SearchIndexService searchServiceHotelsIndex;
 
     private AzureSearchResources azureSearchResources;
     private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
@@ -159,10 +160,9 @@ public class SearchIndexClientTestBase extends TestBase {
 
         try {
             //Creating Index:
-            SearchIndexService searchIndexService =
-                new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, apiKey);
-            searchIndexService.initialize();
-            indexName = searchIndexService.indexName();
+            searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, apiKey);
+            searchServiceHotelsIndex.initialize();
+            indexName = searchServiceHotelsIndex.indexName();
 
         } catch (Exception e) {
             e.printStackTrace();
