@@ -5,17 +5,11 @@
             "name": "ISBN",
             "type": "Edm.String",
             "key": true,
-            "filterable": true,
-            "sortable": true,
-            "facetable": true
         },
         {
             "name": "Title",
             "type": "Edm.String",
             "searchable": true,
-            "filterable": true,
-            "sortable": true,
-            "facetable": false
         },
         {
             "name": "Author",
@@ -24,27 +18,16 @@
                 {
                     "name": "FirstName",
                     "type": "Edm.String",
-                    "searchable": true,
-                    "filterable": true,
-                    "sortable": true,
-                    "facetable": true
                 },
                 {
                     "name": "LastName",
                     "type": "Edm.String",
-                    "searchable": true,
-                    "filterable": true,
-                    "sortable": true,
-                    "facetable": true
                 }
             ]
         },
         {
             "name": "PublishDate",
             "type": "Edm.DateTimeOffset",
-            "filterable": true,
-            "sortable": true,
-            "facetable": true
         }
     ]
 }
