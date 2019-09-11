@@ -42,7 +42,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
@@ -108,14 +108,14 @@ class DirectoryAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
-        resp.value().getSmbProperties()
-        resp.value().getSmbProperties().getFilePermissionKey()
-        resp.value().getSmbProperties().getNtfsFileAttributes()
-        resp.value().getSmbProperties().getFileLastWriteTime()
-        resp.value().getSmbProperties().getFileCreationTime()
-        resp.value().getSmbProperties().getFileChangeTime()
-        resp.value().getSmbProperties().getParentId()
-        resp.value().getSmbProperties().getFileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     def "Create directory with file permission key"() {
@@ -129,14 +129,14 @@ class DirectoryAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
-        resp.value().getSmbProperties()
-        resp.value().getSmbProperties().getFilePermissionKey()
-        resp.value().getSmbProperties().getNtfsFileAttributes()
-        resp.value().getSmbProperties().getFileLastWriteTime()
-        resp.value().getSmbProperties().getFileCreationTime()
-        resp.value().getSmbProperties().getFileChangeTime()
-        resp.value().getSmbProperties().getParentId()
-        resp.value().getSmbProperties().getFileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     @Unroll
@@ -176,15 +176,15 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().getETag()
-        resp.value().getSmbProperties()
-        resp.value().getSmbProperties().getFilePermissionKey()
-        resp.value().getSmbProperties().getNtfsFileAttributes()
-        resp.value().getSmbProperties().getFileLastWriteTime()
-        resp.value().getSmbProperties().getFileCreationTime()
-        resp.value().getSmbProperties().getFileChangeTime()
-        resp.value().getSmbProperties().getParentId()
-        resp.value().getSmbProperties().getFileId()
+        resp.getValue().getETag()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     def "Get properties error"() {
@@ -202,14 +202,14 @@ class DirectoryAPITests extends APISpec {
         def resp = primaryDirectoryClient.setPropertiesWithResponse(null, filePermission, null, null)
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().getSmbProperties()
-        resp.value().getSmbProperties().getFilePermissionKey()
-        resp.value().getSmbProperties().getNtfsFileAttributes()
-        resp.value().getSmbProperties().getFileLastWriteTime()
-        resp.value().getSmbProperties().getFileCreationTime()
-        resp.value().getSmbProperties().getFileChangeTime()
-        resp.value().getSmbProperties().getParentId()
-        resp.value().getSmbProperties().getFileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     def "Set properties file permission key"() {
@@ -223,14 +223,14 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().getSmbProperties()
-        resp.value().getSmbProperties().getFilePermissionKey()
-        resp.value().getSmbProperties().getNtfsFileAttributes()
-        resp.value().getSmbProperties().getFileLastWriteTime()
-        resp.value().getSmbProperties().getFileCreationTime()
-        resp.value().getSmbProperties().getFileChangeTime()
-        resp.value().getSmbProperties().getParentId()
-        resp.value().getSmbProperties().getFileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     @Unroll
@@ -511,7 +511,7 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("txt")
+            .setFileContentType("txt")
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
 
@@ -533,11 +533,11 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
 
         where:
-        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
-        "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
+        fileName    | maxSize | httpHeaders                                          | metadata                              | errMsg
+        "testfile:" | 1024    | null                                                 | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                                 | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | null                                                 | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 

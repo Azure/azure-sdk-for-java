@@ -204,7 +204,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 200
         Boolean.parseBoolean(response.getHeaders().value(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED))
-        response.getValue().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
+        response.getHeaders().value(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256) == key.getKeySHA256()
     }
 
     def "Get blob properties and metadata with CPK"() {

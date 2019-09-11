@@ -335,7 +335,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
         BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
         Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
@@ -349,7 +349,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats min"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
         BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
 
         expect:

@@ -96,7 +96,7 @@ class HelperTest extends APISpec {
         }
 
         v.setStartTime(startTime)
-            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
+            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.getAccountName()))
             .setSnapshotId(snapId)
 
         if (expiryTime == null) {
@@ -123,11 +123,11 @@ class HelperTest extends APISpec {
             expectedStringToSign = String.format(expectedStringToSign,
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(startTime),
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-                primaryCredential.accountName())
+                primaryCredential.getAccountName())
         } else {
             expectedStringToSign = String.format(expectedStringToSign,
                 Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-                primaryCredential.accountName())
+                primaryCredential.getAccountName())
         }
 
         then:
@@ -166,7 +166,7 @@ class HelperTest extends APISpec {
         }
 
         v.setStartTime(startTime)
-            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.accountName()))
+            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.getAccountName()))
             .setSnapshotId(snapId)
 
         if (expiryTime == null) {
@@ -203,7 +203,7 @@ class HelperTest extends APISpec {
 
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(key)
 
-        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.getExpiryTime()), primaryCredential.accountName())
+        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.getExpiryTime()), primaryCredential.getAccountName())
 
         then:
         token.getSignature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
@@ -239,7 +239,7 @@ class HelperTest extends APISpec {
             .setExpiryTime(expiryTime)
             .setPermissions(new BlobSASPermission().toString())
             .setResource(expectedResource)
-            .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.accountName(), containerName))
+            .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.getAccountName(), containerName))
             .setSnapshotId(snapId)
 
         if (blobName != null) {
@@ -248,7 +248,7 @@ class HelperTest extends APISpec {
 
         expectedStringToSign = String.format(expectedStringToSign,
             Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-            primaryCredential.accountName())
+            primaryCredential.getAccountName())
 
         when:
         BlobServiceSASQueryParameters token = v.generateSASQueryParameters(primaryCredential)
@@ -469,7 +469,7 @@ class HelperTest extends APISpec {
 
         def token = v.generateSASQueryParameters(primaryCredential)
 
-        expectedStringToSign = String.format(expectedStringToSign, primaryCredential.accountName())
+        expectedStringToSign = String.format(expectedStringToSign, primaryCredential.getAccountName())
 
         then:
         token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
@@ -632,7 +632,7 @@ class HelperTest extends APISpec {
         BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .setPermissions("r")
-            .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.accountName()))
+            .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
             .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 
         parts.setSasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
