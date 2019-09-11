@@ -41,15 +41,12 @@ public class IndexingSyncTests extends IndexingTestBase {
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
         Hotel hotel3 = prepareStaticallyTypedHotel("3");
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel");
+        Hotel randomHotel = prepareStaticallyTypedHotel("randomId");
 
         IndexAction uploadAction = new IndexAction()
             .actionType(IndexActionType.UPLOAD)
             .additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
-        Map<String, Object> randomHotel = new HashMap<String, Object>(){
-            {
-                put("HotelId", "randomId");
-            }
-        };
+
         IndexAction deleteAction = new IndexAction()
             .actionType(IndexActionType.DELETE)
             .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
@@ -73,11 +70,11 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<IndexingResult> results =  client.index(indexBatch).results();
         Assert.assertEquals(results.size(), indexBatch.actions().size());
 
-        AssertSuccessfulIndexResult(results.get(0), "1", 201);
-        AssertSuccessfulIndexResult(results.get(1), "randomId", 200);
-        AssertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
-        AssertSuccessfulIndexResult(results.get(3), "3", 201);
-        AssertSuccessfulIndexResult(results.get(4), "2", 201);
+        assertSuccessfulIndexResult(results.get(0), "1", 201);
+        assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+        assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
+        assertSuccessfulIndexResult(results.get(3), "3", 201);
+        assertSuccessfulIndexResult(results.get(4), "2", 201);
 
         Hotel actualHotel1 = client.getDocument(hotel1.hotelId()).as(Hotel.class);
         Assert.assertEquals(hotel1, actualHotel1);
@@ -98,27 +95,27 @@ public class IndexingSyncTests extends IndexingTestBase {
         Document hotel2 = prepareDynamicallyTypedHotel("2");
         Document hotel3 = prepareDynamicallyTypedHotel("3");
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel");
+        Document randomHotel = prepareDynamicallyTypedHotel("randomId");
 
         IndexAction uploadAction = new IndexAction()
             .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
-        Map<String, Object> randomHotel = new HashMap<String, Object>(){
-            {
-                put("HotelId", "randomId");
-            }
-        };
+            .additionalProperties(hotel1);
+
         IndexAction deleteAction = new IndexAction()
             .actionType(IndexActionType.DELETE)
-            .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
+            .additionalProperties(randomHotel);
+
         IndexAction mergeNonExistingAction = new IndexAction()
             .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(nonExistingHotel, Map.class));
+            .additionalProperties(nonExistingHotel);
+
         IndexAction mergeOrUploadAction = new IndexAction()
             .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel3, Map.class));
+            .additionalProperties(hotel3);
+
         IndexAction uploadAction2 = new IndexAction()
             .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel2, Map.class));
+            .additionalProperties(hotel2);
 
         IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
             uploadAction,
@@ -127,14 +124,15 @@ public class IndexingSyncTests extends IndexingTestBase {
             mergeOrUploadAction,
             uploadAction2
         ));
+
         List<IndexingResult> results =  client.index(indexBatch).results();
         Assert.assertEquals(results.size(), indexBatch.actions().size());
 
-        AssertSuccessfulIndexResult(results.get(0), "1", 201);
-        AssertSuccessfulIndexResult(results.get(1), "randomId", 200);
-        AssertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
-        AssertSuccessfulIndexResult(results.get(3), "3", 201);
-        AssertSuccessfulIndexResult(results.get(4), "2", 201);
+        assertSuccessfulIndexResult(results.get(0), "1", 201);
+        assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+        assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
+        assertSuccessfulIndexResult(results.get(3), "3", 201);
+        assertSuccessfulIndexResult(results.get(4), "2", 201);
 
         Document actualHotel1 = client.getDocument(hotel1.get("HotelId").toString());
         Assert.assertEquals(hotel1, actualHotel1);

@@ -2,9 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search.data.tests;
 
+import com.azure.search.data.common.jsonwrapper.JsonWrapper;
+import com.azure.search.data.common.jsonwrapper.api.JsonApi;
+import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.customization.models.GeoPoint;
+import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.IndexingResult;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
@@ -20,6 +24,7 @@ import com.azure.search.data.generated.models.IndexActionType;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected static final String INDEX_NAME = "hotels";
@@ -120,13 +125,13 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         return hotel;
     }
 
-    protected void AssertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
+    protected void assertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
         Assert.assertEquals(result.key(), key);
         Assert.assertEquals(result.statusCode(), statusCode);
         Assert.assertEquals(result.succeeded(), true);
     }
 
-    protected void AssertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
+    protected void assertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
         Assert.assertEquals(result.key(), key);
         Assert.assertEquals(result.statusCode(), statusCode);
         Assert.assertEquals(result.errorMessage(), errorMessage);
