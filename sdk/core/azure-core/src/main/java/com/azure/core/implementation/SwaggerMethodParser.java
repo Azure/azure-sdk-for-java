@@ -422,7 +422,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             && !formSubstitutions.isEmpty()
             && swaggerMethodArguments != null) {
             result = formSubstitutions.stream()
-                .map(s -> serializeFormData(s.getUrlParameterName(), swaggerMethodArguments[s.getMethodParameterIndex()]))
+                .map(s -> serializeFormData(s.getUrlParameterName(),
+                    swaggerMethodArguments[s.getMethodParameterIndex()]))
                 .collect(Collectors.joining("&"));
         }
 

@@ -103,7 +103,8 @@ public class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).setRequest(restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection)
+                .setRequest(restRequest));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {

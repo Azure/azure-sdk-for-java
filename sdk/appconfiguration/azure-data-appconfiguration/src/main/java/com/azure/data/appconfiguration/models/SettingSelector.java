@@ -4,27 +4,28 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.implementation.annotation.Fluent;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+
 /**
  * A set of options for selecting configuration settings from App Configuration service.
  *
  * <ul>
- *     <li>
- *         Providing {@link #getLabels() labels} will filter {@link ConfigurationSetting ConfigurationSettings} that match
- *         any label name in conjunction with the keys that are passed in to the service request.
- *     </li>
- *     <li>
- *         Providing {@link #getAcceptDateTime() acceptDateTime} will return the representation of matching
- *         {@link ConfigurationSetting} at that given {@link OffsetDateTime}.
- *     </li>
- *     <li>
- *         Providing {@link #getFields() fields} will populate only those {@link ConfigurationSetting} fields in the
- *         response. By default, all of the fields are returned.
- *     </li>
+ * <li>
+ * Providing {@link #getLabels() labels} will filter {@link ConfigurationSetting ConfigurationSettings} that match any
+ * label name in conjunction with the keys that are passed in to the service request.
+ * </li>
+ * <li>
+ * Providing {@link #getAcceptDateTime() acceptDateTime} will return the representation of matching {@link
+ * ConfigurationSetting} at that given {@link OffsetDateTime}.
+ * </li>
+ * <li>
+ * Providing {@link #getFields() fields} will populate only those {@link ConfigurationSetting} fields in the response.
+ * By default, all of the fields are returned.
+ * </li>
  * </ul>
  *
  * @see ConfigurationAsyncClient
@@ -38,9 +39,8 @@ public class SettingSelector {
     private Range range;
 
     /**
-     * Creates a setting selector that will populate responses with all of the
-     * {@link ConfigurationSetting ConfigurationSetting's} properties and select all
-     * {@link ConfigurationSetting#getKey() keys}.
+     * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
+     * ConfigurationSetting's} properties and select all {@link ConfigurationSetting#getKey() keys}.
      */
     public SettingSelector() {
     }
@@ -51,10 +51,10 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ol>
-     *     <li>If keys = "*", settings with any key are returned.</li>
-     *     <li>If keys = "abc1234", settings with a key equal to "abc1234" are returned.</li>
-     *     <li>If keys = "abc*", settings with a key starting with "abc" are returned.</li>
-     *     <li>If keys = "*abc*", settings with a key containing "abc" are returned.</li>
+     * <li>If keys = "*", settings with any key are returned.</li>
+     * <li>If keys = "abc1234", settings with a key equal to "abc1234" are returned.</li>
+     * <li>If keys = "abc*", settings with a key starting with "abc" are returned.</li>
+     * <li>If keys = "*abc*", settings with a key containing "abc" are returned.</li>
      * </ol>
      *
      * @return The expressions to filter ConfigurationSetting keys on.
@@ -69,11 +69,11 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code keys = "*"}, settings with any key are returned.</li>
-     *     <li>If {@code keys = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     *     <li>If {@code keys = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     *     <li>If {@code keys = "*abc*"}, settings with a key containing "abc" are returned.</li>
-     *     <li>If {@code keys = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
+     * <li>If {@code keys = "*"}, settings with any key are returned.</li>
+     * <li>If {@code keys = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
+     * <li>If {@code keys = "abc*"}, settings with a key starting with "abc" are returned.</li>
+     * <li>If {@code keys = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     * <li>If {@code keys = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
      * </ul>
      *
      * @param keys The expressions to filter ConfigurationSetting keys on.
@@ -85,22 +85,23 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the labels used to filter settings based on their {@link ConfigurationSetting#getLabel() label} in the service.
+     * Gets the labels used to filter settings based on their {@link ConfigurationSetting#getLabel() label} in the
+     * service.
      *
-     * If the value is {@code null} or an empty string, all ConfigurationSettings with
-     * {@link ConfigurationSetting#NO_LABEL} are returned.
+     * If the value is {@code null} or an empty string, all ConfigurationSettings with {@link
+     * ConfigurationSetting#NO_LABEL} are returned.
      *
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code labels = "*"}, settings with any label are returned.</li>
-     *     <li>If {@code labels = "\0"}, settings without any label are returned.</li>
-     *     <li>If {@code labels = ""}, settings without any label are returned.</li>
-     *     <li>If {@code labels = null}, settings without any label are returned.</li>
-     *     <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     *     <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     *     <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     *     <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
+     * <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     * <li>If {@code labels = "\0"}, settings without any label are returned.</li>
+     * <li>If {@code labels = ""}, settings without any label are returned.</li>
+     * <li>If {@code labels = null}, settings without any label are returned.</li>
+     * <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     * <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     * <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     * <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
      * @return labels The labels used to filter GET requests from the service.
@@ -115,12 +116,12 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code labels = "*"}, settings with any label are returned.</li>
-     *     <li>If {@code labels = "\0"}, settings without any label are returned. (This is the default label.)</li>
-     *     <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     *     <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     *     <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     *     <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
+     * <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     * <li>If {@code labels = "\0"}, settings without any label are returned. (This is the default label.)</li>
+     * <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     * <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     * <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     * <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
      * @param labels The ConfigurationSetting labels to match. If the provided value is {@code null} or {@code ""}, all
@@ -166,8 +167,8 @@ public class SettingSelector {
     }
 
     /**
-     * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}.
-     * If none are set, the service returns ConfigurationSettings with all of their fields populated.
+     * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}. If
+     * none are set, the service returns ConfigurationSettings with all of their fields populated.
      *
      * @param fields The fields to select for the query response. If none are set, the service will return the
      * ConfigurationSettings with a default set of properties.
@@ -179,8 +180,9 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the {@link Range} used to select a specific range of revisions with {@code listSettingRevisions}.
-     * If {@code null}, the service returns all revisions.
+     * Gets the {@link Range} used to select a specific range of revisions with {@code listSettingRevisions}. If
+     * {@code null}, the service returns all revisions.
+     *
      * @return The {@link Range} used to select a range of revisions.
      */
     public Range getRange() {
@@ -189,6 +191,7 @@ public class SettingSelector {
 
     /**
      * Sets the {@link Range} used to select a specific range of revisions. If null, the service returns all revisions.
+     *
      * @param range The range of revisions to select.
      * @return The updated SettingSelector object.
      */

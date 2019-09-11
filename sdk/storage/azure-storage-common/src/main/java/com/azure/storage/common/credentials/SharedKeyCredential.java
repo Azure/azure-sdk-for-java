@@ -72,7 +72,7 @@ public final class SharedKeyCredential {
      *
      * @return The account name.
      */
-    public String accountName() {
+    public String getAccountName() {
         return accountName;
     }
 

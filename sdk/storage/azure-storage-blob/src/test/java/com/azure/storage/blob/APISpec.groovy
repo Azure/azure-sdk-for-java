@@ -227,7 +227,7 @@ BlobServiceClient setClient(SharedKeyCredential credential) {
 
 def getOAuthServiceClient() {
     BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
         .httpClient(getHttpClient())
         .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
@@ -249,7 +249,7 @@ BlobServiceClient getServiceClient(String endpoint) {
 }
 
 BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
+    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
 }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
@@ -266,7 +266,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
-        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.accountName()))
+        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
             .buildAsyncClient()
     }
 
