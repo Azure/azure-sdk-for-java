@@ -341,7 +341,7 @@ public final class PageBlobUploadPagesHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean IsServerEncrypted() {
         return this.isServerEncrypted;
     }
 

@@ -243,7 +243,7 @@ public final class DirectoryCreateHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean IsServerEncrypted() {
         return this.isServerEncrypted;
     }
 

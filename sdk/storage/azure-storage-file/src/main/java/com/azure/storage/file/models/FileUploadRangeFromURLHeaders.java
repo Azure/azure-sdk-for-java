@@ -237,7 +237,7 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean IsServerEncrypted() {
         return this.isServerEncrypted;
     }
 

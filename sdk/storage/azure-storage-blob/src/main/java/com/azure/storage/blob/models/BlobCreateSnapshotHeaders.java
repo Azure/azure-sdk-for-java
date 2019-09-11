@@ -272,7 +272,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean IsServerEncrypted() {
         return this.isServerEncrypted;
     }
 

@@ -66,7 +66,7 @@ public final class Metrics {
      *
      * @return the enabled value.
      */
-    public boolean getEnabled() {
+    public boolean isEnabled() {
         return this.enabled;
     }
 
@@ -88,7 +88,7 @@ public final class Metrics {
      *
      * @return the includeAPIs value.
      */
-    public Boolean getIncludeAPIs() {
+    public Boolean isIncludeAPIs() {
         return this.includeAPIs;
     }
 

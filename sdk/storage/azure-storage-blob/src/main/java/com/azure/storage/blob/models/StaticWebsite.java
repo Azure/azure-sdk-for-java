@@ -38,7 +38,7 @@ public final class StaticWebsite {
      *
      * @return the enabled value.
      */
-    public boolean getEnabled() {
+    public boolean isEnabled() {
         return this.enabled;
     }
 
