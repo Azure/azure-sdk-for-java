@@ -146,8 +146,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getProperties
         client.getProperties().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-                response.getHourMetrics().getEnabled(),
-                response.getMinuteMetrics().getEnabled()));
+                response.getHourMetrics().isEnabled(),
+                response.getMinuteMetrics().isEnabled()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getProperties
     }
 
@@ -158,8 +158,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-                response.getValue().getHourMetrics().getEnabled(),
-                response.getValue().getMinuteMetrics().getEnabled()));
+                response.getValue().getHourMetrics().isEnabled(),
+                response.getValue().getMinuteMetrics().isEnabled()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
     }
 

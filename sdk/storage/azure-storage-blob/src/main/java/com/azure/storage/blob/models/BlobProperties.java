@@ -664,7 +664,7 @@ public final class BlobProperties {
      *
      * @return the serverEncrypted value.
      */
-    public Boolean getServerEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.serverEncrypted;
     }
 
@@ -684,7 +684,7 @@ public final class BlobProperties {
      *
      * @return the incrementalCopy value.
      */
-    public Boolean getIncrementalCopy() {
+    public Boolean isIncrementalCopy() {
         return this.incrementalCopy;
     }
 
@@ -797,7 +797,7 @@ public final class BlobProperties {
      *
      * @return the accessTierInferred value.
      */
-    public Boolean getAccessTierInferred() {
+    public Boolean isAccessTierInferred() {
         return this.accessTierInferred;
     }
 

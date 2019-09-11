@@ -597,7 +597,7 @@ public final class BlobGetPropertiesHeaders {
      *
      * @return the isIncrementalCopy value.
      */
-    public Boolean getIsIncrementalCopy() {
+    public Boolean isIncrementalCopy() {
         return this.isIncrementalCopy;
     }
 
@@ -1073,7 +1073,7 @@ public final class BlobGetPropertiesHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.isServerEncrypted;
     }
 
@@ -1152,7 +1152,7 @@ public final class BlobGetPropertiesHeaders {
      *
      * @return the accessTierInferred value.
      */
-    public Boolean getAccessTierInferred() {
+    public Boolean isAccessTierInferred() {
         return this.accessTierInferred;
     }
 

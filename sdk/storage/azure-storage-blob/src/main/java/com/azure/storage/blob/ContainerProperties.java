@@ -32,8 +32,8 @@ public final class ContainerProperties {
         this.leaseState = generatedResponseHeaders.getLeaseState();
         this.leaseStatus = generatedResponseHeaders.getLeaseStatus();
         this.blobPublicAccess = generatedResponseHeaders.getBlobPublicAccess();
-        this.hasImmutabilityPolicy = generatedResponseHeaders.getHasImmutabilityPolicy();
-        this.hasLegalHold = generatedResponseHeaders.getHasLegalHold();
+        this.hasImmutabilityPolicy = generatedResponseHeaders.isHasImmutabilityPolicy();
+        this.hasLegalHold = generatedResponseHeaders.isHasLegalHold();
     }
 
     /**

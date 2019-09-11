@@ -242,7 +242,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.isServerEncrypted;
     }
 

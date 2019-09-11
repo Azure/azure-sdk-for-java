@@ -789,7 +789,7 @@ public class DirectoryAsyncClient {
         Map<String, String> metadata = response.getDeserializedHeaders().getMetadata();
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
@@ -805,7 +805,7 @@ public class DirectoryAsyncClient {
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().getIsServerEncrypted();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }

@@ -170,7 +170,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         client.getProperties()
             .subscribe(properties -> {
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
+                    properties.getHourMetrics().isEnabled(), properties.getMinuteMetrics().isEnabled());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getProperties
     }
@@ -185,7 +185,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
             .subscribe(response -> {
                 StorageServiceProperties properties = response.getValue();
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
+                    properties.getHourMetrics().isEnabled(), properties.getMinuteMetrics().isEnabled());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse
     }

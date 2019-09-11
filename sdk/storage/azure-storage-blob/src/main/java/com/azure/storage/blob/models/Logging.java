@@ -70,7 +70,7 @@ public final class Logging {
      *
      * @return the delete value.
      */
-    public boolean getDelete() {
+    public boolean isDelete() {
         return this.delete;
     }
 
@@ -92,7 +92,7 @@ public final class Logging {
      *
      * @return the read value.
      */
-    public boolean getRead() {
+    public boolean isRead() {
         return this.read;
     }
 
@@ -114,7 +114,7 @@ public final class Logging {
      *
      * @return the write value.
      */
-    public boolean getWrite() {
+    public boolean isWrite() {
         return this.write;
     }
 

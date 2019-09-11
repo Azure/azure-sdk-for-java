@@ -159,7 +159,7 @@ public final class FileSetMetadataHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean getIsServerEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.isServerEncrypted;
     }
 
