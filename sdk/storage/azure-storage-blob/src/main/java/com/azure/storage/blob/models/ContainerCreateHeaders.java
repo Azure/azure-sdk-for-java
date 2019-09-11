@@ -74,7 +74,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -86,7 +86,7 @@ public final class ContainerCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders eTag(String eTag) {
+    public ContainerCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -99,7 +99,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -115,7 +115,7 @@ public final class ContainerCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders lastModified(OffsetDateTime lastModified) {
+    public ContainerCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -131,7 +131,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -143,7 +143,7 @@ public final class ContainerCreateHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders clientRequestId(String clientRequestId) {
+    public ContainerCreateHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -154,7 +154,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -165,7 +165,7 @@ public final class ContainerCreateHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders requestId(String requestId) {
+    public ContainerCreateHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -177,7 +177,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -189,7 +189,7 @@ public final class ContainerCreateHeaders {
      * @param version the version value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders version(String version) {
+    public ContainerCreateHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -200,7 +200,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -214,7 +214,7 @@ public final class ContainerCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerCreateHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -228,7 +228,7 @@ public final class ContainerCreateHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -238,7 +238,7 @@ public final class ContainerCreateHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerCreateHeaders object itself.
      */
-    public ContainerCreateHeaders errorCode(String errorCode) {
+    public ContainerCreateHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

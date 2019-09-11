@@ -113,7 +113,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void listQueuesAsync() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.listQueues
         client.listQueues().subscribe(
-            queueItem -> System.out.printf("Queue %s exists in the account", queueItem.name()),
+            queueItem -> System.out.printf("Queue %s exists in the account", queueItem.getName()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete listing the queues!")
         );
@@ -127,7 +127,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions
         client.listQueues(new QueuesSegmentOptions().prefix("azure")).subscribe(
             queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
-                queueItem.name(), queueItem.metadata()),
+                queueItem.getName(), queueItem.getMetadata()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete listing the queues!")
         );
@@ -164,7 +164,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         client.getProperties()
             .subscribe(properties -> {
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
+                    properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getProperties
     }
@@ -179,7 +179,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
             .subscribe(response -> {
                 StorageServiceProperties properties = response.value();
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
-                    properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
+                    properties.getHourMetrics().getEnabled(), properties.getMinuteMetrics().getEnabled());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse
     }
@@ -214,8 +214,8 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void setPropertiesEnableMetrics() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
         StorageServiceProperties properties = client.getProperties().block();
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
+        properties.getMinuteMetrics().setEnabled(true);
+        properties.getHourMetrics().setEnabled(true);
         client.setProperties(properties).subscribe(
             response -> System.out.printf("Setting Queue service properties completed."));
         // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
@@ -227,8 +227,8 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     public void setPropertiesAsyncEnableMetrics() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties
         StorageServiceProperties properties = client.getProperties().block();
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
+        properties.getMinuteMetrics().setEnabled(true);
+        properties.getHourMetrics().setEnabled(true);
         client.setPropertiesWithResponse(properties)
             .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
                 response.statusCode()));
@@ -243,7 +243,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         client.getStatistics()
             .subscribe(stats -> {
                 System.out.printf("Geo replication status: %s, Last synced: %s",
-                    stats.geoReplication().status(), stats.geoReplication().lastSyncTime());
+                    stats.getGeoReplication().getStatus(), stats.getGeoReplication().getLastSyncTime());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getStatistics
     }
@@ -257,7 +257,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
             .subscribe(response -> {
                 StorageServiceStats stats = response.value();
                 System.out.printf("Geo replication status: %s, Last synced: %s",
-                    stats.geoReplication().status(), stats.geoReplication().lastSyncTime());
+                    stats.getGeoReplication().getStatus(), stats.getGeoReplication().getLastSyncTime());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse
     }

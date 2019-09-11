@@ -92,7 +92,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -106,7 +106,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryGetAccessControlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -121,7 +121,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -132,7 +132,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders eTag(String eTag) {
+    public DirectoryGetAccessControlHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -144,7 +144,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -159,7 +159,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param lastModified the lastModified value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders lastModified(OffsetDateTime lastModified) {
+    public DirectoryGetAccessControlHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -174,7 +174,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the xMsOwner value.
      */
-    public String xMsOwner() {
+    public String getXMsOwner() {
         return this.xMsOwner;
     }
 
@@ -185,7 +185,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param xMsOwner the xMsOwner value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders xMsOwner(String xMsOwner) {
+    public DirectoryGetAccessControlHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;
     }
@@ -197,7 +197,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the xMsGroup value.
      */
-    public String xMsGroup() {
+    public String getXMsGroup() {
         return this.xMsGroup;
     }
 
@@ -209,7 +209,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param xMsGroup the xMsGroup value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders xMsGroup(String xMsGroup) {
+    public DirectoryGetAccessControlHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
     }
@@ -221,7 +221,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the xMsPermissions value.
      */
-    public String xMsPermissions() {
+    public String getXMsPermissions() {
         return this.xMsPermissions;
     }
 
@@ -233,7 +233,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param xMsPermissions the xMsPermissions value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders xMsPermissions(String xMsPermissions) {
+    public DirectoryGetAccessControlHeaders setXMsPermissions(String xMsPermissions) {
         this.xMsPermissions = xMsPermissions;
         return this;
     }
@@ -246,7 +246,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the xMsAcl value.
      */
-    public String xMsAcl() {
+    public String getXMsAcl() {
         return this.xMsAcl;
     }
 
@@ -259,7 +259,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param xMsAcl the xMsAcl value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders xMsAcl(String xMsAcl) {
+    public DirectoryGetAccessControlHeaders setXMsAcl(String xMsAcl) {
         this.xMsAcl = xMsAcl;
         return this;
     }
@@ -270,7 +270,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -281,7 +281,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders requestId(String requestId) {
+    public DirectoryGetAccessControlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -292,7 +292,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -303,7 +303,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param version the version value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders version(String version) {
+    public DirectoryGetAccessControlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -315,7 +315,7 @@ public final class DirectoryGetAccessControlHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -327,7 +327,7 @@ public final class DirectoryGetAccessControlHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the DirectoryGetAccessControlHeaders object itself.
      */
-    public DirectoryGetAccessControlHeaders clientRequestId(String clientRequestId) {
+    public DirectoryGetAccessControlHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }

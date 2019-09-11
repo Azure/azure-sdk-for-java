@@ -160,11 +160,11 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .fileCreationTime(OffsetDateTime.now())
@@ -400,7 +400,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
         directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
-                handleItem.handleId()));
+                handleItem.getHandleId()));
         // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
     }
 
@@ -411,7 +411,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
         directoryAsyncClient.listHandles(10, true)
-            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
+            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.getHandleId(), true)
                 .subscribe(numOfClosedHandles -> System.out.printf("Closed %d handles.", numOfClosedHandles)));
         // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
     }

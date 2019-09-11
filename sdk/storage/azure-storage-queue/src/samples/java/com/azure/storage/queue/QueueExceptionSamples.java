@@ -44,7 +44,7 @@ public class QueueExceptionSamples {
         try {
             queueClientResponse.value().dequeueMessages().forEach(
                 msg -> {
-                    queueClient.deleteMessage("wrong id", msg.popReceipt());
+                    queueClient.deleteMessage("wrong id", msg.getPopReceipt());
                 }
             );
         } catch (StorageException e) {
@@ -59,7 +59,7 @@ public class QueueExceptionSamples {
         try {
             queueClient.dequeueMessages().forEach(
                 msg -> {
-                    queueClient.deleteMessage(msg.messageId(), "Wrong Pop Receipt");
+                    queueClient.deleteMessage(msg.getMessageId(), "Wrong Pop Receipt");
                 }
             );
         } catch (StorageException e) {

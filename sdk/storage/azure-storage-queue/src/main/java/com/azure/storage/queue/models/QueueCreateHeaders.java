@@ -50,7 +50,7 @@ public final class QueueCreateHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class QueueCreateHeaders {
      * @param requestId the requestId value to set.
      * @return the QueueCreateHeaders object itself.
      */
-    public QueueCreateHeaders requestId(String requestId) {
+    public QueueCreateHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class QueueCreateHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class QueueCreateHeaders {
      * @param version the version value to set.
      * @return the QueueCreateHeaders object itself.
      */
-    public QueueCreateHeaders version(String version) {
+    public QueueCreateHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,7 +96,7 @@ public final class QueueCreateHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -110,7 +110,7 @@ public final class QueueCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the QueueCreateHeaders object itself.
      */
-    public QueueCreateHeaders dateProperty(OffsetDateTime dateProperty) {
+    public QueueCreateHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class QueueCreateHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class QueueCreateHeaders {
      * @param errorCode the errorCode value to set.
      * @return the QueueCreateHeaders object itself.
      */
-    public QueueCreateHeaders errorCode(String errorCode) {
+    public QueueCreateHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

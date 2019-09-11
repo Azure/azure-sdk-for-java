@@ -90,7 +90,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the snapshot value.
      */
-    public String snapshot() {
+    public String getSnapshot() {
         return this.snapshot;
     }
 
@@ -102,7 +102,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param snapshot the snapshot value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders snapshot(String snapshot) {
+    public BlobCreateSnapshotHeaders setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -114,7 +114,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -126,7 +126,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders eTag(String eTag) {
+    public BlobCreateSnapshotHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -139,7 +139,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -155,7 +155,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobCreateSnapshotHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -171,7 +171,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -183,7 +183,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders clientRequestId(String clientRequestId) {
+    public BlobCreateSnapshotHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -194,7 +194,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -205,7 +205,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders requestId(String requestId) {
+    public BlobCreateSnapshotHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -217,7 +217,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -229,7 +229,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param version the version value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders version(String version) {
+    public BlobCreateSnapshotHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -240,7 +240,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -254,7 +254,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobCreateSnapshotHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -272,7 +272,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean isServerEncrypted() {
+    public Boolean getIsServerEncrypted() {
         return this.isServerEncrypted;
     }
 
@@ -286,7 +286,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public BlobCreateSnapshotHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -296,7 +296,7 @@ public final class BlobCreateSnapshotHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -306,7 +306,7 @@ public final class BlobCreateSnapshotHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobCreateSnapshotHeaders object itself.
      */
-    public BlobCreateSnapshotHeaders errorCode(String errorCode) {
+    public BlobCreateSnapshotHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

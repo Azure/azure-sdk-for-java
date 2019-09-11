@@ -90,7 +90,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -102,7 +102,7 @@ public final class BlobSetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders eTag(String eTag) {
+    public BlobSetMetadataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -115,7 +115,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -131,7 +131,7 @@ public final class BlobSetMetadataHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobSetMetadataHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -147,7 +147,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -159,7 +159,7 @@ public final class BlobSetMetadataHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders clientRequestId(String clientRequestId) {
+    public BlobSetMetadataHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -170,7 +170,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -181,7 +181,7 @@ public final class BlobSetMetadataHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders requestId(String requestId) {
+    public BlobSetMetadataHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -193,7 +193,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -205,7 +205,7 @@ public final class BlobSetMetadataHeaders {
      * @param version the version value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders version(String version) {
+    public BlobSetMetadataHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -216,7 +216,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -230,7 +230,7 @@ public final class BlobSetMetadataHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobSetMetadataHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -246,7 +246,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean isServerEncrypted() {
+    public Boolean getIsServerEncrypted() {
         return this.isServerEncrypted;
     }
 
@@ -258,7 +258,7 @@ public final class BlobSetMetadataHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public BlobSetMetadataHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -270,7 +270,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -282,7 +282,7 @@ public final class BlobSetMetadataHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public BlobSetMetadataHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -292,7 +292,7 @@ public final class BlobSetMetadataHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -302,7 +302,7 @@ public final class BlobSetMetadataHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobSetMetadataHeaders object itself.
      */
-    public BlobSetMetadataHeaders errorCode(String errorCode) {
+    public BlobSetMetadataHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

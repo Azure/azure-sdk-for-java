@@ -55,7 +55,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -67,7 +67,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      * @return the DirectoryListFilesAndDirectoriesSegmentHeaders object
      * itself.
      */
-    public DirectoryListFilesAndDirectoriesSegmentHeaders contentType(String contentType) {
+    public DirectoryListFilesAndDirectoriesSegmentHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -78,7 +78,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -90,7 +90,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      * @return the DirectoryListFilesAndDirectoriesSegmentHeaders object
      * itself.
      */
-    public DirectoryListFilesAndDirectoriesSegmentHeaders requestId(String requestId) {
+    public DirectoryListFilesAndDirectoriesSegmentHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -101,7 +101,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -113,7 +113,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      * @return the DirectoryListFilesAndDirectoriesSegmentHeaders object
      * itself.
      */
-    public DirectoryListFilesAndDirectoriesSegmentHeaders version(String version) {
+    public DirectoryListFilesAndDirectoriesSegmentHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -124,7 +124,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -139,7 +139,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      * @return the DirectoryListFilesAndDirectoriesSegmentHeaders object
      * itself.
      */
-    public DirectoryListFilesAndDirectoriesSegmentHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryListFilesAndDirectoriesSegmentHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -153,7 +153,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -164,7 +164,7 @@ public final class DirectoryListFilesAndDirectoriesSegmentHeaders {
      * @return the DirectoryListFilesAndDirectoriesSegmentHeaders object
      * itself.
      */
-    public DirectoryListFilesAndDirectoriesSegmentHeaders errorCode(String errorCode) {
+    public DirectoryListFilesAndDirectoriesSegmentHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

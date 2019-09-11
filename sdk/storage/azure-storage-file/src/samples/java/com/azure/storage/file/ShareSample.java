@@ -78,7 +78,7 @@ public class ShareSample {
 
         try {
             ShareProperties shareProperties1 = shareClientWithSnapshot1.getProperties();
-            System.out.println("This is the first snapshot eTag: " + shareProperties1.etag());
+            System.out.println("This is the first snapshot eTag: " + shareProperties1.getEtag());
         } catch (StorageException e) {
             System.out.println("Failed to get properties for the first share snapshot. Reasons: " + e.getMessage());
         }
@@ -92,7 +92,7 @@ public class ShareSample {
 
         try {
             ShareProperties shareProperties2 = shareClientWithSnapshot2.getProperties();
-            System.out.println("This is the second snapshot eTag: " + shareProperties2.etag());
+            System.out.println("This is the second snapshot eTag: " + shareProperties2.getEtag());
         } catch (StorageException e) {
             System.out.println("Failed to get properties for the second share snapshot. Reasons: " + e.getMessage());
         }

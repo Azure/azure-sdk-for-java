@@ -64,7 +64,7 @@ public final class ShareCreateHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -75,7 +75,7 @@ public final class ShareCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareCreateHeaders object itself.
      */
-    public ShareCreateHeaders eTag(String eTag) {
+    public ShareCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ShareCreateHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -104,7 +104,7 @@ public final class ShareCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareCreateHeaders object itself.
      */
-    public ShareCreateHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -119,7 +119,7 @@ public final class ShareCreateHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -130,7 +130,7 @@ public final class ShareCreateHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareCreateHeaders object itself.
      */
-    public ShareCreateHeaders requestId(String requestId) {
+    public ShareCreateHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -141,7 +141,7 @@ public final class ShareCreateHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -152,7 +152,7 @@ public final class ShareCreateHeaders {
      * @param version the version value to set.
      * @return the ShareCreateHeaders object itself.
      */
-    public ShareCreateHeaders version(String version) {
+    public ShareCreateHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -163,7 +163,7 @@ public final class ShareCreateHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -177,7 +177,7 @@ public final class ShareCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareCreateHeaders object itself.
      */
-    public ShareCreateHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareCreateHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -191,7 +191,7 @@ public final class ShareCreateHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -201,7 +201,7 @@ public final class ShareCreateHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareCreateHeaders object itself.
      */
-    public ShareCreateHeaders errorCode(String errorCode) {
+    public ShareCreateHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

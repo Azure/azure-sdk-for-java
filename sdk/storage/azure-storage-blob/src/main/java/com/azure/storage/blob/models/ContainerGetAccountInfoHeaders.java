@@ -73,7 +73,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -85,7 +85,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders clientRequestId(String clientRequestId) {
+    public ContainerGetAccountInfoHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -107,7 +107,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders requestId(String requestId) {
+    public ContainerGetAccountInfoHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -119,7 +119,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -131,7 +131,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param version the version value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders version(String version) {
+    public ContainerGetAccountInfoHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -142,7 +142,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -156,7 +156,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerGetAccountInfoHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -172,7 +172,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the skuName value.
      */
-    public SkuName skuName() {
+    public SkuName getSkuName() {
         return this.skuName;
     }
 
@@ -184,7 +184,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param skuName the skuName value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders skuName(SkuName skuName) {
+    public ContainerGetAccountInfoHeaders setSkuName(SkuName skuName) {
         this.skuName = skuName;
         return this;
     }
@@ -195,7 +195,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the accountKind value.
      */
-    public AccountKind accountKind() {
+    public AccountKind getAccountKind() {
         return this.accountKind;
     }
 
@@ -206,7 +206,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param accountKind the accountKind value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders accountKind(AccountKind accountKind) {
+    public ContainerGetAccountInfoHeaders setAccountKind(AccountKind accountKind) {
         this.accountKind = accountKind;
         return this;
     }
@@ -216,7 +216,7 @@ public final class ContainerGetAccountInfoHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -226,7 +226,7 @@ public final class ContainerGetAccountInfoHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.
      */
-    public ContainerGetAccountInfoHeaders errorCode(String errorCode) {
+    public ContainerGetAccountInfoHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -211,11 +211,11 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .fileCreationTime(OffsetDateTime.now())
@@ -305,7 +305,7 @@ public class ShareJavaDocCodeSamples {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.getProperties
         ShareProperties properties = shareClient.getProperties();
-        System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
+        System.out.printf("Share quota: %d, Metadata: %s", properties.getQuota(), properties.getMetadata());
         // END: com.azure.storage.file.shareClient.getProperties
     }
 
@@ -317,7 +317,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getPropertiesWithResponse#duration-context
         ShareProperties properties = shareClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).value();
-        System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
+        System.out.printf("Share quota: %d, Metadata: %s", properties.getQuota(), properties.getMetadata());
         // END: com.azure.storage.file.shareClient.getPropertiesWithResponse#duration-context
     }
 
@@ -388,7 +388,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getAccessPolicy
         for (SignedIdentifier result : shareClient.getAccessPolicy()) {
             System.out.printf("Access policy %s allows these permissions: %s",
-                result.id(), result.accessPolicy().permission());
+                result.getId(), result.getAccessPolicy().getPermission());
         }
         // END: com.azure.storage.file.shareClient.getAccessPolicy
     }
@@ -399,11 +399,11 @@ public class ShareJavaDocCodeSamples {
     public void setAccessPolicy() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.ShareClient.setAccessPolicy#List
-        AccessPolicy accessPolicy = new AccessPolicy().permission("r")
-            .start(OffsetDateTime.now(ZoneOffset.UTC))
-            .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
+            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
+        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 
         shareClient.setAccessPolicy(Collections.singletonList(permission));
         System.out.println("Setting access policies completed.");
@@ -416,11 +416,11 @@ public class ShareJavaDocCodeSamples {
     public void setAccessPolicyWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.setAccessPolicyWithResponse#list-duration-context
-        AccessPolicy accessPolicy = new AccessPolicy().permission("r")
-            .start(OffsetDateTime.now(ZoneOffset.UTC))
-            .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
+            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
+        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 
         Response<ShareInfo> response = shareClient.setAccessPolicyWithResponse(Collections.singletonList(permission),
             Duration.ofSeconds(1), new Context(key1, value1));

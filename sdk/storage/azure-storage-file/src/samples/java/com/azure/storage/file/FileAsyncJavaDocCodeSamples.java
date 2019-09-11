@@ -113,7 +113,7 @@ public class FileAsyncJavaDocCodeSamples {
     public void createFileAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().setFileContentType("text/plain");
         fileAsyncClient.create(1024)
             .doOnSuccess(response -> System.out.println("Creating the file completed."));
         // END: com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map
@@ -126,11 +126,11 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .fileCreationTime(OffsetDateTime.now())
@@ -515,11 +515,11 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .fileCreationTime(OffsetDateTime.now())
@@ -539,11 +539,11 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .fileCreationTime(OffsetDateTime.now())
@@ -612,7 +612,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles
         fileAsyncClient.listHandles()
-            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.handleId()));
+            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.getHandleId()));
         // END: com.azure.storage.file.fileAsyncClient.listHandles
     }
 
@@ -623,7 +623,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles#integer
         fileAsyncClient.listHandles(10)
-            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.handleId()));
+            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.getHandleId()));
         // END: com.azure.storage.file.fileAsyncClient.listHandles#integer
     }
 
@@ -635,7 +635,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
         fileAsyncClient.listHandles(10)
             .subscribe(result -> {
-                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(
+                fileAsyncClient.forceCloseHandles(result.getHandleId()).subscribe(
                     numOfClosedHandles -> System.out.printf("Close %d handles.", numOfClosedHandles));
             });
         // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string

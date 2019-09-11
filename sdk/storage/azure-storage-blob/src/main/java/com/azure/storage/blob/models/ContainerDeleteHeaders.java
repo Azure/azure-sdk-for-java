@@ -58,7 +58,7 @@ public final class ContainerDeleteHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -70,7 +70,7 @@ public final class ContainerDeleteHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders clientRequestId(String clientRequestId) {
+    public ContainerDeleteHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -81,7 +81,7 @@ public final class ContainerDeleteHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -92,7 +92,7 @@ public final class ContainerDeleteHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders requestId(String requestId) {
+    public ContainerDeleteHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -104,7 +104,7 @@ public final class ContainerDeleteHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -116,7 +116,7 @@ public final class ContainerDeleteHeaders {
      * @param version the version value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders version(String version) {
+    public ContainerDeleteHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -127,7 +127,7 @@ public final class ContainerDeleteHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -141,7 +141,7 @@ public final class ContainerDeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerDeleteHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -155,7 +155,7 @@ public final class ContainerDeleteHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -165,7 +165,7 @@ public final class ContainerDeleteHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerDeleteHeaders object itself.
      */
-    public ContainerDeleteHeaders errorCode(String errorCode) {
+    public ContainerDeleteHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

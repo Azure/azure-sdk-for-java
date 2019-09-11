@@ -463,7 +463,7 @@ public class DirectoryAsyncClient {
                     response.statusCode(),
                     response.headers(),
                     convertResponseAndGetNumOfResults(response),
-                    response.value().nextMarker(),
+                    response.value().getNextMarker(),
                     response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -507,8 +507,8 @@ public class DirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
-                    response.value().handleList(),
-                    response.value().nextMarker(),
+                    response.value().getHandleList(),
+                    response.value().getNextMarker(),
                     response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -556,8 +556,8 @@ public class DirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.request(),
                     response.statusCode(),
                     response.headers(),
-                    Collections.singletonList(response.deserializedHeaders().numberOfHandlesClosed()),
-                    response.deserializedHeaders().marker(),
+                    Collections.singletonList(response.deserializedHeaders().getNumberOfHandlesClosed()),
+                    response.deserializedHeaders().getMarker(),
                     response.deserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -778,45 +778,45 @@ public class DirectoryAsyncClient {
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
+        String eTag = response.deserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.deserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectoryProperties> getPropertiesResponse(DirectorysGetPropertiesResponse response) {
-        Map<String, String> metadata = response.deserializedHeaders().metadata();
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime offsetDateTime = response.deserializedHeaders().lastModified();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
+        Map<String, String> metadata = response.deserializedHeaders().getMetadata();
+        String eTag = response.deserializedHeaders().getETag();
+        OffsetDateTime offsetDateTime = response.deserializedHeaders().getLastModified();
+        boolean isServerEncrypted = response.deserializedHeaders().getIsServerEncrypted();
         FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         DirectoryProperties directoryProperties = new DirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, directoryProperties);
     }
 
     private Response<DirectoryInfo> setPropertiesResponse(final DirectorysSetPropertiesResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
+        String eTag = response.deserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.deserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.headers());
         DirectoryInfo directoryInfo = new DirectoryInfo(eTag, lastModified, smbProperties);
         return new SimpleResponse<>(response, directoryInfo);
     }
 
     private Response<DirectorySetMetadataInfo> setMetadataResponse(final DirectorysSetMetadataResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
+        String eTag = response.deserializedHeaders().getETag();
+        boolean isServerEncrypted = response.deserializedHeaders().getIsServerEncrypted();
         DirectorySetMetadataInfo directorySetMetadataInfo = new DirectorySetMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
     private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
         Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::name));
-        if (response.value().segment() != null) {
-            response.value().segment().directoryItems()
-                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.name(), true, null)));
-            response.value().segment().fileItems()
-                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.name(), false, fileItem.properties())));
+        if (response.value().getSegment() != null) {
+            response.value().getSegment().getDirectoryItems()
+                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.getName(), true, null)));
+            response.value().getSegment().getFileItems()
+                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.getName(), false, fileItem.getProperties())));
         }
 
         return new ArrayList<>(fileRefs);

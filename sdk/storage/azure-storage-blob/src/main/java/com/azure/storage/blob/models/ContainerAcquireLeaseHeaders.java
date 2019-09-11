@@ -80,7 +80,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -92,7 +92,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders eTag(String eTag) {
+    public ContainerAcquireLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -105,7 +105,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -121,7 +121,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders lastModified(OffsetDateTime lastModified) {
+    public ContainerAcquireLeaseHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -135,7 +135,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the leaseId value.
      */
-    public String leaseId() {
+    public String getLeaseId() {
         return this.leaseId;
     }
 
@@ -145,7 +145,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders leaseId(String leaseId) {
+    public ContainerAcquireLeaseHeaders setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -157,7 +157,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -169,7 +169,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders clientRequestId(String clientRequestId) {
+    public ContainerAcquireLeaseHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -180,7 +180,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -191,7 +191,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders requestId(String requestId) {
+    public ContainerAcquireLeaseHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -203,7 +203,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -215,7 +215,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param version the version value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders version(String version) {
+    public ContainerAcquireLeaseHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -226,7 +226,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -240,7 +240,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerAcquireLeaseHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -254,7 +254,7 @@ public final class ContainerAcquireLeaseHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -264,7 +264,7 @@ public final class ContainerAcquireLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerAcquireLeaseHeaders object itself.
      */
-    public ContainerAcquireLeaseHeaders errorCode(String errorCode) {
+    public ContainerAcquireLeaseHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

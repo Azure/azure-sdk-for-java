@@ -4,8 +4,8 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
@@ -13,9 +13,9 @@ import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
-import java.time.Duration;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -162,11 +162,11 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
             .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .fileCreationTime(OffsetDateTime.now())
@@ -382,7 +382,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context
         Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
             new Context(key1, value1));
-        System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
+        System.out.printf("Get handles completed with handle id %s", result.iterator().next().getHandleId());
         // END: com.azure.storage.file.directoryClient.listHandles#Integer-boolean-duration-context
     }
 
@@ -395,10 +395,10 @@ public class DirectoryJavaDocCodeSamples {
         Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
             new Context(key1, value1));
         result.forEach(handleItem ->  {
-            directoryClient.forceCloseHandles(handleItem.handleId(), true, Duration.ofSeconds(1),
+            directoryClient.forceCloseHandles(handleItem.getHandleId(), true, Duration.ofSeconds(1),
                 new Context(key1, value1))
                 .forEach(numOfClosedHandles ->
-                System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
+                System.out.printf("Get handles completed with handle id %s", handleItem.getHandleId()));
         });
         // END: com.azure.storage.file.directoryClient.forceCloseHandles
     }

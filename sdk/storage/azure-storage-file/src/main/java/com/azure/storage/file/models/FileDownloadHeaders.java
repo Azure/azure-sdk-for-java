@@ -242,7 +242,7 @@ public final class FileDownloadHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -257,7 +257,7 @@ public final class FileDownloadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders lastModified(OffsetDateTime lastModified) {
+    public FileDownloadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -271,7 +271,7 @@ public final class FileDownloadHeaders {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -281,7 +281,7 @@ public final class FileDownloadHeaders {
      * @param metadata the metadata value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders metadata(Map<String, String> metadata) {
+    public FileDownloadHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -292,7 +292,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -303,7 +303,7 @@ public final class FileDownloadHeaders {
      * @param contentLength the contentLength value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentLength(Long contentLength) {
+    public FileDownloadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -314,7 +314,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -325,7 +325,7 @@ public final class FileDownloadHeaders {
      * @param contentType the contentType value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentType(String contentType) {
+    public FileDownloadHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -337,7 +337,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentRange value.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return this.contentRange;
     }
 
@@ -349,7 +349,7 @@ public final class FileDownloadHeaders {
      * @param contentRange the contentRange value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentRange(String contentRange) {
+    public FileDownloadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -360,7 +360,7 @@ public final class FileDownloadHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -371,7 +371,7 @@ public final class FileDownloadHeaders {
      * @param eTag the eTag value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders eTag(String eTag) {
+    public FileDownloadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -388,7 +388,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -405,7 +405,7 @@ public final class FileDownloadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentMD5(byte[] contentMD5) {
+    public FileDownloadHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -416,7 +416,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -427,7 +427,7 @@ public final class FileDownloadHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentEncoding(String contentEncoding) {
+    public FileDownloadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -438,7 +438,7 @@ public final class FileDownloadHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -449,7 +449,7 @@ public final class FileDownloadHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders cacheControl(String cacheControl) {
+    public FileDownloadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -461,7 +461,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -473,7 +473,7 @@ public final class FileDownloadHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentDisposition(String contentDisposition) {
+    public FileDownloadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -484,7 +484,7 @@ public final class FileDownloadHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -495,7 +495,7 @@ public final class FileDownloadHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders contentLanguage(String contentLanguage) {
+    public FileDownloadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -506,7 +506,7 @@ public final class FileDownloadHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -517,7 +517,7 @@ public final class FileDownloadHeaders {
      * @param requestId the requestId value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders requestId(String requestId) {
+    public FileDownloadHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -528,7 +528,7 @@ public final class FileDownloadHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -539,7 +539,7 @@ public final class FileDownloadHeaders {
      * @param version the version value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders version(String version) {
+    public FileDownloadHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -550,7 +550,7 @@ public final class FileDownloadHeaders {
      *
      * @return the acceptRanges value.
      */
-    public String acceptRanges() {
+    public String getAcceptRanges() {
         return this.acceptRanges;
     }
 
@@ -561,7 +561,7 @@ public final class FileDownloadHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders acceptRanges(String acceptRanges) {
+    public FileDownloadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
     }
@@ -572,7 +572,7 @@ public final class FileDownloadHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -586,7 +586,7 @@ public final class FileDownloadHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -603,7 +603,7 @@ public final class FileDownloadHeaders {
      *
      * @return the copyCompletionTime value.
      */
-    public OffsetDateTime copyCompletionTime() {
+    public OffsetDateTime getCopyCompletionTime() {
         if (this.copyCompletionTime == null) {
             return null;
         }
@@ -619,7 +619,7 @@ public final class FileDownloadHeaders {
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders copyCompletionTime(OffsetDateTime copyCompletionTime) {
+    public FileDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
         if (copyCompletionTime == null) {
             this.copyCompletionTime = null;
         } else {
@@ -635,7 +635,7 @@ public final class FileDownloadHeaders {
      *
      * @return the copyStatusDescription value.
      */
-    public String copyStatusDescription() {
+    public String getCopyStatusDescription() {
         return this.copyStatusDescription;
     }
 
@@ -647,7 +647,7 @@ public final class FileDownloadHeaders {
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders copyStatusDescription(String copyStatusDescription) {
+    public FileDownloadHeaders setCopyStatusDescription(String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
         return this;
     }
@@ -658,7 +658,7 @@ public final class FileDownloadHeaders {
      *
      * @return the copyId value.
      */
-    public String copyId() {
+    public String getCopyId() {
         return this.copyId;
     }
 
@@ -669,7 +669,7 @@ public final class FileDownloadHeaders {
      * @param copyId the copyId value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders copyId(String copyId) {
+    public FileDownloadHeaders setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -682,7 +682,7 @@ public final class FileDownloadHeaders {
      *
      * @return the copyProgress value.
      */
-    public String copyProgress() {
+    public String getCopyProgress() {
         return this.copyProgress;
     }
 
@@ -695,7 +695,7 @@ public final class FileDownloadHeaders {
      * @param copyProgress the copyProgress value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders copyProgress(String copyProgress) {
+    public FileDownloadHeaders setCopyProgress(String copyProgress) {
         this.copyProgress = copyProgress;
         return this;
     }
@@ -707,7 +707,7 @@ public final class FileDownloadHeaders {
      *
      * @return the copySource value.
      */
-    public String copySource() {
+    public String getCopySource() {
         return this.copySource;
     }
 
@@ -719,7 +719,7 @@ public final class FileDownloadHeaders {
      * @param copySource the copySource value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders copySource(String copySource) {
+    public FileDownloadHeaders setCopySource(String copySource) {
         this.copySource = copySource;
         return this;
     }
@@ -731,7 +731,7 @@ public final class FileDownloadHeaders {
      *
      * @return the copyStatus value.
      */
-    public CopyStatusType copyStatus() {
+    public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
 
@@ -743,7 +743,7 @@ public final class FileDownloadHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders copyStatus(CopyStatusType copyStatus) {
+    public FileDownloadHeaders setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -757,7 +757,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileContentMD5 value.
      */
-    public byte[] fileContentMD5() {
+    public byte[] getFileContentMD5() {
         return ImplUtils.clone(this.fileContentMD5);
     }
 
@@ -771,7 +771,7 @@ public final class FileDownloadHeaders {
      * @param fileContentMD5 the fileContentMD5 value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileContentMD5(byte[] fileContentMD5) {
+    public FileDownloadHeaders setFileContentMD5(byte[] fileContentMD5) {
         this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
@@ -785,7 +785,7 @@ public final class FileDownloadHeaders {
      *
      * @return the isServerEncrypted value.
      */
-    public Boolean isServerEncrypted() {
+    public Boolean getIsServerEncrypted() {
         return this.isServerEncrypted;
     }
 
@@ -799,7 +799,7 @@ public final class FileDownloadHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public FileDownloadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -809,7 +809,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileAttributes value.
      */
-    public String fileAttributes() {
+    public String getFileAttributes() {
         return this.fileAttributes;
     }
 
@@ -819,7 +819,7 @@ public final class FileDownloadHeaders {
      * @param fileAttributes the fileAttributes value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileAttributes(String fileAttributes) {
+    public FileDownloadHeaders setFileAttributes(String fileAttributes) {
         this.fileAttributes = fileAttributes;
         return this;
     }
@@ -829,7 +829,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileCreationTime value.
      */
-    public OffsetDateTime fileCreationTime() {
+    public OffsetDateTime getFileCreationTime() {
         return this.fileCreationTime;
     }
 
@@ -839,7 +839,7 @@ public final class FileDownloadHeaders {
      * @param fileCreationTime the fileCreationTime value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
+    public FileDownloadHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -849,7 +849,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileLastWriteTime value.
      */
-    public OffsetDateTime fileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return this.fileLastWriteTime;
     }
 
@@ -859,7 +859,7 @@ public final class FileDownloadHeaders {
      * @param fileLastWriteTime the fileLastWriteTime value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public FileDownloadHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -869,7 +869,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileChangeTime value.
      */
-    public OffsetDateTime fileChangeTime() {
+    public OffsetDateTime getFileChangeTime() {
         return this.fileChangeTime;
     }
 
@@ -879,7 +879,7 @@ public final class FileDownloadHeaders {
      * @param fileChangeTime the fileChangeTime value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
+    public FileDownloadHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
         this.fileChangeTime = fileChangeTime;
         return this;
     }
@@ -890,7 +890,7 @@ public final class FileDownloadHeaders {
      *
      * @return the filePermissionKey value.
      */
-    public String filePermissionKey() {
+    public String getFilePermissionKey() {
         return this.filePermissionKey;
     }
 
@@ -901,7 +901,7 @@ public final class FileDownloadHeaders {
      * @param filePermissionKey the filePermissionKey value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders filePermissionKey(String filePermissionKey) {
+    public FileDownloadHeaders setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -911,7 +911,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileId value.
      */
-    public String fileId() {
+    public String getFileId() {
         return this.fileId;
     }
 
@@ -921,7 +921,7 @@ public final class FileDownloadHeaders {
      * @param fileId the fileId value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileId(String fileId) {
+    public FileDownloadHeaders setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -931,7 +931,7 @@ public final class FileDownloadHeaders {
      *
      * @return the fileParentId value.
      */
-    public String fileParentId() {
+    public String getFileParentId() {
         return this.fileParentId;
     }
 
@@ -941,7 +941,7 @@ public final class FileDownloadHeaders {
      * @param fileParentId the fileParentId value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders fileParentId(String fileParentId) {
+    public FileDownloadHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
         return this;
     }
@@ -951,7 +951,7 @@ public final class FileDownloadHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -961,7 +961,7 @@ public final class FileDownloadHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileDownloadHeaders object itself.
      */
-    public FileDownloadHeaders errorCode(String errorCode) {
+    public FileDownloadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

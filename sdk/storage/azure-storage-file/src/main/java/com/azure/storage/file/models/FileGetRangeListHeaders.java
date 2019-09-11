@@ -71,7 +71,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -87,7 +87,7 @@ public final class FileGetRangeListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders lastModified(OffsetDateTime lastModified) {
+    public FileGetRangeListHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -102,7 +102,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -113,7 +113,7 @@ public final class FileGetRangeListHeaders {
      * @param eTag the eTag value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders eTag(String eTag) {
+    public FileGetRangeListHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the fileContentLength value.
      */
-    public Long fileContentLength() {
+    public Long getFileContentLength() {
         return this.fileContentLength;
     }
 
@@ -133,7 +133,7 @@ public final class FileGetRangeListHeaders {
      * @param fileContentLength the fileContentLength value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders fileContentLength(Long fileContentLength) {
+    public FileGetRangeListHeaders setFileContentLength(Long fileContentLength) {
         this.fileContentLength = fileContentLength;
         return this;
     }
@@ -144,7 +144,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -155,7 +155,7 @@ public final class FileGetRangeListHeaders {
      * @param requestId the requestId value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders requestId(String requestId) {
+    public FileGetRangeListHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -166,7 +166,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -177,7 +177,7 @@ public final class FileGetRangeListHeaders {
      * @param version the version value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders version(String version) {
+    public FileGetRangeListHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -188,7 +188,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -202,7 +202,7 @@ public final class FileGetRangeListHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileGetRangeListHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -216,7 +216,7 @@ public final class FileGetRangeListHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -226,7 +226,7 @@ public final class FileGetRangeListHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileGetRangeListHeaders object itself.
      */
-    public FileGetRangeListHeaders errorCode(String errorCode) {
+    public FileGetRangeListHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

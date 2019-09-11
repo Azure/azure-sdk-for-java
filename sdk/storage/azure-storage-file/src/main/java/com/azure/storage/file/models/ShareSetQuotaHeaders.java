@@ -64,7 +64,7 @@ public final class ShareSetQuotaHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -75,7 +75,7 @@ public final class ShareSetQuotaHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareSetQuotaHeaders object itself.
      */
-    public ShareSetQuotaHeaders eTag(String eTag) {
+    public ShareSetQuotaHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ShareSetQuotaHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
@@ -104,7 +104,7 @@ public final class ShareSetQuotaHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareSetQuotaHeaders object itself.
      */
-    public ShareSetQuotaHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareSetQuotaHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -119,7 +119,7 @@ public final class ShareSetQuotaHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -130,7 +130,7 @@ public final class ShareSetQuotaHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareSetQuotaHeaders object itself.
      */
-    public ShareSetQuotaHeaders requestId(String requestId) {
+    public ShareSetQuotaHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -141,7 +141,7 @@ public final class ShareSetQuotaHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -152,7 +152,7 @@ public final class ShareSetQuotaHeaders {
      * @param version the version value to set.
      * @return the ShareSetQuotaHeaders object itself.
      */
-    public ShareSetQuotaHeaders version(String version) {
+    public ShareSetQuotaHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -163,7 +163,7 @@ public final class ShareSetQuotaHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -177,7 +177,7 @@ public final class ShareSetQuotaHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareSetQuotaHeaders object itself.
      */
-    public ShareSetQuotaHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareSetQuotaHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -191,7 +191,7 @@ public final class ShareSetQuotaHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -201,7 +201,7 @@ public final class ShareSetQuotaHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareSetQuotaHeaders object itself.
      */
-    public ShareSetQuotaHeaders errorCode(String errorCode) {
+    public ShareSetQuotaHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

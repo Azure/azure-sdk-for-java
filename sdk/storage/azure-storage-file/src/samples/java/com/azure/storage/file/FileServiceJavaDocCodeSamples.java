@@ -130,7 +130,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.listShares
         fileServiceClient.listShares().forEach(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
+            shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName())
         );
         // END: com.azure.storage.file.fileServiceClient.listShares
     }
@@ -143,7 +143,7 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context1
         fileServiceClient.listShares(new ListSharesOptions().prefix("azure"), Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
-                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName())
         );
         // END: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context1
     }
@@ -157,7 +157,7 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2
         fileServiceClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true), Duration.ofSeconds(1), new Context(key1, value1)).forEach(
-                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName())
         );
         // END: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2
     }
@@ -193,8 +193,8 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.getProperties
         FileServiceProperties properties = fileServiceClient.getProperties();
-        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
-            properties.minuteMetrics().enabled());
+        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.getHourMetrics().getEnabled(),
+            properties.getMinuteMetrics().getEnabled());
         // END: com.azure.storage.file.fileServiceClient.getProperties
     }
 
@@ -206,8 +206,8 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).value();
-        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
-            properties.minuteMetrics().enabled());
+        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.getHourMetrics().getEnabled(),
+            properties.getMinuteMetrics().getEnabled());
         // END: com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context
     }
 
@@ -219,8 +219,8 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
         FileServiceProperties properties = fileServiceClient.getProperties();
 
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
+        properties.getMinuteMetrics().setEnabled(true);
+        properties.getHourMetrics().setEnabled(true);
 
         fileServiceClient.setProperties(properties);
         System.out.println("Setting File service properties completed.");
@@ -236,8 +236,8 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceProperties properties = fileServiceClient.getPropertiesWithResponse(
             Duration.ofSeconds(1), new Context(key1, value1)).value();
 
-        properties.minuteMetrics().enabled(true);
-        properties.hourMetrics().enabled(true);
+        properties.getMinuteMetrics().setEnabled(true);
+        properties.getHourMetrics().setEnabled(true);
 
         VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
@@ -252,7 +252,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
         FileServiceProperties properties = fileServiceClient.getProperties();
-        properties.cors(Collections.emptyList());
+        properties.setCors(Collections.emptyList());
 
         VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));

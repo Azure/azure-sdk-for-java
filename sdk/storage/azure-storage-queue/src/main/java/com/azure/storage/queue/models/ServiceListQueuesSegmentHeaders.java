@@ -50,7 +50,7 @@ public final class ServiceListQueuesSegmentHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class ServiceListQueuesSegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceListQueuesSegmentHeaders object itself.
      */
-    public ServiceListQueuesSegmentHeaders requestId(String requestId) {
+    public ServiceListQueuesSegmentHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class ServiceListQueuesSegmentHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class ServiceListQueuesSegmentHeaders {
      * @param version the version value to set.
      * @return the ServiceListQueuesSegmentHeaders object itself.
      */
-    public ServiceListQueuesSegmentHeaders version(String version) {
+    public ServiceListQueuesSegmentHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ServiceListQueuesSegmentHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -110,7 +110,7 @@ public final class ServiceListQueuesSegmentHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ServiceListQueuesSegmentHeaders object itself.
      */
-    public ServiceListQueuesSegmentHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ServiceListQueuesSegmentHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class ServiceListQueuesSegmentHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class ServiceListQueuesSegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceListQueuesSegmentHeaders object itself.
      */
-    public ServiceListQueuesSegmentHeaders errorCode(String errorCode) {
+    public ServiceListQueuesSegmentHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

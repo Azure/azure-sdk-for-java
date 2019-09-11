@@ -55,7 +55,7 @@ public final class DirectoryListHandlesHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -66,7 +66,7 @@ public final class DirectoryListHandlesHeaders {
      * @param contentType the contentType value to set.
      * @return the DirectoryListHandlesHeaders object itself.
      */
-    public DirectoryListHandlesHeaders contentType(String contentType) {
+    public DirectoryListHandlesHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -77,7 +77,7 @@ public final class DirectoryListHandlesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -88,7 +88,7 @@ public final class DirectoryListHandlesHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectoryListHandlesHeaders object itself.
      */
-    public DirectoryListHandlesHeaders requestId(String requestId) {
+    public DirectoryListHandlesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -99,7 +99,7 @@ public final class DirectoryListHandlesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -110,7 +110,7 @@ public final class DirectoryListHandlesHeaders {
      * @param version the version value to set.
      * @return the DirectoryListHandlesHeaders object itself.
      */
-    public DirectoryListHandlesHeaders version(String version) {
+    public DirectoryListHandlesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -121,7 +121,7 @@ public final class DirectoryListHandlesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
@@ -135,7 +135,7 @@ public final class DirectoryListHandlesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectoryListHandlesHeaders object itself.
      */
-    public DirectoryListHandlesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryListHandlesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -149,7 +149,7 @@ public final class DirectoryListHandlesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -159,7 +159,7 @@ public final class DirectoryListHandlesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the DirectoryListHandlesHeaders object itself.
      */
-    public DirectoryListHandlesHeaders errorCode(String errorCode) {
+    public DirectoryListHandlesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }
