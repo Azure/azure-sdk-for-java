@@ -4,12 +4,12 @@
         {
             "name": "ISBN",
             "type": "Edm.String",
-            "key": true,
+            "key": true
         },
         {
             "name": "Title",
             "type": "Edm.String",
-            "searchable": true,
+            "searchable": true
         },
         {
             "name": "Author",
@@ -17,17 +17,17 @@
             "fields": [
                 {
                     "name": "FirstName",
-                    "type": "Edm.String",
+                    "type": "Edm.String"
                 },
                 {
                     "name": "LastName",
-                    "type": "Edm.String",
+                    "type": "Edm.String"
                 }
             ]
         },
         {
             "name": "PublishDate",
-            "type": "Edm.DateTimeOffset",
+            "type": "Edm.DateTimeOffset"
         }
     ]
 }
