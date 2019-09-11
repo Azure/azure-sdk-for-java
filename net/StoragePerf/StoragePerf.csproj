@@ -4,11 +4,15 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <ServerGarbageCollection>true</ServerGarbageCollection>
+    <RestoreSources>
+      https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-net/index.json;
+      https://api.nuget.org/v3/index.json;
+    </RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.0.0-preview.2" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.0.0-dev.20190908.1" />
   </ItemGroup> 
   
 </Project>
