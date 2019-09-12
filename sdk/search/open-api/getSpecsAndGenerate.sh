@@ -25,7 +25,7 @@ autorest --use=$AUTOREST_JAVA_DIR ./data-readme.md
 
 # Generate the service api
 # Todo: Uncomment when working on the Service API
-autorest --input-file=2019-05-06/service/searchservice.json --output-folder=../azure-search-service --namespace=com.azure.search.service --azure-arm=true --add-credentials=true --java
+# autorest --input-file=2019-05-06/service/searchservice.json --output-folder=../azure-search-service --namespace=com.azure.search.service --azure-arm=true --add-credentials=true --java
 
 # Cleanup
 rm -rf 2019-05-06
