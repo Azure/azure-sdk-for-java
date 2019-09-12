@@ -149,10 +149,10 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponse#string-duration-duration
         client.enqueueMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null).subscribe(
-            response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
-                response.getValue().getExpirationTime()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete enqueuing the message!")
+                response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
+                    response.getValue().getExpirationTime()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
         );
         // END: com.azure.storage.queue.queueAsyncClient.enqueueMessageWithResponse#string-duration-duration
     }
@@ -165,10 +165,10 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration
         client.enqueueMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5)).subscribe(
-            response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
-                response.getValue().getExpirationTime()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete enqueuing the message!")
+                response -> System.out.printf("Message %s expires at %s", response.getValue().getMessageId(),
+                    response.getValue().getExpirationTime()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
         );
         // END: com.azure.storage.queue.QueueAsyncClient.enqueueMessageWithResponse-liveTime#String-Duration-Duration
     }
@@ -253,10 +253,10 @@ public class QueueAsyncJavaDocCodeSamples {
             dequeuedMessage -> {
                 client.updateMessage("newText", dequeuedMessage.getMessageId(),
                     dequeuedMessage.getPopReceipt(), null).subscribe(
-                    response -> {
-                    },
-                    updateError -> System.err.print(updateError.toString()),
-                    () -> System.out.println("Complete updating the message!")
+                        response -> {
+                        },
+                        updateError -> System.err.print(updateError.toString()),
+                        () -> System.out.println("Complete updating the message!")
                 );
             },
             dequeueError -> System.err.print(dequeueError.toString()),
@@ -275,10 +275,10 @@ public class QueueAsyncJavaDocCodeSamples {
             dequeuedMessage -> {
                 client.updateMessageWithResponse("newText", dequeuedMessage.getMessageId(),
                     dequeuedMessage.getPopReceipt(), null).subscribe(
-                    response -> System.out.println("Complete updating the message with status code:"
-                        + response.getStatusCode()),
-                    updateError -> System.err.print(updateError.toString()),
-                    () -> System.out.println("Complete updating the message!")
+                        response -> System.out.println("Complete updating the message with status code:"
+                            + response.getStatusCode()),
+                        updateError -> System.err.print(updateError.toString()),
+                        () -> System.out.println("Complete updating the message!")
                 );
             },
             dequeueError -> System.err.print(dequeueError.toString()),
@@ -314,11 +314,13 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-                client.deleteMessageWithResponse(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt()).subscribe(
-                    response -> System.out.println("Complete deleting the message with status code: " + response.getStatusCode()),
-                    deleteError -> System.err.print(deleteError.toString()),
-                    () -> System.out.println("Complete deleting the message!")
-                );
+                client.deleteMessageWithResponse(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt())
+                    .subscribe(
+                        response -> System.out.println("Complete deleting the message with status code: "
+                            + response.getStatusCode()),
+                        deleteError -> System.err.print(deleteError.toString()),
+                        () -> System.out.println("Complete deleting the message!")
+                    );
             },
             dequeueError -> System.err.print(dequeueError.toString()),
             () -> System.out.println("Complete dequeueing the message!")
