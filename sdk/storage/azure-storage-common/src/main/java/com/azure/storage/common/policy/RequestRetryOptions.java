@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
  * functionality.
  */
 public final class RequestRetryOptions {
+    private static final String BOUNDS_MESSAGE = "The value of the parameter '%s' should be between %s and %s.";
+
     private final ClientLogger logger = new ClientLogger(RequestRetryOptions.class);
 
     private final int maxTries;
@@ -62,7 +64,7 @@ public final class RequestRetryOptions {
      * non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL} or {@link RetryPolicyType#FIXED}.
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
-                               Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
+        Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
         this.retryPolicyType = retryPolicyType == null ? RetryPolicyType.EXPONENTIAL : retryPolicyType;
         if (maxTries != null) {
             assertInBounds("maxRetries", maxTries, 1, Integer.MAX_VALUE);
@@ -174,7 +176,7 @@ public final class RequestRetryOptions {
 
     private static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format("The value of the parameter '%s' should be between %s and %s.", param, min, max));
+            throw new IllegalArgumentException(String.format(BOUNDS_MESSAGE, param, min, max));
         }
     }
 }

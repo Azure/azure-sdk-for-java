@@ -89,28 +89,28 @@ public final class BlobInputStream extends InputStream {
      * Initializes a new instance of the BlobInputStream class.
      *
      * @param blobClient A {@link BlobClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     *
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the
+     * blob.
      * @throws StorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition) throws StorageException {
+    BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition)
+        throws StorageException {
         this(blobClient, 0, null, accessCondition);
     }
 
     /**
-     * Initializes a new instance of the BlobInputStream class.
-     * Note that if {@code blobRangeOffset} is not {@code 0} or {@code blobRangeLength} is not {@code null}, there will
-     * be no content MD5 verification.
+     * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
+     * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
      * @param blobClient A {@link BlobClient} object which represents the blob that this stream is associated with.
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
-     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     *
+     * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the
+     * blob.
      * @throws StorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClient blobClient, long blobRangeOffset, Long blobRangeLength,
-                              final BlobAccessConditions accessCondition)
+        final BlobAccessConditions accessCondition)
         throws StorageException {
 
         this.blobRangeOffset = blobRangeOffset;
@@ -138,9 +138,7 @@ public final class BlobInputStream extends InputStream {
      * or another thread. A single read or skip of this many bytes will not block, but may read or skip fewer bytes.
      *
      * @return An <code>int</code> which represents an estimate of the number of bytes that can be read (or skipped
-     *         over)
-     *         from this input stream without blocking, or 0 when it reaches the end of the input stream.
-     *
+     * over) from this input stream without blocking, or 0 when it reaches the end of the input stream.
      * @throws IOException If an I/O error occurs.
      */
     @Override
@@ -151,8 +149,8 @@ public final class BlobInputStream extends InputStream {
     /**
      * Helper function to check if the stream is faulted, if it is it surfaces the exception.
      *
-     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
-     *             closed.
+     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
+     * been closed.
      */
     private synchronized void checkStreamState() throws IOException {
         if (this.streamFaulted) {
@@ -177,12 +175,12 @@ public final class BlobInputStream extends InputStream {
      * bytes may be generated on the client side for some ranges that do not exist.
      *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
-     *
      * @throws IOException If an I/O error occurs.
      */
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
-            this.currentBuffer = this.blobClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
+            this.currentBuffer = this.blobClient.download(new BlobRange(this.currentAbsoluteReadPosition,
+                (long) readLength), this.accessCondition, false)
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.body(null)).map(ByteBuffer::wrap))
                 .block();
 
@@ -200,7 +198,7 @@ public final class BlobInputStream extends InputStream {
      * the last marked position so that subsequent reads re-read the same bytes.
      *
      * @param readlimit An <code>int</code> which represents the maximum limit of bytes that can be read before the mark
-     *            position becomes invalid.
+     * position becomes invalid.
      */
     @Override
     public synchronized void mark(final int readlimit) {
@@ -214,7 +212,7 @@ public final class BlobInputStream extends InputStream {
      * false.
      *
      * @return <Code>True</Code> if this stream instance supports the mark and reset methods; <Code>False</Code>
-     *         otherwise.
+     * otherwise.
      */
     @Override
     public boolean markSupported() {
@@ -226,9 +224,8 @@ public final class BlobInputStream extends InputStream {
      * no byte is available because the end of the stream has been reached, the value -1 is returned. This method blocks
      * until input data is available, the end of the stream is detected, or an exception is thrown.
      *
-     * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if
-     *         there is no more data because the end of the stream has been reached.
-     *
+     * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if there is no
+     * more data because the end of the stream has been reached.
      * @throws IOException If an I/O error occurs.
      */
     @Override
@@ -247,18 +244,16 @@ public final class BlobInputStream extends InputStream {
 
     /**
      * Reads some number of bytes from the input stream and stores them into the buffer array <code>b</code>. The number
-     * of bytes
-     * actually read is returned as an integer. This method blocks until input data is available, end of file is
-     * detected, or an exception is thrown. If the length of <code>b</code> is zero, then no bytes are read and 0 is
-     * returned;
-     * otherwise, there is an attempt to read at least one byte. If no byte is available because the stream is at the
-     * end of the file, the value -1 is returned; otherwise, at least one byte is read and stored into <code>b</code>.
+     * of bytes actually read is returned as an integer. This method blocks until input data is available, end of file
+     * is detected, or an exception is thrown. If the length of <code>b</code> is zero, then no bytes are read and 0 is
+     * returned; otherwise, there is an attempt to read at least one byte. If no byte is available because the stream is
+     * at the end of the file, the value -1 is returned; otherwise, at least one byte is read and stored into
+     * <code>b</code>.
      *
      * The first byte read is stored into element <code>b[0]</code>, the next one into <code>b[1]</code>, and so on. The
-     * number of bytes read is,
-     * at most, equal to the length of <code>b</code>. Let <code>k</code> be the number of bytes actually read; these
-     * bytes will be stored in
-     * elements <code>b[0]</code> through <code>b[k-1]</code>, leaving elements <code>b[k]</code> through
+     * number of bytes read is, at most, equal to the length of <code>b</code>. Let <code>k</code> be the number of
+     * bytes actually read; these bytes will be stored in elements <code>b[0]</code> through <code>b[k-1]</code>,
+     * leaving elements <code>b[k]</code> through
      * <code>b[b.length-1]</code> unaffected.
      *
      * The <code>read(b)</code> method for class {@link InputStream} has the same effect as:
@@ -266,9 +261,8 @@ public final class BlobInputStream extends InputStream {
      * <code>read(b, 0, b.length)</code>
      *
      * @param b A <code>byte</code> array which represents the buffer into which the data is read.
-     *
-     * @throws IOException If the first byte cannot be read for any reason other than the end of the file, if the input stream
-     *             has been closed, or if some other I/O error occurs.
+     * @throws IOException If the first byte cannot be read for any reason other than the end of the file, if the input
+     * stream has been closed, or if some other I/O error occurs.
      * @throws NullPointerException If the <code>byte</code> array <code>b</code> is null.
      */
     @Override
@@ -279,19 +273,17 @@ public final class BlobInputStream extends InputStream {
     /**
      * Reads up to <code>len</code> bytes of data from the input stream into an array of bytes. An attempt is made to
      * read as many as <code>len</code> bytes, but a smaller number may be read. The number of bytes actually read is
-     * returned as an integer. This
-     * method blocks until input data is available, end of file is detected, or an exception is thrown.
+     * returned as an integer. This method blocks until input data is available, end of file is detected, or an
+     * exception is thrown.
      *
      * If <code>len</code> is zero, then no bytes are read and 0 is returned; otherwise, there is an attempt to read at
-     * least one
-     * byte. If no byte is available because the stream is at end of file, the value -1 is returned; otherwise, at least
-     * one byte is read and stored into <code>b</code>.
+     * least one byte. If no byte is available because the stream is at end of file, the value -1 is returned;
+     * otherwise, at least one byte is read and stored into <code>b</code>.
      *
      * The first byte read is stored into element <code>b[off]</code>, the next one into <code>b[off+1]</code>, and so
-     * on. The number of bytes
-     * read is, at most, equal to <code>len</code>. Let <code>k</code> be the number of bytes actually read; these bytes
-     * will be stored in
-     * elements <code>b[off]</code> through <code>b[off+k-1]</code>, leaving elements <code>b[off+k]</code> through
+     * on. The number of bytes read is, at most, equal to <code>len</code>. Let <code>k</code> be the number of bytes
+     * actually read; these bytes will be stored in elements <code>b[off]</code> through <code>b[off+k-1]</code>,
+     * leaving elements <code>b[off+k]</code> through
      * <code>b[off+len-1]</code> unaffected.
      *
      * In every case, elements <code>b[0]</code> through <code>b[off]</code> and elements <code>b[off+len]</code>
@@ -302,27 +294,24 @@ public final class BlobInputStream extends InputStream {
      * call results in an <code>IOException</code>, that exception is returned from the call to the
      * <code>read(b, off, len)</code> method. If any
      * subsequent call to <code>read()</code> results in a <code>IOException</code>, the exception is caught and treated
-     * as if it were end of
-     * file; the bytes read up to that point are stored into <code>b</code> and the number of bytes read before the
-     * exception
-     * occurred is returned. The default implementation of this method blocks until the requested amount of input data
+     * as if it were end of file; the bytes read up to that point are stored into <code>b</code> and the number of bytes
+     * read before the exception occurred is returned. The default implementation of this method blocks until the
+     * requested amount of input data
      * <code>len</code> has been read, end of file is detected, or an exception is thrown. Subclasses are encouraged to
-     * provide a
-     * more efficient implementation of this method.
+     * provide a more efficient implementation of this method.
      *
      * @param b A <code>byte</code> array which represents the buffer into which the data is read.
      * @param off An <code>int</code> which represents the start offset in the <code>byte</code> array at which the data
-     *            is written.
+     * is written.
      * @param len An <code>int</code> which represents the maximum number of bytes to read.
-     *
-     * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if
-     *         there is no more data because the end of the stream has been reached.
-     *
-     * @throws IOException If the first byte cannot be read for any reason other than end of file, or if the input stream has
-     *             been closed, or if some other I/O error occurs.
+     * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if there is no
+     * more data because the end of the stream has been reached.
+     * @throws IOException If the first byte cannot be read for any reason other than end of file, or if the input
+     * stream has been closed, or if some other I/O error occurs.
      * @throws NullPointerException If the <code>byte</code> array <code>b</code> is null.
-     * @throws IndexOutOfBoundsException If <code>off</code> is negative, <code>len</code> is negative, or <code>len</code> is greater than
-     *             <code>b.length - off</code>.
+     * @throws IndexOutOfBoundsException If <code>off</code> is negative, <code>len</code> is negative, or
+     * <code>len</code> is greater than
+     * <code>b.length - off</code>.
      */
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
@@ -338,14 +327,12 @@ public final class BlobInputStream extends InputStream {
      *
      * @param b A <code>byte</code> array which represents the buffer into which the data is read.
      * @param off An <code>int</code> which represents the start offset in the <code>byte</code> array <code>b</code> at
-     *            which the data is written.
+     * which the data is written.
      * @param len An <code>int</code> which represents the maximum number of bytes to read.
-     *
-     * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if
-     *         there is no more data because the end of the stream has been reached.
-     *
-     * @throws IOException If the first byte cannot be read for any reason other than end of file, or if the input stream has
-     *             been closed, or if some other I/O error occurs.
+     * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if there is no
+     * more data because the end of the stream has been reached.
+     * @throws IOException If the first byte cannot be read for any reason other than end of file, or if the input
+     * stream has been closed, or if some other I/O error occurs.
      */
     private synchronized int readInternal(final byte[] b, final int off, int len) throws IOException {
         this.checkStreamState();
@@ -353,7 +340,8 @@ public final class BlobInputStream extends InputStream {
         // if buffer is empty do next get operation
         if ((this.currentBuffer == null || this.currentBuffer.remaining() == 0)
             && this.currentAbsoluteReadPosition < this.streamLength + this.blobRangeOffset) {
-            this.dispatchRead((int) Math.min(this.readSize, this.streamLength + this.blobRangeOffset - this.currentAbsoluteReadPosition));
+            this.dispatchRead((int) Math.min(this.readSize,
+                this.streamLength + this.blobRangeOffset - this.currentAbsoluteReadPosition));
         }
 
         len = Math.min(len, this.readSize);
@@ -383,7 +371,8 @@ public final class BlobInputStream extends InputStream {
     /**
      * Repositions the stream to the given absolute byte offset.
      *
-     * @param absolutePosition A <code>long</code> which represents the absolute byte offset withitn the stream reposition.
+     * @param absolutePosition A <code>long</code> which represents the absolute byte offset withitn the stream
+     * reposition.
      */
     private synchronized void reposition(final long absolutePosition) {
         this.currentAbsoluteReadPosition = absolutePosition;

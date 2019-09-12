@@ -12,11 +12,11 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * FileServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once all
- * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
- * can actually be applied to file urls. Note: that both this class and {@link FileServiceSASQueryParameters} exist because the
- * former is mutable and a logical representation while the latter is immutable and used to generate actual REST
- * requests.
+ * FileServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
+ * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
+ * which can actually be applied to file urls. Note: that both this class and {@link FileServiceSASQueryParameters}
+ * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
+ * actual REST requests.
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
  * for more conceptual information on SAS.
@@ -104,8 +104,8 @@ final class FileServiceSASSignatureValues {
     }
 
     /**
-     * @return the version of the service this SAS will target. If not specified, it will default to the version targeted
-     * by the library.
+     * @return the version of the service this SAS will target. If not specified, it will default to the version
+     * targeted by the library.
      */
     public String getVersion() {
         return version;
@@ -178,16 +178,16 @@ final class FileServiceSASSignatureValues {
     }
 
     /**
-     * @return the permissions string allowed by the SAS. Please refer to either {@link ShareSASPermission} or
-     * {@link FileSASPermission} depending on the resource being accessed for help determining the permissions allowed.
+     * @return the permissions string allowed by the SAS. Please refer to either {@link ShareSASPermission} or {@link
+     * FileSASPermission} depending on the resource being accessed for help determining the permissions allowed.
      */
     public String getPermissions() {
         return permissions;
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link ShareSASPermission} or
-     * {@link FileSASPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the permissions string allowed by the SAS. Please refer to either {@link ShareSASPermission} or {@link
+     * FileSASPermission} depending on the resource being accessed for help constructing the permissions string.
      *
      * @param permissions Permissions string for the SAS
      * @return the updated FileServiceSASSignatureValues object
@@ -406,9 +406,9 @@ final class FileServiceSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign());
 
-        return new FileServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
-            this.identifier, this.resource, this.permissions, signature, this.cacheControl, this.contentDisposition,
-            this.contentEncoding, this.contentLanguage, this.contentType);
+        return new FileServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+            this.ipRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
+            this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType);
     }
 
     /**

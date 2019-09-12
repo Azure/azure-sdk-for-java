@@ -243,7 +243,8 @@ public final class Constants {
     }
 
     static final class MessageConstants {
-        static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
+        static final String ARGUMENT_NULL_OR_EMPTY =
+            "The argument must not be null or an empty string. Argument name: %s.";
         static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
         static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
         static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";

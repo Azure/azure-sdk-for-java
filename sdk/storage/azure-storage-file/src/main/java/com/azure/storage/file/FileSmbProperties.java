@@ -81,6 +81,7 @@ public class FileSmbProperties {
 
     /**
      * Sets the file permission key.
+     *
      * @param filePermissionKey The file permission key.
      * @return the updated FileSmbProperties object.
      */
@@ -91,6 +92,7 @@ public class FileSmbProperties {
 
     /**
      * Sets the ntfs file attributes.
+     *
      * @param ntfsFileAttributes An enum set of the ntfs file attributes.
      * @return the updated FileSmbProperties object.
      */
@@ -101,6 +103,7 @@ public class FileSmbProperties {
 
     /**
      * Sets the file creation time.
+     *
      * @param fileCreationTime The file creation time.
      * @return the updated FileSmbProperties object..
      */
@@ -111,6 +114,7 @@ public class FileSmbProperties {
 
     /**
      * Sets the file last write time.
+     *
      * @param fileLastWriteTime The file last write time.
      * @return the updated FileSmbProperties object.
      */
@@ -123,6 +127,7 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the file permission header.
+     *
      * @param filePermission The file permission.
      * @param defaultValue The default file permission header value.
      * @return The value of the file permission header
@@ -135,6 +140,7 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the ntfs attributes header.
+     *
      * @param defaultValue The default ntfs attributes header value.
      * @return The value of the ntfs attributes header
      */
@@ -146,6 +152,7 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the creation time header.
+     *
      * @param defaultValue The default creation time header value.
      * @return The value of the creation time header
      */
@@ -157,6 +164,7 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the last write time header.
+     *
      * @param defaultValue The default last write time header value.
      * @return The value of the last write time header
      */
@@ -169,6 +177,7 @@ public class FileSmbProperties {
     /**
      * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
      * file SMB properties
+     *
      * @param time the <code>OffsetDateTime</code> to be interpreted as a {@code String}
      * @return The {@code String} representing the date
      */
@@ -178,13 +187,17 @@ public class FileSmbProperties {
 
     /**
      * Creates a new FileSmbProperties object from HttpHeaders
+     *
      * @param httpHeaders The headers to construct FileSmbProperties from
      */
     FileSmbProperties(HttpHeaders httpHeaders) {
         this.filePermissionKey = httpHeaders.value(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(httpHeaders.value(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
-        this.fileCreationTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_CREATION_TIME));
-        this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
+        this.ntfsFileAttributes = NtfsFileAttributes
+            .toAttributes(httpHeaders.value(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
+        this.fileCreationTime = OffsetDateTime.parse(httpHeaders
+            .value(FileConstants.HeaderConstants.FILE_CREATION_TIME));
+        this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders
+            .value(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
         this.fileChangeTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_CHANGE_TIME));
         this.fileId = httpHeaders.value(FileConstants.HeaderConstants.FILE_ID);
         this.parentId = httpHeaders.value(FileConstants.HeaderConstants.FILE_PARENT_ID);

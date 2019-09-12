@@ -136,9 +136,6 @@ final class ProgressReporter {
      * @param progressReceiver {@link IProgressReceiver}
      * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount of
      * data emitted so far.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=progress
-     * "Sample code for ProgressReporterFactor.addProgressReporting")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, IProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
@@ -149,7 +146,8 @@ final class ProgressReporter {
         }
     }
 
-    static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data, IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
+    static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data, IProgressReceiver progressReceiver,
+        Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;
         } else {

@@ -12,11 +12,11 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * QueueServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once all
- * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
- * can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSASQueryParameters} exist because the
- * former is mutable and a logical representation while the latter is immutable and used to generate actual REST
- * requests.
+ * QueueServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
+ * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
+ * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSASQueryParameters}
+ * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
+ * actual REST requests.
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
  * for more conceptual information on SAS.
@@ -72,8 +72,8 @@ final class QueueServiceSASSignatureValues {
         this.identifier = identifier;
     }
 
-    QueueServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
-        String permission, IPRange ipRange, String identifier) {
+    QueueServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier) {
         if (version != null) {
             this.version = version;
         }
@@ -86,8 +86,8 @@ final class QueueServiceSASSignatureValues {
     }
 
     /**
-     * @return the version of the service this SAS will target. If not specified, it will default to the version targeted
-     * by the library.
+     * @return the version of the service this SAS will target. If not specified, it will default to the version
+     * targeted by the library.
      */
     public String getVersion() {
         return version;
@@ -249,6 +249,7 @@ final class QueueServiceSASSignatureValues {
         this.identifier = identifier;
         return this;
     }
+
     /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
@@ -266,8 +267,8 @@ final class QueueServiceSASSignatureValues {
         String stringToSign = stringToSign();
         String signature = sharedKeyCredentials.computeHmac256(stringToSign);
 
-        return new QueueServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
-            this.identifier, this.permissions, signature);
+        return new QueueServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+            this.ipRange, this.identifier, this.permissions, signature);
     }
 
     /**
