@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 public class PageBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
-    private byte[] contentMD5;
+    private final byte[] contentMD5;
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
     private final Long blobSequenceNumber;
@@ -58,6 +58,7 @@ public class PageBlobItem {
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
         this.isServerEncrypted = null;
         this.encryptionKeySha256 = null;
+        this.contentMD5 = null;
     }
 
     public PageBlobItem(PageBlobUpdateSequenceNumberHeaders generatedHeaders) {
@@ -66,6 +67,7 @@ public class PageBlobItem {
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
         this.isServerEncrypted = null;
         this.encryptionKeySha256 = null;
+        this.contentMD5 = null;
     }
 
     /**

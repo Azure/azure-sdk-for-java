@@ -42,8 +42,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.secondaryHost() != null)
-            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod()) ||
-            HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
+            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
+            || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
         return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
     }

@@ -74,8 +74,8 @@ public class ShareAsyncClient {
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
-     * endpoint}. Each service call goes through the {@link HttpPipeline pipeline} in the {@code
-     * azureFileStorageClient}.
+     * endpoint}. Each service call goes through the {@link HttpPipeline pipeline} in the
+     * {@code azureFileStorageClient}.
      *
      * @param client Client that interacts with the service interfaces
      * @param shareName Name of the share
@@ -100,7 +100,7 @@ public class ShareAsyncClient {
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
                 String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e));
+                    azureFileStorageClient.getUrl()), e));
         }
     }
 
@@ -109,8 +109,7 @@ public class ShareAsyncClient {
      * Constructs a {@link DirectoryAsyncClient} that interacts with the root directory in the share.
      *
      * <p>If the directory doesn't exist in the share {@link DirectoryAsyncClient#create()} in the
-     * azureFileStorageClient will
-     * need to be called before interaction with the directory can happen.</p>
+     * azureFileStorageClient will need to be called before interaction with the directory can happen.</p>
      *
      * @return a {@link DirectoryAsyncClient} that interacts with the root directory in the share
      */
@@ -122,8 +121,7 @@ public class ShareAsyncClient {
      * Constructs a {@link DirectoryAsyncClient} that interacts with the specified directory.
      *
      * <p>If the directory doesn't exist in the share {@link DirectoryAsyncClient#create() create} in the
-     * azureFileStorageClient will
-     * need to be called before interaction with the directory can happen.</p>
+     * azureFileStorageClient will need to be called before interaction with the directory can happen.</p>
      *
      * @param directoryName Name of the directory
      * @return a {@link DirectoryAsyncClient} that interacts with the directory in the share

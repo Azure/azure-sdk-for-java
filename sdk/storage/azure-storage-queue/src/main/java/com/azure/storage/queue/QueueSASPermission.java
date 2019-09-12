@@ -31,8 +31,8 @@ public final class QueueSASPermission {
     }
 
     /**
-     * Creates a {@code QueueSASPermission} from the specified permissions string. This method will throw an {@code
-     * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates a {@code QueueSASPermission} from the specified permissions string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code QueueSASPermission}.
      * @return A {@code QueueSASPermission} generated from the given {@code String}.

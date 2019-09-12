@@ -67,9 +67,8 @@ public final class QueueAsyncClient {
     private final String queueName;
 
     /**
-     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code
-     * AzureQueueStorageImpl#getUrl() endpoint}. Each service call goes through the {@link HttpPipeline pipeline} in the
-     * {@code AzureQueueStorageImpl client}.
+     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
+     * Each service call goes through the {@link HttpPipeline pipeline}.
      *
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
@@ -665,8 +664,10 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message, or
      * the {@code visibilityTimeout} is outside the allowed bounds
      */
-    public Mono<UpdatedMessage> updateMessage(String messageText, String messageId, String popReceipt, Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout).flatMap(FluxUtil::toMono);
+    public Mono<UpdatedMessage> updateMessage(String messageText, String messageId, String popReceipt,
+        Duration visibilityTimeout) {
+        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**

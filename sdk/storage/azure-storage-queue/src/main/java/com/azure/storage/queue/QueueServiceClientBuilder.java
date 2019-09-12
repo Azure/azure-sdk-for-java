@@ -23,9 +23,8 @@ import java.util.Objects;
  * QueueServiceClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of QueueServiceAsyncClient.
  *
  * <p>The client needs the endpoint of the Azure Storage Queue service, name of the share, and authorization
- * credential.
- * {@link QueueServiceClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder
- * the A {@link SASTokenCredential} that authorizes the client.</p>
+ * credential. {@link QueueServiceClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give
+ * the builder the A {@link SASTokenCredential} that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation.sastoken}
@@ -87,8 +86,8 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
     }
 
     /**
-     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link QueueServiceAsyncClient} is created.
+     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncClient()} is called a new instance of {@link QueueServiceAsyncClient} is created.
      *
      * <p>
      * If {@link QueueServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
@@ -129,8 +128,7 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
      * Sets the endpoint for the Azure Storage Queue instance that the client will interact with.
      *
      * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in
-     * an
-     * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
+     * an attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage Queue instance to send service requests to and receive responses
      * from.

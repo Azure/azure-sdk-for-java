@@ -496,8 +496,8 @@ public class DirectoryAsyncClient {
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot, recursive,
-                    context), timeout)
+                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot,
+                    recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

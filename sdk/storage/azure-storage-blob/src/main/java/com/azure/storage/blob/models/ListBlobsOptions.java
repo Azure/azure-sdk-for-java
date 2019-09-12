@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.ContainerClient;
 
 /**
@@ -10,6 +11,7 @@ import com.azure.storage.blob.ContainerClient;
  * object. See the constructor for details on each of the options.
  */
 public final class ListBlobsOptions {
+    private final ClientLogger logger = new ClientLogger(ListBlobsOptions.class);
 
     private BlobListDetails details;
 
@@ -79,7 +81,7 @@ public final class ListBlobsOptions {
      */
     public ListBlobsOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
-            throw new IllegalArgumentException("MaxResults must be greater than 0.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
         }
         this.maxResults = maxResults;
         return this;

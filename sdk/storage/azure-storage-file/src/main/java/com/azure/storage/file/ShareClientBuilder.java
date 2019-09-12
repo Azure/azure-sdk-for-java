@@ -75,7 +75,8 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
         Objects.requireNonNull(shareName);
 
         if (!super.hasCredential()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         HttpPipeline pipeline = super.getPipeline();
