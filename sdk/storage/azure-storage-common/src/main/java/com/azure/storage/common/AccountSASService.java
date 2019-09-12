@@ -67,7 +67,7 @@ public final class AccountSASService {
     /**
      * @return the access status for blob resources.
      */
-    public boolean getBlob() {
+    public boolean isBlob() {
         return blob;
     }
 
@@ -85,7 +85,7 @@ public final class AccountSASService {
     /**
      * @return the access status for file resources.
      */
-    public boolean getFile() {
+    public boolean isFile() {
         return file;
     }
 
@@ -103,7 +103,7 @@ public final class AccountSASService {
     /**
      * @return the access status for queue resources.
      */
-    public boolean getQueue() {
+    public boolean isQueue() {
         return queue;
     }
 
@@ -121,7 +121,7 @@ public final class AccountSASService {
     /**
      * @return the access status for table resources.
      */
-    public boolean getTable() {
+    public boolean isTable() {
         return table;
     }
 

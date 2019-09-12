@@ -8,19 +8,19 @@ package com.azure.storage.file.models;
  *
  * <ul>
  *     <li>
- *         Providing {@link ListSharesOptions#prefix(String) prefix} will filter selections to {@link ShareItem shares}
+ *         Providing {@link ListSharesOptions#setPrefix(String) prefix} will filter selections to {@link ShareItem shares}
  *         that that begin with the prefix.
  *     </li>
  *     <li>
- *         Providing {@link ListSharesOptions#maxResults(Integer) maxResults} will limit the number of {@link ShareItem shares}
+ *         Providing {@link ListSharesOptions#setMaxResults(Integer) maxResults} will limit the number of {@link ShareItem shares}
  *         returned in a single page.
  *     </li>
  *     <li>
- *         Setting {@link ListSharesOptions#includeMetadata(boolean) includeMetadata} to true will include the metadata
+ *         Setting {@link ListSharesOptions#setIncludeMetadata(boolean) includeMetadata} to true will include the metadata
  *         of each {@link ShareItem share}, if false {@link ShareItem#getMetadata()}  metadata} for each share will be {@code null}.
  *     </li>
  *     <li>
- *         Setting {@link ListSharesOptions#includeSnapshots(boolean) includeSnapshots} to true will include snapshots
+ *         Setting {@link ListSharesOptions#setIncludeSnapshots(boolean) includeSnapshots} to true will include snapshots
  *         of each {@link ShareItem share}, the snapshot will be included as separate items in the response and will be
  *         identifiable by {@link ShareItem#getSnapshot()}  snapshot} having a value. The base share will contain {@code null}
  *         for the snapshot.
@@ -39,7 +39,7 @@ public final class ListSharesOptions {
      * @param prefix The prefix that shares must start with to pass the filter
      * @return An updated ListSharesOptions object
      */
-    public ListSharesOptions prefix(String prefix) {
+    public ListSharesOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -47,7 +47,7 @@ public final class ListSharesOptions {
     /**
      * @return the prefix that a share must match to be included in the listing
      */
-    public String prefix() {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -57,7 +57,7 @@ public final class ListSharesOptions {
      * @param maxResults Maximum number of shares to include in a single response. This value must be between 1 and 5000.
      * @return An updated ListSharesOptions object
      */
-    public ListSharesOptions maxResults(Integer maxResults) {
+    public ListSharesOptions setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -65,7 +65,7 @@ public final class ListSharesOptions {
     /**
      * @return the maximum number of shares to inlcude in a single response
      */
-    public Integer maxResults() {
+    public Integer getMaxResults() {
         return maxResults;
     }
 
@@ -77,7 +77,7 @@ public final class ListSharesOptions {
      * @param includeMetadata Flag indicating if metadata should be including in the listing
      * @return An updated ListSharesOptions object
      */
-    public ListSharesOptions includeMetadata(boolean includeMetadata) {
+    public ListSharesOptions setIncludeMetadata(boolean includeMetadata) {
         this.includeMetadata = includeMetadata;
         return this;
     }
@@ -85,7 +85,7 @@ public final class ListSharesOptions {
     /**
      * @return the status of include share metadata when listing shares
      */
-    public boolean includeMetadata() {
+    public boolean isIncludeMetadata() {
         return includeMetadata;
     }
 
@@ -95,7 +95,7 @@ public final class ListSharesOptions {
      * @param includeSnapshots Flag indicating if snapshots should be included in the listing
      * @return An updated ListSharesOptions object
      */
-    public ListSharesOptions includeSnapshots(boolean includeSnapshots) {
+    public ListSharesOptions setIncludeSnapshots(boolean includeSnapshots) {
         this.includeSnapshots = includeSnapshots;
         return this;
     }
@@ -103,7 +103,7 @@ public final class ListSharesOptions {
     /**
      * @return the status of including share snapshots when listing shares
      */
-    public boolean includeSnapshots() {
+    public boolean isIncludeSnapshots() {
         return includeSnapshots;
     }
 }

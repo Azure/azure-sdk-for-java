@@ -238,7 +238,7 @@ public final class QueueServiceAsyncClient {
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            if (options.getIncludeMetadata()) {
+            if (options.isIncludeMetadata()) {
                 include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
             }
         }

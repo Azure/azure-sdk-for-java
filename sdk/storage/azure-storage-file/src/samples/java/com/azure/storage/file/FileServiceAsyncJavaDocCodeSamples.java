@@ -143,7 +143,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
     public void listSharesAsyncWithPrefix() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.prefix
-        fileServiceAsyncClient.listShares(new ListSharesOptions().prefix("azure")).subscribe(
+        fileServiceAsyncClient.listShares(new ListSharesOptions().setPrefix("azure")).subscribe(
             shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete listing the shares!")
@@ -157,7 +157,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
     public void listSharesAsyncWithOverload() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
-        fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true).includeSnapshots(true))
+        fileServiceAsyncClient.listShares(new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true))
             .subscribe(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName()),
                 error -> System.err.print(error.toString()),

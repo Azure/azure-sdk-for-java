@@ -86,7 +86,7 @@ public final class AccountSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean getRead() {
+    public boolean isRead() {
         return read;
     }
 
@@ -104,7 +104,7 @@ public final class AccountSASPermission {
     /**
      * @return the add permission status
      */
-    public boolean getAdd() {
+    public boolean isAdd() {
         return add;
     }
 
@@ -122,7 +122,7 @@ public final class AccountSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean getCreate() {
+    public boolean isCreate() {
         return create;
     }
 
@@ -140,7 +140,7 @@ public final class AccountSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean getWrite() {
+    public boolean isWrite() {
         return write;
     }
 
@@ -158,7 +158,7 @@ public final class AccountSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean getDelete() {
+    public boolean isDelete() {
         return delete;
     }
 
@@ -176,7 +176,7 @@ public final class AccountSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean getList() {
+    public boolean isList() {
         return list;
     }
 
@@ -197,7 +197,7 @@ public final class AccountSASPermission {
      *
      * @return the update permission status
      */
-    public boolean getUpdate() {
+    public boolean isUpdate() {
         return update;
     }
 

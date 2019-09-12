@@ -543,13 +543,13 @@ class HelperTest extends APISpec {
         AccountSASPermission perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getList() == list
-        perms.getAdd() == add
-        perms.getCreate() == create
-        perms.getUpdate() == update
+        perms.isRead() == read
+        perms.isWrite() == write
+        perms.isDelete() == delete
+        perms.isList() == list
+        perms.isAdd() == add
+        perms.isCreate() == create
+        perms.isUpdate() == update
         perms.getProcessMessages() == process
 
         where:
@@ -599,8 +599,8 @@ class HelperTest extends APISpec {
         AccountSASResourceType resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.getService() == service
-        resourceTypes.getContainer() == container
+        resourceTypes.isService() == service
+        resourceTypes.isContainer() == container
         resourceTypes.getObject() == object
 
         where:

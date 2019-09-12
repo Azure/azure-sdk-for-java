@@ -152,11 +152,11 @@ class FileServiceAsyncAPITests extends APISpec {
         testShares.isEmpty()
 
         where:
-        options                                                                                               | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter")                        | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").includeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").includeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithfilter").maxResults(2)          | 3      | false           | true
+        options                                                                                                     | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter")                           | 3      | false           | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResults(2)          | 3      | false           | true
     }
 
     @Unroll
@@ -187,10 +187,10 @@ class FileServiceAsyncAPITests extends APISpec {
         }.expectNextCount(limits - 1).verifyComplete()
 
         where:
-        options                                                                                                                   | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs")                                              | 3      | false           | false
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs").includeMetadata(true)                        | 3      | true            | false
-        new ListSharesOptions().prefix("fileserviceasyncapitestslistshareswithargs").includeMetadata(true).includeSnapshots(true) | 4      | true            | true
+        options                                                                                                                            | limits | includeMetadata | includeSnapshot
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs")                                                    | 3      | false           | false
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs").setIncludeMetadata(true)                           | 3      | true            | false
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs").setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
     def "Set and get properties"() {

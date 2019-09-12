@@ -135,13 +135,13 @@ public final class FileServiceAsyncClient {
     /**
      * Lists the shares in the Storage account that pass the options filter.
      *
-     * <p>Set starts with name filter using {@link ListSharesOptions#prefix(String) prefix} to filter shares that are
+     * <p>Set starts with name filter using {@link ListSharesOptions#setPrefix(String) prefix} to filter shares that are
      * listed.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * <p>Pass true to {@link ListSharesOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the shares.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeSnapshots(boolean) includeSnapshots} to have snapshots of the
+     * <p>Pass true to {@link ListSharesOptions#setIncludeSnapshots(boolean) includeSnapshots} to have snapshots of the
      * shares listed.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -173,16 +173,16 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout, Context context) {
-        final String prefix = (options != null) ? options.prefix() : null;
-        final Integer maxResults = (options != null) ? options.maxResults() : null;
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            if (options.includeMetadata()) {
+            if (options.isIncludeMetadata()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
             }
 
-            if (options.includeSnapshots()) {
+            if (options.isIncludeSnapshots()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
             }
         }

@@ -99,13 +99,13 @@ public final class FileServiceClient {
     /**
      * Lists the shares in the Storage account that pass the options filter.
      *
-     * <p>Set starts with name filter using {@link ListSharesOptions#prefix(String) prefix} to filter shares that are
+     * <p>Set starts with name filter using {@link ListSharesOptions#setPrefix(String) prefix} to filter shares that are
      * listed.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * <p>Pass true to {@link ListSharesOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the shares.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeSnapshots(boolean) includeSnapshots} to have snapshots of the
+     * <p>Pass true to {@link ListSharesOptions#setIncludeSnapshots(boolean) includeSnapshots} to have snapshots of the
      * shares listed.</p>
      *
      * <p><strong>Code Samples</strong></p>

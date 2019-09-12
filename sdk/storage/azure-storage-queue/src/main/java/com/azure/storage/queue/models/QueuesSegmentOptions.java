@@ -19,7 +19,7 @@ import com.azure.storage.queue.QueueServiceClient;
  *         returned in a single page.
  *     </li>
  *     <li>
- *         Setting {@link QueuesSegmentOptions#getIncludeMetadata() includeMetadata} to true will include the metadata of
+ *         Setting {@link QueuesSegmentOptions#isIncludeMetadata() includeMetadata} to true will include the metadata of
  *         each {@link QueueItem queue}, if false {@link QueueItem#getMetadata()}  metadata} for each queue will be {@code null}.
  *     </li>
  * </ul>
@@ -37,7 +37,7 @@ public final class QueuesSegmentOptions {
     /**
      * @return the status of including metadata when listing queues
      */
-    public boolean getIncludeMetadata() {
+    public boolean isIncludeMetadata() {
         return includeMetadata;
     }
 

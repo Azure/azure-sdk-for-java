@@ -141,7 +141,7 @@ public class FileServiceJavaDocCodeSamples {
     public void listSharesWithPrefix() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context1
-        fileServiceClient.listShares(new ListSharesOptions().prefix("azure"), Duration.ofSeconds(1),
+        fileServiceClient.listShares(new ListSharesOptions().setPrefix("azure"), Duration.ofSeconds(1),
             new Context(key1, value1)).forEach(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName())
         );
@@ -155,8 +155,8 @@ public class FileServiceJavaDocCodeSamples {
     public void listSharesWithMetadataAndSnapshot() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2
-        fileServiceClient.listShares(new ListSharesOptions().includeMetadata(true)
-            .includeSnapshots(true), Duration.ofSeconds(1), new Context(key1, value1)).forEach(
+        fileServiceClient.listShares(new ListSharesOptions().setIncludeMetadata(true)
+            .setIncludeSnapshots(true), Duration.ofSeconds(1), new Context(key1, value1)).forEach(
                 shareItem -> System.out.printf("Share %s exists in the account", shareItem.getName())
         );
         // END: com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2

@@ -62,7 +62,7 @@ public final class AccountSASResourceType {
     /**
      * @return the access status for service level APIs.
      */
-    public boolean getService() {
+    public boolean isService() {
         return service;
     }
 
@@ -81,7 +81,7 @@ public final class AccountSASResourceType {
      * @return the access status for container level APIs, this grants access to Blob Containers, Tables, Queues,
      * and File Shares.
      */
-    public boolean getContainer() {
+    public boolean isContainer() {
         return container;
     }
 
