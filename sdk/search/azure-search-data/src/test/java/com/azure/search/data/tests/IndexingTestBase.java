@@ -143,14 +143,14 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     protected void assertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
         Assert.assertEquals(result.key(), key);
         Assert.assertEquals(result.statusCode(), statusCode);
-        Assert.assertEquals(result.succeeded(), true);
+        Assert.assertTrue(result.succeeded());
     }
 
     protected void assertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
         Assert.assertEquals(result.key(), key);
         Assert.assertEquals(result.statusCode(), statusCode);
         Assert.assertEquals(result.errorMessage(), errorMessage);
-        Assert.assertEquals(result.succeeded(), false);
+        Assert.assertFalse(result.succeeded());
     }
 
     public abstract void indexWithInvalidDocumentThrowsException();

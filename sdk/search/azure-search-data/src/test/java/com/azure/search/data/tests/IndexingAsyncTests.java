@@ -56,8 +56,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Hotel hotel1 = prepareStaticallyTypedHotel("1");
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
         Hotel hotel3 = prepareStaticallyTypedHotel("3");
-        Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel");
-        Hotel randomHotel = prepareStaticallyTypedHotel("randomId");
+        Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
+        Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexAction uploadAction = new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
 
@@ -129,8 +129,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Document hotel1 = prepareDynamicallyTypedHotel("1");
         Document hotel2 = prepareDynamicallyTypedHotel("2");
         Document hotel3 = prepareDynamicallyTypedHotel("3");
-        Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel");
-        Document randomHotel = prepareDynamicallyTypedHotel("randomId");
+        Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // merging with a non existing document
+        Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexAction uploadAction = new IndexAction()
             .actionType(IndexActionType.UPLOAD)
