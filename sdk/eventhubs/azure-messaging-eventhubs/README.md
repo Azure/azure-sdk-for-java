@@ -25,6 +25,8 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
+  = [Default Http Client](#defailt-http-client)
+  - [Configuring Http Clients](#configuring-http-clients)
   - [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
   - [Create an Event Hub client using a connection string](#create-an-event-hub-client-using-a-connection-string)
   - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
