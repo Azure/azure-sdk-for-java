@@ -314,7 +314,7 @@ public final class ContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.ContainerClient.delete}
      */
-    public void setDelete() {
+    public void delete() {
         deleteWithResponse(null, null, Context.NONE);
     }
 

@@ -73,7 +73,7 @@ class APISpec extends Specification {
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
                 Duration.ofSeconds(30), Context.NONE).each {
-                queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
+                queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
             }
         }
     }

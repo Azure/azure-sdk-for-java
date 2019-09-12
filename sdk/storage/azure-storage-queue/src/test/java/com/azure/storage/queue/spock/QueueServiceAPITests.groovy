@@ -125,10 +125,10 @@ class QueueServiceAPITests extends APISpec {
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
-            QueueItem queue = new QueueItem().name(queueName + version)
-                .metadata(Collections.singletonMap("metadata" + version, "value" + version))
+            QueueItem queue = new QueueItem().setName(queueName + version)
+                .setMetadata(Collections.singletonMap("metadata" + version, "value" + version))
             testQueues.add(queue)
-            primaryQueueServiceClient.createQueueWithResponse(queue.name(), queue.metadata(), null, null)
+            primaryQueueServiceClient.createQueueWithResponse(queue.getName(), queue.getMetadata(), null, null)
         }
 
         when:
@@ -136,7 +136,7 @@ class QueueServiceAPITests extends APISpec {
         then:
         queueListIter.each {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
-            primaryQueueServiceClient.deleteQueue(it.name())
+            primaryQueueServiceClient.deleteQueue(it.getName())
         }
         testQueues.size() == 0
 
@@ -158,20 +158,20 @@ class QueueServiceAPITests extends APISpec {
     def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceClient.getProperties()
-        def retentionPolicy = new RetentionPolicy().enabled(true)
-            .days(3)
-        def logging = new Logging().version("1.0")
-            .delete(true)
-            .write(true)
-            .retentionPolicy(retentionPolicy)
-        def metrics = new Metrics().enabled(true)
-            .includeAPIs(false)
-            .retentionPolicy(retentionPolicy)
+        def retentionPolicy = new RetentionPolicy().setEnabled(true)
+            .setDays(3)
+        def logging = new Logging().setVersion("1.0")
+            .setDelete(true)
+            .setWrite(true)
+            .setRetentionPolicy(retentionPolicy)
+        def metrics = new Metrics().setEnabled(true)
+            .setIncludeAPIs(false)
+            .setRetentionPolicy(retentionPolicy)
             .setVersion("1.0")
-        def updatedProperties = new StorageServiceProperties().logging(logging)
-            .hourMetrics(metrics)
-            .minuteMetrics(metrics)
-            .cors(new ArrayList<>())
+        def updatedProperties = new StorageServiceProperties().setLogging(logging)
+            .setHourMetrics(metrics)
+            .setMinuteMetrics(metrics)
+            .setCors(new ArrayList<>())
 
         when:
         def getResponseBefore = primaryQueueServiceClient.getProperties()

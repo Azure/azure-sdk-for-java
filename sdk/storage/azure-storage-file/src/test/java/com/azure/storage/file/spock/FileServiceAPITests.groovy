@@ -22,10 +22,10 @@ class FileServiceAPITests extends APISpec {
     static def testMetadata = Collections.singletonMap("testmetadata", "value")
     static def reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties"
     static def TOO_MANY_RULES = new ArrayList<>()
-    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new CorsRule().allowedHeaders(reallyLongString))
-    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new CorsRule().exposedHeaders(reallyLongString))
-    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new CorsRule().allowedOrigins(reallyLongString))
-    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new CorsRule().allowedMethods("NOTAREALHTTPMETHOD"))
+    static def INVALID_ALLOWED_HEADER = Collections.singletonList(new CorsRule().setAllowedHeaders(reallyLongString))
+    static def INVALID_EXPOSED_HEADER = Collections.singletonList(new CorsRule().setExposedHeaders(reallyLongString))
+    static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new CorsRule().setAllowedOrigins(reallyLongString))
+    static def INVALID_ALLOWED_METHOD = Collections.singletonList(new CorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
@@ -37,7 +37,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl().toString()
@@ -110,13 +110,13 @@ class FileServiceAPITests extends APISpec {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
-            ShareItem share = new ShareItem().properties(new ShareProperties().quota(i + 1)).name(shareName + i)
+            ShareItem share = new ShareItem().setProperties(new ShareProperties().setQuota(i + 1)).setName(shareName + i)
             if (i == 2) {
-                share.metadata(testMetadata)
+                share.setMetadata(testMetadata)
             }
 
             testShares.add(share)
-            primaryFileServiceClient.createShareWithResponse(share.name(), share.metadata(), share.properties().quota(), null, null)
+            primaryFileServiceClient.createShareWithResponse(share.getName(), share.getMetadata(), share.getProperties().getQuota(), null, null)
         }
 
         when:
@@ -141,13 +141,13 @@ class FileServiceAPITests extends APISpec {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
-            ShareItem share = new ShareItem().name(shareName + i).properties(new ShareProperties().quota(2))
-                .metadata(testMetadata)
-            def shareClient = primaryFileServiceClient.getShareClient(share.name())
-            shareClient.createWithResponse(share.metadata(), share.properties().quota(), null, null)
+            ShareItem share = new ShareItem().setName(shareName + i).setProperties(new ShareProperties().setQuota(2))
+                .setMetadata(testMetadata)
+            def shareClient = primaryFileServiceClient.getShareClient(share.getName())
+            shareClient.createWithResponse(share.getMetadata(), share.getProperties().getQuota(), null, null)
             if (i == 2) {
                 def snapshot = shareClient.createSnapshot().getSnapshot()
-                testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(snapshot))
+                testShares.add(new ShareItem().setName(share.getName()).setMetadata(share.getMetadata()).setProperties(share.getProperties()).setSnapshot(snapshot))
             }
             testShares.add(share)
         }
@@ -171,11 +171,11 @@ class FileServiceAPITests extends APISpec {
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceClient.getProperties()
-        def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
-        def metrics = new Metrics().enabled(true).includeAPIs(false)
-            .retentionPolicy(retentionPolicy).setVersion("1.0")
-        def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
-            .minuteMetrics(metrics).cors(new ArrayList<>())
+        def retentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new Metrics().setEnabled(true).setIncludeAPIs(false)
+            .setRetentionPolicy(retentionPolicy).setVersion("1.0")
+        def updatedProperties = new FileServiceProperties().setHourMetrics(metrics)
+            .setMinuteMetrics(metrics).setCors(new ArrayList<>())
 
         when:
         def getPropertiesBeforeResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null)
@@ -193,13 +193,13 @@ class FileServiceAPITests extends APISpec {
     @Unroll
     def "Set and get properties with invalid args"() {
         given:
-        def retentionPolicy = new RetentionPolicy().enabled(true).days(3)
-        def metrics = new Metrics().enabled(true).includeAPIs(false)
-            .retentionPolicy(retentionPolicy).setVersion("1.0")
+        def retentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new Metrics().setEnabled(true).setIncludeAPIs(false)
+            .setRetentionPolicy(retentionPolicy).setVersion("1.0")
 
         when:
-        def updatedProperties = new FileServiceProperties().hourMetrics(metrics)
-            .minuteMetrics(metrics).cors(coreList)
+        def updatedProperties = new FileServiceProperties().setHourMetrics(metrics)
+            .setMinuteMetrics(metrics).setCors(coreList)
         primaryFileServiceClient.setProperties(updatedProperties)
 
         then:

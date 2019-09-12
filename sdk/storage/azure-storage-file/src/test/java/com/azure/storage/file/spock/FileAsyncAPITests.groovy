@@ -46,15 +46,15 @@ class FileAsyncAPITests extends APISpec {
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHTTPHeaders().fileContentLanguage("en")
-            .fileContentType("application/octet-stream")
+        httpHeaders = new FileHTTPHeaders().setFileContentLanguage("en")
+            .setFileContentType("application/octet-stream")
         smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get file URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
@@ -87,7 +87,7 @@ class FileAsyncAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata))
@@ -507,7 +507,7 @@ class FileAsyncAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null))

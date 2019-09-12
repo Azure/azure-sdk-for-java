@@ -115,7 +115,7 @@ public class FileTransferExample {
         /*
          * Clean up the local files and storage container.
          */
-        containerClient.setDelete();
+        containerClient.delete();
         Files.deleteIfExists(largeFile.toPath());
         Files.deleteIfExists(downloadFile.toPath());
     }

@@ -50,15 +50,15 @@ class FileAPITests extends APISpec {
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHTTPHeaders().fileContentLanguage("en")
-            .fileContentType("application/octet-stream")
+        httpHeaders = new FileHTTPHeaders().setFileContentLanguage("en")
+            .setFileContentType("application/octet-stream")
         smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL) as EnumSet<NtfsFileAttributes>)
     }
 
     def "Get file URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
@@ -88,7 +88,7 @@ class FileAPITests extends APISpec {
         // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null, null)
 
         then:
@@ -492,7 +492,7 @@ class FileAPITests extends APISpec {
         when:
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null, null, null)
         then:

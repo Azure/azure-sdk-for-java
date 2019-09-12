@@ -84,7 +84,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Clean up the container and blob.
          */
-        blobClient.setDelete();
-        containerClient.setDelete();
+        blobClient.delete();
+        containerClient.delete();
     }
 }

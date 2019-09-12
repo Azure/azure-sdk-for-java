@@ -38,7 +38,7 @@ class ShareAPITests extends APISpec {
 
     def "Get share URL"() {
         given:
-        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
 
         when:
@@ -171,8 +171,8 @@ class ShareAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        testMetadata.equals(getPropertiesResponse.getValue().metadata())
-        getPropertiesResponse.getValue().quota() == 1L
+        testMetadata.equals(getPropertiesResponse.getValue().getMetadata())
+        getPropertiesResponse.getValue().getQuota() == 1L
     }
 
     def "Get properties error"() {
@@ -194,9 +194,9 @@ class ShareAPITests extends APISpec {
         def getQuotaAfterResponse = primaryShareClient.getProperties()
 
         then:
-        getQuotaBeforeResponse.quota() == 1
+        getQuotaBeforeResponse.getQuota() == 1
         FileTestHelper.assertResponseStatusCode(setQuotaResponse, 200)
-        getQuotaAfterResponse.quota() == 2
+        getQuotaAfterResponse.getQuota() == 2
     }
 
     def "Set quota error"() {
@@ -218,9 +218,9 @@ class ShareAPITests extends APISpec {
         def getMetadataAfterResponse = primaryShareClient.getProperties()
 
         then:
-        testMetadata.equals(getMetadataBeforeResponse.metadata())
+        testMetadata.equals(getMetadataBeforeResponse.getMetadata())
         FileTestHelper.assertResponseStatusCode(setMetadataResponse, 200)
-        metadataAfterSet.equals(getMetadataAfterResponse.metadata())
+        metadataAfterSet.equals(getMetadataAfterResponse.getMetadata())
     }
 
     def "Set metadata error"() {
@@ -255,7 +255,7 @@ class ShareAPITests extends APISpec {
         def filePermissionKey = primaryShareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryShareClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null, null, null), 201)
@@ -317,7 +317,7 @@ class ShareAPITests extends APISpec {
         def filePermissionKey = primaryShareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
 
         expect:
         FileTestHelper.assertResponseStatusCode(
@@ -368,7 +368,7 @@ class ShareAPITests extends APISpec {
         fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
         "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
     }
 
@@ -434,7 +434,7 @@ class ShareAPITests extends APISpec {
         def permissionKey = primaryShareClient.createPermission(filePermission)
 
         when:
-        def permission = primaryShareClient.getPermission(permissionKey)
+        def permission = primaryShareClient.setPermission(permissionKey)
 
         then:
         permission == filePermission
@@ -448,7 +448,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.createPermissionWithResponse("abcde", null)
         then:
         def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.FILE_INVALID_PERMISSION)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.fromString("FileInvalidPermission"))
     }
 
     def "Get permission error"() {

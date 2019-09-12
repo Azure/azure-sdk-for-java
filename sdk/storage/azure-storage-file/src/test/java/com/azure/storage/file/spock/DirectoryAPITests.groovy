@@ -123,7 +123,7 @@ class DirectoryAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         when:
         def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
 
@@ -217,7 +217,7 @@ class DirectoryAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         primaryDirectoryClient.create()
         def resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null, null)
 
@@ -451,7 +451,7 @@ class DirectoryAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null, null, null), 201)
@@ -533,11 +533,11 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
 
         where:
-        fileName    | maxSize | httpHeaders                                          | metadata                              | errMsg
-        "testfile:" | 1024    | null                                                 | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null                                                 | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
+        "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
         "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null                                                 | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
+        "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 

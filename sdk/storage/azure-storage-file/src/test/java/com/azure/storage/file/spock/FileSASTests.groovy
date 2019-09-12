@@ -246,9 +246,9 @@ class FileSASTests extends APISpec {
     def "ShareSAS network test identifier permissions create delete"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
-            .id("0000")
-            .accessPolicy(new AccessPolicy().permission("rcwdl")
-                .expiry(getUTCNow().plusDays(1)))
+            .setId("0000")
+            .setAccessPolicy(new AccessPolicy().setPermission("rcwdl")
+                .setExpiry(getUTCNow().plusDays(1)))
 
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
@@ -263,7 +263,7 @@ class FileSASTests extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         when:
-        String sasWithId = primaryShareClient.generateSAS(identifier.id())
+        String sasWithId = primaryShareClient.generateSAS(identifier.getId())
 
         ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryShareClient.getShareUrl().toString())
@@ -296,9 +296,9 @@ class FileSASTests extends APISpec {
             .setService(true)
             .setObject(true)
         def permissions = new AccountSASPermission()
-            .read(true)
-            .create(true)
-            .delete(true)
+            .setRead(true)
+            .setCreate(true)
+            .setDelete(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:

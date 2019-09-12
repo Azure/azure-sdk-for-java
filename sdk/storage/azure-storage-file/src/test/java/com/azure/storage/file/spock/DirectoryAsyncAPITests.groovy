@@ -43,7 +43,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl().toString()
@@ -123,7 +123,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(smbProperties, null, null))
             .assertNext {
@@ -209,7 +209,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(smbProperties, null))
@@ -450,7 +450,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def filePermissionKey = shareClient.createPermission(filePermission)
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
-            .getFilePermissionKey(filePermissionKey)
+            .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.create().block()
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null))
@@ -513,7 +513,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("txt")
+            .setFileContentType("txt")
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
 
@@ -542,7 +542,7 @@ class DirectoryAsyncAPITests extends APISpec {
         fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
         "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }

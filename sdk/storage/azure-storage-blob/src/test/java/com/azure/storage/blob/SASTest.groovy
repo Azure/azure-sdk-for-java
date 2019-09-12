@@ -469,7 +469,7 @@ class SASTest extends APISpec {
         def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
-        client.setDelete()
+        client.delete()
 
         then:
         thrown(StorageException)

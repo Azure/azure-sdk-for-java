@@ -1310,7 +1310,7 @@ class BlobAPITest extends APISpec {
         e.getStatusCode() == 412
 
         cleanup:
-        cu2.setDelete()
+        cu2.delete()
     }
 
     def "Abort copy"() {
@@ -1377,7 +1377,7 @@ class BlobAPITest extends APISpec {
         then:
         bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().setLeaseId(leaseID), null, null).getStatusCode() == 204
         // Normal test cleanup will not clean up containers in the alternate account.
-        cu2.setDelete()
+        cu2.delete()
     }
 
     def "Copy error"() {
@@ -1668,7 +1668,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlockBlobClient(generateBlobName())
 
         when:
-        bc.setDelete()
+        bc.delete()
 
         then:
         thrown(StorageException)
@@ -1693,7 +1693,7 @@ class BlobAPITest extends APISpec {
         cc.listBlobsFlat().iterator().next().getProperties().getAccessTier() == tier
 
         cleanup:
-        cc.setDelete()
+        cc.delete()
 
         where:
         tier               | _
@@ -1718,7 +1718,7 @@ class BlobAPITest extends APISpec {
         cc.listBlobsFlat().iterator().next().getProperties().getAccessTier() == tier
 
         cleanup:
-        cc.setDelete()
+        cc.delete()
 
         where:
         tier           | _
@@ -1744,7 +1744,7 @@ class BlobAPITest extends APISpec {
         statusCode == 200 || statusCode == 202
 
         cleanup:
-        cc.setDelete()
+        cc.delete()
     }
 
     def "Set tier inferred"() {
@@ -1805,7 +1805,7 @@ class BlobAPITest extends APISpec {
         e.getErrorCode() == StorageErrorCode.INVALID_HEADER_VALUE
 
         cleanup:
-        cc.setDelete()
+        cc.delete()
     }
 
     def "Set tier illegal argument"() {
@@ -1831,7 +1831,7 @@ class BlobAPITest extends APISpec {
         notThrown(StorageException)
 
         cleanup:
-        cc.setDelete()
+        cc.delete()
     }
 
     def "Set tier lease fail"() {
@@ -1869,7 +1869,7 @@ class BlobAPITest extends APISpec {
     def "Undelete"() {
         setup:
         enableSoftDelete()
-        bc.setDelete()
+        bc.delete()
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
@@ -1887,7 +1887,7 @@ class BlobAPITest extends APISpec {
     def "Undelete min"() {
         setup:
         enableSoftDelete()
-        bc.setDelete()
+        bc.delete()
 
         expect:
         bc.undeleteWithResponse(null, null).getStatusCode() == 200
@@ -1897,7 +1897,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlockBlobClient(generateBlobName())
 
         when:
-        bc.unsetDelete()
+        bc.undelete()
 
         then:
         thrown(StorageException)

@@ -129,7 +129,7 @@ class ServiceAPITest extends APISpec {
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
-        containers.each { container -> container.setDelete() }
+        containers.each { container -> container.delete() }
     }
 
     def "List containers error"() {
@@ -157,7 +157,7 @@ class ServiceAPITest extends APISpec {
         notThrown(Exception)
 
         cleanup:
-        containers.each { container -> container.setDelete() }
+        containers.each { container -> container.delete() }
     }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {

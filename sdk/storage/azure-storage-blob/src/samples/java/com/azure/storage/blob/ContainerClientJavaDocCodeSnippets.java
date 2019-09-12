@@ -223,12 +223,12 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setDelete()}
+     * Code snippet for {@link ContainerClient#delete()}
      */
     public void setDelete() {
         // BEGIN: com.azure.storage.blob.ContainerClient.delete
         try {
-            client.setDelete();
+            client.delete();
             System.out.printf("Delete completed%n");
         } catch (StorageException error) {
             if (error.getErrorCode().equals(StorageErrorCode.CONTAINER_NOT_FOUND)) {

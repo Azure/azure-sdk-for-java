@@ -76,7 +76,7 @@ class APISpec extends Specification {
                 .buildClient()
             cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase()),
             Duration.ofSeconds(30), null).each {
-                cleanupFileServiceClient.deleteShare(it.name())
+                cleanupFileServiceClient.deleteShare(it.getName())
             }
         }
     }
