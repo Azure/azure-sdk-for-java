@@ -36,8 +36,6 @@ import java.util.stream.Collectors;
 import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 
-//FIXME beforeClass times out inconsistently
-@Ignore
 public class ParallelDocumentQueryTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
     private CosmosContainer createdCollection;
@@ -62,8 +60,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         };
     }
 
-    //FIXME test times out inconsistently
-    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";

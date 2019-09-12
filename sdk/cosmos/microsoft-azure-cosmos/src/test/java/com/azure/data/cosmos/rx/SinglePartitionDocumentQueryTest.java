@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// FIXME beforeclass times out inconsistently
-@Ignore
 public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;
