@@ -5,10 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.apache.qpid.proton.Proton;
@@ -27,7 +25,6 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,12 +61,11 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
-
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID)
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
+            .setPartitionId(PARTITION_ID)
             .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
+
+        client = createBuilder().buildAsyncClient();
         producer = client.createProducer(producerOptions);
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }

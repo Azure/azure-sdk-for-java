@@ -27,7 +27,7 @@ import java.time.Duration;
  */
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
-    protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().tryTimeout(TIMEOUT);
+    protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
@@ -44,7 +44,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @Before
     public void setupTest() {
-        logger.info("[{}]: Performing integration test set-up.", testName());
+        logger.info("[{}]: Performing integration test set-up.", getTestName());
 
         skipIfNotRecordMode();
 
@@ -58,7 +58,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @After
     public void teardownTest() {
-        logger.info("[{}]: Performing test clean-up.", testName());
+        logger.info("[{}]: Performing test clean-up.", getTestName());
         afterTest();
 
         if (scheduler != null) {
@@ -122,7 +122,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 closeable.close();
             } catch (IOException error) {
                 logger.error(String.format("[%s]: %s didn't close properly.",
-                    testName(), closeable.getClass().getSimpleName()), error);
+                    getTestName(), closeable.getClass().getSimpleName()), error);
             }
         }
     }

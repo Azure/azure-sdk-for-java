@@ -3,18 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -23,13 +17,11 @@ import org.junit.rules.TestName;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -42,8 +34,8 @@ import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEED
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 
 /**
- * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubAsyncConsumer} in
- * other scenarios.
+ * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubAsyncConsumer}
+ * in other scenarios.
  *
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
@@ -70,14 +62,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
-        final ConnectionOptions connectionOptions = new ConnectionOptions(properties.getEndpoint().getHost(),
-            properties.getEventHubName(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
-            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder().buildAsyncClient();
     }
 
     @Override
@@ -111,11 +96,11 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
                 final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
                     logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId);
                 }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        countDownLatch.countDown();
-                    });
+                    Assert.fail("An error should not have occurred:" + error.toString());
+                }, () -> {
+                    logger.info("Disposing of consumer now that the receive is complete.");
+                    countDownLatch.countDown();
+                });
 
                 subscriptions.add(subscription);
 

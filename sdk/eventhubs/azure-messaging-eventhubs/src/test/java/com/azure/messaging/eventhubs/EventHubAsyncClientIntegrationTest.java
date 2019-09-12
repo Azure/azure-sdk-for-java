@@ -4,11 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -27,7 +24,6 @@ import reactor.test.StepVerifier;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -45,6 +41,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @RunWith(Parameterized.class)
 public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
+    private final TransportType transportType;
+    private EventHubClientBuilder builder;
 
     @Parameterized.Parameters(name = "{index}: transportType={0}")
     public static Iterable<Object> getTransportTypes() {
@@ -63,8 +61,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     public EventHubAsyncClientIntegrationTest(TransportType transportType) {
         super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
-
-        setTransportType(transportType);
+        this.transportType = transportType;
     }
 
     @Override
@@ -74,11 +71,9 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final ConnectionOptions connectionOptions = getConnectionOptions();
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
+        builder = createBuilder()
+            .transportType(transportType);
+        client = builder.buildAsyncClient();
 
         setupEventTestData(client);
     }
@@ -131,7 +126,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
         final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()), null);
+            clients[i] = builder.buildAsyncClient();
         }
 
         final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().setPartitionId(PARTITION_ID));
@@ -150,10 +145,10 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 }).take(numberOfEvents).subscribe(event -> {
                     logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()), () -> {
-                        long count = countDownLatch.getCount();
-                        logger.info("Finished consuming events. Counting down: {}", count);
-                        countDownLatch.countDown();
-                    });
+                    long count = countDownLatch.getCount();
+                    logger.info("Finished consuming events. Counting down: {}", count);
+                    countDownLatch.countDown();
+                });
 
                 subscriptions.add(subscription);
             }

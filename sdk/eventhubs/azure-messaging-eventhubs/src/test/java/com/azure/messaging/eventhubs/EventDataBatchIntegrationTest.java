@@ -3,11 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
@@ -22,7 +20,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -57,10 +54,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
     }
 
@@ -92,7 +86,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition key.
+     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition
+     * key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
@@ -158,11 +153,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                             event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
                 }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        dispose(consumer);
-                    });
+                    Assert.fail("An error should not have occurred:" + error.toString());
+                }, () -> {
+                    logger.info("Disposing of consumer now that the receive is complete.");
+                    dispose(consumer);
+                });
             }).collectList().block(TIMEOUT);
 
             Assert.assertNotNull(consumerSubscriptions);
