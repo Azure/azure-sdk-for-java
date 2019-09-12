@@ -743,7 +743,7 @@ public final class ContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under the given directory
-     * (prefix). Directories will have {@link BlobItem#getIsPrefix()} set to true.
+     * (prefix). Directories will have {@link BlobItem#isPrefix()} set to true.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
@@ -778,7 +778,7 @@ public final class ContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under the given prefix
-     * (directory). Directories will have {@link BlobItem#getIsPrefix()} set to true.
+     * (directory). Directories will have {@link BlobItem#isPrefix()} set to true.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the

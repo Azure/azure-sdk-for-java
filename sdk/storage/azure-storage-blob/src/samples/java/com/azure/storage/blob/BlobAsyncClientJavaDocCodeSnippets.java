@@ -375,9 +375,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.setHTTPHeadersWithResponse(new BlobHTTPHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"), accessConditions).subscribe(
-            response ->
-                System.out.printf("Set HTTP headers completed with status %d%n",
-                    response.getStatusCode()));
+                response ->
+                    System.out.printf("Set HTTP headers completed with status %d%n",
+                        response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
     }
 
