@@ -8,10 +8,10 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.*;
+
+import java.text.ParseException;
+
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
@@ -33,6 +33,7 @@ import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -45,6 +46,148 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Long expected = 0L;
 
         StepVerifier.create(result).expectNext(expected).expectComplete().verify();
+    }
+
+    @Override
+    public void canIndexStaticallyTypedDocuments() throws ParseException {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
+        Hotel hotel1 = prepareStaticallyTypedHotel("1");
+        Hotel hotel2 = prepareStaticallyTypedHotel("2");
+        Hotel hotel3 = prepareStaticallyTypedHotel("3");
+        Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
+        Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
+
+        IndexAction uploadAction = new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
+
+        IndexAction deleteAction = new IndexAction()
+            .actionType(IndexActionType.DELETE)
+            .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
+        IndexAction mergeNonExistingAction = new IndexAction()
+            .actionType(IndexActionType.MERGE)
+            .additionalProperties(jsonApi.convertObjectToType(nonExistingHotel, Map.class));
+        IndexAction mergeOrUploadAction = new IndexAction()
+            .actionType(IndexActionType.MERGE_OR_UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel3, Map.class));
+        IndexAction uploadAction2 = new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(hotel2, Map.class));
+
+        IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
+            uploadAction,
+            deleteAction,
+            mergeNonExistingAction,
+            mergeOrUploadAction,
+            uploadAction2
+        ));
+
+        Mono<DocumentIndexResult> response = client.index(indexBatch);
+
+        StepVerifier.create(response)
+            .expectNextMatches(documentIndexResult -> {
+                List<IndexingResult> indexingResults = documentIndexResult.results();
+
+                assertSuccessfulIndexResult(indexingResults.get(0), "1", 201);
+                assertSuccessfulIndexResult(indexingResults.get(1), "randomId", 200);
+                assertFailedIndexResult(indexingResults.get(2), "nonExistingHotel", 404, "Document not found.");
+                assertSuccessfulIndexResult(indexingResults.get(3), "3", 201);
+                assertSuccessfulIndexResult(indexingResults.get(4), "2", 201);
+
+                return indexingResults.size() == indexBatch.actions().size();
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getDocument(hotel1.hotelId()))
+            .expectNextMatches(result -> {
+                Hotel actual = result.as(Hotel.class);
+                return actual.equals(hotel1);
+            })
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(client.getDocument(hotel2.hotelId()))
+            .expectNextMatches(result -> {
+                Hotel actual = result.as(Hotel.class);
+                return actual.equals(hotel2);
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getDocument(hotel3.hotelId()))
+            .expectNextMatches(result -> {
+                Hotel actual = result.as(Hotel.class);
+                return actual.equals(hotel3);
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canIndexDynamicDocuments() {
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
+        Document hotel1 = prepareDynamicallyTypedHotel("1");
+        Document hotel2 = prepareDynamicallyTypedHotel("2");
+        Document hotel3 = prepareDynamicallyTypedHotel("3");
+        Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // merging with a non existing document
+        Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+
+        IndexAction uploadAction = new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(hotel1);
+
+        IndexAction deleteAction = new IndexAction()
+            .actionType(IndexActionType.DELETE)
+            .additionalProperties(randomHotel);
+
+        IndexAction mergeNonExistingAction = new IndexAction()
+            .actionType(IndexActionType.MERGE)
+            .additionalProperties(nonExistingHotel);
+
+        IndexAction mergeOrUploadAction = new IndexAction()
+            .actionType(IndexActionType.MERGE_OR_UPLOAD)
+            .additionalProperties(hotel3);
+
+        IndexAction uploadAction2 = new IndexAction()
+            .actionType(IndexActionType.UPLOAD)
+            .additionalProperties(hotel2);
+
+        IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
+            uploadAction,
+            deleteAction,
+            mergeNonExistingAction,
+            mergeOrUploadAction,
+            uploadAction2
+        ));
+
+        Mono<DocumentIndexResult> response = client.index(indexBatch);
+
+        StepVerifier.create(response)
+            .expectNextMatches(documentIndexResult -> {
+                List<IndexingResult> results = documentIndexResult.results();
+
+                assertSuccessfulIndexResult(results.get(0), "1", 201);
+                assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+                assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
+                assertSuccessfulIndexResult(results.get(3), "3", 201);
+                assertSuccessfulIndexResult(results.get(4), "2", 201);
+
+                return results.size() == indexBatch.actions().size();
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.getDocument(hotel1.get("HotelId").toString()))
+            .expectNext(hotel1)
+            .verifyComplete();
+
+        StepVerifier.create(client.getDocument(hotel2.get("HotelId").toString()))
+            .expectNext(hotel2)
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(client.getDocument(hotel3.get("HotelId").toString()))
+            .expectNext(hotel3)
+            .verifyComplete();
     }
 
     @Override
