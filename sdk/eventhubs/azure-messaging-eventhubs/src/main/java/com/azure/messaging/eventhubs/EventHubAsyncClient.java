@@ -16,13 +16,11 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
-import com.azure.messaging.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
@@ -34,9 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -346,35 +342,5 @@ public class EventHubAsyncClient implements Closeable {
 
     String getEventHubName() {
         return this.eventHubName;
-    }
-
-    static class ResponseMapper implements AmqpResponseMapper {
-        @Override
-        public EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
-            return new EventHubProperties(
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
-                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
-                (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
-        }
-
-        @Override
-        public PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
-            return new PartitionProperties(
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
-                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-                (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-                (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-                ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
-                (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
-        }
-
-        @Override
-        public <T> T deserialize(Map<?, ?> amqpBody, Class<T> deserializedType) {
-            if (deserializedType == PartitionProperties.class) {
-
-            }
-            return null;
-        }
     }
 }
