@@ -51,9 +51,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobAsyncClient#asBlockBlobAsyncClient()}, or via the method {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}.
- * This class does not hold any state about a particular blob, but is instead a convenient way of sending appropriate
- * requests to the resource on the service.
+ * BlobAsyncClient#asBlockBlobAsyncClient()}, or via the method
+ * {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}. This class does not hold any state about a particular
+ * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
@@ -106,8 +106,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -132,8 +132,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * of a block blob's, use PutBlock and PutBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -214,10 +214,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with this method; the content of
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
-     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link BlockBlobAsyncClient#commitBlockList(List)},
-     * which this method uses internally. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
+     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information,
+     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -420,8 +420,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * @code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -444,8 +444,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -635,8 +635,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tierOp, null, headers,
-            accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(), context))
+            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tierOp, null,
+            headers, accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(),
+            context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }

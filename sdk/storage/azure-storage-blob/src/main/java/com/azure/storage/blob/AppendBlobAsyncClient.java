@@ -28,10 +28,11 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder#buildAppendBlobAsyncClient()},
- * via the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method {@link
- * ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold any state about a particular blob,
- * but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * Client to an append blob. It may only be instantiated through a
+ * {@link BlobClientBuilder#buildAppendBlobAsyncClient()}, via the method
+ * {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
+ * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold any state about a particular
+ * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
@@ -112,8 +113,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -132,8 +133,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *

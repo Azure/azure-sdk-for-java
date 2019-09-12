@@ -7,8 +7,8 @@ import com.azure.storage.blob.BlobServiceClient;
 
 /**
  * Defines options available to configure the behavior of a call to listContainersSegment on a {@link BlobServiceClient}
- * object. See the constructor for details on each of the options. Null may be passed in place of an object of this
- * type if no options are desirable.
+ * object. See the constructor for details on each of the options. Null may be passed in place of an object of this type
+ * if no options are desirable.
  */
 public final class ListContainersOptions {
 
@@ -74,6 +74,7 @@ public final class ListContainersOptions {
      *
      * @param maxResults The number of containers to return in a single response
      * @return the updated ListContainersOptions object
+     * @throws IllegalArgumentException If {@code maxResults} is less than or equal to {@code 0}.
      */
     public ListContainersOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {

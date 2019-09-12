@@ -351,8 +351,8 @@ public class FileAsyncClient {
                         .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                         .subscribeOn(Schedulers.elastic())
                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3, throwable -> throwable instanceof IOException ||
-                            throwable instanceof TimeoutException)))
+                        .retry(3, throwable -> throwable instanceof IOException
+                            || throwable instanceof TimeoutException)))
                 .then(), this::channelCleanUp);
     }
 
@@ -563,7 +563,8 @@ public class FileAsyncClient {
      */
     public Mono<FileInfo> setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission).flatMap(FluxUtil::toMono);
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -746,8 +747,8 @@ public class FileAsyncClient {
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
      * @return The {@link FileUploadInfo file upload info}
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
      * code 413 (Request Entity Too Large)
@@ -770,8 +771,8 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is
      * set to clear, the value of this header must be set to zero.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
@@ -887,8 +888,8 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
      * @return A response of {@link FileUploadInfo file upload info} that only contains headers and response status code
      */
     public Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset) {
@@ -1296,12 +1297,14 @@ public class FileAsyncClient {
         return new SimpleResponse<>(response, fileUploadInfo);
     }
 
-    private Response<FileUploadRangeFromURLInfo> uploadRangeFromURLResponse(final FilesUploadRangeFromURLResponse response) {
+    private Response<FileUploadRangeFromURLInfo> uploadRangeFromURLResponse(
+        final FilesUploadRangeFromURLResponse response) {
         FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Boolean isServerEncrypted = headers.isServerEncrypted();
-        FileUploadRangeFromURLInfo fileUploadRangeFromURLInfo = new FileUploadRangeFromURLInfo(eTag, lastModified, isServerEncrypted);
+        FileUploadRangeFromURLInfo fileUploadRangeFromURLInfo =
+            new FileUploadRangeFromURLInfo(eTag, lastModified, isServerEncrypted);
         return new SimpleResponse<>(response, fileUploadRangeFromURLInfo);
     }
 

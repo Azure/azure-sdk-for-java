@@ -7,15 +7,17 @@ import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class contains the properties about an append blob.
+ */
 public class AppendBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final byte[] contentMD5;
     private final boolean isServerEncrypted;
     private final String encryptionKeySha256;
-
-    private String blobAppendOffset;
-    private Integer blobCommittedBlockCount;
+    private final String blobAppendOffset;
+    private final Integer blobCommittedBlockCount;
 
     public AppendBlobItem(AppendBlobCreateHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
@@ -23,6 +25,8 @@ public class AppendBlobItem {
         this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+        this.blobAppendOffset = null;
+        this.blobCommittedBlockCount = null;
     }
 
     public AppendBlobItem(AppendBlobAppendBlockHeaders generatedHeaders) {

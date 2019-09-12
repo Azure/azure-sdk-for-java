@@ -608,7 +608,8 @@ public final class ContainerAsyncClient {
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException("ETag access conditions are not supported for this API."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
         /*
@@ -879,7 +880,8 @@ public final class ContainerAsyncClient {
         ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
         if (options.getDetails().getSnapshots()) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
         return postProcessResponse(Utility.applyOptionalTimeout(
@@ -926,7 +928,8 @@ public final class ContainerAsyncClient {
      */
     public Mono<Response<String>> acquireLeaseWithResponse(String proposedID, int duration,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> acquireLeaseWithResponse(proposedID, duration, modifiedAccessConditions, context));
+        return withContext(context ->
+            acquireLeaseWithResponse(proposedID, duration, modifiedAccessConditions, context));
     }
 
     Mono<Response<String>> acquireLeaseWithResponse(String proposedID, int duration,

@@ -52,9 +52,9 @@ public final class DownloadAsyncResponse {
     }
 
     /**
-     * Returns the response body which has been modified to enable reliably reading data if desired (if {@code
-     * options.maxRetryRequests > 0}. If retries are enabled, if a connection fails while reading, the stream will make
-     * additional requests to reestablish a connection and continue reading.
+     * Returns the response body which has been modified to enable reliably reading data if desired (if
+     * {@code options.maxRetryRequests > 0}. If retries are enabled, if a connection fails while reading, the stream
+     * will make additional requests to reestablish a connection and continue reading.
      *
      * @param options {@link ReliableDownloadOptions}
      * @return A {@link Flux} which emits the data as {@link ByteBuffer ByteBuffers}

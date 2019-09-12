@@ -193,5 +193,5 @@
 
   <!--  -->
   <suppress checks="LineLength" files="com.azure.storage.common.SR.java"/>
-  <suppress checks="LineLength" files=".*[/\\]storage[/\\](implementation|models)[/\\].*"/>
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*(implementation|models)[/\\].*"/>
 </suppressions>

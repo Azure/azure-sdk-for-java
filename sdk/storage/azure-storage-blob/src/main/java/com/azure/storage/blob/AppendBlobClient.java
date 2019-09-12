@@ -140,8 +140,8 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -159,8 +159,8 @@ public final class AppendBlobClient extends BlobClient {
     /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *

@@ -473,9 +473,6 @@ public class BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @return Emits the successful response.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download
-     * "Sample code for BlobAsyncClient.download")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
         boolean rangeGetContentMD5) {
@@ -564,8 +561,8 @@ public class BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
+    public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize,
+        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
         return withContext(context -> downloadToFile(filePath, range, blockSize, options, accessConditions,
             rangeGetContentMD5, context));
     }
@@ -993,7 +990,8 @@ public class BlobAsyncClient {
      */
     public Mono<Response<String>> acquireLeaseWithResponse(String proposedId, int duration,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> acquireLeaseWithResponse(proposedId, duration, modifiedAccessConditions, context));
+        return withContext(context ->
+            acquireLeaseWithResponse(proposedId, duration, modifiedAccessConditions, context));
     }
 
     Mono<Response<String>> acquireLeaseWithResponse(String proposedId, int duration,

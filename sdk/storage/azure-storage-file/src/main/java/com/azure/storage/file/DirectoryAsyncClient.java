@@ -455,17 +455,6 @@ public class DirectoryAsyncClient {
         return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, null, Context.NONE);
     }
 
-    /*
-     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
-     * DirectoryClient. Applies the given timeout to each Mono<DirectorysListFilesAndDirectoriesSegmentResponse> backing the PagedFlux.
-     *
-     * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
-     * @param maxResults Optional maximum number of files and/or directories to return per page.
-     *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive response emitting the listed files and directories, flattened.
-     */
     PagedFlux<FileRef> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<FileRef>>> retriever =
@@ -503,16 +492,6 @@ public class DirectoryAsyncClient {
         return listHandlesWithOptionalTimeout(maxResult, recursive, null, Context.NONE);
     }
 
-    /*
-     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
-     * DirectoryClient. Applies the given timeout to each Mono<DirectorysListHandlesResponse> backing the PagedFlux.
-     *
-     * @param maxResult Optional maximum number of results will return per page
-     * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive response emitting the listed handles, flattened.
-     */
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResult, boolean recursive, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
@@ -552,17 +531,6 @@ public class DirectoryAsyncClient {
         return forceCloseHandlesWithOptionalTimeout(handleId, recursive, null, Context.NONE);
     }
 
-    /*
-     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
-     * DirectoryClient. Applies the given timeout to each Mono<DirectorysForceCloseHandlesResponse> backing the PagedFlux.
-     *
-     * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
-     * @param maxResults Optional maximum number of files and/or directories to return per page.
-     *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive response emitting the listed forced closed handles, flattened.
-     */
     PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, boolean recursive, Duration timeout,
         Context context) {
         // TODO: Will change the return type to how many handles have been closed.

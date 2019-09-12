@@ -39,22 +39,22 @@ public final class RequestRetryOptions {
     /**
      * Configures how the {@link com.azure.core.http.HttpPipeline} should retry requests.
      *
-     * @param retryPolicyType A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of {@code
-     * null} accepts the default.
+     * @param retryPolicyType A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of
+     * {@code null} accepts the default.
      * @param maxTries Specifies the maximum number of attempts an operation will be tried before producing an error. A
      * value of {@code null} means that you accept our default policy. A value of 1 means 1 try and no retries.
-     * @param tryTimeout Indicates the maximum time allowed for any single try of an HTTP request. A value of {@code
-     * null} means that you accept our default. NOTE: When transferring large amounts of data, the default TryTimeout
-     * will probably not be sufficient. You should override this value based on the bandwidth available to the host
-     * machine and proximity to the Storage service. A good starting point may be something like (60 seconds per MB of
-     * anticipated-payload-size).
+     * @param tryTimeout Indicates the maximum time allowed for any single try of an HTTP request. A value of
+     * {@code null} means that you accept our default. NOTE: When transferring large amounts of data, the default
+     * TryTimeout will probably not be sufficient. You should override this value based on the bandwidth available to
+     * the host machine and proximity to the Storage service. A good starting point may be something like (60 seconds
+     * per MB of anticipated-payload-size).
      * @param retryDelayInMs Specifies the amount of delay to use before retrying an operation. A value of {@code null}
      * means you accept the default value. The delay increases (exponentially or linearly) with each retry up to a
      * maximum specified by MaxRetryDelay. If you specify {@code null}, then you must also specify {@code null} for
      * MaxRetryDelay.
-     * @param maxRetryDelayInMs Specifies the maximum delay allowed before retrying an operation. A value of {@code
-     * null} means you accept the default value. If you specify {@code null}, then you must also specify {@code null}
-     * for RetryDelay.
+     * @param maxRetryDelayInMs Specifies the maximum delay allowed before retrying an operation. A value of
+     * {@code null} means you accept the default value. If you specify {@code null}, then you must also specify
+     * {@code null} for RetryDelay.
      * @param secondaryHost If a secondaryHost is specified, retries will be tried against this host. If secondaryHost
      * is {@code null} (the default) then operations are not retried against another host. NOTE: Before setting this
      * field, make sure you understand the issues around reading stale and potentially-inconsistent data at

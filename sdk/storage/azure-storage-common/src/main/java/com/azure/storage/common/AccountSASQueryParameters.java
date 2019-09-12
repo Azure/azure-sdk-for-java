@@ -46,8 +46,8 @@ public final class AccountSASQueryParameters extends BaseSASQueryParameters {
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
-     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code
-     * null}.
+     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or
+     * {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */

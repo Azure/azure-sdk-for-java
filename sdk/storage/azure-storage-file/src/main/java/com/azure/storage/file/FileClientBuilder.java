@@ -22,8 +22,9 @@ import java.util.Objects;
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileClient
  * FileClients}, {@link FileAsyncClient FileAsyncClients}, {@link DirectoryClient DirectoryClients}, and {@link
  * DirectoryAsyncClient DirectoryAsyncClients}. Calling {@link FileClientBuilder#buildFileClient() buildFileClient},
- * {@link FileClientBuilder#buildFileAsyncClient() buildFileAsyncClient}, {@link FileClientBuilder#buildDirectoryClient()
- * buildDirectoryClient}, or {@link FileClientBuilder#buildDirectoryAsyncClient() buildDirectoryAsyncClient} constructs
+ * {@link FileClientBuilder#buildFileAsyncClient() buildFileAsyncClient},
+ * {@link FileClientBuilder#buildDirectoryClient() buildDirectoryClient}, or
+ * {@link FileClientBuilder#buildDirectoryAsyncClient() buildDirectoryAsyncClient} constructs
  * an instance of {@link FileClient}, {@link FileAsyncClient}, {@link DirectoryClient}, or {@link DirectoryAsyncClient}
  * respectively.
  *
@@ -99,8 +100,8 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
     }
 
     /**
-     * Creates a {@link DirectoryAsyncClient} based on options set in the builder. Every time {@code
-     * buildFileAsyncClient()} is called a new instance of {@link DirectoryAsyncClient} is created.
+     * Creates a {@link DirectoryAsyncClient} based on options set in the builder. Every time
+     * {@code buildFileAsyncClient()} is called a new instance of {@link DirectoryAsyncClient} is created.
      *
      * <p>
      * If {@link FileClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link

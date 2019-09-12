@@ -30,8 +30,8 @@ public final class FileSASPermission {
     }
 
     /**
-     * Creates an {@code FileSASPermission} from the specified permissions string. This method will throw an {@code
-     * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates an {@code FileSASPermission} from the specified permissions string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code FileSASPermission}.
      * @return A {@code FileSASPermission} generated from the given {@code String}.

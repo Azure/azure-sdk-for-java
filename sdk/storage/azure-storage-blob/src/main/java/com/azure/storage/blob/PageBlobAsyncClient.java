@@ -140,8 +140,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -159,8 +159,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -479,7 +479,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobAccessConditions accessConditions) {
-        return withContext(context -> updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
+        return withContext(context ->
+            updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
     }
 
     Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber,

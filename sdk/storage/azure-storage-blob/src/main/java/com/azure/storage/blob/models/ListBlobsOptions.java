@@ -38,8 +38,8 @@ public final class ListBlobsOptions {
     }
 
     /**
-     * Filters the results to return only blobs whose names begin with the specified prefix. May be null to return
-     * all blobs.
+     * Filters the results to return only blobs whose names begin with the specified prefix. May be null to return all
+     * blobs.
      *
      * @return the prefix that a blob must match to be returned in the listing
      */
@@ -48,8 +48,8 @@ public final class ListBlobsOptions {
     }
 
     /**
-     * Filters the results to return only blobs whose names begin with the specified prefix. May be null to return
-     * all blobs.
+     * Filters the results to return only blobs whose names begin with the specified prefix. May be null to return all
+     * blobs.
      *
      * @param prefix A prefix that a blob must match to be returned
      * @return the updated ListBlobsOptions object
@@ -75,6 +75,7 @@ public final class ListBlobsOptions {
      *
      * @param maxResults The number of blobs to returned in a single response
      * @return the updated ListBlobsOptions object
+     * @throws IllegalArgumentException If {@code maxResults} is less than or equal to {@code 0}.
      */
     public ListBlobsOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {

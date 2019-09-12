@@ -37,8 +37,8 @@ public final class AccountSASPermission {
     }
 
     /**
-     * Creates an {@code AccountSASPermission} from the specified permissions string. This method will throw an {@code
-     * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates an {@code AccountSASPermission} from the specified permissions string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code SharedAccessAccountPermissions}.
      * @return An {@code AccountSASPermission} object generated from the given {@code String}.
