@@ -36,11 +36,14 @@ namespace StoragePerfNet
 
         public class Options
         {
-            [Option('d', "duration", Default = 10)]
-            public int Duration { get; set; }
-            
             [Option("debug")]
             public bool Debug { get; set; }
+
+            [Option('d', "duration", Default = 10)]
+            public int Duration { get; set; }
+
+            [Option('p', "parallel", Default = 1, HelpText = "Number of tasks to execute in parallel")]
+            public int Parallel { get; set; }
 
             [Option('u', "upload")]
             public bool Upload { get; set; }
@@ -83,30 +86,24 @@ namespace StoragePerfNet
                 await UploadAndVerifyDownload(client);
             }
 
-            Console.WriteLine($"Downloading blob '{_containerName}/{_blobName}' for {options.Duration} seconds...");
+            Console.WriteLine($"Downloading blob '{_containerName}/{_blobName}' with {options.Parallel} parallel task(s) for {options.Duration} second(s)...");
             Console.WriteLine();
 
-            var sw = Stopwatch.StartNew();
             var duration = TimeSpan.FromSeconds(options.Duration);
+            var cts = new CancellationTokenSource(duration);
+            var token = cts.Token;
 
-            var elapsed = sw.Elapsed;
-            var lastElapsed = elapsed;
-            while (elapsed < duration)
+            var tasks = new Task[options.Parallel];
+            var sw = Stopwatch.StartNew();
+            for (var i=0; i < options.Parallel; i++)
             {
-                await Download(client);
-                Interlocked.Increment(ref _downloads);
-
-                if (elapsed.Seconds > lastElapsed.Seconds)
-                {
-                    Console.WriteLine(_downloads);
-                }
-
-                lastElapsed = elapsed;
-                elapsed = sw.Elapsed;
+                tasks[i] = DownloadLoop(client, token);
             }
+            _ = PrintStatus(token);
+            await Task.WhenAll(tasks);
             sw.Stop();
 
-            var elapsedSeconds = elapsed.TotalSeconds;
+            var elapsedSeconds = sw.Elapsed.TotalSeconds;
             var downloadsPerSecond = _downloads / elapsedSeconds;
             var megabytesPerSecond = (downloadsPerSecond * _bytesPerMessage) / (1024 * 1024);
 
@@ -115,9 +112,39 @@ namespace StoragePerfNet
                         $"({downloadsPerSecond:N2} blobs/s, {megabytesPerSecond:N2} MB/s)");
         }
 
-        static async Task Download(BlobClient client)
+        static async Task DownloadLoop(BlobClient client, CancellationToken token)
         {
-            await client.DownloadAsync();
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    await Download(client, token);
+                    Interlocked.Increment(ref _downloads);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
+        }
+
+        static async Task Download(BlobClient client, CancellationToken token)
+        {
+            await client.DownloadAsync(token);
+        }
+
+        static async Task PrintStatus(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1), token);
+                    Console.WriteLine(_downloads);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
         }
 
         static async Task UploadAndVerifyDownload(BlobClient client)
