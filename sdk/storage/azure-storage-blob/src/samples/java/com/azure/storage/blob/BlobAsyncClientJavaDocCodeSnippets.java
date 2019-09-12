@@ -128,11 +128,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setDelete()}
+     * Code snippets for {@link BlobAsyncClient#delete()}
      */
     public void deleteCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.delete
-        client.setDelete().doOnSuccess(response -> System.out.println("Completed delete"));
+        client.delete().doOnSuccess(response -> System.out.println("Completed delete"));
         // END: com.azure.storage.blob.BlobAsyncClient.delete
     }
 
@@ -187,11 +187,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#unsetDelete()}
+     * Code snippet for {@link BlobAsyncClient#undelete()}
      */
     public void undeleteCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.undelete
-        client.unsetDelete().doOnSuccess(response -> System.out.println("Completed undelete"));
+        client.undelete().doOnSuccess(response -> System.out.println("Completed undelete"));
         // END: com.azure.storage.blob.BlobAsyncClient.undelete
     }
 
