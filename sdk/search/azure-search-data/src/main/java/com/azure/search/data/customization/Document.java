@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 public class Document extends LinkedHashMap<String, Object> {
 
     /**
-     * If the document chema is known, user can convert the properties to a specific object type
+     * If the document schema is known, user can convert the properties to a specific object type
      * @param cls Class type of the document object to convert to
      * @param <T> type
      * @return an object of the request type
