@@ -28,7 +28,7 @@ class EncodedParameter {
      *
      * @return the name of this parameter
      */
-    public String name() {
+    public String getName() {
         return name;
     }
 
@@ -37,7 +37,7 @@ class EncodedParameter {
      *
      * @return the encoded value for this parameter
      */
-    public String encodedValue() {
+    public String getEncodedValue() {
         return encodedValue;
     }
 }

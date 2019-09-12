@@ -43,19 +43,19 @@ public class SignVerifyOperations {
 
         // Let's create a signature from a simple digest.
         SignResult signResult = cryptoClient.sign(SignatureAlgorithm.RS256, digest);
-        System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signResult.signature().length, signResult.algorithm().toString());
+        System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signResult.getSignature().length, signResult.getAlgorithm().toString());
 
         // Let's verify the signature against the digest.
-        VerifyResult verifyResult = cryptoClient.verify(SignatureAlgorithm.RS256, digest, signResult.signature());
+        VerifyResult verifyResult = cryptoClient.verify(SignatureAlgorithm.RS256, digest, signResult.getSignature());
         System.out.printf("Signature verified : %s \n", verifyResult.isValid());
 
 
         // We can sign the raw plain text data without having to create a digest
         SignResult signingDataResult = cryptoClient.signData(SignatureAlgorithm.RS256, plainText);
-        System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signingDataResult.signature().length, signingDataResult.algorithm().toString());
+        System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signingDataResult.getSignature().length, signingDataResult.getAlgorithm().toString());
 
         // Let's verify the signature against the raw plain text data.
-        VerifyResult verifyDataResult = cryptoClient.verifyData(SignatureAlgorithm.RS256, plainText, signResult.signature());
+        VerifyResult verifyDataResult = cryptoClient.verifyData(SignatureAlgorithm.RS256, plainText, signResult.getSignature());
         System.out.printf("Signature verified : %s \n", verifyDataResult.isValid());
 
     }

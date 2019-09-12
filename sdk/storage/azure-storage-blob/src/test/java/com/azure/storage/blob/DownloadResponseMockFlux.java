@@ -81,8 +81,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (this.info.offset() != (this.tryNumber - 1) * 256
-                        || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                    if (this.info.getOffset() != (this.tryNumber - 1) * 256
+                        || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                         Operators.error(subscriber, new IllegalArgumentException("Info values are incorrect."));
                         return;
                     }
@@ -93,8 +93,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                     Operators.error(subscriber, new IOException());
                     break;
                 }
-                if (this.info.offset() != (this.tryNumber - 1) * 256
-                    || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                if (this.info.getOffset() != (this.tryNumber - 1) * 256
+                    || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                     Operators.error(subscriber, new IllegalArgumentException("Info values are incorrect."));
                     return;
                 }
@@ -163,37 +163,37 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                          */
                         throw new StorageErrorException("Message", new HttpResponse() {
                             @Override
-                            public int statusCode() {
+                            public int getStatusCode() {
                                 return 500;
                             }
 
                             @Override
-                            public String headerValue(String s) {
+                            public String getHeaderValue(String s) {
                                 return null;
                             }
 
                             @Override
-                            public HttpHeaders headers() {
+                            public HttpHeaders getHeaders() {
                                 return null;
                             }
 
                             @Override
-                            public Flux<ByteBuffer> body() {
+                            public Flux<ByteBuffer> getBody() {
                                 return null;
                             }
 
                             @Override
-                            public Mono<byte[]> bodyAsByteArray() {
+                            public Mono<byte[]> getBodyAsByteArray() {
                                 return null;
                             }
 
                             @Override
-                            public Mono<String> bodyAsString() {
+                            public Mono<String> getBodyAsString() {
                                 return null;
                             }
 
                             @Override
-                            public Mono<String> bodyAsString(Charset charset) {
+                            public Mono<String> getBodyAsString(Charset charset) {
                                 return null;
                             }
                         });
@@ -202,7 +202,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 }
             case DR_TEST_SCENARIO_INFO_TEST:
                 // We also test that the info is updated in DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
-                if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals("etag")) {
+                if (info.getCount() != 10 || info.getOffset() != 20 || !info.getETag().equals("etag")) {
                     throw new IllegalArgumentException("Info values incorrect");
                 }
                 return Mono.just(response);

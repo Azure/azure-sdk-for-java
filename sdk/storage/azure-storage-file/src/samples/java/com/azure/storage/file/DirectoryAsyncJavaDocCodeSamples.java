@@ -104,7 +104,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
         directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata).subscribe(
             response ->
-                System.out.println("Completed creating the directory with status code:" + response.statusCode()),
+                System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.createWithResponse#filesmbproperties-string-map
@@ -133,7 +133,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         directoryAsyncClient.createSubDirectoryWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
             response ->
                 System.out.println("Successfully creating the subdirectory with status code: "
-                    + response.statusCode()),
+                    + response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.createSubDirectoryWithResponse#string-filesmbproperties-string-map
@@ -160,21 +160,21 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("text/html")
-            .fileContentEncoding("gzip")
-            .fileContentLanguage("en")
-            .fileCacheControl("no-transform")
-            .fileContentDisposition("attachment");
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
         FileSmbProperties smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .fileCreationTime(OffsetDateTime.now())
-            .fileLastWriteTime(OffsetDateTime.now())
-            .filePermissionKey("filePermissionKey");
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         directoryAsyncClient.createFileWithResponse("myFile", 1024, httpHeaders, smbProperties, filePermission,
             Collections.singletonMap("directory", "metadata")).subscribe(
-                response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
+                response ->  System.out.printf("Creating the file completed with status code %d", response.getStatusCode()),
                 error -> System.err.println(error.toString()),
                 () -> System.out.println("Completed creating the file.")
         );
@@ -189,7 +189,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories
         directoryAsyncClient.listFilesAndDirectories().subscribe(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name()),
+                fileRef.isDirectory(), fileRef.getName()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed listing the directories and files.")
         );
@@ -204,7 +204,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer
         directoryAsyncClient.listFilesAndDirectories("subdir", 10).subscribe(
             fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.name()),
+                fileRef.isDirectory(), fileRef.getName()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed listing the directories and files.")
         );
@@ -232,7 +232,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteFileWithResponse#string
         directoryAsyncClient.deleteFileWithResponse("myfile").subscribe(
-            response ->  System.out.printf("Delete file completed with status code %d", response.statusCode()),
+            response ->  System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the file.")
         );
@@ -260,7 +260,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteSubDirectoryWithResponse#string
         directoryAsyncClient.deleteSubDirectoryWithResponse("mysubdirectory").subscribe(
-            response ->  System.out.printf("Delete subdirectory completed with status code %d", response.statusCode()),
+            response ->  System.out.printf("Delete subdirectory completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString()),
             () -> System.out.println("Completed deleting the subdirectory.")
         );
@@ -288,7 +288,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.deleteWithResponse
         directoryAsyncClient.deleteWithResponse().subscribe(
-            response ->  System.out.printf("Delete completed with status code %d", response.statusCode()),
+            response ->  System.out.printf("Delete completed with status code %d", response.getStatusCode()),
             error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.directoryAsyncClient.deleteWithResponse
@@ -301,7 +301,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.getProperties
         directoryAsyncClient.getProperties().subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s.", properties.lastModified());
+            System.out.printf("Directory latest modified date is %s.", properties.getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.getProperties
     }
@@ -313,7 +313,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
         directoryAsyncClient.getPropertiesWithResponse().subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.getPropertiesWithResponse
     }
@@ -327,7 +327,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setProperties(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setProperties#filesmbproperties-string
     }
@@ -341,7 +341,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         directoryAsyncClient.setPropertiesWithResponse(smbProperties, filePermission).subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.value().lastModified());
+            System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
         });
         // END: com.azure.storage.file.directoryAsyncClient.setPropertiesWithResponse#filesmbproperties-string
     }
@@ -376,7 +376,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map.clearMetadata
         directoryAsyncClient.setMetadataWithResponse(null).subscribe(
             response ->  System.out.printf("Clearing the directory metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map.clearMetadata
     }
 
@@ -388,7 +388,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map
         directoryAsyncClient.setMetadataWithResponse(Collections.singletonMap("directory", "updatedMetadata"))
             .subscribe(response -> System.out.println("Setting the directory metadata completed with status code:"
-                + response.statusCode()));
+                + response.getStatusCode()));
         // END: com.azure.storage.file.directoryAsyncClient.setMetadataWithResponse#map
     }
 
@@ -400,7 +400,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
         directoryAsyncClient.listHandles(10, true)
             .subscribe(handleItem -> System.out.printf("Get handles completed with handle id %s",
-                handleItem.handleId()));
+                handleItem.getHandleId()));
         // END: com.azure.storage.file.directoryAsyncClient.listHandles#integer-boolean
     }
 
@@ -411,7 +411,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
         directoryAsyncClient.listHandles(10, true)
-            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.handleId(), true)
+            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.getHandleId(), true)
                 .subscribe(numOfClosedHandles -> System.out.printf("Closed %d handles.", numOfClosedHandles)));
         // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
     }

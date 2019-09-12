@@ -78,9 +78,9 @@ public class FileSample {
         }
 
         // Abort the copy if the status is pending.
-        if (copyResponse.copyStatus() == CopyStatusType.PENDING) {
+        if (copyResponse.getCopyStatus() == CopyStatusType.PENDING) {
             try {
-                destFileClient.abortCopy(copyResponse.copyId());
+                destFileClient.abortCopy(copyResponse.getCopyId());
             } catch (StorageException e) {
                 System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
             }
@@ -119,7 +119,7 @@ public class FileSample {
         // Get the file properties
         try {
             FileProperties propertiesResponse = srcFileClient.getProperties();
-            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.eTag(), propertiesResponse.fileType());
+            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.getETag(), propertiesResponse.getFileType());
         } catch (StorageException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());
         }

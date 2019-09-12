@@ -195,12 +195,12 @@ public class PagedListTests {
     public void canHandleIntermediateEmptyPage() {
         List<Integer> pagedList = new PagedList<Integer>(new Page<Integer>() {
             @Override
-            public String nextPageLink() {
+            public String getNextPageLink() {
                 return "A";
             }
 
             @Override
-            public List<Integer> items() {
+            public List<Integer> getItems() {
                 List<Integer> list = new ArrayList<>();
                 list.add(1);
                 list.add(2);
@@ -212,24 +212,24 @@ public class PagedListTests {
                 if (nextPageLink == "A") {
                     return new Page<Integer>() {
                         @Override
-                        public String nextPageLink() {
+                        public String getNextPageLink() {
                             return "B";
                         }
 
                         @Override
-                        public List<Integer> items() {
+                        public List<Integer> getItems() {
                             return new ArrayList<>(); // EMPTY PAGE
                         }
                     };
                 } else if (nextPageLink == "B") {
                     return new Page<Integer>() {
                         @Override
-                        public String nextPageLink() {
+                        public String getNextPageLink() {
                             return "C";
                         }
 
                         @Override
-                        public List<Integer> items() {
+                        public List<Integer> getItems() {
                             List<Integer> list = new ArrayList<>();
                             list.add(3);
                             list.add(4);
@@ -239,12 +239,12 @@ public class PagedListTests {
                 } else if (nextPageLink == "C") {
                     return new Page<Integer>() {
                         @Override
-                        public String nextPageLink() {
+                        public String getNextPageLink() {
                             return null;
                         }
 
                         @Override
-                        public List<Integer> items() {
+                        public List<Integer> getItems() {
                             List<Integer> list = new ArrayList<>();
                             list.add(5);
                             list.add(6);
@@ -276,7 +276,7 @@ public class PagedListTests {
             }
 
             Flux<Integer> firstFlux() {
-                return Flux.defer((Supplier<Flux<Integer>>) () -> Flux.fromIterable(list.currentPage().items()));
+                return Flux.defer((Supplier<Flux<Integer>>) () -> Flux.fromIterable(list.getCurrentPage().getItems()));
             }
 
             Flux<Integer> nextFlux() {
@@ -284,7 +284,7 @@ public class PagedListTests {
                     if (list.hasNextPage()) {
                         list.loadNextPage();
                         loadNextPageCallCount++;
-                        return Flux.fromIterable(list.currentPage().items()).concatWith(Flux.defer(new Supplier<Flux<Integer>>() {
+                        return Flux.fromIterable(list.getCurrentPage().getItems()).concatWith(Flux.defer(new Supplier<Flux<Integer>>() {
                             @Override
                             public Flux<Integer> get() {
                                 return nextFlux();
@@ -319,7 +319,7 @@ public class PagedListTests {
         }
 
         @Override
-        public String nextPageLink() {
+        public String getNextPageLink() {
             if (page + 1 == max) {
                 return null;
             }
@@ -327,7 +327,7 @@ public class PagedListTests {
         }
 
         @Override
-        public List<Integer> items() {
+        public List<Integer> getItems() {
             if (page + 1 != max) {
                 List<Integer> items = new ArrayList<>();
                 items.add(page);

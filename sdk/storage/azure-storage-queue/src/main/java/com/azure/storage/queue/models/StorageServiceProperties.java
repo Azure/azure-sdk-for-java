@@ -59,7 +59,7 @@ public final class StorageServiceProperties {
      *
      * @return the logging value.
      */
-    public Logging logging() {
+    public Logging getLogging() {
         return this.logging;
     }
 
@@ -69,7 +69,7 @@ public final class StorageServiceProperties {
      * @param logging the logging value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties logging(Logging logging) {
+    public StorageServiceProperties setLogging(Logging logging) {
         this.logging = logging;
         return this;
     }
@@ -80,7 +80,7 @@ public final class StorageServiceProperties {
      *
      * @return the hourMetrics value.
      */
-    public Metrics hourMetrics() {
+    public Metrics getHourMetrics() {
         return this.hourMetrics;
     }
 
@@ -91,7 +91,7 @@ public final class StorageServiceProperties {
      * @param hourMetrics the hourMetrics value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties hourMetrics(Metrics hourMetrics) {
+    public StorageServiceProperties setHourMetrics(Metrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -102,7 +102,7 @@ public final class StorageServiceProperties {
      *
      * @return the minuteMetrics value.
      */
-    public Metrics minuteMetrics() {
+    public Metrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
 
@@ -113,7 +113,7 @@ public final class StorageServiceProperties {
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties minuteMetrics(Metrics minuteMetrics) {
+    public StorageServiceProperties setMinuteMetrics(Metrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -123,7 +123,7 @@ public final class StorageServiceProperties {
      *
      * @return the cors value.
      */
-    public List<CorsRule> cors() {
+    public List<CorsRule> getCors() {
         if (this.cors == null) {
             this.cors = new CorsWrapper(new ArrayList<CorsRule>());
         }
@@ -136,7 +136,7 @@ public final class StorageServiceProperties {
      * @param cors the cors value to set.
      * @return the StorageServiceProperties object itself.
      */
-    public StorageServiceProperties cors(List<CorsRule> cors) {
+    public StorageServiceProperties setCors(List<CorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }

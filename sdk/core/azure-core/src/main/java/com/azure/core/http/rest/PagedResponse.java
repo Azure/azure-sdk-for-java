@@ -17,7 +17,7 @@ public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable 
      *
      * @return The items in the page.
      */
-    default List<T> value() {
-        return items();
+    default List<T> getValue() {
+        return getItems();
     }
 }

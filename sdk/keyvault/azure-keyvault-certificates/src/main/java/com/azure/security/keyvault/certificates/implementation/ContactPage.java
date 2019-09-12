@@ -27,12 +27,12 @@ public final class ContactPage implements Page<Contact> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<Contact> items() {
+    public List<Contact> getItems() {
         return items;
     }
 
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return null;
     }
 }

@@ -38,28 +38,28 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void generateAccountSAS() {
         // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
         AccountSASService service = new AccountSASService()
-            .blob(true)
-            .file(true)
-            .queue(true)
-            .table(true);
+            .setBlob(true)
+            .setFile(true)
+            .setQueue(true)
+            .setTable(true);
         AccountSASResourceType resourceType = new AccountSASResourceType()
-            .container(true)
-            .object(true)
-            .service(true);
+            .setContainer(true)
+            .setObject(true)
+            .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .read(true)
-            .add(true)
-            .create(true)
-            .write(true)
-            .delete(true)
-            .list(true)
-            .processMessages(true)
-            .update(true);
+            .setRead(true)
+            .setAdd(true)
+            .setCreate(true)
+            .setWrite(true)
+            .setDelete(true)
+            .setList(true)
+            .setProcessMessages(true)
+            .setUpdate(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -95,7 +95,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
 
         ContainerAsyncClient containerClient =
-            client.createContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().value();
+            client.createContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType
     }
 
@@ -117,7 +117,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context
         Context context = new Context("Key", "Value");
         client.deleteContainerWithResponse("containerName").subscribe(response ->
-            System.out.printf("Delete container completed with status %d%n", response.statusCode()));
+            System.out.printf("Delete container completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context
     }
 
@@ -127,15 +127,15 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      */
     public void listContainers() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listContainers
-        client.listContainers().subscribe(container -> System.out.printf("Name: %s%n", container.name()));
+        client.listContainers().subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.listContainers
 
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions
         ListContainersOptions options = new ListContainersOptions()
-            .prefix("containerNamePrefixToMatch")
-            .details(new ContainerListDetails().metadata(true));
+            .setPrefix("containerNamePrefixToMatch")
+            .setDetails(new ContainerListDetails().setMetadata(true));
 
-        client.listContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.name()));
+        client.listContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions
     }
 
@@ -146,8 +146,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getProperties
         client.getProperties().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-                response.hourMetrics().enabled(),
-                response.minuteMetrics().enabled()));
+                response.getHourMetrics().isEnabled(),
+                response.getMinuteMetrics().isEnabled()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getProperties
     }
 
@@ -158,8 +158,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
-                response.value().hourMetrics().enabled(),
-                response.value().minuteMetrics().enabled()));
+                response.getValue().getHourMetrics().isEnabled(),
+                response.getValue().getMinuteMetrics().isEnabled()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
     }
 
@@ -168,20 +168,20 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      */
     public void setProperties() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties
-        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().enabled(true).days(3);
-        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().enabled(true).days(1);
+        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
+        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
         StorageServiceProperties properties = new StorageServiceProperties()
-            .logging(new Logging()
-                .write(true)
-                .delete(true)
-                .retentionPolicy(loggingRetentionPolicy))
-            .hourMetrics(new Metrics()
-                .enabled(true)
-                .retentionPolicy(metricsRetentionPolicy))
-            .minuteMetrics(new Metrics()
-                .enabled(true)
-                .retentionPolicy(metricsRetentionPolicy));
+            .setLogging(new Logging()
+                .setWrite(true)
+                .setDelete(true)
+                .setRetentionPolicy(loggingRetentionPolicy))
+            .setHourMetrics(new Metrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy))
+            .setMinuteMetrics(new Metrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy));
 
         client.setProperties(properties).subscribe(
             response -> System.out.printf("Setting properties completed%n"),
@@ -194,23 +194,23 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      */
     public void setPropertiesWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
-        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().enabled(true).days(3);
-        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().enabled(true).days(1);
+        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
+        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
         StorageServiceProperties properties = new StorageServiceProperties()
-            .logging(new Logging()
-                .write(true)
-                .delete(true)
-                .retentionPolicy(loggingRetentionPolicy))
-            .hourMetrics(new Metrics()
-                .enabled(true)
-                .retentionPolicy(metricsRetentionPolicy))
-            .minuteMetrics(new Metrics()
-                .enabled(true)
-                .retentionPolicy(metricsRetentionPolicy));
+            .setLogging(new Logging()
+                .setWrite(true)
+                .setDelete(true)
+                .setRetentionPolicy(loggingRetentionPolicy))
+            .setHourMetrics(new Metrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy))
+            .setMinuteMetrics(new Metrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy));
 
         client.setPropertiesWithResponse(properties).subscribe(response ->
-            System.out.printf("Setting properties completed with status %d%n", response.statusCode()));
+            System.out.printf("Setting properties completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
     }
 
@@ -222,7 +222,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         OffsetDateTime delegationKeyExpiryTime = OffsetDateTime.now().plusDays(7);
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime
         client.getUserDelegationKey(delegationKeyStartTime, delegationKeyExpiryTime).subscribe(response ->
-            System.out.printf("User delegation key: %s%n", response.value()));
+            System.out.printf("User delegation key: %s%n", response.getValue()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime
     }
 
@@ -234,7 +234,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         OffsetDateTime delegationKeyExpiryTime = OffsetDateTime.now().plusDays(7);
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime
         client.getUserDelegationKeyWithResponse(delegationKeyStartTime, delegationKeyExpiryTime).subscribe(response ->
-            System.out.printf("User delegation key: %s%n", response.value().value()));
+            System.out.printf("User delegation key: %s%n", response.getValue().getValue()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime
     }
 
@@ -244,7 +244,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void getStatistics() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getStatistics
         client.getStatistics().subscribe(response ->
-            System.out.printf("Geo-replication status: %s%n", response.geoReplication().status()));
+            System.out.printf("Geo-replication status: %s%n", response.getGeoReplication().getStatus()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getStatistics
     }
 
@@ -254,7 +254,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void getStatisticsWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse
         client.getStatisticsWithResponse().subscribe(response ->
-            System.out.printf("Geo-replication status: %s%n", response.value().geoReplication().status()));
+            System.out.printf("Geo-replication status: %s%n", response.getValue().getGeoReplication().getStatus()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse
     }
 
@@ -264,7 +264,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void getAccountInfo() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo
         client.getAccountInfo().subscribe(response ->
-            System.out.printf("Account kind: %s, SKU: %s%n", response.accountKind(), response.skuName()));
+            System.out.printf("Account kind: %s, SKU: %s%n", response.getAccountKind(), response.getSkuName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo
     }
 
@@ -274,7 +274,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void getAccountInfoWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
         client.getAccountInfoWithResponse().subscribe(response ->
-            System.out.printf("Account kind: %s, SKU: %s%n", response.value().accountKind(), response.value().skuName()));
+            System.out.printf("Account kind: %s, SKU: %s%n", response.getValue().getAccountKind(),
+                response.getValue().getSkuName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
     }
 }

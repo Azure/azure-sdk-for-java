@@ -46,17 +46,17 @@ public class ContainerClientJavaDocCodeSnippets {
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         ContainerSASPermission permissions = new ContainerSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-            .list(true);
+            .setRead(true)
+            .setWrite(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setAdd(true)
+            .setList(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
@@ -80,17 +80,17 @@ public class ContainerClientJavaDocCodeSnippets {
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         ContainerSASPermission permissions = new ContainerSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
-            .list(true);
+            .setRead(true)
+            .setWrite(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setAdd(true)
+            .setList(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255");
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
@@ -179,8 +179,8 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ContainerClient#exists()} and
-     * {@link ContainerClient#existsWithResponse(Duration, Context)}
+     * Code snippets for {@link ContainerClient#exists()} and {@link ContainerClient#existsWithResponse(Duration,
+     * Context)}
      */
     public void exists() {
         // BEGIN: com.azure.storage.blob.ContainerClient.exists
@@ -189,20 +189,20 @@ public class ContainerClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
-        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).value());
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
         // END: com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context
     }
 
     /**
      * Code snippet for {@link ContainerClient#create()}
      */
-    public void create() {
+    public void setCreate() {
         // BEGIN: com.azure.storage.blob.ContainerClient.create
         try {
             client.create();
             System.out.printf("Create completed%n");
         } catch (StorageException error) {
-            if (error.errorCode().equals(StorageErrorCode.CONTAINER_ALREADY_EXISTS)) {
+            if (error.getErrorCode().equals(StorageErrorCode.CONTAINER_ALREADY_EXISTS)) {
                 System.out.printf("Can't create container. It already exists %n");
             }
         }
@@ -218,20 +218,20 @@ public class ContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         System.out.printf("Create completed with status %d%n",
-            client.createWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).statusCode());
+            client.createWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.createWithResponse#Metadata-PublicAccessType-Duration-Context
     }
 
     /**
      * Code snippet for {@link ContainerClient#delete()}
      */
-    public void delete() {
+    public void setDelete() {
         // BEGIN: com.azure.storage.blob.ContainerClient.delete
         try {
             client.delete();
             System.out.printf("Delete completed%n");
         } catch (StorageException error) {
-            if (error.errorCode().equals(StorageErrorCode.CONTAINER_NOT_FOUND)) {
+            if (error.getErrorCode().equals(StorageErrorCode.CONTAINER_NOT_FOUND)) {
                 System.out.printf("Delete failed. Container was not found %n");
             }
         }
@@ -244,13 +244,13 @@ public class ContainerClientJavaDocCodeSnippets {
     public void delete2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
         ContainerAccessConditions accessConditions = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
-            accessConditions, timeout, context).statusCode());
+            accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
     }
 
@@ -261,7 +261,7 @@ public class ContainerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.ContainerClient.getProperties
         ContainerProperties properties = client.getProperties();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
-            properties.blobPublicAccess(),
+            properties.getBlobPublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
         // END: com.azure.storage.blob.ContainerClient.getProperties
@@ -272,12 +272,13 @@ public class ContainerClientJavaDocCodeSnippets {
      */
     public void getProperties2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("Key", "Value");
 
-        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context).value();
+        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context)
+            .getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
-            properties.blobPublicAccess(),
+            properties.getBlobPublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
         // END: com.azure.storage.blob.ContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
@@ -300,20 +301,20 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#setMetadataWithResponse(Metadata, ContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#setMetadataWithResponse(Metadata, ContainerAccessConditions, Duration,
+     * Context)}
      */
     public void setMetadata2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         ContainerAccessConditions accessConditions = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("Key", "Value");
 
         System.out.printf("Set metadata completed with status %d%n",
-            client.setMetadataWithResponse(metadata, accessConditions, timeout, context).statusCode());
+            client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
     }
 
@@ -327,8 +328,8 @@ public class ContainerClientJavaDocCodeSnippets {
 
         for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
             System.out.printf("Identifier Name: %s, Permissions %s%n",
-                identifier.id(),
-                identifier.accessPolicy().permission());
+                identifier.getId(),
+                identifier.getAccessPolicy().getPermission());
         }
         // END: com.azure.storage.blob.ContainerClient.getAccessPolicy
     }
@@ -338,15 +339,16 @@ public class ContainerClientJavaDocCodeSnippets {
      */
     public void getAccessPolicy2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("Key", "Value");
-        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context).value();
+        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context)
+            .getValue();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
         for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
             System.out.printf("Identifier Name: %s, Permissions %s%n",
-                identifier.id(),
-                identifier.accessPolicy().permission());
+                identifier.getId(),
+                identifier.getAccessPolicy().getPermission());
         }
         // END: com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
     }
@@ -357,11 +359,11 @@ public class ContainerClientJavaDocCodeSnippets {
     public void setAccessPolicy() {
         // BEGIN: com.azure.storage.blob.ContainerClient.setAccessPolicy#PublicAccessType-List
         SignedIdentifier identifier = new SignedIdentifier()
-            .id("name")
-            .accessPolicy(new AccessPolicy()
-                .start(OffsetDateTime.now())
-                .expiry(OffsetDateTime.now().plusDays(7))
-                .permission("permissionString"));
+            .setId("name")
+            .setAccessPolicy(new AccessPolicy()
+                .setStart(OffsetDateTime.now())
+                .setExpiry(OffsetDateTime.now().plusDays(7))
+                .setPermission("permissionString"));
 
         try {
             client.setAccessPolicy(PublicAccessType.CONTAINER, Collections.singletonList(identifier));
@@ -373,23 +375,22 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#setAccessPolicyWithResponse(
-     * PublicAccessType, List, ContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#setAccessPolicyWithResponse(PublicAccessType, List,
+     * ContainerAccessConditions, Duration, Context)}
      */
     public void setAccessPolicy2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context
         SignedIdentifier identifier = new SignedIdentifier()
-            .id("name")
-            .accessPolicy(new AccessPolicy()
-                .start(OffsetDateTime.now())
-                .expiry(OffsetDateTime.now().plusDays(7))
-                .permission("permissionString"));
+            .setId("name")
+            .setAccessPolicy(new AccessPolicy()
+                .setStart(OffsetDateTime.now())
+                .setExpiry(OffsetDateTime.now().plusDays(7))
+                .setPermission("permissionString"));
 
         ContainerAccessConditions accessConditions = new ContainerAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         Context context = new Context("Key", "Value");
 
@@ -398,7 +399,7 @@ public class ContainerClientJavaDocCodeSnippets {
                 Collections.singletonList(identifier),
                 accessConditions,
                 timeout,
-                context).statusCode());
+                context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context
     }
 
@@ -408,7 +409,7 @@ public class ContainerClientJavaDocCodeSnippets {
     public void listBlobsFlat() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat
         client.listBlobsFlat().forEach(blob ->
-            System.out.printf("Name: %s, Directory? %b%n", blob.name(), blob.isPrefix()));
+            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsFlat
     }
 
@@ -418,17 +419,17 @@ public class ContainerClientJavaDocCodeSnippets {
     public void listBlobsFlat2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
-            .prefix("prefixToMatch")
-            .details(new BlobListDetails()
-                .deletedBlobs(true)
-                .snapshots(true));
+            .setPrefix("prefixToMatch")
+            .setDetails(new BlobListDetails()
+                .setDeletedBlobs(true)
+                .setSnapshots(true));
 
         client.listBlobsFlat(options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
-                blob.name(),
+                blob.getName(),
                 blob.isPrefix(),
-                blob.deleted(),
-                blob.snapshot()));
+                blob.isDeleted(),
+                blob.getSnapshot()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration
     }
 
@@ -438,7 +439,7 @@ public class ContainerClientJavaDocCodeSnippets {
     public void listBlobsHierarchy() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
         client.listBlobsHierarchy("directoryName").forEach(blob ->
-            System.out.printf("Name: %s, Directory? %b%n", blob.name(), blob.isPrefix()));
+            System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
     }
 
@@ -448,17 +449,17 @@ public class ContainerClientJavaDocCodeSnippets {
     public void listBlobsHierarchy2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
-            .prefix("directoryName")
-            .details(new BlobListDetails()
-                .deletedBlobs(true)
-                .snapshots(true));
+            .setPrefix("directoryName")
+            .setDetails(new BlobListDetails()
+                .setDeletedBlobs(true)
+                .setSnapshots(true));
 
         client.listBlobsHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
-                blob.name(),
+                blob.getName(),
                 blob.isPrefix(),
-                blob.deleted(),
-                blob.snapshot()));
+                blob.isDeleted(),
+                blob.getSnapshot()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
     }
 
@@ -472,18 +473,18 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#acquireLeaseWithResponse(String, int, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#acquireLeaseWithResponse(String, int, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void acquireLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
         ModifiedAccessConditions accessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         Context context = new Context("Key", "Value");
 
         System.out.printf("Lease ID: %s%n",
-            client.acquireLeaseWithResponse(proposedId, leaseDuration, accessConditions, timeout, context).value());
+            client.acquireLeaseWithResponse(proposedId, leaseDuration, accessConditions, timeout, context).getValue());
         // END: com.azure.storage.blob.ContainerClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
     }
 
@@ -502,24 +503,25 @@ public class ContainerClientJavaDocCodeSnippets {
     public void renewLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.renewLease#String-ModifiedAccessConditions-Duration
         ModifiedAccessConditions accessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         System.out.printf("Renewed Lease ID: %s%n", client.renewLease(leaseId, accessConditions, timeout));
         // END: com.azure.storage.blob.ContainerClient.renewLease#String-ModifiedAccessConditions-Duration
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#renewLeaseWithResponse(String, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#renewLeaseWithResponse(String, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void renewLease3() {
         // BEGIN: com.azure.storage.blob.ContainerClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
         ModifiedAccessConditions accessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         Context context = new Context("Key", "Value");
 
-        System.out.printf("Renewed Lease ID: %s%n", client.renewLeaseWithResponse(leaseId, accessConditions, timeout, context));
+        System.out.printf("Renewed Lease ID: %s%n",
+            client.renewLeaseWithResponse(leaseId, accessConditions, timeout, context));
         // END: com.azure.storage.blob.ContainerClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -538,18 +540,18 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#releaseLeaseWithResponse(String, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#releaseLeaseWithResponse(String, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void releaseLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
         ModifiedAccessConditions accessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         Context context = new Context("Key", "Value");
 
         System.out.printf("Release lease completed with status %d%n",
-            client.releaseLeaseWithResponse(leaseId, accessConditions, timeout, context).statusCode());
+            client.releaseLeaseWithResponse(leaseId, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.ContainerClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -564,18 +566,18 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions, Duration,
+     * Context)}
      */
     public void breakLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
         ModifiedAccessConditions accessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         Context context = new Context("Key", "Value");
 
         System.out.printf("Broken lease had %d seconds remaining on the lease%n",
-            client.breakLeaseWithResponse(10, accessConditions, timeout, context).value().getSeconds());
+            client.breakLeaseWithResponse(10, accessConditions, timeout, context).getValue().getSeconds());
         // END: com.azure.storage.blob.ContainerClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
     }
 
@@ -589,18 +591,18 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for
-     * {@link ContainerClient#changeLeaseWithResponse(String, String, ModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link ContainerClient#changeLeaseWithResponse(String, String, ModifiedAccessConditions,
+     * Duration, Context)}
      */
     public void changeLease2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context
         ModifiedAccessConditions accessConditions = new ModifiedAccessConditions()
-            .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         Context context = new Context("Key", "Value");
 
         System.out.printf("Changed Lease ID: %s%n",
-            client.changeLeaseWithResponse(leaseId, proposedId, accessConditions, timeout, context).value());
+            client.changeLeaseWithResponse(leaseId, proposedId, accessConditions, timeout, context).getValue());
         // END: com.azure.storage.blob.ContainerClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context
     }
 
@@ -610,7 +612,7 @@ public class ContainerClientJavaDocCodeSnippets {
     public void getAccountInfo() {
         // BEGIN: com.azure.storage.blob.ContainerClient.getAccountInfo#Duration
         StorageAccountInfo accountInfo = client.getAccountInfo(timeout);
-        System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
+        System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.getAccountKind(), accountInfo.getSkuName());
         // END: com.azure.storage.blob.ContainerClient.getAccountInfo#Duration
     }
 
@@ -620,8 +622,8 @@ public class ContainerClientJavaDocCodeSnippets {
     public void getAccountInfo2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
-        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).value();
-        System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.accountKind(), accountInfo.skuName());
+        StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).getValue();
+        System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.getAccountKind(), accountInfo.getSkuName());
         // END: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
     }
 }

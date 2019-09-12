@@ -84,7 +84,7 @@ public class BasicExample {
         /*
          * Download the blob's content to output stream.
          */
-        int dataSize = (int) blobClient.getProperties().blobSize();
+        int dataSize = (int) blobClient.getProperties().getBlobSize();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(dataSize);
         blobClient.download(outputStream);
         outputStream.close();
@@ -111,7 +111,7 @@ public class BasicExample {
          * List the blob(s) in our container.
          */
         containerClient.listBlobsFlat()
-            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.name() + ", Snapshot: " + blobItem.snapshot()));
+            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
 
         /*
          * Delete the blob we created earlier.

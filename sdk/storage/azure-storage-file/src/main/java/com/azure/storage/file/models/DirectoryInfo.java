@@ -31,21 +31,21 @@ public final class DirectoryInfo {
     /**
      * @return The entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return The last time the share was modified.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
      * @return The SMB Properties of the directory.
      */
-    public FileSmbProperties smbProperties() {
+    public FileSmbProperties getSmbProperties() {
         return smbProperties;
     }
 }

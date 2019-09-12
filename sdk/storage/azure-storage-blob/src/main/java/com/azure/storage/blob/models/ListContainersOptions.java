@@ -25,7 +25,7 @@ public final class ListContainersOptions {
     /**
      * @return the details for listing specific containers
      */
-    public ContainerListDetails details() {
+    public ContainerListDetails getDetails() {
         return details;
     }
 
@@ -33,7 +33,7 @@ public final class ListContainersOptions {
      * @param details The details for listing specific containers
      * @return the updated ListContainersOptions object
      */
-    public ListContainersOptions details(ContainerListDetails details) {
+    public ListContainersOptions setDetails(ContainerListDetails details) {
         this.details = details;
         return this;
     }
@@ -43,7 +43,7 @@ public final class ListContainersOptions {
      *
      * @return the prefix a container must start with to be returned
      */
-    public String prefix() {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -53,7 +53,7 @@ public final class ListContainersOptions {
      * @param prefix The prefix that a container must match to be returned
      * @return the updated ListContainersOptions object
      */
-    public ListContainersOptions prefix(String prefix) {
+    public ListContainersOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -64,7 +64,7 @@ public final class ListContainersOptions {
      *
      * @return the number of containers to be returned in a single response
      */
-    public Integer maxResults() {
+    public Integer getMaxResults() {
         return maxResults;
     }
 
@@ -75,7 +75,7 @@ public final class ListContainersOptions {
      * @param maxResults The number of containers to return in a single response
      * @return the updated ListContainersOptions object
      */
-    public ListContainersOptions maxResults(Integer maxResults) {
+    public ListContainersOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw new IllegalArgumentException("MaxResults must be greater than 0.");
         }

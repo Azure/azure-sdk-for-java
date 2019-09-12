@@ -26,7 +26,7 @@ public final class KeyUnwrapResult {
      * Get the unwrapped key content.
      * @return The unwrapped key content.
      */
-    public byte[] key() {
+    public byte[] getKey() {
         return ImplUtils.clone(key);
     }
 }

@@ -18,7 +18,7 @@ class KeyVerifyResponse {
      *
      * @return the value value
      */
-    public Boolean value() {
+    public Boolean getValue() {
         return this.value;
     }
 }

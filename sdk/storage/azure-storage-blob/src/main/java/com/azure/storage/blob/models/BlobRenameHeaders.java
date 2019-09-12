@@ -68,7 +68,7 @@ public final class BlobRenameHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -79,7 +79,7 @@ public final class BlobRenameHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders eTag(String eTag) {
+    public BlobRenameHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -91,11 +91,11 @@ public final class BlobRenameHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class BlobRenameHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobRenameHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -122,7 +122,7 @@ public final class BlobRenameHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -134,7 +134,7 @@ public final class BlobRenameHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders clientRequestId(String clientRequestId) {
+    public BlobRenameHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -145,7 +145,7 @@ public final class BlobRenameHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -156,7 +156,7 @@ public final class BlobRenameHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders requestId(String requestId) {
+    public BlobRenameHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -167,7 +167,7 @@ public final class BlobRenameHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -178,7 +178,7 @@ public final class BlobRenameHeaders {
      * @param version the version value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders version(String version) {
+    public BlobRenameHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -188,7 +188,7 @@ public final class BlobRenameHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -198,7 +198,7 @@ public final class BlobRenameHeaders {
      * @param contentLength the contentLength value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders contentLength(Long contentLength) {
+    public BlobRenameHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -209,11 +209,11 @@ public final class BlobRenameHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -223,7 +223,7 @@ public final class BlobRenameHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobRenameHeaders object itself.
      */
-    public BlobRenameHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobRenameHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

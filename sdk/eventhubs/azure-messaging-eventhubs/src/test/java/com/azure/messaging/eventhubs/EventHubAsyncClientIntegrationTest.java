@@ -68,7 +68,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -101,7 +101,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     public void receiveMessage() {
         // Arrange
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .prefetchCount(2);
+            .setPrefetchCount(2);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
 
@@ -134,7 +134,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()), null);
         }
 
-        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
+        final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().setPartitionId(PARTITION_ID));
         final List<EventHubAsyncConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -144,11 +144,11 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 consumers.add(consumer);
 
                 final Disposable subscription = consumer.receive().filter(event -> {
-                    return event.properties() != null
-                        && event.properties().containsKey(messageTrackingId)
-                        && messageTrackingValue.equals(event.properties().get(messageTrackingId));
+                    return event.getProperties() != null
+                        && event.getProperties().containsKey(messageTrackingId)
+                        && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
                 }).take(numberOfEvents).subscribe(event -> {
-                    logger.info("Event[{}] matched.", event.sequenceNumber());
+                    logger.info("Event[{}] matched.", event.getSequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()), () -> {
                         long count = countDownLatch.getCount();
                         logger.info("Finished consuming events. Counting down: {}", count);
@@ -189,7 +189,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
         final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 

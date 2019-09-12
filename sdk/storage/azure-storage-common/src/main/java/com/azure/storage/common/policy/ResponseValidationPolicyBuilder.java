@@ -39,8 +39,8 @@ public class ResponseValidationPolicyBuilder {
      */
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
-            String requestHeaderValue = httpResponse.request().headers().value(headerName);
-            String responseHeaderValue = httpResponse.headerValue(headerName);
+            String requestHeaderValue = httpResponse.getRequest().getHeaders().value(headerName);
+            String responseHeaderValue = httpResponse.getHeaderValue(headerName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
                 throw logger.logExceptionAsError(new RuntimeException(String.format(
                     "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",

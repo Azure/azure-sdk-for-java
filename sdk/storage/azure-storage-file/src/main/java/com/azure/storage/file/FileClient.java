@@ -87,7 +87,7 @@ public class FileClient {
      * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, null, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -138,7 +138,7 @@ public class FileClient {
      * @return The {@link FileCopyInfo file copy info}
      */
     public FileCopyInfo startCopy(String sourceUrl, Map<String, String> metadata) {
-        return startCopyWithResponse(sourceUrl, metadata, null, Context.NONE).value();
+        return startCopyWithResponse(sourceUrl, metadata, null, Context.NONE).getValue();
     }
 
     /**
@@ -266,7 +266,7 @@ public class FileClient {
      * @return The {@link FileDownloadInfo file download info}
      */
     public FileDownloadInfo downloadWithProperties() {
-        return downloadWithPropertiesWithResponse(null, null, null, Context.NONE).value();
+        return downloadWithPropertiesWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -351,7 +351,7 @@ public class FileClient {
      * @return {@link FileProperties Storage file properties}
      */
     public FileProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -404,7 +404,7 @@ public class FileClient {
      */
     public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE).value();
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE).getValue();
     }
 
     /**
@@ -464,7 +464,7 @@ public class FileClient {
      * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public FileMetadataInfo setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, null, Context.NONE).value();
+        return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
     }
 
     /**
@@ -515,7 +515,7 @@ public class FileClient {
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
     public FileUploadInfo upload(ByteBuffer data, long length) {
-        return uploadWithResponse(data, length, null, Context.NONE).value();
+        return uploadWithResponse(data, length, null, Context.NONE).getValue();
     }
 
    /**
@@ -590,7 +590,7 @@ public class FileClient {
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public FileUploadRangeFromURLInfo uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
         URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE).value();
+        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE).getValue();
     }
 
     /**
@@ -639,7 +639,7 @@ public class FileClient {
      * @return The {@link FileUploadInfo file upload info}
      */
     public FileUploadInfo clearRange(long length) {
-        return clearRangeWithResponse(length, 0, null, Context.NONE).value();
+        return clearRangeWithResponse(length, 0, null, Context.NONE).getValue();
     }
 
     /**

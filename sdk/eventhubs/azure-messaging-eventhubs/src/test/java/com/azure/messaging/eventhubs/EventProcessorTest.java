@@ -90,16 +90,16 @@ public class EventProcessorTest {
     @Test
     public void testWithSimplePartitionProcessor() throws Exception {
         // Arrange
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(consumer1.receive()).thenReturn(Flux.just(eventData1, eventData2));
-        when(eventData1.sequenceNumber()).thenReturn(1L);
-        when(eventData2.sequenceNumber()).thenReturn(2L);
-        when(eventData1.offset()).thenReturn(1L);
-        when(eventData2.offset()).thenReturn(100L);
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
@@ -119,22 +119,22 @@ public class EventProcessorTest {
         eventProcessor.stop();
 
         // Assert
-        assertNotNull(eventProcessor.identifier());
+        assertNotNull(eventProcessor.getIdentifier());
 
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
-                assertEquals("Partition", "1", partitionOwnership.partitionId());
-                assertEquals("Consumer", "test-consumer", partitionOwnership.consumerGroupName());
-                assertEquals("EventHub name", "test-eh", partitionOwnership.eventHubName());
-                assertEquals("Sequence number", 2, (long) partitionOwnership.sequenceNumber());
-                assertEquals("Offset", Long.valueOf(100), partitionOwnership.offset());
-                assertEquals("OwnerId", eventProcessor.identifier(), partitionOwnership.ownerId());
-                assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() >= beforeTest);
-                assertTrue("LastModifiedTime", partitionOwnership.lastModifiedTime() <= System.currentTimeMillis());
-                assertNotNull(partitionOwnership.eTag());
+                assertEquals("Partition", "1", partitionOwnership.getPartitionId());
+                assertEquals("Consumer", "test-consumer", partitionOwnership.getConsumerGroupName());
+                assertEquals("EventHub name", "test-eh", partitionOwnership.getEventHubName());
+                assertEquals("Sequence number", 2, (long) partitionOwnership.getSequenceNumber());
+                assertEquals("Offset", Long.valueOf(100), partitionOwnership.getOffset());
+                assertEquals("OwnerId", eventProcessor.getIdentifier(), partitionOwnership.getOwnerId());
+                assertTrue("LastModifiedTime", partitionOwnership.getLastModifiedTime() >= beforeTest);
+                assertTrue("LastModifiedTime", partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis());
+                assertNotNull(partitionOwnership.getETag());
             }).verifyComplete();
 
         verify(eventHubAsyncClient, atLeastOnce()).getPartitionIds();
@@ -152,7 +152,7 @@ public class EventProcessorTest {
     @Test
     public void testWithFaultyPartitionProcessor() throws Exception {
         // Arrange
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
@@ -189,21 +189,21 @@ public class EventProcessorTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(eventData1.sequenceNumber()).thenReturn(1L);
-        when(eventData2.sequenceNumber()).thenReturn(2L);
-        when(eventData1.offset()).thenReturn(1L);
-        when(eventData2.offset()).thenReturn(100L);
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
         Map<String, Object> properties = new HashMap<>();
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
-        when(eventData1.properties()).thenReturn(properties);
+        when(eventData1.getProperties()).thenReturn(properties);
         when(consumer1.receive()).thenReturn(Flux.just(eventData1));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
@@ -247,21 +247,21 @@ public class EventProcessorTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyString(), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
-        when(eventData1.sequenceNumber()).thenReturn(1L);
-        when(eventData2.sequenceNumber()).thenReturn(2L);
-        when(eventData1.offset()).thenReturn(1L);
-        when(eventData2.offset()).thenReturn(100L);
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
         Map<String, Object> properties = new HashMap<>();
         properties.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
-        when(eventData1.properties()).thenReturn(properties);
+        when(eventData1.getProperties()).thenReturn(properties);
         when(consumer1.receive()).thenReturn(Flux.just(eventData1));
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
@@ -306,30 +306,30 @@ public class EventProcessorTest {
         final CountDownLatch count = new CountDownLatch(1);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
-        when(eventHubAsyncClient.eventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("1"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer1);
         when(consumer1.receive()).thenReturn(
             Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData1, eventData2)));
-        when(eventData1.sequenceNumber()).thenReturn(1L);
-        when(eventData2.sequenceNumber()).thenReturn(2L);
-        when(eventData1.offset()).thenReturn(1L);
-        when(eventData2.offset()).thenReturn(100L);
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
 
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("2"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer2);
         when(consumer2.receive()).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData3)));
-        when(eventData3.sequenceNumber()).thenReturn(1L);
-        when(eventData3.offset()).thenReturn(1L);
+        when(eventData3.getSequenceNumber()).thenReturn(1L);
+        when(eventData3.getOffset()).thenReturn(1L);
 
         when(eventHubAsyncClient
             .createConsumer(anyString(), eq("3"), any(EventPosition.class), any(EventHubConsumerOptions.class)))
             .thenReturn(consumer3);
         when(consumer3.receive()).thenReturn(Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(eventData4)));
-        when(eventData4.sequenceNumber()).thenReturn(1L);
-        when(eventData4.offset()).thenReturn(1L);
+        when(eventData4.getSequenceNumber()).thenReturn(1L);
+        when(eventData4.getOffset()).thenReturn(1L);
 
         final InMemoryPartitionManager partitionManager = new InMemoryPartitionManager();
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
@@ -354,10 +354,10 @@ public class EventProcessorTest {
         StepVerifier.create(partitionManager.listOwnership("test-eh", "test-consumer"))
             .assertNext(po -> {
                 try {
-                    if (po.partitionId().equals("1")) {
+                    if (po.getPartitionId().equals("1")) {
                         verify(consumer1, atLeastOnce()).receive();
                         verify(consumer1, atLeastOnce()).close();
-                    } else if (po.partitionId().equals("2")) {
+                    } else if (po.getPartitionId().equals("2")) {
                         verify(consumer2, atLeastOnce()).receive();
                         verify(consumer2, atLeastOnce()).close();
                     } else {

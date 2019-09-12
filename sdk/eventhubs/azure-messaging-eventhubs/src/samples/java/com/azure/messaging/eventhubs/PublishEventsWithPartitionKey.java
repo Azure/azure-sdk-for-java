@@ -56,7 +56,7 @@ public class PublishEventsWithPartitionKey {
         // Note that there is no means of accurately predicting which partition will be associated with a given partition key;
         // we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
         // exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
-        SendOptions sendOptions = new SendOptions().partitionKey("basketball");
+        SendOptions sendOptions = new SendOptions().setPartitionKey("basketball");
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending

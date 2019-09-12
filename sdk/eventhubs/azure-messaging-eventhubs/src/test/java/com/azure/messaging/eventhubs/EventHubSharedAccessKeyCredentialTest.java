@@ -69,9 +69,9 @@ public class EventHubSharedAccessKeyCredentialTest {
                 Assert.assertNotNull(accessToken);
 
                 Assert.assertFalse(accessToken.isExpired());
-                Assert.assertTrue(accessToken.expiresOn().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
+                Assert.assertTrue(accessToken.getExpiresOn().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
 
-                final String[] split = accessToken.token().split(" ");
+                final String[] split = accessToken.getToken().split(" ");
                 Assert.assertEquals(2, split.length);
                 Assert.assertEquals("SharedAccessSignature", split[0].trim());
 

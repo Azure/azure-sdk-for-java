@@ -139,7 +139,7 @@ public class KeyBase {
      * @param notBefore The notBefore UTC time to set
      * @return the KeyBase object itself.
      */
-    public KeyBase notBefore(OffsetDateTime notBefore) {
+    public KeyBase setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -162,7 +162,7 @@ public class KeyBase {
      * @param expires The expiry time to set for the key.
      * @return the KeyBase object itself.
      */
-    public KeyBase expires(OffsetDateTime expires) {
+    public KeyBase setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }
@@ -210,7 +210,7 @@ public class KeyBase {
      * @param tags The tags to set
      * @return the KeyBase object itself.
      */
-    public KeyBase tags(Map<String, String> tags) {
+    public KeyBase setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -295,22 +295,22 @@ public class KeyBase {
     JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
         final Base64 base64 = new Base64(-1, null, true);
         JsonWebKey outputKey = new JsonWebKey()
-                .y(base64.decode((String) key.get("y")))
-                .x(base64.decode((String) key.get("x")))
-                .crv(KeyCurveName.fromString((String) key.get("crv")))
-                .keyOps(getKeyOperations((List<String>) key.get("key_ops")))
-                .t(base64.decode((String) key.get("key_hsm")))
-                .k(base64.decode((String) key.get("k")))
-                .q(base64.decode((String) key.get("q")))
-                .p(base64.decode((String) key.get("p")))
-                .qi(base64.decode((String) key.get("qi")))
-                .dq(base64.decode((String) key.get("dq")))
-                .dp(base64.decode((String) key.get("dp")))
-                .d(base64.decode((String) key.get("d")))
-                .e(base64.decode((String) key.get("e")))
-                .n(base64.decode((String) key.get("n")))
-                .kty(KeyType.fromString((String) key.get("kty")))
-                .kid((String) key.get("kid"));
+                .setY(base64.decode((String) key.get("y")))
+                .setX(base64.decode((String) key.get("x")))
+                .setCrv(KeyCurveName.fromString((String) key.get("crv")))
+                .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
+                .setT(base64.decode((String) key.get("key_hsm")))
+                .setK(base64.decode((String) key.get("k")))
+                .setQ(base64.decode((String) key.get("q")))
+                .setP(base64.decode((String) key.get("p")))
+                .setQi(base64.decode((String) key.get("qi")))
+                .setDq(base64.decode((String) key.get("dq")))
+                .setDp(base64.decode((String) key.get("dp")))
+                .setD(base64.decode((String) key.get("d")))
+                .setE(base64.decode((String) key.get("e")))
+                .setN(base64.decode((String) key.get("n")))
+                .setKty(KeyType.fromString((String) key.get("kty")))
+                .setKid((String) key.get("kid"));
         unpackId((String) key.get("kid"));
         return outputKey;
     }

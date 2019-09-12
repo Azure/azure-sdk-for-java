@@ -33,49 +33,49 @@ public class FileSmbProperties {
     /**
      * @return The file's permission key.
      */
-    public String filePermissionKey() {
+    public String getFilePermissionKey() {
         return filePermissionKey;
     }
 
     /**
      * @return The file's {@link NtfsFileAttributes}.
      */
-    public EnumSet<NtfsFileAttributes> ntfsFileAttributes() {
+    public EnumSet<NtfsFileAttributes> getNtfsFileAttributes() {
         return ntfsFileAttributes;
     }
 
     /**
      * @return The file's creation time.
      */
-    public OffsetDateTime fileCreationTime() {
+    public OffsetDateTime getFileCreationTime() {
         return fileCreationTime;
     }
 
     /**
      * @return The file's last write time.
      */
-    public OffsetDateTime fileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return fileLastWriteTime;
     }
 
     /**
      * @return The file's change time.
      */
-    public OffsetDateTime fileChangeTime() {
+    public OffsetDateTime getFileChangeTime() {
         return fileChangeTime;
     }
 
     /**
      * @return The file's ID.
      */
-    public String fileId() {
+    public String getFileId() {
         return fileId;
     }
 
     /**
      * @return The file's parent ID.
      */
-    public String parentId() {
+    public String getParentId() {
         return parentId;
     }
 
@@ -84,7 +84,7 @@ public class FileSmbProperties {
      * @param filePermissionKey The file permission key.
      * @return the updated FileSmbProperties object.
      */
-    public FileSmbProperties filePermissionKey(String filePermissionKey) {
+    public FileSmbProperties setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -94,7 +94,7 @@ public class FileSmbProperties {
      * @param ntfsFileAttributes An enum set of the ntfs file attributes.
      * @return the updated FileSmbProperties object.
      */
-    public FileSmbProperties ntfsFileAttributes(EnumSet<NtfsFileAttributes> ntfsFileAttributes) {
+    public FileSmbProperties setNtfsFileAttributes(EnumSet<NtfsFileAttributes> ntfsFileAttributes) {
         this.ntfsFileAttributes = ntfsFileAttributes;
         return this;
     }
@@ -104,7 +104,7 @@ public class FileSmbProperties {
      * @param fileCreationTime The file creation time.
      * @return the updated FileSmbProperties object..
      */
-    public FileSmbProperties fileCreationTime(OffsetDateTime fileCreationTime) {
+    public FileSmbProperties setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -114,7 +114,7 @@ public class FileSmbProperties {
      * @param fileLastWriteTime The file last write time.
      * @return the updated FileSmbProperties object.
      */
-    public FileSmbProperties fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public FileSmbProperties setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -127,7 +127,7 @@ public class FileSmbProperties {
      * @param defaultValue The default file permission header value.
      * @return The value of the file permission header
      */
-    String filePermission(String filePermission, String defaultValue) {
+    String setFilePermission(String filePermission, String defaultValue) {
         return (filePermission == null) && (filePermissionKey == null)
             ? defaultValue
             : filePermission;
@@ -138,7 +138,7 @@ public class FileSmbProperties {
      * @param defaultValue The default ntfs attributes header value.
      * @return The value of the ntfs attributes header
      */
-    String ntfsFileAttributes(String defaultValue) {
+    String setNtfsFileAttributes(String defaultValue) {
         return ntfsFileAttributes == null
             ? defaultValue
             : NtfsFileAttributes.toString(ntfsFileAttributes);
@@ -149,7 +149,7 @@ public class FileSmbProperties {
      * @param defaultValue The default creation time header value.
      * @return The value of the creation time header
      */
-    String fileCreationTime(String defaultValue) {
+    String setFileCreationTime(String defaultValue) {
         return fileCreationTime == null
             ? defaultValue
             : parseFileSMBDate(fileCreationTime);
@@ -160,7 +160,7 @@ public class FileSmbProperties {
      * @param defaultValue The default last write time header value.
      * @return The value of the last write time header
      */
-    String fileLastWriteTime(String defaultValue) {
+    String setFileLastWriteTime(String defaultValue) {
         return fileLastWriteTime == null
             ? defaultValue
             : parseFileSMBDate(fileLastWriteTime);

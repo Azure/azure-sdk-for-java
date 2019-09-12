@@ -79,8 +79,8 @@ public class EventDataUtil {
     private static Message toAmqpMessage(String partitionKey, EventData eventData) {
         final Message message = Proton.message();
 
-        if (eventData.properties() != null && !eventData.properties().isEmpty()) {
-            message.setApplicationProperties(new ApplicationProperties(eventData.properties()));
+        if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
+            message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
         }
 
         if (!ImplUtils.isNullOrEmpty(partitionKey)) {
@@ -93,8 +93,8 @@ public class EventDataUtil {
 
         setSystemProperties(eventData, message);
 
-        if (eventData.body() != null) {
-            message.setBody(new Data(Binary.create(eventData.body())));
+        if (eventData.getBody() != null) {
+            message.setBody(new Data(Binary.create(eventData.getBody())));
         }
 
         return message;
@@ -104,11 +104,11 @@ public class EventDataUtil {
      * Sets AMQP protocol header values on the AMQP message.
      */
     private static void setSystemProperties(EventData eventData, Message message) {
-        if (eventData.systemProperties() == null || eventData.systemProperties().isEmpty()) {
+        if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
             return;
         }
 
-        eventData.systemProperties().forEach((key, value) -> {
+        eventData.getSystemProperties().forEach((key, value) -> {
             if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                 return;
             }

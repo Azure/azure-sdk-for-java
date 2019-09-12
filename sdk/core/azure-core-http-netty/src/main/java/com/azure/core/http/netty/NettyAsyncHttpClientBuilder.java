@@ -52,7 +52,7 @@ public class NettyAsyncHttpClientBuilder {
 
                 if (proxyOptions != null) {
                     ProxyProvider.Proxy nettyProxy;
-                    switch (proxyOptions.type()) {
+                    switch (proxyOptions.getType()) {
                         case HTTP:
                             nettyProxy = ProxyProvider.Proxy.HTTP;
                             break;
@@ -65,11 +65,11 @@ public class NettyAsyncHttpClientBuilder {
                         default:
                             throw logger.logExceptionAsWarning(
                                 new IllegalStateException(
-                                    "Unknown Proxy type '" + proxyOptions.type()
+                                    "Unknown Proxy type '" + proxyOptions.getType()
                                         + "' in use. Not configuring Netty proxy."));
                     }
 
-                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.address()));
+                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.getAddress()));
                 }
 
                 return tcpConfig;
@@ -83,7 +83,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param proxyOptions The proxy configuration to use.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setProxy(ProxyOptions proxyOptions) {
+    public NettyAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -94,7 +94,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param enableWiretap Flag indicating wiretap status
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setWiretap(boolean enableWiretap) {
+    public NettyAsyncHttpClientBuilder wiretap(boolean enableWiretap) {
         this.enableWiretap = enableWiretap;
         return this;
     }
@@ -105,7 +105,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param port The port to connect to.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setPort(int port) {
+    public NettyAsyncHttpClientBuilder port(int port) {
         this.port = port;
         return this;
     }
@@ -119,7 +119,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setNioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
         return this;
     }

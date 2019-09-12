@@ -126,8 +126,8 @@ public final class BlobInputStream extends InputStream {
 
         BlobProperties properties = blobClient.getProperties().block();
         this.streamLength = blobRangeLength == null
-            ? properties.blobSize() - this.blobRangeOffset
-            : Math.min(properties.blobSize() - this.blobRangeOffset, blobRangeLength);
+            ? properties.getBlobSize() - this.blobRangeOffset
+            : Math.min(properties.getBlobSize() - this.blobRangeOffset, blobRangeLength);
 
         this.reposition(blobRangeOffset);
     }

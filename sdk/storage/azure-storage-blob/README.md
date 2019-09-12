@@ -164,7 +164,7 @@ or
 
 Create a container using ContainerClient.
 ```java
-containerClient.create();
+containerClient.setCreate();
 ```
 
 ### Uploading a blob from a stream
@@ -211,7 +211,7 @@ Enumerating all blobs using ContainerClient
 ```java
 containerClient.listBlobsFlat()
         .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.name())
+            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
         );
 ```
 

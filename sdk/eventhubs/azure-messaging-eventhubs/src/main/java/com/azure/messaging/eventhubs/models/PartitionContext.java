@@ -52,7 +52,7 @@ public class PartitionContext {
      *
      * @return The partition id associated to an instance of {@link PartitionProcessor}.
      */
-    public String partitionId() {
+    public String getPartitionId() {
         return partitionId;
     }
 
@@ -61,7 +61,7 @@ public class PartitionContext {
      *
      * @return The Event Hub name associated to an instance of {@link PartitionProcessor}.
      */
-    public String eventHubName() {
+    public String getEventHubName() {
         return eventHubName;
     }
 
@@ -70,7 +70,7 @@ public class PartitionContext {
      *
      * @return The consumer group name associated to an instance of {@link PartitionProcessor}.
      */
-    public String consumerGroup() {
+    public String getConsumerGroup() {
         return consumerGroup;
     }
 
@@ -84,13 +84,13 @@ public class PartitionContext {
     public Mono<Void> updateCheckpoint(EventData eventData) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
-            .consumerGroupName(consumerGroup)
-            .eventHubName(eventHubName)
-            .ownerId(ownerId)
-            .partitionId(partitionId)
-            .sequenceNumber(eventData.sequenceNumber())
-            .offset(eventData.offset())
-            .eTag(previousETag);
+            .setConsumerGroupName(consumerGroup)
+            .setEventHubName(eventHubName)
+            .setOwnerId(ownerId)
+            .setPartitionId(partitionId)
+            .setSequenceNumber(eventData.getSequenceNumber())
+            .setOffset(eventData.getOffset())
+            .setETag(previousETag);
         return this.partitionManager.updateCheckpoint(checkpoint)
             .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))
             .then();
@@ -107,13 +107,13 @@ public class PartitionContext {
     public Mono<Void> updateCheckpoint(long sequenceNumber, Long offset) {
         String previousETag = this.eTag.get();
         Checkpoint checkpoint = new Checkpoint()
-            .consumerGroupName(consumerGroup)
-            .eventHubName(eventHubName)
-            .ownerId(ownerId)
-            .partitionId(partitionId)
-            .sequenceNumber(sequenceNumber)
-            .offset(offset)
-            .eTag(previousETag);
+            .setConsumerGroupName(consumerGroup)
+            .setEventHubName(eventHubName)
+            .setOwnerId(ownerId)
+            .setPartitionId(partitionId)
+            .setSequenceNumber(sequenceNumber)
+            .setOffset(offset)
+            .setETag(previousETag);
 
         return this.partitionManager.updateCheckpoint(checkpoint)
             .map(eTag -> this.eTag.compareAndSet(previousETag, eTag))

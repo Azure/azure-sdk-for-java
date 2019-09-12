@@ -48,7 +48,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -103,11 +103,11 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
 
         // Assert
         final Map<Long, EventData> asList = actual.stream()
-            .collect(Collectors.toMap(EventData::sequenceNumber, Function.identity()));
+            .collect(Collectors.toMap(EventData::getSequenceNumber, Function.identity()));
         Assert.assertEquals(numberOfEvents, asList.size());
 
         final Map<Long, EventData> asList2 = actual2.stream()
-            .collect(Collectors.toMap(EventData::sequenceNumber, Function.identity()));
+            .collect(Collectors.toMap(EventData::getSequenceNumber, Function.identity()));
         Assert.assertEquals(secondNumberOfEvents, asList2.size());
 
         final Long maximumSequence = Collections.max(asList.keySet());
@@ -130,7 +130,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
 
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
 
         try {
             producer.send(events);
@@ -163,7 +163,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
 
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
 
         try {
             producer.send(events);
@@ -195,7 +195,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
         final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
 
         try {
             producer.send(events);
@@ -205,8 +205,8 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             final IterableStream<EventData> receive2 = consumer2.receive(receiveNumber, Duration.ofSeconds(5));
 
             // Assert
-            final List<Long> asList = receive.stream().map(EventData::sequenceNumber).collect(Collectors.toList());
-            final List<Long> asList2 = receive2.stream().map(EventData::sequenceNumber).collect(Collectors.toList());
+            final List<Long> asList = receive.stream().map(EventData::getSequenceNumber).collect(Collectors.toList());
+            final List<Long> asList2 = receive2.stream().map(EventData::getSequenceNumber).collect(Collectors.toList());
 
             Assert.assertEquals(receiveNumber, asList.size());
             Assert.assertEquals(receiveNumber, asList2.size());
@@ -237,7 +237,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
 
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
 
         try {
             producer.send(events);
@@ -272,7 +272,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
         final EventHubProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 

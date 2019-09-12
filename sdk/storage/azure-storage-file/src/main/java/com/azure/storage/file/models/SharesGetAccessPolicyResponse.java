@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Contains all response data for the getAccessPolicy operation.
@@ -31,7 +30,7 @@ public final class SharesGetAccessPolicyResponse extends ResponseBase<ShareGetAc
      * @return the deserialized response body.
      */
     @Override
-    public List<SignedIdentifier> value() {
-        return super.value();
+    public List<SignedIdentifier> getValue() {
+        return super.getValue();
     }
 }

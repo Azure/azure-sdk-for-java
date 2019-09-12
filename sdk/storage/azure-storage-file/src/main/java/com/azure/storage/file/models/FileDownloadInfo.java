@@ -49,56 +49,56 @@ public final class FileDownloadInfo {
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return Last time the directory was modified.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
      * @return A set of name-value pairs associated with this file as user-defined metadata.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
      * @return The number of bytes present in the response body.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return contentLength;
     }
 
     /**
      * @return The content type specified for the file. The default content type is application/octet-stream.
      */
-    public String contentType() {
+    public String getContentType() {
         return contentType;
     }
 
     /**
      * @return The range of bytes returned if the client requested a subset of the file by setting the Range request header.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return contentRange;
     }
 
     /**
      * @return The download request body.
      */
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         return body;
     }
 
     /**
      * @return The SMB properties of the file.
      */
-    public FileSmbProperties smbProperties() {
+    public FileSmbProperties getSmbProperties() {
         return smbProperties;
     }
 }

@@ -133,10 +133,10 @@ class QueueServiceAsyncAPITests extends APISpec {
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
-            QueueItem queue = new QueueItem().name(queueName + version)
-                .metadata(Collections.singletonMap("metadata" + version, "value" + version))
+            QueueItem queue = new QueueItem().setName(queueName + version)
+                .setMetadata(Collections.singletonMap("metadata" + version, "value" + version))
             testQueues.add(queue)
-            primaryQueueServiceAsyncClient.createQueueWithResponse(queue.name(), queue.metadata()).block()
+            primaryQueueServiceAsyncClient.createQueueWithResponse(queue.getName(), queue.getMetadata()).block()
         }
         when:
         def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options))
@@ -149,10 +149,10 @@ class QueueServiceAsyncAPITests extends APISpec {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
         }.verifyComplete()
         where:
-        options                                                                                        | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues")                       | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").maxResults(2)         | _
-        new QueuesSegmentOptions().prefix("queueserviceasyncapitestslistqueues").includeMetadata(true) | _
+        options                                                                                              | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues")                          | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setMaxResults(2)         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setIncludeMetadata(true) | _
     }
 
     def "List empty queues"() {
@@ -167,20 +167,20 @@ class QueueServiceAsyncAPITests extends APISpec {
     def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceAsyncClient.getProperties().block()
-        def retentionPolicy = new RetentionPolicy().enabled(true)
-            .days(3)
-        def logging = new Logging().version("1.0")
-            .delete(true)
-            .write(true)
-            .retentionPolicy(retentionPolicy)
-        def metrics = new Metrics().enabled(true)
-            .includeAPIs(false)
-            .retentionPolicy(retentionPolicy)
-            .version("1.0")
-        def updatedProperties = new StorageServiceProperties().logging(logging)
-            .hourMetrics(metrics)
-            .minuteMetrics(metrics)
-            .cors(new ArrayList<>())
+        def retentionPolicy = new RetentionPolicy().setEnabled(true)
+            .setDays(3)
+        def logging = new Logging().setVersion("1.0")
+            .setDelete(true)
+            .setWrite(true)
+            .setRetentionPolicy(retentionPolicy)
+        def metrics = new Metrics().setEnabled(true)
+            .setIncludeAPIs(false)
+            .setRetentionPolicy(retentionPolicy)
+            .setVersion("1.0")
+        def updatedProperties = new StorageServiceProperties().setLogging(logging)
+            .setHourMetrics(metrics)
+            .setMinuteMetrics(metrics)
+            .setCors(new ArrayList<>())
         when:
         def getPropertiesBeforeVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
         def setPropertiesVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.setPropertiesWithResponse(updatedProperties))

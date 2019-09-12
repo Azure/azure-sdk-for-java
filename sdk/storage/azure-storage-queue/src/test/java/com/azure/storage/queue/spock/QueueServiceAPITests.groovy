@@ -31,7 +31,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue"() {
         when:
         def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60),  null, null, null)
-        def enqueueMessageResponse = queueClientResponse.value().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null,null)
+        def enqueueMessageResponse = queueClientResponse.getValue().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null,null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -69,7 +69,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue maxOverload"() {
         when:
         def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60), metadata,null, null)
-        def enqueueMessageResponse = queueClientResponse.value().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null, null)
+        def enqueueMessageResponse = queueClientResponse.getValue().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null, null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -125,10 +125,10 @@ class QueueServiceAPITests extends APISpec {
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
-            QueueItem queue = new QueueItem().name(queueName + version)
-                .metadata(Collections.singletonMap("metadata" + version, "value" + version))
+            QueueItem queue = new QueueItem().setName(queueName + version)
+                .setMetadata(Collections.singletonMap("metadata" + version, "value" + version))
             testQueues.add(queue)
-            primaryQueueServiceClient.createQueueWithResponse(queue.name(), queue.metadata(), null, null)
+            primaryQueueServiceClient.createQueueWithResponse(queue.getName(), queue.getMetadata(), null, null)
         }
 
         when:
@@ -136,15 +136,15 @@ class QueueServiceAPITests extends APISpec {
         then:
         queueListIter.each {
             QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
-            primaryQueueServiceClient.deleteQueue(it.name())
+            primaryQueueServiceClient.deleteQueue(it.getName())
         }
         testQueues.size() == 0
 
         where:
-        options                                                                                   | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues")                       | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").maxResults(2)         | _
-        new QueuesSegmentOptions().prefix("queueserviceapitestslistqueues").includeMetadata(true) | _
+        options                                                                                         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues")                          | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setMaxResults(2)         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setIncludeMetadata(true) | _
     }
 
     def "List empty queues"() {
@@ -152,26 +152,26 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.getQueueClient(testResourceName.randomName(methodName, 60))
 
         then:
-        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName), null, null).iterator().hasNext()
+        !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName), null, null).iterator().hasNext()
     }
 
     def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceClient.getProperties()
-        def retentionPolicy = new RetentionPolicy().enabled(true)
-            .days(3)
-        def logging = new Logging().version("1.0")
-            .delete(true)
-            .write(true)
-            .retentionPolicy(retentionPolicy)
-        def metrics = new Metrics().enabled(true)
-            .includeAPIs(false)
-            .retentionPolicy(retentionPolicy)
-            .version("1.0")
-        def updatedProperties = new StorageServiceProperties().logging(logging)
-            .hourMetrics(metrics)
-            .minuteMetrics(metrics)
-            .cors(new ArrayList<>())
+        def retentionPolicy = new RetentionPolicy().setEnabled(true)
+            .setDays(3)
+        def logging = new Logging().setVersion("1.0")
+            .setDelete(true)
+            .setWrite(true)
+            .setRetentionPolicy(retentionPolicy)
+        def metrics = new Metrics().setEnabled(true)
+            .setIncludeAPIs(false)
+            .setRetentionPolicy(retentionPolicy)
+            .setVersion("1.0")
+        def updatedProperties = new StorageServiceProperties().setLogging(logging)
+            .setHourMetrics(metrics)
+            .setMinuteMetrics(metrics)
+            .setCors(new ArrayList<>())
 
         when:
         def getResponseBefore = primaryQueueServiceClient.getProperties()

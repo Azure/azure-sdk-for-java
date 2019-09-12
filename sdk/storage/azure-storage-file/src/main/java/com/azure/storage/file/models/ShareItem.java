@@ -44,7 +44,7 @@ public final class ShareItem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -54,7 +54,7 @@ public final class ShareItem {
      * @param name the name value to set.
      * @return the ShareItem object itself.
      */
-    public ShareItem name(String name) {
+    public ShareItem setName(String name) {
         this.name = name;
         return this;
     }
@@ -64,7 +64,7 @@ public final class ShareItem {
      *
      * @return the snapshot value.
      */
-    public String snapshot() {
+    public String getSnapshot() {
         return this.snapshot;
     }
 
@@ -74,7 +74,7 @@ public final class ShareItem {
      * @param snapshot the snapshot value to set.
      * @return the ShareItem object itself.
      */
-    public ShareItem snapshot(String snapshot) {
+    public ShareItem setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -84,7 +84,7 @@ public final class ShareItem {
      *
      * @return the properties value.
      */
-    public ShareProperties properties() {
+    public ShareProperties getProperties() {
         return this.properties;
     }
 
@@ -94,7 +94,7 @@ public final class ShareItem {
      * @param properties the properties value to set.
      * @return the ShareItem object itself.
      */
-    public ShareItem properties(ShareProperties properties) {
+    public ShareItem setProperties(ShareProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -104,7 +104,7 @@ public final class ShareItem {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -114,7 +114,7 @@ public final class ShareItem {
      * @param metadata the metadata value to set.
      * @return the ShareItem object itself.
      */
-    public ShareItem metadata(Map<String, String> metadata) {
+    public ShareItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

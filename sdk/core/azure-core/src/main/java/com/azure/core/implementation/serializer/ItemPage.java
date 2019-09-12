@@ -30,12 +30,12 @@ class ItemPage<T> implements Page<T> {
     private String nextLink;
 
     @Override
-    public List<T> items() {
+    public List<T> getItems() {
         return items;
     }
 
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return nextLink;
     }
 }

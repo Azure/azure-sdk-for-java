@@ -7,7 +7,6 @@ package com.azure.storage.file.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import java.util.Map;
 
 /**
  * Contains all response data for the listSharesSegment operation.
@@ -30,7 +29,7 @@ public final class ServicesListSharesSegmentResponse extends ResponseBase<Servic
      * @return the deserialized response body.
      */
     @Override
-    public ListSharesResponse value() {
-        return super.value();
+    public ListSharesResponse getValue() {
+        return super.getValue();
     }
 }

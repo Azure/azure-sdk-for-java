@@ -201,7 +201,7 @@ public final class QueueServiceAsyncClient {
     /**
      * Lists the queues in the storage account that pass the filter.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * <p><strong>Code Samples</strong></p>
@@ -223,7 +223,7 @@ public final class QueueServiceAsyncClient {
     /**
      * Lists the queues in the storage account that pass the filter starting at the specified marker.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * @param marker Starting point to list the queues
@@ -233,12 +233,12 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
     PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout, Context context) {
-        final String prefix = (options != null) ? options.prefix() : null;
-        final Integer maxResults = (options != null) ? options.maxResults() : null;
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            if (options.includeMetadata()) {
+            if (options.isIncludeMetadata()) {
                 include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
             }
         }
@@ -247,12 +247,12 @@ public final class QueueServiceAsyncClient {
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
                     null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
-                    response.statusCode(),
-                    response.headers(),
-                    response.value().queueItems(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getQueueItems(),
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
@@ -297,15 +297,15 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(client.services().getPropertiesWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -328,10 +328,10 @@ public final class QueueServiceAsyncClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
     public Mono<Void> setProperties(StorageServiceProperties properties) {
@@ -342,8 +342,8 @@ public final class QueueServiceAsyncClient {
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -366,10 +366,10 @@ public final class QueueServiceAsyncClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
     public Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties) {
@@ -419,7 +419,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**

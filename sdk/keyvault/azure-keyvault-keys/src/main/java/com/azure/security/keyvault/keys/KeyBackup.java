@@ -21,7 +21,7 @@ class KeyBackup {
      *
      * @return the value value
      */
-    public byte[] value() {
+    public byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }

@@ -38,11 +38,11 @@ public class ManagingDeletedKeys {
         // Let's create Ec and Rsa keys valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048));
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(2048));
 
         keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .expires(OffsetDateTime.now().plusYears(1)));
+                .setExpires(OffsetDateTime.now().plusYears(1)));
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyClient.deleteKey("CloudEcKey");
@@ -66,7 +66,7 @@ public class ManagingDeletedKeys {
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
         for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
-            System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
+            System.out.printf("Deleted key's recovery Id %s", deletedKey.getRecoveryId());
         }
 
         // If the keyvault is soft-delete enabled, then for permanent deletion deleted keys need to be purged.

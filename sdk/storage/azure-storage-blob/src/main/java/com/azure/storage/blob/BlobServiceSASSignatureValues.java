@@ -115,7 +115,7 @@ final class BlobServiceSASSignatureValues {
      * @return the version of the service this SAS will target. If not specified, it will default to the version targeted
      * by the library.
      */
-    public String version() {
+    public String getVersion() {
         return version;
     }
 
@@ -126,7 +126,7 @@ final class BlobServiceSASSignatureValues {
      * @param version Version to target
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues version(String version) {
+    public BlobServiceSASSignatureValues setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -134,7 +134,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol protocol() {
+    public SASProtocol getProtocol() {
         return protocol;
     }
 
@@ -144,7 +144,7 @@ final class BlobServiceSASSignatureValues {
      * @param protocol Protocol for the SAS
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues protocol(SASProtocol protocol) {
+    public BlobServiceSASSignatureValues setProtocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -152,7 +152,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return when the SAS will take effect.
      */
-    public OffsetDateTime startTime() {
+    public OffsetDateTime getStartTime() {
         return startTime;
     }
 
@@ -162,7 +162,7 @@ final class BlobServiceSASSignatureValues {
      * @param startTime When the SAS takes effect
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues startTime(OffsetDateTime startTime) {
+    public BlobServiceSASSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -170,7 +170,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the time after which the SAS will no longer work.
      */
-    public OffsetDateTime expiryTime() {
+    public OffsetDateTime getExpiryTime() {
         return expiryTime;
     }
 
@@ -180,7 +180,7 @@ final class BlobServiceSASSignatureValues {
      * @param expiryTime When the SAS will no longer work
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues expiryTime(OffsetDateTime expiryTime) {
+    public BlobServiceSASSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -189,7 +189,7 @@ final class BlobServiceSASSignatureValues {
      * @return the permissions string allowed by the SAS. Please refer to either {@link ContainerSASPermission} or
      * {@link BlobSASPermission} depending on the resource being accessed for help determining the permissions allowed.
      */
-    public String permissions() {
+    public String getPermissions() {
         return permissions;
     }
 
@@ -200,7 +200,7 @@ final class BlobServiceSASSignatureValues {
      * @param permissions Permissions string for the SAS
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues permissions(String permissions) {
+    public BlobServiceSASSignatureValues setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -208,7 +208,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange ipRange() {
+    public IPRange getIpRange() {
         return ipRange;
     }
 
@@ -218,7 +218,7 @@ final class BlobServiceSASSignatureValues {
      * @param ipRange Allowed IP range to set
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues ipRange(IPRange ipRange) {
+    public BlobServiceSASSignatureValues setIpRange(IPRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -226,7 +226,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the resource the SAS user may access.
      */
-    public String resource() {
+    public String getResource() {
         return resource;
     }
 
@@ -236,7 +236,7 @@ final class BlobServiceSASSignatureValues {
      * @param resource Allowed resources string to set
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues resource(String resource) {
+    public BlobServiceSASSignatureValues setResource(String resource) {
         this.resource = resource;
         return this;
     }
@@ -244,7 +244,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the canonical name of the object the SAS user may access.
      */
-    public String canonicalName() {
+    public String getCanonicalName() {
         return canonicalName;
     }
 
@@ -254,7 +254,7 @@ final class BlobServiceSASSignatureValues {
      * @param canonicalName Canonical name of the object the SAS grants access
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues canonicalName(String canonicalName) {
+    public BlobServiceSASSignatureValues setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
         return this;
     }
@@ -268,7 +268,7 @@ final class BlobServiceSASSignatureValues {
      * @return the updated BlobServiceSASSignatureValues object
      * @throws RuntimeException If {@code urlString} is a malformed URL.
      */
-    public BlobServiceSASSignatureValues canonicalName(String urlString, String accountName) {
+    public BlobServiceSASSignatureValues setCanonicalName(String urlString, String accountName) {
         URL url;
         try {
             url = new URL(urlString);
@@ -283,7 +283,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the specific snapshot the SAS user may access.
      */
-    public String snapshotId() {
+    public String getSnapshotId() {
         return this.snapshotId;
     }
 
@@ -293,7 +293,7 @@ final class BlobServiceSASSignatureValues {
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues snapshotId(String snapshotId) {
+    public BlobServiceSASSignatureValues setSnapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
         return this;
     }
@@ -303,7 +303,7 @@ final class BlobServiceSASSignatureValues {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return identifier;
     }
 
@@ -315,7 +315,7 @@ final class BlobServiceSASSignatureValues {
      * @param identifier Name of the access policy
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues identifier(String identifier) {
+    public BlobServiceSASSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -323,7 +323,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the cache-control header for the SAS.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return cacheControl;
     }
 
@@ -333,7 +333,7 @@ final class BlobServiceSASSignatureValues {
      * @param cacheControl Cache-Control header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues cacheControl(String cacheControl) {
+    public BlobServiceSASSignatureValues setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -341,7 +341,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the content-disposition header for the SAS.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return contentDisposition;
     }
 
@@ -351,7 +351,7 @@ final class BlobServiceSASSignatureValues {
      * @param contentDisposition Content-Disposition header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues contentDisposition(String contentDisposition) {
+    public BlobServiceSASSignatureValues setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -359,7 +359,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the content-encoding header for the SAS.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return contentEncoding;
     }
 
@@ -369,7 +369,7 @@ final class BlobServiceSASSignatureValues {
      * @param contentEncoding Content-Encoding header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues contentEncoding(String contentEncoding) {
+    public BlobServiceSASSignatureValues setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -377,7 +377,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the content-language header for the SAS.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return contentLanguage;
     }
 
@@ -387,7 +387,7 @@ final class BlobServiceSASSignatureValues {
      * @param contentLanguage Content-Language header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues contentLanguage(String contentLanguage) {
+    public BlobServiceSASSignatureValues setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -395,7 +395,7 @@ final class BlobServiceSASSignatureValues {
     /**
      * @return the content-type header for the SAS.
      */
-    public String contentType() {
+    public String getContentType() {
         return contentType;
     }
 
@@ -405,7 +405,7 @@ final class BlobServiceSASSignatureValues {
      * @param contentType Content-Type header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues contentType(String contentType) {
+    public BlobServiceSASSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -444,7 +444,7 @@ final class BlobServiceSASSignatureValues {
         assertGenerateOK(true);
 
         // Signature is generated on the un-url-encoded values.
-        String signature = Utility.computeHMac256(delegationKey.value(), stringToSign(delegationKey));
+        String signature = Utility.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey));
 
         return new BlobServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime, this.ipRange,
             null /* identifier */, this.resource, this.permissions, signature, this.cacheControl, this.contentDisposition,
@@ -499,12 +499,12 @@ final class BlobServiceSASSignatureValues {
             this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
-            key.signedOid() == null ? "" : key.signedOid(),
-            key.signedTid() == null ? "" : key.signedTid(),
-            key.signedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedStart()),
-            key.signedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedExpiry()),
-            key.signedService() == null ? "" : key.signedService(),
-            key.signedVersion() == null ? "" : key.signedVersion(),
+            key.getSignedOid() == null ? "" : key.getSignedOid(),
+            key.getSignedTid() == null ? "" : key.getSignedTid(),
+            key.getSignedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+            key.getSignedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+            key.getSignedService() == null ? "" : key.getSignedService(),
+            key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.ipRange == null ? "" : this.ipRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             this.version == null ? "" : this.version,

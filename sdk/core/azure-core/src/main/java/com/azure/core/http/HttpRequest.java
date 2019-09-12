@@ -53,7 +53,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the request method
      */
-    public HttpMethod httpMethod() {
+    public HttpMethod getHttpMethod() {
         return httpMethod;
     }
 
@@ -63,7 +63,7 @@ public class HttpRequest implements Serializable {
      * @param httpMethod the request method
      * @return this HttpRequest
      */
-    public HttpRequest httpMethod(HttpMethod httpMethod) {
+    public HttpRequest setHttpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -73,7 +73,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the target address
      */
-    public URL url() {
+    public URL getUrl() {
         return url;
     }
 
@@ -83,7 +83,7 @@ public class HttpRequest implements Serializable {
      * @param url target address as {@link URL}
      * @return this HttpRequest
      */
-    public HttpRequest url(URL url) {
+    public HttpRequest setUrl(URL url) {
         this.url = url;
         return this;
     }
@@ -93,7 +93,7 @@ public class HttpRequest implements Serializable {
      *
      * @return headers to be sent
      */
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
@@ -103,7 +103,7 @@ public class HttpRequest implements Serializable {
      * @param headers the set of headers
      * @return this HttpRequest
      */
-    public HttpRequest headers(HttpHeaders headers) {
+    public HttpRequest setHeaders(HttpHeaders headers) {
         this.headers = headers;
         return this;
     }
@@ -116,7 +116,7 @@ public class HttpRequest implements Serializable {
      * @param value the header value
      * @return this HttpRequest
      */
-    public HttpRequest header(String name, String value) {
+    public HttpRequest setHeader(String name, String value) {
         headers.put(name, value);
         return this;
     }
@@ -126,7 +126,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the content to be send
      */
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         return body;
     }
 
@@ -136,9 +136,9 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(String content) {
+    public HttpRequest setBody(String content) {
         final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return body(bodyBytes);
+        return setBody(bodyBytes);
     }
 
     /**
@@ -148,9 +148,9 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(byte[] content) {
+    public HttpRequest setBody(byte[] content) {
         headers.put("Content-Length", String.valueOf(content.length));
-        return body(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
+        return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
     }
 
     /**
@@ -162,7 +162,7 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(Flux<ByteBuffer> content) {
+    public HttpRequest setBody(Flux<ByteBuffer> content) {
         this.body = content;
         return this;
     }

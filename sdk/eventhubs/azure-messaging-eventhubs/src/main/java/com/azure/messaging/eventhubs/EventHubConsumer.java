@@ -24,11 +24,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
