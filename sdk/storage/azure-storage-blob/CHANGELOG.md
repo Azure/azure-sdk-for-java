@@ -19,9 +19,9 @@ For details on the Azure SDK for Java (September 2019 Preview) release, you can 
 - Simplified API to return model types directly on non-maximal overloads. Maximal overloads return `Response<T>` and suffixed with WithResponse.
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.3/sdk/storage/azure-storage-blob/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/085c8570b411defff26860ef56ea189af07d3d6a/sdk/storage/azure-storage-blob/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.3/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/085c8570b411defff26860ef56ea189af07d3d6a/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
 demonstrate the new API.
 
 ## Version 12.0.0-preview.2 (2019-08-08)
