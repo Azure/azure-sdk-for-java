@@ -3,9 +3,9 @@
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0-preview.3/sdk/storage/azure-storage-queue/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/085c8570b411defff26860ef56ea189af07d3d6a/sdk/storage/azure-storage-queue/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-storage-queue_12.0.0-preview.3/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/085c8570b411defff26860ef56ea189af07d3d6a/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
 
 - Added tracing telemetry on maximum overload API.
 - Added generate SAS token APIs.
