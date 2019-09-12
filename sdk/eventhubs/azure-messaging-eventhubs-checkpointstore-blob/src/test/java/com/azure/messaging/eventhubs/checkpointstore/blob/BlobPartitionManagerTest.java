@@ -194,13 +194,13 @@ public class BlobPartitionManagerTest {
         Metadata metadata = getMetadata(owner, sequenceNumber, offset);
 
         BlobProperties properties = new BlobProperties()
-            .lastModified(OffsetDateTime.now())
-            .etag(etag);
+            .setLastModified(OffsetDateTime.now())
+            .setEtag(etag);
 
         return new BlobItem()
-            .name(blobName)
-            .metadata(metadata)
-            .properties(properties);
+            .setName(blobName)
+            .setMetadata(metadata)
+            .setProperties(properties);
     }
 
     private Metadata getMetadata(String owner, String sequenceNumber, String offset) {
