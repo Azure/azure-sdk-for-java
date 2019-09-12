@@ -3,10 +3,12 @@ using Azure.Storage.Blobs;
 
 using CommandLine;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Runtime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StoragePerfNet
@@ -20,6 +22,8 @@ namespace StoragePerfNet
         private static readonly byte[] _payload;
         private static readonly Stream _payloadStream;
 
+        private static int _downloads = 0;
+
         static Program()
         {
             _payload = new byte[_bytesPerMessage];
@@ -32,11 +36,14 @@ namespace StoragePerfNet
 
         public class Options
         {
-            [Option('c', "count", Default = 1)]
-            public int Count { get; set; }
-
-            [Option('d', "debug")]
+            [Option('d', "duration", Default = 10)]
+            public int Duration { get; set; }
+            
+            [Option("debug")]
             public bool Debug { get; set; }
+
+            [Option('u', "upload")]
+            public bool Upload { get; set; }
         }
 
         static async Task Main(string[] args)
@@ -70,14 +77,59 @@ namespace StoragePerfNet
             blobClientOptions.Transport = new HttpClientTransport(httpClient);
 
             var client = new BlobClient(connectionString, _containerName, _blobName, blobClientOptions);
+
+            if (options.Upload)
+            {
+                await UploadAndVerifyDownload(client);
+            }
+
+            Console.WriteLine($"Downloading blob '{_containerName}/{_blobName}' for {options.Duration} seconds...");
+            Console.WriteLine();
+
+            var sw = Stopwatch.StartNew();
+            var duration = TimeSpan.FromSeconds(options.Duration);
+
+            var elapsed = sw.Elapsed;
+            var lastElapsed = elapsed;
+            while (elapsed < duration)
+            {
+                await Download(client);
+                Interlocked.Increment(ref _downloads);
+
+                if (elapsed.Seconds > lastElapsed.Seconds)
+                {
+                    Console.WriteLine(_downloads);
+                }
+
+                lastElapsed = elapsed;
+                elapsed = sw.Elapsed;
+            }
+            sw.Stop();
+
+            var elapsedSeconds = elapsed.TotalSeconds;
+            var downloadsPerSecond = _downloads / elapsedSeconds;
+            var megabytesPerSecond = (downloadsPerSecond * _bytesPerMessage) / (1024 * 1024);
+
+            Console.WriteLine();
+            Console.WriteLine($"Downloaded {_downloads} blobs of size {_bytesPerMessage} in {elapsedSeconds:N2}s " +
+                        $"({downloadsPerSecond:N2} blobs/s, {megabytesPerSecond:N2} MB/s)");
+        }
+
+        static async Task Download(BlobClient client)
+        {
+            await client.DownloadAsync();
+        }
+
+        static async Task UploadAndVerifyDownload(BlobClient client)
+        {
             await client.UploadAsync(_payloadStream);
 
             var downloadResponse = await client.DownloadAsync();
-            
+
             var downloadContent = downloadResponse.Value.Content;
             var downloadPayload = new byte[downloadContent.Length];
             downloadContent.Read(downloadPayload, 0, downloadPayload.Length);
-            
+
             if (!((ReadOnlySpan<byte>)_payload).SequenceEqual(downloadPayload))
             {
                 var sb = new StringBuilder();
