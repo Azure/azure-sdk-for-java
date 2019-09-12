@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.3.0</version>
+  <version>1.4.0</version>
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -172,7 +172,7 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
-          <fork>false</fork>
+          <fork>true</fork>
         </configuration>
         <executions>
           <execution>
@@ -405,7 +405,7 @@
                 <packages>com.azure.storage.blob*</packages>
               </group>
               <group>
-                <title>Azure Storage - Blobs Cryptography</title>
+                <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
               <group>
@@ -417,7 +417,7 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
-                <title>Azure Storage - Queues Cryptography</title>
+                <title>Azure Storage Queues - Cryptography</title>
                 <packages>com.azure.storage.queue.cryptography*</packages>
               </group>
               <group>
@@ -471,7 +471,7 @@
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
-            <fork>false</fork>
+            <fork>true</fork>
           </configuration>
         </plugin>
 
@@ -547,7 +547,7 @@
           <excludeFilterFile>eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml
           </excludeFilterFile>
           <failOnError>true</failOnError>
-          <fork>false</fork>
+          <fork>true</fork>
         </configuration>
       </plugin>
       <plugin>
@@ -575,6 +575,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
@@ -808,15 +809,16 @@
     <module>./sdk/core/azure-core-test</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>./sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
-    <module>./sdk/keyvault/azure-keyvault-secrets</module>
-    <module>./sdk/keyvault/azure-keyvault-keys</module>
-    <module>./sdk/tracing/tracing-opentelemetry</module>
     <module>./sdk/identity/azure-identity</module>
+    <module>./sdk/keyvault/azure-keyvault-certificates</module>
+    <module>./sdk/keyvault/azure-keyvault-keys</module>
+    <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/storage/azure-storage-blob</module>
     <module>./sdk/storage/azure-storage-blob-cryptography</module>
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
     <module>./sdk/storage/azure-storage-queue-cryptography</module>
+    <module>./sdk/tracing/tracing-opentelemetry</module>
   </modules>
 </project>

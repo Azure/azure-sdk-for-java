@@ -57,7 +57,7 @@ public class BackCompatTest extends IntegrationTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -70,7 +70,7 @@ public class BackCompatTest extends IntegrationTestBase {
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .partitionId(PARTITION_ID);
+            .setPartitionId(PARTITION_ID);
         producer = client.createProducer(producerOptions);
     }
 
@@ -116,12 +116,12 @@ public class BackCompatTest extends IntegrationTestBase {
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
-        Assert.assertEquals(expected.size(), event.properties().size());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(event.body()).toString());
+        Assert.assertEquals(expected.size(), event.getProperties().size());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
 
         expected.forEach((key, value) -> {
-            Assert.assertTrue(event.properties().containsKey(key));
-            Assert.assertEquals(value, event.properties().get(key));
+            Assert.assertTrue(event.getProperties().containsKey(key));
+            Assert.assertEquals(value, event.getProperties().get(key));
         });
     }
 }

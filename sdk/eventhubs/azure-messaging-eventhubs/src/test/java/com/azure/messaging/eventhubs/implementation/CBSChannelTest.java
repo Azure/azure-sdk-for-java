@@ -44,7 +44,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -53,14 +53,14 @@ public class CBSChannelTest extends IntegrationTestBase {
         MockitoAnnotations.initMocks(this);
 
         credentials = getConnectionStringProperties();
-        tokenResourceProvider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, credentials.endpoint().getHost());
+        tokenResourceProvider = new TokenResourceProvider(CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, credentials.getEndpoint().getHost());
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         connection = new ReactorConnection(CONNECTION_ID, getConnectionOptions(), getReactorProvider(),
             handlerProvider, mapper);
 
         cbsChannel = new CBSChannel(connection, getTokenCredential(), getAuthorizationType(), getReactorProvider(),
-            handlerProvider, new RetryOptions().tryTimeout(Duration.ofMinutes(5)));
+            handlerProvider, new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubName());
+        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.getEventHubName());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience))
@@ -94,18 +94,18 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void unsuccessfulAuthorize() {
         // Arrange
-        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.eventHubName());
+        final String tokenAudience = tokenResourceProvider.getResourceString(credentials.getEventHubName());
         final Duration duration = Duration.ofMinutes(10);
 
         TokenCredential tokenProvider = null;
         try {
-            tokenProvider = new EventHubSharedAccessKeyCredential(credentials.sharedAccessKeyName(), "Invalid shared access key.", duration);
+            tokenProvider = new EventHubSharedAccessKeyCredential(credentials.getSharedAccessKeyName(), "Invalid shared access key.", duration);
         } catch (Exception e) {
             Assert.fail("Could not create token provider: " + e.toString());
         }
 
         final CBSNode node = new CBSChannel(connection, tokenProvider, getAuthorizationType(), getReactorProvider(),
-            handlerProvider, new RetryOptions().tryTimeout(Duration.ofMinutes(5)));
+            handlerProvider, new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
         StepVerifier.create(node.authorize(tokenAudience))

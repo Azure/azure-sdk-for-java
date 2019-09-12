@@ -25,7 +25,7 @@ public final class QueueMessage {
      *
      * @return the messageText value.
      */
-    public String messageText() {
+    public String getMessageText() {
         return this.messageText;
     }
 
@@ -35,7 +35,7 @@ public final class QueueMessage {
      * @param messageText the messageText value to set.
      * @return the QueueMessage object itself.
      */
-    public QueueMessage messageText(String messageText) {
+    public QueueMessage setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }

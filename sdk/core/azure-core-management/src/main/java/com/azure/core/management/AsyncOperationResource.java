@@ -16,7 +16,7 @@ public class AsyncOperationResource {
      * The status of the asynchronous operation.
      * @return The status of the asynchronous operation.
      */
-    public String status() {
+    public String getStatus() {
         return status;
     }
 
@@ -34,7 +34,7 @@ public class AsyncOperationResource {
     /**
      * @return The resource's id.
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 

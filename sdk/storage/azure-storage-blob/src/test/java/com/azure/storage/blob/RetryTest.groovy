@@ -23,7 +23,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         retryTestFactory.getTryNumber() == 6
     }
 
@@ -35,7 +35,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 503
+        response.getStatusCode() == 503
         retryTestFactory.getTryNumber() == retryTestOptions.maxTries()
     }
 
@@ -47,7 +47,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 400
+        response.getStatusCode() == 400
         retryTestFactory.getTryNumber() == 1
     }
 
@@ -59,7 +59,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 400
+        response.getStatusCode() == 400
         retryTestFactory.getTryNumber() == 2
     }
 
@@ -71,7 +71,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         retryTestFactory.getTryNumber() == 3
     }
 
@@ -83,7 +83,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         retryTestFactory.getTryNumber() == 3
     }
 
@@ -95,7 +95,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         retryTestFactory.getTryNumber() == 6
     }
 
@@ -107,7 +107,7 @@ class RetryTest extends APISpec {
         HttpResponse response = retryTestFactory.send(retryTestURL).block()
 
         then:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
         retryTestFactory.getTryNumber() == 4
     }
 

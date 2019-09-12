@@ -117,7 +117,7 @@ public final class AppendBlobClient extends BlobClient {
      */
     public AppendBlobItem create(BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) {
-        return createWithResponse(headers, metadata, accessConditions, timeout, Context.NONE).value();
+        return createWithResponse(headers, metadata, accessConditions, timeout, Context.NONE).getValue();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class AppendBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#value() value} contains the created appended blob.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
     public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
@@ -158,7 +158,7 @@ public final class AppendBlobClient extends BlobClient {
      * @return The information of the append blob operation.
      */
     public AppendBlobItem appendBlock(InputStream data, long length) {
-        return appendBlockWithResponse(data, length, null, null, Context.NONE).value();
+        return appendBlockWithResponse(data, length, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -179,7 +179,7 @@ public final class AppendBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the append blob operation.
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
@@ -234,7 +234,7 @@ public final class AppendBlobClient extends BlobClient {
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
         return this.appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5, destAccessConditions,
-            sourceAccessConditions, timeout, Context.NONE).value();
+            sourceAccessConditions, timeout, Context.NONE).getValue();
     }
 
     /**

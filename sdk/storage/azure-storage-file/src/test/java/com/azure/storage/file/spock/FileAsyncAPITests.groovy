@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.FileAsyncClient
-import com.azure.storage.file.FileClient
 import com.azure.storage.file.FileSASPermission
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
@@ -24,7 +23,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -48,15 +46,15 @@ class FileAsyncAPITests extends APISpec {
         shareClient.create()
         primaryFileAsyncClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHTTPHeaders().fileContentLanguage("en")
-            .fileContentType("application/octet-stream")
+        httpHeaders = new FileHTTPHeaders().setFileContentLanguage("en")
+            .setFileContentType("application/octet-stream")
         smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get file URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
@@ -87,44 +85,44 @@ class FileAsyncAPITests extends APISpec {
     def "Create file with args fpk"() {
         setup:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
-                assert it.value().lastModified()
-                assert it.value().smbProperties()
-                assert it.value().smbProperties().filePermissionKey()
-                assert it.value().smbProperties().ntfsFileAttributes()
-                assert it.value().smbProperties().fileLastWriteTime()
-                assert it.value().smbProperties().fileCreationTime()
-                assert it.value().smbProperties().fileChangeTime()
-                assert it.value().smbProperties().parentId()
-                assert it.value().smbProperties().fileId()
+                assert it.getValue().getLastModified()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
     def "Create file with args fp"() {
         setup:
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
-                assert it.value().lastModified()
-                assert it.value().smbProperties()
-                assert it.value().smbProperties().filePermissionKey()
-                assert it.value().smbProperties().ntfsFileAttributes()
-                assert it.value().smbProperties().fileLastWriteTime()
-                assert it.value().smbProperties().fileCreationTime()
-                assert it.value().smbProperties().fileChangeTime()
-                assert it.value().smbProperties().parentId()
-                assert it.value().smbProperties().fileId()
+                assert it.getValue().getLastModified()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
@@ -158,16 +156,16 @@ class FileAsyncAPITests extends APISpec {
         }.verifyComplete()
 
         downloadVerifier.assertNext {
-            assert it.value().contentLength() == dataLength
+            assert it.getValue().getContentLength() == dataLength
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().smbProperties()
-            assert it.value().smbProperties().filePermissionKey()
-            assert it.value().smbProperties().ntfsFileAttributes()
-            assert it.value().smbProperties().fileLastWriteTime()
-            assert it.value().smbProperties().fileCreationTime()
-            assert it.value().smbProperties().fileChangeTime()
-            assert it.value().smbProperties().parentId()
-            assert it.value().smbProperties().fileId()
+            assert it.getValue().getSmbProperties()
+            assert it.getValue().getSmbProperties().getFilePermissionKey()
+            assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+            assert it.getValue().getSmbProperties().getFileLastWriteTime()
+            assert it.getValue().getSmbProperties().getFileCreationTime()
+            assert it.getValue().getSmbProperties().getFileChangeTime()
+            assert it.getValue().getSmbProperties().getParentId()
+            assert it.getValue().getSmbProperties().getFileId()
         }.verifyComplete()
 
         cleanup:
@@ -189,7 +187,7 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 206)
-            assert it.value().contentLength() == dataLength
+            assert it.getValue().getContentLength() == dataLength
         }.verifyComplete()
 
         cleanup:
@@ -259,7 +257,7 @@ class FileAsyncAPITests extends APISpec {
             FileTestHelper.assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
-            assert it.value().body() != null
+            assert it.getValue().getBody() != null
         }
     }
 
@@ -279,7 +277,7 @@ class FileAsyncAPITests extends APISpec {
             FileTestHelper.assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
-            assert it.value().body() != null
+            assert it.getValue().getBody() != null
         }
 
         cleanup:
@@ -395,7 +393,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().read(true), getUTCNow().plusDays(1))
+        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setRead(true), getUTCNow().plusDays(1))
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
@@ -406,7 +404,7 @@ class FileAsyncAPITests extends APISpec {
         client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI()).block()
 
         then:
-        def result = new String(client.downloadWithProperties().block().body().blockLast().array())
+        def result = new String(client.downloadWithProperties().block().getBody().blockLast().array())
 
         for(int i = 0; i < length; i++) {
             result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
@@ -426,7 +424,7 @@ class FileAsyncAPITests extends APISpec {
         then:
         copyInfoVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
-            assert it.value().copyId() != null
+            assert it.getValue().getCopyId() != null
         }.verifyComplete()
     }
 
@@ -479,17 +477,17 @@ class FileAsyncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().eTag()
-            assert it.value().lastModified()
-            assert it.value().lastModified()
-            assert it.value().smbProperties()
-            assert it.value().smbProperties().filePermissionKey()
-            assert it.value().smbProperties().ntfsFileAttributes()
-            assert it.value().smbProperties().fileLastWriteTime()
-            assert it.value().smbProperties().fileCreationTime()
-            assert it.value().smbProperties().fileChangeTime()
-            assert it.value().smbProperties().parentId()
-            assert it.value().smbProperties().fileId()
+            assert it.getValue().getETag()
+            assert it.getValue().getLastModified()
+            assert it.getValue().getLastModified()
+            assert it.getValue().getSmbProperties()
+            assert it.getValue().getSmbProperties().getFilePermissionKey()
+            assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+            assert it.getValue().getSmbProperties().getFileLastWriteTime()
+            assert it.getValue().getSmbProperties().getFileCreationTime()
+            assert it.getValue().getSmbProperties().getFileChangeTime()
+            assert it.getValue().getSmbProperties().getParentId()
+            assert it.getValue().getSmbProperties().getFileId()
         }
     }
 
@@ -507,43 +505,43 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
-                assert it.value().smbProperties()
-                assert it.value().smbProperties().filePermissionKey()
-                assert it.value().smbProperties().ntfsFileAttributes()
-                assert it.value().smbProperties().fileLastWriteTime()
-                assert it.value().smbProperties().fileCreationTime()
-                assert it.value().smbProperties().fileChangeTime()
-                assert it.value().smbProperties().parentId()
-                assert it.value().smbProperties().fileId()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
     def "Set httpHeaders fp"() {
         given:
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block()
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
-                assert it.value().smbProperties()
-                assert it.value().smbProperties().filePermissionKey()
-                assert it.value().smbProperties().ntfsFileAttributes()
-                assert it.value().smbProperties().fileLastWriteTime()
-                assert it.value().smbProperties().fileCreationTime()
-                assert it.value().smbProperties().fileChangeTime()
-                assert it.value().smbProperties().parentId()
-                assert it.value().smbProperties().fileId()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
@@ -572,13 +570,13 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         getPropertiesBeforeVerifier.assertNext {
-            assert testMetadata.equals(it.metadata())
+            assert testMetadata.equals(it.getMetadata())
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
-            assert updatedMetadata.equals(it.metadata())
+            assert updatedMetadata.equals(it.getMetadata())
         }.verifyComplete()
     }
 
@@ -606,8 +604,8 @@ class FileAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges())
             .assertNext {
-                assert it.start() == 0
-                assert it.end() == 1023
+                assert it.getStart() == 0
+                assert it.getEnd() == 1023
             }.verifyComplete()
 
         cleanup:
@@ -624,8 +622,8 @@ class FileAsyncAPITests extends APISpec {
         expect:
         StepVerifier.create(primaryFileAsyncClient.listRanges(new FileRange(0, 511L)))
             .assertNext {
-                assert it.start() == 0
-                assert it.end() == 511
+                assert it.getStart() == 0
+                assert it.getEnd() == 511
             }.verifyComplete()
 
         cleanup:

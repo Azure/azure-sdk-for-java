@@ -29,7 +29,7 @@ public final class ServicesFilterBlobsResponse extends ResponseBase<ServiceFilte
      * @return the deserialized response body.
      */
     @Override
-    public FilterBlobsResponse value() {
-        return super.value();
+    public FilterBlobsResponse getValue() {
+        return super.getValue();
     }
 }

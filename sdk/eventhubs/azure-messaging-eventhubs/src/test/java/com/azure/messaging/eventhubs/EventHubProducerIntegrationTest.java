@@ -31,7 +31,7 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -55,7 +55,7 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendMessageToPartition() throws IOException {
         // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
@@ -120,7 +120,7 @@ public class EventHubProducerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try (EventHubProducer producer = client.createProducer()) {
-            final BatchOptions options = new BatchOptions().partitionKey("my-partition-key");
+            final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
             final EventDataBatch batch = producer.createBatch(options);
 
             events.forEach(event -> {

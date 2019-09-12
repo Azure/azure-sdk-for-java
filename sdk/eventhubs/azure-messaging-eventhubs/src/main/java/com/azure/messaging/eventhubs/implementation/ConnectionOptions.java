@@ -45,35 +45,35 @@ public class ConnectionOptions {
         this.scheduler = scheduler;
     }
 
-    public String host() {
+    public String getHost() {
         return host;
     }
 
-    public String eventHubName() {
+    public String getEventHubName() {
         return eventHubName;
     }
 
-    public TokenCredential tokenCredential() {
+    public TokenCredential getTokenCredential() {
         return tokenCredential;
     }
 
-    public CBSAuthorizationType authorizationType() {
+    public CBSAuthorizationType getAuthorizationType() {
         return authorizationType;
     }
 
-    public TransportType transportType() {
+    public TransportType getTransportType() {
         return transport;
     }
 
-    public RetryOptions retry() {
+    public RetryOptions getRetry() {
         return retryOptions;
     }
 
-    public ProxyConfiguration proxyConfiguration() {
+    public ProxyConfiguration getProxyConfiguration() {
         return proxyConfiguration;
     }
 
-    public Scheduler scheduler() {
+    public Scheduler getScheduler() {
         return scheduler;
     }
 }

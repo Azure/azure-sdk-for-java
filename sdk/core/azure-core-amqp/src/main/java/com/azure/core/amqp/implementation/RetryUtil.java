@@ -28,17 +28,17 @@ public class RetryUtil {
      *
      * @param options A set of options used to configure the retry policy.
      * @return A new retry policy configured with the given {@code options}.
-     * @throws IllegalArgumentException If {@link RetryOptions#retryMode()} is not a supported mode.
+     * @throws IllegalArgumentException If {@link RetryOptions#getRetryMode()} is not a supported mode.
      */
     public static RetryPolicy getRetryPolicy(RetryOptions options) {
-        switch (options.retryMode()) {
+        switch (options.getRetryMode()) {
             case FIXED:
                 return new FixedRetryPolicy(options);
             case EXPONENTIAL:
                 return new ExponentialRetryPolicy(options);
             default:
                 throw new IllegalArgumentException(
-                    String.format(Locale.ROOT, "Mode is not supported: %s", options.retryMode()));
+                    String.format(Locale.ROOT, "Mode is not supported: %s", options.getRetryMode()));
         }
     }
 

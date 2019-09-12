@@ -29,7 +29,7 @@ public final class BlockBlobsGetBlockListResponse extends ResponseBase<BlockBlob
      * @return the deserialized response body.
      */
     @Override
-    public BlockList value() {
-        return super.value();
+    public BlockList getValue() {
+        return super.getValue();
     }
 }

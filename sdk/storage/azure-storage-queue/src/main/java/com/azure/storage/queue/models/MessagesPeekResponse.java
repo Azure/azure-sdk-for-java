@@ -30,7 +30,7 @@ public final class MessagesPeekResponse extends ResponseBase<MessagesPeekHeaders
      * @return the deserialized response body.
      */
     @Override
-    public List<PeekedMessage> value() {
-        return super.value();
+    public List<PeekedMessage> getValue() {
+        return super.getValue();
     }
 }

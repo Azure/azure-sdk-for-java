@@ -19,15 +19,15 @@ public final class FileUploadInfo {
         this.isServerEncrypted = isServerEncrypted;
     }
 
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(contentMD5);
     }
 

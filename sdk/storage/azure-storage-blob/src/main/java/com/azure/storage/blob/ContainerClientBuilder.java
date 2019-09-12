@@ -92,10 +92,10 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
             URL url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
 
-            this.endpoint = parts.scheme() + "://" + parts.host();
-            this.containerName = parts.containerName();
+            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.containerName = parts.getContainerName();
 
-            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
+            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

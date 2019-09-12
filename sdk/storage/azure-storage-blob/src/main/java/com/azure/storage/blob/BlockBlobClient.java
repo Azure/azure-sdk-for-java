@@ -119,7 +119,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public BlockBlobItem upload(InputStream data, long length) throws IOException {
-        return uploadWithResponse(data, length, null, null, null, null, null, Context.NONE).value();
+        return uploadWithResponse(data, length, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -326,7 +326,7 @@ public final class BlockBlobClient extends BlobClient {
      * @return The list of blocks.
      */
     public BlockList listBlocks(BlockListType listType) {
-        return this.listBlocksWithResponse(listType, null, null, Context.NONE).value();
+        return this.listBlocksWithResponse(listType, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -371,7 +371,7 @@ public final class BlockBlobClient extends BlobClient {
      * @return The information of the block blob.
      */
     public BlockBlobItem commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, null, Context.NONE).value();
+        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**

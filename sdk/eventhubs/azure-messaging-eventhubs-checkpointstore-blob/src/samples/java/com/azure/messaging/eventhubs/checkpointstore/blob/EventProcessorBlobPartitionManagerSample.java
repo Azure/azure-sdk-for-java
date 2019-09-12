@@ -31,9 +31,9 @@ public class EventProcessorBlobPartitionManagerSample {
         public Mono<Void> processEvent(
             PartitionContext partitionContext, EventData eventData) {
             System.out.printf("Processing event from partition %s with sequence number %d %n",
-                partitionContext.partitionId(), eventData.sequenceNumber());
+                partitionContext.getPartitionId(), eventData.getSequenceNumber());
 
-            if (eventData.sequenceNumber() % 10 == 0) {
+            if (eventData.getSequenceNumber() % 10 == 0) {
                 return partitionContext.updateCheckpoint(eventData);
             }
             return Mono.empty();

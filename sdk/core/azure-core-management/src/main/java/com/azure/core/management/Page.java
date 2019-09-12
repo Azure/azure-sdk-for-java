@@ -16,12 +16,12 @@ public interface Page<E> {
      *
      * @return the link.
      */
-    String nextPageLink();
+    String getNextPageLink();
 
     /**
      * Gets the list of items.
      *
      * @return the list of items.
      */
-    List<E> items();
+    List<E> getItems();
 }

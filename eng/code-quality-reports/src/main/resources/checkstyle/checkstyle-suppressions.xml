@@ -121,6 +121,9 @@
   <!-- Suppress LineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]"/>
 
+  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
+  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
+
   <!-- Suppress LineLength for Track 1 libraries. -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]microsoft[/\\]"/>
 
@@ -183,6 +186,8 @@
   issue link: https://github.com/Azure/azure-sdk-for-java/issues/5145 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.secrets.SecretAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.certificates.CertificateAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.certificates.CertificateClient.java"/>
 
   <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>

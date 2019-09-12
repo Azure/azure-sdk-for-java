@@ -40,7 +40,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         this();
 
         for (final HttpHeader header : headers) {
-            this.put(header.name(), header.value());
+            this.put(header.getName(), header.getValue());
         }
     }
 
@@ -49,7 +49,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * @return the number of headers in this collection.
      */
-    public int size() {
+    public int getSize() {
         return headers.size();
     }
 
@@ -86,7 +86,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public String value(String name) {
         final HttpHeader header = get(name);
-        return header == null ? null : header.value();
+        return header == null ? null : header.getValue();
     }
 
     /**
@@ -98,7 +98,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public String[] values(String name) {
         final HttpHeader header = get(name);
-        return header == null ? null : header.values();
+        return header == null ? null : header.getValues();
     }
 
     private String formatKey(final String key) {
@@ -113,7 +113,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     public Map<String, String> toMap() {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers.values()) {
-            result.put(header.name(), header.value());
+            result.put(header.getName(), header.getValue());
         }
         return result;
     }

@@ -78,7 +78,7 @@ public final class ContainerSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -88,7 +88,7 @@ public final class ContainerSASPermission {
      * @param read Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission read(boolean read) {
+    public ContainerSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ContainerSASPermission {
     /**
      * @return the add permission status
      */
-    public boolean add() {
+    public boolean getAdd() {
         return add;
     }
 
@@ -106,7 +106,7 @@ public final class ContainerSASPermission {
      * @param add Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission add(boolean add) {
+    public ContainerSASPermission setAdd(boolean add) {
         this.add = add;
         return this;
     }
@@ -114,7 +114,7 @@ public final class ContainerSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean create() {
+    public boolean getCreate() {
         return create;
     }
 
@@ -124,7 +124,7 @@ public final class ContainerSASPermission {
      * @param create Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission create(boolean create) {
+    public ContainerSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -132,7 +132,7 @@ public final class ContainerSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean write() {
+    public boolean getWrite() {
         return write;
     }
 
@@ -142,7 +142,7 @@ public final class ContainerSASPermission {
      * @param write Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission write(boolean write) {
+    public ContainerSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -150,7 +150,7 @@ public final class ContainerSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return delete;
     }
 
@@ -160,7 +160,7 @@ public final class ContainerSASPermission {
      * @param delete Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission delete(boolean delete) {
+    public ContainerSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -168,7 +168,7 @@ public final class ContainerSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean list() {
+    public boolean getList() {
         return list;
     }
 
@@ -178,7 +178,7 @@ public final class ContainerSASPermission {
      * @param list Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission list(boolean list) {
+    public ContainerSASPermission setList(boolean list) {
         this.list = list;
         return this;
     }

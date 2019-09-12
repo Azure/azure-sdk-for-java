@@ -16,64 +16,64 @@ public class PageBlobItem {
     private Long blobSequenceNumber;
 
     public PageBlobItem(PageBlobCreateHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
     }
 
     public PageBlobItem(PageBlobUploadPagesHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
     public PageBlobItem(PageBlobUploadPagesFromURLHeaders generatedHeaders, String encryptionKeySha256Header) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
         this.encryptionKeySha256 = encryptionKeySha256Header;
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
+        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
     public PageBlobItem(PageBlobClearPagesHeaders generatedHeaders, String isServerEncryptedHeader,
         String encryptionKeySha256Header) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = Boolean.parseBoolean(isServerEncryptedHeader);
         this.encryptionKeySha256 = encryptionKeySha256Header;
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
+        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
     public PageBlobItem(PageBlobResizeHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
     public PageBlobItem(PageBlobUpdateSequenceNumberHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
     /**
      * @return the eTag of the page blob
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return the time this page blob was last modified
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
@@ -87,21 +87,21 @@ public class PageBlobItem {
     /**
      * @return the key used to encrypt the page blob
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return encryptionKeySha256;
     }
 
     /**
      * @return the MD5 of the page blob's content
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(contentMD5);
     }
 
     /**
      * @return the current sequence number of the page blob
      */
-    public Long blobSequenceNumber() {
+    public Long getBlobSequenceNumber() {
         return blobSequenceNumber;
     }
 }

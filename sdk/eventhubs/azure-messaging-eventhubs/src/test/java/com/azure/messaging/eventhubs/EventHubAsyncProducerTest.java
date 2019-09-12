@@ -58,7 +58,7 @@ public class EventHubAsyncProducerTest {
     @Captor
     ArgumentCaptor<List<Message>> messagesCaptor;
 
-    private RetryOptions retryOptions = new RetryOptions().tryTimeout(Duration.ofSeconds(30));
+    private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
 
     @Before
     public void setup() {
@@ -91,7 +91,7 @@ public class EventHubAsyncProducerTest {
 
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
 
@@ -120,7 +120,7 @@ public class EventHubAsyncProducerTest {
 
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
 
@@ -148,10 +148,10 @@ public class EventHubAsyncProducerTest {
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final SendOptions options = new SendOptions().partitionKey("Some partition key");
+        final SendOptions options = new SendOptions().setPartitionKey("Some partition key");
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
-            .partitionId("my-partition-id");
+            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)))
+            .setPartitionId("my-partition-id");
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
@@ -183,8 +183,8 @@ public class EventHubAsyncProducerTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
-            .partitionId("my-partition-id");
+            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)))
+            .setPartitionId("my-partition-id");
 
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
 
@@ -227,8 +227,8 @@ public class EventHubAsyncProducerTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)))
-            .partitionId("my-partition-id");
+            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)))
+            .setPartitionId("my-partition-id");
 
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(sendLink), producerOptions, tracerProvider);
 
@@ -266,7 +266,7 @@ public class EventHubAsyncProducerTest {
         });
 
         final SendOptions options = new SendOptions();
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);
 
@@ -300,7 +300,7 @@ public class EventHubAsyncProducerTest {
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);
 
@@ -338,15 +338,15 @@ public class EventHubAsyncProducerTest {
 
         // This event is 1024 bytes when serialized.
         final EventData event = new EventData(new byte[eventPayload]);
-        final BatchOptions options = new BatchOptions().partitionKey("some-key");
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        final BatchOptions options = new BatchOptions().setPartitionKey("some-key");
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assert.assertEquals(options.partitionKey(), batch.getPartitionKey());
+                Assert.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
                 Assert.assertTrue(batch.tryAdd(event));
             })
             .verifyComplete();
@@ -365,8 +365,8 @@ public class EventHubAsyncProducerTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // This event is 1024 bytes when serialized.
-        final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);
 
@@ -378,7 +378,7 @@ public class EventHubAsyncProducerTest {
 
     /**
      * Verifies that the producer can create an {@link EventDataBatch} with a given {@link
-     * BatchOptions#maximumSizeInBytes()}.
+     * BatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     public void createsEventDataBatchWithSize() {
@@ -399,8 +399,8 @@ public class EventHubAsyncProducerTest {
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
-        final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        final BatchOptions options = new BatchOptions().setMaximumSizeInBytes(batchSize);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);
 
@@ -429,15 +429,15 @@ public class EventHubAsyncProducerTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         final String originalKey = "some-key";
-        final BatchOptions options = new BatchOptions().partitionKey(originalKey);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        final BatchOptions options = new BatchOptions().setPartitionKey(originalKey);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);
 
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                options.partitionKey("something-else");
+                options.setPartitionKey("something-else");
                 Assert.assertEquals(originalKey, batch.getPartitionKey());
             })
             .verifyComplete();
@@ -461,7 +461,7 @@ public class EventHubAsyncProducerTest {
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(new RetryOptions().tryTimeout(
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(new RetryOptions().setTryTimeout(
             Duration.ofSeconds(30)));
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubAsyncProducer producer = new EventHubAsyncProducer(Mono.just(link), producerOptions, tracerProvider);

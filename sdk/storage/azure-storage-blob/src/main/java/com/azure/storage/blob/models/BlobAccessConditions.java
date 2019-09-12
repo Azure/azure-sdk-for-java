@@ -30,7 +30,7 @@ public final class BlobAccessConditions {
      *
      * @return the modified access conditions
      */
-    public ModifiedAccessConditions modifiedAccessConditions() {
+    public ModifiedAccessConditions getModifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
@@ -42,7 +42,7 @@ public final class BlobAccessConditions {
      * @param modifiedAccessConditions the modified access conditions to set
      * @return the updated BlobAccessConditions object
      */
-    public BlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public BlobAccessConditions setModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -53,7 +53,7 @@ public final class BlobAccessConditions {
      *
      * @return the lease access conditions
      */
-    public LeaseAccessConditions leaseAccessConditions() {
+    public LeaseAccessConditions getLeaseAccessConditions() {
         return leaseAccessConditions;
     }
 
@@ -64,7 +64,7 @@ public final class BlobAccessConditions {
      * @param leaseAccessConditions the lease access conditions to set
      * @return the updated BlobAccessConditions object
      */
-    public BlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+    public BlobAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }

@@ -23,7 +23,7 @@ public class BatchOptions implements Cloneable {
      * @param maximumSizeInBytes The maximum size to allow for the {@link EventDataBatch batch of events}.
      * @return The updated {@link BatchOptions} object.
      */
-    public BatchOptions maximumSizeInBytes(int maximumSizeInBytes) {
+    public BatchOptions setMaximumSizeInBytes(int maximumSizeInBytes) {
         this.maximumSizeInBytes = maximumSizeInBytes;
         return this;
     }
@@ -33,7 +33,7 @@ public class BatchOptions implements Cloneable {
      *
      * @return The maximum size to allow for a single batch of events, in bytes.
      */
-    public int maximumSizeInBytes() {
+    public int getMaximumSizeInBytes() {
         return maximumSizeInBytes;
     }
 
@@ -44,7 +44,7 @@ public class BatchOptions implements Cloneable {
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
      * @return The updated {@link BatchOptions} object.
      */
-    public BatchOptions partitionKey(String partitionKey) {
+    public BatchOptions setPartitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -55,7 +55,7 @@ public class BatchOptions implements Cloneable {
      *
      * @return The partition hashing key to associate with the event or batch of events.
      */
-    public String partitionKey() {
+    public String getPartitionKey() {
         return partitionKey;
     }
 
@@ -73,7 +73,7 @@ public class BatchOptions implements Cloneable {
             clone = new BatchOptions();
         }
 
-        return clone.partitionKey(partitionKey)
-            .maximumSizeInBytes(maximumSizeInBytes);
+        return clone.setPartitionKey(partitionKey)
+            .setMaximumSizeInBytes(maximumSizeInBytes);
     }
 }

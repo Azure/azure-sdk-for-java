@@ -30,8 +30,9 @@ public final class AzureQueueStorageImpl {
      *
      * @param url the url value.
      */
-    void setUrl(String url) {
+    AzureQueueStorageImpl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**
@@ -53,8 +54,9 @@ public final class AzureQueueStorageImpl {
      *
      * @param version the version value.
      */
-    void setVersion(String version) {
+    AzureQueueStorageImpl setVersion(String version) {
         this.version = version;
+        return this;
     }
 
     /**

@@ -43,7 +43,7 @@ public abstract class TestBase {
      */
     @Before
     public void setupTest() {
-        final String testName = testName();
+        final String testName = getTestName();
         if (logger.isInfoEnabled()) {
             logger.info("Test Mode: {}, Name: {}", testMode, testName);
         }
@@ -87,7 +87,7 @@ public abstract class TestBase {
      *
      * @return The name of the current test.
      */
-    protected abstract String testName();
+    protected abstract String getTestName();
 
     /**
      * Performs any set-up before each test case. Any initialization that occurs in TestBase occurs first before this.

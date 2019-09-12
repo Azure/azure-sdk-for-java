@@ -120,7 +120,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                 Mono<HttpResponse> result;
                 if (!data.pollingCompleted) {
                     final HttpResponse bufferedHttpPollResponse = response.buffer();
-                    result = bufferedHttpPollResponse.bodyAsString()
+                    result = bufferedHttpPollResponse.getBodyAsString()
                         .map(bodyString -> {
                             AsyncOperationResource operationResource = null;
                             try {
@@ -128,13 +128,13 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                             } catch (IOException ignored) {
                             }
                             //
-                            if (operationResource == null || operationResource.status() == null) {
+                            if (operationResource == null || operationResource.getStatus() == null) {
                                 throw logger.logExceptionAsError(new CloudException(
                                     "The polling response does not contain a valid body",
                                     bufferedHttpPollResponse,
                                     null));
                             } else {
-                                final String status = operationResource.status();
+                                final String status = operationResource.getStatus();
                                 setStatus(status);
 
                                 data.pollingCompleted = OperationState.isCompleted(status);
@@ -148,7 +148,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                             bufferedHttpPollResponse));
                                     }
 
-                                    if (operationResource.id() != null) {
+                                    if (operationResource.getId() != null) {
                                         data.gotResourceResponse = true;
                                     }
                                 }
@@ -197,7 +197,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
             }
         }
 
-        urlHeader = httpResponse.headerValue("Location");
+        urlHeader = httpResponse.getHeaderValue("Location");
         URL locationUrl = null;
         if (urlHeader != null) {
             try {
@@ -209,16 +209,16 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         return azureAsyncOperationUrl != null
             ? new AzureAsyncOperationPollStrategy(
             new AzureAsyncOperationPollStrategyData(restProxy, methodParser, azureAsyncOperationUrl,
-                originalHttpRequest.url(), locationUrl, originalHttpRequest.httpMethod(), delayInMilliseconds))
+                originalHttpRequest.getUrl(), locationUrl, originalHttpRequest.getHttpMethod(), delayInMilliseconds))
             : null;
     }
 
     static String getHeader(HttpResponse httpResponse) {
-        return httpResponse.headerValue(HEADER_NAME);
+        return httpResponse.getHeaderValue(HEADER_NAME);
     }
 
     @Override
-    public Serializable strategyData() {
+    public Serializable getStrategyData() {
         return this.data;
     }
 }

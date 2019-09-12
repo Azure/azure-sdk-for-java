@@ -26,7 +26,7 @@ public final class SharePermission {
      *
      * @return the permission value.
      */
-    public String permission() {
+    public String getPermission() {
         return this.permission;
     }
 
@@ -37,7 +37,7 @@ public final class SharePermission {
      * @param permission the permission value to set.
      * @return the SharePermission object itself.
      */
-    public SharePermission permission(String permission) {
+    public SharePermission setPermission(String permission) {
         this.permission = permission;
         return this;
     }
