@@ -8,3 +8,4 @@ jobs:
         AZURE_TEST_MODE: RECORD
         ARM_CLIENTID: $(java-keyvault-test-arm-client-id)
         ARM_CLIENTKEY: $(java-keyvault-test-arm-client-key)
+        AZURE_KEYVAULT_ENDPOINT: $(java-azure-keyvault-sdk-endpoint)
