@@ -33,7 +33,7 @@ public class IdentitySamples {
             .buildClient();
 
         Secret secret = client.getSecret("{SECRET_NAME}");
-        System.out.println(secret.value());
+        System.out.println(secret.getValue());
     }
 
     /**
@@ -53,7 +53,7 @@ public class IdentitySamples {
             .buildClient();
 
         Secret secret = client.getSecret("{SECRET_NAME}");
-        System.out.println(secret.value());
+        System.out.println(secret.getValue());
     }
 
     /**
@@ -64,7 +64,7 @@ public class IdentitySamples {
         DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
             .deviceCodeChallengeConsumer(challenge -> {
                 // lets user know of the challenge, e.g., display the message on an IoT device
-                displayMessage(challenge.message());
+                displayMessage(challenge.getMessage());
             })
             .build();
 
@@ -74,7 +74,7 @@ public class IdentitySamples {
             .buildClient();
 
         Secret secret = client.getSecret("{SECRET_NAME}");
-        System.out.println(secret.value());
+        System.out.println(secret.getValue());
     }
 
     /**
@@ -106,7 +106,7 @@ public class IdentitySamples {
             .buildClient();
 
         Secret secret = client.getSecret("{SECRET_NAME}");
-        System.out.println(secret.value());
+        System.out.println(secret.getValue());
     }
 
     private void displayMessage(String message) {
