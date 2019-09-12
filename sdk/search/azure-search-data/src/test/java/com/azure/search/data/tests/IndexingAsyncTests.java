@@ -15,10 +15,6 @@ import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.IndexingResult;
 import com.azure.search.data.models.Book;
 import com.azure.search.data.models.Hotel;
-import com.azure.search.data.generated.models.*;
-
-import java.text.ParseException;
-
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
@@ -32,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,10 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;

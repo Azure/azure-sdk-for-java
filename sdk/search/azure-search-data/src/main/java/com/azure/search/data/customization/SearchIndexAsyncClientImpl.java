@@ -14,19 +14,20 @@ import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.common.SuggestPagedResponse;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
+import com.azure.search.data.generated.models.AutocompleteParameters;
+import com.azure.search.data.generated.models.AutocompleteResult;
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
+import com.azure.search.data.generated.models.SearchRequest;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
-import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.SearchRequest;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestRequest;
 import com.azure.search.data.generated.models.SuggestResult;
-import com.azure.search.data.generated.models.IndexBatch;
-import com.azure.search.data.generated.models.AutocompleteParameters;
-import com.azure.search.data.generated.models.AutocompleteResult;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
+
 import java.util.List;
 
 
