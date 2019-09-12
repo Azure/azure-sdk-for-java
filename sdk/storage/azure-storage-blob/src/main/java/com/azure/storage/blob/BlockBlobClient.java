@@ -3,9 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -31,6 +30,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
@@ -150,12 +150,14 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-            Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout, Context context)
-            throws IOException {
+        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
+        Context context) throws IOException {
         Objects.requireNonNull(data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
+            BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier, accessConditions, context);
+            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier,
+                accessConditions, context);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
@@ -252,7 +254,8 @@ public final class BlockBlobClient extends BlobClient {
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
+            BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
@@ -347,8 +350,9 @@ public final class BlockBlobClient extends BlobClient {
      * @return The list of blocks.
      */
     public Response<BlockList> listBlocksWithResponse(BlockListType listType,
-                                          LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<Response<BlockList>> response = blockBlobAsyncClient.listBlocksWithResponse(listType, leaseAccessConditions, context);
+        LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<Response<BlockList>> response = blockBlobAsyncClient.listBlocksWithResponse(listType,
+            leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

@@ -18,18 +18,19 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange, BlobAccessConditions, boolean)}
- * to automatically retry failed reads from the body as
- * appropriate. If the download is interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download
- * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
- * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The
- * download will also lock on the blob's etag to ensure consistency.
+ * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
+ * BlobAccessConditions, boolean)} to automatically retry failed reads from the body as appropriate. If the download is
+ * interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download from where it left off,
+ * allowing the user to consume the data as one continuous stream, for any interruptions are hidden. The retry behavior
+ * is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The download will also lock on the
+ * blob's etag to ensure consistency.
  * <p>
  * Note that the retries performed as a part of this reader are composed with those of any retries in an {@link
- * com.azure.core.http.HttpPipeline} used in conjunction with this reader. That is, if this object issues a request to resume a download,
- * an underlying pipeline may issue several retries as a part of that request. Furthermore, this reader only retries on
- * network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior of this reader is
- * entirely independent of and in no way coupled to an {@link com.azure.core.http.HttpPipeline}'s retry mechanism.
+ * com.azure.core.http.HttpPipeline} used in conjunction with this reader. That is, if this object issues a request to
+ * resume a download, an underlying pipeline may issue several retries as a part of that request. Furthermore, this
+ * reader only retries on network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior
+ * of this reader is entirely independent of and in no way coupled to an {@link com.azure.core.http.HttpPipeline}'s
+ * retry mechanism.
  */
 public final class DownloadAsyncResponse {
     private final HTTPGetterInfo info;
@@ -41,7 +42,7 @@ public final class DownloadAsyncResponse {
 
     // The constructor is package-private because customers should not be creating their own responses.
     DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
-                          HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
+        HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
         Utility.assertNotNull("info.eTag", info.getETag());
@@ -51,9 +52,9 @@ public final class DownloadAsyncResponse {
     }
 
     /**
-     * Returns the response body which has been modified to enable reliably reading data if desired (if
-     * {@code options.maxRetryRequests > 0}. If retries are enabled, if a connection fails while reading, the stream
-     * will make additional requests to reestablish a connection and continue reading.
+     * Returns the response body which has been modified to enable reliably reading data if desired (if {@code
+     * options.maxRetryRequests > 0}. If retries are enabled, if a connection fails while reading, the stream will make
+     * additional requests to reestablish a connection and continue reading.
      *
      * @param options {@link ReliableDownloadOptions}
      * @return A {@link Flux} which emits the data as {@link ByteBuffer ByteBuffers}
@@ -88,7 +89,8 @@ public final class DownloadAsyncResponse {
                 Do not compound the number of retries by passing in another set of downloadOptions; just get
                 the raw body.
                 */
-                return getter.apply(this.info).flatMapMany(response -> this.applyReliableDownload(this.rawResponse.getValue(), retryCount, options));
+                return getter.apply(this.info).flatMapMany(response -> this
+                    .applyReliableDownload(this.rawResponse.getValue(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flux.error(e);
@@ -96,7 +98,8 @@ public final class DownloadAsyncResponse {
         }
     }
 
-    private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data, int currentRetryCount, ReliableDownloadOptions options) {
+    private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data, int currentRetryCount,
+        ReliableDownloadOptions options) {
         return data.doOnNext(buffer -> {
             /*
             Update how much data we have received in case we need to retry and propagate to the user the data we

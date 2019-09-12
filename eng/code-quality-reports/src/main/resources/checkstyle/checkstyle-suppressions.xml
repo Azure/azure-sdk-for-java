@@ -83,11 +83,10 @@
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- All auto generated files need to exclude from checkstyle -->
-  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
 
   <!-- The constant name is public static. -->
-  <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
+  <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
 
   <!-- Custom checkstyle rules only check track 2 libraries -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
@@ -117,9 +116,6 @@
 
   <!-- Suppress LineLength for samples and tests -->
   <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
-
-  <!-- Suppress LineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]"/>
 
   <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
@@ -194,4 +190,7 @@
 
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
+
+  <!-- Resource file class, ignore the line limit -->
+  <suppress checks="LineLength" files="com.azure.storage.common.SR.java"/>
 </suppressions>

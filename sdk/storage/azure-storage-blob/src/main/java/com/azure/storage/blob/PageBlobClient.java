@@ -127,7 +127,8 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
+            metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -136,8 +137,8 @@ public final class PageBlobClient extends BlobClient {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
+     * Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -154,8 +155,8 @@ public final class PageBlobClient extends BlobClient {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
+     * Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -198,7 +199,8 @@ public final class PageBlobClient extends BlobClient {
      * @return The information of the uploaded pages.
      */
     public PageBlobItem uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE).getValue();
+        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -227,7 +229,8 @@ public final class PageBlobClient extends BlobClient {
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceURL,
+            sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -258,7 +261,8 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> clearPagesWithResponse(PageRange pageRange,
         PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPagesWithResponse(pageRange, pageBlobAccessConditions, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPagesWithResponse(pageRange,
+            pageBlobAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -284,8 +288,10 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the page ranges.
      */
-    public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesWithResponse(blobRange, accessConditions, context), timeout);
+    public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
+        Duration timeout, Context context) {
+        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient
+            .getPageRangesWithResponse(blobRange, accessConditions, context), timeout);
     }
 
     /**
@@ -317,8 +323,10 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
      */
-    public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context), timeout);
+    public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient
+            .getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context), timeout);
     }
 
     /**
@@ -344,8 +352,9 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The resized page blob.
      */
-    public Response<PageBlobItem> resizeWithResponse(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, accessConditions);
+    public Response<PageBlobItem> resizeWithResponse(long size, BlobAccessConditions accessConditions, Duration timeout,
+        Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -377,7 +386,8 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient
+            .updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -416,7 +426,8 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<CopyStatusType> copyIncrementalWithResponse(URL source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
+        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient
+            .copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

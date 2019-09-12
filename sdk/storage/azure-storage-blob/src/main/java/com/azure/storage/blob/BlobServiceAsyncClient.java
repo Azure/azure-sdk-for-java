@@ -141,11 +141,13 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * ContainerAsyncClient} used to interact with the container created.
      */
-    public Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType) {
+    public Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
+        PublicAccessType accessType) {
         return withContext(context -> createContainerWithResponse(containerName, metadata, accessType, context));
     }
 
-    Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType, Context context) {
+    Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
+        PublicAccessType accessType, Context context) {
         ContainerAsyncClient containerAsyncClient = getContainerAsyncClient(containerName);
 
         return containerAsyncClient.createWithResponse(metadata, accessType, context)
@@ -197,7 +199,8 @@ public final class BlobServiceAsyncClient {
         try {
             return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
     }
 
@@ -275,7 +278,8 @@ public final class BlobServiceAsyncClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker, ListContainersOptions options, Duration timeout) {
+    private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
+        ListContainersOptions options, Duration timeout) {
         options = options == null ? new ListContainersOptions() : options;
 
         return postProcessResponse(Utility.applyOptionalTimeout(
@@ -372,7 +376,8 @@ public final class BlobServiceAsyncClient {
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context)).flatMap(FluxUtil::toMono);
+        return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -389,14 +394,17 @@ public final class BlobServiceAsyncClient {
      * delegation key.
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      */
-    public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry) {
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
+        OffsetDateTime expiry) {
         return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
     }
 
-    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry, Context context) {
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        Context context) {
         Utility.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
         return postProcessResponse(
@@ -434,8 +442,8 @@ public final class BlobServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getStatisticsWithResponse}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the storage
-     * account statistics.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
+     * storage account statistics.
      */
     public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
         return withContext(this::getStatisticsWithResponse);
@@ -519,9 +527,11 @@ public final class BlobServiceAsyncClient {
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
 
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
+        SharedKeyCredential sharedKeyCredential =
+            Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
+            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

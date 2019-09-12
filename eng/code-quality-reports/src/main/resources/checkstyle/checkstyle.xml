@@ -54,7 +54,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
   <module name="LineLength">
     <property name="max" value="120"/>
     <!-- Allow codeSnippet to override max line length -->
-    <property name="ignorePattern" value=".*\{@codesnippet.*\}"/>
+    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)"/>
   </module>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->

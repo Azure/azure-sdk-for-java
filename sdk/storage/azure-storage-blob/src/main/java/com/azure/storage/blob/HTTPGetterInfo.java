@@ -63,17 +63,17 @@ public final class HTTPGetterInfo {
 
     /**
      * @return the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
-     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context) properties}.
-     * Defaults to null.
+     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context)
+     * properties}. Defaults to null.
      */
     public String getETag() {
         return eTag;
     }
 
     /**
-     * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
-     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context) properties}.
-     * Defaults to null.
+     * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the resource
+     * and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context)
+     * properties}. Defaults to null.
      *
      * @param eTag Resource's eTag
      * @return the updated HTTPGetterInfo object

@@ -10,9 +10,9 @@ import java.util.Locale;
 /**
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a blob. Setting
  * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
- * the values are set, this should be serialized with toString and set as the permissions field on a
- * {@link BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * the values are set, this should be serialized with toString and set as the permissions field on a {@link
+ * BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
 public final class BlobSASPermission {
 
@@ -33,11 +33,10 @@ public final class BlobSASPermission {
     }
 
     /**
-     * Creates a {@code BlobSASPermission} from the specified permissions string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates a {@code BlobSASPermission} from the specified permissions string. This method will throw an {@code
+     * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code BlobSASPermission}.
-     *
      * @return A {@code BlobSASPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
      */
@@ -64,7 +63,8 @@ public final class BlobSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permString, c));
             }
         }
         return permissions;

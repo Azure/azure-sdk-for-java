@@ -7,10 +7,10 @@ import java.util.Locale;
 
 /**
  * This is a helper class to construct a string representing the resources accessible by an AccountSAS. Setting a value
- * to true means that any SAS which uses these permissions will grant access to that resource type. Once all the
- * values are set, this should be serialized with toString and set as the resources field on an
- * {@link AccountSASSignatureValues} object. It is possible to construct the resources string without this class, but
- * the order of the resources is particular and this class guarantees correctness.
+ * to true means that any SAS which uses these permissions will grant access to that resource type. Once all the values
+ * are set, this should be serialized with toString and set as the resources field on an {@link
+ * AccountSASSignatureValues} object. It is possible to construct the resources string without this class, but the order
+ * of the resources is particular and this class guarantees correctness.
  */
 public final class AccountSASResourceType {
 
@@ -31,7 +31,6 @@ public final class AccountSASResourceType {
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
      *
      * @param resourceTypesString A {@code String} which represents the {@code AccountSASResourceTypes}.
-     *
      * @return A {@code AccountSASResourceType} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code resourceTypesString} contains a character other than s, c, or o.
      */
@@ -52,8 +51,8 @@ public final class AccountSASResourceType {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                                    "Resource Types", resourceTypesString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Resource Types", resourceTypesString, c));
             }
         }
         return resourceType;
@@ -78,15 +77,16 @@ public final class AccountSASResourceType {
     }
 
     /**
-     * @return the access status for container level APIs, this grants access to Blob Containers, Tables, Queues,
-     * and File Shares.
+     * @return the access status for container level APIs, this grants access to Blob Containers, Tables, Queues, and
+     * File Shares.
      */
     public boolean isContainer() {
         return container;
     }
 
     /**
-     * Sets the access status for container level APIs, this grants access to Blob Containers, Tables, Queues, and File Shares.
+     * Sets the access status for container level APIs, this grants access to Blob Containers, Tables, Queues, and File
+     * Shares.
      *
      * @param container Access status to set
      * @return the updated AccountSASResourceType object.
@@ -105,7 +105,8 @@ public final class AccountSASResourceType {
     }
 
     /**
-     * Sets the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages, Files.
+     * Sets the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages,
+     * Files.
      *
      * @param object Access status to set
      * @return the updated AccountSASResourceType object.

@@ -23,7 +23,6 @@ final class URLParser {
      * BlobURLParts object.
      *
      * @param url The {@code URL} to be parsed.
-     *
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
      */
     public static BlobURLParts parse(URL url) {
@@ -61,23 +60,23 @@ final class URLParser {
             queryParamsMap.remove("snapshot");
         }
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters = new BlobServiceSASQueryParameters(queryParamsMap, true);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
+            new BlobServiceSASQueryParameters(queryParamsMap, true);
 
         return new BlobURLParts()
-                .setScheme(scheme)
-                .setHost(host)
-                .setContainerName(containerName)
-                .setBlobName(blobName)
-                .setSnapshot(snapshot)
-                .setSasQueryParameters(blobServiceSasQueryParameters)
-                .setUnparsedParameters(queryParamsMap);
+            .setScheme(scheme)
+            .setHost(host)
+            .setContainerName(containerName)
+            .setBlobName(blobName)
+            .setSnapshot(snapshot)
+            .setSasQueryParameters(blobServiceSasQueryParameters)
+            .setUnparsedParameters(queryParamsMap);
     }
 
     /**
      * Parses a query string into a one to many hashmap.
      *
      * @param queryParams The string of query params to parse.
-     *
      * @return A {@code HashMap<String, String[]>} of the key values.
      */
     private static TreeMap<String, String[]> parseQueryString(String queryParams) {
