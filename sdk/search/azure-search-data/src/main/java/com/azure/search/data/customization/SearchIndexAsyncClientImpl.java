@@ -11,14 +11,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.common.SuggestPagedResponse;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.data.generated.models.SearchParameters;
-import com.azure.search.data.generated.models.SearchRequest;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.SearchRequest;
 import com.azure.search.data.generated.models.SuggestParameters;
+import com.azure.search.data.generated.models.SuggestRequest;
 import com.azure.search.data.generated.models.SuggestResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.AutocompleteParameters;
@@ -166,7 +168,6 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 return new SearchPagedResponse(res);
             });
         return new PagedFlux<>(() -> first, nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
-
     }
 
     @Override
@@ -209,7 +210,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName) {
-        return null;
+        return suggest(searchText, suggesterName, null, null);
     }
 
     @Override
@@ -218,7 +219,14 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         String suggesterName,
         SuggestParameters suggestParameters,
         SearchRequestOptions searchRequestOptions) {
-        return null;
+        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestParameters);
+        Mono<PagedResponse<SuggestResult>> first = restClient.documents()
+                .suggestPostWithRestResponseAsync(suggestRequest)
+                .map(res -> {
+                    return new SuggestPagedResponse(res);
+                });
+        return new PagedFlux<>(() -> first, nextLink -> Mono.empty());
+
     }
 
     @Override
@@ -309,5 +317,42 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         }
 
         return searchRequest;
+    }
+
+    /**
+     * Create suggest request from search text, suggester name, and parameters
+     *
+     * @param searchText search text
+     * @param suggesterName search text
+     * @param suggestParameters suggest parameters
+     * @return SuggestRequest
+     */
+    private SuggestRequest createSuggestRequest(String searchText, String suggesterName, SuggestParameters suggestParameters) {
+        SuggestRequest suggestRequest = new SuggestRequest().searchText(searchText).suggesterName(suggesterName);
+        if (suggestParameters != null) {
+            suggestRequest.
+                    filter(suggestParameters.filter()).
+                    useFuzzyMatching(suggestParameters.useFuzzyMatching()).
+                    highlightPostTag(suggestParameters.highlightPostTag()).
+                    highlightPreTag(suggestParameters.highlightPreTag()).
+                    minimumCoverage(suggestParameters.minimumCoverage()).
+                    top(suggestParameters.top());
+            List<String> searchFields = suggestParameters.searchFields();
+            if (searchFields != null) {
+                suggestRequest.searchFields(String.join(",", searchFields));
+            }
+
+            List<String> orderBy = suggestParameters.orderBy();
+            if (orderBy != null) {
+                suggestRequest.orderBy(String.join(",", orderBy));
+            }
+
+            List<String> select = suggestParameters.select();
+            if (select != null) {
+                suggestRequest.select(String.join(",", select));
+            }
+        }
+
+        return suggestRequest;
     }
 }
