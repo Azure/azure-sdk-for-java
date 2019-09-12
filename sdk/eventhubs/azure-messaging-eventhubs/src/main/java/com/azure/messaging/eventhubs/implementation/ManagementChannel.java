@@ -19,7 +19,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
@@ -56,7 +55,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private final Mono<RequestResponseChannel> channelMono;
     private final ReactorProvider provider;
     private final String eventHubName;
-    private final AmqpResponseMapper mapper;
+    private final ManagementResponseMapper mapper;
     private final TokenManagerProvider tokenManagerProvider;
 
     /**
@@ -68,7 +67,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      */
     ManagementChannel(AmqpConnection connection, String eventHubName, TokenCredential credential,
                       TokenManagerProvider tokenManagerProvider, ReactorProvider provider, RetryOptions retryOptions,
-                      ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
+                      ReactorHandlerProvider handlerProvider, ManagementResponseMapper mapper) {
         super(new ClientLogger(ManagementChannel.class));
 
         Objects.requireNonNull(handlerProvider);
@@ -97,7 +96,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, mapper::toEventHubProperties);
+        return getProperties(properties, EventHubProperties.class);
     }
 
     /**
@@ -111,10 +110,10 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, mapper::toPartitionProperties);
+        return getProperties(properties, PartitionProperties.class);
     }
 
-    private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
+    private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
         final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
 
         return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
@@ -138,7 +137,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
                 Map<?, ?> map = (Map<?, ?>) body.getValue();
 
-                return mapper.apply(map);
+                return mapper.deserialize(map, responseType);
             });
         });
     }

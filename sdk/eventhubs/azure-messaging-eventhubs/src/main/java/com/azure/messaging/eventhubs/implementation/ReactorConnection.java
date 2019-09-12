@@ -59,7 +59,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper,
+                             ReactorHandlerProvider handlerProvider, ManagementResponseMapper mapper,
                              TokenManagerProvider tokenManagerProvider) {
         super(new ClientLogger(ReactorConnection.class));
 
