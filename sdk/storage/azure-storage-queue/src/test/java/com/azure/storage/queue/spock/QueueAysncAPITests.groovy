@@ -68,8 +68,8 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().getApproximateMessagesCount() == 0
-            assert testMetadata.equals(it.value().getMetadata())
+            assert it.getValue().getApproximateMessagesCount() == 0
+            assert testMetadata.equals(it.getValue().getMetadata())
         }.verifyComplete()
     }
 
@@ -93,14 +93,14 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifierBefore.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert expectMetadataInCreate.equals(it.value().getMetadata())
+            assert expectMetadataInCreate.equals(it.getValue().getMetadata())
         }.verifyComplete()
         setMetadataVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204) }
             .verifyComplete()
         getPropertiesVerifierAfter.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert expectMetadataInSet.equals(it.value().metadata)
+            assert expectMetadataInSet.equals(it.getValue().metadata)
         }.verifyComplete()
         where:
         matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
@@ -399,14 +399,14 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().getApproximateMessagesCount() == 3
+            assert it.getValue().getApproximateMessagesCount() == 3
         }.verifyComplete()
         clearMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().getApproximateMessagesCount() == 0
+            assert it.getValue().getApproximateMessagesCount() == 0
         }.verifyComplete()
     }
 
@@ -433,7 +433,7 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().getApproximateMessagesCount() == 3
+            assert it.getValue().getApproximateMessagesCount() == 3
 
         }.verifyComplete()
         deleteMsgVerifier.assertNext {
@@ -441,7 +441,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().getApproximateMessagesCount() == 2
+            assert it.getValue().getApproximateMessagesCount() == 2
         }.verifyComplete()
     }
 

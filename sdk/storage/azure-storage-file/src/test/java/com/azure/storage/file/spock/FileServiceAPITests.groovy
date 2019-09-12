@@ -184,10 +184,10 @@ class FileServiceAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
-        FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.value())
+        FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.getValue())
         FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 202)
         FileTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.value())
+        FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
     }
 
     @Unroll

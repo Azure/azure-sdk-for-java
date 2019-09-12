@@ -31,7 +31,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue"() {
         when:
         def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60),  null, null, null)
-        def enqueueMessageResponse = queueClientResponse.value().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null,null)
+        def enqueueMessageResponse = queueClientResponse.getValue().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null,null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -69,7 +69,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue maxOverload"() {
         when:
         def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60), metadata,null, null)
-        def enqueueMessageResponse = queueClientResponse.value().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null, null)
+        def enqueueMessageResponse = queueClientResponse.getValue().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null, null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)

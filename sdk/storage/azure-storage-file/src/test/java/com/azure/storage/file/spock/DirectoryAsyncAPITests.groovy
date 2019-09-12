@@ -108,14 +108,14 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, filePermission, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
-                assert it.value().getSmbProperties()
-                assert it.value().getSmbProperties().getFilePermissionKey()
-                assert it.value().getSmbProperties().getNtfsFileAttributes()
-                assert it.value().getSmbProperties().getFileLastWriteTime()
-                assert it.value().getSmbProperties().getFileCreationTime()
-                assert it.value().getSmbProperties().getFileChangeTime()
-                assert it.value().getSmbProperties().getParentId()
-                assert it.value().getSmbProperties().getFileId()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
@@ -128,14 +128,14 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(smbProperties, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
-                assert it.value().getSmbProperties()
-                assert it.value().getSmbProperties().getFilePermissionKey()
-                assert it.value().getSmbProperties().getNtfsFileAttributes()
-                assert it.value().getSmbProperties().getFileLastWriteTime()
-                assert it.value().getSmbProperties().getFileCreationTime()
-                assert it.value().getSmbProperties().getFileChangeTime()
-                assert it.value().getSmbProperties().getParentId()
-                assert it.value().getSmbProperties().getFileId()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
@@ -165,15 +165,15 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().getETag()
-            assert it.value().getSmbProperties()
-            assert it.value().getSmbProperties().getFilePermissionKey()
-            assert it.value().getSmbProperties().getNtfsFileAttributes()
-            assert it.value().getSmbProperties().getFileLastWriteTime()
-            assert it.value().getSmbProperties().getFileCreationTime()
-            assert it.value().getSmbProperties().getFileChangeTime()
-            assert it.value().getSmbProperties().getParentId()
-            assert it.value().getSmbProperties().getFileId()
+            assert it.getValue().getETag()
+            assert it.getValue().getSmbProperties()
+            assert it.getValue().getSmbProperties().getFilePermissionKey()
+            assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+            assert it.getValue().getSmbProperties().getFileLastWriteTime()
+            assert it.getValue().getSmbProperties().getFileCreationTime()
+            assert it.getValue().getSmbProperties().getFileChangeTime()
+            assert it.getValue().getSmbProperties().getParentId()
+            assert it.getValue().getSmbProperties().getFileId()
         }.verifyComplete()
     }
 
@@ -193,14 +193,14 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(null, filePermission))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
-                assert it.value().getSmbProperties()
-                assert it.value().getSmbProperties().getFilePermissionKey()
-                assert it.value().getSmbProperties().getNtfsFileAttributes()
-                assert it.value().getSmbProperties().getFileLastWriteTime()
-                assert it.value().getSmbProperties().getFileCreationTime()
-                assert it.value().getSmbProperties().getFileChangeTime()
-                assert it.value().getSmbProperties().getParentId()
-                assert it.value().getSmbProperties().getFileId()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
@@ -215,14 +215,14 @@ class DirectoryAsyncAPITests extends APISpec {
         StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(smbProperties, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
-                assert it.value().getSmbProperties()
-                assert it.value().getSmbProperties().getFilePermissionKey()
-                assert it.value().getSmbProperties().getNtfsFileAttributes()
-                assert it.value().getSmbProperties().getFileLastWriteTime()
-                assert it.value().getSmbProperties().getFileCreationTime()
-                assert it.value().getSmbProperties().getFileChangeTime()
-                assert it.value().getSmbProperties().getParentId()
-                assert it.value().getSmbProperties().getFileId()
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
             }.verifyComplete()
     }
 
@@ -254,13 +254,13 @@ class DirectoryAsyncAPITests extends APISpec {
         def getPropertiesAfterVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
         then:
         getPropertiesBeforeVerifier.assertNext {
-            assert testMetadata.equals(it.value().getMetadata())
+            assert testMetadata.equals(it.getValue().getMetadata())
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
-            assert updatedMetadata.equals(it.value().getMetadata())
+            assert updatedMetadata.equals(it.getValue().getMetadata())
         }.verifyComplete()
     }
 

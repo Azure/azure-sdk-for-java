@@ -171,7 +171,7 @@ class FileServiceAsyncAPITests extends APISpec {
             if (i == 2) {
                 StepVerifier.create(shareAsyncClient.createSnapshotWithResponse(null))
                     .assertNext {
-                        testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.value().getSnapshot()))
+                        testShares.add(new ShareItem().name(share.name()).metadata(share.metadata()).properties(share.properties()).snapshot(it.getValue().getSnapshot()))
                         FileTestHelper.assertResponseStatusCode(it, 201)
                     }.verifyComplete()
             }
@@ -210,7 +210,7 @@ class FileServiceAsyncAPITests extends APISpec {
         then:
         getPropertiesBeforeVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.value())
+            assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue())
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 202)
@@ -218,7 +218,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
         getPropertiesAfterVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.value())
+            assert FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue())
         }.verifyComplete()
     }
 

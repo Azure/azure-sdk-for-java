@@ -110,8 +110,8 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-                .snapshot(it.value().getSnapshot()).buildClient()
-            assert Objects.equals(it.value().getSnapshot(),
+                .snapshot(it.getValue().getSnapshot()).buildClient()
+            assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
 
@@ -136,8 +136,8 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-                .snapshot(it.value().getSnapshot()).buildClient()
-            assert Objects.equals(it.value().getSnapshot(),
+                .snapshot(it.getValue().getSnapshot()).buildClient()
+            assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
     }
@@ -177,8 +177,8 @@ class ShareAsyncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert testMetadata.equals(it.value().metadata())
-            assert it.value().quota() == 1L
+            assert testMetadata.equals(it.getValue().metadata())
+            assert it.getValue().quota() == 1L
         }.verifyComplete()
     }
 

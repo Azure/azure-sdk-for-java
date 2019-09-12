@@ -105,10 +105,10 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.value().getSnapshot()).buildClient()
+            .snapshot(createSnapshotResponse.getValue().getSnapshot()).buildClient()
 
         then:
-        Objects.equals(createSnapshotResponse.value().getSnapshot(),
+        Objects.equals(createSnapshotResponse.getValue().getSnapshot(),
             shareSnapshotClient.getSnapshotId())
     }
 
@@ -129,10 +129,10 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.value().getSnapshot()).buildClient()
+            .snapshot(createSnapshotResponse.getValue().getSnapshot()).buildClient()
 
         then:
-        Objects.equals(createSnapshotResponse.value().getSnapshot(),
+        Objects.equals(createSnapshotResponse.getValue().getSnapshot(),
             shareSnapshotClient.getSnapshotId())
     }
 
@@ -171,8 +171,8 @@ class ShareAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        testMetadata.equals(getPropertiesResponse.value().metadata())
-        getPropertiesResponse.value().quota() == 1L
+        testMetadata.equals(getPropertiesResponse.getValue().metadata())
+        getPropertiesResponse.getValue().quota() == 1L
     }
 
     def "Get properties error"() {
