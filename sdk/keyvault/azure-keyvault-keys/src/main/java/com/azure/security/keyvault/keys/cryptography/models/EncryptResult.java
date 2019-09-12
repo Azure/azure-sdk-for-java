@@ -41,7 +41,7 @@ public final class EncryptResult {
      * Get the encrypted content.
      * @return The encrypted content.
      */
-    public byte[] cipherText() {
+    public byte[] getCipherText() {
         return ImplUtils.clone(cipherText);
     }
 
@@ -49,7 +49,7 @@ public final class EncryptResult {
      * Get the authentication tag.
      * @return The authentication tag.
      */
-    public byte[] authenticationTag() {
+    public byte[] getAuthenticationTag() {
         return ImplUtils.clone(authenticationTag);
     }
 
@@ -57,7 +57,7 @@ public final class EncryptResult {
      * Get the encryption algorithm used for encryption.
      * @return The encryption algorithm used.
      */
-    public EncryptionAlgorithm algorithm() {
+    public EncryptionAlgorithm getAlgorithm() {
         return algorithm;
     }
 

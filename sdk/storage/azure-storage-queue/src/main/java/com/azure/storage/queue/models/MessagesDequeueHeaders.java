@@ -50,7 +50,7 @@ public final class MessagesDequeueHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class MessagesDequeueHeaders {
      * @param requestId the requestId value to set.
      * @return the MessagesDequeueHeaders object itself.
      */
-    public MessagesDequeueHeaders requestId(String requestId) {
+    public MessagesDequeueHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class MessagesDequeueHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class MessagesDequeueHeaders {
      * @param version the version value to set.
      * @return the MessagesDequeueHeaders object itself.
      */
-    public MessagesDequeueHeaders version(String version) {
+    public MessagesDequeueHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,11 +96,11 @@ public final class MessagesDequeueHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -110,7 +110,7 @@ public final class MessagesDequeueHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the MessagesDequeueHeaders object itself.
      */
-    public MessagesDequeueHeaders dateProperty(OffsetDateTime dateProperty) {
+    public MessagesDequeueHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class MessagesDequeueHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class MessagesDequeueHeaders {
      * @param errorCode the errorCode value to set.
      * @return the MessagesDequeueHeaders object itself.
      */
-    public MessagesDequeueHeaders errorCode(String errorCode) {
+    public MessagesDequeueHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

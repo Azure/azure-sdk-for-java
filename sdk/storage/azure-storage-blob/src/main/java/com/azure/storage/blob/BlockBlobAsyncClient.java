@@ -168,9 +168,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         AccessTierOptional opTier = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, opTier, null, headers, accessConditions.leaseAccessConditions(), cpk,
-            accessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            null, data, length, null, metadata, opTier, null, headers, accessConditions.getLeaseAccessConditions(), cpk,
+            accessConditions.getModifiedAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -310,7 +310,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
                 return this.stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
-                    accessConditionsFinal.leaseAccessConditions())
+                    accessConditionsFinal.getLeaseAccessConditions())
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> {
                         pool.returnBuffer(buffer);
@@ -367,11 +367,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             channel -> {
                 final SortedMap<Long, String> blockIds = new TreeMap<>();
                 return Flux.fromIterable(sliceFile(filePath, blockSize))
-                    .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
+                    .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
                     .flatMap(chunk -> {
-                        String blockId = blockIds.get(chunk.offset());
+                        String blockId = blockIds.get(chunk.getOffset());
                         return stageBlockWithResponse(
-                            blockId, FluxUtil.readFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                            blockId, FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()), chunk.getCount(), null);
                     })
                     .then(Mono.defer(() -> commitBlockListWithResponse(
                         new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
@@ -563,7 +563,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the list of blocks.
      */
     public Mono<BlockList> listBlocks(BlockListType listType) {
-        return this.listBlocksWithResponse(listType, null).map(Response::value);
+        return this.listBlocksWithResponse(listType, null).map(Response::getValue);
     }
 
     /**
@@ -592,7 +592,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(null,
             null, listType, snapshot, null, null, leaseAccessConditions, context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
@@ -651,8 +651,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().latest(base64BlockIDs), null, null, null, metadata, tierOp, null, headers,
-            accessConditions.leaseAccessConditions(), cpk, accessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tierOp, null, headers,
+            accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }

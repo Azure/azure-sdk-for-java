@@ -452,12 +452,12 @@ public class ShareAsyncClient {
         Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
             marker -> postProcessResponse(this.azureFileStorageClient.shares()
                 .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE))
-            .map(response -> new PagedResponseBase<>(response.request(),
-                response.statusCode(),
-                response.headers(),
-                response.value(),
+            .map(response -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue(),
                 null,
-                response.deserializedHeaders()));
+                response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -514,13 +514,13 @@ public class ShareAsyncClient {
          */
         if (permissions != null) {
             for (SignedIdentifier permission : permissions) {
-                if (permission.accessPolicy() != null && permission.accessPolicy().start() != null) {
-                    permission.accessPolicy().start(
-                        permission.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStart() != null) {
+                    permission.getAccessPolicy().setStart(
+                        permission.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
                 }
-                if (permission.accessPolicy() != null && permission.accessPolicy().expiry() != null) {
-                    permission.accessPolicy().expiry(
-                        permission.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiry() != null) {
+                    permission.getAccessPolicy().setExpiry(
+                        permission.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         }
@@ -821,9 +821,9 @@ public class ShareAsyncClient {
 
     Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission = new SharePermission().permission(filePermission);
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission);
         return postProcessResponse(azureFileStorageClient.shares().createPermissionWithRestResponseAsync(shareName, sharePermission, null, context))
-            .map(response -> new SimpleResponse<>(response, response.deserializedHeaders().filePermissionKey()));
+            .map(response -> new SimpleResponse<>(response, response.getDeserializedHeaders().getFilePermissionKey()));
     }
 
     /**
@@ -856,7 +856,7 @@ public class ShareAsyncClient {
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
         return postProcessResponse(azureFileStorageClient.shares().getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context))
-            .map(response -> new SimpleResponse<>(response, response.value().permission()));
+            .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 
     /**
@@ -957,7 +957,7 @@ public class ShareAsyncClient {
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
         FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
-            sharedKeyCredential.accountName());
+            sharedKeyCredential.getAccountName());
 
         FileServiceSASQueryParameters fileServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
@@ -971,41 +971,41 @@ public class ShareAsyncClient {
         String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.canonicalName(this.shareName, accountName);
+        fileServiceSASSignatureValues.setCanonicalName(this.shareName, accountName);
 
         // Set resource
-        fileServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_SHARE_CONSTANT);
+        fileServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_SHARE_CONSTANT);
 
         return fileServiceSASSignatureValues;
     }
 
     private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {
-        String eTag = response.headers().value("ETag");
-        OffsetDateTime lastModified = new DateTimeRfc1123(response.headers().value("Last-Modified")).dateTime();
+        String eTag = response.getHeaders().value("ETag");
+        OffsetDateTime lastModified = new DateTimeRfc1123(response.getHeaders().value("Last-Modified")).getDateTime();
 
-        return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), new ShareInfo(eTag, lastModified));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), new ShareInfo(eTag, lastModified));
     }
 
     private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(SharesCreateSnapshotResponse response) {
-        ShareCreateSnapshotHeaders headers = response.deserializedHeaders();
-        ShareSnapshotInfo snapshotInfo = new ShareSnapshotInfo(headers.snapshot(), headers.eTag(), headers.lastModified());
+        ShareCreateSnapshotHeaders headers = response.getDeserializedHeaders();
+        ShareSnapshotInfo snapshotInfo = new ShareSnapshotInfo(headers.getSnapshot(), headers.getETag(), headers.getLastModified());
 
-        return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), snapshotInfo);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), snapshotInfo);
     }
 
     private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
-        ShareGetPropertiesHeaders headers = response.deserializedHeaders();
-        ShareProperties shareProperties = new ShareProperties().quota(headers.quota())
-            .etag(headers.eTag())
-            .lastModified(headers.lastModified())
-            .metadata(headers.metadata());
+        ShareGetPropertiesHeaders headers = response.getDeserializedHeaders();
+        ShareProperties shareProperties = new ShareProperties().setQuota(headers.getQuota())
+            .setEtag(headers.getETag())
+            .setLastModified(headers.getLastModified())
+            .setMetadata(headers.getMetadata());
 
-        return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareProperties);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), shareProperties);
     }
 
     private Response<ShareStatistics> mapGetStatisticsResponse(SharesGetStatisticsResponse response) {
-        ShareStatistics shareStatistics = new ShareStatistics((int) (response.value().shareUsageBytes() / 1024));
+        ShareStatistics shareStatistics = new ShareStatistics((int) (response.getValue().getShareUsageBytes() / 1024));
 
-        return new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), shareStatistics);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), shareStatistics);
     }
 }

@@ -88,7 +88,7 @@ public final class QueueServiceClient {
      * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public QueueClient createQueue(String queueName) {
-        return createQueueWithResponse(queueName, null, null, Context.NONE).value();
+        return createQueueWithResponse(queueName, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class QueueServiceClient {
 
         Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
         Response<QueueAsyncClient> response = Utility.blockWithOptionalTimeout(asyncResponse, timeout);
-        return new SimpleResponse<>(response, new QueueClient(response.value()));
+        return new SimpleResponse<>(response, new QueueClient(response.getValue()));
     }
 
     /**
@@ -175,7 +175,7 @@ public final class QueueServiceClient {
     /**
      * Lists the queues in the storage account that pass the filter.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * <p><strong>Code Samples</strong></p>
@@ -200,7 +200,7 @@ public final class QueueServiceClient {
     /**
      * Lists the queues in the storage account that pass the filter starting at the specified marker.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the queues.
      *
      * @param marker Starting point to list the queues
@@ -229,7 +229,7 @@ public final class QueueServiceClient {
      * @return Storage account Queue service properties
      */
     public StorageServiceProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -259,8 +259,8 @@ public final class QueueServiceClient {
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -282,10 +282,10 @@ public final class QueueServiceClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
     public void setProperties(StorageServiceProperties properties) {
@@ -296,8 +296,8 @@ public final class QueueServiceClient {
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -322,10 +322,10 @@ public final class QueueServiceClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -349,7 +349,7 @@ public final class QueueServiceClient {
      * @return The geo replication information about the Queue service
      */
     public StorageServiceStats getStatistics() {
-        return getStatisticsWithResponse(null, Context.NONE).value();
+        return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
     /**

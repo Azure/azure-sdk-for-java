@@ -24,7 +24,7 @@ public class RetryUtilTest {
     public void getCorrectModeFixed() {
         // Act
         final RetryOptions retryOptions = new RetryOptions()
-            .retryMode(RetryMode.FIXED);
+            .setRetryMode(RetryMode.FIXED);
         final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
@@ -36,7 +36,7 @@ public class RetryUtilTest {
     public void getCorrectModeExponential() {
         // Act
         final RetryOptions retryOptions = new RetryOptions()
-            .retryMode(RetryMode.EXPONENTIAL);
+            .setRetryMode(RetryMode.EXPONENTIAL);
         final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
@@ -48,9 +48,9 @@ public class RetryUtilTest {
     public void withRetryFlux() {
         // Arrange
         final RetryOptions options = new RetryOptions()
-            .delay(Duration.ofSeconds(1))
-            .maxRetries(2);
-        final Duration totalWaitTime = Duration.ofSeconds(options.maxRetries() * options.delay().getSeconds());
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2);
+        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
         final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
@@ -65,16 +65,16 @@ public class RetryUtilTest {
             .expectError(TimeoutException.class)
             .verify();
 
-        Assert.assertEquals(options.maxRetries() + 1, resubscribe.get());
+        Assert.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
 
     @Test
     public void withRetryMono() {
         // Arrange
         final RetryOptions options = new RetryOptions()
-            .delay(Duration.ofSeconds(1))
-            .maxRetries(2);
-        final Duration totalWaitTime = Duration.ofSeconds(options.maxRetries() * options.delay().getSeconds());
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2);
+        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
         final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
@@ -89,6 +89,6 @@ public class RetryUtilTest {
             .expectError(TimeoutException.class)
             .verify();
 
-        Assert.assertEquals(options.maxRetries() + 1, resubscribe.get());
+        Assert.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
 }

@@ -83,7 +83,7 @@ public final class DirectoryRenameHeaders {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -98,7 +98,7 @@ public final class DirectoryRenameHeaders {
      * @param marker the marker value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders marker(String marker) {
+    public DirectoryRenameHeaders setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -109,7 +109,7 @@ public final class DirectoryRenameHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -120,7 +120,7 @@ public final class DirectoryRenameHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders eTag(String eTag) {
+    public DirectoryRenameHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -132,11 +132,11 @@ public final class DirectoryRenameHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -147,7 +147,7 @@ public final class DirectoryRenameHeaders {
      * @param lastModified the lastModified value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders lastModified(OffsetDateTime lastModified) {
+    public DirectoryRenameHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -163,7 +163,7 @@ public final class DirectoryRenameHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -175,7 +175,7 @@ public final class DirectoryRenameHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders clientRequestId(String clientRequestId) {
+    public DirectoryRenameHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -186,7 +186,7 @@ public final class DirectoryRenameHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -197,7 +197,7 @@ public final class DirectoryRenameHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders requestId(String requestId) {
+    public DirectoryRenameHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -208,7 +208,7 @@ public final class DirectoryRenameHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -219,7 +219,7 @@ public final class DirectoryRenameHeaders {
      * @param version the version value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders version(String version) {
+    public DirectoryRenameHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -229,7 +229,7 @@ public final class DirectoryRenameHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -239,7 +239,7 @@ public final class DirectoryRenameHeaders {
      * @param contentLength the contentLength value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders contentLength(Long contentLength) {
+    public DirectoryRenameHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -250,11 +250,11 @@ public final class DirectoryRenameHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -264,7 +264,7 @@ public final class DirectoryRenameHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectoryRenameHeaders object itself.
      */
-    public DirectoryRenameHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryRenameHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

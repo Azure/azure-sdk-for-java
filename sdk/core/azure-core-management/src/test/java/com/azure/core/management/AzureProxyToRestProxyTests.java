@@ -405,11 +405,11 @@ public abstract class AzureProxyToRestProxyTests {
                     .putWithUnexpectedResponse("I'm the body!");
             fail("Expected RestException would be thrown.");
         } catch (HttpResponseException e) {
-            assertNotNull(e.value());
-            assertTrue(e.value() instanceof LinkedHashMap);
+            assertNotNull(e.getValue());
+            assertTrue(e.getValue() instanceof LinkedHashMap);
 
             @SuppressWarnings("unchecked")
-            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -421,8 +421,8 @@ public abstract class AzureProxyToRestProxyTests {
                     .putWithUnexpectedResponseAndExceptionType("I'm the body!");
             fail("Expected RestException would be thrown.");
         } catch (MyAzureException e) {
-            assertNotNull(e.value());
-            assertEquals("I'm the body!", e.value().data());
+            assertNotNull(e.getValue());
+            assertEquals("I'm the body!", e.getValue().data());
         } catch (Throwable e) {
             fail("Throwable of wrong type thrown.");
         }
@@ -453,7 +453,7 @@ public abstract class AzureProxyToRestProxyTests {
     public void syncRestResponseHeadRequest() {
         ResponseBase<?, ?> res = createService(Service10.class)
                 .restResponseHead();
-        assertNull(res.value());
+        assertNull(res.getValue());
     }
 
     @Test
@@ -468,7 +468,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .restResponseHeadAsync()
                 .block();
 
-        assertNull(res.value());
+        assertNull(res.getValue());
     }
 
     @Test

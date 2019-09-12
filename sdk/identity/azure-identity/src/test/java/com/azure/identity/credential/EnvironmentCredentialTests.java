@@ -33,6 +33,6 @@ public class EnvironmentCredentialTests {
                 Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
                 return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
             }).block();
-        Assert.assertEquals("token", token.token());
+        Assert.assertEquals("token", token.getToken());
     }
 }

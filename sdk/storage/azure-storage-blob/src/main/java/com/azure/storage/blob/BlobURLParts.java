@@ -50,14 +50,14 @@ final class BlobURLParts {
     /**
      * The scheme. Ex: "https://".
      */
-    public String scheme() {
+    public String getScheme() {
         return scheme;
     }
 
     /**
      * The scheme. Ex: "https://".
      */
-    public BlobURLParts scheme(String scheme) {
+    public BlobURLParts setScheme(String scheme) {
         this.scheme = scheme;
         return this;
     }
@@ -65,14 +65,14 @@ final class BlobURLParts {
     /**
      * The host. Ex: "account.blob.core.windows.net".
      */
-    public String host() {
+    public String getHost() {
         return host;
     }
 
     /**
      * The host. Ex: "account.blob.core.windows.net".
      */
-    public BlobURLParts host(String host) {
+    public BlobURLParts setHost(String host) {
         this.host = host;
         return this;
     }
@@ -80,14 +80,14 @@ final class BlobURLParts {
     /**
      * The container name or {@code null} if a {@link BlobServiceAsyncClient} was parsed.
      */
-    public String containerName() {
+    public String getContainerName() {
         return containerName;
     }
 
     /**
      * The container name or {@code null} if a {@link BlobServiceAsyncClient} was parsed.
      */
-    public BlobURLParts containerName(String containerName) {
+    public BlobURLParts setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -95,14 +95,14 @@ final class BlobURLParts {
     /**
      * The blob name or {@code null} if a {@link BlobServiceAsyncClient} or {@link ContainerAsyncClient} was parsed.
      */
-    public String blobName() {
+    public String getBlobName() {
         return blobName;
     }
 
     /**
      * The blob name or {@code null} if a {@link BlobServiceAsyncClient} or {@link ContainerAsyncClient} was parsed.
      */
-    public BlobURLParts blobName(String blobName) {
+    public BlobURLParts setBlobName(String blobName) {
         this.blobName = blobName;
         return this;
     }
@@ -110,14 +110,14 @@ final class BlobURLParts {
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
-    public String snapshot() {
+    public String getSnapshot() {
         return snapshot;
     }
 
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
-    public BlobURLParts snapshot(String snapshot) {
+    public BlobURLParts setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -126,7 +126,7 @@ final class BlobURLParts {
      * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
      * parameters.
      */
-    public BlobServiceSASQueryParameters sasQueryParameters() {
+    public BlobServiceSASQueryParameters getSasQueryParameters() {
         return blobServiceSasQueryParameters;
     }
 
@@ -134,7 +134,7 @@ final class BlobURLParts {
      * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
      * parameters.
      */
-    public BlobURLParts sasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
+    public BlobURLParts setSasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
         this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
         return this;
     }
@@ -143,7 +143,7 @@ final class BlobURLParts {
      * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
      * no such parameters.
      */
-    public Map<String, String[]> unparsedParameters() {
+    public Map<String, String[]> getUnparsedParameters() {
         return unparsedParameters;
     }
 
@@ -151,7 +151,7 @@ final class BlobURLParts {
      * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
      * no such parameters.
      */
-    public BlobURLParts unparsedParameters(Map<String, String[]> unparsedParameters) {
+    public BlobURLParts setUnparsedParameters(Map<String, String[]> unparsedParameters) {
         this.unparsedParameters = unparsedParameters;
         return this;
     }
@@ -165,7 +165,7 @@ final class BlobURLParts {
      *         ill-formatted.
      */
     public URL toURL() throws MalformedURLException {
-        UrlBuilder url = new UrlBuilder().scheme(this.scheme).host(this.host);
+        UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
         if (this.containerName != null) {
@@ -175,7 +175,7 @@ final class BlobURLParts {
                 path.append(this.blobName);
             }
         }
-        url.path(path.toString());
+        url.setPath(path.toString());
 
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
@@ -183,7 +183,7 @@ final class BlobURLParts {
         if (this.blobServiceSasQueryParameters != null) {
             String encodedSAS = this.blobServiceSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
-                url.query(encodedSAS);
+                url.setQuery(encodedSAS);
             }
         }
 

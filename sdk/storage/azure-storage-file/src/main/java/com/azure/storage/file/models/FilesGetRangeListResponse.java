@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Contains all response data for the getRangeList operation.
@@ -31,7 +30,7 @@ public final class FilesGetRangeListResponse extends ResponseBase<FileGetRangeLi
      * @return the deserialized response body.
      */
     @Override
-    public List<Range> value() {
-        return super.value();
+    public List<Range> getValue() {
+        return super.getValue();
     }
 }

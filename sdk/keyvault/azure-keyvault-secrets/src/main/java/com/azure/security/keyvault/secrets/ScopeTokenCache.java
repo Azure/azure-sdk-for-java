@@ -33,7 +33,7 @@ class ScopeTokenCache {
         this.getNew = getNew;
     }
 
-    public void scopes(String... scopes) {
+    public void setScopes(String... scopes) {
         this.scopes = scopes;
     }
 

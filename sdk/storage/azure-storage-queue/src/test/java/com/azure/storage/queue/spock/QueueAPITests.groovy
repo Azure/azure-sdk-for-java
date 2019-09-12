@@ -3,12 +3,12 @@
 
 package com.azure.storage.queue.spock
 
+import com.azure.core.util.Context
 import com.azure.storage.queue.QueueClient
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageException
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -57,8 +57,8 @@ class QueueAPITests extends APISpec {
         def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().approximateMessagesCount() == 0
-        testMetadata.equals(getPropertiesResponse.value().metadata())
+        getPropertiesResponse.getValue().getApproximateMessagesCount() == 0
+        testMetadata.equals(getPropertiesResponse.getValue().getMetadata())
     }
 
     def "Get properties error"() {
@@ -79,10 +79,10 @@ class QueueAPITests extends APISpec {
         def getPropertiesResponseAfter = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseBefore, 200)
-        expectMetadataInCreate.equals(getPropertiesResponseBefore.value().metadata())
+        expectMetadataInCreate.equals(getPropertiesResponseBefore.getValue().getMetadata())
         QueueTestHelper.assertResponseStatusCode(setMetadataResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseAfter, 200)
-        expectMetadataInSet.equals(getPropertiesResponseAfter.value().metadata())
+        expectMetadataInSet.equals(getPropertiesResponseAfter.getValue().getMetadata())
         where:
         matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
         null             | testMetadata  | Collections.emptyMap() | testMetadata
@@ -139,12 +139,12 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         def accessPolicy = new AccessPolicy()
-            .permission("raup")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("raup")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
         def permission = new SignedIdentifier()
-            .id("testpermission")
-            .accessPolicy(accessPolicy)
+            .setId("testpermission")
+            .setAccessPolicy(accessPolicy)
         when:
         def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(Collections.singletonList(permission), null, null)
         def nextAccessPolicy = queueClient.getAccessPolicy().iterator().next()
@@ -156,13 +156,13 @@ class QueueAPITests extends APISpec {
     def "Set invalid access policy"() {
         given:
         def accessPolicy = new AccessPolicy()
-            .permission("r")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("r")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
 
         def permission = new SignedIdentifier()
-            .id("theidofthispermissionislongerthanwhatisallowedbytheserviceandshouldfail")
-            .accessPolicy(accessPolicy)
+            .setId("theidofthispermissionislongerthanwhatisallowedbytheserviceandshouldfail")
+            .setAccessPolicy(accessPolicy)
         queueClient.create()
         when:
         queueClient.setAccessPolicy(Collections.singletonList(permission))
@@ -174,19 +174,19 @@ class QueueAPITests extends APISpec {
     def "Set multiple access policies"() {
         given:
         def accessPolicy = new AccessPolicy()
-            .permission("r")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("r")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
 
         def permissions = new ArrayList<>()
         for (int i = 0; i < 3; i++) {
             permissions.add(new SignedIdentifier()
-                .id("policy" + i)
-                .accessPolicy(accessPolicy))
+                .setId("policy" + i)
+                .setAccessPolicy(accessPolicy))
         }
         queueClient.create()
         when:
-        def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(permissions, null, null)
+        def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE)
         def nextAccessPolicy = queueClient.getAccessPolicy().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(setAccessPolicyResponse, 204)
@@ -199,19 +199,19 @@ class QueueAPITests extends APISpec {
     def "Set too many access policies"() {
         given:
         def accessPolicy = new AccessPolicy()
-            .permission("r")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("r")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
 
         def permissions = new ArrayList<>()
         for (int i = 0; i < 6; i++) {
             permissions.add(new SignedIdentifier()
-                .id("policy" + i)
-                .accessPolicy(accessPolicy))
+                .setId("policy" + i)
+                .setAccessPolicy(accessPolicy))
         }
         queueClient.create()
         when:
-        queueClient.setAccessPolicyWithResponse(permissions, null, null)
+        queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE)
         then:
         def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
@@ -226,7 +226,7 @@ class QueueAPITests extends APISpec {
         def peekMsgIter = queueClient.peekMessages().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        expectMsg.equals(peekMsgIter.next().messageText())
+        expectMsg.equals(peekMsgIter.next().getMessageText())
         !peekMsgIter.hasNext()
     }
 
@@ -239,7 +239,7 @@ class QueueAPITests extends APISpec {
         def peekMsgIter = queueClient.peekMessages().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        peekMsgIter.next().messageText() == null
+        peekMsgIter.next().getMessageText() == null
         !peekMsgIter.hasNext()
     }
 
@@ -261,7 +261,7 @@ class QueueAPITests extends APISpec {
         when:
         def dequeueMsgResponse = queueClient.dequeueMessages().iterator().next()
         then:
-        expectMsg.equals(dequeueMsgResponse.messageText())
+        expectMsg.equals(dequeueMsgResponse.getMessageText())
     }
 
     def "Dequeue multiple messages"() {
@@ -274,8 +274,8 @@ class QueueAPITests extends APISpec {
         when:
         def dequeueMsgIter = queueClient.dequeueMessages(2).iterator()
         then:
-        expectMsg1.equals(dequeueMsgIter.next().messageText())
-        expectMsg2.equals(dequeueMsgIter.next().messageText())
+        expectMsg1.equals(dequeueMsgIter.next().getMessageText())
+        expectMsg2.equals(dequeueMsgIter.next().getMessageText())
     }
 
     def "Dequeue too many message"() {
@@ -296,7 +296,7 @@ class QueueAPITests extends APISpec {
         when:
         def peekMsgIter = queueClient.peekMessages().iterator().next()
         then:
-        expectMsg.equals(peekMsgIter.messageText())
+        expectMsg.equals(peekMsgIter.getMessageText())
     }
 
     def "Peek multiple messages"() {
@@ -309,8 +309,8 @@ class QueueAPITests extends APISpec {
         when:
         def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
         then:
-        expectMsg1.equals(peekMsgIter.next().messageText())
-        expectMsg2.equals(peekMsgIter.next().messageText())
+        expectMsg1.equals(peekMsgIter.next().getMessageText())
+        expectMsg2.equals(peekMsgIter.next().getMessageText())
         !peekMsgIter.hasNext()
     }
 
@@ -344,10 +344,10 @@ class QueueAPITests extends APISpec {
         def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().approximateMessagesCount() == 3
+        getPropertiesResponse.getValue().getApproximateMessagesCount() == 3
         QueueTestHelper.assertResponseStatusCode(clearMsgResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        getPropertiesAfterResponse.value().approximateMessagesCount() == 0
+        getPropertiesAfterResponse.getValue().getApproximateMessagesCount() == 0
     }
 
     def "Clear messages error"() {
@@ -367,15 +367,15 @@ class QueueAPITests extends APISpec {
         def dequeueMsg = queueClient.dequeueMessages().iterator().next()
         when:
         def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
-        def deleteMsgResponse = queueClient.deleteMessageWithResponse(dequeueMsg.messageId(), dequeueMsg.popReceipt(),
+        def deleteMsgResponse = queueClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
             null, null)
         def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.value().approximateMessagesCount() == 3
+        getPropertiesResponse.getValue().getApproximateMessagesCount() == 3
         QueueTestHelper.assertResponseStatusCode(deleteMsgResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        getPropertiesAfterResponse.value().approximateMessagesCount() == 2
+        getPropertiesAfterResponse.getValue().getApproximateMessagesCount() == 2
     }
 
     @Unroll
@@ -386,8 +386,8 @@ class QueueAPITests extends APISpec {
         queueClient.enqueueMessage(expectMsg)
         def dequeueMessageIter = queueClient.dequeueMessages().iterator().next()
         when:
-        def deleteMessageId = messageId ? dequeueMessageIter.messageId() : dequeueMessageIter.messageId() + "Random"
-        def deletePopReceipt = popReceipt ? dequeueMessageIter.popReceipt() : dequeueMessageIter.popReceipt() + "Random"
+        def deleteMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
+        def deletePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
         queueClient.deleteMessage(deleteMessageId, deletePopReceipt)
         then:
         def e = thrown(StorageException)
@@ -408,12 +408,12 @@ class QueueAPITests extends APISpec {
         def dequeueMsg = queueClient.dequeueMessages().iterator().next()
         when:
         def updateMsgResponse = queueClient.updateMessageWithResponse(updateMsg,
-            dequeueMsg.messageId(), dequeueMsg.popReceipt(), Duration.ofSeconds(1), null,  null)
+            dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), Duration.ofSeconds(1), null,  null)
         QueueTestHelper.sleepInRecord(Duration.ofSeconds(2))
         def peekMsgIter = queueClient.peekMessages().iterator().next()
         then:
         QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
-        updateMsg.equals(peekMsgIter.messageText())
+        updateMsg.equals(peekMsgIter.getMessageText())
     }
 
     @Unroll
@@ -424,8 +424,8 @@ class QueueAPITests extends APISpec {
         queueClient.enqueueMessage("test message before update")
         def dequeueMessageIter = queueClient.dequeueMessages().iterator().next()
         when:
-        def updateMessageId = messageId ? dequeueMessageIter.messageId() : dequeueMessageIter.messageId() + "Random"
-        def updatePopReceipt = popReceipt ? dequeueMessageIter.popReceipt() : dequeueMessageIter.popReceipt() + "Random"
+        def updateMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
+        def updatePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
         queueClient.updateMessage(updateMsg, updateMessageId, updatePopReceipt, Duration.ofSeconds(1))
         then:
         def e = thrown(StorageException)

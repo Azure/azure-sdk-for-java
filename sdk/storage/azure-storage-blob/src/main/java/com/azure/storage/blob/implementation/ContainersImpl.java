@@ -220,7 +220,7 @@ public final class ContainersImpl {
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, context);
     }
@@ -261,15 +261,15 @@ public final class ContainersImpl {
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -315,11 +315,11 @@ public final class ContainersImpl {
         final String comp = "metadata";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
@@ -360,7 +360,7 @@ public final class ContainersImpl {
         final String comp = "acl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, leaseId, context);
     }
@@ -407,15 +407,15 @@ public final class ContainersImpl {
         final String comp = "acl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(containerAcl);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -465,11 +465,11 @@ public final class ContainersImpl {
         final String action = "acquire";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -516,11 +516,11 @@ public final class ContainersImpl {
         final String action = "release";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -567,11 +567,11 @@ public final class ContainersImpl {
         final String action = "renew";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -618,11 +618,11 @@ public final class ContainersImpl {
         final String action = "break";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -671,11 +671,11 @@ public final class ContainersImpl {
         final String action = "change";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);

@@ -58,7 +58,7 @@ public final class AccountSASQueryParameters extends BaseSASQueryParameters {
      * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
      * more details.
      */
-    public String services() {
+    public String getServices() {
         return services;
     }
 
@@ -66,7 +66,7 @@ public final class AccountSASQueryParameters extends BaseSASQueryParameters {
      * @return The storage resource types being accessed (only for Account SAS). Please refer to {@link
      * AccountSASResourceType} for more details.
      */
-    public String resourceTypes() {
+    public String getResourceTypes() {
         return resourceTypes;
     }
 

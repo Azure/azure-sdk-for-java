@@ -30,7 +30,7 @@ public final class UrlBuilder {
      * @param scheme The scheme/protocol that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder scheme(String scheme) {
+    public UrlBuilder setScheme(String scheme) {
         if (scheme == null || scheme.isEmpty()) {
             this.scheme = null;
         } else {
@@ -44,7 +44,7 @@ public final class UrlBuilder {
      *
      * @return the scheme/protocol that has been assigned to this UrlBuilder.
      */
-    public String scheme() {
+    public String getScheme() {
         return scheme;
     }
 
@@ -54,7 +54,7 @@ public final class UrlBuilder {
      * @param host The host that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder host(String host) {
+    public UrlBuilder setHost(String host) {
         if (host == null || host.isEmpty()) {
             this.host = null;
         } else {
@@ -68,7 +68,7 @@ public final class UrlBuilder {
      *
      * @return the host that has been assigned to this UrlBuilder.
      */
-    public String host() {
+    public String getHost() {
         return host;
     }
 
@@ -78,7 +78,7 @@ public final class UrlBuilder {
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder port(String port) {
+    public UrlBuilder setPort(String port) {
         if (port == null || port.isEmpty()) {
             this.port = null;
         } else {
@@ -93,8 +93,8 @@ public final class UrlBuilder {
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder port(int port) {
-        return port(Integer.toString(port));
+    public UrlBuilder setPort(int port) {
+        return setPort(Integer.toString(port));
     }
 
     /**
@@ -102,7 +102,7 @@ public final class UrlBuilder {
      *
      * @return the port that has been assigned to this UrlBuilder.
      */
-    public Integer port() {
+    public Integer getPort() {
         return port == null ? null : Integer.valueOf(port);
     }
 
@@ -112,7 +112,7 @@ public final class UrlBuilder {
      * @param path The path that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder path(String path) {
+    public UrlBuilder setPath(String path) {
         if (path == null || path.isEmpty()) {
             this.path = null;
         } else {
@@ -126,7 +126,7 @@ public final class UrlBuilder {
      *
      * @return the path that has been assigned to this UrlBuilder.
      */
-    public String path() {
+    public String getPath() {
         return path;
     }
 
@@ -148,7 +148,7 @@ public final class UrlBuilder {
      * @param query The query that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder query(String query) {
+    public UrlBuilder setQuery(String query) {
         if (query == null || query.isEmpty()) {
             this.query.clear();
         } else {
@@ -162,7 +162,7 @@ public final class UrlBuilder {
      *
      * @return the query that has been assigned to this UrlBuilder.
      */
-    public Map<String, String> query() {
+    public Map<String, String> getQuery() {
         return query;
     }
 
@@ -311,27 +311,27 @@ public final class UrlBuilder {
         if (url != null) {
             final String protocol = url.getProtocol();
             if (protocol != null && !protocol.isEmpty()) {
-                result.scheme(protocol);
+                result.setScheme(protocol);
             }
 
             final String host = url.getHost();
             if (host != null && !host.isEmpty()) {
-                result.host(host);
+                result.setHost(host);
             }
 
             final int port = url.getPort();
             if (port != -1) {
-                result.port(port);
+                result.setPort(port);
             }
 
             final String path = url.getPath();
             if (path != null && !path.isEmpty()) {
-                result.path(path);
+                result.setPath(path);
             }
 
             final String query = url.getQuery();
             if (query != null && !query.isEmpty()) {
-                result.query(query);
+                result.setQuery(query);
             }
         }
 

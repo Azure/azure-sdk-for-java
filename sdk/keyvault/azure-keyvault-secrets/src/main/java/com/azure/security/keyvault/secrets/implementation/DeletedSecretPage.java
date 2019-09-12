@@ -33,7 +33,7 @@ public final class DeletedSecretPage implements Page<DeletedSecret> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class DeletedSecretPage implements Page<DeletedSecret> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<DeletedSecret> items() {
+    public List<DeletedSecret> getItems() {
         return items;
     }
 }

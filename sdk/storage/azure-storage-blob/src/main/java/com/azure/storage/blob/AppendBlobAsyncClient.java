@@ -93,7 +93,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
      *
-     * @return A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the created appended blob.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
@@ -104,9 +104,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
-            null, 0, null, metadata, null, headers, accessConditions.leaseAccessConditions(), cpk,
-            accessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
+            null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(), cpk,
+            accessConditions.getModifiedAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -146,7 +146,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         emitted by the {@code Flux}.
      * @param appendBlobAccessConditions {@link AppendBlobAccessConditions}
      *
-     * @return A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
                                                                   AppendBlobAccessConditions appendBlobAccessConditions) {
@@ -160,11 +160,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
             null, null, data, length, null, null, null, null,
-            appendBlobAccessConditions.leaseAccessConditions(),
-            appendBlobAccessConditions.appendPositionAccessConditions(), cpk,
-            appendBlobAccessConditions.modifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
-
+            appendBlobAccessConditions.getLeaseAccessConditions(),
+            appendBlobAccessConditions.getAppendPositionAccessConditions(), cpk,
+            appendBlobAccessConditions.getModifiedAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -203,7 +202,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @param destAccessConditions {@link AppendBlobAccessConditions}
      * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
      *
-     * @return A {@link Mono} containing {@link Response} whose {@link Response#value() value} contains the append blob operation.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
                                                                          byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
@@ -222,10 +221,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(
             this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
                 sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null, null, null, cpk,
-                destAccessConditions.leaseAccessConditions(),
-                destAccessConditions.appendPositionAccessConditions(),
-                destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders(),
-                rb.headers().value("x-ms-request-server-encrypted"))));
+                destAccessConditions.getLeaseAccessConditions(),
+                destAccessConditions.getAppendPositionAccessConditions(),
+                destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders(),
+                rb.getHeaders().value("x-ms-request-server-encrypted"))));
     }
 }

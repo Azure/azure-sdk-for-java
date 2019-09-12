@@ -58,7 +58,7 @@ abstract class PollStrategy {
 
     @SuppressWarnings("unchecked")
     protected <T> T deserialize(String value, Type returnType) throws IOException {
-        return (T) restProxy.serializer().deserialize(value, returnType, SerializerEncoding.JSON);
+        return (T) restProxy.getSerializer().deserialize(value, returnType, SerializerEncoding.JSON);
     }
 
     protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {
@@ -67,14 +67,14 @@ abstract class PollStrategy {
 
     protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
         Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse =
-            new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser);
+            new HttpResponseDecoder(restProxy.getSerializer()).decode(Mono.just(httpResponse), this.methodParser);
         return asyncDecodedResponse.flatMap(decodedResponse -> {
             return restProxy.ensureExpectedStatus(decodedResponse, methodParser, additionalAllowedStatusCodes);
         }).map(decodedResponse -> httpResponse);
     }
 
-    protected String fullyQualifiedMethodName() {
-        return methodParser.fullyQualifiedMethodName();
+    protected String getFullyQualifiedMethodName() {
+        return methodParser.getFullyQualifiedMethodName();
     }
 
     protected boolean expectsResourceResponse() {
@@ -102,7 +102,7 @@ abstract class PollStrategy {
     static Long delayInMillisecondsFrom(HttpResponse httpResponse) {
         Long result = null;
 
-        final String retryAfterSecondsString = httpResponse.headerValue("Retry-After");
+        final String retryAfterSecondsString = httpResponse.getHeaderValue("Retry-After");
         if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
             result = Long.parseLong(retryAfterSecondsString) * 1000;
         }
@@ -127,7 +127,7 @@ abstract class PollStrategy {
     /**
      * @return the current status of the long running operation.
      */
-    String status() {
+    String getStatus() {
         return status;
     }
 
@@ -161,7 +161,7 @@ abstract class PollStrategy {
     Mono<HttpResponse> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             final HttpRequest pollRequest = createPollRequest();
-            return restProxy.send(pollRequest, new Context("caller-method", fullyQualifiedMethodName()));
+            return restProxy.send(pollRequest, new Context("caller-method", getFullyQualifiedMethodName()));
         })).flatMap(response -> updateFromAsync(response)));
     }
 
@@ -174,10 +174,10 @@ abstract class PollStrategy {
             try {
                 final Object resultObject =
                     restProxy.handleRestReturnType(
-                            new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse),
+                            new HttpResponseDecoder(restProxy.getSerializer()).decode(Mono.just(httpResponse),
                                 this.methodParser),
                             methodParser, operationStatusResultType, context);
-                operationStatus = new OperationStatus<>(resultObject, status());
+                operationStatus = new OperationStatus<>(resultObject, getStatus());
             } catch (HttpResponseException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
@@ -204,9 +204,9 @@ abstract class PollStrategy {
     /**
      * @return The data for the strategy.
      */
-    public abstract Serializable strategyData();
+    public abstract Serializable getStrategyData();
 
-    SwaggerMethodParser methodParser() {
+    SwaggerMethodParser getMethodParser() {
         return this.methodParser;
     }
 }

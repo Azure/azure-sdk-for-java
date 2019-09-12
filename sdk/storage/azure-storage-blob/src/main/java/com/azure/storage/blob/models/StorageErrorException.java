@@ -33,7 +33,7 @@ public final class StorageErrorException extends HttpResponseException {
     }
 
     @Override
-    public StorageError value() {
-        return (StorageError) super.value();
+    public StorageError getValue() {
+        return (StorageError) super.getValue();
     }
 }

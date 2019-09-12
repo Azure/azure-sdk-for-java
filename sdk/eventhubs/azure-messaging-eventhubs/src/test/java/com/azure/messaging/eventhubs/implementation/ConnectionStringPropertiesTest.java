@@ -86,10 +86,10 @@ public class ConnectionStringPropertiesTest {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
 
         // Assert
-        Assert.assertEquals(HOST, properties.endpoint().getHost());
-        Assert.assertEquals(SAS_KEY, properties.sharedAccessKeyName());
-        Assert.assertEquals(SAS_VALUE, properties.sharedAccessKey());
-        Assert.assertNull(properties.eventHubName());
+        Assert.assertEquals(HOST, properties.getEndpoint().getHost());
+        Assert.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
+        Assert.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
+        Assert.assertNull(properties.getEventHubName());
     }
 
     /**
@@ -104,10 +104,10 @@ public class ConnectionStringPropertiesTest {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
 
         // Assert
-        Assert.assertEquals(HOST, properties.endpoint().getHost());
-        Assert.assertEquals(SAS_KEY, properties.sharedAccessKeyName());
-        Assert.assertEquals(SAS_VALUE, properties.sharedAccessKey());
-        Assert.assertEquals(EVENT_HUB, properties.eventHubName());
+        Assert.assertEquals(HOST, properties.getEndpoint().getHost());
+        Assert.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
+        Assert.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
+        Assert.assertEquals(EVENT_HUB, properties.getEventHubName());
     }
 
     private static String getConnectionString(String hostname, String eventHubName, String sasKeyName, String sasKeyValue) {

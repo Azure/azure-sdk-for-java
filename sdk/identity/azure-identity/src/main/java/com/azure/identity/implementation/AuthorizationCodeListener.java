@@ -71,9 +71,9 @@ public final class AuthorizationCodeListener {
 
     private static String getCodeFromUri(String uri) {
         UrlBuilder urlBuilder = UrlBuilder.parse(uri);
-        for (String query : urlBuilder.query().keySet()) {
+        for (String query : urlBuilder.getQuery().keySet()) {
             if ("code".equalsIgnoreCase(query)) {
-                return urlBuilder.query().get(query);
+                return urlBuilder.getQuery().get(query);
             }
         }
         return null;

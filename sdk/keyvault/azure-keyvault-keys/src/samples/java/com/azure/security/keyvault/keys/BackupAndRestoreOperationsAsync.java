@@ -38,10 +38,10 @@ public class BackupAndRestoreOperationsAsync {
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048))
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
@@ -57,14 +57,14 @@ public class BackupAndRestoreOperationsAsync {
 
         // The Cloud Rsa key is no longer in use, so you delete it.
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
         keyAsyncClient.purgeDeletedKey("CloudRsaKey").subscribe(purgeResponse ->
-            System.out.printf("Purge Status response %d \n", purgeResponse.statusCode()));
+            System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
 
         //To ensure file is purged on server side.
         Thread.sleep(15000);

@@ -141,8 +141,8 @@ public final class TestUtils {
      * Checks the {@link #MESSAGE_TRACKING_ID} to see if it matches the {@code expectedValue}.
      */
     static boolean isMatchingEvent(EventData event, String expectedValue) {
-        return event.properties() != null && event.properties().containsKey(MESSAGE_TRACKING_ID)
-            && expectedValue.equals(event.properties().get(MESSAGE_TRACKING_ID));
+        return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_TRACKING_ID)
+            && expectedValue.equals(event.getProperties().get(MESSAGE_TRACKING_ID));
     }
 
     private TestUtils() {

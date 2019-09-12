@@ -103,7 +103,7 @@ public class ConnectionStringProperties {
      *
      * @return The endpoint address, including protocol, from the connection string.
      */
-    public URI endpoint() {
+    public URI getEndpoint() {
         return endpoint;
     }
 
@@ -112,7 +112,7 @@ public class ConnectionStringProperties {
      *
      * @return The name of the specific Event Hub under the namespace.
      */
-    public String eventHubName() {
+    public String getEventHubName() {
         return eventHubName;
     }
 
@@ -121,7 +121,7 @@ public class ConnectionStringProperties {
      *
      * @return The name of the shared access key.
      */
-    public String sharedAccessKeyName() {
+    public String getSharedAccessKeyName() {
         return sharedAccessKeyName;
     }
 
@@ -130,7 +130,7 @@ public class ConnectionStringProperties {
      *
      * @return The value of the shared access key.
      */
-    public String sharedAccessKey() {
+    public String getSharedAccessKey() {
         return sharedAccessKey;
     }
 }

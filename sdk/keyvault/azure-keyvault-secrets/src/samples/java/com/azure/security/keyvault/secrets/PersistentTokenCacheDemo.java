@@ -31,6 +31,6 @@ public class PersistentTokenCacheDemo {
         // Try to get a secret! Only works if you are logged in
         System.out.println("\nWhat is the super secret secret?\n\n");
         Secret secret = client.getSecret("the-secret");
-        System.out.println("Secret was found: " + secret.value());
+        System.out.println("Secret was found: " + secret.getValue());
     }
 }

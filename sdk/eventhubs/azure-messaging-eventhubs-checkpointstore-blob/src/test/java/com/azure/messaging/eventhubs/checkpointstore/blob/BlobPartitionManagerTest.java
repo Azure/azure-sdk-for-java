@@ -73,26 +73,26 @@ public class BlobPartitionManagerTest {
 
         StepVerifier.create(blobPartitionManager.listOwnership("eh", "cg"))
             .assertNext(partitionOwnership -> {
-                assertEquals("owner1", partitionOwnership.ownerId());
-                assertEquals("0", partitionOwnership.partitionId());
-                assertEquals(1, (long) partitionOwnership.sequenceNumber());
-                assertEquals(230, (long) partitionOwnership.offset());
-                assertEquals("eh", partitionOwnership.eventHubName());
-                assertEquals("cg", partitionOwnership.consumerGroupName());
-                assertEquals("etag", partitionOwnership.eTag());
+                assertEquals("owner1", partitionOwnership.getOwnerId());
+                assertEquals("0", partitionOwnership.getPartitionId());
+                assertEquals(1, (long) partitionOwnership.getSequenceNumber());
+                assertEquals(230, (long) partitionOwnership.getOffset());
+                assertEquals("eh", partitionOwnership.getEventHubName());
+                assertEquals("cg", partitionOwnership.getConsumerGroupName());
+                assertEquals("etag", partitionOwnership.getETag());
             }).verifyComplete();
     }
 
     @Test
     public void testUpdateCheckpoint() {
         Checkpoint checkpoint = new Checkpoint()
-            .eventHubName("eh")
-            .consumerGroupName("cg")
-            .ownerId("owner1")
-            .partitionId("0")
-            .eTag("etag")
-            .sequenceNumber(2L)
-            .offset(100L);
+            .setEventHubName("eh")
+            .setConsumerGroupName("cg")
+            .setOwnerId("owner1")
+            .setPartitionId("0")
+            .setETag("etag")
+            .setSequenceNumber(2L)
+            .setOffset(100L);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
@@ -123,13 +123,13 @@ public class BlobPartitionManagerTest {
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po))
             .assertNext(partitionOwnership -> {
-                assertEquals("owner1", partitionOwnership.ownerId());
-                assertEquals("0", partitionOwnership.partitionId());
-                assertEquals("eh", partitionOwnership.eventHubName());
-                assertEquals("cg", partitionOwnership.consumerGroupName());
-                assertEquals("etag2", partitionOwnership.eTag());
-                assertNull(partitionOwnership.sequenceNumber());
-                assertNull(partitionOwnership.offset());
+                assertEquals("owner1", partitionOwnership.getOwnerId());
+                assertEquals("0", partitionOwnership.getPartitionId());
+                assertEquals("eh", partitionOwnership.getEventHubName());
+                assertEquals("cg", partitionOwnership.getConsumerGroupName());
+                assertEquals("etag2", partitionOwnership.getETag());
+                assertNull(partitionOwnership.getSequenceNumber());
+                assertNull(partitionOwnership.getOffset());
             }).verifyComplete();
     }
 
@@ -147,13 +147,13 @@ public class BlobPartitionManagerTest {
     @Test
     public void testUpdateCheckpointError() {
         Checkpoint checkpoint = new Checkpoint()
-            .eventHubName("eh")
-            .consumerGroupName("cg")
-            .ownerId("owner1")
-            .partitionId("0")
-            .eTag("etag")
-            .sequenceNumber(2L)
-            .offset(100L);
+            .setEventHubName("eh")
+            .setConsumerGroupName("cg")
+            .setOwnerId("owner1")
+            .setPartitionId("0")
+            .setETag("etag")
+            .setSequenceNumber(2L)
+            .setOffset(100L);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
@@ -184,23 +184,23 @@ public class BlobPartitionManagerTest {
     private PartitionOwnership createPartitionOwnership(String eventHubName, String consumerGroupName,
         String partitionId, String ownerId) {
         return new PartitionOwnership()
-            .eventHubName(eventHubName)
-            .consumerGroupName(consumerGroupName)
-            .partitionId(partitionId)
-            .ownerId(ownerId);
+            .setEventHubName(eventHubName)
+            .setConsumerGroupName(consumerGroupName)
+            .setPartitionId(partitionId)
+            .setOwnerId(ownerId);
     }
 
     private BlobItem getBlobItem(String owner, String sequenceNumber, String offset, String etag, String blobName) {
         Metadata metadata = getMetadata(owner, sequenceNumber, offset);
 
         BlobProperties properties = new BlobProperties()
-            .lastModified(OffsetDateTime.now())
-            .etag(etag);
+            .setLastModified(OffsetDateTime.now())
+            .setEtag(etag);
 
         return new BlobItem()
-            .name(blobName)
-            .metadata(metadata)
-            .properties(properties);
+            .setName(blobName)
+            .setMetadata(metadata)
+            .setProperties(properties);
     }
 
     private Metadata getMetadata(String owner, String sequenceNumber, String offset) {

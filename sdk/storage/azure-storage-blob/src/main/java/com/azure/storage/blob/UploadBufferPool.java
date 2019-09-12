@@ -33,7 +33,7 @@ final class UploadBufferPool {
     private final ClientLogger logger = new ClientLogger(UploadBufferPool.class);
 
     /*
-    Note that a blocking on a syncrhonized object is not the same as blocking on a reactive operation; blocking on this
+    Note that a blocking on a synchronized object is not the same as blocking on a reactive operation; blocking on this
     queue will not compromise the async nature of this workflow. Fluxes themselves are internally synchronized to ensure
     only one call to onNext happens at a time.
      */

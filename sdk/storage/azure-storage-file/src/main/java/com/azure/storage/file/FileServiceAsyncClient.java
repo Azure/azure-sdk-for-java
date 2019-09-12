@@ -30,11 +30,11 @@ import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
-import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,13 +135,13 @@ public final class FileServiceAsyncClient {
     /**
      * Lists the shares in the Storage account that pass the options filter.
      *
-     * <p>Set starts with name filter using {@link ListSharesOptions#prefix(String) prefix} to filter shares that are
+     * <p>Set starts with name filter using {@link ListSharesOptions#setPrefix(String) prefix} to filter shares that are
      * listed.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * <p>Pass true to {@link ListSharesOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned for
      * the shares.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeSnapshots(boolean) includeSnapshots} to have snapshots of the
+     * <p>Pass true to {@link ListSharesOptions#setIncludeSnapshots(boolean) includeSnapshots} to have snapshots of the
      * shares listed.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -173,16 +173,16 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout, Context context) {
-        final String prefix = (options != null) ? options.prefix() : null;
-        final Integer maxResults = (options != null) ? options.maxResults() : null;
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            if (options.includeMetadata()) {
+            if (options.isIncludeMetadata()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
             }
 
-            if (options.includeSnapshots()) {
+            if (options.isIncludeSnapshots()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
             }
         }
@@ -190,12 +190,12 @@ public final class FileServiceAsyncClient {
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
                 .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
-                    response.statusCode(),
-                    response.headers(),
-                    response.value().shareItems(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getShareItems(),
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders())));
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
@@ -239,15 +239,15 @@ public final class FileServiceAsyncClient {
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -266,10 +266,10 @@ public final class FileServiceAsyncClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
     public Mono<Void> setProperties(FileServiceProperties properties) {
@@ -280,8 +280,8 @@ public final class FileServiceAsyncClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors() CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -304,10 +304,10 @@ public final class FileServiceAsyncClient {
      *     <li>More than five CORS rules will exist for the Queue service</li>
      *     <li>Size of all CORS rules exceeds 2KB</li>
      *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *         Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed headers},
+     *         or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     *     <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
     public Mono<VoidResponse> setPropertiesWithResponse(FileServiceProperties properties) {

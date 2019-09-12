@@ -108,8 +108,8 @@ public class PartitionBasedLoadBalancerTest {
 
             assertNotNull(partitionOwnership);
             assertEquals(index + 1, partitionOwnership.size());
-            partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).ownerId()));
-            assertEquals(index + 1, partitionOwnership.stream().map(po -> po.partitionId()).distinct().count());
+            partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).getOwnerId()));
+            assertEquals(index + 1, partitionOwnership.stream().map(po -> po.getPartitionId()).distinct().count());
         });
     }
 
@@ -139,16 +139,16 @@ public class PartitionBasedLoadBalancerTest {
             List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
                 consumerGroupName).collectList().block();
             assertTrue(partitionOwnership.size() <= 3);
-            assertEquals(2, partitionOwnership.stream().map(po -> po.ownerId()).distinct().count());
+            assertEquals(2, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
         });
 
         List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
         // because owner1 runs first, it will have the chance to claim one additional partition
-        assertEquals(2, partitionOwnership.stream().filter(po -> "owner1".equals(po.ownerId())).count());
+        assertEquals(2, partitionOwnership.stream().filter(po -> "owner1".equals(po.getOwnerId())).count());
         // after owner1 has 2 partitions and owner2 has 1 partition, owner2 runs again but this time the load
         // is balanced and owner2 should not claim any additional partition
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.ownerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.getOwnerId())).count());
     }
 
     @Test
@@ -169,9 +169,9 @@ public class PartitionBasedLoadBalancerTest {
             List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
                 consumerGroupName).collectList().block();
             assertEquals(index + 1, partitionOwnership.size());
-            partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).ownerId()));
+            partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).getOwnerId()));
             assertEquals(index + 1,
-                partitionOwnership.stream().map(PartitionOwnership::partitionId).distinct().count());
+                partitionOwnership.stream().map(PartitionOwnership::getPartitionId).distinct().count());
         });
 
         // Now, second event processor comes online and steals a partition as the number of partitions
@@ -181,9 +181,9 @@ public class PartitionBasedLoadBalancerTest {
         List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
         assertEquals(3, partitionOwnership.size());
-        assertEquals(2, partitionOwnership.stream().map(PartitionOwnership::ownerId).distinct().count());
-        assertEquals(2, partitionOwnership.stream().filter(po -> po.ownerId().equals("owner1")).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> po.ownerId().equals("owner2")).count());
+        assertEquals(2, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
+        assertEquals(2, partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner1")).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner2")).count());
     }
 
     @Test
@@ -204,20 +204,20 @@ public class PartitionBasedLoadBalancerTest {
             List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
                 consumerGroupName).collectList().block();
             assertTrue(partitionOwnership.size() <= 3);
-            assertEquals(3, partitionOwnership.stream().map(po -> po.ownerId()).distinct().count());
+            assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
         });
 
         List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
 
-        assertEquals(3, partitionOwnership.stream().map(po -> po.ownerId()).distinct().count());
+        assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
 
         // each should have 1 partition
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.ownerId())).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner1".equals(po.ownerId())).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.ownerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.getOwnerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner1".equals(po.getOwnerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.getOwnerId())).count());
         // owner4 should not be in the list
-        assertTrue(partitionOwnership.stream().noneMatch(po -> po.ownerId().equals("owner4")));
+        assertTrue(partitionOwnership.stream().noneMatch(po -> po.getOwnerId().equals("owner4")));
     }
 
     @Test
@@ -238,20 +238,20 @@ public class PartitionBasedLoadBalancerTest {
             List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
                 consumerGroupName).collectList().block();
             assertTrue(partitionOwnership.size() <= 3);
-            assertEquals(3, partitionOwnership.stream().map(po -> po.ownerId()).distinct().count());
+            assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
         });
 
         List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
 
-        assertEquals(3, partitionOwnership.stream().map(po -> po.ownerId()).distinct().count());
+        assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
 
         // each should have 1 partition
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.ownerId())).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner1".equals(po.ownerId())).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.ownerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.getOwnerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner1".equals(po.getOwnerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.getOwnerId())).count());
         // owner4 should not be in the list
-        assertTrue(partitionOwnership.stream().noneMatch(po -> po.ownerId().equals("owner4")));
+        assertTrue(partitionOwnership.stream().noneMatch(po -> po.getOwnerId().equals("owner4")));
 
         sleep(6);
         IntStream.range(0, loadBalancers.size()).forEach(index -> {
@@ -265,14 +265,14 @@ public class PartitionBasedLoadBalancerTest {
         partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
 
-        assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::ownerId).distinct().count());
+        assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
 
         // each should have 1 partition
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.ownerId())).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.ownerId())).count());
-        assertEquals(1, partitionOwnership.stream().filter(po -> "owner3".equals(po.ownerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.getOwnerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner2".equals(po.getOwnerId())).count());
+        assertEquals(1, partitionOwnership.stream().filter(po -> "owner3".equals(po.getOwnerId())).count());
         // owner2 should not be in the list as it was stopped
-        assertTrue(partitionOwnership.stream().noneMatch(po -> "owner1".equals(po.ownerId())));
+        assertTrue(partitionOwnership.stream().noneMatch(po -> "owner1".equals(po.getOwnerId())));
     }
 
     @Test
@@ -358,21 +358,21 @@ public class PartitionBasedLoadBalancerTest {
     public void testEmptyOwnerId() {
         // null owner id
         PartitionOwnership claim1 = new PartitionOwnership()
-            .eventHubName(eventHubName)
-            .consumerGroupName(consumerGroupName)
-            .partitionId("1")
-            .eTag(UUID.randomUUID().toString())
-            .ownerLevel(0)
-            .lastModifiedTime(System.currentTimeMillis());
+            .setEventHubName(eventHubName)
+            .setConsumerGroupName(consumerGroupName)
+            .setPartitionId("1")
+            .setETag(UUID.randomUUID().toString())
+            .setOwnerLevel(0)
+            .setLastModifiedTime(System.currentTimeMillis());
         // owner id is an empty string
         PartitionOwnership claim2 = new PartitionOwnership()
-            .eventHubName(eventHubName)
-            .consumerGroupName(consumerGroupName)
-            .partitionId("2")
-            .eTag(UUID.randomUUID().toString())
-            .ownerLevel(0)
-            .lastModifiedTime(System.currentTimeMillis())
-            .ownerId("");
+            .setEventHubName(eventHubName)
+            .setConsumerGroupName(consumerGroupName)
+            .setPartitionId("2")
+            .setETag(UUID.randomUUID().toString())
+            .setOwnerLevel(0)
+            .setLastModifiedTime(System.currentTimeMillis())
+            .setOwnerId("");
         partitionManager.claimOwnership(claim1, claim2).subscribe();
 
         List<String> partitionIds = Arrays.asList("1", "2", "3");
@@ -391,8 +391,8 @@ public class PartitionBasedLoadBalancerTest {
         List<PartitionOwnership> partitionOwnership = partitionManager.listOwnership(eventHubName,
             consumerGroupName).collectList().block();
         assertEquals(3, partitionOwnership.size());
-        partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).ownerId()));
-        assertEquals(3, partitionOwnership.stream().map(po -> po.partitionId()).distinct().count());
+        partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).getOwnerId()));
+        assertEquals(3, partitionOwnership.stream().map(po -> po.getPartitionId()).distinct().count());
     }
 
     private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {

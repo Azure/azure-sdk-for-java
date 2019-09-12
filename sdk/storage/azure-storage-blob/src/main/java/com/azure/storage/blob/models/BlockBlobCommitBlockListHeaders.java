@@ -107,7 +107,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -119,7 +119,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param eTag the eTag value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders eTag(String eTag) {
+    public BlockBlobCommitBlockListHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -132,11 +132,11 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -148,7 +148,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders lastModified(OffsetDateTime lastModified) {
+    public BlockBlobCommitBlockListHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -165,7 +165,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -178,7 +178,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders contentMD5(byte[] contentMD5) {
+    public BlockBlobCommitBlockListHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -191,7 +191,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the xMsContentCrc64 value.
      */
-    public byte[] xMsContentCrc64() {
+    public byte[] getXMsContentCrc64() {
         return ImplUtils.clone(this.xMsContentCrc64);
     }
 
@@ -204,7 +204,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+    public BlockBlobCommitBlockListHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -216,7 +216,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -228,7 +228,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders clientRequestId(String clientRequestId) {
+    public BlockBlobCommitBlockListHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -239,7 +239,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -250,7 +250,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders requestId(String requestId) {
+    public BlockBlobCommitBlockListHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -262,7 +262,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -274,7 +274,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param version the version value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders version(String version) {
+    public BlockBlobCommitBlockListHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -285,11 +285,11 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -299,7 +299,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobCommitBlockListHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -327,7 +327,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobCommitBlockListHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -339,7 +339,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -351,7 +351,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobCommitBlockListHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -361,7 +361,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -371,7 +371,7 @@ public final class BlockBlobCommitBlockListHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobCommitBlockListHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders errorCode(String errorCode) {
+    public BlockBlobCommitBlockListHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

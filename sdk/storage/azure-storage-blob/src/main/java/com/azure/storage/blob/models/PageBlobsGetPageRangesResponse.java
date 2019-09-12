@@ -29,7 +29,7 @@ public final class PageBlobsGetPageRangesResponse extends ResponseBase<PageBlobG
      * @return the deserialized response body.
      */
     @Override
-    public PageList value() {
-        return super.value();
+    public PageList getValue() {
+        return super.getValue();
     }
 }

@@ -28,7 +28,7 @@ public class ProxyAuthenticationPolicyTests {
             .httpClient(new NoOpHttpClient())
             .policies(new ProxyAuthenticationPolicy(username, password),
                 (context, next) -> {
-                    assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", context.httpRequest().headers().value("Proxy-Authentication"));
+                    assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", context.getHttpRequest().getHeaders().value("Proxy-Authentication"));
                     auditorVisited.set(true);
                     return next.process();
                 })

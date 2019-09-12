@@ -113,7 +113,7 @@ public class ShareClient {
      * @throws StorageException If the share already exists with different metadata
      */
     public ShareInfo create() {
-        return createWithResponse(null, null, null, Context.NONE).value();
+        return createWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -164,7 +164,7 @@ public class ShareClient {
      * in progress for the share
      */
     public ShareSnapshotInfo createSnapshot() {
-        return createSnapshotWithResponse(null, null, Context.NONE).value();
+        return createSnapshotWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -251,7 +251,7 @@ public class ShareClient {
      * @throws StorageException If the share doesn't exist
      */
     public ShareProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -295,7 +295,7 @@ public class ShareClient {
      * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      */
     public ShareInfo setQuota(int quotaInGB) {
-        return setQuotaWithResponse(quotaInGB, null, Context.NONE).value();
+        return setQuotaWithResponse(quotaInGB, null, Context.NONE).getValue();
     }
 
     /**
@@ -345,7 +345,7 @@ public class ShareClient {
      * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
      */
     public ShareInfo setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, null, Context.NONE).value();
+        return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
     }
 
     /**
@@ -411,7 +411,7 @@ public class ShareClient {
      * or the share will have more than five policies.
      */
     public ShareInfo setAccessPolicy(List<SignedIdentifier> permissions) {
-        return setAccessPolicyWithResponse(permissions, null, Context.NONE).value();
+        return setAccessPolicyWithResponse(permissions, null, Context.NONE).getValue();
     }
 
     /**
@@ -454,7 +454,7 @@ public class ShareClient {
      * @return The storage {@link ShareStatistics statistics of the share}
      */
     public ShareStatistics getStatistics() {
-        return getStatisticsWithResponse(null, Context.NONE).value();
+        return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -498,7 +498,7 @@ public class ShareClient {
      */
     public DirectoryClient createDirectory(String directoryName) {
         return createDirectoryWithResponse(directoryName, null, null, null,
-            null, Context.NONE).value();
+            null, Context.NONE).getValue();
     }
 
     /**
@@ -560,7 +560,7 @@ public class ShareClient {
      */
     public FileClient createFile(String fileName, long maxSize) {
         return createFileWithResponse(fileName, maxSize, null, null, null,
-            null, null, Context.NONE).value();
+            null, null, Context.NONE).getValue();
     }
 
     /**
@@ -702,7 +702,7 @@ public class ShareClient {
      * @return The file permission key associated with the file permission.
      */
     public String createPermission(String filePermission) {
-        return createPermissionWithResponse(filePermission, Context.NONE).value();
+        return createPermissionWithResponse(filePermission, Context.NONE).getValue();
     }
 
     /**
@@ -732,7 +732,7 @@ public class ShareClient {
      * @return The file permission associated with the file permission key.
      */
     public String getPermission(String filePermissionKey) {
-        return getPermissionWithResponse(filePermissionKey, Context.NONE).value();
+        return getPermissionWithResponse(filePermissionKey, Context.NONE).getValue();
     }
 
     /**

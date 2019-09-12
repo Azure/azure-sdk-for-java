@@ -87,7 +87,7 @@ public class EventHubAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
-                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
+        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider) {
         Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         Objects.requireNonNull(provider, "'provider' cannot be null.");
         Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
@@ -95,7 +95,7 @@ public class EventHubAsyncClient implements Closeable {
 
         this.connectionOptions = connectionOptions;
         this.tracerProvider = tracerProvider;
-        this.eventHubName = connectionOptions.eventHubName();
+        this.eventHubName = connectionOptions.getEventHubName();
         this.connectionId = StringUtil.getRandomString("MF");
         this.connectionMono = Mono.fromCallable(() -> {
             return (EventHubConnection) new ReactorConnection(connectionId, connectionOptions, provider,
@@ -104,10 +104,10 @@ public class EventHubAsyncClient implements Closeable {
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()
-            .retry(connectionOptions.retry());
+            .setRetry(connectionOptions.getRetry());
         this.defaultConsumerOptions = new EventHubConsumerOptions()
-            .retry(connectionOptions.retry())
-            .scheduler(connectionOptions.scheduler());
+            .setRetry(connectionOptions.getRetry())
+            .setScheduler(connectionOptions.getScheduler());
     }
 
     /**
@@ -129,7 +129,7 @@ public class EventHubAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
-        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.partitionIds()));
+        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.getPartitionIds()));
     }
 
     /**
@@ -159,7 +159,7 @@ public class EventHubAsyncClient implements Closeable {
 
     /**
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@code null}, the
+     * in batches. If {@link EventHubProducerOptions#getPartitionId() options.partitionId()} is not {@code null}, the
      * events are routed to that specific partition. Otherwise, events are automatically routed to an available
      * partition.
      *
@@ -172,18 +172,18 @@ public class EventHubAsyncClient implements Closeable {
 
         final EventHubProducerOptions clonedOptions = options.clone();
 
-        if (clonedOptions.retry() == null) {
-            clonedOptions.retry(connectionOptions.retry());
+        if (clonedOptions.getRetry() == null) {
+            clonedOptions.setRetry(connectionOptions.getRetry());
         }
 
         final String entityPath;
         final String linkName;
 
-        if (ImplUtils.isNullOrEmpty(options.partitionId())) {
+        if (ImplUtils.isNullOrEmpty(options.getPartitionId())) {
             entityPath = eventHubName;
             linkName = StringUtil.getRandomString("EC");
         } else {
-            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, options.partitionId());
+            entityPath = String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, options.getPartitionId());
             linkName = StringUtil.getRandomString("PS");
         }
 
@@ -191,10 +191,10 @@ public class EventHubAsyncClient implements Closeable {
             .flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
                 logger.verbose("Creating producer for {}", entityPath);
-                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
+                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
-                return session.createProducer(linkName, entityPath, clonedOptions.retry().tryTimeout(), retryPolicy)
-                    .cast(AmqpSendLink.class);
+                return session.createProducer(linkName, entityPath, clonedOptions.getRetry().getTryTimeout(),
+                    retryPolicy).cast(AmqpSendLink.class);
             });
 
         return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
@@ -208,15 +208,15 @@ public class EventHubAsyncClient implements Closeable {
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
-     *         the context of this group. The name of the consumer group that is created by default is {@link
-     *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is {@link
+     * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubAsyncConsumer} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
-     *         empty string.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
+     * string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
@@ -236,24 +236,24 @@ public class EventHubAsyncClient implements Closeable {
      * Consumers."
      *
      * Designating a consumer as exclusive may be specified in the {@code options}, by setting {@link
-     * EventHubConsumerOptions#ownerLevel(Long)} to a non-null value. By default, consumers are created as
+     * EventHubConsumerOptions#setOwnerLevel(Long)} to a non-null value. By default, consumers are created as
      * non-exclusive.
      * </p>
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
-     *         the context of this group. The name of the consumer group that is created by default is {@link
-     *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
+     * context of this group. The name of the consumer group that is created by default is {@link
+     * #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
      * @return An new {@link EventHubAsyncConsumer} that receives events from the partition with all configured {@link
-     *         EventHubConsumerOptions}.
+     * EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, {@code consumerGroup}, {@code partitionId}, or
-     *     {@code options} is {@code null}.
+     * {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is an empty string.
      */
     public EventHubAsyncConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
-                                                EventHubConsumerOptions options) {
+        EventHubConsumerOptions options) {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
@@ -268,27 +268,26 @@ public class EventHubAsyncClient implements Closeable {
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
-        if (clonedOptions.scheduler() == null) {
-            clonedOptions.scheduler(connectionOptions.scheduler());
+        if (clonedOptions.getScheduler() == null) {
+            clonedOptions.setScheduler(connectionOptions.getScheduler());
         }
-        if (clonedOptions.retry() == null) {
-            clonedOptions.retry(connectionOptions.retry());
+        if (clonedOptions.getRetry() == null) {
+            clonedOptions.setRetry(connectionOptions.getRetry());
         }
 
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath =
             String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubName, consumerGroup, partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> {
-            return connection.createSession(entityPath).cast(EventHubSession.class);
-        }).flatMap(session -> {
-            logger.verbose("Creating consumer for path: {}", entityPath);
-            final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.retry());
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection ->
+            connection.createSession(entityPath).cast(EventHubSession.class)).flatMap(session -> {
+                logger.verbose("Creating consumer for path: {}", entityPath);
+                final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
-            return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
-                clonedOptions.retry().tryTimeout(), retryPolicy, options.ownerLevel(), options.identifier())
-                .cast(AmqpReceiveLink.class);
-        });
+                return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
+                    clonedOptions.getRetry().getTryTimeout(), retryPolicy, options.getOwnerLevel(),
+                    options.getIdentifier()).cast(AmqpReceiveLink.class);
+            });
 
         return new EventHubAsyncConsumer(receiveLinkMono, clonedOptions);
     }
@@ -301,14 +300,14 @@ public class EventHubAsyncClient implements Closeable {
     public void close() {
         if (hasConnection.getAndSet(false)) {
             try {
-                final AmqpConnection connection = connectionMono.block(connectionOptions.retry().tryTimeout());
+                final AmqpConnection connection = connectionMono.block(connectionOptions.getRetry().getTryTimeout());
                 if (connection != null) {
                     connection.close();
                 }
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(connectionOptions.host())));
+                        new ErrorContext(connectionOptions.getHost())));
             }
         }
     }
@@ -317,25 +316,25 @@ public class EventHubAsyncClient implements Closeable {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference
-        if (eventPosition.offset() != null) {
+        if (eventPosition.getOffset() != null) {
             return String.format(
                 AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
                 isInclusiveFlag,
-                eventPosition.offset());
+                eventPosition.getOffset());
         }
 
-        if (eventPosition.sequenceNumber() != null) {
+        if (eventPosition.getSequenceNumber() != null) {
             return String.format(
                 AmqpConstants.AMQP_ANNOTATION_FORMAT,
                 SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
                 isInclusiveFlag,
-                eventPosition.sequenceNumber());
+                eventPosition.getSequenceNumber());
         }
 
-        if (eventPosition.enqueuedDateTime() != null) {
+        if (eventPosition.getEnqueuedDateTime() != null) {
             String ms;
             try {
-                ms = Long.toString(eventPosition.enqueuedDateTime().toEpochMilli());
+                ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
             } catch (ArithmeticException ex) {
                 ms = Long.toString(Long.MAX_VALUE);
             }
@@ -350,7 +349,7 @@ public class EventHubAsyncClient implements Closeable {
         throw new IllegalArgumentException("No starting position was set.");
     }
 
-    String eventHubName() {
+    String getEventHubName() {
         return this.eventHubName;
     }
 

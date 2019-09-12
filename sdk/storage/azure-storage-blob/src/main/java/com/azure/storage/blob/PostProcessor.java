@@ -12,8 +12,8 @@ final class PostProcessor {
     static <T> Mono<T> postProcessResponse(Mono<T> response) {
         return Utility.postProcessResponse(response, (errorResponse) ->
             errorResponse.onErrorResume(StorageErrorException.class, resume ->
-                resume.response()
-                    .bodyAsString()
+                resume.getResponse()
+                    .getBodyAsString()
                     .switchIfEmpty(Mono.just(""))
                     .flatMap(body -> Mono.error(new StorageException(resume, body)))
             ));

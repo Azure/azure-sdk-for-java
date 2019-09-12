@@ -35,9 +35,9 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
 
         HTTPGetterInfo info = new HTTPGetterInfo()
-            .offset(0)
-            .count(flux.getScenarioData().remaining())
-            .eTag("etag")
+            .setOffset(0)
+            .setCount(flux.getScenarioData().remaining())
+            .setETag("etag")
 
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
@@ -61,7 +61,7 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
-        HTTPGetterInfo info = new HTTPGetterInfo().eTag("etag")
+        HTTPGetterInfo info = new HTTPGetterInfo().setETag("etag")
 
         when:
         DownloadAsyncResponse response = flux.getter(info).block()
@@ -92,7 +92,7 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
 
         when:
-        new DownloadAsyncResponse(flux.getter(info).block().rawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
+        new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
         thrown(IllegalArgumentException)
@@ -100,7 +100,7 @@ class DownloadResponseTest extends APISpec {
         where:
         info                                      | _
         null                                      | _
-        new HTTPGetterInfo().eTag(null)     | _
+        new HTTPGetterInfo().setETag(null)        | _
     }
 
     def "Options IA"() {
@@ -117,7 +117,7 @@ class DownloadResponseTest extends APISpec {
 
         when:
         DownloadAsyncResponse response = new DownloadAsyncResponse(flux.getter(new HTTPGetterInfo()).block()
-            .rawResponse(), new HTTPGetterInfo().eTag("etag"), null)
+            .getRawResponse(), new HTTPGetterInfo().setETag("etag"), null)
         response.body(null).blockFirst()
 
         then:
@@ -128,9 +128,9 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_INFO_TEST, this)
         HTTPGetterInfo info = new HTTPGetterInfo()
-            .offset(20)
-            .count(10)
-            .eTag("etag")
+            .setOffset(20)
+            .setCount(10)
+            .setETag("etag")
 
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
@@ -144,7 +144,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Info count IA"() {
         when:
-        new HTTPGetterInfo().count(-1)
+        new HTTPGetterInfo().setCount(-1)
 
         then:
         thrown(IllegalArgumentException)

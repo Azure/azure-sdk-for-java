@@ -86,49 +86,49 @@ public final class FileServiceSASQueryParameters extends BaseSASQueryParameters 
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return identifier;
     }
 
     /**
      * @return The storage share or file (only for {@link FileServiceSASSignatureValues}).
      */
-    public String resource() {
+    public String getResource() {
         return resource;
     }
 
     /**
      * @return The Cache-Control header value when a client accesses the resource with this sas token.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return cacheControl;
     }
 
     /**
      * @return The Content-Disposition header value when a client accesses the resource with this sas token.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return contentDisposition;
     }
 
     /**
      * @return The Content-Encoding header value when a client accesses the resource with this sas token.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return contentEncoding;
     }
 
     /**
      * @return The Content-Language header value when a client accesses the resource with this sas token.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return contentLanguage;
     }
 
     /**
      * @return The Content-Type header value when a client accesses the resource with this sas token.
      */
-    public String contentType() {
+    public String getContentType() {
         return contentType;
     }
 

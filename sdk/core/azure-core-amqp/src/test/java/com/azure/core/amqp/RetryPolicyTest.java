@@ -18,9 +18,9 @@ public class RetryPolicyTest {
     private final Duration maxDelay = Duration.ofSeconds(120);
     private final Duration delay = Duration.ofSeconds(20);
     private final RetryOptions options = new RetryOptions()
-        .maxRetries(maxRetries)
-        .maxDelay(maxDelay)
-        .delay(delay);
+        .setMaxRetries(maxRetries)
+        .setMaxDelay(maxDelay)
+        .setDelay(delay);
 
     /**
      * Verifies we retry on a retriable AmqpException.
@@ -96,7 +96,7 @@ public class RetryPolicyTest {
     }
 
     /**
-     * Verifies that we return {@link RetryOptions#maxDelay()} if the returned delay is larger than the maximum.
+     * Verifies that we return {@link RetryOptions#getMaxDelay()} if the returned delay is larger than the maximum.
      */
     @Test
     public void returnsMaxDelayIfDelayLarger() {

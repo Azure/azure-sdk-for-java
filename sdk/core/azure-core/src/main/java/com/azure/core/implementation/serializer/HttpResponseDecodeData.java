@@ -22,7 +22,7 @@ public interface HttpResponseDecodeData {
      *
      * @return the return type
      */
-    Type returnType();
+    Type getReturnType();
 
     /**
      * Get the type of the entity to be used to deserialize 'Matching' headers.
@@ -36,8 +36,8 @@ public interface HttpResponseDecodeData {
      *
      * @return headers entity type
      */
-    default Type headersType() {
-        Type token = this.returnType();
+    default Type getHeadersType() {
+        Type token = this.getReturnType();
         Type headersType = null;
 
         if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
@@ -60,7 +60,7 @@ public interface HttpResponseDecodeData {
      *
      * @return the expected HTTP response status codes
      */
-    default int[] expectedStatusCodes() {
+    default int[] getExpectedStatusCodes() {
         return null;
     }
 
@@ -73,7 +73,7 @@ public interface HttpResponseDecodeData {
      *
      * @return the type that the raw HTTP response content will be sent as
      */
-    default Type returnValueWireType() {
+    default Type getReturnValueWireType() {
         return null;
     }
 
