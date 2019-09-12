@@ -191,6 +191,7 @@
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
 
-  <!-- Resource file class, ignore the line limit -->
+  <!--  -->
   <suppress checks="LineLength" files="com.azure.storage.common.SR.java"/>
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\](implementation|models)[/\\].*"/>
 </suppressions>
