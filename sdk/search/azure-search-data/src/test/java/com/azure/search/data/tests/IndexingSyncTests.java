@@ -8,28 +8,32 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.generated.models.*;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.IndexingResult;
+import com.azure.search.data.models.Book;
+import com.azure.search.data.models.Hotel;
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
-import com.azure.search.data.models.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.azure.search.data.models.Hotel;
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import java.util.*;
-
-import java.text.ParseException;
-
-import java.util.stream.Collectors;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
@@ -46,6 +50,39 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
+    public void indexDoesNotThrowWhenAllActionsSucceed() {
+        String expectedHotelId = "1";
+        Long expectedHotelCount = 1L;
+
+        Hotel myHotel = new Hotel().hotelId(expectedHotelId);
+        List<Hotel> toUpload = Arrays.asList(myHotel);
+
+        List<IndexingResult> result = client.uploadDocuments(toUpload).results();
+        this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+
+        waitFor(2);
+        Assert.assertEquals(expectedHotelCount, client.countDocuments());
+    }
+
+    @Override
+    public void canIndexWithPascalCaseFields() {
+        String expectedHotelId = "1";
+        Long expectedHotelCount = 1L;
+
+        Hotel myHotel =
+            new Hotel().hotelId(expectedHotelId).
+                hotelName("My Pascal Hotel").
+                description("A Great Pascal Description.").
+                category("Category Pascal");
+        List<Hotel> toUpload = Arrays.asList(myHotel);
+
+        List<IndexingResult> result = client.uploadDocuments(toUpload).results();
+        this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+
+        waitFor(2);
+        Assert.assertEquals(expectedHotelCount, client.countDocuments());
+    }
+
     public void canIndexStaticallyTypedDocuments() throws ParseException {
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         jsonApi.configureTimezone();
@@ -162,9 +199,8 @@ public class IndexingSyncTests extends IndexingTestBase {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("The request is invalid. Details: actions : 0: Document key cannot be missing or empty.");
 
-        List<IndexAction> indexActions = new LinkedList<>();
-        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, new Document());
-        client.index(new IndexBatch().actions(indexActions));
+        List<Document> toUpload = Arrays.asList(new Document());
+        client.uploadDocuments(toUpload);
     }
 
     @Override

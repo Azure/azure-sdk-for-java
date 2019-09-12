@@ -62,6 +62,15 @@ public interface SearchIndexClient {
     // Index Operations
 
     /**
+     * Uploads a collection of documents to the target index
+     *
+     * @param documents collection of documents to upload to the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
+    <T> DocumentIndexResult  uploadDocuments(List<T> documents);
+
+    /**
      * Gets the number of documents
      *
      * @return the number of documents.

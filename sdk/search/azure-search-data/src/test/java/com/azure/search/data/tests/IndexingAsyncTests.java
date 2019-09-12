@@ -8,34 +8,34 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.generated.models.*;
-
-import java.text.ParseException;
-
+import com.azure.search.data.generated.models.DocumentIndexResult;
+import com.azure.search.data.generated.models.IndexAction;
+import com.azure.search.data.generated.models.IndexActionType;
+import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.generated.models.IndexingResult;
+import com.azure.search.data.models.Book;
+import com.azure.search.data.models.Hotel;
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
-import com.azure.search.data.models.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.search.data.models.Hotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
-
 import org.junit.Assert;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.*;
-import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
@@ -46,6 +46,53 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Long expected = 0L;
 
         StepVerifier.create(result).expectNext(expected).expectComplete().verify();
+    }
+
+    @Override
+    public void indexDoesNotThrowWhenAllActionsSucceed() {
+        String expectedHotelId = "1";
+        Long expectedHotelCount = 1L;
+
+        Hotel myHotel = new Hotel().hotelId(expectedHotelId);
+        List<Hotel> toUpload = Arrays.asList(myHotel);
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(toUpload);
+
+        StepVerifier.create(asyncResult).assertNext(res -> {
+            List<IndexingResult> result = res.results();
+            this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+        }).verifyComplete();
+
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments()).
+            expectNext(expectedHotelCount).
+            verifyComplete();
+    }
+
+    @Override
+    public void canIndexWithPascalCaseFields() {
+        String expectedHotelId = "1";
+        Long expectedHotelCount = 1L;
+
+        Hotel myHotel =
+            new Hotel().hotelId(expectedHotelId).
+                hotelName("My Pascal Hotel").
+                description("A Great Pascal Description.").
+                category("Category Pascal");
+        List<Hotel> toUpload = Arrays.asList(myHotel);
+
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(toUpload);
+
+        StepVerifier.create(asyncResult).assertNext(res -> {
+            List<IndexingResult> result = res.results();
+            this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+        }).verifyComplete();
+
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments()).
+            expectNext(expectedHotelCount).
+            verifyComplete();
     }
 
     @Override
@@ -192,16 +239,15 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void indexWithInvalidDocumentThrowsException() {
-        List<IndexAction> indexActions = new LinkedList<>();
-        addDocumentToIndexActions(indexActions, IndexActionType.UPLOAD, new Document());
-        Mono<DocumentIndexResult> indexResult = client.index(new IndexBatch().actions(indexActions));
+        List<Document> toUpload = Arrays.asList(new Document());
+        Mono<DocumentIndexResult> indexResult = client.uploadDocuments(toUpload);
 
         StepVerifier
             .create(indexResult)
             .verifyErrorSatisfies(error -> {
-                assertEquals(HttpResponseException.class, error.getClass());
-                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
-                assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
+                Assert.assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
             });
     }
 

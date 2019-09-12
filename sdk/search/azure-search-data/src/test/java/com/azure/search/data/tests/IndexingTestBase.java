@@ -3,28 +3,22 @@
 package com.azure.search.data.tests;
 
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.customization.models.GeoPoint;
+import com.azure.search.data.env.SearchIndexClientTestBase;
 import com.azure.search.data.generated.models.IndexingResult;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.service.SearchServiceClient;
-import com.azure.search.service.customization.SearchCredentials;
-import com.azure.search.service.implementation.SearchServiceClientImpl;
 import com.azure.search.data.models.Hotel;
 import com.azure.search.data.models.HotelAddress;
 import com.azure.search.data.models.HotelRoom;
+import com.azure.search.service.SearchServiceClient;
+import com.azure.search.service.customization.SearchCredentials;
+import com.azure.search.service.implementation.SearchServiceClientImpl;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
@@ -52,6 +46,12 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void countingDocsOfNewIndexGivesZero();
+
+    @Test
+    public abstract void indexDoesNotThrowWhenAllActionsSucceed();
+
+    @Test
+    public abstract void canIndexWithPascalCaseFields();
 
     @Test
     public abstract void canIndexStaticallyTypedDocuments() throws Exception;
@@ -169,10 +169,20 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     protected abstract void initializeClient();
 
-    protected void addDocumentToIndexActions(List<IndexAction> indexActions, IndexActionType indexActionType, HashMap<String, Object> document) {
-        indexActions.add(new IndexAction()
-            .actionType(indexActionType)
-            .additionalProperties(document));
+    protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
+        Assert.assertEquals(key, result.key());
+        Assert.assertTrue(result.succeeded());
+        Assert.assertNull(result.errorMessage());
+        Assert.assertEquals(expectedStatusCode, result.statusCode());
+    }
+
+    protected void waitFor(int seconds) {
+        seconds = seconds * 1000;
+        try {
+            Thread.sleep(seconds);
+        } catch (InterruptedException e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     protected List<Hotel> getBoundaryValues() throws ParseException {
@@ -191,7 +201,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                     new HotelRoom()
                         .baseRate(Double.MIN_VALUE)
                 )),
-            // Maximimum values
+            // Maximum values
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
