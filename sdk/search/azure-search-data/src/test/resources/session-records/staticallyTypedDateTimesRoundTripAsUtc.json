@@ -1,63 +1,63 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdke18225020449.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk23808408437c.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "171e8a0b-213e-4c71-a632-a4e7a4fcd7af",
+      "request-id" : "1725bb59-03c6-4de3-b0b8-637c17eaf9df",
       "StatusCode" : "200",
-      "Date" : "Wed, 11 Sep 2019 23:37:03 GMT",
+      "Date" : "Fri, 13 Sep 2019 00:41:11 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "269",
+      "elapsed-time" : "327",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "289",
-      "Body" : "{\"@odata.context\":\"https://azs-sdke18225020449.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk23808408437c.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdke18225020449.search.windows.net/indexes('books')/docs('1')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk23808408437c.search.windows.net/indexes('books')/docs('1')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "7c927c1c-887f-47e9-83a4-9a55e740be85",
+      "request-id" : "834c859a-cc94-420b-bcc8-699cefba3d0d",
       "StatusCode" : "200",
-      "Date" : "Wed, 11 Sep 2019 23:37:06 GMT",
+      "Date" : "Fri, 13 Sep 2019 00:41:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "13",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "185",
-      "Body" : "{\"@odata.context\":\"https://azs-sdke18225020449.search.windows.net/indexes('books')/$metadata#docs(*)/$entity\",\"ISBN\":\"1\",\"Title\":null,\"PublishDate\":\"2010-06-27T00:00:00Z\",\"Author\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk23808408437c.search.windows.net/indexes('books')/$metadata#docs(*)/$entity\",\"ISBN\":\"1\",\"Title\":null,\"PublishDate\":\"2010-06-27T00:00:00Z\",\"Author\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdke18225020449.search.windows.net/indexes('books')/docs('2')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk23808408437c.search.windows.net/indexes('books')/docs('2')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "74dd8ec0-4a81-4aa4-8b8a-e14db5d86519",
+      "request-id" : "43d42a95-3973-4001-bf2f-54441d0ae107",
       "StatusCode" : "200",
-      "Date" : "Wed, 11 Sep 2019 23:37:06 GMT",
+      "Date" : "Fri, 13 Sep 2019 00:41:13 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "8",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "185",
-      "Body" : "{\"@odata.context\":\"https://azs-sdke18225020449.search.windows.net/indexes('books')/$metadata#docs(*)/$entity\",\"ISBN\":\"2\",\"Title\":null,\"PublishDate\":\"2010-06-27T00:00:00Z\",\"Author\":null}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk23808408437c.search.windows.net/indexes('books')/$metadata#docs(*)/$entity\",\"ISBN\":\"2\",\"Title\":null,\"PublishDate\":\"2010-06-27T00:00:00Z\",\"Author\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }

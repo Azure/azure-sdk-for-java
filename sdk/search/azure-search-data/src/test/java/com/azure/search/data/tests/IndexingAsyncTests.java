@@ -4,6 +4,7 @@ package com.azure.search.data.tests;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.SearchIndexBatchBuilder;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -170,44 +171,16 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void canIndexDynamicDocuments() {
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
-
         Document hotel1 = prepareDynamicallyTypedHotel("1");
         Document hotel2 = prepareDynamicallyTypedHotel("2");
         Document hotel3 = prepareDynamicallyTypedHotel("3");
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexAction uploadAction = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(hotel1);
+        SearchIndexBatchBuilder batchBuilder = client.getBatchBuilder();
+        batchBuilder.upload(hotel1).delete(randomHotel).merge(nonExistingHotel).mergeOrUpload(hotel3).upload(hotel2);
 
-        IndexAction deleteAction = new IndexAction()
-            .actionType(IndexActionType.DELETE)
-            .additionalProperties(randomHotel);
-
-        IndexAction mergeNonExistingAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(nonExistingHotel);
-
-        IndexAction mergeOrUploadAction = new IndexAction()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(hotel3);
-
-        IndexAction uploadAction2 = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(hotel2);
-
-        IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
-            uploadAction,
-            deleteAction,
-            mergeNonExistingAction,
-            mergeOrUploadAction,
-            uploadAction2
-        ));
-
-        Mono<DocumentIndexResult> response = client.index(indexBatch);
+        Mono<DocumentIndexResult> response = client.index(batchBuilder.batch());
 
         StepVerifier.create(response)
             .expectNextMatches(documentIndexResult -> {
@@ -219,7 +192,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertSuccessfulIndexResult(results.get(3), "3", 201);
                 assertSuccessfulIndexResult(results.get(4), "2", 201);
 
-                return results.size() == indexBatch.actions().size();
+                return results.size() == batchBuilder.size();
             })
             .verifyComplete();
 

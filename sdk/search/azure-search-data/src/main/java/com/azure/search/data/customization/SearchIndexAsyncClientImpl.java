@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.SearchIndexBatchBuilder;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.common.SuggestPagedResponse;
@@ -133,8 +134,13 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
+    public SearchIndexBatchBuilder getBatchBuilder() {
+        return new IndexBatchBuilder();
+    }
+
+    @Override
     public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().upload(documents));
+        return this.index(new IndexBatchBuilder().upload(documents).batch());
     }
 
     @Override
