@@ -33,9 +33,9 @@ If you are using Maven, add the following to your build.gradle file:
 implementation 'com.azure.ai.inkrecognizer:inkrecognizer:1.0'
 ```
 
-### Key concepts
+## Key concepts
 
-#### Implement InkStroke and InkPoint
+### Implement InkStroke and InkPoint
 
 The InkStroke interface represents an ink stroke (a collection of ink points from the time a user places the writing instrument on the writing surface until the the instrument is lifted. You will be expected to implement this interface so that the InkRecognizer Client object can use it to translate the ink to JSON for delivery to the Ink Recognizer service.
 
@@ -67,7 +67,7 @@ public enum InkStrokeKind {
 }
 ```
 
-#### Create client
+### Create client
 
 You will need to then create an InkRecognizerClient object as follows:
 
@@ -89,7 +89,7 @@ InkRecognizerAsyncClient inkRecognizerAsyncClient = inkRecognizerClientBuilder.c
                 .buildAsyncClient();
 ```
 
-#### Send request
+### Send request
 
 You can then send the strokes for processing to the service through the client
 
@@ -97,7 +97,7 @@ You can then send the strokes for processing to the service through the client
 InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
 ```
 
-#### Use the response
+### Use the response
 
 You can call methods on the InkRecognitionRoot. For example, you can search for specific recognized words in the recognized text as follows:
 
@@ -105,7 +105,7 @@ You can call methods on the InkRecognitionRoot. For example, you can search for 
 Iterable<InkWord> wordsFound = root.findWord("hello")
 ```
 
-### Examples
+## Examples
 
 The [Ink Recognizer Samples][samples] cover some of the common use cases of the Ink Recognizer SDK.
 
