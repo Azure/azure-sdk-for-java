@@ -117,6 +117,9 @@ namespace StoragePerfNet
                 catch (ObjectDisposedException)
                 {
                 }
+                catch (StorageException)
+                {
+                }
             }
         }
 
@@ -138,6 +141,9 @@ namespace StoragePerfNet
                 {
                 }
                 catch (ObjectDisposedException)
+                {
+                }
+                catch (StorageException)
                 {
                 }
             }
