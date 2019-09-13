@@ -1,4 +1,4 @@
-# Azure Ink Recognizer SDK for Android
+#  Ink Recognizer client library for Android
 
 The Ink Recognizer Cognitive Service provides a cloud-based REST API to analyze and recognize digital ink content. Unlike services that use Optical Character Recognition (OCR), the API requires digital ink stroke data as input. Digital ink strokes are time-ordered series of 2D points (X,Y coordinates) that represent the motion of input tools such as digital pens or fingers. It then recognizes the shapes and handwritten content from the input and returns a JSON response containing all recognized entities.
 
@@ -32,6 +32,8 @@ If you are using Maven, add the following to your build.gradle file:
 ```gradle
 implementation 'com.azure.ai.inkrecognizer:inkrecognizer:1.0'
 ```
+
+### Key concepts
 
 #### Implement InkStroke and InkPoint
 
@@ -102,6 +104,14 @@ You can call methods on the InkRecognitionRoot. For example, you can search for 
 ```Java
 Iterable<InkWord> wordsFound = root.findWord("hello")
 ```
+
+### Examples
+
+The [Ink Recognizer Samples][samples] cover some of the common use cases of the Ink Recognizer SDK.
+
+## Troubleshooting
+
+## Next steps
 
 ## Contributing
 
