@@ -129,7 +129,8 @@ namespace StoragePerfNet
 
         static async Task Download(BlobClient client, CancellationToken token)
         {
-            await client.DownloadAsync(token);
+            var response = await client.DownloadAsync(token);
+            await response.Value.Content.CopyToAsync(Stream.Null);
         }
 
         static async Task PrintStatus(CancellationToken token)
@@ -153,9 +154,12 @@ namespace StoragePerfNet
 
             var downloadResponse = await client.DownloadAsync();
 
-            var downloadContent = downloadResponse.Value.Content;
-            var downloadPayload = new byte[downloadContent.Length];
-            downloadContent.Read(downloadPayload, 0, downloadPayload.Length);
+            byte[] downloadPayload;
+            using (var memoryStream = new MemoryStream((int)downloadResponse.Value.ContentLength))
+            {
+                await downloadResponse.Value.Content.CopyToAsync(memoryStream);
+                downloadPayload = memoryStream.ToArray();
+            }
 
             if (!((ReadOnlySpan<byte>)_payload).SequenceEqual(downloadPayload))
             {
