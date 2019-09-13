@@ -8,19 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models;
 
-import java.util.UUID;
 
 /**
- * The PredictImageOptionalParameter model.
+ * The DetectImageUrlOptionalParameter model.
  */
-public class PredictImageOptionalParameter {
-    /**
-     * Optional. Specifies the id of a particular iteration to evaluate
-     * against.
-     * The default iteration for the project will be used when not specified.
-     */
-    private UUID iterationId;
-
+public class DetectImageUrlOptionalParameter {
     /**
      * Optional. Specifies the name of application using the endpoint.
      */
@@ -30,26 +22,6 @@ public class PredictImageOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
-
-    /**
-     * Get the iterationId value.
-     *
-     * @return the iterationId value
-     */
-    public UUID iterationId() {
-        return this.iterationId;
-    }
-
-    /**
-     * Set the iterationId value.
-     *
-     * @param iterationId the iterationId value to set
-     * @return the PredictImageOptionalParameter object itself.
-     */
-    public PredictImageOptionalParameter withIterationId(UUID iterationId) {
-        this.iterationId = iterationId;
-        return this;
-    }
 
     /**
      * Get the application value.
@@ -64,9 +36,9 @@ public class PredictImageOptionalParameter {
      * Set the application value.
      *
      * @param application the application value to set
-     * @return the PredictImageOptionalParameter object itself.
+     * @return the DetectImageUrlOptionalParameter object itself.
      */
-    public PredictImageOptionalParameter withApplication(String application) {
+    public DetectImageUrlOptionalParameter withApplication(String application) {
         this.application = application;
         return this;
     }
@@ -84,9 +56,9 @@ public class PredictImageOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the PredictImageOptionalParameter object itself.
+     * @return the DetectImageUrlOptionalParameter object itself.
      */
-    public PredictImageOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public DetectImageUrlOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

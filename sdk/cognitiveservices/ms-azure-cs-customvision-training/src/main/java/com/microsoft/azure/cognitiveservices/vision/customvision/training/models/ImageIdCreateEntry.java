@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageIdCreateEntry {
     /**
-     * The id property.
+     * Id of the image.
      */
     @JsonProperty(value = "id")
     private UUID id;
