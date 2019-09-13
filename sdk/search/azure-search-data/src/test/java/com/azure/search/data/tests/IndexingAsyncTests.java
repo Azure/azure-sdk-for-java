@@ -185,7 +185,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             mergeOrUpload(hotel3).
             upload(hotel2);
 
-        Mono<DocumentIndexResult> response = client.index(batchBuilder.batch());
+        Mono<DocumentIndexResult> response = client.index(batchBuilder.build());
 
         StepVerifier.create(response)
             .expectNextMatches(documentIndexResult -> {

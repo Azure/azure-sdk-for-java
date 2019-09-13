@@ -134,7 +134,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().upload(documents).batch());
+        return this.index(new IndexBatchBuilder().upload(documents).build());
     }
 
     @Override

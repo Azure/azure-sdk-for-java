@@ -146,7 +146,7 @@ public class IndexBatchBuilder {
      *
      * @return An IndexBatch with the desired actions.
      */
-    public IndexBatch batch() {
+    public IndexBatch build() {
         return new IndexBatch().actions(this.indexActions);
     }
 
