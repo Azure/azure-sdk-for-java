@@ -11,8 +11,6 @@ import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
