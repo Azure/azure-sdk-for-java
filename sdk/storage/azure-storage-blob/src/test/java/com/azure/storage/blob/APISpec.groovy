@@ -165,7 +165,7 @@ class APISpec extends Specification {
             ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                containerClient.breakLeaseWithResponse(0, null, null, null)
+                new LeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
             }
 
             containerClient.delete()
@@ -491,7 +491,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     def setupBlobLeaseCondition(BlobClient bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bc.acquireLease(null, -1)
+            responseLeaseId = new LeaseClient(bc).acquireLease(-1)
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -503,7 +503,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     def setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bac.acquireLease(null, -1).block()
+            responseLeaseId = new LeaseAsyncClient(bac).acquireLease(-1).block()
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -522,7 +522,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1)
+            return new LeaseClient(cu).acquireLease(-1)
         } else {
             return leaseID
         }
