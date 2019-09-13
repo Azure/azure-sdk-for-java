@@ -5,7 +5,6 @@ package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.customization.Document;
-import com.azure.search.data.customization.IndexBatchBuilder;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;

@@ -17,12 +17,6 @@ call mvn -f sdk/search/pom.service.xml -Dmaven.wagon.http.pool=false -Dmaven.tes
 
 
 @echo ************************************
-@echo Test
-call mvn -f sdk/search/pom.service.xml -Dmaven.wagon.http.pool=false test || exit /b
-
-
-
-@echo ************************************
 @echo Install all client packages
 call mvn -f pom.client.xml -Dmaven.wagon.http.pool=false -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true %SCOPE_DOWN% install || exit /b
 
