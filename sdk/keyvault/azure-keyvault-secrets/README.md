@@ -19,7 +19,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 </dependency>
 ```
 ### Default HTTP Client
-By default all client libraries ship without any baked-in HTTP client. Users who want to use a client library are encouraged to opt-in to the relevant HTTP client for their needs. For most situations, this is achieved by including the following dependency in the Maven pom.xml file:
+All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
 
 ```xml
 <dependency>
@@ -29,7 +29,7 @@ By default all client libraries ship without any baked-in HTTP client. Users who
 </dependency>
 ```
 
-This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client.
+This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
 
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
 
