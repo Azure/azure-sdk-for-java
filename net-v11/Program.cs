@@ -16,7 +16,7 @@ namespace StoragePerfNet
     {
         private const string _containerName = "testcontainer";
         private const string _blobName = "testblob";
-        
+
         private const int _bytesPerMessage = 1024 * 10;
         private static readonly byte[] _payload;
         private static readonly Stream _payloadStream;
@@ -30,7 +30,7 @@ namespace StoragePerfNet
             // Initialize payload with stable random data since all-zeros may be compressed or optimized
             (new Random(0)).NextBytes(_payload);
 
-            _payloadStream = new MemoryStream(_payload, writable:false);
+            _payloadStream = new MemoryStream(_payload, writable: false);
         }
 
         public class Options
@@ -114,6 +114,9 @@ namespace StoragePerfNet
                 catch (OperationCanceledException)
                 {
                 }
+                catch (ObjectDisposedException)
+                {
+                }
             }
         }
 
@@ -132,6 +135,9 @@ namespace StoragePerfNet
                     Console.WriteLine(_downloads);
                 }
                 catch (OperationCanceledException)
+                {
+                }
+                catch (ObjectDisposedException)
                 {
                 }
             }
