@@ -4,8 +4,8 @@ package com.azure;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubConsumer;
-import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -38,14 +38,14 @@ public class EventHubs {
 
     private static void sendAndReceiveEvents(String partitionId) {
         LOGGER.info("Creating consumer... ");
-        EventHubConsumer consumer = client.createConsumer(
+        EventHubAsyncConsumer consumer = client.createConsumer(
             EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             partitionId,
             EventPosition.latest());
         LOGGER.info("\tDONE.");
 
         LOGGER.info("Creating producer... ");
-        EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+        EventHubAsyncProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
         LOGGER.info("\tDONE.");
 
         LOGGER.info("Sending Events... ");
