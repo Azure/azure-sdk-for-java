@@ -84,7 +84,7 @@ public final class InkRecognizerClientBuilder {
 
     /**
      * @param unit The physical unit used for the ink points. The points are assumed to be in pixels if the values
-     *             isn't specified.
+     * isn't specified.
      * @return The current InkRecognizerClientBuilder instance.
      */
     public InkRecognizerClientBuilder unit(InkPointUnit unit) {
@@ -94,7 +94,7 @@ public final class InkRecognizerClientBuilder {
 
     /**
      * @param multiple The multiple to apply to the unit if it has been scaled. The points are assumed to be in pixels
-     *                 if the values isn't specified.
+     * if the values isn't specified.
      * @return The current InkRecognizerClientBuilder instance.
      */
     public InkRecognizerClientBuilder unitMultiple(float multiple) {
@@ -123,6 +123,7 @@ public final class InkRecognizerClientBuilder {
     /**
      * Used to retrieve a new instance of the InkRecognizerClient class.
      * @return An InkRecognizerClient instance.
+     * @throws Exception
      */
     public InkRecognizerClient buildClient() throws Exception {
         validateFields();
@@ -142,6 +143,7 @@ public final class InkRecognizerClientBuilder {
     /**
      * Used to retrieve a new instance of the InkRecognizerAsyncClient class.
      * @return An InkRecognizerAsyncClient instance.
+     * @throws Exception
      */
     public InkRecognizerAsyncClient buildAsyncClient() throws Exception {
         validateFields();

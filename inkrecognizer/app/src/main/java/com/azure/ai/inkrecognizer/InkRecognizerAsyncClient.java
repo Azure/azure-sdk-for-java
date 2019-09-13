@@ -66,9 +66,9 @@ public final class InkRecognizerAsyncClient {
 
     /**
      * Synchronously sends data to the service and generates a tree structure containing the recognition results.
-     * @param strokes  The ink strokes to recognize.
+     * @param strokes The ink strokes to recognize.
      * @param language The IETF BCP 47 language code (for ex. en-US, en-GB, hi-IN etc.) for the strokes. This is only
-     *                 needed when the language is different from the default set when the client was instantiated.
+     * needed when the language is different from the default set when the client was instantiated.
      * @return An InkRecognitionResult containing status codes, error messages (if applicable) and the recognition results
      * in a hierarchy.
      */
@@ -88,12 +88,15 @@ public final class InkRecognizerAsyncClient {
 
     /**
      * Synchronously sends data to the service and generates a tree structure containing the recognition results.
-     * @param strokes  The ink strokes to recognize.
-     * @param unit     The physical unit for the points in the stroke.
+     * @param strokes The ink strokes to recognize.
+     * @param unit The physical unit for the points in the stroke.
      * @param multiple A multiplier applied to the unit value to indicate the true unit being used. This allows the
-     *                 caller to specify values in a fraction or multiple of a unit.
+     * caller to specify values in a fraction or multiple of a unit.
+     * @param applicationKind The domain of the application (Writing or Drawing. The default is "Mixed").
      * @param language The IETF BCP 47 language code (for ex. en-US, en-GB, hi-IN etc.) for the strokes. This is only
-     *                 needed when the language is different from the default set when the client was instantiated.
+     * needed when the language is different from the default set when the client was instantiated.
+     * @param displayMetrics A structure describing general information about the display, such as xdpi, ydpi, where the
+     * application using this SDK will run on.
      * @return A InkRecognitionResult containing status codes, error messages (if applicable) and the recognition results
      * in a hierarchy.
      */

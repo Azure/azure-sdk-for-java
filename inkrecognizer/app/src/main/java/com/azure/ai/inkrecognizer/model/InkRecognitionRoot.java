@@ -111,7 +111,7 @@ public class InkRecognitionRoot {
     /**
      * Retrieves all InkRecognitionUnit objects found (matching the kind specified) in the tree returned by the Ink Recognizer service.
      * @param category - parameter specifies the category of the model units to return. If the there are no units that
-     *                 match the requested category, an empty list is returned.
+     * match the requested category, an empty list is returned.
      * @return A collection of all the relevant InkRecognitionUnit objects.
      */
     public Iterable<InkRecognitionUnit> getRecognitionUnits(InkRecognitionUnitKind category) {

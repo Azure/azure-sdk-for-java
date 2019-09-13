@@ -4,10 +4,10 @@ The Ink Recognizer Cognitive Service provides a cloud-based REST API to analyze 
 
 With the Ink Recognizer SDK, you can easily connect to the Azure Ink Recognizer service and recognize handwritten content in your applications. Here are the features you can utilize:
 
-* Handwriting recognition - Recognize handwritten content in 63 languages and locales.
-* Layout recognition - Get structural information about the digital ink content. Break the content into writing regions, paragraphs, lines, words, bulleted lists. Your applications can then use the layout information to build additional features like automatic list formatting, and shape alignment.
-* Shape recognition - Recognize the most commonly used geometric shapes when taking notes.
-* Combined shapes and text recognition - Recognize which ink strokes belong to shapes or handwritten content, and separately classify them.
+* Handwriting recognition
+* Layout recognition
+* Shape recognition
+* Combined shapes and text recognition
 
 This SDK will:
 
