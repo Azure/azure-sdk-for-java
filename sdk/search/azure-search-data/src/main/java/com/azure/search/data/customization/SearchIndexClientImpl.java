@@ -41,7 +41,7 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
 
     @Override
     public <T> DocumentIndexResult uploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().upload(documents));
+        return this.index(new IndexBatchBuilder().upload(documents).build());
     }
 
     @Override
