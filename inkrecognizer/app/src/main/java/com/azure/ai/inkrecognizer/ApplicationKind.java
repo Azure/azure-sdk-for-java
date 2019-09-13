@@ -35,7 +35,7 @@ public enum ApplicationKind {
     private static final Map<String, ApplicationKind> map = new HashMap<>();
 
     static {
-        for(ApplicationKind applicationKind : ApplicationKind.values()) {
+        for (ApplicationKind applicationKind : ApplicationKind.values()) {
             map.put(applicationKind.toString(), applicationKind);
         }
     }
@@ -45,7 +45,7 @@ public enum ApplicationKind {
     }
 
     static ApplicationKind getApplicationKindOrDefault(String applicationKindString) {
-        if(map.containsKey(applicationKindString)) {
+        if (map.containsKey(applicationKindString)) {
             return map.get(applicationKindString);
         } else {
             return ApplicationKind.MIXED;

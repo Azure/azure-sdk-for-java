@@ -6,6 +6,7 @@ package com.azure.ai.inkrecognizer.model;
 import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +25,18 @@ public class WritingRegion extends InkRecognitionUnit {
             InkRecognitionRoot root,
             InkPointUnit inkPointUnit,
             DisplayMetrics displayMetrics
-    ) throws Exception { super(writingRegionNode, root, inkPointUnit, displayMetrics); }
+    ) throws Exception {
+        super(writingRegionNode, root, inkPointUnit, displayMetrics);
+    }
 
     /**
      * Retrieves the recognized text of one or more words in the region.
      * @return The recognized string.
      */
     public String recognizedText() {
-        if(recognizedText == null) {
+        if (recognizedText == null) {
             recognizedText = "";
-            for(InkRecognitionUnit child : children()) {
+            for (InkRecognitionUnit child : children()) {
                 recognizedText += ((Paragraph)child).recognizedText();
             }
             recognizedText += "\n";
@@ -47,8 +50,8 @@ public class WritingRegion extends InkRecognitionUnit {
      */
     public Iterable<Paragraph> paragraphs() {
         List<Paragraph> paragraphs = new ArrayList<>();
-        for(InkRecognitionUnit child : children()) {
-            if(child.kind().equals(InkRecognitionUnitKind.PARAGRAPH)) {
+        for (InkRecognitionUnit child : children()) {
+            if (child.kind().equals(InkRecognitionUnitKind.PARAGRAPH)) {
                 paragraphs.add((Paragraph)child);
             }
         }

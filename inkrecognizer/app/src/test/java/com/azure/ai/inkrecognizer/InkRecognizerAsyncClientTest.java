@@ -10,9 +10,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import static com.azure.ai.inkrecognizer.TestUtils.*;
 
 public class InkRecognizerAsyncClientTest {
@@ -125,8 +127,8 @@ public class InkRecognizerAsyncClientTest {
 
         List<Thread> threads = new ArrayList<>();
         int THREAD_COUNT = 30;
-        for(int i=0; i<THREAD_COUNT; i++){
-            threads.add(new Thread("" + i){
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            threads.add(new Thread("" + i) {
                 public void run() {
                     try {
                         int fileIndex = new Random().nextInt(TestUtils.FILES.length);
@@ -138,7 +140,7 @@ public class InkRecognizerAsyncClientTest {
                             Assert.assertNotEquals(r.root, null);
                         });
                         response.block();
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         Thread t = Thread.currentThread();
                         t.getUncaughtExceptionHandler().uncaughtException(t, e);
                     }
@@ -146,11 +148,11 @@ public class InkRecognizerAsyncClientTest {
             });
         }
 
-        for(int i=0; i<THREAD_COUNT; i++){
+        for (int i = 0; i < THREAD_COUNT; i++) {
             threads.get(i).start();
         }
 
-        for(int i=0; i<THREAD_COUNT; i++){
+        for (int i = 0; i < THREAD_COUNT; i++) {
             threads.get(i).join();
         }
 

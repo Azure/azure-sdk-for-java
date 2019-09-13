@@ -6,6 +6,7 @@ package com.azure.ai.inkrecognizer.model;
 import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class InkRecognitionUnit {
             }
 
             // Parse the boundingBox coordinates
-            if(jsonNode.has("boundingRectangle")) {
+            if (jsonNode.has("boundingRectangle")) {
                 JsonNode jsonBoundingBox = jsonNode.get("boundingRectangle");
                 boundingBox = new Rectangle(Utils.translatePoints(jsonBoundingBox.get("topX").asDouble(), inkPointUnit, displayMetrics),
                         Utils.translatePoints(jsonBoundingBox.get("topY").asDouble(), inkPointUnit, displayMetrics),
@@ -63,9 +64,9 @@ public class InkRecognitionUnit {
             }
 
             // Parse the rotatedBoundingBox coordinates
-            if(jsonNode.has("rotatedBoundingRectangle")) {
+            if (jsonNode.has("rotatedBoundingRectangle")) {
                 JsonNode jsonRotatedBoundingBox = jsonNode.get("rotatedBoundingRectangle");
-                for(final JsonNode coordinate : jsonRotatedBoundingBox) {
+                for (final JsonNode coordinate : jsonRotatedBoundingBox) {
                     rotatedBoundingBox.add(
                             new Point(
                                     Utils.translatePoints(coordinate.get("x").asDouble(), inkPointUnit, displayMetrics),
@@ -75,8 +76,7 @@ public class InkRecognitionUnit {
                 }
             }
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new Exception("Error while parsing server response");
         }
 
@@ -105,7 +105,9 @@ public class InkRecognitionUnit {
      * always return an empty list.
      * @return The children of the model unit
      */
-    public Iterable<InkRecognitionUnit> children() { return root.recognitionUnitsByIds(childIds); }
+    public Iterable<InkRecognitionUnit> children() {
+        return root.recognitionUnitsByIds(childIds);
+    }
 
     /**
      * The parent of a model unit is the unit containing current unit.
@@ -113,7 +115,9 @@ public class InkRecognitionUnit {
      * is the parent of the words. A top level model unit will return null as the parent.
      * @return The parent of the model unit
      */
-    public InkRecognitionUnit parent() { return root.recognitionUnitById(parentId); }
+    public InkRecognitionUnit parent() {
+        return root.recognitionUnitById(parentId);
+    }
 
     /**
      * The bounding box is the rectangular area that contains all the strokes in a model unit.
@@ -144,11 +148,11 @@ public class InkRecognitionUnit {
 
         List<Long> result = new ArrayList<>();
 
-        if(jsonArray == null || !jsonArray.isArray()) {
+        if (jsonArray == null || !jsonArray.isArray()) {
             throw new Exception("Error while parsing array");
         }
 
-        for(final JsonNode jsonElement : jsonArray) {
+        for (final JsonNode jsonElement : jsonArray) {
             result.add(jsonElement.asLong());
         }
 

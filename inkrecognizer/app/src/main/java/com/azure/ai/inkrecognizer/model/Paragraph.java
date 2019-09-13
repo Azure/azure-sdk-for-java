@@ -34,10 +34,10 @@ public class Paragraph extends InkRecognitionUnit {
      * @return The recognized string.
      */
     public String recognizedText() {
-        if(recognizedText == null) {
+        if (recognizedText == null) {
             recognizedText = "";
-            for(InkRecognitionUnit child : children()) {
-                if(child.kind().equals(InkRecognitionUnitKind.LINE)) {
+            for (InkRecognitionUnit child : children()) {
+                if (child.kind().equals(InkRecognitionUnitKind.LINE)) {
                     recognizedText += ((Line)child).recognizedText() + "\n";
                 } else {
                     recognizedText += ((InkList)child).recognizedText() + "\n";
@@ -53,8 +53,8 @@ public class Paragraph extends InkRecognitionUnit {
      */
     public Iterable<Line> lines() {
         List<Line> lines = new ArrayList<>();
-        for(InkRecognitionUnit child : children()) {
-            if(child.kind().equals(InkRecognitionUnitKind.LINE)) {
+        for (InkRecognitionUnit child : children()) {
+            if (child.kind().equals(InkRecognitionUnitKind.LINE)) {
                 lines.add((Line)child);
             }
         }

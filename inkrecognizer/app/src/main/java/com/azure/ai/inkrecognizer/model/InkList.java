@@ -33,9 +33,9 @@ public class InkList extends InkRecognitionUnit {
      * @return The recognized text of all the lines under the list
      */
     public String recognizedText() {
-        if(recognizedText == null) {
+        if (recognizedText == null) {
             recognizedText = "";
-            for(InkRecognitionUnit child : children()) {
+            for (InkRecognitionUnit child : children()) {
                 recognizedText += ((Line)child).recognizedText();
                 return recognizedText;
             }

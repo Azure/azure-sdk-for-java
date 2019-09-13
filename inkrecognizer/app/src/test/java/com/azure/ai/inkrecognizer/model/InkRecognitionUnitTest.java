@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Iterator;
 
 import static com.azure.ai.inkrecognizer.model.TestUtils.*;
@@ -19,13 +20,13 @@ public class InkRecognitionUnitTest {
 
     private InkRecognitionUnit unit;
     private ObjectNode jsonUnit;
-    private final Rectangle boundingRectangle = new Rectangle(138.369995,17.980000,37.570000,28.090000);
+    private final Rectangle boundingRectangle = new Rectangle(138.369995, 17.980000, 37.570000, 28.090000);
     private final String category = "root";
     private final long[] children = new long[]{1, 2};
     private final String classString = "container";
     private final int id = 0;
     private final int parent = -1;
-    private final float[][] rotatedBoundingRectangle = new float[][]{{138.289993f, 18.010000f}, {175.710007f, 17.709999f}, {175.940002f, 45.840000f}, {138.520004f,46.139999f}};
+    private final float[][] rotatedBoundingRectangle = new float[][]{{138.289993f, 18.010000f}, {175.710007f, 17.709999f}, {175.940002f, 45.840000f}, {138.520004f, 46.139999f}};
     private final long[] strokes = new long[]{200, 201, 197, 198, 199, 202, 212, 215, 218};
     private DisplayMetrics displayMetrics;
 
@@ -73,7 +74,7 @@ public class InkRecognitionUnitTest {
         unit = new InkRecognitionUnit(jsonUnit, null, InkPointUnit.MM, displayMetrics);
         Iterator<Long> actualStrokesIterator = unit.strokeIds().iterator();
         int i;
-        for (i=0 ; i<strokes.length && actualStrokesIterator.hasNext(); i++) {
+        for (i = 0; i < strokes.length && actualStrokesIterator.hasNext(); i++) {
             Assert.assertEquals(strokes[i], actualStrokesIterator.next().longValue());
         }
         Assert.assertFalse(actualStrokesIterator.hasNext());
@@ -120,7 +121,7 @@ public class InkRecognitionUnitTest {
         unit = new InkRecognitionUnit(jsonUnit, null, InkPointUnit.MM, displayMetrics);
         Iterator<Point> actualRotatedBoundingBoxIterator = unit.rotatedBoundingBox().iterator();
         int expectedRotatedBoundingBoxIndex;
-        for(expectedRotatedBoundingBoxIndex = 0; actualRotatedBoundingBoxIterator.hasNext(); expectedRotatedBoundingBoxIndex++) {
+        for (expectedRotatedBoundingBoxIndex = 0; actualRotatedBoundingBoxIterator.hasNext(); expectedRotatedBoundingBoxIndex++) {
             Point actualRotatedBoundingBox = actualRotatedBoundingBoxIterator.next();
             Assert.assertEquals(rotatedBoundingRectangle[expectedRotatedBoundingBoxIndex][0], actualRotatedBoundingBox.x(), TestUtils.TOLERANCE);
             Assert.assertEquals(rotatedBoundingRectangle[expectedRotatedBoundingBoxIndex][1], actualRotatedBoundingBox.y(), TestUtils.TOLERANCE);

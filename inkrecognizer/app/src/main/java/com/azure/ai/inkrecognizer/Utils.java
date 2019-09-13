@@ -14,7 +14,9 @@ class Utils {
 
     private static final float INCH_TO_MM = 25.4f;
 
-    static <T> T getValueOrDefault(T value, T defaultValue) { return value == null ? defaultValue : value; }
+    static <T> T getValueOrDefault(T value, T defaultValue) {
+        return value == null ? defaultValue : value;
+    }
 
     static String createJSONForRequest(
             Iterable<InkStroke> strokes,
@@ -32,8 +34,7 @@ class Utils {
                         && unit != null
                         && language != null
                         && applicationKind != null
-        )
-        {
+        ) {
 
             JsonNodeFactory factory = JsonNodeFactory.instance;
             ObjectNode jsonAnalysisRequest = factory.objectNode();
@@ -42,7 +43,7 @@ class Utils {
 
             while (strokesIterator.hasNext()) {
 
-                InkStroke stroke = (InkStroke) strokesIterator.next();
+                InkStroke stroke = (InkStroke)strokesIterator.next();
                 ObjectNode jsonStroke = factory.objectNode();
 
                 jsonStroke.put("id", stroke.getId());
@@ -60,10 +61,10 @@ class Utils {
 
                 while (pointsIterator.hasNext()) {
                     InkPoint inkPoint;
-                    if(unit.equals(InkPointUnit.PIXEL)) {
-                        inkPoint = convertFromPixelToMM((InkPoint) pointsIterator.next(), displayMetrics);
+                    if (unit.equals(InkPointUnit.PIXEL)) {
+                        inkPoint = convertFromPixelToMM((InkPoint)pointsIterator.next(), displayMetrics);
                     } else {
-                        inkPoint = (InkPoint) pointsIterator.next();
+                        inkPoint = (InkPoint)pointsIterator.next();
                     }
 
                     jsonPoints.add(
@@ -72,7 +73,7 @@ class Utils {
                                     .put("y", inkPoint.getY())
                     );
                 }
-                if(unit.equals(InkPointUnit.PIXEL)) {
+                if (unit.equals(InkPointUnit.PIXEL)) {
                     unit = InkPointUnit.MM;
                 }
 

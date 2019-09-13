@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Iterator;
 
 import static com.azure.ai.inkrecognizer.model.TestUtils.*;
@@ -20,12 +21,12 @@ public class InkDrawingTest {
 
     private InkDrawing inkDrawing;
     private ObjectNode jsonInkDrawing;
-    private final Rectangle boundingRectangle = new Rectangle(138.369995,17.980000,37.570000,28.090000);
+    private final Rectangle boundingRectangle = new Rectangle(138.369995, 17.980000, 37.570000, 28.090000);
     private final String category = "inkDrawing";
     private final String classString = "leaf";
     private final int id = 10;
     private final int parentId = 8;
-    private final float[][] rotatedBoundingRectangle = new float[][]{{138.289993f, 18.010000f}, {175.710007f, 17.709999f}, {175.940002f, 45.840000f}, {138.520004f,46.139999f}};
+    private final float[][] rotatedBoundingRectangle = new float[][]{{138.289993f, 18.010000f}, {175.710007f, 17.709999f}, {175.940002f, 45.840000f}, {138.520004f, 46.139999f}};
     private final long[] strokes = new long[]{201, 202};
     private final Point center = new Point(291.08999633789063, 131.6300048828125);
     private final float confidence = 1f;
@@ -105,7 +106,7 @@ public class InkDrawingTest {
     }
 
     @Test
-    public void recognizedShapeTest() throws Exception{
+    public void recognizedShapeTest() throws Exception {
 
         inkDrawing = new InkDrawing(jsonInkDrawing, null, InkPointUnit.MM, displayMetrics);
         // Check if the Shape methods are working as expected
@@ -115,7 +116,7 @@ public class InkDrawingTest {
     }
 
     @Test
-    public void recognizedShapeMissingTest() throws Exception{
+    public void recognizedShapeMissingTest() throws Exception {
 
         jsonInkDrawing.remove(RECOGNIZED_OBJECT);
         inkDrawing = new InkDrawing(jsonInkDrawing, null, InkPointUnit.MM, displayMetrics);
@@ -146,7 +147,7 @@ public class InkDrawingTest {
         inkDrawing = new InkDrawing(jsonInkDrawing, null, InkPointUnit.MM, displayMetrics);
         Iterator<Point> actualPointsIterator = inkDrawing.points().iterator();
         int i;
-        for (i=0 ; i<points.length && actualPointsIterator.hasNext(); i++) {
+        for (i = 0; i < points.length && actualPointsIterator.hasNext(); i++) {
             Point point = actualPointsIterator.next();
             Assert.assertEquals(points[i][0], point.x(), TOLERANCE);
             Assert.assertEquals(points[i][1], point.y(), TOLERANCE);
@@ -184,7 +185,7 @@ public class InkDrawingTest {
 
         Iterator<Point> actualAlternatePointsIterator = actualAlternate.points().iterator();
         int i;
-        for (i=0 ; i<alternate.alternatePoints.length && actualAlternatePointsIterator.hasNext(); i++) {
+        for (i = 0; i < alternate.alternatePoints.length && actualAlternatePointsIterator.hasNext(); i++) {
             Point point = actualAlternatePointsIterator.next();
             Assert.assertEquals(alternate.alternatePoints[i][0], point.x(), TOLERANCE);
             Assert.assertEquals(alternate.alternatePoints[i][1], point.y(), TOLERANCE);
@@ -277,8 +278,7 @@ public class InkDrawingTest {
                 float alternateRotationAngle,
                 float[][] alternatePoints,
                 String alternateRecognizedString
-        )
-        {
+        ) {
             this.alternateCategory = alternateCategory;
             this.alternateConfidence = alternateConfidence;
             this.alternateRotationAngle = alternateRotationAngle;

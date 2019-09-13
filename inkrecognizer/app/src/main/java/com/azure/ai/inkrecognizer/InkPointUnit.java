@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The InkPointUnit is used to specified the physical units of the ink points. If a value isn't specified,
+ * The InkPointUnit is used to specify the physical units of the ink points. If a value isn't specified,
  * it is assumed that the points are in pixels
  * @author Microsoft
  * @version 1.0
@@ -37,7 +37,7 @@ public enum InkPointUnit {
     private static final Map<String, InkPointUnit> map = new HashMap<>();
 
     static {
-        for(InkPointUnit inkPointUnit : InkPointUnit.values()) {
+        for (InkPointUnit inkPointUnit : InkPointUnit.values()) {
             map.put(inkPointUnit.toString(), inkPointUnit);
         }
     }
@@ -47,7 +47,7 @@ public enum InkPointUnit {
     }
 
     static InkPointUnit getInkPointUnitOrDefault(String inkPointUnitString) {
-        if(map.containsKey(inkPointUnitString)) {
+        if (map.containsKey(inkPointUnitString)) {
             return map.get(inkPointUnitString);
         } else {
             return InkPointUnit.PIXEL;

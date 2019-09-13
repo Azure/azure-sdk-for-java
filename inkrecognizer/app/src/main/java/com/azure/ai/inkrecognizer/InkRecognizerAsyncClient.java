@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The InkRecognizerAsyncClient communicates with the service using default configuration settings
- * or settings provided by the caller. Communication with the service is done in an asynchronous manner.
+ * or settings provided by the caller. Service results are returned asynchronously.
  * @author Microsoft
  * @version 1.0
  */
@@ -46,10 +46,9 @@ public final class InkRecognizerAsyncClient {
     }
 
     /**
-     * Synchronously sends data to the service and generates a tree structure containing the model results.
-     *
+     * Synchronously sends data to the service and generates a tree structure containing the recognition results.
      * @param strokes The ink strokes to recognize.
-     * @return An InkRecognitionResult containing status codes, error messages (if applicable ) and the model results
+     * @return An InkRecognitionResult containing status codes, error messages (if applicable) and the recognition results
      * in a hierarchy.
      */
     public Mono<Response<InkRecognitionRoot>> recognizeInk(
@@ -66,12 +65,11 @@ public final class InkRecognizerAsyncClient {
     }
 
     /**
-     * Synchronously sends data to the service and generates a tree structure containing the model results.
-     *
+     * Synchronously sends data to the service and generates a tree structure containing the recognition results.
      * @param strokes  The ink strokes to recognize.
      * @param language The IETF BCP 47 language code (for ex. en-US, en-GB, hi-IN etc.) for the strokes. This is only
      *                 needed when the language is different from the default set when the client was instantiated.
-     * @return An InkRecognitionResult containing status codes, error messages (if applicable ) and the model results
+     * @return An InkRecognitionResult containing status codes, error messages (if applicable) and the recognition results
      * in a hierarchy.
      */
     public Mono<Response<InkRecognitionRoot>> recognizeInk(
@@ -89,15 +87,14 @@ public final class InkRecognizerAsyncClient {
     }
 
     /**
-     * Synchronously sends data to the service and generates a tree structure containing the model results.
-     *
+     * Synchronously sends data to the service and generates a tree structure containing the recognition results.
      * @param strokes  The ink strokes to recognize.
      * @param unit     The physical unit for the points in the stroke.
      * @param multiple A multiplier applied to the unit value to indicate the true unit being used. This allows the
      *                 caller to specify values in a fraction or multiple of a unit.
      * @param language The IETF BCP 47 language code (for ex. en-US, en-GB, hi-IN etc.) for the strokes. This is only
      *                 needed when the language is different from the default set when the client was instantiated.
-     * @return A InkRecognitionResult containing status codes, error messages (if applicable ) and the model results
+     * @return A InkRecognitionResult containing status codes, error messages (if applicable) and the recognition results
      * in a hierarchy.
      */
     public Mono<Response<InkRecognitionRoot>> recognizeInk(
@@ -140,11 +137,11 @@ public final class InkRecognizerAsyncClient {
                 .build();
         request = credentials.SetRequestCredentials(request);
 
-        for(int retryAttempt = 0; retryAttempt < retryCount; ++retryAttempt) {
+        for (int retryAttempt = 0; retryAttempt < retryCount; ++retryAttempt) {
             try (okhttp3.Response response = client.newCall(request).execute()) {
                 if (response.code() != 200) {
                     // If last attempt failed, return the error
-                    if(retryAttempt == retryCount - 1) {
+                    if (retryAttempt == retryCount - 1) {
                         throw new Exception("Request unsuccessful: " + response);
                         // Else try again
                     } else {
@@ -156,7 +153,7 @@ public final class InkRecognizerAsyncClient {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonResponse = objectMapper.readValue(responseString, JsonNode.class);
                 return new Response<>(response.code(), responseString, new InkRecognitionRoot(jsonResponse.get("recognitionUnits"), unit, displayMetrics));
-            } catch(Exception e) {
+            } catch (Exception e) {
             }
         }
 

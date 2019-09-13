@@ -23,7 +23,8 @@ public final class InkRecognizerClientBuilder {
     private ServiceVersion serviceVersion;
     private DisplayMetrics displayMetrics;
 
-    public InkRecognizerClientBuilder() {}
+    public InkRecognizerClientBuilder() {
+    }
 
     /**
      * Used to set the application key for communicating with the service
@@ -93,7 +94,7 @@ public final class InkRecognizerClientBuilder {
 
     /**
      * @param multiple The multiple to apply to the unit if it has been scaled. The points are assumed to be in pixels
-     *               if the values isn't specified.
+     *                 if the values isn't specified.
      * @return The current InkRecognizerClientBuilder instance.
      */
     public InkRecognizerClientBuilder unitMultiple(float multiple) {
@@ -126,16 +127,16 @@ public final class InkRecognizerClientBuilder {
     public InkRecognizerClient buildClient() throws Exception {
         validateFields();
         return new InkRecognizerClient(endpoint, credentials)
-            .setCredentials(credentials)
-            .setEndpoint(endpoint)
-            .setRetryCount(retryCount)
-            .setRetryTimeout(retryTimeout)
-            .setApplicationKind(applicationKind)
-            .setLanguage(language)
-            .setUnit(unit)
-            .setUnitMultiple(unitMultiple)
-            .setServiceVersion(serviceVersion)
-            .setDisplayMetrics(displayMetrics);
+                .setCredentials(credentials)
+                .setEndpoint(endpoint)
+                .setRetryCount(retryCount)
+                .setRetryTimeout(retryTimeout)
+                .setApplicationKind(applicationKind)
+                .setLanguage(language)
+                .setUnit(unit)
+                .setUnitMultiple(unitMultiple)
+                .setServiceVersion(serviceVersion)
+                .setDisplayMetrics(displayMetrics);
     }
 
     /**
@@ -158,7 +159,7 @@ public final class InkRecognizerClientBuilder {
     }
 
     private void validateFields() throws Exception {
-        if(credentials == null || endpoint == null || displayMetrics == null) {
+        if (credentials == null || endpoint == null || displayMetrics == null) {
             throw new Exception("Required fields not set in the request");
         }
     }

@@ -8,7 +8,8 @@ public class InkPointImplementor implements InkPoint {
     private float x;
     private float y;
 
-    InkPointImplementor() {}
+    InkPointImplementor() {
+    }
 
     InkPointImplementor setX(double x) {
         this.x = (float)x;
@@ -20,8 +21,12 @@ public class InkPointImplementor implements InkPoint {
         return this;
     }
 
-    public float getX() { return x; }
+    public float getX() {
+        return x;
+    }
 
-    public float getY() {  return y; }
+    public float getY() {
+        return y;
+    }
 
 }

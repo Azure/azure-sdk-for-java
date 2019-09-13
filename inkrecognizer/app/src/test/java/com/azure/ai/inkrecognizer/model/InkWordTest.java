@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Iterator;
 
 import static com.azure.ai.inkrecognizer.model.TestUtils.*;
@@ -20,16 +21,16 @@ public class InkWordTest {
 
     private InkWord inkWord;
     private ObjectNode jsonInkWord;
-    private final Rectangle boundingRectangle = new Rectangle(138.369995,17.980000,37.570000,28.090000);
+    private final Rectangle boundingRectangle = new Rectangle(138.369995, 17.980000, 37.570000, 28.090000);
     private final String category = "inkWord";
     private final String children = "none";
     private final String classString = "leaf";
     private final int id = 10;
     private final int parent = 8;
     private final String recognizedText = "12";
-    private final float[][] rotatedBoundingRectangle = new float[][]{{138.289993f, 18.010000f}, {175.710007f, 17.709999f}, {175.940002f, 45.840000f}, {138.520004f,46.139999f}};
+    private final float[][] rotatedBoundingRectangle = new float[][]{{138.289993f, 18.010000f}, {175.710007f, 17.709999f}, {175.940002f, 45.840000f}, {138.520004f, 46.139999f}};
     private final long[] strokes = new long[]{201, 202};
-    private final String[] alternateRecognizedString = { ", 2", "I 2", "l 2", ". 2", "1 2", "| 2", "I 2", ", .", "l ." };
+    private final String[] alternateRecognizedString = {", 2", "I 2", "l 2", ". 2", "1 2", "| 2", "I 2", ", .", "l ."};
     private DisplayMetrics displayMetrics;
 
     @Before
@@ -78,7 +79,7 @@ public class InkWordTest {
         inkWord = new InkWord(jsonInkWord, null, InkPointUnit.MM, displayMetrics);
         Iterator<String> actualAlternatesIterator = inkWord.alternates().iterator();
         int i;
-        for (i=0 ; i<alternateRecognizedString.length && actualAlternatesIterator.hasNext(); i++) {
+        for (i = 0; i < alternateRecognizedString.length && actualAlternatesIterator.hasNext(); i++) {
             Assert.assertEquals(alternateRecognizedString[i], actualAlternatesIterator.next());
         }
         Assert.assertFalse(actualAlternatesIterator.hasNext());

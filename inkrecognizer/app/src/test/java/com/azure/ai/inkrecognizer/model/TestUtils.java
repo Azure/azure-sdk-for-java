@@ -44,14 +44,14 @@ class TestUtils {
 
     static ObjectNode addBoundingRectangle(Rectangle boundingRectangle) {
         return factory.objectNode().put("topX", boundingRectangle.x())
-                        .put("topY", boundingRectangle.y())
-                        .put("width", boundingRectangle.width())
-                        .put("height", boundingRectangle.height());
+                .put("topY", boundingRectangle.y())
+                .put("width", boundingRectangle.width())
+                .put("height", boundingRectangle.height());
     }
 
     static ArrayNode addIds(long[] ids) {
         ArrayNode jsonIds = factory.arrayNode();
-        for(long id : ids) {
+        for (long id : ids) {
             jsonIds.add(id);
         }
         return jsonIds;
@@ -59,16 +59,16 @@ class TestUtils {
 
     static ArrayNode addWritingAlternates(String[] alternates, String category) {
         ArrayNode jsonAlternates = factory.arrayNode();
-        for(String alternate : alternates) {
+        for (String alternate : alternates) {
             jsonAlternates.add(factory.objectNode().put("category", category)
-                .put("recognizedString", alternate));
+                    .put("recognizedString", alternate));
         }
         return jsonAlternates;
     }
 
     static ObjectNode addCenter(Point center) {
         return factory.objectNode().put("x", center.x())
-                        .put("y", center.y());
+                .put("y", center.y());
     }
 
     static ArrayNode addPointsArray(float[][] points) {
@@ -82,10 +82,10 @@ class TestUtils {
     static ArrayNode addAlternate(InkDrawingTest.Alternate alternate) {
         ArrayNode jsonAlternates = factory.arrayNode();
         ObjectNode jsonAlternate = factory.objectNode()
-            .put("category", alternate.alternateCategory)
-            .put("confidence", alternate.alternateConfidence)
-            .put("rotationAngle", alternate.alternateRotationAngle)
-            .put("recognizedString", alternate.alternateRecognizedString);
+                .put("category", alternate.alternateCategory)
+                .put("confidence", alternate.alternateConfidence)
+                .put("rotationAngle", alternate.alternateRotationAngle)
+                .put("recognizedString", alternate.alternateRecognizedString);
         jsonAlternate.set("points", TestUtils.addPointsArray(alternate.alternatePoints));
         jsonAlternates.add(jsonAlternate);
         return jsonAlternates;

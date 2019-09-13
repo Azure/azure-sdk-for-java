@@ -17,7 +17,7 @@ public enum ServiceVersion {
     private static final Map<String, ServiceVersion> map = new HashMap<>();
 
     static {
-        for(ServiceVersion serviceVersion : ServiceVersion.values()) {
+        for (ServiceVersion serviceVersion : ServiceVersion.values()) {
             map.put(serviceVersion.toString(), serviceVersion);
         }
     }
@@ -27,7 +27,7 @@ public enum ServiceVersion {
     }
 
     static ServiceVersion getServiceVersionOrDefault(String serviceVersionString) {
-        if(map.containsKey(serviceVersionString)) {
+        if (map.containsKey(serviceVersionString)) {
             return map.get(serviceVersionString);
         } else {
             return PREVIEW_1_0_0;

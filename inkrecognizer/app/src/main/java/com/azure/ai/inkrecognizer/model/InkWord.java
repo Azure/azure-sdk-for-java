@@ -6,6 +6,7 @@ package com.azure.ai.inkrecognizer.model;
 import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +36,12 @@ public class InkWord extends InkRecognitionUnit {
             // Parse the alternates
             if (wordNode.has("alternates")) {
                 JsonNode jsonAlternates = wordNode.get("alternates");
-                for(JsonNode jsonAlternate : jsonAlternates) {
+                for (JsonNode jsonAlternate : jsonAlternates) {
                     alternates.add(jsonAlternate.get("recognizedString").asText());
                 }
 
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new Exception("Error while parsing server response");
         }
 

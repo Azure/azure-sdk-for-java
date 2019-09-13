@@ -5,6 +5,7 @@ package com.azure.ai.inkrecognizer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -36,19 +37,19 @@ class TestUtils {
 
             InkStrokeImplementor inkStrokeImplementor = new InkStrokeImplementor();
 
-            if(jsonStroke.has("points")) {
+            if (jsonStroke.has("points")) {
                 inkStrokeImplementor.setInkPoints(loadPoints(jsonStroke.get("points")));
             }
 
-            if(jsonStroke.has("kind")) {
+            if (jsonStroke.has("kind")) {
                 inkStrokeImplementor.setInkStrokeKind(jsonStroke.get("kind").asText());
             }
 
-            if(jsonStroke.has("id")) {
+            if (jsonStroke.has("id")) {
                 inkStrokeImplementor.setId(jsonStroke.get("id").asLong());
             }
 
-            if(jsonStroke.has("language")) {
+            if (jsonStroke.has("language")) {
                 inkStrokeImplementor.setLanguage(jsonStroke.get("language").asText());
             }
 
@@ -64,7 +65,7 @@ class TestUtils {
         List<InkPoint> inkPoints = new ArrayList<>();
 
         // Process array
-        if(jsonPoints.isArray()) {
+        if (jsonPoints.isArray()) {
             for (JsonNode jsonPoint : jsonPoints) {
                 inkPoints.add(new InkPointImplementor().setX(jsonPoint.get("x").asDouble())
                         .setY(jsonPoint.get("y").asDouble()));
@@ -73,15 +74,14 @@ class TestUtils {
         // or process string
         else {
             StringTokenizer st = new StringTokenizer(jsonPoints.asText(), ",");
-            while(st.hasMoreTokens()) {
+            while (st.hasMoreTokens()) {
                 inkPoints.add(new InkPointImplementor().setX(Float.parseFloat(st.nextToken()))
-                    .setY(Float.parseFloat(st.nextToken())));
+                        .setY(Float.parseFloat(st.nextToken())));
             }
         }
 
         return inkPoints;
     }
-
 
 
 }

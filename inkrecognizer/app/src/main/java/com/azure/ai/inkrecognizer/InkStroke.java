@@ -14,28 +14,28 @@ package com.azure.ai.inkrecognizer;
  */
 public interface InkStroke {
 
-     /**
-      * Retrieves the points contained in the strokes.
-      * @return A list of points in the stroke.
-      */
-     Iterable<InkPoint> getInkPoints();
+    /**
+     * Retrieves the points contained in the strokes.
+     * @return A list of points in the stroke.
+     */
+    Iterable<InkPoint> getInkPoints();
 
-     /**
-      * Retrieves the InkStrokeKind. The default is InkStrokeKind.UNKNOWN.
-      * @return The StrokeKind that was assigned to the stroke.
-      */
-     InkStrokeKind getKind();
+    /**
+     * Retrieves the InkStrokeKind. The default is InkStrokeKind.UNKNOWN.
+     * @return The StrokeKind that was assigned to the stroke.
+     */
+    InkStrokeKind getKind();
 
-     /**
-      * Retrieves the unique identifier for the stroke. This is required to ensure that there's no ambiguity when processing the strokes.
-      * @return The unique identifier for the stroke.
-      */
-     long getId();
+    /**
+     * Retrieves the unique identifier for the stroke. This is required to ensure that there's no ambiguity when processing the strokes.
+     * @return The unique identifier for the stroke.
+     */
+    long getId();
 
-     /**
-      * The language assigned to the stroke. If the language returns an empty string, The language set on the InkRecognizerClient object is used.
-      * @return The language to use for ink model.
-      */
-     String getLanguage();
+    /**
+     * The language assigned to the stroke. If the language returns an empty string, The language set on the InkRecognizerClient object is used.
+     * @return The language to use for ink model.
+     */
+    String getLanguage();
 
 }

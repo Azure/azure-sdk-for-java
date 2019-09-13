@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +38,9 @@ public class InkDrawing extends InkRecognitionUnit {
         try {
 
             center = drawingNode.has("center") ? populateCenter(drawingNode.get("center"), inkPointUnit, displayMetrics) : new Point();
-            confidence = drawingNode.has("confidence") ? (float) drawingNode.get("confidence").asDouble() : 1.0f;
+            confidence = drawingNode.has("confidence") ? (float)drawingNode.get("confidence").asDouble() : 1.0f;
             shape = Shape.getShapeOrDefault(drawingNode.has("recognizedObject") ? drawingNode.get("recognizedObject").asText() : null);
-            rotationAngle = drawingNode.has("rotationAngle") ? (float) drawingNode.get("rotationAngle").asDouble() : 0.0f;
+            rotationAngle = drawingNode.has("rotationAngle") ? (float)drawingNode.get("rotationAngle").asDouble() : 0.0f;
             populatePoints(drawingNode.get("points"), inkPointUnit, displayMetrics);
 
             // Parse the alternates
@@ -54,25 +55,25 @@ public class InkDrawing extends InkRecognitionUnit {
                         JsonNode alternateDrawing = drawingNode.deepCopy();
 
                         if (alternate.has("confidence")) {
-                            ((ObjectNode) alternateDrawing).put("confidence", alternate.get("confidence").asDouble());
+                            ((ObjectNode)alternateDrawing).put("confidence", alternate.get("confidence").asDouble());
                         } else {
-                            ((ObjectNode) alternateDrawing).remove("confidence");
+                            ((ObjectNode)alternateDrawing).remove("confidence");
                         }
 
                         if (alternate.has("rotationAngle")) {
-                            ((ObjectNode) alternateDrawing).put("rotationAngle", alternate.get("rotationAngle").asDouble());
+                            ((ObjectNode)alternateDrawing).put("rotationAngle", alternate.get("rotationAngle").asDouble());
                         } else {
-                            ((ObjectNode) alternateDrawing).remove("rotationAngle");
+                            ((ObjectNode)alternateDrawing).remove("rotationAngle");
                         }
 
                         if (alternate.has("points")) {
-                            ((ObjectNode) alternateDrawing).set("points", alternate.get("points"));
+                            ((ObjectNode)alternateDrawing).set("points", alternate.get("points"));
                         } else {
-                            ((ObjectNode) alternateDrawing).remove("points");
+                            ((ObjectNode)alternateDrawing).remove("points");
                         }
 
-                        ((ObjectNode) alternateDrawing).put("recognizedObject", alternate.get("recognizedString").asText());
-                        ((ObjectNode) alternateDrawing).remove("alternates");
+                        ((ObjectNode)alternateDrawing).put("recognizedObject", alternate.get("recognizedString").asText());
+                        ((ObjectNode)alternateDrawing).remove("alternates");
 
                         this.alternates.add(new InkDrawing(alternateDrawing, root, inkPointUnit, displayMetrics));
 
@@ -82,8 +83,7 @@ public class InkDrawing extends InkRecognitionUnit {
 
             }
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new Exception("Error while parsing server response");
         }
 
@@ -148,7 +148,7 @@ public class InkDrawing extends InkRecognitionUnit {
     }
 
     private void populatePoints(JsonNode jsonPoints, InkPointUnit inkPointUnit, DisplayMetrics displayMetrics) {
-        if(jsonPoints != null) {
+        if (jsonPoints != null) {
             for (JsonNode jsonPoint : jsonPoints) {
                 points.add(
                         new Point(

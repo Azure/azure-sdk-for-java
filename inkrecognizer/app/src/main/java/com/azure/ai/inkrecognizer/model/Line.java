@@ -6,6 +6,7 @@ package com.azure.ai.inkrecognizer.model;
 import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +34,13 @@ public class Line extends InkRecognitionUnit {
 
         try {
             // Parse the alternates
-            if(lineNode.has("alternates")) {
+            if (lineNode.has("alternates")) {
                 JsonNode jsonAlternates = lineNode.get("alternates");
-                for(JsonNode jsonAlternate : jsonAlternates) {
+                for (JsonNode jsonAlternate : jsonAlternates) {
                     alternates.add(jsonAlternate.get("recognizedString").asText());
                 }
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new Exception("Error while parsing server response");
         }
 
@@ -68,8 +68,8 @@ public class Line extends InkRecognitionUnit {
      * @return The bullet on the line if one is present.
      */
     public InkBullet bullet() {
-        for(InkRecognitionUnit child : children()) {
-            if(child.kind().equals(InkRecognitionUnitKind.INK_BULLET)) {
+        for (InkRecognitionUnit child : children()) {
+            if (child.kind().equals(InkRecognitionUnitKind.INK_BULLET)) {
                 return (InkBullet)child;
             }
         }
@@ -82,8 +82,8 @@ public class Line extends InkRecognitionUnit {
      */
     public Iterable<InkWord> words() {
         List<InkWord> inkWords = new ArrayList<>();
-        for(InkRecognitionUnit child : children()) {
-            if(child.kind().equals(InkRecognitionUnitKind.INK_WORD)) {
+        for (InkRecognitionUnit child : children()) {
+            if (child.kind().equals(InkRecognitionUnitKind.INK_WORD)) {
                 inkWords.add((InkWord)child);
             }
         }

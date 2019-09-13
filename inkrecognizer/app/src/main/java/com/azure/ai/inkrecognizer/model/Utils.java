@@ -13,10 +13,10 @@ class Utils {
     // Translates MM to PIXEL if user chose PIXEL as unit
     static float translatePoints(double milliValue, InkPointUnit inkPointUnit, DisplayMetrics displayMetrics) {
 
-        if(inkPointUnit == InkPointUnit.PIXEL) {
+        if (inkPointUnit == InkPointUnit.PIXEL) {
 
             final float DOT_PER_INCH = displayMetrics.xdpi;
-            return ((float)milliValue/INCH_TO_MM) * DOT_PER_INCH;
+            return ((float)milliValue / INCH_TO_MM) * DOT_PER_INCH;
 
         } else {
 

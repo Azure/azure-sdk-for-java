@@ -6,6 +6,7 @@ package com.azure.ai.inkrecognizer.model;
 import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,7 @@ public class InkRecognitionRoot {
             DisplayMetrics displayMetrics
     ) throws Exception {
 
-        for(JsonNode jsonRecognitionUnit : jsonRecognitionUnits) {
+        for (JsonNode jsonRecognitionUnit : jsonRecognitionUnits) {
 
             String category = jsonRecognitionUnit.get("category").asText();
             long id = jsonRecognitionUnit.get("id").asLong();
@@ -89,7 +90,7 @@ public class InkRecognitionRoot {
      */
     public Iterable<InkWord> inkWords() {
         List<InkWord> inkWords = new ArrayList<>();
-        for(Long wordId : wordList) {
+        for (Long wordId : wordList) {
             inkWords.add((InkWord)recognizedUnits.get(wordId));
         }
         return inkWords;
@@ -101,7 +102,7 @@ public class InkRecognitionRoot {
      */
     public Iterable<InkDrawing> inkDrawings() {
         List<InkDrawing> inkDrawings = new ArrayList<>();
-        for(Long drawingId : recognizedDrawings) {
+        for (Long drawingId : recognizedDrawings) {
             inkDrawings.add((InkDrawing)recognizedUnits.get(drawingId));
         }
         return inkDrawings;
@@ -110,13 +111,13 @@ public class InkRecognitionRoot {
     /**
      * Retrieves all InkRecognitionUnit objects found (matching the kind specified) in the tree returned by the Ink Recognizer service.
      * @param category - parameter specifies the category of the model units to return. If the there are no units that
-     * match the requested category, an empty list is returned.
+     *                 match the requested category, an empty list is returned.
      * @return A collection of all the relevant InkRecognitionUnit objects.
      */
     public Iterable<InkRecognitionUnit> getRecognitionUnits(InkRecognitionUnitKind category) {
         List<InkRecognitionUnit> recognitionUnits = new ArrayList<>();
-        for(InkRecognitionUnit unit : recognizedUnits.values()) {
-            if(unit.kind() == category) {
+        for (InkRecognitionUnit unit : recognizedUnits.values()) {
+            if (unit.kind() == category) {
                 recognitionUnits.add(unit);
             }
         }
@@ -133,14 +134,14 @@ public class InkRecognitionRoot {
 
     /**
      * This function attempts to find specified words in the list of recognized words returned by the service.
-     * @param  wordToSearch -  The word to search for.
+     * @param wordToSearch -  The word to search for.
      * @return A collection of InkWord objects with text that match the word used in the search request.
      */
     public Iterable<InkWord> findWord(String wordToSearch) {
         List<InkWord> inkWords = new ArrayList<>();
-        for(Long wordId : wordList) {
+        for (Long wordId : wordList) {
             InkWord inkWord = (InkWord)recognizedUnits.get(wordId);
-            if(inkWord.recognizedText().equalsIgnoreCase(wordToSearch)) {
+            if (inkWord.recognizedText().equalsIgnoreCase(wordToSearch)) {
                 inkWords.add(inkWord);
             }
         }
@@ -148,12 +149,12 @@ public class InkRecognitionRoot {
     }
 
     Iterable<InkRecognitionUnit> recognitionUnitsByIds(List<Long> unitIds) {
-        if(unitIds == null) {
+        if (unitIds == null) {
             return new ArrayList<>();
         } else {
             List<InkRecognitionUnit> recognitionUnits = new ArrayList<>();
-            for(Long unitId : unitIds) {
-                if(recognizedUnits.containsKey(unitId)) {
+            for (Long unitId : unitIds) {
+                if (recognizedUnits.containsKey(unitId)) {
                     recognitionUnits.add(recognizedUnits.get(unitId));
                 }
             }

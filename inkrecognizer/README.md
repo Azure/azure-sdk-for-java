@@ -4,7 +4,7 @@ The Ink Recognizer Cognitive Service provides a cloud-based REST API to analyze 
 
 With the Ink Recognizer SDK, you can easily connect to the Azure Ink Recognizer service and recognize handwritten content in your applications. Here are the features you can utilize:
 
-* Handwriting recognition - Recognize handwritten content in 63 core languages and locales.
+* Handwriting recognition - Recognize handwritten content in 63 languages and locales.
 * Layout recognition - Get structural information about the digital ink content. Break the content into writing regions, paragraphs, lines, words, bulleted lists. Your applications can then use the layout information to build additional features like automatic list formatting, and shape alignment.
 * Shape recognition - Recognize the most commonly used geometric shapes when taking notes.
 * Combined shapes and text recognition - Recognize which ink strokes belong to shapes or handwritten content, and separately classify them.
@@ -23,7 +23,7 @@ This SDK will:
 
 Android 6.0 or later
 Java Development Kit (JDK) with version 7 or above
-You must have an [Cognitive Services API account][cog_serv_acc]. If you don't have an Azure subscription, you can [create an account][create_acc] for free. You can get your subscription key from the [Azure portal][az_portal] after creating your account, or [Azure website][az_web] after activating a free trial.
+You must have a [Cognitive Services API account][cog_serv_acc]. If you don't have an Azure subscription, you can [create an account][create_acc] for free. You can get your subscription key from the [Azure portal][az_portal] after creating your account, or [Azure website][az_web] after activating a free trial.
 
 ### Adding the SDK to your product
 
@@ -35,11 +35,39 @@ implementation 'com.azure.ai.inkrecognizer:inkrecognizer:1.0'
 
 #### Implement InkStroke and InkPoint
 
-This is so that the SDK client can take in the stroke information
+The InkStroke interface represents an ink stroke (a collection of ink points from the time a user places the writing instrument on the writing surface until the the instrument is lifted. You will be expected to implement this interface so that the InkRecognizer Client object can use it to translate the ink to JSON for delivery to the Ink Recognizer service.
+
+```Java
+public interface InkStroke {
+     Iterable<InkPoint> getInkPoints();
+     InkStrokeKind getKind();
+     long getId();
+     String getLanguage();
+} 
+```
+
+The InkPoint interface represents a single position on the path of an ink stroke. You are expected to implement this interface as well.
+
+```Java
+public interface InkPoint {
+    float getX();
+    float getY();
+}
+```
+
+The StrokeKind enum represents the class a stroke belongs to. You are expected to set this value when it is known with absolute certainty. The default value is "UNKNOWN".
+
+```Java
+public enum InkStrokeKind {
+    UNKNOWN("unknown"),
+    DRAWING("inkDrawing"),
+    WRITING("inkWriting");
+}
+```
 
 #### Create client
 
-You can create then create an InkRecognizerClient 
+You will need to then create an InkRecognizerClient object as follows:
 
 ```Java
 InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
@@ -49,7 +77,7 @@ InkRecognizerClient inkRecognizerClient = inkRecognizerClientBuilder.credentials
                 .buildClient();
 ```
 
-or InkRecognizerAsyncClient
+or an InkRecognizerAsyncClient object as shown as:
 
 ```Java
 InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
@@ -69,7 +97,7 @@ InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
 
 #### Use the response
 
-You can call upon methods that you's wish to use. One example is below in which you want specified words in the list of recognized words returned by the service
+You can call methods on the InkRecognitionRoot. For example, you can search for specific recognized words in the recognized text as follows:
 
 ```Java
 Iterable<InkWord> wordsFound = root.findWord("hello")

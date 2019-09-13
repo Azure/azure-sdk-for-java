@@ -133,7 +133,7 @@ public enum Shape {
     private static final Map<String, Shape> map = new HashMap<>();
 
     static {
-        for(Shape shape : Shape.values()) {
+        for (Shape shape : Shape.values()) {
             map.put(shape.toString(), shape);
         }
     }
@@ -143,7 +143,7 @@ public enum Shape {
     }
 
     static Shape getShapeOrDefault(String shapeString) {
-        if(map.containsKey(shapeString)) {
+        if (map.containsKey(shapeString)) {
             return map.get(shapeString);
         } else {
             return Shape.DRAWING;

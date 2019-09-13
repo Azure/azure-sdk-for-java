@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -48,7 +49,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkWord> inkWords = root.inkWords().iterator();
         int i;
-        for(i = 0; i < inkWordsCount && inkWords.hasNext(); ++i) {
+        for (i = 0; i < inkWordsCount && inkWords.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.INK_WORD, inkWords.next().kind());
         }
@@ -62,7 +63,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkDrawing> inkDrawings = root.inkDrawings().iterator();
         int i;
-        for(i = 0; i < inkDrawingsCount && inkDrawings.hasNext(); ++i) {
+        for (i = 0; i < inkDrawingsCount && inkDrawings.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.INK_DRAWING, inkDrawings.next().kind());
         }
@@ -76,7 +77,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> inkDrawings = root.getRecognitionUnits(InkRecognitionUnitKind.INK_DRAWING).iterator();
         int i;
-        for(i = 0; i < inkDrawingsCount && inkDrawings.hasNext(); ++i) {
+        for (i = 0; i < inkDrawingsCount && inkDrawings.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.INK_DRAWING, inkDrawings.next().kind());
         }
@@ -90,7 +91,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> writingRegions = root.getRecognitionUnits(InkRecognitionUnitKind.WRITING_REGION).iterator();
         int i;
-        for(i = 0; i < writingRegionsCount && writingRegions.hasNext(); ++i) {
+        for (i = 0; i < writingRegionsCount && writingRegions.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.WRITING_REGION, writingRegions.next().kind());
         }
@@ -104,7 +105,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> paragraphs = root.getRecognitionUnits(InkRecognitionUnitKind.PARAGRAPH).iterator();
         int i;
-        for(i = 0; i < paragraphsCount && paragraphs.hasNext(); ++i) {
+        for (i = 0; i < paragraphsCount && paragraphs.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.PARAGRAPH, paragraphs.next().kind());
         }
@@ -118,7 +119,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> lines = root.getRecognitionUnits(InkRecognitionUnitKind.LINE).iterator();
         int i;
-        for(i = 0; i < linesCount && lines.hasNext(); ++i) {
+        for (i = 0; i < linesCount && lines.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.LINE, lines.next().kind());
         }
@@ -132,7 +133,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> inkWords = root.getRecognitionUnits(InkRecognitionUnitKind.INK_WORD).iterator();
         int i;
-        for(i = 0; i < inkWordsCount && inkWords.hasNext(); ++i) {
+        for (i = 0; i < inkWordsCount && inkWords.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.INK_WORD, inkWords.next().kind());
         }
@@ -146,7 +147,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> bullets = root.getRecognitionUnits(InkRecognitionUnitKind.INK_BULLET).iterator();
         int i;
-        for(i = 0; i < bulletsCount && bullets.hasNext(); ++i) {
+        for (i = 0; i < bulletsCount && bullets.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.INK_BULLET, bullets.next().kind());
         }
@@ -160,7 +161,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> inkLists = root.getRecognitionUnits(InkRecognitionUnitKind.INK_LIST).iterator();
         int i;
-        for(i = 0; i < inkListCount && inkLists.hasNext(); ++i) {
+        for (i = 0; i < inkListCount && inkLists.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.INK_LIST, inkLists.next().kind());
         }
@@ -174,7 +175,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> unknowns = root.getRecognitionUnits(InkRecognitionUnitKind.UNKNOWN).iterator();
         int i;
-        for(i = 0; i < unknownsCount && unknowns.hasNext(); ++i) {
+        for (i = 0; i < unknownsCount && unknowns.hasNext(); ++i) {
             // Check for one of the fields as the rest fields are checked in the unit tests
             Assert.assertEquals(InkRecognitionUnitKind.UNKNOWN, unknowns.next().kind());
         }
@@ -188,7 +189,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> units = root.recognitionUnits().iterator();
         int actualRecognitionUnitsCount = 0;
-        while(units.hasNext()) {
+        while (units.hasNext()) {
             units.next();
             actualRecognitionUnitsCount++;
         }
@@ -211,7 +212,7 @@ public class InkRecognitionRootTest {
         int stringHowOccurrence = 2;
         Iterator<InkWord> inkWords = root.findWord(stringToSearch).iterator();
         int i;
-        for(i = 0; i < stringHowOccurrence && inkWords.hasNext(); ++i) {
+        for (i = 0; i < stringHowOccurrence && inkWords.hasNext(); ++i) {
             InkWord inkWord = inkWords.next();
             Assert.assertEquals(InkRecognitionUnitKind.INK_WORD, inkWord.kind());
             Assert.assertTrue(inkWord.recognizedText().equalsIgnoreCase(stringToSearch));
@@ -258,10 +259,10 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> lines = root.getRecognitionUnits(InkRecognitionUnitKind.LINE).iterator();
         int actualBulletCount = 0;
-        while(lines.hasNext()) {
+        while (lines.hasNext()) {
             Line line = (Line)lines.next();
             InkBullet bullet = line.bullet();
-            if(bullet != null) {
+            if (bullet != null) {
                 actualBulletCount++;
             }
         }
@@ -274,7 +275,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> lines = root.getRecognitionUnits(InkRecognitionUnitKind.LINE).iterator();
         int actualInkWordCount = 0;
-        while(lines.hasNext()) {
+        while (lines.hasNext()) {
             Line line = (Line)lines.next();
             for (InkWord inkWord : line.words()) {
                 actualInkWordCount++;
@@ -293,7 +294,7 @@ public class InkRecognitionRootTest {
         expectedTexts.add("Hey");
         expectedTexts.add("How");
         Set<String> actualTexts = new TreeSet<>();
-        while(inkLists.hasNext()) {
+        while (inkLists.hasNext()) {
             actualTexts.add(((InkList)inkLists.next()).recognizedText());
         }
         Assert.assertEquals(expectedTexts, actualTexts);
@@ -312,7 +313,7 @@ public class InkRecognitionRootTest {
         expectedTexts.add("be a way\n");
         expectedTexts.add("how Sun\n");
         Set<String> actualTexts = new TreeSet<>();
-        while(paragraphs.hasNext()) {
+        while (paragraphs.hasNext()) {
             actualTexts.add(((Paragraph)paragraphs.next()).recognizedText());
         }
         Assert.assertEquals(expectedTexts, actualTexts);
@@ -324,7 +325,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> paragraphs = root.getRecognitionUnits(InkRecognitionUnitKind.PARAGRAPH).iterator();
         int actualLineCount = 0;
-        while(paragraphs.hasNext()) {
+        while (paragraphs.hasNext()) {
             Paragraph paragraph = (Paragraph)paragraphs.next();
             for (Line line : paragraph.lines()) {
                 actualLineCount++;
@@ -345,7 +346,7 @@ public class InkRecognitionRootTest {
         expectedTexts.add("how Sun\n\n");
         expectedTexts.add(". .\n\n");
         Set<String> actualTexts = new TreeSet<>();
-        while(writingRegions.hasNext()) {
+        while (writingRegions.hasNext()) {
             actualTexts.add(((WritingRegion)writingRegions.next()).recognizedText());
         }
         Assert.assertEquals(expectedTexts, actualTexts);
@@ -357,7 +358,7 @@ public class InkRecognitionRootTest {
 
         Iterator<InkRecognitionUnit> writingRegions = root.getRecognitionUnits(InkRecognitionUnitKind.WRITING_REGION).iterator();
         int actualParagraphsCount = 0;
-        while(writingRegions.hasNext()) {
+        while (writingRegions.hasNext()) {
             WritingRegion writingRegion = (WritingRegion)writingRegions.next();
             for (Paragraph paragraph : writingRegion.paragraphs()) {
                 actualParagraphsCount++;

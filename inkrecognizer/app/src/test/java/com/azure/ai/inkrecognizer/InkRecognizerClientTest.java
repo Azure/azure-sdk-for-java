@@ -9,9 +9,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import static com.azure.ai.inkrecognizer.TestUtils.*;
 
 public class InkRecognizerClientTest {
@@ -110,8 +112,8 @@ public class InkRecognizerClientTest {
 
         List<Thread> threads = new ArrayList<>();
         int THREAD_COUNT = 30;
-        for(int i=0; i<THREAD_COUNT; i++){
-            threads.add(new Thread("" + i){
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            threads.add(new Thread("" + i) {
                 public void run() {
                     try {
                         int fileIndex = new Random().nextInt(TestUtils.FILES.length);
@@ -120,7 +122,7 @@ public class InkRecognizerClientTest {
                         Assert.assertTrue(response.body.length() > 0);
                         Assert.assertEquals(response.status, 200);
                         Assert.assertNotEquals(response.root, null);
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         Thread t = Thread.currentThread();
                         t.getUncaughtExceptionHandler().uncaughtException(t, e);
                     }
@@ -128,11 +130,11 @@ public class InkRecognizerClientTest {
             });
         }
 
-        for(int i=0; i<THREAD_COUNT; i++){
+        for (int i = 0; i < THREAD_COUNT; i++) {
             threads.get(i).start();
         }
 
-        for(int i=0; i<THREAD_COUNT; i++){
+        for (int i = 0; i < THREAD_COUNT; i++) {
             threads.get(i).join();
         }
 

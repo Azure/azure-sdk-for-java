@@ -12,11 +12,12 @@ class InkStrokeImplementor implements InkStroke {
     private long id;
     private String language;
 
-     InkStrokeImplementor() {}
+    InkStrokeImplementor() {
+    }
 
-     void setInkPoints(List<InkPoint> inkPoints) {
-         this.inkPoints = inkPoints;
-     }
+    void setInkPoints(List<InkPoint> inkPoints) {
+        this.inkPoints = inkPoints;
+    }
 
     void setInkStrokeKind(String inkStrokeKind) {
         this.inkStrokeKind = InkStrokeKind.getInkStrokeKindOrDefault(inkStrokeKind);
@@ -30,12 +31,20 @@ class InkStrokeImplementor implements InkStroke {
         this.language = language;
     }
 
-    public Iterable<InkPoint> getInkPoints() { return inkPoints; }
+    public Iterable<InkPoint> getInkPoints() {
+        return inkPoints;
+    }
 
-    public InkStrokeKind getKind() { return inkStrokeKind; }
+    public InkStrokeKind getKind() {
+        return inkStrokeKind;
+    }
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public String getLanguage() { return language; }
+    public String getLanguage() {
+        return language;
+    }
 
 }

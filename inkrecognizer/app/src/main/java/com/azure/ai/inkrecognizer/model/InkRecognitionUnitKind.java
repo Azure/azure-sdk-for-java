@@ -54,7 +54,7 @@ public enum InkRecognitionUnitKind {
     private static final Map<String, InkRecognitionUnitKind> map = new HashMap<>();
 
     static {
-        for(InkRecognitionUnitKind inkRecognitionUnitKind : InkRecognitionUnitKind.values()) {
+        for (InkRecognitionUnitKind inkRecognitionUnitKind : InkRecognitionUnitKind.values()) {
             map.put(inkRecognitionUnitKind.toString(), inkRecognitionUnitKind);
         }
     }
@@ -64,7 +64,7 @@ public enum InkRecognitionUnitKind {
     }
 
     static InkRecognitionUnitKind getInkRecognitionUnitKindOrDefault(String inkRecognitionKindString) {
-        if(map.containsKey(inkRecognitionKindString)) {
+        if (map.containsKey(inkRecognitionKindString)) {
             return map.get(inkRecognitionKindString);
         } else {
             return InkRecognitionUnitKind.UNKNOWN;
