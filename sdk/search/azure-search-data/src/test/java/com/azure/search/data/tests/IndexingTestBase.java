@@ -167,6 +167,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void staticallyTypedDateTimesRoundTripAsUtc() throws Exception;
 
+    @Test
+    public abstract void canMergeStaticallyTypedDocuments() throws ParseException;
+
     protected abstract void initializeClient();
 
     protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {

@@ -9,6 +9,7 @@ import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.customization.IndexBatchBuilder;
+import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -16,6 +17,8 @@ import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.IndexingResult;
 import com.azure.search.data.models.Book;
 import com.azure.search.data.models.Hotel;
+import com.azure.search.data.models.HotelAddress;
+import com.azure.search.data.models.HotelRoom;
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
@@ -369,6 +372,147 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .assertNext(res -> {
                 Assert.assertEquals(books.get(1).publishDate(), res.as(Book.class).publishDate());
             })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canMergeStaticallyTypedDocuments() throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        Hotel originalDoc = new Hotel()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFr("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .category("Boutique")
+            .tags(Arrays.asList("pool",
+                "air conditioning",
+                "concierge"))
+            .parkingIncluded(false)
+            .smokingAllowed(true)
+            .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
+            .rating(4)
+            .location(GeoPoint.createWithDefaultCrs(40.760586, -73.975403))
+            .address(new HotelAddress()
+                .streetAddress("677 5th Ave")
+                .city("New York")
+                .stateProvince("NY")
+                .country("USA")
+                .postalCode("10022"))
+            .rooms(Arrays.asList(
+                new HotelRoom()
+                    .description("Budget Room, 1 Queen Bed (Cityside)")
+                    .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
+                    .type("Budget Room")
+                    .baseRate(9.69)
+                    .bedOptions("1 Queen Bed")
+                    .sleepsCount(2)
+                    .smokingAllowed(true)
+                    .tags(Arrays.asList("vcr/dvd")),
+                new HotelRoom()
+                    .description("Budget Room, 1 King Bed (Mountain View)")
+                    .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
+                    .type("Budget Room")
+                    .baseRate(8.09)
+                    .bedOptions("1 King Bed")
+                    .sleepsCount(2)
+                    .smokingAllowed(true)
+                    .tags(Arrays.asList("vcr/dvd",
+                        "jacuzzi tub"))
+            ));
+
+        // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
+        Hotel updatedDoc = new Hotel()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description(null)
+            .category("Economy")
+            .tags(Arrays.asList("pool",
+                "air conditioning"))
+            .parkingIncluded(true)
+            .lastRenovationDate(null)
+            .rating(3)
+            .location(null)
+            .address(new HotelAddress())
+            .rooms(Arrays.asList(
+                new HotelRoom()
+                    .description(null)
+                    .type("Budget Room")
+                    .baseRate(10.5)
+                    .bedOptions("1 Queen Bed")
+                    .sleepsCount(2)
+                    .tags(Arrays.asList("vcr/dvd",
+                        "balcony"))));
+
+        // Fields whose values get updated are updated, and whose values get erased remain the same.
+        Hotel expectedDoc = new Hotel()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFr("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .category("Economy")
+            .tags(Arrays.asList("pool",
+                "air conditioning"))
+            .parkingIncluded(true)
+            .smokingAllowed(true)
+            .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
+            .rating(3)
+            .location(GeoPoint.createWithDefaultCrs(40.760586, -73.975403))
+            .address(new HotelAddress()
+                .streetAddress("677 5th Ave")
+                .city("New York")
+                .stateProvince("NY")
+                .country("USA")
+                .postalCode("10022"))
+            .rooms(Arrays.asList(
+                new HotelRoom()
+                    .description(null)
+                    .type("Budget Room")
+                    .baseRate(10.5)
+                    .bedOptions("1 Queen Bed")
+                    .sleepsCount(2)
+                    .tags(Arrays.asList("vcr/dvd",
+                        "balcony"))));
+
+        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
+        jsonApi.configureTimezone();
+
+        // Upload an original doc and merge it with an updated doc
+        IndexAction uploadOriginalDocAction = new IndexAction()
+            .actionType(IndexActionType.MERGE_OR_UPLOAD)
+            .additionalProperties(jsonApi.convertObjectToType(originalDoc, Map.class));
+        IndexAction replaceWithUpdatedDocAction = new IndexAction()
+            .actionType(IndexActionType.MERGE)
+            .additionalProperties(jsonApi.convertObjectToType(updatedDoc, Map.class));
+        IndexBatch batch1 = new IndexBatch()
+            .actions(Arrays.asList(uploadOriginalDocAction));
+        IndexBatch batch2 = new IndexBatch()
+            .actions(Arrays.asList(replaceWithUpdatedDocAction));
+
+        // Verify
+        StepVerifier.create(client.index(batch1))
+            .expectNextMatches(documentIndexResult -> documentIndexResult.results().size() == batch1.actions().size())
+            .verifyComplete();
+        StepVerifier.create(client.index(batch2))
+            .expectNextMatches(documentIndexResult -> documentIndexResult.results().size() == batch2.actions().size())
+            .verifyComplete();
+        StepVerifier.create(client.getDocument("1"))
+            .expectNextMatches(result -> result.as(Hotel.class).equals(expectedDoc))
+            .verifyComplete();
+
+        // Merge with the original doc
+        IndexAction replaceWithOriginalDocAction = new IndexAction()
+            .actionType(IndexActionType.MERGE)
+            .additionalProperties(jsonApi.convertObjectToType(originalDoc, Map.class));
+        IndexBatch batch3 = new IndexBatch()
+            .actions(Arrays.asList(replaceWithOriginalDocAction));
+
+        // Verify
+        StepVerifier.create(client.index(batch3))
+            .expectNextMatches(documentIndexResult -> documentIndexResult.results().size() == batch3.actions().size())
+            .verifyComplete();
+        StepVerifier.create(client.getDocument("1"))
+            .expectNextMatches(result -> result.as(Hotel.class).equals(originalDoc))
             .verifyComplete();
     }
 
