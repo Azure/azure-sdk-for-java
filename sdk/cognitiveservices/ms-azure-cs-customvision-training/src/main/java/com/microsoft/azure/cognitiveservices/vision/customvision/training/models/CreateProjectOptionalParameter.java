@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
 import java.util.UUID;
+import java.util.List;
 
 /**
  * The CreateProjectOptionalParameter model.
@@ -29,6 +30,11 @@ public class CreateProjectOptionalParameter {
      * include: 'Multiclass', 'Multilabel'.
      */
     private String classificationType;
+
+    /**
+     * List of platforms the trained model is intending exporting to.
+     */
+    private List<String> targetExportPlatforms;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -92,6 +98,26 @@ public class CreateProjectOptionalParameter {
      */
     public CreateProjectOptionalParameter withClassificationType(String classificationType) {
         this.classificationType = classificationType;
+        return this;
+    }
+
+    /**
+     * Get the targetExportPlatforms value.
+     *
+     * @return the targetExportPlatforms value
+     */
+    public List<String> targetExportPlatforms() {
+        return this.targetExportPlatforms;
+    }
+
+    /**
+     * Set the targetExportPlatforms value.
+     *
+     * @param targetExportPlatforms the targetExportPlatforms value to set
+     * @return the CreateProjectOptionalParameter object itself.
+     */
+    public CreateProjectOptionalParameter withTargetExportPlatforms(List<String> targetExportPlatforms) {
+        this.targetExportPlatforms = targetExportPlatforms;
         return this;
     }
 
