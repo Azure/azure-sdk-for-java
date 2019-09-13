@@ -64,13 +64,6 @@ public interface SearchIndexAsyncClient {
     // Index Operations
 
     /**
-     * Gets a new SearchIndexBatchBuilder
-     *
-     * @return a new SearchIndexBatchBuilder.
-     */
-    SearchIndexBatchBuilder getBatchBuilder();
-
-    /**
      * Uploads a collection of documents to the target index
      *
      * @param documents collection of documents to upload to the target Index.

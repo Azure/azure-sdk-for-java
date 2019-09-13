@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.data.customization;
 
-import com.azure.search.data.SearchIndexBatchBuilder;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -16,14 +15,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-public class IndexBatchBuilder implements SearchIndexBatchBuilder {
+public class IndexBatchBuilder {
     private JsonApi jsonApi;
     private List<IndexAction> indexActions;
 
     /**
-     * Package private constructor to be used by {@link SearchIndexClientImpl} or {@link SearchIndexAsyncClientImpl}
+     * Public constructor with no parameters.
      */
-    IndexBatchBuilder() {
+    public IndexBatchBuilder() {
         jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         jsonApi.configureTimezone();
         indexActions = new ArrayList<>();
@@ -33,7 +32,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds an Upload IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder upload(T document) {
@@ -45,7 +44,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds Upload IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder upload(List<T> documents) {
@@ -57,7 +56,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds a Delete IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder delete(T document) {
@@ -69,7 +68,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds Delete IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder delete(List<T> documents) {
@@ -81,7 +80,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds a Merge IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder merge(T document) {
@@ -93,7 +92,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds Merge IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder merge(List<T> documents) {
@@ -105,7 +104,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds a Merge or Upload IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder mergeOrUpload(T document) {
@@ -117,7 +116,7 @@ public class IndexBatchBuilder implements SearchIndexBatchBuilder {
      * Adds Merge or Upload IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize
+     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
     public <T> IndexBatchBuilder mergeOrUpload(List<T> documents) {

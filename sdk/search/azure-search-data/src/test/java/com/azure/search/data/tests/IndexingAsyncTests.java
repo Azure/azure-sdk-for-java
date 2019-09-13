@@ -4,11 +4,11 @@ package com.azure.search.data.tests;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.SearchIndexBatchBuilder;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
+import com.azure.search.data.customization.IndexBatchBuilder;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
@@ -177,8 +177,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        SearchIndexBatchBuilder batchBuilder = client.getBatchBuilder();
-        batchBuilder.upload(hotel1).delete(randomHotel).merge(nonExistingHotel).mergeOrUpload(hotel3).upload(hotel2);
+        IndexBatchBuilder batchBuilder = new IndexBatchBuilder();
+        batchBuilder.
+            upload(hotel1).
+            delete(randomHotel).
+            merge(nonExistingHotel).
+            mergeOrUpload(hotel3).
+            upload(hotel2);
 
         Mono<DocumentIndexResult> response = client.index(batchBuilder.batch());
 
