@@ -18,9 +18,6 @@ namespace StoragePerfNet
         private const string _containerName = "testcontainer";
         private const string _blobName = "testblob";
         
-        private static byte[] _payload;
-        private static Stream _payloadStream;
-
         private static int _downloads = 0;
 
         public class Options
@@ -64,11 +61,6 @@ namespace StoragePerfNet
             }
 #endif
 
-            _payload = new byte[options.Size];
-            // Initialize payload with stable random data since all-zeros may be compressed or optimized
-            (new Random(0)).NextBytes(_payload);
-            _payloadStream = new MemoryStream(_payload, writable: false);
-
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
             var httpClient = new HttpClient(httpClientHandler);
@@ -80,7 +72,7 @@ namespace StoragePerfNet
 
             if (options.Upload)
             {
-                await UploadAndVerifyDownload(client);
+                await UploadAndVerifyDownload(client, options.Size);
             }
 
             Console.WriteLine($"Downloading blob '{_containerName}/{_blobName}' with {options.Parallel} parallel task(s) for {options.Duration} second(s)...");
@@ -145,9 +137,14 @@ namespace StoragePerfNet
             }
         }
 
-        static async Task UploadAndVerifyDownload(BlobClient client)
+        static async Task UploadAndVerifyDownload(BlobClient client, int size)
         {
-            await client.UploadAsync(_payloadStream);
+            var payload = new byte[size];
+            // Initialize payload with stable random data since all-zeros may be compressed or optimized
+            (new Random(0)).NextBytes(payload);
+            var payloadStream = new MemoryStream(payload, writable: false);
+
+            await client.UploadAsync(payloadStream);
 
             var downloadResponse = await client.DownloadAsync();
 
@@ -158,18 +155,18 @@ namespace StoragePerfNet
                 downloadPayload = memoryStream.ToArray();
             }
 
-            if (!((ReadOnlySpan<byte>)_payload).SequenceEqual(downloadPayload))
+            if (!((ReadOnlySpan<byte>)payload).SequenceEqual(downloadPayload))
             {
                 var sb = new StringBuilder();
-                sb.Append($"Downloaded {downloadPayload.Length} bytes, not equal to uploaded {_payload.Length} bytes.");
+                sb.Append($"Downloaded {downloadPayload.Length} bytes, not equal to uploaded {payload.Length} bytes.");
 
-                if (downloadPayload.Length == _payload.Length)
+                if (downloadPayload.Length == payload.Length)
                 {
-                    for (var i = 0; i < _payload.Length; i++)
+                    for (var i = 0; i < payload.Length; i++)
                     {
-                        if (_payload[i] != downloadPayload[i])
+                        if (payload[i] != downloadPayload[i])
                         {
-                            sb.Append($"First difference at position {i}.  Uploaded {_payload[i]}, downloaded {downloadPayload[i]}");
+                            sb.Append($"First difference at position {i}.  Uploaded {payload[i]}, downloaded {downloadPayload[i]}");
                             break;
                         }
                     }
