@@ -25,14 +25,6 @@ Android 6.0 or later
 Java Development Kit (JDK) with version 7 or above
 You must have a [Cognitive Services API account][cog_serv_acc]. If you don't have an Azure subscription, you can [create an account][create_acc] for free. You can get your subscription key from the [Azure portal][az_portal] after creating your account, or [Azure website][az_web] after activating a free trial.
 
-### Adding the SDK to your product
-
-If you are using Maven, add the following to your build.gradle file:
-
-```gradle
-implementation 'com.azure.ai.inkrecognizer:inkrecognizer:1.0'
-```
-
 ## Key concepts
 
 ### Implement InkStroke and InkPoint
