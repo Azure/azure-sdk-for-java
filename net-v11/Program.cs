@@ -17,21 +17,7 @@ namespace StoragePerfNet
         private const string _containerName = "testcontainer";
         private const string _blobName = "testblob";
 
-        private const int _bytesPerMessage = 1024 * 10;
-        private static readonly byte[] _payload;
-        private static readonly Stream _payloadStream;
-
         private static int _downloads = 0;
-
-        static Program()
-        {
-            _payload = new byte[_bytesPerMessage];
-
-            // Initialize payload with stable random data since all-zeros may be compressed or optimized
-            (new Random(0)).NextBytes(_payload);
-
-            _payloadStream = new MemoryStream(_payload, writable: false);
-        }
 
         public class Options
         {
@@ -43,6 +29,9 @@ namespace StoragePerfNet
 
             [Option('p', "parallel", Default = 1, HelpText = "Number of tasks to execute in parallel")]
             public int Parallel { get; set; }
+
+            [Option('s', "size", Default = 10 * 1024, HelpText = "Size of message (in bytes)")]
+            public int Size { get; set; }
 
             [Option('u', "upload")]
             public bool Upload { get; set; }
@@ -95,10 +84,10 @@ namespace StoragePerfNet
 
             var elapsedSeconds = sw.Elapsed.TotalSeconds;
             var downloadsPerSecond = _downloads / elapsedSeconds;
-            var megabytesPerSecond = (downloadsPerSecond * _bytesPerMessage) / (1024 * 1024);
+            var megabytesPerSecond = (downloadsPerSecond * options.Size) / (1024 * 1024);
 
             Console.WriteLine();
-            Console.WriteLine($"Downloaded {_downloads} blobs of size {_bytesPerMessage} in {elapsedSeconds:N2}s " +
+            Console.WriteLine($"Downloaded {_downloads} blobs of size {options.Size} in {elapsedSeconds:N2}s " +
                         $"({downloadsPerSecond:N2} blobs/s, {megabytesPerSecond:N2} MB/s)");
         }
 
