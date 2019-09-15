@@ -462,10 +462,10 @@ public class RestProxy implements InvocationHandler {
                     .then(Mono.just(createResponse(response, entityType, null)));
             } else {
                 asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                    .map((Function<Object, Response<?>>) bodyAsObject -> createResponse(response, entityType,
+                    .flatMap((Function<Object, Mono<Response<?>>>) bodyAsObject -> createResponse(response, entityType,
                         bodyAsObject))
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> Mono.just(createResponse(response,
-                        entityType, null))));
+                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> createResponse(response,
+                        entityType, null)));
             }
         } else {
             // For now we're just throwing if the Maybe didn't emit a value.
@@ -476,7 +476,7 @@ public class RestProxy implements InvocationHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Response<?> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
+    private Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
         final HttpResponse httpResponse = response.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -521,12 +521,19 @@ public class RestProxy implements InvocationHandler {
 
                 switch (paramCount) {
                     case 3:
-                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders);
+                        return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders));
                     case 4:
-                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject);
+                        return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject));
                     case 5:
-                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject,
-                            response.getDecodedHeaders().block());
+                        return response.getDecodedHeaders().flatMap(
+                            headers -> {
+                                try {
+                                    return Mono.justOrEmpty(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject,
+                                        headers));
+                                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                                    throw new RuntimeException("a");
+                                }
+                            });
                     default:
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "Response constructor with expected parameters not found."));
