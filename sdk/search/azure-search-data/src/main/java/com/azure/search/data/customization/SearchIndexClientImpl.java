@@ -110,7 +110,10 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
                                                 String suggesterName,
                                                 SuggestParameters suggestParameters,
                                                 SearchRequestOptions searchRequestOptions) {
-        PagedFlux<SuggestResult> result = asyncClient.suggest(searchText, suggesterName, suggestParameters, searchRequestOptions);
+        PagedFlux<SuggestResult> result = asyncClient.suggest(searchText,
+            suggesterName,
+            suggestParameters,
+            searchRequestOptions);
         return new PagedIterable<>(result);
     }
 

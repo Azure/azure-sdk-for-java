@@ -341,7 +341,9 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
      * @param suggestParameters suggest parameters
      * @return SuggestRequest
      */
-    private SuggestRequest createSuggestRequest(String searchText, String suggesterName, SuggestParameters suggestParameters) {
+    private SuggestRequest createSuggestRequest(String searchText,
+                                                String suggesterName,
+                                                SuggestParameters suggestParameters) {
         SuggestRequest suggestRequest = new SuggestRequest().searchText(searchText).suggesterName(suggesterName);
         if (suggestParameters != null) {
             suggestRequest.
