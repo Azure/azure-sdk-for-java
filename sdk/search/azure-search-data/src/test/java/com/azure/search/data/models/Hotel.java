@@ -183,14 +183,14 @@ public class Hotel {
             Objects.equals(description, hotel.description) &&
             Objects.equals(descriptionFr, hotel.descriptionFr) &&
             Objects.equals(category, hotel.category) &&
-            Objects.equals(tags, hotel.tags) &&
+            ModelComparer.collectionEquals(tags, hotel.tags) &&
             Objects.equals(parkingIncluded, hotel.parkingIncluded) &&
             Objects.equals(smokingAllowed, hotel.smokingAllowed) &&
             Objects.equals(lastRenovationDate, hotel.lastRenovationDate) &&
             Objects.equals(rating, hotel.rating) &&
             Objects.equals(location, hotel.location) &&
             Objects.equals(address, hotel.address) &&
-            Objects.equals(rooms, hotel.rooms);
+            ModelComparer.collectionEquals(rooms, hotel.rooms);
     }
 
     @Override

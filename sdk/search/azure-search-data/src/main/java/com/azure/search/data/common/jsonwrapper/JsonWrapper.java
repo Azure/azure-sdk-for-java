@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data.common.jsonwrapper;
 
+import com.azure.search.data.common.jsonwrapper.api.Config;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.spi.JsonPlugin;
 
@@ -17,7 +18,12 @@ public class JsonWrapper {
      * @return JsonApi
      */
     public static JsonApi newInstance() {
-        return newInstance((Class) null);
+
+        JsonApi jsonApi = newInstance((Class) null);
+        jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        jsonApi.configureTimezone();
+
+        return jsonApi;
     }
 
     /**
@@ -28,7 +34,11 @@ public class JsonWrapper {
     public static JsonApi newInstance(String type) {
         try {
             Class<? extends JsonApi> cls = (Class<? extends JsonApi>) Class.forName(type);
-            return newInstance(cls);
+            JsonApi jsonApi = newInstance(cls);
+            jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            jsonApi.configureTimezone();
+
+            return jsonApi;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -44,11 +54,12 @@ public class JsonWrapper {
         Iterator<JsonPlugin> it = PLUGIN_LOADER.iterator();
         while (it.hasNext()) {
             JsonPlugin plugin = it.next();
-            if (type == null) {
-                return plugin.newInstance();
-            }
-            if (plugin.getType().equals(type)) {
-                return plugin.newInstance();
+            if (type == null || plugin.getType().equals(type)) {
+                JsonApi jsonApi = plugin.newInstance();
+                jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                jsonApi.configureTimezone();
+
+                return jsonApi;
             }
         }
         return null;

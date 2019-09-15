@@ -1,0 +1,46 @@
+{
+    "networkCallRecords" : [ {
+        "Method" : "POST",
+        "Uri" : "https://azs-sdk2ba138075142.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+        "Headers" : {
+            "Content-Type" : "application/json; charset=utf-8"
+        },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "cd5354a7-b5f0-41cf-baa0-1414b35131f2",
+            "StatusCode" : "200",
+            "Date" : "Fri, 13 Sep 2019 00:39:31 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "170",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "227",
+            "Body" : "{\"@odata.context\":\"https://azs-sdk2ba138075142.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Type" : "application/json; odata.metadata=minimal"
+        }
+    }, {
+        "Method" : "GET",
+        "Uri" : "https://azs-sdk2ba138075142.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06",
+        "Headers" : { },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "aa9b3029-4612-4cbf-8f91-f391c6823758",
+            "StatusCode" : "200",
+            "Date" : "Fri, 13 Sep 2019 00:39:34 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "26",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "4",
+            "Body" : "﻿1",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Type" : "text/plain"
+        }
+    } ],
+    "variables" : [ ]
+}

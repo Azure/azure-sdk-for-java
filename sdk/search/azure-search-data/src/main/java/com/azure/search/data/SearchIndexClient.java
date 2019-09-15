@@ -8,12 +8,12 @@ import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.DocumentSuggestResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
 import com.azure.search.data.generated.models.SuggestParameters;
+import com.azure.search.data.generated.models.SuggestResult;
 
 import java.util.List;
 
@@ -61,6 +61,15 @@ public interface SearchIndexClient {
 
 
     // Index Operations
+
+    /**
+     * Uploads a collection of documents to the target index
+     *
+     * @param documents collection of documents to upload to the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
+    <T> DocumentIndexResult  uploadDocuments(List<T> documents);
 
     /**
      * Gets the number of documents
@@ -113,7 +122,7 @@ public interface SearchIndexClient {
      * @param suggesterName suggester name
      * @return suggests result
      */
-    DocumentSuggestResult suggest(String searchText, String suggesterName);
+    PagedIterable<SuggestResult> suggest(String searchText, String suggesterName);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
@@ -124,10 +133,10 @@ public interface SearchIndexClient {
      * @param searchRequestOptions search request options
      * @return suggests results
      */
-    DocumentSuggestResult suggest(String searchText,
-                                  String suggesterName,
-                                  SuggestParameters suggestParameters,
-                                  SearchRequestOptions searchRequestOptions);
+    PagedIterable<SuggestResult> suggest(String searchText,
+                                         String suggesterName,
+                                         SuggestParameters suggestParameters,
+                                         SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
