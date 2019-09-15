@@ -523,15 +523,18 @@ public class RestProxy implements InvocationHandler {
                     case 3:
                         return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders));
                     case 4:
-                        return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject));
+                        return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders,
+                            bodyAsObject));
                     case 5:
                         return response.getDecodedHeaders().flatMap(
                             headers -> {
                                 try {
-                                    return Mono.justOrEmpty(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject,
+                                    return Mono.justOrEmpty(ctor.newInstance(httpRequest, responseStatusCode,
+                                        responseHeaders, bodyAsObject,
                                         headers));
-                                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                                    throw new RuntimeException("a");
+                                } catch (IllegalAccessException | InvocationTargetException
+                                    | InstantiationException e) {
+                                    throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
                                 }
                             });
                     default:
