@@ -21,8 +21,8 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ManagementResponseMapper;
-import com.azure.messaging.eventhubs.implementation.ReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
@@ -353,8 +353,8 @@ public class EventHubClientBuilder {
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
             final ManagementResponseMapper mapper = new EventHubResponseMapper();
 
-            return new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, mapper,
-                tokenManagerProvider);
+            return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
+                tokenManagerProvider, mapper);
         });
 
         return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider, connectionMono);

@@ -63,8 +63,6 @@ public class ReactorConnectionTest {
     @Mock
     private TokenCredential tokenProvider;
     @Mock
-    private ManagementResponseMapper responseMapper;
-    @Mock
     private Connection connectionProtonJ;
     @Mock
     private Session session;
@@ -95,7 +93,7 @@ public class ReactorConnectionTest {
             CREDENTIAL_INFO.getEventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            responseMapper, tokenManager);
+            tokenManager);
     }
 
     @After
@@ -103,7 +101,6 @@ public class ReactorConnectionTest {
         reactor = null;
         selectable = null;
         tokenProvider = null;
-        responseMapper = null;
         connectionProtonJ = null;
         session = null;
         record = null;
@@ -298,7 +295,7 @@ public class ReactorConnectionTest {
 
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            reactorHandlerProvider, responseMapper, tokenManager)) {
+            reactorHandlerProvider, tokenManager)) {
             StepVerifier.create(connectionBad.getCBSNode())
                 .verifyError(TimeoutException.class);
         }

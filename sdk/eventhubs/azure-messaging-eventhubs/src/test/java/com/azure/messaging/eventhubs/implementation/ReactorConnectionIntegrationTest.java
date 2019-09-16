@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -25,9 +24,6 @@ import java.time.ZoneOffset;
 import static com.azure.messaging.eventhubs.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
-    @Mock
-    private ManagementResponseMapper responseMapper;
-
     @Rule
     public TestName testName = new TestName();
     private ReactorConnection connection;
@@ -64,7 +60,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new ReactorConnection("test-connection-id", options, reactorProvider,
-            handlerProvider, responseMapper, tokenManagerProvider);
+            handlerProvider, tokenManagerProvider);
     }
 
     @Override

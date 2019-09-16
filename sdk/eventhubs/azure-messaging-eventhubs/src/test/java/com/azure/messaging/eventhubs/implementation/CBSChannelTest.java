@@ -18,7 +18,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -33,9 +32,6 @@ import static com.azure.messaging.eventhubs.implementation.CBSAuthorizationType.
 
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
-
-    @Mock
-    private ManagementResponseMapper mapper;
 
     @Rule
     public TestName testName = new TestName();
@@ -79,7 +75,7 @@ public class CBSChannelTest extends IntegrationTestBase {
 
         reactorProvider = new ReactorProvider();
         handlerProvider = new ReactorHandlerProvider(reactorProvider);
-        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider, mapper,
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider);
 
         cbsChannel = new CBSChannel(connection, tokenCredential, connectionOptions.getAuthorizationType(),
@@ -88,8 +84,6 @@ public class CBSChannelTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        mapper = null;
-
         if (cbsChannel != null) {
             cbsChannel.close();
         }

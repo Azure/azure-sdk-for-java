@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ReactorConnection extends EndpointStateNotifierBase implements EventHubConnection {
+public class ReactorConnection extends EndpointStateNotifierBase implements AmqpConnection {
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
     private final AtomicBoolean hasConnection = new AtomicBoolean();
 
@@ -40,7 +41,6 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
-    private final Mono<EventHubManagementNode> managementChannelMono;
     private final RetryPolicy retryPolicy;
 
     private ReactorExecutor executor;
@@ -57,10 +57,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
+     * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider, ManagementResponseMapper mapper,
-                             TokenManagerProvider tokenManagerProvider) {
+                             ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider) {
         super(new ClientLogger(ReactorConnection.class));
 
         this.connectionOptions = connectionOptions;
@@ -73,7 +73,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             connectionOptions.getTransportType());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
-        this.connectionMono = Mono.fromCallable(() -> getOrCreateConnection())
+        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .doOnSubscribe(c -> hasConnection.set(true));
 
         this.subscriptions = Disposables.composite(
@@ -85,11 +85,6 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 this::notifyError,
                 this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
-
-        this.managementChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
-                connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
-                reactorProvider, connectionOptions.getRetry(), handlerProvider, mapper))).cache();
     }
 
     /**
@@ -100,16 +95,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         final Mono<CBSNode> cbsNodeMono = RetryUtil.withRetry(
             getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
             connectionOptions.getRetry().getTryTimeout(), retryPolicy)
-            .then(Mono.fromCallable(() -> getOrCreateCBSNode()));
+            .then(Mono.fromCallable(this::getOrCreateCBSNode));
 
         return hasConnection.get()
             ? cbsNodeMono
             : connectionMono.then(cbsNodeMono);
-    }
-
-    @Override
-    public Mono<EventHubManagementNode> getManagementNode() {
-        return managementChannelMono;
     }
 
     @Override
@@ -188,6 +178,15 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             }
         });
         super.close();
+    }
+
+    /**
+     * Gets the AMQP connection for this instance.
+     *
+     * @return The AMQP connection.
+     */
+    protected Mono<Connection> getReactorConnection() {
+        return connectionMono;
     }
 
     private synchronized CBSNode getOrCreateCBSNode() {
