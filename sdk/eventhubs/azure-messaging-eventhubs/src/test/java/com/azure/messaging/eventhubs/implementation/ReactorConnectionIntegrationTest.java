@@ -49,14 +49,14 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
         TokenCredential tokenCredential = null;
         try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(connectionString.sharedAccessKeyName(),
-                connectionString.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+            tokenCredential = new EventHubSharedAccessKeyCredential(connectionString.getSharedAccessKeyName(),
+                connectionString.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             Assert.fail("Could not create tokenProvider :" + e);
         }
 
-        final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.endpoint().getHost(),
-            connectionString.eventHubName(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
+        final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
+            connectionString.getEventHubName(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
 
         ReactorProvider reactorProvider = new ReactorProvider();

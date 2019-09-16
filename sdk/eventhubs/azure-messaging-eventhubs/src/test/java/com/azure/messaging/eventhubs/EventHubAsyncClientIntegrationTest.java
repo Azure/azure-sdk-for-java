@@ -144,11 +144,12 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         && messageTrackingValue.equals(event.getProperties().get(messageTrackingId));
                 }).take(numberOfEvents).subscribe(event -> {
                     logger.info("Event[{}] matched.", event.getSequenceNumber());
-                }, error -> Assert.fail("An error should not have occurred:" + error.toString()), () -> {
-                    long count = countDownLatch.getCount();
-                    logger.info("Finished consuming events. Counting down: {}", count);
-                    countDownLatch.countDown();
-                });
+                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
+                        long count = countDownLatch.getCount();
+                        logger.info("Finished consuming events. Counting down: {}", count);
+                        countDownLatch.countDown();
+                    });
 
                 subscriptions.add(subscription);
             }

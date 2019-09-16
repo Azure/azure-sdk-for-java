@@ -152,12 +152,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                         logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
                             event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
-                }, error -> {
-                    Assert.fail("An error should not have occurred:" + error.toString());
-                }, () -> {
-                    logger.info("Disposing of consumer now that the receive is complete.");
-                    dispose(consumer);
-                });
+                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
+                        logger.info("Disposing of consumer now that the receive is complete.");
+                        dispose(consumer);
+                    });
             }).collectList().block(TIMEOUT);
 
             Assert.assertNotNull(consumerSubscriptions);
