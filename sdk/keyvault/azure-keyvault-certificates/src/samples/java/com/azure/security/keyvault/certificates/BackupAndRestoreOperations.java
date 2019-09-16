@@ -82,7 +82,7 @@ public class BackupAndRestoreOperations {
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
         VoidResponse response = certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
-        System.out.printf("Purged Deleted certificate with status %s", response.statusCode());
+        System.out.printf("Purged Deleted certificate with status %s", response.getStatusCode());
 
         //To ensure certificate is purged on server side.
         Thread.sleep(15000);

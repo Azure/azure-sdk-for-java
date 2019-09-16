@@ -7,9 +7,9 @@ For details on the Azure SDK for Java (September 2019 Preview) release refer to 
 - Added logging when throwing `RutimeException`s.
 
 This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-data-appconfiguration_1.0.0-preview.3/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
 and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-data-appconfiguration_1.0.0-preview.3/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 demonstrate the new API.
 
 ## Version 1.0.0-preview.2 (2019-08-06)

@@ -42,11 +42,11 @@ public class EncryptDecryptOperations {
 
         // Let's encrypt a simple plain text of size 100 bytes.
         EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
 
         //Let's decrypt the encrypted response.
-        DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText());
-        System.out.printf("Returned plainText size is %d bytes \n", decryptResult.plainText().length);
+        DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText());
+        System.out.printf("Returned plainText size is %d bytes \n", decryptResult.getPlainText().length);
 
         // Let's do Encrypt and Decrypt operations with a symmetric key.
         byte[] keyContent = { 0x06, (byte) 0xa9, 0x21, 0x40, 0x36, (byte) 0xb8, (byte) 0xa1, 0x5b, 0x51, 0x2e, 0x03, (byte) 0xd5, 0x34, 0x12, 0x00, 0x06 };
@@ -55,8 +55,8 @@ public class EncryptDecryptOperations {
 
         // Convert the symmetric key encoded content to Json Web key.
         JsonWebKey symmetricKey = JsonWebKey.fromAes(new SecretKeySpec(keyContent, "AES"))
-            .kty(KeyType.OCT)
-            .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
+            .setKty(KeyType.OCT)
+            .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
 
         // Configure the symmetric key in a new crypto client.
         CryptographyClient symmetricKeyCryptoClient = new CryptographyClientBuilder()
@@ -66,10 +66,10 @@ public class EncryptDecryptOperations {
 
         // Note the implementation of A128CBC in this library uses PKCS7 padding.
         EncryptResult encryptionResult = symmetricKeyCryptoClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null);
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptionResult.cipherText().length, encryptionResult.algorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
 
-        DecryptResult decryptionResult = symmetricKeyCryptoClient.decrypt(EncryptionAlgorithm.A128CBC, encryptionResult.cipherText(), initializationVector, null, null);
-        System.out.printf("Returned unwrapped key size is %d bytes\n", decryptionResult.plainText().length);
+        DecryptResult decryptionResult = symmetricKeyCryptoClient.decrypt(EncryptionAlgorithm.A128CBC, encryptionResult.getCipherText(), initializationVector, null, null);
+        System.out.printf("Returned unwrapped key size is %d bytes\n", decryptionResult.getPlainText().length);
 
     }
 }

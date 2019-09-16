@@ -21,7 +21,7 @@ class KeyRestoreRequestParameters {
      *
      * @return the keyBundleBackup value
      */
-    public byte[] keyBackup() {
+    public byte[] getKeyBackup() {
         if (this.keyBackup == null) {
             return new byte[0];
         }
@@ -34,7 +34,7 @@ class KeyRestoreRequestParameters {
      * @param keyBackup The keyBundleBackup value to set
      * @return the KeyRestoreParameters object itself.
      */
-    public KeyRestoreRequestParameters keyBackup(byte[] keyBackup) {
+    public KeyRestoreRequestParameters setKeyBackup(byte[] keyBackup) {
         if (keyBackup == null) {
             this.keyBackup = null;
         } else {

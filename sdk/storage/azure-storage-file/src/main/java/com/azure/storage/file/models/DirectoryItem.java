@@ -25,7 +25,7 @@ public final class DirectoryItem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -35,7 +35,7 @@ public final class DirectoryItem {
      * @param name the name value to set.
      * @return the DirectoryItem object itself.
      */
-    public DirectoryItem name(String name) {
+    public DirectoryItem setName(String name) {
         this.name = name;
         return this;
     }

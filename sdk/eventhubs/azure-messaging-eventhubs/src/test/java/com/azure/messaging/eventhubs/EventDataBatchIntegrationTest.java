@@ -3,11 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
@@ -22,7 +20,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -49,7 +46,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -57,10 +54,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
     }
 
@@ -92,7 +86,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition key.
+     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition
+     * key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
@@ -114,19 +109,19 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
     /**
      * Verifies that when we send 10 messages with the same partition key and some application properties, the received
-     * EventData also contains the {@link EventData#partitionKey()} property set.
+     * EventData also contains the {@link EventData#getPartitionKey()} property set.
      */
     @Test
     public void sendBatchPartitionKeyValidate() throws InterruptedException {
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
 
-        final SendOptions sendOptions = new SendOptions().partitionKey(PARTITION_KEY);
+        final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
-            data.properties().put(MESSAGE_TRACKING_ID, messageValue);
+            data.getProperties().put(MESSAGE_TRACKING_ID, messageValue);
 
             if (!batch.tryAdd(data)) {
                 break;
@@ -146,20 +141,19 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
             final List<Disposable> consumerSubscriptions = consumers.map(consumer -> {
                 return consumer.receive().subscribe(event -> {
-                    if (event.partitionKey() == null || !PARTITION_KEY.equals(event.partitionKey())) {
+                    if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }
 
                     if (isMatchingEvent(event, messageValue)) {
-                        logger.info("Event[{}] matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
+                        logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
                         countDownLatch.countDown();
                     } else {
                         logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
-                            event.sequenceNumber(), messageValue, event.properties().get(MESSAGE_TRACKING_ID)));
+                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
-                }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
+                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         dispose(consumer);
                     });
@@ -171,7 +165,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             subscriptions.addAll(consumerSubscriptions);
 
             // Act
-            producer.send(batch.getEvents(), sendOptions).block(TIMEOUT);
+            producer.send(batch.getEvents(), sendOptions).block();
 
             // Assert
             // Wait for all the events we sent to be received.
@@ -199,7 +193,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         while (true) {
             final EventData eventData = new EventData("a".getBytes());
             for (int i = 0; i < random.nextInt(20); i++) {
-                eventData.properties().put("key" + i, "value");
+                eventData.getProperties().put("key" + i, "value");
             }
 
             if (batch.tryAdd(eventData)) {

@@ -45,23 +45,23 @@ public final class ManagedIdentityCredential implements TokenCredential {
     /**
      * @return the client id of user assigned or system assigned identity.
      */
-    public String clientId() {
+    public String getClientId() {
         return this.appServiceMSICredential != null
-            ? this.appServiceMSICredential.clientId()
-            : this.virtualMachineMSICredential.clientId();
+            ? this.appServiceMSICredential.getClientId()
+            : this.virtualMachineMSICredential.getClientId();
     }
 
     /**
      * @return the endpoint from which token needs to be retrieved.
      */
-    public String msiEndpoint() {
-        return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.msiEndpoint();
+    public String getMsiEndpoint() {
+        return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.getMsiEndpoint();
     }
     /**
      * @return the secret to use to retrieve the token.
      */
-    public String msiSecret() {
-        return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.msiSecret();
+    public String getMsiSecret() {
+        return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.getMsiSecret();
     }
 
     @Override

@@ -77,7 +77,7 @@ public class ProxyConfiguration implements AutoCloseable {
      * @return the proxy authentication type to use. Returns {@code null} if no authentication type was set. This occurs
      *     when user uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
      */
-    public ProxyAuthenticationType authentication() {
+    public ProxyAuthenticationType getAuthentication() {
         return this.authentication;
     }
 
@@ -87,7 +87,7 @@ public class ProxyConfiguration implements AutoCloseable {
      * @return the proxy address. Return {@code null} if no proxy address was set This occurs when user uses
      *     {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
      */
-    public Proxy proxyAddress() {
+    public Proxy getProxyAddress() {
         return this.proxyAddress;
     }
 
@@ -97,7 +97,7 @@ public class ProxyConfiguration implements AutoCloseable {
      * @return the username and password to use. Return {@code null} if no credential was set. This occurs when user
      *     uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
      */
-    public PasswordAuthentication credential() {
+    public PasswordAuthentication getCredential() {
         return this.credentials;
     }
 

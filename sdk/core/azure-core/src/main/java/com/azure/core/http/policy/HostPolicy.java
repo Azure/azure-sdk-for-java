@@ -34,9 +34,9 @@ public class HostPolicy implements HttpPipelinePolicy {
         logger.info("Setting host to {}", host);
 
         Mono<HttpResponse> result;
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
-            context.httpRequest().url(urlBuilder.host(host).toURL());
+            context.getHttpRequest().setUrl(urlBuilder.setHost(host).toURL());
             result = next.process();
         } catch (MalformedURLException e) {
             result = Mono.error(e);

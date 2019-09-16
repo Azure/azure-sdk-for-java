@@ -67,7 +67,7 @@ public class DirectorySample {
         try {
             directoryClient.listFilesAndDirectories().forEach(
                 fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s%n",
-                    fileRef.isDirectory(), fileRef.name()));
+                    fileRef.isDirectory(), fileRef.getName()));
         } catch (StorageException e) {
             System.out.println("Failed to list all the subdirectories and files. Reasons: " + e.getMessage());
         }
@@ -75,7 +75,7 @@ public class DirectorySample {
         // Get the parent directory properties.
         try {
             DirectoryProperties propertiesResponse = directoryClient.getProperties();
-            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.eTag());
+            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.getETag());
         } catch (StorageException e) {
             System.out.println("Failed to get the properties of the parent directory");
         }

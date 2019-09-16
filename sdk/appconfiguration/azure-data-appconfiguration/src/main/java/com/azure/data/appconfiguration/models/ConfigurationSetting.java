@@ -11,15 +11,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * ConfigurationSetting is a resource identified by unique combination of {@link #key() key} and {@link #label() label}.
- * By default, the label is {@code null}. To explicitly reference the default label use {@link #NO_LABEL}.
+ * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel()
+ * label}. By default, the label is {@code null}. To explicitly reference the default label use {@link #NO_LABEL}.
  */
 @Fluent
 public class ConfigurationSetting {
     /**
-     * The default label for configuration settings is the label, "\0".
-     * Users use this value when they want to explicitly reference a configuration setting that has no label.
-     * This gets URL encoded as "%00".
+     * The default label for configuration settings is the label, "\0". Users use this value when they want to
+     * explicitly reference a configuration setting that has no label. This gets URL encoded as "%00".
      */
     public static final String NO_LABEL = "\0";
 
@@ -58,7 +57,7 @@ public class ConfigurationSetting {
      *
      * @return The key for this configuration setting.
      */
-    public String key() {
+    public String getKey() {
         return key;
     }
 
@@ -68,7 +67,7 @@ public class ConfigurationSetting {
      * @param key The name of the configuration key.
      * @return ConfigurationSetting object itself.
      */
-    public ConfigurationSetting key(String key) {
+    public ConfigurationSetting setKey(String key) {
         this.key = key;
         return this;
     }
@@ -78,18 +77,18 @@ public class ConfigurationSetting {
      *
      * @return The label of this setting.
      */
-    public String label() {
+    public String getLabel() {
         return label;
     }
 
     /**
-     * Sets the label of this configuration setting. {@link #NO_LABEL} is the default label used when this value is
-     * not set.
+     * Sets the label of this configuration setting. {@link #NO_LABEL} is the default label used when this value is not
+     * set.
      *
      * @param label The label of this configuration setting.
      * @return The updated ConfigurationSetting object.
      */
-    public ConfigurationSetting label(String label) {
+    public ConfigurationSetting setLabel(String label) {
         this.label = label;
         return this;
     }
@@ -99,7 +98,7 @@ public class ConfigurationSetting {
      *
      * @return The value of this configuration setting.
      */
-    public String value() {
+    public String getValue() {
         return value;
     }
 
@@ -109,7 +108,7 @@ public class ConfigurationSetting {
      * @param value The value to associate with this configuration setting.
      * @return The updated ConfigurationSetting object.
      */
-    public ConfigurationSetting value(String value) {
+    public ConfigurationSetting setValue(String value) {
         this.value = value;
         return this;
     }
@@ -119,7 +118,7 @@ public class ConfigurationSetting {
      *
      * @return The content type of this setting.
      */
-    public String contentType() {
+    public String getContentType() {
         return contentType;
     }
 
@@ -129,7 +128,7 @@ public class ConfigurationSetting {
      * @param contentType The content type of this configuration setting.
      * @return The updated ConfigurationSetting object.
      */
-    public ConfigurationSetting contentType(String contentType) {
+    public ConfigurationSetting setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -139,7 +138,7 @@ public class ConfigurationSetting {
      *
      * @return etag The etag for the setting.
      */
-    public String etag() {
+    public String getETag() {
         return etag;
     }
 
@@ -149,7 +148,7 @@ public class ConfigurationSetting {
      * @param etag The etag for the configuration setting.
      * @return The updated ConfigurationSetting object.
      */
-    public ConfigurationSetting etag(String etag) {
+    public ConfigurationSetting setETag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -159,7 +158,7 @@ public class ConfigurationSetting {
      *
      * @return The time when the configuration was last modified.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
@@ -167,8 +166,7 @@ public class ConfigurationSetting {
      * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
      * made to this setting.
      *
-     * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration
-     * service.
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration service.
      *
      * @return true if locked; false otherwise.
      */
@@ -181,7 +179,7 @@ public class ConfigurationSetting {
      *
      * @return tags Gets tags for this configuration setting.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return tags;
     }
 
@@ -191,7 +189,7 @@ public class ConfigurationSetting {
      * @param tags The tags to add to this configuration setting.
      * @return The updated ConfigurationSetting object.
      */
-    public ConfigurationSetting tags(Map<String, String> tags) {
+    public ConfigurationSetting setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -238,12 +236,12 @@ public class ConfigurationSetting {
     @Override
     public int hashCode() {
         return Objects.hash(this.key,
-                this.label,
-                this.value,
-                this.etag,
-                this.lastModified,
-                this.locked,
-                this.contentType,
-                this.tags);
+            this.label,
+            this.value,
+            this.etag,
+            this.lastModified,
+            this.locked,
+            this.contentType,
+            this.tags);
     }
 }

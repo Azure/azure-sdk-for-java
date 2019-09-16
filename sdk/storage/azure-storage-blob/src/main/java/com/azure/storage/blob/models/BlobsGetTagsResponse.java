@@ -29,7 +29,7 @@ public final class BlobsGetTagsResponse extends ResponseBase<BlobGetTagsHeaders,
      * @return the deserialized response body.
      */
     @Override
-    public BlobTags value() {
-        return super.value();
+    public BlobTags getValue() {
+        return super.getValue();
     }
 }

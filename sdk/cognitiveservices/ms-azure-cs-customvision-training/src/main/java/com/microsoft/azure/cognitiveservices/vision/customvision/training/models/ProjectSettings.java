@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
 import java.util.UUID;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,6 +28,13 @@ public class ProjectSettings {
      */
     @JsonProperty(value = "classificationType")
     private Classifier classificationType;
+
+    /**
+     * A list of ExportPlatform that the trained model should be able to
+     * support.
+     */
+    @JsonProperty(value = "targetExportPlatforms")
+    private List<String> targetExportPlatforms;
 
     /**
      * Get the domainId value.
@@ -65,6 +73,26 @@ public class ProjectSettings {
      */
     public ProjectSettings withClassificationType(Classifier classificationType) {
         this.classificationType = classificationType;
+        return this;
+    }
+
+    /**
+     * Get the targetExportPlatforms value.
+     *
+     * @return the targetExportPlatforms value
+     */
+    public List<String> targetExportPlatforms() {
+        return this.targetExportPlatforms;
+    }
+
+    /**
+     * Set the targetExportPlatforms value.
+     *
+     * @param targetExportPlatforms the targetExportPlatforms value to set
+     * @return the ProjectSettings object itself.
+     */
+    public ProjectSettings withTargetExportPlatforms(List<String> targetExportPlatforms) {
+        this.targetExportPlatforms = targetExportPlatforms;
         return this;
     }
 

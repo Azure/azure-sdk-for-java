@@ -8,9 +8,9 @@ import java.util.Locale;
 /**
  * This is a helper class to construct a string representing the permissions granted by an AccountSAS. Setting a value
  * to true means that any SAS which uses these permissions will grant permissions for that operation. Once all the
- * values are set, this should be serialized with toString and set as the permissions field on an
- * {@link AccountSASSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * values are set, this should be serialized with toString and set as the permissions field on an {@link
+ * AccountSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
 public final class AccountSASPermission {
 
@@ -41,9 +41,9 @@ public final class AccountSASPermission {
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code SharedAccessAccountPermissions}.
-     *
      * @return An {@code AccountSASPermission} object generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or p.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or
+     * p.
      */
     public static AccountSASPermission parse(String permString) {
         AccountSASPermission permissions = new AccountSASPermission();
@@ -77,7 +77,8 @@ public final class AccountSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permString, c));
             }
         }
         return permissions;
@@ -86,7 +87,7 @@ public final class AccountSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean read() {
+    public boolean isRead() {
         return read;
     }
 
@@ -96,7 +97,7 @@ public final class AccountSASPermission {
      * @param read Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission read(boolean read) {
+    public AccountSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -104,7 +105,7 @@ public final class AccountSASPermission {
     /**
      * @return the add permission status
      */
-    public boolean add() {
+    public boolean isAdd() {
         return add;
     }
 
@@ -114,7 +115,7 @@ public final class AccountSASPermission {
      * @param add Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission add(boolean add) {
+    public AccountSASPermission setAdd(boolean add) {
         this.add = add;
         return this;
     }
@@ -122,7 +123,7 @@ public final class AccountSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean create() {
+    public boolean isCreate() {
         return create;
     }
 
@@ -132,7 +133,7 @@ public final class AccountSASPermission {
      * @param create Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission create(boolean create) {
+    public AccountSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -140,7 +141,7 @@ public final class AccountSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean write() {
+    public boolean isWrite() {
         return write;
     }
 
@@ -150,7 +151,7 @@ public final class AccountSASPermission {
      * @param write Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission write(boolean write) {
+    public AccountSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -158,7 +159,7 @@ public final class AccountSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean delete() {
+    public boolean isDelete() {
         return delete;
     }
 
@@ -168,7 +169,7 @@ public final class AccountSASPermission {
      * @param delete Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission delete(boolean delete) {
+    public AccountSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -176,7 +177,7 @@ public final class AccountSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean list() {
+    public boolean isList() {
         return list;
     }
 
@@ -187,7 +188,7 @@ public final class AccountSASPermission {
      * @param list Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission list(boolean list) {
+    public AccountSASPermission setList(boolean list) {
         this.list = list;
         return this;
     }
@@ -197,7 +198,7 @@ public final class AccountSASPermission {
      *
      * @return the update permission status
      */
-    public boolean update() {
+    public boolean isUpdate() {
         return update;
     }
 
@@ -207,7 +208,7 @@ public final class AccountSASPermission {
      * @param update Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission update(boolean update) {
+    public AccountSASPermission setUpdate(boolean update) {
         this.update = update;
         return this;
     }
@@ -217,7 +218,7 @@ public final class AccountSASPermission {
      *
      * @return the process messages permission status.
      */
-    public boolean processMessages() {
+    public boolean getProcessMessages() {
         return processMessages;
     }
 
@@ -227,7 +228,7 @@ public final class AccountSASPermission {
      * @param processMessages Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission processMessages(boolean processMessages) {
+    public AccountSASPermission setProcessMessages(boolean processMessages) {
         this.processMessages = processMessages;
         return this;
     }

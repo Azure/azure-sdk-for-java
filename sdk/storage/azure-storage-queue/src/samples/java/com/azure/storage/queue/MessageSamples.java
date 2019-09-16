@@ -32,12 +32,12 @@ public class MessageSamples {
         // TODO
 
         // Get the total count of msg in the queue
-        int count = queueClient.getProperties().approximateMessagesCount();
+        int count = queueClient.getProperties().getApproximateMessagesCount();
 
         // Peek all messages in queue. It is supposed to print "Hello World" 3 times.
         queueClient.peekMessages(count, null, null).forEach(
             peekedMessage -> {
-                System.out.println("Here is the msg: " + peekedMessage.messageText());
+                System.out.println("Here is the msg: " + peekedMessage.getMessageText());
             }
         );
 
@@ -45,7 +45,7 @@ public class MessageSamples {
         queueClient.dequeueMessages(count, Duration.ofSeconds(30), Duration.ofSeconds(50), null).forEach(
             queueMessage -> {
                 String msgToReplace = String.format("Hello, world!");
-                queueClient.updateMessage(queueMessage.messageId(), msgToReplace, queueMessage.popReceipt(), Duration.ZERO);
+                queueClient.updateMessage(queueMessage.getMessageId(), msgToReplace, queueMessage.getPopReceipt(), Duration.ZERO);
             }
         );
 
@@ -53,7 +53,7 @@ public class MessageSamples {
         // Since there is no invisible time for above dequeue, the following if condition should be true.
         if (queueClient.dequeueMessages().iterator().hasNext()) {
             DequeuedMessage queueMessage = queueClient.dequeueMessages().iterator().next();
-            queueClient.deleteMessage(queueMessage.messageId(), queueMessage.popReceipt());
+            queueClient.deleteMessage(queueMessage.getMessageId(), queueMessage.getPopReceipt());
         } else {
             System.out.println("OOps, the messages disappear!");
         }

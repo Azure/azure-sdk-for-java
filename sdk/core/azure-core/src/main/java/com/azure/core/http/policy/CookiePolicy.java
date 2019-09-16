@@ -32,22 +32,23 @@ public class CookiePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
-            final URI uri = context.httpRequest().url().toURI();
+            final URI uri = context.getHttpRequest().getUrl().toURI();
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
-            for (HttpHeader header : context.httpRequest().headers()) {
-                cookieHeaders.put(header.name(), Arrays.asList(context.httpRequest().headers().values(header.name())));
+            for (HttpHeader header : context.getHttpRequest().getHeaders()) {
+                cookieHeaders.put(header.getName(), Arrays.asList(context.getHttpRequest().getHeaders()
+                    .values(header.getName())));
             }
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                context.httpRequest().headers().put(entry.getKey(), String.join(",", entry.getValue()));
+                context.getHttpRequest().getHeaders().put(entry.getKey(), String.join(",", entry.getValue()));
             }
 
             return next.process().map(httpResponse -> {
                 Map<String, List<String>> responseHeaders = new HashMap<>();
-                for (HttpHeader header : httpResponse.headers()) {
-                    responseHeaders.put(header.name(), Collections.singletonList(header.value()));
+                for (HttpHeader header : httpResponse.getHeaders()) {
+                    responseHeaders.put(header.getName(), Collections.singletonList(header.getValue()));
                 }
 
                 try {

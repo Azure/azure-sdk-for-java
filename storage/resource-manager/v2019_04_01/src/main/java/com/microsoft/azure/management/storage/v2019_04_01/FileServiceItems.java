@@ -11,16 +11,17 @@ package com.microsoft.azure.management.storage.v2019_04_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_04_01.implementation.StorageManager;
-import com.microsoft.azure.management.storage.v2019_04_01.implementation.ListContainerItemsInner;
+import com.microsoft.azure.management.storage.v2019_04_01.implementation.FileServiceItemsInner;
+import com.microsoft.azure.management.storage.v2019_04_01.implementation.FileServicePropertiesInner;
 import java.util.List;
 
 /**
- * Type representing ListContainerItems.
+ * Type representing FileServiceItems.
  */
-public interface ListContainerItems extends HasInner<ListContainerItemsInner>, HasManager<StorageManager> {
+public interface FileServiceItems extends HasInner<FileServiceItemsInner>, HasManager<StorageManager> {
     /**
      * @return the value value.
      */
-    List<ListContainerItem> value();
+    List<FileServicePropertiesInner> value();
 
 }

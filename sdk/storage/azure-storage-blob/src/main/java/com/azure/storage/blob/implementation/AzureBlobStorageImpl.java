@@ -31,8 +31,9 @@ public final class AzureBlobStorageImpl {
      *
      * @param url the url value.
      */
-    void setUrl(String url) {
+    AzureBlobStorageImpl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**
@@ -54,8 +55,9 @@ public final class AzureBlobStorageImpl {
      *
      * @param version the version value.
      */
-    void setVersion(String version) {
+    AzureBlobStorageImpl setVersion(String version) {
         this.version = version;
+        return this;
     }
 
     /**
@@ -77,8 +79,9 @@ public final class AzureBlobStorageImpl {
      *
      * @param pathRenameMode the pathRenameMode value.
      */
-    void setPathRenameMode(PathRenameMode pathRenameMode) {
+    AzureBlobStorageImpl setPathRenameMode(PathRenameMode pathRenameMode) {
         this.pathRenameMode = pathRenameMode;
+        return this;
     }
 
     /**

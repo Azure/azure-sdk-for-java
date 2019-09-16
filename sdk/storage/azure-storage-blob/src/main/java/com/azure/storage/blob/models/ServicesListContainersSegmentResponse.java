@@ -29,7 +29,7 @@ public final class ServicesListContainersSegmentResponse extends ResponseBase<Se
      * @return the deserialized response body.
      */
     @Override
-    public ListContainersSegmentResponse value() {
-        return super.value();
+    public ListContainersSegmentResponse getValue() {
+        return super.getValue();
     }
 }

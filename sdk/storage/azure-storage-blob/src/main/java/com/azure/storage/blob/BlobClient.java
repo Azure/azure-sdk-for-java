@@ -160,7 +160,7 @@ public class BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobAccessConditions accessConditions) {
-        return new BlobInputStream(blobAsyncClient, range.offset(), range.count(), accessConditions);
+        return new BlobInputStream(blobAsyncClient, range.getOffset(), range.getCount(), accessConditions);
     }
 
     /**
@@ -173,7 +173,7 @@ public class BlobClient {
      * @return true if the container exists, false if it doesn't
      */
     public Boolean exists() {
-        return existsWithResponse(null, Context.NONE).value();
+        return existsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -207,7 +207,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).value();
+        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -234,10 +234,11 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
-            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-            BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
+        RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+        BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions, destAccessConditions, context);
+            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
+                destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -277,8 +278,10 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context);
+    public VoidResponse abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+        Duration timeout, Context context) {
+        Mono<VoidResponse> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
+            context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -297,7 +300,7 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public String copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).value();
+        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -323,10 +326,11 @@ public class BlobClient {
      * @return The copy ID for the long running operation.
      */
     public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
-            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-            Duration timeout, Context context) {
+        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+        Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions, context);
+            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
+                context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -371,10 +375,10 @@ public class BlobClient {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public VoidResponse downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
-                                             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         Mono<VoidResponse> download = blobAsyncClient
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
-            .flatMapMany(res -> res.value()
+            .flatMapMany(res -> res.getValue()
                 .doOnNext(bf -> {
                     try {
                         stream.write(bf.array());
@@ -420,8 +424,8 @@ public class BlobClient {
      * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
      * AppendBlobClient}.</p>
      *
-     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
-     * provide the {@link BlobRange} parameter.</p>
+     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
+     * call, provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -441,8 +445,9 @@ public class BlobClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
-                               BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, options, accessConditions, rangeGetContentMD5, context);
+        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, options, accessConditions,
+            rangeGetContentMD5, context);
 
         Utility.blockWithOptionalTimeout(download, timeout);
     }
@@ -456,7 +461,6 @@ public class BlobClient {
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
-     *
      */
     public void delete() {
         deleteWithResponse(null, null, null, Context.NONE);
@@ -481,7 +485,7 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-                                           BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = blobAsyncClient
             .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
@@ -501,7 +505,7 @@ public class BlobClient {
      * @return The blob properties and metadata.
      */
     public BlobProperties getProperties() {
-        return getPropertiesWithResponse(null, null, Context.NONE).value();
+        return getPropertiesWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -519,7 +523,8 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The blob properties and metadata.
      */
-    public Response<BlobProperties> getPropertiesWithResponse(BlobAccessConditions accessConditions, Duration timeout, Context context) {
+    public Response<BlobProperties> getPropertiesWithResponse(BlobAccessConditions accessConditions, Duration timeout,
+        Context context) {
         Mono<Response<BlobProperties>> response = blobAsyncClient.getPropertiesWithResponse(accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -560,7 +565,7 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
-                                                   Duration timeout, Context context) {
+        Duration timeout, Context context) {
         Mono<VoidResponse> response = blobAsyncClient
             .setHTTPHeadersWithResponse(headers, accessConditions, context);
 
@@ -601,7 +606,8 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+    public VoidResponse setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+        Duration timeout, Context context) {
         Mono<VoidResponse> response = blobAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -621,7 +627,7 @@ public class BlobClient {
      * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
     public BlobClient createSnapshot() {
-        return createSnapshotWithResponse(null, null, null, Context.NONE).value();
+        return createSnapshotWithResponse(null, null, null, Context.NONE).getValue();
     }
 
 
@@ -642,10 +648,11 @@ public class BlobClient {
      * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
      * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Response<BlobClient> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+    public Response<BlobClient> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+        Duration timeout, Context context) {
         Mono<Response<BlobClient>> response = blobAsyncClient
             .createSnapshotWithResponse(metadata, accessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, new BlobClient(rb.value())));
+            .map(rb -> new SimpleResponse<>(rb, new BlobClient(rb.getValue())));
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -691,8 +698,9 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setTierWithResponse(AccessTier tier, RehydratePriority priority,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions, context);
+        LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions,
+            context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -706,7 +714,6 @@ public class BlobClient {
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
-     *
      */
     public void undelete() {
         undeleteWithResponse(null, Context.NONE);
@@ -749,7 +756,7 @@ public class BlobClient {
      * @return The lease ID.
      */
     public String acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).value();
+        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -774,8 +781,9 @@ public class BlobClient {
      * @return The lease ID.
      */
     public Response<String> acquireLeaseWithResponse(String proposedId, int duration,
-                                                     ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<String>> response = blobAsyncClient.acquireLeaseWithResponse(proposedId, duration, modifiedAccessConditions, context);
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
+        Mono<Response<String>> response = blobAsyncClient.acquireLeaseWithResponse(proposedId, duration,
+            modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -794,7 +802,7 @@ public class BlobClient {
      * @return The renewed lease ID.
      */
     public String renewLease(String leaseId) {
-        return renewLeaseWithResponse(leaseId, null, null, Context.NONE).value();
+        return renewLeaseWithResponse(leaseId, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -815,7 +823,8 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The renewed lease ID.
      */
-    public Response<String> renewLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
+    public Response<String> renewLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
+        Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
             .renewLeaseWithResponse(leaseId, modifiedAccessConditions, context);
 
@@ -856,8 +865,10 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse releaseLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.releaseLeaseWithResponse(leaseId, modifiedAccessConditions, context);
+    public VoidResponse releaseLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
+        Duration timeout, Context context) {
+        Mono<VoidResponse> response = blobAsyncClient.releaseLeaseWithResponse(leaseId, modifiedAccessConditions,
+            context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -876,7 +887,7 @@ public class BlobClient {
      * @return The remaining time in the broken lease in seconds.
      */
     public Integer breakLease() {
-        return breakLeaseWithResponse(null, null, null, Context.NONE).value();
+        return breakLeaseWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -902,7 +913,8 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The remaining time in the broken lease in seconds.
      */
-    public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
+    public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<Integer>> response = blobAsyncClient
             .breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context);
 
@@ -924,7 +936,7 @@ public class BlobClient {
      * @return The new lease ID.
      */
     public String changeLease(String leaseId, String proposedId) {
-        return changeLeaseWithResponse(leaseId, proposedId, null, null, Context.NONE).value();
+        return changeLeaseWithResponse(leaseId, proposedId, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -946,8 +958,10 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The new lease ID.
      */
-    public Response<String> changeLeaseWithResponse(String leaseId, String proposedId, ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<String>> response = blobAsyncClient.changeLeaseWithResponse(leaseId, proposedId, modifiedAccessConditions, context);
+    public Response<String> changeLeaseWithResponse(String leaseId, String proposedId,
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
+        Mono<Response<String>> response = blobAsyncClient.changeLeaseWithResponse(leaseId, proposedId,
+            modifiedAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -965,7 +979,7 @@ public class BlobClient {
      * @return The sku name and account kind.
      */
     public StorageAccountInfo getAccountInfo() {
-        return getAccountInfoWithResponse(null, Context.NONE).value();
+        return getAccountInfoWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -1030,7 +1044,8 @@ public class BlobClient {
      * {@codesnippet com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
+     * Docs</a></p>
      *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS

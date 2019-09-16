@@ -33,7 +33,7 @@ public final class IssuerBasePage implements Page<IssuerBase> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class IssuerBasePage implements Page<IssuerBase> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<IssuerBase> items() {
+    public List<IssuerBase> getItems() {
         return items;
     }
 }

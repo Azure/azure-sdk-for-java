@@ -7,7 +7,6 @@ package com.azure.storage.file.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import java.util.Map;
 
 /**
  * Contains all response data for the getPermission operation.
@@ -30,7 +29,7 @@ public final class SharesGetPermissionResponse extends ResponseBase<ShareGetPerm
      * @return the deserialized response body.
      */
     @Override
-    public SharePermission value() {
-        return super.value();
+    public SharePermission getValue() {
+        return super.getValue();
     }
 }

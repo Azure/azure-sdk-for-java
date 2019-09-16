@@ -8,19 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models;
 
-import java.util.UUID;
 
 /**
- * The PredictImageWithNoStoreOptionalParameter model.
+ * The ClassifyImageOptionalParameter model.
  */
-public class PredictImageWithNoStoreOptionalParameter {
-    /**
-     * Optional. Specifies the id of a particular iteration to evaluate
-     * against.
-     * The default iteration for the project will be used when not specified.
-     */
-    private UUID iterationId;
-
+public class ClassifyImageOptionalParameter {
     /**
      * Optional. Specifies the name of application using the endpoint.
      */
@@ -30,26 +22,6 @@ public class PredictImageWithNoStoreOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
-
-    /**
-     * Get the iterationId value.
-     *
-     * @return the iterationId value
-     */
-    public UUID iterationId() {
-        return this.iterationId;
-    }
-
-    /**
-     * Set the iterationId value.
-     *
-     * @param iterationId the iterationId value to set
-     * @return the PredictImageWithNoStoreOptionalParameter object itself.
-     */
-    public PredictImageWithNoStoreOptionalParameter withIterationId(UUID iterationId) {
-        this.iterationId = iterationId;
-        return this;
-    }
 
     /**
      * Get the application value.
@@ -64,9 +36,9 @@ public class PredictImageWithNoStoreOptionalParameter {
      * Set the application value.
      *
      * @param application the application value to set
-     * @return the PredictImageWithNoStoreOptionalParameter object itself.
+     * @return the ClassifyImageOptionalParameter object itself.
      */
-    public PredictImageWithNoStoreOptionalParameter withApplication(String application) {
+    public ClassifyImageOptionalParameter withApplication(String application) {
         this.application = application;
         return this;
     }
@@ -84,9 +56,9 @@ public class PredictImageWithNoStoreOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the PredictImageWithNoStoreOptionalParameter object itself.
+     * @return the ClassifyImageOptionalParameter object itself.
      */
-    public PredictImageWithNoStoreOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ClassifyImageOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

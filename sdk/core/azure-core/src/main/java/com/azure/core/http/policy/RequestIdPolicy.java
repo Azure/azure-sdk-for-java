@@ -19,9 +19,9 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String requestId = context.httpRequest().headers().value(REQUEST_ID_HEADER);
+        String requestId = context.getHttpRequest().getHeaders().value(REQUEST_ID_HEADER);
         if (requestId == null) {
-            context.httpRequest().headers().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
+            context.getHttpRequest().getHeaders().put(REQUEST_ID_HEADER, UUID.randomUUID().toString());
         }
         return next.process();
     }

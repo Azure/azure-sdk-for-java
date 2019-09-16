@@ -13,7 +13,7 @@ import com.azure.data.appconfiguration.implementation.ConfigurationSettingPage;
  *
  * @see ConfigurationAsyncClient#listSettingRevisions(SettingSelector)
  * @see ConfigurationClient#listSettingRevisions(SettingSelector)
- * @see SettingSelector#range(Range)
+ * @see SettingSelector#setRange(Range)
  */
 @Immutable
 public class Range {
@@ -33,14 +33,14 @@ public class Range {
     /**
      * @return the start of the range.
      */
-    public int start() {
+    public int getStart() {
         return start;
     }
 
     /**
      * @return the end of the range.
      */
-    public int end() {
+    public int getEnd() {
         return end;
     }
 

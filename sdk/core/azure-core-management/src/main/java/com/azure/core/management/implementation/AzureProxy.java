@@ -7,13 +7,13 @@ import com.azure.core.AzureEnvironment;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.OperationDescription;
 import com.azure.core.implementation.RestProxy;
@@ -48,8 +48,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * This class can be used to create an Azure specific proxy implementation for a provided Swagger
- * generated interface.
+ * This class can be used to create an Azure specific proxy implementation for a provided Swagger generated interface.
  */
 public final class AzureProxy extends RestProxy {
     private static long defaultPollingDelayInMilliseconds = 30 * 1000;
@@ -57,9 +56,10 @@ public final class AzureProxy extends RestProxy {
 
     /**
      * Create a new instance of RestProxy.
+     *
      * @param httpPipeline The HttpPipeline that will be used by this AzureProxy to send HttpRequests.
-     * @param interfaceParser The parser that contains information about the swagger interface that
-     *     this RestProxy "implements".
+     * @param interfaceParser The parser that contains information about the swagger interface that this RestProxy
+     * "implements".
      */
     private AzureProxy(HttpPipeline httpPipeline, SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, createDefaultSerializer(), interfaceParser);
@@ -68,14 +68,15 @@ public final class AzureProxy extends RestProxy {
     /**
      * @return The millisecond delay that will occur by default between long running operation polls.
      */
-    public static long defaultDelayInMilliseconds() {
+    public static long getDefaultDelayInMilliseconds() {
         return AzureProxy.defaultPollingDelayInMilliseconds;
     }
 
     /**
      * Set the millisecond delay that will occur by default between long running operation polls.
-     * @param defaultPollingDelayInMilliseconds The number of milliseconds to delay before sending the next
-     *     long running operation status poll.
+     *
+     * @param defaultPollingDelayInMilliseconds The number of milliseconds to delay before sending the next long running
+     * operation status poll.
      */
     public static void setDefaultPollingDelayInMilliseconds(long defaultPollingDelayInMilliseconds) {
         AzureProxy.defaultPollingDelayInMilliseconds = defaultPollingDelayInMilliseconds;
@@ -83,6 +84,7 @@ public final class AzureProxy extends RestProxy {
 
     /**
      * Get the default serializer.
+     *
      * @return the default serializer.
      */
     private static SerializerAdapter createDefaultSerializer() {
@@ -90,6 +92,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     private static String operatingSystem;
+
     private static String operatingSystem() {
         if (operatingSystem == null) {
             operatingSystem = System.getProperty("os.name") + "/" + System.getProperty("os.version");
@@ -98,6 +101,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     private static String macAddressHash;
+
     private static String macAddressHash() {
         if (macAddressHash == null) {
             byte[] macBytes = null;
@@ -114,9 +118,9 @@ public final class AzureProxy extends RestProxy {
 
                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
                 byte[] hash = digest.digest(macBytes);
-                StringBuffer builder = new StringBuffer();
-                for (int i = 0; i < hash.length; i++) {
-                    builder.append(String.format("%02x", hash[i]));
+                StringBuilder builder = new StringBuilder();
+                for (byte b : hash) {
+                    builder.append(String.format("%02x", b));
                 }
                 macAddressHash = builder.toString();
             } catch (Throwable t) {
@@ -132,6 +136,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     private static String javaVersion;
+
     private static String javaVersion() {
         if (javaVersion == null) {
             final String versionProperty = System.getProperty("java.version");
@@ -155,8 +160,8 @@ public final class AzureProxy extends RestProxy {
 
     /**
      * Create the default HttpPipeline.
-     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
-     *     string.
+     *
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent string.
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface) {
@@ -165,8 +170,8 @@ public final class AzureProxy extends RestProxy {
 
     /**
      * Create the default HttpPipeline.
-     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
-     *     string.
+     *
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent string.
      * @param credentials The credentials to use to apply authentication to the pipeline.
      * @return the default HttpPipeline.
      */
@@ -176,10 +181,9 @@ public final class AzureProxy extends RestProxy {
 
     /**
      * Create the default HttpPipeline.
-     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
-     *     string.
-     * @param credentialsPolicy The credentials policy factory to use to apply authentication to the
-     *     pipeline.
+     *
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent string.
+     * @param credentialsPolicy The credentials policy factory to use to apply authentication to the pipeline.
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, HttpPipelinePolicy credentialsPolicy) {
@@ -200,17 +204,17 @@ public final class AzureProxy extends RestProxy {
 
     /**
      * Create a proxy implementation of the provided Swagger interface.
+     *
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
      * @param azureEnvironment The azure environment that the proxy implementation will target.
-     * @param httpPipeline The HTTP httpPipeline will be used to make REST calls.
-     *     //* @param serializer The serializer that will be used to convert POJOs to and from request and
-     *     response bodies.
+     * @param httpPipeline The HTTP httpPipeline will be used to make REST calls. //* @param serializer The serializer
+     * that will be used to convert POJOs to and from request and response bodies.
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, AzureEnvironment azureEnvironment,
-                               HttpPipeline httpPipeline) {
+        HttpPipeline httpPipeline) {
         String baseUrl = null;
 
         if (azureEnvironment != null) {
@@ -229,67 +233,65 @@ public final class AzureProxy extends RestProxy {
 
     @Override
     protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncHttpResponse,
-                                        final SwaggerMethodParser methodParser, Type returnType, Context context) {
+        final SwaggerMethodParser methodParser, Type returnType, Context context) {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
                 throw logger.logExceptionAsError(new InvalidReturnTypeException("AzureProxy only supports swagger "
-                    + "interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "())"
-                    + " if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
+                    + "interface methods that return Flux (such as " + methodParser.getFullyQualifiedMethodName()
+                    + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
             } else {
                 // Get ResultTypeT in OperationStatus<ResultTypeT>
                 final Type operationStatusResultType =
                     ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
                 //
-                return asyncHttpResponse.flatMapMany(httpResponse -> {
-                    return createPollStrategy(httpRequest, Mono.just(httpResponse), methodParser)
-                        .flatMapMany(pollStrategy -> {
-                            Mono<OperationStatus<Object>> first =
-                                handleBodyReturnType(httpResponse, methodParser, operationStatusResultType)
-                                    .map(operationResult -> new OperationStatus<Object>(
-                                        operationResult,
-                                        pollStrategy.status()))
-                                    .switchIfEmpty(
-                                        Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(
-                                            new OperationStatus<>((Object) null, pollStrategy.status()))));
-                            Flux<OperationStatus<Object>> rest =
-                                pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser,
-                                    operationStatusResultType, context);
-                            return first.concatWith(rest);
-                        });
-                });
+                return asyncHttpResponse.flatMapMany(httpResponse -> createPollStrategy(httpRequest,
+                    Mono.just(httpResponse), methodParser).flatMapMany(pollStrategy -> {
+                        Mono<OperationStatus<Object>> first =
+                            handleBodyReturnType(httpResponse, methodParser, operationStatusResultType)
+                                .map(operationResult -> new OperationStatus<Object>(
+                                    operationResult,
+                                    pollStrategy.getStatus()))
+                                .switchIfEmpty(
+                                    Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(
+                                        new OperationStatus<>((Object) null, pollStrategy.getStatus()))));
+                        Flux<OperationStatus<Object>> rest =
+                            pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser,
+                                operationStatusResultType, context);
+                        return first.concatWith(rest);
+                    }));
             }
         } else {
             final Mono<HttpResponse> lastAsyncHttpResponse =
                 createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
-                    .flatMap((Function<PollStrategy, Mono<HttpResponse>>) pollStrategy -> pollStrategy.pollUntilDone());
-            return handleRestReturnType(new HttpResponseDecoder(this.serializer()).decode(lastAsyncHttpResponse,
+                    .flatMap((Function<PollStrategy, Mono<HttpResponse>>) PollStrategy::pollUntilDone);
+            return handleRestReturnType(new HttpResponseDecoder(this.getSerializer()).decode(lastAsyncHttpResponse,
                 methodParser), methodParser, returnType, context);
         }
     }
 
     @Override
     protected Object handleResumeOperation(final HttpRequest httpRequest, OperationDescription operationDescription,
-                                           final SwaggerMethodParser methodParser, Type returnType, Context context) {
+        final SwaggerMethodParser methodParser, Type returnType, Context context) {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
         if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
             throw logger.logExceptionAsError(new InvalidReturnTypeException("AzureProxy only supports swagger "
-                + "interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if "
-                + "the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
+                + "interface methods that return Flux (such as " + methodParser.getFullyQualifiedMethodName()
+                + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
         }
 
         PollStrategy.PollStrategyData pollStrategyData =
-            (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
+            (PollStrategy.PollStrategyData) operationDescription.getPollStrategyData();
         PollStrategy pollStrategy = pollStrategyData.initializeStrategy(this, methodParser);
         return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType, context);
     }
 
     private Mono<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest,
-            final Mono<HttpDecodedResponse> asyncOriginalHttpDecodedResponse, final SwaggerMethodParser methodParser) {
+        final Mono<HttpDecodedResponse> asyncOriginalHttpDecodedResponse, final SwaggerMethodParser methodParser) {
         return asyncOriginalHttpDecodedResponse
             .flatMap((Function<HttpDecodedResponse, Mono<PollStrategy>>) originalHttpDecodedResponse -> {
-                final int httpStatusCode = originalHttpDecodedResponse.sourceResponse().statusCode();
-                final HttpResponse originalHttpResponse = originalHttpDecodedResponse.sourceResponse();
+                final int httpStatusCode = originalHttpDecodedResponse.getSourceResponse().getStatusCode();
+                final HttpResponse originalHttpResponse = originalHttpDecodedResponse.getSourceResponse();
                 final int[] longRunningOperationStatusCodes = new int[]{200, 201, 202};
                 return ensureExpectedStatus(originalHttpDecodedResponse, methodParser, longRunningOperationStatusCodes)
                     .flatMap(response -> {
@@ -300,9 +302,9 @@ public final class AzureProxy extends RestProxy {
                         final long delayInMilliseconds =
                             parsedDelayInMilliseconds != null
                                 ? parsedDelayInMilliseconds
-                                : AzureProxy.defaultDelayInMilliseconds();
+                                : AzureProxy.getDefaultDelayInMilliseconds();
 
-                        final HttpMethod originalHttpRequestMethod = originalHttpRequest.httpMethod();
+                        final HttpMethod originalHttpRequestMethod = originalHttpRequest.getHttpMethod();
 
                         PollStrategy pollStrategy = null;
                         if (httpStatusCode == 200) {
@@ -334,7 +336,7 @@ public final class AzureProxy extends RestProxy {
                                 if (pollStrategy == null) {
                                     pollStrategy =
                                         LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser,
-                                            originalHttpRequest, originalHttpDecodedResponse.sourceResponse(),
+                                            originalHttpRequest, originalHttpDecodedResponse.getSourceResponse(),
                                             delayInMilliseconds);
                                 }
                             }
@@ -372,10 +374,10 @@ public final class AzureProxy extends RestProxy {
     }
 
     private Mono<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest,
-            HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
+        HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
         Mono<PollStrategy> pollStrategyMono;
 
-        final HttpMethod httpRequestMethod = httpRequest.httpMethod();
+        final HttpMethod httpRequestMethod = httpRequest.getHttpMethod();
         if (httpRequestMethod == HttpMethod.DELETE
             || httpRequestMethod == HttpMethod.GET
             || httpRequestMethod == HttpMethod.HEAD
@@ -384,7 +386,7 @@ public final class AzureProxy extends RestProxy {
                 new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, httpResponse)));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
-            pollStrategyMono = bufferedOriginalHttpResponse.bodyAsString()
+            pollStrategyMono = bufferedOriginalHttpResponse.getBodyAsString()
                 .map(originalHttpResponseBody -> {
                     if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
                         throw logger.logExceptionAsError(new CloudException(
@@ -392,17 +394,17 @@ public final class AzureProxy extends RestProxy {
                     }
                     PollStrategy pollStrategy;
                     try {
-                        final SerializerAdapter serializer = serializer();
+                        final SerializerAdapter serializer = getSerializer();
                         final ResourceWithProvisioningState resource =
                             serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class,
                                 SerializerEncoding.JSON);
                         if (resource != null
-                            && resource.properties() != null
-                            && !OperationState.isCompleted(resource.properties().provisioningState())) {
+                            && resource.getProperties() != null
+                            && !OperationState.isCompleted(resource.getProperties().getProvisioningState())) {
                             pollStrategy = new ProvisioningStatePollStrategy(
                                 new ProvisioningStatePollStrategy.ProvisioningStatePollStrategyData(
                                     AzureProxy.this, methodParser, httpRequest,
-                                    resource.properties().provisioningState(), delayInMilliseconds));
+                                    resource.getProperties().getProvisioningState(), delayInMilliseconds));
                         } else {
                             pollStrategy = new CompletedPollStrategy(
                                 new CompletedPollStrategy.CompletedPollStrategyData(

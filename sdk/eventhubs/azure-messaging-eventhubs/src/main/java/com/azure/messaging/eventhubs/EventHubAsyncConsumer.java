@@ -24,11 +24,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubAsyncConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * <li>If {@link EventHubAsyncConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
@@ -65,13 +65,13 @@ public class EventHubAsyncConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
-        this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
+        this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.prefetchCount());
-                link.addCredits(options.prefetchCount());
+                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.getPrefetchCount());
+                link.addCredits(options.getPrefetchCount());
 
                 link.setEmptyCreditListener(() -> {
                     if (emitterProcessor.hasDownstreams()) {

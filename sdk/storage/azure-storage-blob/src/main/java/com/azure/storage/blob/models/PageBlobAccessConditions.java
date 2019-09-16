@@ -32,7 +32,7 @@ public final class PageBlobAccessConditions {
      *
      * @return the sequence number access conditions
      */
-    public SequenceNumberAccessConditions sequenceNumberAccessConditions() {
+    public SequenceNumberAccessConditions getSequenceNumberAccessConditions() {
         return sequenceNumberAccessConditions;
     }
 
@@ -42,7 +42,7 @@ public final class PageBlobAccessConditions {
      * @param sequenceNumberAccessConditions the sequence number access conditions to set
      * @return the updated PageBlobAccessConditions object
      */
-    public PageBlobAccessConditions sequenceNumberAccessConditions(
+    public PageBlobAccessConditions setSequenceNumberAccessConditions(
             SequenceNumberAccessConditions sequenceNumberAccessConditions) {
         this.sequenceNumberAccessConditions = sequenceNumberAccessConditions;
         return this;
@@ -55,7 +55,7 @@ public final class PageBlobAccessConditions {
      *
      * @return the modified access conditions
      */
-    public ModifiedAccessConditions modifiedAccessConditions() {
+    public ModifiedAccessConditions getModifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
@@ -67,7 +67,7 @@ public final class PageBlobAccessConditions {
      * @param modifiedAccessConditions the modified access conditions to set
      * @return the updated PageBlobAccessConditions object
      */
-    public PageBlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public PageBlobAccessConditions setModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -78,7 +78,7 @@ public final class PageBlobAccessConditions {
      *
      * @return the lease access conditions
      */
-    public LeaseAccessConditions leaseAccessConditions() {
+    public LeaseAccessConditions getLeaseAccessConditions() {
         return leaseAccessConditions;
     }
 
@@ -89,7 +89,7 @@ public final class PageBlobAccessConditions {
      * @param leaseAccessConditions the lease access conditions to set
      * @return the updated PageBlobAccessConditions object
      */
-    public PageBlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+    public PageBlobAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }

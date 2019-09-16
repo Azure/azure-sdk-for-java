@@ -37,7 +37,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the curve.
      */
-    public KeyCurveName curve() {
+    public KeyCurveName getCurve() {
         return this.curve;
     }
 
@@ -47,7 +47,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @param curve The curve to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public EcKeyCreateOptions curve(KeyCurveName curve) {
+    public EcKeyCreateOptions setCurve(KeyCurveName curve) {
         this.curve = curve;
         return this;
     }
@@ -59,7 +59,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions keyOperations(KeyOperation... keyOperations) {
+    public EcKeyCreateOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
@@ -71,8 +71,8 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions notBefore(OffsetDateTime notBefore) {
-        super.notBefore(notBefore);
+    public EcKeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
+        super.setNotBefore(notBefore);
         return this;
     }
 
@@ -83,8 +83,8 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions expires(OffsetDateTime expires) {
-        super.expires(expires);
+    public EcKeyCreateOptions setExpires(OffsetDateTime expires) {
+        super.setExpires(expires);
         return this;
     }
 
@@ -95,8 +95,8 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions tags(Map<String, String> tags) {
-        super.tags(tags);
+    public EcKeyCreateOptions setTags(Map<String, String> tags) {
+        super.setTags(tags);
         return this;
     }
 
@@ -106,8 +106,8 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @param enabled The enabled value to set
      * @return the EcKeyCreateOptions object itself.
      */
-    public KeyCreateOptions enabled(Boolean enabled) {
-        super.enabled(enabled);
+    public KeyCreateOptions setEnabled(Boolean enabled) {
+        super.setEnabled(enabled);
         return this;
     }
 
@@ -116,7 +116,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @param hsm The hsm value to set.
      * @return the EcKeyCreateOptions object itself.
      */
-    public EcKeyCreateOptions hsm(Boolean hsm) {
+    public EcKeyCreateOptions setHsm(Boolean hsm) {
         this.hsm = hsm;
         this.keyType = hsm ? KeyType.EC_HSM : KeyType.EC;
         return this;
@@ -126,7 +126,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * Get the hsm value of the key being created.
      * @return the hsm value.
      */
-    public Boolean hsm() {
+    public Boolean isHsm() {
         return this.hsm;
     }
 }

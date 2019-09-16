@@ -36,15 +36,15 @@ public final class CloudException extends HttpResponseException {
     }
 
     @Override
-    public CloudError value() {
-        return (CloudError) super.value();
+    public CloudError getValue() {
+        return (CloudError) super.getValue();
     }
 
     @Override
     public String toString() {
         String message = super.toString();
-        if (value() != null && value().message() != null) {
-            message = message + ": " + value().message();
+        if (getValue() != null && getValue().getMessage() != null) {
+            message = message + ": " + getValue().getMessage();
         }
         return message;
     }

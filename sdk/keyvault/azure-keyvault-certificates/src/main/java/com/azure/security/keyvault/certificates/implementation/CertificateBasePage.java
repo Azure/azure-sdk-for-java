@@ -33,7 +33,7 @@ public final class CertificateBasePage implements Page<CertificateBase> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class CertificateBasePage implements Page<CertificateBase> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<CertificateBase> items() {
+    public List<CertificateBase> getItems() {
         return items;
     }
 }

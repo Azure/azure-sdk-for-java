@@ -10,9 +10,9 @@ import java.util.Locale;
 /**
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a blob. Setting
  * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
- * the values are set, this should be serialized with toString and set as the permissions field on a
- * {@link BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * the values are set, this should be serialized with toString and set as the permissions field on a {@link
+ * BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
 public final class BlobSASPermission {
 
@@ -37,7 +37,6 @@ public final class BlobSASPermission {
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code BlobSASPermission}.
-     *
      * @return A {@code BlobSASPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
      */
@@ -64,7 +63,8 @@ public final class BlobSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permString, c));
             }
         }
         return permissions;
@@ -73,7 +73,7 @@ public final class BlobSASPermission {
     /**
      * @return the read permission status.
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -83,7 +83,7 @@ public final class BlobSASPermission {
      * @param read Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission read(boolean read) {
+    public BlobSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -91,7 +91,7 @@ public final class BlobSASPermission {
     /**
      * @return the add permission status.
      */
-    public boolean add() {
+    public boolean getAdd() {
         return add;
     }
 
@@ -101,7 +101,7 @@ public final class BlobSASPermission {
      * @param add Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission add(boolean add) {
+    public BlobSASPermission setAdd(boolean add) {
         this.add = add;
         return this;
     }
@@ -109,7 +109,7 @@ public final class BlobSASPermission {
     /**
      * @return the create permission status.
      */
-    public boolean create() {
+    public boolean getCreate() {
         return create;
     }
 
@@ -119,7 +119,7 @@ public final class BlobSASPermission {
      * @param create Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission create(boolean create) {
+    public BlobSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -127,7 +127,7 @@ public final class BlobSASPermission {
     /**
      * @return the write permission status.
      */
-    public boolean write() {
+    public boolean getWrite() {
         return write;
     }
 
@@ -137,7 +137,7 @@ public final class BlobSASPermission {
      * @param write Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission write(boolean write) {
+    public BlobSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -145,7 +145,7 @@ public final class BlobSASPermission {
     /**
      * @return the delete permission status.
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return delete;
     }
 
@@ -155,7 +155,7 @@ public final class BlobSASPermission {
      * @param delete Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission delete(boolean delete) {
+    public BlobSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }

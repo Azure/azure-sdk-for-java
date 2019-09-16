@@ -53,7 +53,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return cache.getToken()
             .flatMap(token -> {
-                context.httpRequest().headers().put(AUTHORIZATION_HEADER, BEARER + " " + token.token());
+                context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
                 return next.process();
             });
     }

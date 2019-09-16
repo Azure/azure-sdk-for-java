@@ -28,6 +28,9 @@ public final class ExportPlatform extends ExpandableStringEnum<ExportPlatform> {
     /** Static value ONNX for ExportPlatform. */
     public static final ExportPlatform ONNX = fromString("ONNX");
 
+    /** Static value VAIDK for ExportPlatform. */
+    public static final ExportPlatform VAIDK = fromString("VAIDK");
+
     /**
      * Creates or finds a ExportPlatform from its string representation.
      * @param name a name to look for

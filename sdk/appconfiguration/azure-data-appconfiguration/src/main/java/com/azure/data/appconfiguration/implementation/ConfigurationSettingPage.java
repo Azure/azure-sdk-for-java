@@ -25,7 +25,7 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
      * @return The link to the next page or {@code null} if there are no more resources to fetch.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -35,7 +35,7 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
      * @return The list of {@link ConfigurationSetting ConfigurationSettings}.
      */
     @Override
-    public List<ConfigurationSetting> items() {
+    public List<ConfigurationSetting> getItems() {
         return items;
     }
 }

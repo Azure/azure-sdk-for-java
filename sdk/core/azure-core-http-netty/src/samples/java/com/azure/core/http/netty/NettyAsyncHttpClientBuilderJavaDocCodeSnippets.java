@@ -18,8 +18,8 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
 
         // BEGIN: com.azure.core.http.netty.instantiation-simple
         HttpClient client = new NettyAsyncHttpClientBuilder()
-            .setPort(8080)
-            .setWiretap(true)
+            .port(8080)
+            .wiretap(true)
             .build();
         // END: com.azure.core.http.netty.instantiation-simple
     }
@@ -32,7 +32,7 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup
         int threadCount = 5;
         HttpClient client = new NettyAsyncHttpClientBuilder()
-            .setNioEventLoopGroup(new NioEventLoopGroup(threadCount))
+            .nioEventLoopGroup(new NioEventLoopGroup(threadCount))
             .build();
         // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup
     }

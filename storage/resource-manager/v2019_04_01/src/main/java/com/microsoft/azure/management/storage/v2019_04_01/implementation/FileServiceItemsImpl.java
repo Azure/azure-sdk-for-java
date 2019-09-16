@@ -8,14 +8,13 @@
 
 package com.microsoft.azure.management.storage.v2019_04_01.implementation;
 
-import com.microsoft.azure.management.storage.v2019_04_01.ListContainerItems;
+import com.microsoft.azure.management.storage.v2019_04_01.FileServiceItems;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
-import com.microsoft.azure.management.storage.v2019_04_01.ListContainerItem;
 
-class ListContainerItemsImpl extends WrapperImpl<ListContainerItemsInner> implements ListContainerItems {
+class FileServiceItemsImpl extends WrapperImpl<FileServiceItemsInner> implements FileServiceItems {
     private final StorageManager manager;
-    ListContainerItemsImpl(ListContainerItemsInner inner, StorageManager manager) {
+    FileServiceItemsImpl(FileServiceItemsInner inner, StorageManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -26,7 +25,7 @@ class ListContainerItemsImpl extends WrapperImpl<ListContainerItemsInner> implem
     }
 
     @Override
-    public List<ListContainerItem> value() {
+    public List<FileServicePropertiesInner> value() {
         return this.inner().value();
     }
 

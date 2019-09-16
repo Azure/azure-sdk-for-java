@@ -12,43 +12,43 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImageRegionCreateEntry model.
+ * Entry associating a region to an image.
  */
 public class ImageRegionCreateEntry {
     /**
-     * The imageId property.
+     * Id of the image.
      */
-    @JsonProperty(value = "imageId")
+    @JsonProperty(value = "imageId", required = true)
     private UUID imageId;
 
     /**
-     * The tagId property.
+     * Id of the tag associated with this region.
      */
-    @JsonProperty(value = "tagId")
+    @JsonProperty(value = "tagId", required = true)
     private UUID tagId;
 
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**

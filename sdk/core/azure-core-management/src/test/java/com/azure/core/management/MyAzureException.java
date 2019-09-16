@@ -19,7 +19,7 @@ public class MyAzureException extends HttpResponseException {
     }
 
     @Override
-    public HttpBinJSON value() {
-        return (HttpBinJSON) super.value();
+    public HttpBinJSON getValue() {
+        return (HttpBinJSON) super.getValue();
     }
 }

@@ -68,8 +68,8 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 0
-            assert testMetadata.equals(it.value().metadata())
+            assert it.getValue().getApproximateMessagesCount() == 0
+            assert testMetadata.equals(it.getValue().getMetadata())
         }.verifyComplete()
     }
 
@@ -93,14 +93,14 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifierBefore.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert expectMetadataInCreate.equals(it.value().metadata())
+            assert expectMetadataInCreate.equals(it.getValue().getMetadata())
         }.verifyComplete()
         setMetadataVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204) }
             .verifyComplete()
         getPropertiesVerifierAfter.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert expectMetadataInSet.equals(it.value().metadata)
+            assert expectMetadataInSet.equals(it.getValue().metadata)
         }.verifyComplete()
         where:
         matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
@@ -161,12 +161,12 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         def accessPolicy = new AccessPolicy()
-            .permission("raup")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("raup")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
         def permission = new SignedIdentifier()
-            .id("testpermission")
-            .accessPolicy(accessPolicy)
+            .setId("testpermission")
+            .setAccessPolicy(accessPolicy)
         when:
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicyWithResponse(Collections.singletonList(permission)))
         def getAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.getAccessPolicy())
@@ -182,13 +182,13 @@ class QueueAysncAPITests extends APISpec {
     def "Set invalid access policy"() {
         given:
         def accessPolicy = new AccessPolicy()
-            .permission("r")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("r")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
 
         def permission = new SignedIdentifier()
-            .id("theidofthispermissionislongerthanwhatisallowedbytheserviceandshouldfail")
-            .accessPolicy(accessPolicy)
+            .setId("theidofthispermissionislongerthanwhatisallowedbytheserviceandshouldfail")
+            .setAccessPolicy(accessPolicy)
         queueAsyncClient.create().block()
         when:
         def setAccessPolicyVerifier = StepVerifier.create(queueAsyncClient.setAccessPolicyWithResponse(Collections.singletonList(permission)))
@@ -201,15 +201,15 @@ class QueueAysncAPITests extends APISpec {
     def "Set multiple access policies"() {
         given:
         def accessPolicy = new AccessPolicy()
-            .permission("r")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("r")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
 
         def permissions = new ArrayList<>()
         for (int i = 0; i < 3; i++) {
             permissions.add(new SignedIdentifier()
-                .id("policy" + i)
-                .accessPolicy(accessPolicy))
+                .setId("policy" + i)
+                .setAccessPolicy(accessPolicy))
         }
         queueAsyncClient.create().block()
         when:
@@ -231,15 +231,15 @@ class QueueAysncAPITests extends APISpec {
     def "Set too many access policies"() {
         given:
         def accessPolicy = new AccessPolicy()
-            .permission("r")
-            .start(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .expiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setPermission("r")
+            .setStart(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
+            .setExpiry(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
 
         def permissions = new ArrayList<>()
         for (int i = 0; i < 6; i++) {
             permissions.add(new SignedIdentifier()
-                .id("policy" + i)
-                .accessPolicy(accessPolicy))
+                .setId("policy" + i)
+                .setAccessPolicy(accessPolicy))
         }
         queueAsyncClient.create().block()
         when:
@@ -262,7 +262,7 @@ class QueueAysncAPITests extends APISpec {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
         peekMsgVerifier.assertNext {
-            assert expectMsg.equals(it.messageText())
+            assert expectMsg.equals(it.getMessageText())
             assert !it.hasNext()
         }
     }
@@ -278,7 +278,7 @@ class QueueAysncAPITests extends APISpec {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
         peekMsgVerifier.assertNext {
-            assert it.messageText() == null
+            assert it.getMessageText() == null
             assert !it.hasNext()
         }
     }
@@ -304,7 +304,7 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages())
         then:
         dequeueMsgVerifier.assertNext {
-            assert expectMsg.equals(it.messageText())
+            assert expectMsg.equals(it.getMessageText())
         }.verifyComplete()
     }
 
@@ -319,9 +319,9 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages(2))
         then:
         dequeueMsgVerifier.assertNext {
-            assert expectMsg1.equals(it.messageText())
+            assert expectMsg1.equals(it.getMessageText())
         }.assertNext {
-            assert expectMsg2.equals(it.messageText())
+            assert expectMsg2.equals(it.getMessageText())
         }.verifyComplete()
     }
 
@@ -345,7 +345,7 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
         then:
         peekMsgVerifier.assertNext {
-            assert expectMsg.equals(it.messageText())
+            assert expectMsg.equals(it.getMessageText())
         }.verifyComplete()
     }
 
@@ -360,9 +360,9 @@ class QueueAysncAPITests extends APISpec {
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(2))
         then:
         peekMsgVerifier.assertNext {
-            assert expectMsg1.equals(it.messageText())
+            assert expectMsg1.equals(it.getMessageText())
         }.assertNext {
-            assert expectMsg2.equals(it.messageText())
+            assert expectMsg2.equals(it.getMessageText())
         }.verifyComplete()
     }
 
@@ -399,14 +399,14 @@ class QueueAysncAPITests extends APISpec {
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 3
+            assert it.getValue().getApproximateMessagesCount() == 3
         }.verifyComplete()
         clearMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 0
+            assert it.getValue().getApproximateMessagesCount() == 0
         }.verifyComplete()
     }
 
@@ -428,12 +428,12 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsg = queueAsyncClient.dequeueMessages().blockFirst()
         when:
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getPropertiesWithResponse())
-        def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(dequeueMsg.messageId(), dequeueMsg.popReceipt()))
+        def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt()))
         def getPropertiesAfterVerifier = StepVerifier.create(queueAsyncClient.getPropertiesWithResponse())
         then:
         getPropertiesVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 3
+            assert it.getValue().getApproximateMessagesCount() == 3
 
         }.verifyComplete()
         deleteMsgVerifier.assertNext {
@@ -441,7 +441,7 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().approximateMessagesCount() == 2
+            assert it.getValue().getApproximateMessagesCount() == 2
         }.verifyComplete()
     }
 
@@ -453,8 +453,8 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.enqueueMessage(expectMsg).block()
         def dequeueMessage = queueAsyncClient.dequeueMessages().blockFirst()
         when:
-        def deleteMessageId = messageId ? dequeueMessage.messageId() : dequeueMessage.messageId() + "Random"
-        def deletePopReceipt = popReceipt ? dequeueMessage.popReceipt() : dequeueMessage.popReceipt() + "Random"
+        def deleteMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
+        def deletePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(deleteMessageId, deletePopReceipt))
         then:
         deleteMsgVerifier.verifyErrorSatisfies {
@@ -476,14 +476,14 @@ class QueueAysncAPITests extends APISpec {
         def dequeueMsg = queueAsyncClient.dequeueMessages().blockFirst()
         when:
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(updateMsg,
-            dequeueMsg.messageId(), dequeueMsg.popReceipt(), Duration.ofSeconds(1)))
+            dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), Duration.ofSeconds(1)))
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages().delaySubscription(Duration.ofSeconds(2)))
         then:
         updateMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
         }.verifyComplete()
         peekMsgVerifier.assertNext {
-            assert updateMsg.equals(it.messageText())
+            assert updateMsg.equals(it.getMessageText())
         }.verifyComplete()
     }
 
@@ -495,8 +495,8 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.enqueueMessage("test message before update").block()
         def dequeueMessage = queueAsyncClient.dequeueMessages().blockFirst()
         when:
-        def updateMessageId = messageId ? dequeueMessage.messageId() : dequeueMessage.messageId() + "Random"
-        def updatePopReceipt = popReceipt ? dequeueMessage.popReceipt() : dequeueMessage.popReceipt() + "Random"
+        def updateMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
+        def updatePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(updateMsg, updateMessageId, updatePopReceipt, Duration.ofSeconds(1)))
         then:
         updateMsgVerifier.verifyErrorSatisfies {

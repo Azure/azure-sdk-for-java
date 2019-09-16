@@ -46,7 +46,7 @@ public class EventProcessorBuilderTest {
             .partitionProcessorFactory((() -> new PartitionProcessor() {
                     @Override
                     public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-                        return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));
+                        return Mono.fromRunnable(() -> System.out.println(eventData.getSequenceNumber()));
                     }
                 }))
             .buildEventProcessor();
@@ -64,7 +64,7 @@ public class EventProcessorBuilderTest {
             .partitionProcessorFactory((() -> new PartitionProcessor() {
                     @Override
                     public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-                        return Mono.fromRunnable(() -> System.out.println(eventData.sequenceNumber()));
+                        return Mono.fromRunnable(() -> System.out.println(eventData.getSequenceNumber()));
                     }
                 }))
             .partitionManager(new InMemoryPartitionManager())

@@ -3,24 +3,23 @@
 
 package com.azure.storage.common;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -90,7 +90,8 @@ public final class Utility {
         return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
-    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString, Function<String, T> valueParser) {
+    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString,
+        Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
         if (ImplUtils.isNullOrEmpty(queryString)) {
@@ -281,7 +282,8 @@ public final class Utility {
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -297,7 +299,8 @@ public final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
         }
     }
 
@@ -334,7 +337,8 @@ public final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT,
+                    Constants.MessageConstants.INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -342,8 +346,8 @@ public final class Utility {
     }
 
     /**
-     * Wraps any potential error responses from the service and applies post processing of the response's eTag header
-     * to standardize the value.
+     * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
+     * standardize the value.
      *
      * @param response Response from a service call
      * @param errorWrapper Error wrapping function that is applied to the response
@@ -381,14 +385,14 @@ public final class Utility {
             }
 
             try {
-                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("headers").invoke(response);
+                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("getHeaders").invoke(response);
                 //
                 if (eTag != null) {
                     rawHeaders.put(ETAG, eTag);
                 } else {
                     HttpHeader eTagHeader = rawHeaders.get(ETAG);
-                    if (eTagHeader != null && eTagHeader.value() != null) {
-                        eTag = eTagHeader.value().replace("\"", "");
+                    if (eTagHeader != null && eTagHeader.getValue() != null) {
+                        eTag = eTagHeader.getValue().replace("\"", "");
                         rawHeaders.put(ETAG, eTag);
                     }
                 }
@@ -434,13 +438,13 @@ public final class Utility {
     public static URL appendToURLPath(URL baseURL, String name) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
-        if (builder.path() == null) {
-            builder.path("/");
-        } else if (!builder.path().endsWith("/")) {
-            builder.path(builder.path() + "/");
+        if (builder.getPath() == null) {
+            builder.setPath("/");
+        } else if (!builder.getPath().endsWith("/")) {
+            builder.setPath(builder.getPath() + "/");
         }
 
-        builder.path(builder.path() + name);
+        builder.setPath(builder.getPath() + name);
 
         try {
             return builder.toURL();
@@ -460,11 +464,12 @@ public final class Utility {
     public static URL stripLastPathSegment(URL baseURL) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
-        if (builder.path() == null || !builder.path().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
+        if (builder.getPath() == null || !builder.getPath().contains("/")) {
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
         }
 
-        builder.path(builder.path().substring(0, builder.path().lastIndexOf("/")));
+        builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
         try {
             return builder.toURL();
         } catch (MalformedURLException ex) {
@@ -490,8 +495,8 @@ public final class Utility {
     }
 
     /**
-     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of
-     * entity length and the input length.
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
+     * and the input length.
      *
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.

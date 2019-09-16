@@ -63,14 +63,14 @@ public class HttpResponseException extends AzureException {
     /**
      * @return information about the associated HTTP response
      */
-    public HttpResponse response() {
+    public HttpResponse getResponse() {
         return response;
     }
 
     /**
      * @return the HTTP response value
      */
-    public Object value() {
+    public Object getValue() {
         return value;
     }
 }

@@ -68,7 +68,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -78,7 +78,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse serviceEndpoint(String serviceEndpoint) {
+    public ListBlobsFlatSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the containerName value.
      */
-    public String containerName() {
+    public String getContainerName() {
         return this.containerName;
     }
 
@@ -98,7 +98,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param containerName the containerName value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse containerName(String containerName) {
+    public ListBlobsFlatSegmentResponse setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -108,7 +108,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the prefix value.
      */
-    public String prefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -118,7 +118,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse prefix(String prefix) {
+    public ListBlobsFlatSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -128,7 +128,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -138,7 +138,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param marker the marker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse marker(String marker) {
+    public ListBlobsFlatSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -148,7 +148,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the maxResults value.
      */
-    public int maxResults() {
+    public int getMaxResults() {
         return this.maxResults;
     }
 
@@ -158,7 +158,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse maxResults(int maxResults) {
+    public ListBlobsFlatSegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -168,7 +168,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the delimiter value.
      */
-    public String delimiter() {
+    public String getDelimiter() {
         return this.delimiter;
     }
 
@@ -178,7 +178,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param delimiter the delimiter value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse delimiter(String delimiter) {
+    public ListBlobsFlatSegmentResponse setDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -188,7 +188,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the segment value.
      */
-    public BlobFlatListSegment segment() {
+    public BlobFlatListSegment getSegment() {
         return this.segment;
     }
 
@@ -198,7 +198,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param segment the segment value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse segment(BlobFlatListSegment segment) {
+    public ListBlobsFlatSegmentResponse setSegment(BlobFlatListSegment segment) {
         this.segment = segment;
         return this;
     }
@@ -208,7 +208,7 @@ public final class ListBlobsFlatSegmentResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -218,7 +218,7 @@ public final class ListBlobsFlatSegmentResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListBlobsFlatSegmentResponse nextMarker(String nextMarker) {
+    public ListBlobsFlatSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

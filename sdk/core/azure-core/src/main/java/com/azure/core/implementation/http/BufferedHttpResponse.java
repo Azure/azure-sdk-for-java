@@ -26,44 +26,44 @@ public final class BufferedHttpResponse extends HttpResponse {
      */
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = innerHttpResponse.bodyAsByteArray().cache();
-        this.request(innerHttpResponse.request());
+        this.cachedBody = innerHttpResponse.getBodyAsByteArray().cache();
+        this.setRequest(innerHttpResponse.getRequest());
     }
 
     @Override
-    public int statusCode() {
-        return innerHttpResponse.statusCode();
+    public int getStatusCode() {
+        return innerHttpResponse.getStatusCode();
     }
 
     @Override
-    public String headerValue(String name) {
-        return innerHttpResponse.headerValue(name);
+    public String getHeaderValue(String name) {
+        return innerHttpResponse.getHeaderValue(name);
     }
 
     @Override
-    public HttpHeaders headers() {
-        return innerHttpResponse.headers();
+    public HttpHeaders getHeaders() {
+        return innerHttpResponse.getHeaders();
     }
 
     @Override
-    public Mono<byte[]> bodyAsByteArray() {
+    public Mono<byte[]> getBodyAsByteArray() {
         return cachedBody;
     }
 
     @Override
-    public Flux<ByteBuffer> body() {
-        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
+    public Flux<ByteBuffer> getBody() {
+        return getBodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
     }
 
     @Override
-    public Mono<String> bodyAsString() {
-        return bodyAsByteArray()
+    public Mono<String> getBodyAsString() {
+        return getBodyAsByteArray()
                 .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
     }
 
     @Override
-    public Mono<String> bodyAsString(Charset charset) {
-        return bodyAsByteArray()
+    public Mono<String> getBodyAsString(Charset charset) {
+        return getBodyAsByteArray()
                 .map(bytes -> bytes == null ? null : new String(bytes, charset));
     }
 

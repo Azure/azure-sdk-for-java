@@ -33,7 +33,7 @@ public final class DeletedCertificatePage implements Page<DeletedCertificate> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class DeletedCertificatePage implements Page<DeletedCertificate> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<DeletedCertificate> items() {
+    public List<DeletedCertificate> getItems() {
         return items;
     }
 }

@@ -41,10 +41,10 @@ public class KeyWrapUnwrapOperationsAsync {
         // Let's wrap a simple dummy key content.
         cryptoAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plainText)
             .subscribe(keyWrapResult -> {
-                System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.encryptedKey().length, keyWrapResult.algorithm().toString());
+                System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.
-                cryptoAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyWrapResult.encryptedKey())
-                    .subscribe(keyUnwrapResult -> System.out.printf("Returned unwrapped key size is %d bytes\n", keyUnwrapResult.key().length));
+                cryptoAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyWrapResult.getEncryptedKey())
+                    .subscribe(keyUnwrapResult -> System.out.printf("Returned unwrapped key size is %d bytes\n", keyUnwrapResult.getKey().length));
             });
 
         Thread.sleep(5000);
@@ -55,8 +55,8 @@ public class KeyWrapUnwrapOperationsAsync {
 
         // Convert the symmetric key encoded content to Json Web key.
         JsonWebKey symmetricKey = JsonWebKey.fromAes(new SecretKeySpec(symmetrickeyContent, "AES"))
-            .kty(KeyType.OCT)
-            .keyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
+            .setKty(KeyType.OCT)
+            .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
 
         // Configure the symmetric key in a new crypto client.
         CryptographyAsyncClient symmetricKeyCryptoAsyncClient = new CryptographyClientBuilder()
@@ -67,10 +67,10 @@ public class KeyWrapUnwrapOperationsAsync {
         // Note the implementation of A128CBC in this library uses PKCS7 padding.
         symmetricKeyCryptoAsyncClient.wrapKey(KeyWrapAlgorithm.A128KW, keyContentToWrap)
             .subscribe(symKeyWrapResult -> {
-                System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", symKeyWrapResult.encryptedKey().length, symKeyWrapResult.algorithm().toString());
+                System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", symKeyWrapResult.getEncryptedKey().length, symKeyWrapResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.
-                symmetricKeyCryptoAsyncClient.unwrapKey(KeyWrapAlgorithm.A128KW, symKeyWrapResult.encryptedKey())
-                    .subscribe(symKeyUnwrapResult -> System.out.printf("Returned unwrapped key size is %d bytes\n", symKeyUnwrapResult.key().length));
+                symmetricKeyCryptoAsyncClient.unwrapKey(KeyWrapAlgorithm.A128KW, symKeyWrapResult.getEncryptedKey())
+                    .subscribe(symKeyUnwrapResult -> System.out.printf("Returned unwrapped key size is %d bytes\n", symKeyUnwrapResult.getKey().length));
             });
 
         //Block main thread to let async operations finish

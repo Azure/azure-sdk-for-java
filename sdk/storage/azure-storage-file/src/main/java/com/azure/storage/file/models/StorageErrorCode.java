@@ -248,11 +248,6 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
     public static final StorageErrorCode FILE_LOCK_CONFLICT = fromString("FileLockConflict");
 
     /**
-     * Static value FilePermissionInvalid for StorageErrorCode.
-     */
-    public static final StorageErrorCode FILE_INVALID_PERMISSION = fromString("FileInvalidPermission");
-
-    /**
      * Static value InvalidFileOrDirectoryPathName for StorageErrorCode.
      */
     public static final StorageErrorCode INVALID_FILE_OR_DIRECTORY_PATH_NAME = fromString("InvalidFileOrDirectoryPathName");

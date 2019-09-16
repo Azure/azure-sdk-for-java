@@ -33,88 +33,92 @@ public class FileSmbProperties {
     /**
      * @return The file's permission key.
      */
-    public String filePermissionKey() {
+    public String getFilePermissionKey() {
         return filePermissionKey;
     }
 
     /**
      * @return The file's {@link NtfsFileAttributes}.
      */
-    public EnumSet<NtfsFileAttributes> ntfsFileAttributes() {
+    public EnumSet<NtfsFileAttributes> getNtfsFileAttributes() {
         return ntfsFileAttributes;
     }
 
     /**
      * @return The file's creation time.
      */
-    public OffsetDateTime fileCreationTime() {
+    public OffsetDateTime getFileCreationTime() {
         return fileCreationTime;
     }
 
     /**
      * @return The file's last write time.
      */
-    public OffsetDateTime fileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return fileLastWriteTime;
     }
 
     /**
      * @return The file's change time.
      */
-    public OffsetDateTime fileChangeTime() {
+    public OffsetDateTime getFileChangeTime() {
         return fileChangeTime;
     }
 
     /**
      * @return The file's ID.
      */
-    public String fileId() {
+    public String getFileId() {
         return fileId;
     }
 
     /**
      * @return The file's parent ID.
      */
-    public String parentId() {
+    public String getParentId() {
         return parentId;
     }
 
     /**
      * Sets the file permission key.
+     *
      * @param filePermissionKey The file permission key.
      * @return the updated FileSmbProperties object.
      */
-    public FileSmbProperties filePermissionKey(String filePermissionKey) {
+    public FileSmbProperties setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
 
     /**
      * Sets the ntfs file attributes.
+     *
      * @param ntfsFileAttributes An enum set of the ntfs file attributes.
      * @return the updated FileSmbProperties object.
      */
-    public FileSmbProperties ntfsFileAttributes(EnumSet<NtfsFileAttributes> ntfsFileAttributes) {
+    public FileSmbProperties setNtfsFileAttributes(EnumSet<NtfsFileAttributes> ntfsFileAttributes) {
         this.ntfsFileAttributes = ntfsFileAttributes;
         return this;
     }
 
     /**
      * Sets the file creation time.
+     *
      * @param fileCreationTime The file creation time.
      * @return the updated FileSmbProperties object..
      */
-    public FileSmbProperties fileCreationTime(OffsetDateTime fileCreationTime) {
+    public FileSmbProperties setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
 
     /**
      * Sets the file last write time.
+     *
      * @param fileLastWriteTime The file last write time.
      * @return the updated FileSmbProperties object.
      */
-    public FileSmbProperties fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public FileSmbProperties setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -123,11 +127,12 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the file permission header.
+     *
      * @param filePermission The file permission.
      * @param defaultValue The default file permission header value.
      * @return The value of the file permission header
      */
-    String filePermission(String filePermission, String defaultValue) {
+    String setFilePermission(String filePermission, String defaultValue) {
         return (filePermission == null) && (filePermissionKey == null)
             ? defaultValue
             : filePermission;
@@ -135,10 +140,11 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the ntfs attributes header.
+     *
      * @param defaultValue The default ntfs attributes header value.
      * @return The value of the ntfs attributes header
      */
-    String ntfsFileAttributes(String defaultValue) {
+    String setNtfsFileAttributes(String defaultValue) {
         return ntfsFileAttributes == null
             ? defaultValue
             : NtfsFileAttributes.toString(ntfsFileAttributes);
@@ -146,10 +152,11 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the creation time header.
+     *
      * @param defaultValue The default creation time header value.
      * @return The value of the creation time header
      */
-    String fileCreationTime(String defaultValue) {
+    String setFileCreationTime(String defaultValue) {
         return fileCreationTime == null
             ? defaultValue
             : parseFileSMBDate(fileCreationTime);
@@ -157,10 +164,11 @@ public class FileSmbProperties {
 
     /**
      * Determines the value of the last write time header.
+     *
      * @param defaultValue The default last write time header value.
      * @return The value of the last write time header
      */
-    String fileLastWriteTime(String defaultValue) {
+    String setFileLastWriteTime(String defaultValue) {
         return fileLastWriteTime == null
             ? defaultValue
             : parseFileSMBDate(fileLastWriteTime);
@@ -169,6 +177,7 @@ public class FileSmbProperties {
     /**
      * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
      * file SMB properties
+     *
      * @param time the <code>OffsetDateTime</code> to be interpreted as a {@code String}
      * @return The {@code String} representing the date
      */
@@ -178,13 +187,17 @@ public class FileSmbProperties {
 
     /**
      * Creates a new FileSmbProperties object from HttpHeaders
+     *
      * @param httpHeaders The headers to construct FileSmbProperties from
      */
     FileSmbProperties(HttpHeaders httpHeaders) {
         this.filePermissionKey = httpHeaders.value(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
-        this.ntfsFileAttributes = NtfsFileAttributes.toAttributes(httpHeaders.value(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
-        this.fileCreationTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_CREATION_TIME));
-        this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
+        this.ntfsFileAttributes = NtfsFileAttributes
+            .toAttributes(httpHeaders.value(FileConstants.HeaderConstants.FILE_ATTRIBUTES));
+        this.fileCreationTime = OffsetDateTime.parse(httpHeaders
+            .value(FileConstants.HeaderConstants.FILE_CREATION_TIME));
+        this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders
+            .value(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
         this.fileChangeTime = OffsetDateTime.parse(httpHeaders.value(FileConstants.HeaderConstants.FILE_CHANGE_TIME));
         this.fileId = httpHeaders.value(FileConstants.HeaderConstants.FILE_ID);
         this.parentId = httpHeaders.value(FileConstants.HeaderConstants.FILE_PARENT_ID);

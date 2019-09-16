@@ -22,10 +22,10 @@ public class RetryOptionsTest {
         final RetryOptions options = new RetryOptions();
 
         // Assert
-        Assert.assertEquals(maxRetries, options.maxRetries());
-        Assert.assertEquals(RetryMode.EXPONENTIAL, options.retryMode());
-        Assert.assertEquals(defaultTimeout, options.maxDelay());
-        Assert.assertEquals(defaultTimeout, options.tryTimeout());
+        Assert.assertEquals(maxRetries, options.getMaxRetries());
+        Assert.assertEquals(RetryMode.EXPONENTIAL, options.getRetryMode());
+        Assert.assertEquals(defaultTimeout, options.getMaxDelay());
+        Assert.assertEquals(defaultTimeout, options.getTryTimeout());
     }
 
     /**
@@ -42,18 +42,18 @@ public class RetryOptionsTest {
         final RetryOptions options = new RetryOptions();
 
         // Act
-        final RetryOptions actual = options.retryMode(retryMode)
-            .maxDelay(maxDelay)
-            .delay(delay)
-            .maxRetries(retries)
-            .tryTimeout(tryTimeout);
+        final RetryOptions actual = options.setRetryMode(retryMode)
+            .setMaxDelay(maxDelay)
+            .setDelay(delay)
+            .setMaxRetries(retries)
+            .setTryTimeout(tryTimeout);
 
         // Assert
-        Assert.assertEquals(delay, actual.delay());
-        Assert.assertEquals(maxDelay, actual.maxDelay());
-        Assert.assertEquals(tryTimeout, actual.tryTimeout());
-        Assert.assertEquals(retries, actual.maxRetries());
-        Assert.assertEquals(retryMode, actual.retryMode());
+        Assert.assertEquals(delay, actual.getDelay());
+        Assert.assertEquals(maxDelay, actual.getMaxDelay());
+        Assert.assertEquals(tryTimeout, actual.getTryTimeout());
+        Assert.assertEquals(retries, actual.getMaxRetries());
+        Assert.assertEquals(retryMode, actual.getRetryMode());
     }
 
     /**
@@ -74,11 +74,11 @@ public class RetryOptionsTest {
         final int newRetries = 5;
         final RetryMode newRetryMode = RetryMode.EXPONENTIAL;
 
-        final RetryOptions original = new RetryOptions().retryMode(retryMode)
-            .maxDelay(maxDelay)
-            .delay(delay)
-            .maxRetries(retries)
-            .tryTimeout(tryTimeout);
+        final RetryOptions original = new RetryOptions().setRetryMode(retryMode)
+            .setMaxDelay(maxDelay)
+            .setDelay(delay)
+            .setMaxRetries(retries)
+            .setTryTimeout(tryTimeout);
 
         // Act
         final RetryOptions clone = original.clone();
@@ -86,43 +86,43 @@ public class RetryOptionsTest {
         Assert.assertEquals(original, clone);
 
         final RetryOptions actual = clone
-            .retryMode(newRetryMode)
-            .maxDelay(newMaxDelay)
-            .delay(newDelay)
-            .maxRetries(newRetries)
-            .tryTimeout(newTryTimeout);
+            .setRetryMode(newRetryMode)
+            .setMaxDelay(newMaxDelay)
+            .setDelay(newDelay)
+            .setMaxRetries(newRetries)
+            .setTryTimeout(newTryTimeout);
 
         // Assert
         Assert.assertNotSame(original, actual);
-        Assert.assertEquals(delay, original.delay());
-        Assert.assertEquals(maxDelay, original.maxDelay());
-        Assert.assertEquals(tryTimeout, original.tryTimeout());
-        Assert.assertEquals(retries, original.maxRetries());
-        Assert.assertEquals(retryMode, original.retryMode());
+        Assert.assertEquals(delay, original.getDelay());
+        Assert.assertEquals(maxDelay, original.getMaxDelay());
+        Assert.assertEquals(tryTimeout, original.getTryTimeout());
+        Assert.assertEquals(retries, original.getMaxRetries());
+        Assert.assertEquals(retryMode, original.getRetryMode());
 
-        Assert.assertEquals(newDelay, actual.delay());
-        Assert.assertEquals(newMaxDelay, actual.maxDelay());
-        Assert.assertEquals(newTryTimeout, actual.tryTimeout());
-        Assert.assertEquals(newRetries, actual.maxRetries());
-        Assert.assertEquals(newRetryMode, actual.retryMode());
+        Assert.assertEquals(newDelay, actual.getDelay());
+        Assert.assertEquals(newMaxDelay, actual.getMaxDelay());
+        Assert.assertEquals(newTryTimeout, actual.getTryTimeout());
+        Assert.assertEquals(newRetries, actual.getMaxRetries());
+        Assert.assertEquals(newRetryMode, actual.getRetryMode());
     }
 
     @Test
     public void isEqual() {
         // Arrange
         final RetryOptions first = new RetryOptions()
-            .retryMode(RetryMode.FIXED)
-            .maxDelay(Duration.ofMinutes(10))
-            .delay(Duration.ofMillis(1000))
-            .maxRetries(10)
-            .tryTimeout(Duration.ofMinutes(2));
+            .setRetryMode(RetryMode.FIXED)
+            .setMaxDelay(Duration.ofMinutes(10))
+            .setDelay(Duration.ofMillis(1000))
+            .setMaxRetries(10)
+            .setTryTimeout(Duration.ofMinutes(2));
 
         final RetryOptions second = new RetryOptions()
-            .retryMode(RetryMode.FIXED)
-            .maxDelay(Duration.ofMinutes(10))
-            .delay(Duration.ofMillis(1000))
-            .maxRetries(10)
-            .tryTimeout(Duration.ofMinutes(2));
+            .setRetryMode(RetryMode.FIXED)
+            .setMaxDelay(Duration.ofMinutes(10))
+            .setDelay(Duration.ofMillis(1000))
+            .setMaxRetries(10)
+            .setTryTimeout(Duration.ofMinutes(2));
 
         Assert.assertEquals(first, second);
         Assert.assertEquals(first.hashCode(), second.hashCode());
