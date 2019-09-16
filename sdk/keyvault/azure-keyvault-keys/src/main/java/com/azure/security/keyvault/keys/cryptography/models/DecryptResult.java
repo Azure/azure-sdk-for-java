@@ -26,7 +26,7 @@ public final class DecryptResult {
      * Get the encrypted content.
      * @return The decrypted content.
      */
-    public byte[] plainText() {
+    public byte[] getPlainText() {
         return ImplUtils.clone(plainText);
     }
 }

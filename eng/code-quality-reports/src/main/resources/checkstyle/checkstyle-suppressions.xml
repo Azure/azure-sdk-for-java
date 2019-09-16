@@ -83,11 +83,10 @@
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
   <!-- All auto generated files need to exclude from checkstyle -->
-  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
 
   <!-- The constant name is public static. -->
-  <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
+  <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
 
   <!-- Custom checkstyle rules only check track 2 libraries -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
@@ -118,8 +117,8 @@
   <!-- Suppress LineLength for samples and tests -->
   <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]"/>
+  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
+  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
 
   <!-- Suppress LineLength for Track 1 libraries. -->
   <suppress checks="LineLength" files=".*[/\\]com[/\\]microsoft[/\\]"/>
@@ -183,10 +182,16 @@
   issue link: https://github.com/Azure/azure-sdk-for-java/issues/5145 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.secrets.SecretAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.certificates.CertificateAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.security.keyvault.certificates.CertificateClient.java"/>
 
   <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
 
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
+
+  <!--  -->
+  <suppress checks="LineLength" files="com.azure.storage.common.SR.java"/>
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*(implementation|models)[/\\].*"/>
 </suppressions>

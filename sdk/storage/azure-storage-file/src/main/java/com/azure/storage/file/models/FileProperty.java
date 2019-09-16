@@ -33,7 +33,7 @@ public final class FileProperty {
      *
      * @return the contentLength value.
      */
-    public long contentLength() {
+    public long getContentLength() {
         return this.contentLength;
     }
 
@@ -47,7 +47,7 @@ public final class FileProperty {
      * @param contentLength the contentLength value to set.
      * @return the FileProperty object itself.
      */
-    public FileProperty contentLength(long contentLength) {
+    public FileProperty setContentLength(long contentLength) {
         this.contentLength = contentLength;
         return this;
     }

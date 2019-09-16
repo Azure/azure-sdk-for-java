@@ -7,7 +7,6 @@ package com.azure.storage.file.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import java.util.Map;
 
 /**
  * Contains all response data for the getProperties operation.
@@ -30,7 +29,7 @@ public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGet
      * @return the deserialized response body.
      */
     @Override
-    public FileServiceProperties value() {
-        return super.value();
+    public FileServiceProperties getValue() {
+        return super.getValue();
     }
 }

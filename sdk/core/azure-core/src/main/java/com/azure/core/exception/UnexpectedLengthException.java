@@ -25,14 +25,14 @@ public final class UnexpectedLengthException extends IllegalStateException {
     /**
      * @return the number of bytes read from the input
      */
-    public long bytesRead() {
+    public long getBytesRead() {
         return this.bytesRead;
     }
 
     /**
      * @return the number of bytes that were expected to be read from the input
      */
-    public long bytesExpected() {
+    public long getBytesExpected() {
         return this.bytesExpected;
     }
 }

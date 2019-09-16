@@ -82,13 +82,13 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String header = context.httpRequest().headers().value("User-Agent");
+        String header = context.getHttpRequest().getHeaders().value("User-Agent");
         if (header == null || header.startsWith(DEFAULT_USER_AGENT_HEADER)) {
             header = userAgent;
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().put("User-Agent", header);
+        context.getHttpRequest().getHeaders().put("User-Agent", header);
         return next.process();
     }
 

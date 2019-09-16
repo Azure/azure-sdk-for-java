@@ -26,8 +26,8 @@ public class LogPartitionProcessor extends PartitionProcessor {
     public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
         logger.info(
             "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-            partitionContext.eventHubName(), partitionContext.consumerGroup(), partitionContext.partitionId(),
-            eventData.sequenceNumber());
+            partitionContext.getEventHubName(), partitionContext.getConsumerGroup(), partitionContext.getPartitionId(),
+            eventData.getSequenceNumber());
         return partitionContext.updateCheckpoint(eventData);
     }
 }

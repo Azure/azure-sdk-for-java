@@ -40,7 +40,7 @@ public final class UnixTime {
      *
      * @return The underlying DateTime
      */
-    public OffsetDateTime dateTime() {
+    public OffsetDateTime getDateTime() {
         if (this.dateTime == null) {
             return null;
         }
@@ -68,6 +68,6 @@ public final class UnixTime {
         }
 
         UnixTime rhs = (UnixTime) obj;
-        return this.dateTime.equals(rhs.dateTime());
+        return this.dateTime.equals(rhs.getDateTime());
     }
 }

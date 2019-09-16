@@ -24,7 +24,7 @@ public class CredentialsTests {
         BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "pass");
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.httpRequest().headers().value("Authorization");
+            String headerValue = context.getHttpRequest().getHeaders().value("Authorization");
             Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
             return next.process();
         };
@@ -33,7 +33,7 @@ public class CredentialsTests {
             .httpClient(new NoOpHttpClient())
             .policies((context, next) -> credentials.getToken("scope./default")
                 .flatMap(token -> {
-                    context.httpRequest().headers().put("Authorization", "Basic " + token.token());
+                    context.getHttpRequest().getHeaders().put("Authorization", "Basic " + token.getToken());
                     return next.process();
                 }), auditorPolicy)
             .build();
@@ -52,7 +52,7 @@ public class CredentialsTests {
         };
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.httpRequest().headers().value("Authorization");
+            String headerValue = context.getHttpRequest().getHeaders().value("Authorization");
             Assert.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };

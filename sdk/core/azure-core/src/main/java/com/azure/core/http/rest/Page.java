@@ -15,10 +15,10 @@ public interface Page<T> {
     /**
      * @return A list of items from that service.
      */
-    List<T> items();
+    List<T> getItems();
 
     /**
      * @return A link to the next page, or null if there are no more results.
      */
-    String nextLink();
+    String getNextLink();
 }

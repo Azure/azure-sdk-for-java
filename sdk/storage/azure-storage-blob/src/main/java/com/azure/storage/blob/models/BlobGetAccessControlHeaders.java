@@ -92,11 +92,11 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class BlobGetAccessControlHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobGetAccessControlHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -121,7 +121,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -132,7 +132,7 @@ public final class BlobGetAccessControlHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders eTag(String eTag) {
+    public BlobGetAccessControlHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -144,11 +144,11 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -159,7 +159,7 @@ public final class BlobGetAccessControlHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobGetAccessControlHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -174,7 +174,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the xMsOwner value.
      */
-    public String xMsOwner() {
+    public String getXMsOwner() {
         return this.xMsOwner;
     }
 
@@ -185,7 +185,7 @@ public final class BlobGetAccessControlHeaders {
      * @param xMsOwner the xMsOwner value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders xMsOwner(String xMsOwner) {
+    public BlobGetAccessControlHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;
     }
@@ -197,7 +197,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the xMsGroup value.
      */
-    public String xMsGroup() {
+    public String getXMsGroup() {
         return this.xMsGroup;
     }
 
@@ -209,7 +209,7 @@ public final class BlobGetAccessControlHeaders {
      * @param xMsGroup the xMsGroup value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders xMsGroup(String xMsGroup) {
+    public BlobGetAccessControlHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
     }
@@ -221,7 +221,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the xMsPermissions value.
      */
-    public String xMsPermissions() {
+    public String getXMsPermissions() {
         return this.xMsPermissions;
     }
 
@@ -233,7 +233,7 @@ public final class BlobGetAccessControlHeaders {
      * @param xMsPermissions the xMsPermissions value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders xMsPermissions(String xMsPermissions) {
+    public BlobGetAccessControlHeaders setXMsPermissions(String xMsPermissions) {
         this.xMsPermissions = xMsPermissions;
         return this;
     }
@@ -246,7 +246,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the xMsAcl value.
      */
-    public String xMsAcl() {
+    public String getXMsAcl() {
         return this.xMsAcl;
     }
 
@@ -259,7 +259,7 @@ public final class BlobGetAccessControlHeaders {
      * @param xMsAcl the xMsAcl value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders xMsAcl(String xMsAcl) {
+    public BlobGetAccessControlHeaders setXMsAcl(String xMsAcl) {
         this.xMsAcl = xMsAcl;
         return this;
     }
@@ -270,7 +270,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -281,7 +281,7 @@ public final class BlobGetAccessControlHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders requestId(String requestId) {
+    public BlobGetAccessControlHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -292,7 +292,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -303,7 +303,7 @@ public final class BlobGetAccessControlHeaders {
      * @param version the version value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders version(String version) {
+    public BlobGetAccessControlHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -315,7 +315,7 @@ public final class BlobGetAccessControlHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -327,7 +327,7 @@ public final class BlobGetAccessControlHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobGetAccessControlHeaders object itself.
      */
-    public BlobGetAccessControlHeaders clientRequestId(String clientRequestId) {
+    public BlobGetAccessControlHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }

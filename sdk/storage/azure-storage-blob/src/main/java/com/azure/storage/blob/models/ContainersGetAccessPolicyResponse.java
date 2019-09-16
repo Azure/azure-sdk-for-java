@@ -30,7 +30,7 @@ public final class ContainersGetAccessPolicyResponse extends ResponseBase<Contai
      * @return the deserialized response body.
      */
     @Override
-    public List<SignedIdentifier> value() {
-        return super.value();
+    public List<SignedIdentifier> getValue() {
+        return super.getValue();
     }
 }

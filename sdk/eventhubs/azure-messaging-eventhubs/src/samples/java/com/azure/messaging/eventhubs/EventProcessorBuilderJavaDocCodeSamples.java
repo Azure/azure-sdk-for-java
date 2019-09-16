@@ -45,7 +45,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
          */
         @Override
         public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
-            System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
+            System.out.println("Processing event with sequence number " + eventData.getSequenceNumber());
             return partitionContext.updateCheckpoint(eventData);
         }
     }

@@ -39,7 +39,7 @@ public final class EventHubProperties {
      *
      * @return Name of the Event Hub.
      */
-    public String name() {
+    public String getName() {
         return name;
     }
 
@@ -48,7 +48,7 @@ public final class EventHubProperties {
      *
      * @return The instant, in UTC, at which the Event Hub was created.
      */
-    public Instant createdAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
@@ -57,7 +57,7 @@ public final class EventHubProperties {
      *
      * @return The list of partition identifiers of the Event Hub.
      */
-    public String[] partitionIds() {
+    public String[] getPartitionIds() {
         return partitionIds;
     }
 }

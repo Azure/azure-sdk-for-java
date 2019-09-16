@@ -34,6 +34,6 @@ final class CustomFileAndDirectoryListingDeserializer extends JsonDeserializer<F
             }
         }
 
-        return new FilesAndDirectoriesListSegment().directoryItems(directoryItems).fileItems(fileItems);
+        return new FilesAndDirectoriesListSegment().setDirectoryItems(directoryItems).setFileItems(fileItems);
     }
 }

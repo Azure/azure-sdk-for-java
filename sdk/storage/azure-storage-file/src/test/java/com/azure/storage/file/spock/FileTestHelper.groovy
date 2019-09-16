@@ -25,7 +25,7 @@ class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
 
     static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
-        return expectedStatusCode == response.statusCode()
+        return expectedStatusCode == response.getStatusCode()
     }
 
     static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, StorageErrorCode errMessage) {
@@ -34,12 +34,12 @@ class FileTestHelper {
 
     static boolean assertExceptionStatusCode(Throwable throwable, int expectedStatusCode) {
         return throwable instanceof StorageException &&
-            ((StorageException) throwable).statusCode() == expectedStatusCode
+            ((StorageException) throwable).getStatusCode() == expectedStatusCode
     }
 
     static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
         return throwable instanceof StorageException &&
-            ((StorageException) throwable).errorCode() == errMessage
+            ((StorageException) throwable).getErrorCode() == errMessage
     }
 
     static boolean assertFileServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
@@ -56,10 +56,10 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            return Objects.equals(expected.enabled(), actual.enabled()) &&
-                Objects.equals(expected.includeAPIs(), actual.includeAPIs()) &&
-                Objects.equals(expected.version(), actual.version()) &&
-                assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy())
+            return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
+                Objects.equals(expected.isIncludeAPIs(), actual.isIncludeAPIs()) &&
+                Objects.equals(expected.getVersion(), actual.getVersion()) &&
+                assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy())
         }
     }
 
@@ -67,8 +67,8 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            return Objects.equals(expected.days(), actual.days()) &&
-                Objects.equals(expected.enabled(), actual.enabled())
+            return Objects.equals(expected.getDays(), actual.getDays()) &&
+                Objects.equals(expected.isEnabled(), actual.isEnabled())
         }
     }
 
@@ -92,10 +92,10 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            return Objects.equals(expected.allowedHeaders(), actual.allowedHeaders()) &&
-                Objects.equals(expected.allowedMethods(), actual.allowedMethods()) &&
-                Objects.equals(expected.allowedOrigins(), actual.allowedOrigins()) &&
-                Objects.equals(expected.maxAgeInSeconds(), actual.maxAgeInSeconds())
+            return Objects.equals(expected.getAllowedHeaders(), actual.getAllowedHeaders()) &&
+                Objects.equals(expected.getAllowedMethods(), actual.getAllowedMethods()) &&
+                Objects.equals(expected.getAllowedOrigins(), actual.getAllowedOrigins()) &&
+                Objects.equals(expected.getMaxAgeInSeconds(), actual.getMaxAgeInSeconds())
         }
     }
 
@@ -103,13 +103,13 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         }
-        if (expected.accessPolicy() == null) {
-            return actual.accessPolicy() == null
+        if (expected.getAccessPolicy() == null) {
+            return actual.getAccessPolicy() == null
         }
-        return Objects.equals(expected.id(), actual.id()) &&
-            Objects.equals(expected.accessPolicy().permission(), actual.accessPolicy().permission()) &&
-            Objects.equals(expected.accessPolicy().start(), actual.accessPolicy().start()) &&
-            Objects.equals(expected.accessPolicy().expiry(), actual.accessPolicy().expiry())
+        return Objects.equals(expected.getId(), actual.getId()) &&
+            Objects.equals(expected.getAccessPolicy().getPermission(), actual.getAccessPolicy().getPermission()) &&
+            Objects.equals(expected.getAccessPolicy().getStart(), actual.getAccessPolicy().getStart()) &&
+            Objects.equals(expected.getAccessPolicy().getExpiry(), actual.getAccessPolicy().getExpiry())
     }
 
     static void sleepInRecord(Duration time) {
@@ -131,21 +131,21 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            if (!Objects.equals(expected.name(), actual.name())) {
+            if (!Objects.equals(expected.getName(), actual.getName())) {
                 return false
             }
 
-            if (includeMetadata && !Objects.equals(expected.metadata(), actual.metadata())) {
+            if (includeMetadata && !Objects.equals(expected.getMetadata(), actual.getMetadata())) {
                 return false
             }
-            if (includeSnapshot && !Objects.equals(expected.snapshot(), actual.snapshot())) {
+            if (includeSnapshot && !Objects.equals(expected.getSnapshot(), actual.getSnapshot())) {
                 return false
             }
 
-            if (expected.properties() == null) {
-                return actual.properties() == null
+            if (expected.getProperties() == null) {
+                return actual.getProperties() == null
             } else {
-                return Objects.equals(expected.properties().quota(), actual.properties().quota())
+                return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota())
             }
         }
     }
@@ -154,9 +154,9 @@ class FileTestHelper {
         if (expected == null) {
             return actual == null
         } else {
-            return assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics()) &&
-                assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
-                assertCorsAreEqual(expected.cors(), actual.cors())
+            return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics()) &&
+                assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
+                assertCorsAreEqual(expected.getCors(), actual.getCors())
         }
     }
 

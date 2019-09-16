@@ -79,9 +79,9 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
 
     private double computeRetryFactor() {
         final RetryOptions options = getRetryOptions();
-        final Duration maxBackoff = options.maxDelay();
-        final Duration minBackoff = options.delay();
-        final int maximumRetries = options.maxRetries();
+        final Duration maxBackoff = options.getMaxDelay();
+        final Duration minBackoff = options.getDelay();
+        final int maximumRetries = options.getMaxRetries();
         final long deltaBackoff = maxBackoff.minus(minBackoff).getSeconds();
 
         if (deltaBackoff <= 0 || maximumRetries <= 0) {

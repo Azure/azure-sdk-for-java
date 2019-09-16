@@ -318,10 +318,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             try {
                 delivery = sender.delivery(deliveryTag.getBytes(UTF_8));
-                delivery.setMessageFormat(workItem.messageFormat());
+                delivery.setMessageFormat(workItem.getMessageFormat());
 
-                sentMsgSize = sender.send(workItem.message(), 0, workItem.encodedMessageSize());
-                assert sentMsgSize == workItem.encodedMessageSize()
+                sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
+                assert sentMsgSize == workItem.getEncodedMessageSize()
                     : "Contract of the ProtonJ library for Sender. Send API changed";
 
                 linkAdvance = sender.advance();
@@ -333,14 +333,14 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}]: Sent message", entityPath,
                     getLinkName(), deliveryTag);
 
-                workItem.setIsWaitingForAck();
+                workItem.setWaitingForAck();
                 sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), timeout.toMillis());
             } else {
                 logger.verbose(
                     "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}], sentMessageSize[{}], "
                         + "payloadActualSize[{}]: sendlink advance failed",
                     handler.getConnectionId(), entityPath, getLinkName(), deliveryTag, sentMsgSize,
-                    workItem.encodedMessageSize());
+                    workItem.getEncodedMessageSize());
 
                 if (delivery != null) {
                     delivery.free();
@@ -355,7 +355,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     "Entity(%s): send operation failed while advancing delivery(tag: %s).",
                     entityPath, deliveryTag), context);
 
-                workItem.sink().error(exception);
+                workItem.getSink().error(exception);
             }
         }
     }
@@ -381,7 +381,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 retryAttempts.set(0);
             }
 
-            workItem.sink().success();
+            workItem.getSink().success();
         } else if (outcome instanceof Rejected) {
             final Rejected rejected = (Rejected) outcome;
             final org.apache.qpid.proton.amqp.transport.ErrorCondition error = rejected.getError();
@@ -400,10 +400,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             final Duration retryInterval = retry.calculateRetryDelay(exception, retryAttempt);
 
-            if (retryInterval.compareTo(workItem.timeoutTracker().remaining()) > 0) {
+            if (retryInterval.compareTo(workItem.getTimeoutTracker().remaining()) > 0) {
                 cleanupFailedSend(workItem, exception);
             } else {
-                workItem.lastKnownException(exception);
+                workItem.setLastKnownException(exception);
                 try {
                     reactorProvider.getReactorDispatcher().invoke(() -> send(workItem), retryInterval);
                 } catch (IOException | RejectedExecutionException schedulerException) {
@@ -436,7 +436,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     private void cleanupFailedSend(final RetriableWorkItem workItem, final Exception exception) {
         //TODO (conniey): is there some timeout task I should handle?
-        workItem.sink().error(exception);
+        workItem.getSink().error(exception);
     }
 
     private static boolean isGeneralSendError(Symbol amqpError) {
@@ -519,7 +519,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     handler.getErrorContext(sender));
             }
 
-            workItem.sink().error(exception);
+            workItem.getSink().error(exception);
         }
     }
 }

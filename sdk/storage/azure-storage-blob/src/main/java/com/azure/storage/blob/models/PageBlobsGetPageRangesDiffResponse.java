@@ -29,7 +29,7 @@ public final class PageBlobsGetPageRangesDiffResponse extends ResponseBase<PageB
      * @return the deserialized response body.
      */
     @Override
-    public PageList value() {
-        return super.value();
+    public PageList getValue() {
+        return super.getValue();
     }
 }

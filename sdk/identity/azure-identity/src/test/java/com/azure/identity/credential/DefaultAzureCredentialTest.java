@@ -56,8 +56,8 @@ public class DefaultAzureCredentialTest {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
             AccessToken token = credential.getToken(scopes1).block();
-            Assert.assertEquals(token1, token.token());
-            Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+            Assert.assertEquals(token1, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
         } finally {
             // clean up
             configuration.remove("AZURE_CLIENT_ID");
@@ -81,8 +81,8 @@ public class DefaultAzureCredentialTest {
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         AccessToken token = credential.getToken(scopes).block();
-        Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(token1, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 
     @Ignore("Wont work if cache contains user")

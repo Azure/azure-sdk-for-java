@@ -13,7 +13,7 @@ public class BatchOptionsTest {
     @Test
     public void createDefault() {
         BatchOptions options = new BatchOptions();
-        Assert.assertNull(options.partitionKey());
+        Assert.assertNull(options.getPartitionKey());
     }
 
     /**
@@ -24,10 +24,10 @@ public class BatchOptionsTest {
         int size = 1024;
         BatchOptions options = new BatchOptions();
 
-        options.maximumSizeInBytes(size);
+        options.setMaximumSizeInBytes(size);
 
-        Assert.assertEquals(size, options.maximumSizeInBytes());
-        Assert.assertNull(options.partitionKey());
+        Assert.assertEquals(size, options.getMaximumSizeInBytes());
+        Assert.assertNull(options.getPartitionKey());
     }
 
     /**
@@ -38,18 +38,18 @@ public class BatchOptionsTest {
         // Arrange
         String partitionKey = "My partition key";
         int size = 800;
-        BatchOptions options = new BatchOptions().partitionKey(partitionKey).maximumSizeInBytes(size);
+        BatchOptions options = new BatchOptions().setPartitionKey(partitionKey).setMaximumSizeInBytes(size);
 
         // Act
         BatchOptions clone = options.clone();
 
         // Assert
         Assert.assertNotSame(clone, options);
-        Assert.assertEquals(size, options.maximumSizeInBytes());
-        Assert.assertEquals(partitionKey, options.partitionKey());
+        Assert.assertEquals(size, options.getMaximumSizeInBytes());
+        Assert.assertEquals(partitionKey, options.getPartitionKey());
 
-        Assert.assertEquals(partitionKey, clone.partitionKey());
-        Assert.assertEquals(size, clone.maximumSizeInBytes());
+        Assert.assertEquals(partitionKey, clone.getPartitionKey());
+        Assert.assertEquals(size, clone.getMaximumSizeInBytes());
     }
 
 
@@ -65,18 +65,18 @@ public class BatchOptionsTest {
         String partitionKey = "A new partition key";
         int size = 24;
 
-        BatchOptions options = new BatchOptions().partitionKey(originalPartitionKey).maximumSizeInBytes(originalSize);
+        BatchOptions options = new BatchOptions().setPartitionKey(originalPartitionKey).setMaximumSizeInBytes(originalSize);
         BatchOptions clone = options.clone();
 
         // Act
-        clone.partitionKey(partitionKey)
-            .maximumSizeInBytes(size);
+        clone.setPartitionKey(partitionKey)
+            .setMaximumSizeInBytes(size);
 
         // Assert
-        Assert.assertEquals(partitionKey, clone.partitionKey());
-        Assert.assertEquals(size, clone.maximumSizeInBytes());
+        Assert.assertEquals(partitionKey, clone.getPartitionKey());
+        Assert.assertEquals(size, clone.getMaximumSizeInBytes());
 
-        Assert.assertEquals(originalSize, options.maximumSizeInBytes());
-        Assert.assertEquals(originalPartitionKey, options.partitionKey());
+        Assert.assertEquals(originalSize, options.getMaximumSizeInBytes());
+        Assert.assertEquals(originalPartitionKey, options.getPartitionKey());
     }
 }

@@ -30,9 +30,9 @@ import java.util.function.BiFunction;
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of
  * this class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API
- * for features such as {@link NettyAsyncHttpClientBuilder#setNioEventLoopGroup(NioEventLoopGroup) thread pooling},
- * {@link NettyAsyncHttpClientBuilder#setWiretap(boolean) wiretapping},
- * {@link NettyAsyncHttpClientBuilder#setProxy(ProxyOptions) setProxy configuration}, and much more.
+ * for features such as {@link NettyAsyncHttpClientBuilder#nioEventLoopGroup(NioEventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
@@ -59,13 +59,13 @@ public class NettyAsyncHttpClient implements HttpClient {
     /** {@inheritDoc} */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
-        Objects.requireNonNull(request.httpMethod());
-        Objects.requireNonNull(request.url());
-        Objects.requireNonNull(request.url().getProtocol());
+        Objects.requireNonNull(request.getHttpMethod());
+        Objects.requireNonNull(request.getUrl());
+        Objects.requireNonNull(request.getUrl().getProtocol());
 
         return nettyClient
-            .request(HttpMethod.valueOf(request.httpMethod().toString()))
-            .uri(request.url().toString())
+            .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
+            .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request))
             .single();
@@ -80,13 +80,13 @@ public class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
-            for (HttpHeader header : restRequest.headers()) {
-                if (header.value() != null) {
-                    reactorNettyRequest.header(header.name(), header.value());
+            for (HttpHeader header : restRequest.getHeaders()) {
+                if (header.getValue() != null) {
+                    reactorNettyRequest.header(header.getName(), header.getValue());
                 }
             }
-            if (restRequest.body() != null) {
-                Flux<ByteBuf> nettyByteBufFlux = restRequest.body().map(Unpooled::wrappedBuffer);
+            if (restRequest.getBody() != null) {
+                Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
                 return reactorNettyOutbound.send(nettyByteBufFlux);
             } else {
                 return reactorNettyOutbound;
@@ -103,7 +103,8 @@ public class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).request(restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection)
+                .setRequest(restRequest));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
@@ -116,24 +117,24 @@ public class NettyAsyncHttpClient implements HttpClient {
         }
 
         @Override
-        public int statusCode() {
+        public int getStatusCode() {
             return reactorNettyResponse.status().code();
         }
 
         @Override
-        public String headerValue(String name) {
+        public String getHeaderValue(String name) {
             return reactorNettyResponse.responseHeaders().get(name);
         }
 
         @Override
-        public HttpHeaders headers() {
+        public HttpHeaders getHeaders() {
             HttpHeaders headers = new HttpHeaders();
             reactorNettyResponse.responseHeaders().forEach(e -> headers.put(e.getKey(), e.getValue()));
             return headers;
         }
 
         @Override
-        public Flux<ByteBuffer> body() {
+        public Flux<ByteBuffer> getBody() {
             return bodyIntern().doFinally(s -> {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
@@ -142,7 +143,7 @@ public class NettyAsyncHttpClient implements HttpClient {
         }
 
         @Override
-        public Mono<byte[]> bodyAsByteArray() {
+        public Mono<byte[]> getBodyAsByteArray() {
             return bodyIntern().aggregate().asByteArray().doFinally(s -> {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
@@ -151,7 +152,7 @@ public class NettyAsyncHttpClient implements HttpClient {
         }
 
         @Override
-        public Mono<String> bodyAsString() {
+        public Mono<String> getBodyAsString() {
             return bodyIntern().aggregate().asString().doFinally(s -> {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
@@ -160,7 +161,7 @@ public class NettyAsyncHttpClient implements HttpClient {
         }
 
         @Override
-        public Mono<String> bodyAsString(Charset charset) {
+        public Mono<String> getBodyAsString(Charset charset) {
             return bodyIntern().aggregate().asString(charset).doFinally(s -> {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);

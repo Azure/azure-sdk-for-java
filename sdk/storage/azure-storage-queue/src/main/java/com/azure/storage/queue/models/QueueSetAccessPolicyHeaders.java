@@ -50,7 +50,7 @@ public final class QueueSetAccessPolicyHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class QueueSetAccessPolicyHeaders {
      * @param requestId the requestId value to set.
      * @return the QueueSetAccessPolicyHeaders object itself.
      */
-    public QueueSetAccessPolicyHeaders requestId(String requestId) {
+    public QueueSetAccessPolicyHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class QueueSetAccessPolicyHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class QueueSetAccessPolicyHeaders {
      * @param version the version value to set.
      * @return the QueueSetAccessPolicyHeaders object itself.
      */
-    public QueueSetAccessPolicyHeaders version(String version) {
+    public QueueSetAccessPolicyHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,11 +96,11 @@ public final class QueueSetAccessPolicyHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -110,7 +110,7 @@ public final class QueueSetAccessPolicyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the QueueSetAccessPolicyHeaders object itself.
      */
-    public QueueSetAccessPolicyHeaders dateProperty(OffsetDateTime dateProperty) {
+    public QueueSetAccessPolicyHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class QueueSetAccessPolicyHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class QueueSetAccessPolicyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the QueueSetAccessPolicyHeaders object itself.
      */
-    public QueueSetAccessPolicyHeaders errorCode(String errorCode) {
+    public QueueSetAccessPolicyHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

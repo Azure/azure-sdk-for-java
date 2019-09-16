@@ -8,32 +8,28 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateTagOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ExportIterationOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformanceCountOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformancesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetIterationPerformanceOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateProjectOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageUrlOptionalParameter;
+import com.google.common.base.Joiner;
+import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateImageRegionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateImageTagsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateImagesFromDataOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagesByIdsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImageCountOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImageCountOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImagesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImagesOptionalParameter;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Retrofit;
-import com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings;
-import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateProjectOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CreateTagOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CustomVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Domain;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Export;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ExportIterationOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformanceCountOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagePerformancesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetImagesByIdsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetIterationPerformanceOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImageCountOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTaggedImagesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetTagsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImageCountOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.GetUntaggedImagesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ImageCreateSummary;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.ImageFileCreateBatch;
@@ -54,30 +50,37 @@ import com.microsoft.azure.cognitiveservices.vision.customvision.training.models
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.PredictionQueryResult;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.PredictionQueryToken;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Project;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.QuickTestImageUrlOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Tag;
+import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.TrainProjectOptionalParameter;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.HTTP;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import rx.Observable;
+import rx.functions.Func1;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Multipart;
-import retrofit2.http.Part;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -87,7 +90,7 @@ public class TrainingsImpl implements Trainings {
     /** The Retrofit service to perform REST calls. */
     private TrainingsService service;
     /** The service client containing this operation class. */
-    private TrainingApiImpl client;
+    private CustomVisionTrainingClientImpl client;
 
     /**
      * Initializes an instance of TrainingsImpl.
@@ -95,7 +98,7 @@ public class TrainingsImpl implements Trainings {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TrainingsImpl(Retrofit retrofit, TrainingApiImpl client) {
+    public TrainingsImpl(Retrofit retrofit, CustomVisionTrainingClientImpl client) {
         this.service = retrofit.create(TrainingsService.class);
         this.client = client;
     }
@@ -107,167 +110,175 @@ public class TrainingsImpl implements Trainings {
     interface TrainingsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createTag" })
         @POST("projects/{projectId}/tags")
-        Observable<Response<ResponseBody>> createTag(@Path("projectId") UUID projectId, @Query("name") String name, @Query("description") String description, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createTag(@Path("projectId") UUID projectId, @Query("name") String name, @Query("description") String description, @Query("type") String type, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getTags" })
         @GET("projects/{projectId}/tags")
-        Observable<Response<ResponseBody>> getTags(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTags(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings updateTag" })
         @PATCH("projects/{projectId}/tags/{tagId}")
-        Observable<Response<ResponseBody>> updateTag(@Path("projectId") UUID projectId, @Path("tagId") UUID tagId, @Body Tag updatedTag, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateTag(@Path("projectId") UUID projectId, @Path("tagId") UUID tagId, @Body Tag updatedTag, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteTag" })
         @HTTP(path = "projects/{projectId}/tags/{tagId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteTag(@Path("projectId") UUID projectId, @Path("tagId") UUID tagId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteTag(@Path("projectId") UUID projectId, @Path("tagId") UUID tagId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getTag" })
         @GET("projects/{projectId}/tags/{tagId}")
-        Observable<Response<ResponseBody>> getTag(@Path("projectId") UUID projectId, @Path("tagId") UUID tagId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTag(@Path("projectId") UUID projectId, @Path("tagId") UUID tagId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings exportIteration" })
         @POST("projects/{projectId}/iterations/{iterationId}/export")
-        Observable<Response<ResponseBody>> exportIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("platform") String platform, @Query("flavor") String flavor, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> exportIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("platform") String platform, @Query("flavor") String flavor, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getExports" })
         @GET("projects/{projectId}/iterations/{iterationId}/export")
-        Observable<Response<ResponseBody>> getExports(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getExports(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getImagePerformanceCount" })
-        @GET("projects/{projectId}/iterations/{iterationId}/performance/images/count")
-        Observable<Response<ResponseBody>> getImagePerformanceCount(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings unpublishIteration" })
+        @HTTP(path = "projects/{projectId}/iterations/{iterationId}/publish", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> unpublishIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getImagePerformances" })
-        @GET("projects/{projectId}/iterations/{iterationId}/performance/images")
-        Observable<Response<ResponseBody>> getImagePerformances(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Query("orderBy") String orderBy, @Query("take") Integer take, @Query("skip") Integer skip, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getIterationPerformance" })
-        @GET("projects/{projectId}/iterations/{iterationId}/performance")
-        Observable<Response<ResponseBody>> getIterationPerformance(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("threshold") Double threshold, @Query("overlapThreshold") Double overlapThreshold, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings publishIteration" })
+        @POST("projects/{projectId}/iterations/{iterationId}/publish")
+        Observable<Response<ResponseBody>> publishIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("publishName") String publishName, @Query("predictionId") String predictionId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings updateIteration" })
         @PATCH("projects/{projectId}/iterations/{iterationId}")
-        Observable<Response<ResponseBody>> updateIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Body Iteration updatedIteration, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body Iteration updatedIteration, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteIteration" })
         @HTTP(path = "projects/{projectId}/iterations/{iterationId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getIteration" })
         @GET("projects/{projectId}/iterations/{iterationId}")
-        Observable<Response<ResponseBody>> getIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getIterations" })
         @GET("projects/{projectId}/iterations")
-        Observable<Response<ResponseBody>> getIterations(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings updateProject" })
-        @PATCH("projects/{projectId}")
-        Observable<Response<ResponseBody>> updateProject(@Path("projectId") UUID projectId, @Body Project updatedProject, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteProject" })
-        @HTTP(path = "projects/{projectId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteProject(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getProject" })
-        @GET("projects/{projectId}")
-        Observable<Response<ResponseBody>> getProject(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createProject" })
-        @POST("projects")
-        Observable<Response<ResponseBody>> createProject(@Query("name") String name, @Query("description") String description, @Query("domainId") UUID domainId, @Query("classificationType") String classificationType, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getProjects" })
-        @GET("projects")
-        Observable<Response<ResponseBody>> getProjects(@Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getIterations(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings trainProject" })
         @POST("projects/{projectId}/train")
-        Observable<Response<ResponseBody>> trainProject(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> trainProject(@Path("projectId") UUID projectId, @Query("trainingType") String trainingType, @Query("reservedBudgetInHours") Integer reservedBudgetInHours, @Query("forceTrain") Boolean forceTrain, @Query("notificationEmailAddress") String notificationEmailAddress, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Multipart
-        @POST("projects/{projectId}/quicktest/image")
-        Observable<Response<ResponseBody>> quickTestImage(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Part("imageData") RequestBody imageData, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings updateProject" })
+        @PATCH("projects/{projectId}")
+        Observable<Response<ResponseBody>> updateProject(@Path("projectId") UUID projectId, @Body Project updatedProject, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings quickTestImageUrl" })
-        @POST("projects/{projectId}/quicktest/url")
-        Observable<Response<ResponseBody>> quickTestImageUrl(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteProject" })
+        @HTTP(path = "projects/{projectId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteProject(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getProject" })
+        @GET("projects/{projectId}")
+        Observable<Response<ResponseBody>> getProject(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createProject" })
+        @POST("projects")
+        Observable<Response<ResponseBody>> createProject(@Query("name") String name, @Query("description") String description, @Query("domainId") UUID domainId, @Query("classificationType") String classificationType, @Query("targetExportPlatforms") String targetExportPlatforms, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getProjects" })
+        @GET("projects")
+        Observable<Response<ResponseBody>> getProjects(@Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getImagePerformanceCount" })
+        @GET("projects/{projectId}/iterations/{iterationId}/performance/images/count")
+        Observable<Response<ResponseBody>> getImagePerformanceCount(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getImagePerformances" })
+        @GET("projects/{projectId}/iterations/{iterationId}/performance/images")
+        Observable<Response<ResponseBody>> getImagePerformances(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Query("orderBy") String orderBy, @Query("take") Integer take, @Query("skip") Integer skip, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getIterationPerformance" })
+        @GET("projects/{projectId}/iterations/{iterationId}/performance")
+        Observable<Response<ResponseBody>> getIterationPerformance(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("threshold") Double threshold, @Query("overlapThreshold") Double overlapThreshold, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings queryPredictions" })
         @POST("projects/{projectId}/predictions/query")
-        Observable<Response<ResponseBody>> queryPredictions(@Path("projectId") UUID projectId, @Body PredictionQueryToken query, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> queryPredictions(@Path("projectId") UUID projectId, @Body PredictionQueryToken query, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Multipart
+        @POST("projects/{projectId}/quicktest/image")
+        Observable<Response<ResponseBody>> quickTestImage(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Part("imageData") RequestBody imageData, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings quickTestImageUrl" })
+        @POST("projects/{projectId}/quicktest/url")
+        Observable<Response<ResponseBody>> quickTestImageUrl(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deletePrediction" })
         @HTTP(path = "projects/{projectId}/predictions", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePrediction(@Path("projectId") UUID projectId, @Query("ids") String ids, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePrediction(@Path("projectId") UUID projectId, @Query("ids") String ids, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getImageRegionProposals" })
-        @POST("{projectId}/images/{imageId}/regionproposals")
-        Observable<Response<ResponseBody>> getImageRegionProposals(@Path("projectId") UUID projectId, @Path("imageId") UUID imageId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteImageRegions" })
-        @HTTP(path = "projects/{projectId}/images/regions", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteImageRegions(@Path("projectId") UUID projectId, @Query("regionIds") String regionIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImageRegions" })
-        @POST("projects/{projectId}/images/regions")
-        Observable<Response<ResponseBody>> createImageRegions(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageRegionCreateBatch batch, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteImageTags" })
-        @HTTP(path = "projects/{projectId}/images/tags", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteImageTags(@Path("projectId") UUID projectId, @Query("imageIds") String imageIds, @Query("tagIds") String tagIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImageTags" })
-        @POST("projects/{projectId}/images/tags")
-        Observable<Response<ResponseBody>> createImageTags(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageTagCreateBatch batch, @Header("User-Agent") String userAgent);
+        @POST("projects/{projectId}/images/{imageId}/regionproposals")
+        Observable<Response<ResponseBody>> getImageRegionProposals(@Path("projectId") UUID projectId, @Path("imageId") UUID imageId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImagesFromPredictions" })
         @POST("projects/{projectId}/images/predictions")
-        Observable<Response<ResponseBody>> createImagesFromPredictions(@Path("projectId") UUID projectId, @Body ImageIdCreateBatch batch, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createImagesFromPredictions(@Path("projectId") UUID projectId, @Body ImageIdCreateBatch batch, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImagesFromUrls" })
         @POST("projects/{projectId}/images/urls")
-        Observable<Response<ResponseBody>> createImagesFromUrls(@Path("projectId") UUID projectId, @Body ImageUrlCreateBatch batch, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createImagesFromUrls(@Path("projectId") UUID projectId, @Body ImageUrlCreateBatch batch, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImagesFromFiles" })
         @POST("projects/{projectId}/images/files")
-        Observable<Response<ResponseBody>> createImagesFromFiles(@Path("projectId") UUID projectId, @Body ImageFileCreateBatch batch, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createImagesFromFiles(@Path("projectId") UUID projectId, @Body ImageFileCreateBatch batch, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteImages" })
         @HTTP(path = "projects/{projectId}/images", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteImages(@Path("projectId") UUID projectId, @Query("imageIds") String imageIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteImages(@Path("projectId") UUID projectId, @Query("imageIds") String imageIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Multipart
         @POST("projects/{projectId}/images")
-        Observable<Response<ResponseBody>> createImagesFromData(@Path("projectId") UUID projectId, @Query("tagIds") String tagIds, @Part("imageData") RequestBody imageData, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createImagesFromData(@Path("projectId") UUID projectId, @Query("tagIds") String tagIds, @Part("imageData") RequestBody imageData, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getImagesByIds" })
         @GET("projects/{projectId}/images/id")
-        Observable<Response<ResponseBody>> getImagesByIds(@Path("projectId") UUID projectId, @Query("imageIds") String imageIds, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getUntaggedImageCount" })
-        @GET("projects/{projectId}/images/untagged/count")
-        Observable<Response<ResponseBody>> getUntaggedImageCount(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getTaggedImageCount" })
-        @GET("projects/{projectId}/images/tagged/count")
-        Observable<Response<ResponseBody>> getTaggedImageCount(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getImagesByIds(@Path("projectId") UUID projectId, @Query("imageIds") String imageIds, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getUntaggedImages" })
         @GET("projects/{projectId}/images/untagged")
-        Observable<Response<ResponseBody>> getUntaggedImages(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("orderBy") String orderBy, @Query("take") Integer take, @Query("skip") Integer skip, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getUntaggedImages(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("orderBy") String orderBy, @Query("take") Integer take, @Query("skip") Integer skip, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getTaggedImages" })
         @GET("projects/{projectId}/images/tagged")
-        Observable<Response<ResponseBody>> getTaggedImages(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Query("orderBy") String orderBy, @Query("take") Integer take, @Query("skip") Integer skip, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTaggedImages(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Query("orderBy") String orderBy, @Query("take") Integer take, @Query("skip") Integer skip, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteImageRegions" })
+        @HTTP(path = "projects/{projectId}/images/regions", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteImageRegions(@Path("projectId") UUID projectId, @Query("regionIds") String regionIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImageRegions" })
+        @POST("projects/{projectId}/images/regions")
+        Observable<Response<ResponseBody>> createImageRegions(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageRegionCreateBatch batch, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings deleteImageTags" })
+        @HTTP(path = "projects/{projectId}/images/tags", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteImageTags(@Path("projectId") UUID projectId, @Query("imageIds") String imageIds, @Query("tagIds") String tagIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings createImageTags" })
+        @POST("projects/{projectId}/images/tags")
+        Observable<Response<ResponseBody>> createImageTags(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body ImageTagCreateBatch batch, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getUntaggedImageCount" })
+        @GET("projects/{projectId}/images/untagged/count")
+        Observable<Response<ResponseBody>> getUntaggedImageCount(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getTaggedImageCount" })
+        @GET("projects/{projectId}/images/tagged/count")
+        Observable<Response<ResponseBody>> getTaggedImageCount(@Path("projectId") UUID projectId, @Query("iterationId") UUID iterationId, @Query("tagIds") String tagIds, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getDomain" })
         @GET("domains/{domainId}")
-        Observable<Response<ResponseBody>> getDomain(@Path("domainId") UUID domainId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDomain(@Path("domainId") UUID domainId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.Trainings getDomains" })
         @GET("domains")
-        Observable<Response<ResponseBody>> getDomains(@Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDomains(@Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -275,11 +286,11 @@ public class TrainingsImpl implements Trainings {
     /**
      * Create a tag for the project.
      *
-     * @param projectId The project id
-     * @param name The tag name
+     * @param projectId The project id.
+     * @param name The tag name.
      * @param createTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Tag object if successful.
      */
@@ -290,8 +301,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Create a tag for the project.
      *
-     * @param projectId The project id
-     * @param name The tag name
+     * @param projectId The project id.
+     * @param name The tag name.
      * @param createTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -304,8 +315,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Create a tag for the project.
      *
-     * @param projectId The project id
-     * @param name The tag name
+     * @param projectId The project id.
+     * @param name The tag name.
      * @param createTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
@@ -322,13 +333,16 @@ public class TrainingsImpl implements Trainings {
     /**
      * Create a tag for the project.
      *
-     * @param projectId The project id
-     * @param name The tag name
+     * @param projectId The project id.
+     * @param name The tag name.
      * @param createTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
     public Observable<ServiceResponse<Tag>> createTagWithServiceResponseAsync(UUID projectId, String name, CreateTagOptionalParameter createTagOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -339,20 +353,25 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         final String description = createTagOptionalParameter != null ? createTagOptionalParameter.description() : null;
+        final String type = createTagOptionalParameter != null ? createTagOptionalParameter.type() : null;
 
-        return createTagWithServiceResponseAsync(projectId, name, description);
+        return createTagWithServiceResponseAsync(projectId, name, description, type);
     }
 
     /**
      * Create a tag for the project.
      *
-     * @param projectId The project id
-     * @param name The tag name
-     * @param description Optional description for the tag
+     * @param projectId The project id.
+     * @param name The tag name.
+     * @param description Optional description for the tag.
+     * @param type Optional type for the tag. Possible values include: 'Regular', 'Negative'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
-    public Observable<ServiceResponse<Tag>> createTagWithServiceResponseAsync(UUID projectId, String name, String description) {
+    public Observable<ServiceResponse<Tag>> createTagWithServiceResponseAsync(UUID projectId, String name, String description, String type) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -362,7 +381,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.createTag(projectId, name, description, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createTag(projectId, name, description, type, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Tag>>>() {
                 @Override
                 public Observable<ServiceResponse<Tag>> call(Response<ResponseBody> response) {
@@ -376,10 +396,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Tag> createTagDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Tag, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Tag> createTagDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Tag, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Tag>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -396,6 +416,7 @@ public class TrainingsImpl implements Trainings {
         private UUID projectId;
         private String name;
         private String description;
+        private String type;
 
         /**
          * Constructor.
@@ -424,13 +445,19 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
+        public TrainingsCreateTagParameters withType(String type) {
+            this.type = type;
+            return this;
+        }
+
+        @Override
         public Tag execute() {
-        return createTagWithServiceResponseAsync(projectId, name, description).toBlocking().single().body();
+        return createTagWithServiceResponseAsync(projectId, name, description, type).toBlocking().single().body();
     }
 
         @Override
         public Observable<Tag> executeAsync() {
-            return createTagWithServiceResponseAsync(projectId, name, description).map(new Func1<ServiceResponse<Tag>, Tag>() {
+            return createTagWithServiceResponseAsync(projectId, name, description, type).map(new Func1<ServiceResponse<Tag>, Tag>() {
                 @Override
                 public Tag call(ServiceResponse<Tag> response) {
                     return response.body();
@@ -443,10 +470,10 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the tags for a given project and iteration.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTagsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Tag&gt; object if successful.
      */
@@ -457,7 +484,7 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the tags for a given project and iteration.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTagsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -470,7 +497,7 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the tags for a given project and iteration.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTagsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Tag&gt; object
@@ -487,12 +514,15 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the tags for a given project and iteration.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTagsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Tag&gt; object
      */
     public Observable<ServiceResponse<List<Tag>>> getTagsWithServiceResponseAsync(UUID projectId, GetTagsOptionalParameter getTagsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -507,19 +537,23 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the tags for a given project and iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Tag&gt; object
      */
     public Observable<ServiceResponse<List<Tag>>> getTagsWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getTags(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getTags(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Tag>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<Tag>>> call(Response<ResponseBody> response) {
@@ -533,10 +567,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<Tag>> getTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Tag>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<Tag>> getTagsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Tag>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<Tag>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -592,11 +626,11 @@ public class TrainingsImpl implements Trainings {
     /**
      * Update a tag.
      *
-     * @param projectId The project id
-     * @param tagId The id of the target tag
-     * @param updatedTag The updated tag model
+     * @param projectId The project id.
+     * @param tagId The id of the target tag.
+     * @param updatedTag The updated tag model.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Tag object if successful.
      */
@@ -607,9 +641,9 @@ public class TrainingsImpl implements Trainings {
     /**
      * Update a tag.
      *
-     * @param projectId The project id
-     * @param tagId The id of the target tag
-     * @param updatedTag The updated tag model
+     * @param projectId The project id.
+     * @param tagId The id of the target tag.
+     * @param updatedTag The updated tag model.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -621,9 +655,9 @@ public class TrainingsImpl implements Trainings {
     /**
      * Update a tag.
      *
-     * @param projectId The project id
-     * @param tagId The id of the target tag
-     * @param updatedTag The updated tag model
+     * @param projectId The project id.
+     * @param tagId The id of the target tag.
+     * @param updatedTag The updated tag model.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
@@ -639,13 +673,16 @@ public class TrainingsImpl implements Trainings {
     /**
      * Update a tag.
      *
-     * @param projectId The project id
-     * @param tagId The id of the target tag
-     * @param updatedTag The updated tag model
+     * @param projectId The project id.
+     * @param tagId The id of the target tag.
+     * @param updatedTag The updated tag model.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
     public Observable<ServiceResponse<Tag>> updateTagWithServiceResponseAsync(UUID projectId, UUID tagId, Tag updatedTag) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -659,7 +696,8 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(updatedTag);
-        return service.updateTag(projectId, tagId, updatedTag, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateTag(projectId, tagId, updatedTag, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Tag>>>() {
                 @Override
                 public Observable<ServiceResponse<Tag>> call(Response<ResponseBody> response) {
@@ -673,20 +711,20 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Tag> updateTagDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Tag, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Tag> updateTagDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Tag, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Tag>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
     /**
      * Delete a tag from the project.
      *
-     * @param projectId The project id
-     * @param tagId Id of the tag to be deleted
+     * @param projectId The project id.
+     * @param tagId Id of the tag to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteTag(UUID projectId, UUID tagId) {
@@ -696,8 +734,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Delete a tag from the project.
      *
-     * @param projectId The project id
-     * @param tagId Id of the tag to be deleted
+     * @param projectId The project id.
+     * @param tagId Id of the tag to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -709,8 +747,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Delete a tag from the project.
      *
-     * @param projectId The project id
-     * @param tagId Id of the tag to be deleted
+     * @param projectId The project id.
+     * @param tagId Id of the tag to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -726,12 +764,15 @@ public class TrainingsImpl implements Trainings {
     /**
      * Delete a tag from the project.
      *
-     * @param projectId The project id
-     * @param tagId Id of the tag to be deleted
+     * @param projectId The project id.
+     * @param tagId Id of the tag to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteTagWithServiceResponseAsync(UUID projectId, UUID tagId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -741,7 +782,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.deleteTag(projectId, tagId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteTag(projectId, tagId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -755,10 +797,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Void> deleteTagDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteTagDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -766,11 +808,11 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific tag.
      *
-     * @param projectId The project this tag belongs to
-     * @param tagId The tag id
+     * @param projectId The project this tag belongs to.
+     * @param tagId The tag id.
      * @param getTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Tag object if successful.
      */
@@ -781,8 +823,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific tag.
      *
-     * @param projectId The project this tag belongs to
-     * @param tagId The tag id
+     * @param projectId The project this tag belongs to.
+     * @param tagId The tag id.
      * @param getTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -795,8 +837,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific tag.
      *
-     * @param projectId The project this tag belongs to
-     * @param tagId The tag id
+     * @param projectId The project this tag belongs to.
+     * @param tagId The tag id.
      * @param getTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
@@ -813,13 +855,16 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific tag.
      *
-     * @param projectId The project this tag belongs to
-     * @param tagId The tag id
+     * @param projectId The project this tag belongs to.
+     * @param tagId The tag id.
      * @param getTagOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
     public Observable<ServiceResponse<Tag>> getTagWithServiceResponseAsync(UUID projectId, UUID tagId, GetTagOptionalParameter getTagOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -837,13 +882,16 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific tag.
      *
-     * @param projectId The project this tag belongs to
-     * @param tagId The tag id
-     * @param iterationId The iteration to retrieve this tag from. Optional, defaults to current training set
+     * @param projectId The project this tag belongs to.
+     * @param tagId The tag id.
+     * @param iterationId The iteration to retrieve this tag from. Optional, defaults to current training set.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Tag object
      */
     public Observable<ServiceResponse<Tag>> getTagWithServiceResponseAsync(UUID projectId, UUID tagId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -853,7 +901,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getTag(projectId, tagId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getTag(projectId, tagId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Tag>>>() {
                 @Override
                 public Observable<ServiceResponse<Tag>> call(Response<ResponseBody> response) {
@@ -867,10 +916,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Tag> getTagDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Tag, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Tag> getTagDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Tag, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Tag>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -934,12 +983,12 @@ public class TrainingsImpl implements Trainings {
     /**
      * Export a trained iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param exportIterationOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Export object if successful.
      */
@@ -950,9 +999,9 @@ public class TrainingsImpl implements Trainings {
     /**
      * Export a trained iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param exportIterationOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -965,9 +1014,9 @@ public class TrainingsImpl implements Trainings {
     /**
      * Export a trained iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param exportIterationOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
@@ -984,14 +1033,17 @@ public class TrainingsImpl implements Trainings {
     /**
      * Export a trained iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param exportIterationOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
     public Observable<ServiceResponse<Export>> exportIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, String platform, ExportIterationOptionalParameter exportIterationOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1012,14 +1064,17 @@ public class TrainingsImpl implements Trainings {
     /**
      * Export a trained iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
-     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU). Possible values include: 'Linux', 'Windows'
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
+     * @param flavor The flavor of the target platform. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12', 'ARM'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
     public Observable<ServiceResponse<Export>> exportIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, String platform, String flavor) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1032,7 +1087,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.exportIteration(projectId, iterationId, platform, flavor, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.exportIteration(projectId, iterationId, platform, flavor, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Export>>>() {
                 @Override
                 public Observable<ServiceResponse<Export>> call(Response<ResponseBody> response) {
@@ -1046,10 +1102,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Export> exportIterationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Export, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Export> exportIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Export, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Export>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -1119,10 +1175,10 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the list of exports for a specific iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Export&gt; object if successful.
      */
@@ -1133,8 +1189,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the list of exports for a specific iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1146,8 +1202,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the list of exports for a specific iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Export&gt; object
      */
@@ -1163,12 +1219,15 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get the list of exports for a specific iteration.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Export&gt; object
      */
     public Observable<ServiceResponse<List<Export>>> getExportsWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1178,7 +1237,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getExports(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getExports(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Export>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<Export>>> call(Response<ResponseBody> response) {
@@ -1192,10 +1252,1236 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<Export>> getExportsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Export>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<Export>> getExportsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Export>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<Export>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Unpublish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void unpublishIteration(UUID projectId, UUID iterationId) {
+        unpublishIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
+    }
+
+    /**
+     * Unpublish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> unpublishIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(unpublishIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
+    }
+
+    /**
+     * Unpublish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> unpublishIterationAsync(UUID projectId, UUID iterationId) {
+        return unpublishIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Unpublish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> unpublishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (iterationId == null) {
+            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.unpublishIteration(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = unpublishIterationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> unpublishIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Publish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param publishName The name to give the published iteration.
+     * @param predictionId The id of the prediction resource to publish to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the boolean object if successful.
+     */
+    public boolean publishIteration(UUID projectId, UUID iterationId, String publishName, String predictionId) {
+        return publishIterationWithServiceResponseAsync(projectId, iterationId, publishName, predictionId).toBlocking().single().body();
+    }
+
+    /**
+     * Publish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param publishName The name to give the published iteration.
+     * @param predictionId The id of the prediction resource to publish to.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String publishName, String predictionId, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromResponse(publishIterationWithServiceResponseAsync(projectId, iterationId, publishName, predictionId), serviceCallback);
+    }
+
+    /**
+     * Publish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param publishName The name to give the published iteration.
+     * @param predictionId The id of the prediction resource to publish to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
+     */
+    public Observable<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String publishName, String predictionId) {
+        return publishIterationWithServiceResponseAsync(projectId, iterationId, publishName, predictionId).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
+            @Override
+            public Boolean call(ServiceResponse<Boolean> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Publish a specific iteration.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param publishName The name to give the published iteration.
+     * @param predictionId The id of the prediction resource to publish to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
+     */
+    public Observable<ServiceResponse<Boolean>> publishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, String publishName, String predictionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (iterationId == null) {
+            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
+        }
+        if (publishName == null) {
+            throw new IllegalArgumentException("Parameter publishName is required and cannot be null.");
+        }
+        if (predictionId == null) {
+            throw new IllegalArgumentException("Parameter predictionId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.publishIteration(projectId, iterationId, publishName, predictionId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Boolean>>>() {
+                @Override
+                public Observable<ServiceResponse<Boolean>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Boolean> clientResponse = publishIterationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Boolean> publishIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Boolean, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Boolean>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Update a specific iteration.
+     *
+     * @param projectId Project id.
+     * @param iterationId Iteration id.
+     * @param name Gets or sets the name of the iteration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    public Iteration updateIteration(UUID projectId, UUID iterationId, String name) {
+        return updateIterationWithServiceResponseAsync(projectId, iterationId, name).toBlocking().single().body();
+    }
+
+    /**
+     * Update a specific iteration.
+     *
+     * @param projectId Project id.
+     * @param iterationId Iteration id.
+     * @param name Gets or sets the name of the iteration.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, String name, final ServiceCallback<Iteration> serviceCallback) {
+        return ServiceFuture.fromResponse(updateIterationWithServiceResponseAsync(projectId, iterationId, name), serviceCallback);
+    }
+
+    /**
+     * Update a specific iteration.
+     *
+     * @param projectId Project id.
+     * @param iterationId Iteration id.
+     * @param name Gets or sets the name of the iteration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, String name) {
+        return updateIterationWithServiceResponseAsync(projectId, iterationId, name).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+            @Override
+            public Iteration call(ServiceResponse<Iteration> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update a specific iteration.
+     *
+     * @param projectId Project id.
+     * @param iterationId Iteration id.
+     * @param name Gets or sets the name of the iteration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<ServiceResponse<Iteration>> updateIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (iterationId == null) {
+            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        Iteration updatedIteration = new Iteration();
+        updatedIteration.withName(name);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateIteration(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), updatedIteration, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
+                @Override
+                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Iteration> clientResponse = updateIterationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Iteration> updateIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Iteration, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Iteration>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete a specific iteration of a project.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteIteration(UUID projectId, UUID iterationId) {
+        deleteIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a specific iteration of a project.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
+    }
+
+    /**
+     * Delete a specific iteration of a project.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteIterationAsync(UUID projectId, UUID iterationId) {
+        return deleteIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a specific iteration of a project.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (iterationId == null) {
+            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteIteration(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteIterationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a specific iteration.
+     *
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    public Iteration getIteration(UUID projectId, UUID iterationId) {
+        return getIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
+    }
+
+    /**
+     * Get a specific iteration.
+     *
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Iteration> getIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Iteration> serviceCallback) {
+        return ServiceFuture.fromResponse(getIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
+    }
+
+    /**
+     * Get a specific iteration.
+     *
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<Iteration> getIterationAsync(UUID projectId, UUID iterationId) {
+        return getIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+            @Override
+            public Iteration call(ServiceResponse<Iteration> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a specific iteration.
+     *
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<ServiceResponse<Iteration>> getIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (iterationId == null) {
+            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getIteration(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
+                @Override
+                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Iteration> clientResponse = getIterationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Iteration> getIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Iteration, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Iteration>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Get iterations for the project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;Iteration&gt; object if successful.
+     */
+    public List<Iteration> getIterations(UUID projectId) {
+        return getIterationsWithServiceResponseAsync(projectId).toBlocking().single().body();
+    }
+
+    /**
+     * Get iterations for the project.
+     *
+     * @param projectId The project id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<Iteration>> getIterationsAsync(UUID projectId, final ServiceCallback<List<Iteration>> serviceCallback) {
+        return ServiceFuture.fromResponse(getIterationsWithServiceResponseAsync(projectId), serviceCallback);
+    }
+
+    /**
+     * Get iterations for the project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Iteration&gt; object
+     */
+    public Observable<List<Iteration>> getIterationsAsync(UUID projectId) {
+        return getIterationsWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<List<Iteration>>, List<Iteration>>() {
+            @Override
+            public List<Iteration> call(ServiceResponse<List<Iteration>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get iterations for the project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Iteration&gt; object
+     */
+    public Observable<ServiceResponse<List<Iteration>>> getIterationsWithServiceResponseAsync(UUID projectId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getIterations(projectId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Iteration>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<Iteration>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<Iteration>> clientResponse = getIterationsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<Iteration>> getIterationsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Iteration>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<Iteration>>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    public Iteration trainProject(UUID projectId, TrainProjectOptionalParameter trainProjectOptionalParameter) {
+        return trainProjectWithServiceResponseAsync(projectId, trainProjectOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Iteration> trainProjectAsync(UUID projectId, TrainProjectOptionalParameter trainProjectOptionalParameter, final ServiceCallback<Iteration> serviceCallback) {
+        return ServiceFuture.fromResponse(trainProjectWithServiceResponseAsync(projectId, trainProjectOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<Iteration> trainProjectAsync(UUID projectId, TrainProjectOptionalParameter trainProjectOptionalParameter) {
+        return trainProjectWithServiceResponseAsync(projectId, trainProjectOptionalParameter).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+            @Override
+            public Iteration call(ServiceResponse<Iteration> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId, TrainProjectOptionalParameter trainProjectOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final String trainingType = trainProjectOptionalParameter != null ? trainProjectOptionalParameter.trainingType() : null;
+        final Integer reservedBudgetInHours = trainProjectOptionalParameter != null ? trainProjectOptionalParameter.reservedBudgetInHours() : null;
+        final Boolean forceTrain = trainProjectOptionalParameter != null ? trainProjectOptionalParameter.forceTrain() : null;
+        final String notificationEmailAddress = trainProjectOptionalParameter != null ? trainProjectOptionalParameter.notificationEmailAddress() : null;
+
+        return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress);
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
+     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
+     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
+     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.trainProject(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
+                @Override
+                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Iteration> clientResponse = trainProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Iteration> trainProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Iteration, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Iteration>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public TrainingsTrainProjectParameters trainProject() {
+        return new TrainingsTrainProjectParameters(this);
+    }
+
+    /**
+     * Internal class implementing TrainingsTrainProjectDefinition.
+     */
+    class TrainingsTrainProjectParameters implements TrainingsTrainProjectDefinition {
+        private TrainingsImpl parent;
+        private UUID projectId;
+        private String trainingType;
+        private Integer reservedBudgetInHours;
+        private Boolean forceTrain;
+        private String notificationEmailAddress;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TrainingsTrainProjectParameters(TrainingsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TrainingsTrainProjectParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public TrainingsTrainProjectParameters withTrainingType(String trainingType) {
+            this.trainingType = trainingType;
+            return this;
+        }
+
+        @Override
+        public TrainingsTrainProjectParameters withReservedBudgetInHours(Integer reservedBudgetInHours) {
+            this.reservedBudgetInHours = reservedBudgetInHours;
+            return this;
+        }
+
+        @Override
+        public TrainingsTrainProjectParameters withForceTrain(Boolean forceTrain) {
+            this.forceTrain = forceTrain;
+            return this;
+        }
+
+        @Override
+        public TrainingsTrainProjectParameters withNotificationEmailAddress(String notificationEmailAddress) {
+            this.notificationEmailAddress = notificationEmailAddress;
+            return this;
+        }
+
+        @Override
+        public Iteration execute() {
+        return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Iteration> executeAsync() {
+            return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+                @Override
+                public Iteration call(ServiceResponse<Iteration> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * Update a specific project.
+     *
+     * @param projectId The id of the project to update.
+     * @param updatedProject The updated project model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Project object if successful.
+     */
+    public Project updateProject(UUID projectId, Project updatedProject) {
+        return updateProjectWithServiceResponseAsync(projectId, updatedProject).toBlocking().single().body();
+    }
+
+    /**
+     * Update a specific project.
+     *
+     * @param projectId The id of the project to update.
+     * @param updatedProject The updated project model.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Project> updateProjectAsync(UUID projectId, Project updatedProject, final ServiceCallback<Project> serviceCallback) {
+        return ServiceFuture.fromResponse(updateProjectWithServiceResponseAsync(projectId, updatedProject), serviceCallback);
+    }
+
+    /**
+     * Update a specific project.
+     *
+     * @param projectId The id of the project to update.
+     * @param updatedProject The updated project model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<Project> updateProjectAsync(UUID projectId, Project updatedProject) {
+        return updateProjectWithServiceResponseAsync(projectId, updatedProject).map(new Func1<ServiceResponse<Project>, Project>() {
+            @Override
+            public Project call(ServiceResponse<Project> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update a specific project.
+     *
+     * @param projectId The id of the project to update.
+     * @param updatedProject The updated project model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<ServiceResponse<Project>> updateProjectWithServiceResponseAsync(UUID projectId, Project updatedProject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (updatedProject == null) {
+            throw new IllegalArgumentException("Parameter updatedProject is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(updatedProject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateProject(projectId, updatedProject, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
+                @Override
+                public Observable<ServiceResponse<Project>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Project> clientResponse = updateProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Project> updateProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Project, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Project>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete a specific project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteProject(UUID projectId) {
+        deleteProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a specific project.
+     *
+     * @param projectId The project id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteProjectAsync(UUID projectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteProjectWithServiceResponseAsync(projectId), serviceCallback);
+    }
+
+    /**
+     * Delete a specific project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteProjectAsync(UUID projectId) {
+        return deleteProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a specific project.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteProjectWithServiceResponseAsync(UUID projectId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteProject(projectId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a specific project.
+     *
+     * @param projectId The id of the project to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Project object if successful.
+     */
+    public Project getProject(UUID projectId) {
+        return getProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
+    }
+
+    /**
+     * Get a specific project.
+     *
+     * @param projectId The id of the project to get.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Project> getProjectAsync(UUID projectId, final ServiceCallback<Project> serviceCallback) {
+        return ServiceFuture.fromResponse(getProjectWithServiceResponseAsync(projectId), serviceCallback);
+    }
+
+    /**
+     * Get a specific project.
+     *
+     * @param projectId The id of the project to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<Project> getProjectAsync(UUID projectId) {
+        return getProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Project>, Project>() {
+            @Override
+            public Project call(ServiceResponse<Project> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a specific project.
+     *
+     * @param projectId The id of the project to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<ServiceResponse<Project>> getProjectWithServiceResponseAsync(UUID projectId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getProject(projectId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
+                @Override
+                public Observable<ServiceResponse<Project>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Project> clientResponse = getProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Project> getProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Project, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Project>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Project object if successful.
+     */
+    public Project createProject(String name, CreateProjectOptionalParameter createProjectOptionalParameter) {
+        return createProjectWithServiceResponseAsync(name, createProjectOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Project> createProjectAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter, final ServiceCallback<Project> serviceCallback) {
+        return ServiceFuture.fromResponse(createProjectWithServiceResponseAsync(name, createProjectOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<Project> createProjectAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter) {
+        return createProjectWithServiceResponseAsync(name, createProjectOptionalParameter).map(new Func1<ServiceResponse<Project>, Project>() {
+            @Override
+            public Project call(ServiceResponse<Project> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<ServiceResponse<Project>> createProjectWithServiceResponseAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final String description = createProjectOptionalParameter != null ? createProjectOptionalParameter.description() : null;
+        final UUID domainId = createProjectOptionalParameter != null ? createProjectOptionalParameter.domainId() : null;
+        final String classificationType = createProjectOptionalParameter != null ? createProjectOptionalParameter.classificationType() : null;
+        final List<String> targetExportPlatforms = createProjectOptionalParameter != null ? createProjectOptionalParameter.targetExportPlatforms() : null;
+
+        return createProjectWithServiceResponseAsync(name, description, domainId, classificationType, targetExportPlatforms);
+    }
+
+    /**
+     * Create a project.
+     *
+     * @param name Name of the project.
+     * @param description The description of the project.
+     * @param domainId The id of the domain to use for this project. Defaults to General.
+     * @param classificationType The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'
+     * @param targetExportPlatforms List of platforms the trained model is intending exporting to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Project object
+     */
+    public Observable<ServiceResponse<Project>> createProjectWithServiceResponseAsync(String name, String description, UUID domainId, String classificationType, List<String> targetExportPlatforms) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(targetExportPlatforms);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String targetExportPlatformsConverted = this.client.serializerAdapter().serializeList(targetExportPlatforms, CollectionFormat.CSV);
+        return service.createProject(name, description, domainId, classificationType, targetExportPlatformsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
+                @Override
+                public Observable<ServiceResponse<Project>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Project> clientResponse = createProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Project> createProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Project, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Project>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public TrainingsCreateProjectParameters createProject() {
+        return new TrainingsCreateProjectParameters(this);
+    }
+
+    /**
+     * Internal class implementing TrainingsCreateProjectDefinition.
+     */
+    class TrainingsCreateProjectParameters implements TrainingsCreateProjectDefinition {
+        private TrainingsImpl parent;
+        private String name;
+        private String description;
+        private UUID domainId;
+        private String classificationType;
+        private List<String> targetExportPlatforms;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TrainingsCreateProjectParameters(TrainingsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TrainingsCreateProjectParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public TrainingsCreateProjectParameters withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        @Override
+        public TrainingsCreateProjectParameters withDomainId(UUID domainId) {
+            this.domainId = domainId;
+            return this;
+        }
+
+        @Override
+        public TrainingsCreateProjectParameters withClassificationType(String classificationType) {
+            this.classificationType = classificationType;
+            return this;
+        }
+
+        @Override
+        public TrainingsCreateProjectParameters withTargetExportPlatforms(List<String> targetExportPlatforms) {
+            this.targetExportPlatforms = targetExportPlatforms;
+            return this;
+        }
+
+        @Override
+        public Project execute() {
+        return createProjectWithServiceResponseAsync(name, description, domainId, classificationType, targetExportPlatforms).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Project> executeAsync() {
+            return createProjectWithServiceResponseAsync(name, description, domainId, classificationType, targetExportPlatforms).map(new Func1<ServiceResponse<Project>, Project>() {
+                @Override
+                public Project call(ServiceResponse<Project> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * Get your projects.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;Project&gt; object if successful.
+     */
+    public List<Project> getProjects() {
+        return getProjectsWithServiceResponseAsync().toBlocking().single().body();
+    }
+
+    /**
+     * Get your projects.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<Project>> getProjectsAsync(final ServiceCallback<List<Project>> serviceCallback) {
+        return ServiceFuture.fromResponse(getProjectsWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Get your projects.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Project&gt; object
+     */
+    public Observable<List<Project>> getProjectsAsync() {
+        return getProjectsWithServiceResponseAsync().map(new Func1<ServiceResponse<List<Project>>, List<Project>>() {
+            @Override
+            public List<Project> call(ServiceResponse<List<Project>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get your projects.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Project&gt; object
+     */
+    public Observable<ServiceResponse<List<Project>>> getProjectsWithServiceResponseAsync() {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getProjects(this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Project>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<Project>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<Project>> clientResponse = getProjectsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<Project>> getProjectsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Project>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<Project>>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -1206,11 +2492,11 @@ public class TrainingsImpl implements Trainings {
      * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformanceCountOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
@@ -1224,8 +2510,8 @@ public class TrainingsImpl implements Trainings {
      * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformanceCountOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1241,8 +2527,8 @@ public class TrainingsImpl implements Trainings {
      * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformanceCountOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
@@ -1262,13 +2548,16 @@ public class TrainingsImpl implements Trainings {
      * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformanceCountOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, GetImagePerformanceCountOptionalParameter getImagePerformanceCountOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1278,7 +2567,7 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final List<String> tagIds = getImagePerformanceCountOptionalParameter != null ? getImagePerformanceCountOptionalParameter.tagIds() : null;
+        final List<UUID> tagIds = getImagePerformanceCountOptionalParameter != null ? getImagePerformanceCountOptionalParameter.tagIds() : null;
 
         return getImagePerformanceCountWithServiceResponseAsync(projectId, iterationId, tagIds);
     }
@@ -1289,13 +2578,16 @@ public class TrainingsImpl implements Trainings {
      * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param tagIds A list of tags ids to filter the images to count. Defaults to all tags when null.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
      */
-    public Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1306,8 +2598,9 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(tagIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
-        return service.getImagePerformanceCount(projectId, iterationId, tagIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getImagePerformanceCount(projectId, iterationId, tagIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
                 public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
@@ -1321,10 +2614,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Integer> getImagePerformanceCountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Integer, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Integer> getImagePerformanceCountDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Integer, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Integer>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -1340,7 +2633,7 @@ public class TrainingsImpl implements Trainings {
         private TrainingsImpl parent;
         private UUID projectId;
         private UUID iterationId;
-        private List<String> tagIds;
+        private List<UUID> tagIds;
 
         /**
          * Constructor.
@@ -1363,7 +2656,7 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
-        public TrainingsGetImagePerformanceCountParameters withTagIds(List<String> tagIds) {
+        public TrainingsGetImagePerformanceCountParameters withTagIds(List<UUID> tagIds) {
             this.tagIds = tagIds;
             return this;
         }
@@ -1392,11 +2685,11 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformancesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ImagePerformance&gt; object if successful.
      */
@@ -1411,8 +2704,8 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformancesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1429,8 +2722,8 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformancesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
@@ -1451,13 +2744,16 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param getImagePerformancesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
     public Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, GetImagePerformancesOptionalParameter getImagePerformancesOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1467,7 +2763,7 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final List<String> tagIds = getImagePerformancesOptionalParameter != null ? getImagePerformancesOptionalParameter.tagIds() : null;
+        final List<UUID> tagIds = getImagePerformancesOptionalParameter != null ? getImagePerformancesOptionalParameter.tagIds() : null;
         final String orderBy = getImagePerformancesOptionalParameter != null ? getImagePerformancesOptionalParameter.orderBy() : null;
         final Integer take = getImagePerformancesOptionalParameter != null ? getImagePerformancesOptionalParameter.take() : null;
         final Integer skip = getImagePerformancesOptionalParameter != null ? getImagePerformancesOptionalParameter.skip() : null;
@@ -1482,16 +2778,19 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
-     * @param tagIds A list of tags ids to filter the images. Defaults to all tagged images when null. Limited to 20
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
+     * @param tagIds A list of tags ids to filter the images. Defaults to all tagged images when null. Limited to 20.
      * @param orderBy The ordering. Defaults to newest. Possible values include: 'Newest', 'Oldest'
-     * @param take Maximum number of images to return. Defaults to 50, limited to 256
-     * @param skip Number of images to skip before beginning the image batch. Defaults to 0
+     * @param take Maximum number of images to return. Defaults to 50, limited to 256.
+     * @param skip Number of images to skip before beginning the image batch. Defaults to 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
-    public Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1502,8 +2801,9 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(tagIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
-        return service.getImagePerformances(projectId, iterationId, tagIdsConverted, orderBy, take, skip, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getImagePerformances(projectId, iterationId, tagIdsConverted, orderBy, take, skip, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ImagePerformance>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ImagePerformance>>> call(Response<ResponseBody> response) {
@@ -1517,10 +2817,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<ImagePerformance>> getImagePerformancesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<ImagePerformance>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<ImagePerformance>> getImagePerformancesDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<ImagePerformance>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<ImagePerformance>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -1536,7 +2836,7 @@ public class TrainingsImpl implements Trainings {
         private TrainingsImpl parent;
         private UUID projectId;
         private UUID iterationId;
-        private List<String> tagIds;
+        private List<UUID> tagIds;
         private String orderBy;
         private Integer take;
         private Integer skip;
@@ -1562,7 +2862,7 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
-        public TrainingsGetImagePerformancesParameters withTagIds(List<String> tagIds) {
+        public TrainingsGetImagePerformancesParameters withTagIds(List<UUID> tagIds) {
             this.tagIds = tagIds;
             return this;
         }
@@ -1605,11 +2905,11 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get detailed performance information about an iteration.
      *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
      * @param getIterationPerformanceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IterationPerformance object if successful.
      */
@@ -1620,8 +2920,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get detailed performance information about an iteration.
      *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
      * @param getIterationPerformanceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1634,8 +2934,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get detailed performance information about an iteration.
      *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
      * @param getIterationPerformanceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IterationPerformance object
@@ -1652,13 +2952,16 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get detailed performance information about an iteration.
      *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
      * @param getIterationPerformanceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IterationPerformance object
      */
     public Observable<ServiceResponse<IterationPerformance>> getIterationPerformanceWithServiceResponseAsync(UUID projectId, UUID iterationId, GetIterationPerformanceOptionalParameter getIterationPerformanceOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1677,14 +2980,17 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get detailed performance information about an iteration.
      *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
-     * @param threshold The threshold used to determine true predictions
-     * @param overlapThreshold If applicable, the bounding box overlap threshold used to determine true predictions
+     * @param projectId The id of the project the iteration belongs to.
+     * @param iterationId The id of the iteration to get.
+     * @param threshold The threshold used to determine true predictions.
+     * @param overlapThreshold If applicable, the bounding box overlap threshold used to determine true predictions.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IterationPerformance object
      */
     public Observable<ServiceResponse<IterationPerformance>> getIterationPerformanceWithServiceResponseAsync(UUID projectId, UUID iterationId, Double threshold, Double overlapThreshold) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -1694,7 +3000,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getIterationPerformance(projectId, iterationId, threshold, overlapThreshold, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getIterationPerformance(projectId, iterationId, threshold, overlapThreshold, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IterationPerformance>>>() {
                 @Override
                 public Observable<ServiceResponse<IterationPerformance>> call(Response<ResponseBody> response) {
@@ -1708,10 +3015,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<IterationPerformance> getIterationPerformanceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IterationPerformance, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IterationPerformance> getIterationPerformanceDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IterationPerformance, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IterationPerformance>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -1779,81 +3086,78 @@ public class TrainingsImpl implements Trainings {
     }
 
     /**
-     * Update a specific iteration.
+     * Get images that were sent to your prediction endpoint.
      *
-     * @param projectId Project id
-     * @param iterationId Iteration id
-     * @param updatedIteration The updated iteration model
+     * @param projectId The project id.
+     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
+     * @return the PredictionQueryResult object if successful.
      */
-    public Iteration updateIteration(UUID projectId, UUID iterationId, Iteration updatedIteration) {
-        return updateIterationWithServiceResponseAsync(projectId, iterationId, updatedIteration).toBlocking().single().body();
+    public PredictionQueryResult queryPredictions(UUID projectId, PredictionQueryToken query) {
+        return queryPredictionsWithServiceResponseAsync(projectId, query).toBlocking().single().body();
     }
 
     /**
-     * Update a specific iteration.
+     * Get images that were sent to your prediction endpoint.
      *
-     * @param projectId Project id
-     * @param iterationId Iteration id
-     * @param updatedIteration The updated iteration model
+     * @param projectId The project id.
+     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, Iteration updatedIteration, final ServiceCallback<Iteration> serviceCallback) {
-        return ServiceFuture.fromResponse(updateIterationWithServiceResponseAsync(projectId, iterationId, updatedIteration), serviceCallback);
+    public ServiceFuture<PredictionQueryResult> queryPredictionsAsync(UUID projectId, PredictionQueryToken query, final ServiceCallback<PredictionQueryResult> serviceCallback) {
+        return ServiceFuture.fromResponse(queryPredictionsWithServiceResponseAsync(projectId, query), serviceCallback);
     }
 
     /**
-     * Update a specific iteration.
+     * Get images that were sent to your prediction endpoint.
      *
-     * @param projectId Project id
-     * @param iterationId Iteration id
-     * @param updatedIteration The updated iteration model
+     * @param projectId The project id.
+     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
+     * @return the observable to the PredictionQueryResult object
      */
-    public Observable<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, Iteration updatedIteration) {
-        return updateIterationWithServiceResponseAsync(projectId, iterationId, updatedIteration).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+    public Observable<PredictionQueryResult> queryPredictionsAsync(UUID projectId, PredictionQueryToken query) {
+        return queryPredictionsWithServiceResponseAsync(projectId, query).map(new Func1<ServiceResponse<PredictionQueryResult>, PredictionQueryResult>() {
             @Override
-            public Iteration call(ServiceResponse<Iteration> response) {
+            public PredictionQueryResult call(ServiceResponse<PredictionQueryResult> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Update a specific iteration.
+     * Get images that were sent to your prediction endpoint.
      *
-     * @param projectId Project id
-     * @param iterationId Iteration id
-     * @param updatedIteration The updated iteration model
+     * @param projectId The project id.
+     * @param query Parameters used to query the predictions. Limited to combining 2 tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
+     * @return the observable to the PredictionQueryResult object
      */
-    public Observable<ServiceResponse<Iteration>> updateIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, Iteration updatedIteration) {
+    public Observable<ServiceResponse<PredictionQueryResult>> queryPredictionsWithServiceResponseAsync(UUID projectId, PredictionQueryToken query) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
-        if (iterationId == null) {
-            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
-        }
-        if (updatedIteration == null) {
-            throw new IllegalArgumentException("Parameter updatedIteration is required and cannot be null.");
+        if (query == null) {
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        Validator.validate(updatedIteration);
-        return service.updateIteration(projectId, iterationId, updatedIteration, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
+        Validator.validate(query);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.queryPredictions(projectId, query, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PredictionQueryResult>>>() {
                 @Override
-                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<PredictionQueryResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Iteration> clientResponse = updateIterationDelegate(response);
+                        ServiceResponse<PredictionQueryResult> clientResponse = queryPredictionsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1862,799 +3166,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Iteration> updateIterationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Iteration, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Iteration>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete a specific iteration of a project.
-     *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteIteration(UUID projectId, UUID iterationId) {
-        deleteIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
-    }
-
-    /**
-     * Delete a specific iteration of a project.
-     *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
-    }
-
-    /**
-     * Delete a specific iteration of a project.
-     *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteIterationAsync(UUID projectId, UUID iterationId) {
-        return deleteIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete a specific iteration of a project.
-     *
-     * @param projectId The project id
-     * @param iterationId The iteration id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (iterationId == null) {
-            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.deleteIteration(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteIterationDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteIterationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get a specific iteration.
-     *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    public Iteration getIteration(UUID projectId, UUID iterationId) {
-        return getIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
-    }
-
-    /**
-     * Get a specific iteration.
-     *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Iteration> getIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Iteration> serviceCallback) {
-        return ServiceFuture.fromResponse(getIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
-    }
-
-    /**
-     * Get a specific iteration.
-     *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<Iteration> getIterationAsync(UUID projectId, UUID iterationId) {
-        return getIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
-            @Override
-            public Iteration call(ServiceResponse<Iteration> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get a specific iteration.
-     *
-     * @param projectId The id of the project the iteration belongs to
-     * @param iterationId The id of the iteration to get
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<ServiceResponse<Iteration>> getIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (iterationId == null) {
-            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.getIteration(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
-                @Override
-                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Iteration> clientResponse = getIterationDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Iteration> getIterationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Iteration, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Iteration>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get iterations for the project.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Iteration&gt; object if successful.
-     */
-    public List<Iteration> getIterations(UUID projectId) {
-        return getIterationsWithServiceResponseAsync(projectId).toBlocking().single().body();
-    }
-
-    /**
-     * Get iterations for the project.
-     *
-     * @param projectId The project id
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<Iteration>> getIterationsAsync(UUID projectId, final ServiceCallback<List<Iteration>> serviceCallback) {
-        return ServiceFuture.fromResponse(getIterationsWithServiceResponseAsync(projectId), serviceCallback);
-    }
-
-    /**
-     * Get iterations for the project.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Iteration&gt; object
-     */
-    public Observable<List<Iteration>> getIterationsAsync(UUID projectId) {
-        return getIterationsWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<List<Iteration>>, List<Iteration>>() {
-            @Override
-            public List<Iteration> call(ServiceResponse<List<Iteration>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get iterations for the project.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Iteration&gt; object
-     */
-    public Observable<ServiceResponse<List<Iteration>>> getIterationsWithServiceResponseAsync(UUID projectId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.getIterations(projectId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Iteration>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<Iteration>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<Iteration>> clientResponse = getIterationsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<Iteration>> getIterationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Iteration>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<Iteration>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Update a specific project.
-     *
-     * @param projectId The id of the project to update
-     * @param updatedProject The updated project model
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Project object if successful.
-     */
-    public Project updateProject(UUID projectId, Project updatedProject) {
-        return updateProjectWithServiceResponseAsync(projectId, updatedProject).toBlocking().single().body();
-    }
-
-    /**
-     * Update a specific project.
-     *
-     * @param projectId The id of the project to update
-     * @param updatedProject The updated project model
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Project> updateProjectAsync(UUID projectId, Project updatedProject, final ServiceCallback<Project> serviceCallback) {
-        return ServiceFuture.fromResponse(updateProjectWithServiceResponseAsync(projectId, updatedProject), serviceCallback);
-    }
-
-    /**
-     * Update a specific project.
-     *
-     * @param projectId The id of the project to update
-     * @param updatedProject The updated project model
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<Project> updateProjectAsync(UUID projectId, Project updatedProject) {
-        return updateProjectWithServiceResponseAsync(projectId, updatedProject).map(new Func1<ServiceResponse<Project>, Project>() {
-            @Override
-            public Project call(ServiceResponse<Project> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Update a specific project.
-     *
-     * @param projectId The id of the project to update
-     * @param updatedProject The updated project model
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<ServiceResponse<Project>> updateProjectWithServiceResponseAsync(UUID projectId, Project updatedProject) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (updatedProject == null) {
-            throw new IllegalArgumentException("Parameter updatedProject is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(updatedProject);
-        return service.updateProject(projectId, updatedProject, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
-                @Override
-                public Observable<ServiceResponse<Project>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Project> clientResponse = updateProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Project> updateProjectDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Project, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Project>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete a specific project.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteProject(UUID projectId) {
-        deleteProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
-    }
-
-    /**
-     * Delete a specific project.
-     *
-     * @param projectId The project id
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteProjectAsync(UUID projectId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteProjectWithServiceResponseAsync(projectId), serviceCallback);
-    }
-
-    /**
-     * Delete a specific project.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteProjectAsync(UUID projectId) {
-        return deleteProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete a specific project.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteProjectWithServiceResponseAsync(UUID projectId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.deleteProject(projectId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteProjectDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get a specific project.
-     *
-     * @param projectId The id of the project to get
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Project object if successful.
-     */
-    public Project getProject(UUID projectId) {
-        return getProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
-    }
-
-    /**
-     * Get a specific project.
-     *
-     * @param projectId The id of the project to get
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Project> getProjectAsync(UUID projectId, final ServiceCallback<Project> serviceCallback) {
-        return ServiceFuture.fromResponse(getProjectWithServiceResponseAsync(projectId), serviceCallback);
-    }
-
-    /**
-     * Get a specific project.
-     *
-     * @param projectId The id of the project to get
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<Project> getProjectAsync(UUID projectId) {
-        return getProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Project>, Project>() {
-            @Override
-            public Project call(ServiceResponse<Project> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get a specific project.
-     *
-     * @param projectId The id of the project to get
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<ServiceResponse<Project>> getProjectWithServiceResponseAsync(UUID projectId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.getProject(projectId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
-                @Override
-                public Observable<ServiceResponse<Project>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Project> clientResponse = getProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Project> getProjectDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Project, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Project>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project
-     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Project object if successful.
-     */
-    public Project createProject(String name, CreateProjectOptionalParameter createProjectOptionalParameter) {
-        return createProjectWithServiceResponseAsync(name, createProjectOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project
-     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Project> createProjectAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter, final ServiceCallback<Project> serviceCallback) {
-        return ServiceFuture.fromResponse(createProjectWithServiceResponseAsync(name, createProjectOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project
-     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<Project> createProjectAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter) {
-        return createProjectWithServiceResponseAsync(name, createProjectOptionalParameter).map(new Func1<ServiceResponse<Project>, Project>() {
-            @Override
-            public Project call(ServiceResponse<Project> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project
-     * @param createProjectOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<ServiceResponse<Project>> createProjectWithServiceResponseAsync(String name, CreateProjectOptionalParameter createProjectOptionalParameter) {
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        final String description = createProjectOptionalParameter != null ? createProjectOptionalParameter.description() : null;
-        final UUID domainId = createProjectOptionalParameter != null ? createProjectOptionalParameter.domainId() : null;
-        final String classificationType = createProjectOptionalParameter != null ? createProjectOptionalParameter.classificationType() : null;
-
-        return createProjectWithServiceResponseAsync(name, description, domainId, classificationType);
-    }
-
-    /**
-     * Create a project.
-     *
-     * @param name Name of the project
-     * @param description The description of the project
-     * @param domainId The id of the domain to use for this project. Defaults to General
-     * @param classificationType The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Project object
-     */
-    public Observable<ServiceResponse<Project>> createProjectWithServiceResponseAsync(String name, String description, UUID domainId, String classificationType) {
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.createProject(name, description, domainId, classificationType, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
-                @Override
-                public Observable<ServiceResponse<Project>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Project> clientResponse = createProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Project> createProjectDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Project, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Project>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    @Override
-    public TrainingsCreateProjectParameters createProject() {
-        return new TrainingsCreateProjectParameters(this);
-    }
-
-    /**
-     * Internal class implementing TrainingsCreateProjectDefinition.
-     */
-    class TrainingsCreateProjectParameters implements TrainingsCreateProjectDefinition {
-        private TrainingsImpl parent;
-        private String name;
-        private String description;
-        private UUID domainId;
-        private String classificationType;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        TrainingsCreateProjectParameters(TrainingsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public TrainingsCreateProjectParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public TrainingsCreateProjectParameters withDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        @Override
-        public TrainingsCreateProjectParameters withDomainId(UUID domainId) {
-            this.domainId = domainId;
-            return this;
-        }
-
-        @Override
-        public TrainingsCreateProjectParameters withClassificationType(String classificationType) {
-            this.classificationType = classificationType;
-            return this;
-        }
-
-        @Override
-        public Project execute() {
-        return createProjectWithServiceResponseAsync(name, description, domainId, classificationType).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Project> executeAsync() {
-            return createProjectWithServiceResponseAsync(name, description, domainId, classificationType).map(new Func1<ServiceResponse<Project>, Project>() {
-                @Override
-                public Project call(ServiceResponse<Project> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Get your projects.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Project&gt; object if successful.
-     */
-    public List<Project> getProjects() {
-        return getProjectsWithServiceResponseAsync().toBlocking().single().body();
-    }
-
-    /**
-     * Get your projects.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<Project>> getProjectsAsync(final ServiceCallback<List<Project>> serviceCallback) {
-        return ServiceFuture.fromResponse(getProjectsWithServiceResponseAsync(), serviceCallback);
-    }
-
-    /**
-     * Get your projects.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Project&gt; object
-     */
-    public Observable<List<Project>> getProjectsAsync() {
-        return getProjectsWithServiceResponseAsync().map(new Func1<ServiceResponse<List<Project>>, List<Project>>() {
-            @Override
-            public List<Project> call(ServiceResponse<List<Project>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get your projects.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Project&gt; object
-     */
-    public Observable<ServiceResponse<List<Project>>> getProjectsWithServiceResponseAsync() {
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.getProjects(this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Project>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<Project>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<Project>> clientResponse = getProjectsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<Project>> getProjectsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Project>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<Project>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    public Iteration trainProject(UUID projectId) {
-        return trainProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Iteration> trainProjectAsync(UUID projectId, final ServiceCallback<Iteration> serviceCallback) {
-        return ServiceFuture.fromResponse(trainProjectWithServiceResponseAsync(projectId), serviceCallback);
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<Iteration> trainProjectAsync(UUID projectId) {
-        return trainProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
-            @Override
-            public Iteration call(ServiceResponse<Iteration> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.trainProject(projectId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
-                @Override
-                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Iteration> clientResponse = trainProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Iteration> trainProjectDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Iteration, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Iteration>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<PredictionQueryResult> queryPredictionsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PredictionQueryResult, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PredictionQueryResult>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -2662,11 +3177,11 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param quickTestImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
@@ -2677,8 +3192,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param quickTestImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2691,8 +3206,8 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param quickTestImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
@@ -2709,13 +3224,16 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param quickTestImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
     public Observable<ServiceResponse<ImagePrediction>> quickTestImageWithServiceResponseAsync(UUID projectId, byte[] imageData, QuickTestImageOptionalParameter quickTestImageOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -2733,14 +3251,17 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
     public Observable<ServiceResponse<ImagePrediction>> quickTestImageWithServiceResponseAsync(UUID projectId, byte[] imageData, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -2750,8 +3271,9 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
-        return service.quickTestImage(projectId, iterationId, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.quickTestImage(projectId, iterationId, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
                 @Override
                 public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
@@ -2765,10 +3287,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImagePrediction> quickTestImageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImagePrediction> quickTestImageDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImagePrediction>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -2832,40 +3354,43 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image url.
      *
-     * @param projectId The project to evaluate against
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param quickTestImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction quickTestImageUrl(UUID projectId, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter) {
-        return quickTestImageUrlWithServiceResponseAsync(projectId, quickTestImageUrlOptionalParameter).toBlocking().single().body();
+    public ImagePrediction quickTestImageUrl(UUID projectId, String url, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter) {
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url, quickTestImageUrlOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * Quick test an image url.
      *
-     * @param projectId The project to evaluate against
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param quickTestImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(quickTestImageUrlWithServiceResponseAsync(projectId, quickTestImageUrlOptionalParameter), serviceCallback);
+    public ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(quickTestImageUrlWithServiceResponseAsync(projectId, url, quickTestImageUrlOptionalParameter), serviceCallback);
     }
 
     /**
      * Quick test an image url.
      *
-     * @param projectId The project to evaluate against
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param quickTestImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter) {
-        return quickTestImageUrlWithServiceResponseAsync(projectId, quickTestImageUrlOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter) {
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url, quickTestImageUrlOptionalParameter).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -2876,44 +3401,57 @@ public class TrainingsImpl implements Trainings {
     /**
      * Quick test an image url.
      *
-     * @param projectId The project to evaluate against
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param quickTestImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter) {
+    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, String url, QuickTestImageUrlOptionalParameter quickTestImageUrlOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         final UUID iterationId = quickTestImageUrlOptionalParameter != null ? quickTestImageUrlOptionalParameter.iterationId() : null;
-        final String url = quickTestImageUrlOptionalParameter != null ? quickTestImageUrlOptionalParameter.url() : null;
 
-        return quickTestImageUrlWithServiceResponseAsync(projectId, iterationId, url);
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url, iterationId);
     }
 
     /**
      * Quick test an image url.
      *
-     * @param projectId The project to evaluate against
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
-     * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, UUID iterationId, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, String url, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        return service.quickTestImageUrl(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.quickTestImageUrl(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
                 @Override
                 public Observable<ServiceResponse<ImagePrediction>> call(Response<ResponseBody> response) {
@@ -2927,10 +3465,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImagePrediction> quickTestImageUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImagePrediction> quickTestImageUrlDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImagePrediction, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImagePrediction>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -2945,8 +3483,8 @@ public class TrainingsImpl implements Trainings {
     class TrainingsQuickTestImageUrlParameters implements TrainingsQuickTestImageUrlDefinition {
         private TrainingsImpl parent;
         private UUID projectId;
-        private UUID iterationId;
         private String url;
+        private UUID iterationId;
 
         /**
          * Constructor.
@@ -2963,25 +3501,25 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
-        public TrainingsQuickTestImageUrlParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
-            return this;
-        }
-
-        @Override
         public TrainingsQuickTestImageUrlParameters withUrl(String url) {
             this.url = url;
             return this;
         }
 
         @Override
+        public TrainingsQuickTestImageUrlParameters withIterationId(UUID iterationId) {
+            this.iterationId = iterationId;
+            return this;
+        }
+
+        @Override
         public ImagePrediction execute() {
-        return quickTestImageUrlWithServiceResponseAsync(projectId, iterationId, url).toBlocking().single().body();
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url, iterationId).toBlocking().single().body();
     }
 
         @Override
         public Observable<ImagePrediction> executeAsync() {
-            return quickTestImageUrlWithServiceResponseAsync(projectId, iterationId, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+            return quickTestImageUrlWithServiceResponseAsync(projectId, url, iterationId).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
                 @Override
                 public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                     return response.body();
@@ -2991,124 +3529,40 @@ public class TrainingsImpl implements Trainings {
     }
 
     /**
-     * Get images that were sent to your prediction endpoint.
-     *
-     * @param projectId The project id
-     * @param query Parameters used to query the predictions. Limited to combining 2 tags
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PredictionQueryResult object if successful.
-     */
-    public PredictionQueryResult queryPredictions(UUID projectId, PredictionQueryToken query) {
-        return queryPredictionsWithServiceResponseAsync(projectId, query).toBlocking().single().body();
-    }
-
-    /**
-     * Get images that were sent to your prediction endpoint.
-     *
-     * @param projectId The project id
-     * @param query Parameters used to query the predictions. Limited to combining 2 tags
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<PredictionQueryResult> queryPredictionsAsync(UUID projectId, PredictionQueryToken query, final ServiceCallback<PredictionQueryResult> serviceCallback) {
-        return ServiceFuture.fromResponse(queryPredictionsWithServiceResponseAsync(projectId, query), serviceCallback);
-    }
-
-    /**
-     * Get images that were sent to your prediction endpoint.
-     *
-     * @param projectId The project id
-     * @param query Parameters used to query the predictions. Limited to combining 2 tags
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PredictionQueryResult object
-     */
-    public Observable<PredictionQueryResult> queryPredictionsAsync(UUID projectId, PredictionQueryToken query) {
-        return queryPredictionsWithServiceResponseAsync(projectId, query).map(new Func1<ServiceResponse<PredictionQueryResult>, PredictionQueryResult>() {
-            @Override
-            public PredictionQueryResult call(ServiceResponse<PredictionQueryResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get images that were sent to your prediction endpoint.
-     *
-     * @param projectId The project id
-     * @param query Parameters used to query the predictions. Limited to combining 2 tags
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PredictionQueryResult object
-     */
-    public Observable<ServiceResponse<PredictionQueryResult>> queryPredictionsWithServiceResponseAsync(UUID projectId, PredictionQueryToken query) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(query);
-        return service.queryPredictions(projectId, query, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PredictionQueryResult>>>() {
-                @Override
-                public Observable<ServiceResponse<PredictionQueryResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PredictionQueryResult> clientResponse = queryPredictionsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PredictionQueryResult> queryPredictionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PredictionQueryResult, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PredictionQueryResult>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Delete a set of predicted images and their associated prediction results.
      *
-     * @param projectId The project id
-     * @param ids The prediction ids. Limited to 64
+     * @param projectId The project id.
+     * @param ids The prediction ids. Limited to 64.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deletePrediction(UUID projectId, List<String> ids) {
+    public void deletePrediction(UUID projectId, List<UUID> ids) {
         deletePredictionWithServiceResponseAsync(projectId, ids).toBlocking().single().body();
     }
 
     /**
      * Delete a set of predicted images and their associated prediction results.
      *
-     * @param projectId The project id
-     * @param ids The prediction ids. Limited to 64
+     * @param projectId The project id.
+     * @param ids The prediction ids. Limited to 64.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deletePredictionAsync(UUID projectId, List<String> ids, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deletePredictionAsync(UUID projectId, List<UUID> ids, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deletePredictionWithServiceResponseAsync(projectId, ids), serviceCallback);
     }
 
     /**
      * Delete a set of predicted images and their associated prediction results.
      *
-     * @param projectId The project id
-     * @param ids The prediction ids. Limited to 64
+     * @param projectId The project id.
+     * @param ids The prediction ids. Limited to 64.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deletePredictionAsync(UUID projectId, List<String> ids) {
+    public Observable<Void> deletePredictionAsync(UUID projectId, List<UUID> ids) {
         return deletePredictionWithServiceResponseAsync(projectId, ids).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -3120,12 +3574,15 @@ public class TrainingsImpl implements Trainings {
     /**
      * Delete a set of predicted images and their associated prediction results.
      *
-     * @param projectId The project id
-     * @param ids The prediction ids. Limited to 64
+     * @param projectId The project id.
+     * @param ids The prediction ids. Limited to 64.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deletePredictionWithServiceResponseAsync(UUID projectId, List<String> ids) {
+    public Observable<ServiceResponse<Void>> deletePredictionWithServiceResponseAsync(UUID projectId, List<UUID> ids) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -3136,8 +3593,9 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(ids);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String idsConverted = this.client.serializerAdapter().serializeList(ids, CollectionFormat.CSV);
-        return service.deletePrediction(projectId, idsConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.deletePrediction(projectId, idsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -3151,10 +3609,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Void> deletePredictionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deletePredictionDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -3162,10 +3620,10 @@ public class TrainingsImpl implements Trainings {
      * Get region proposals for an image. Returns empty array if no proposals are found.
      * This API will get region proposals for an image along with confidences for the region. It returns an empty array if no proposals are found.
      *
-     * @param projectId The project id
-     * @param imageId The image id
+     * @param projectId The project id.
+     * @param imageId The image id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageRegionProposal object if successful.
      */
@@ -3177,8 +3635,8 @@ public class TrainingsImpl implements Trainings {
      * Get region proposals for an image. Returns empty array if no proposals are found.
      * This API will get region proposals for an image along with confidences for the region. It returns an empty array if no proposals are found.
      *
-     * @param projectId The project id
-     * @param imageId The image id
+     * @param projectId The project id.
+     * @param imageId The image id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -3191,8 +3649,8 @@ public class TrainingsImpl implements Trainings {
      * Get region proposals for an image. Returns empty array if no proposals are found.
      * This API will get region proposals for an image along with confidences for the region. It returns an empty array if no proposals are found.
      *
-     * @param projectId The project id
-     * @param imageId The image id
+     * @param projectId The project id.
+     * @param imageId The image id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageRegionProposal object
      */
@@ -3209,12 +3667,15 @@ public class TrainingsImpl implements Trainings {
      * Get region proposals for an image. Returns empty array if no proposals are found.
      * This API will get region proposals for an image along with confidences for the region. It returns an empty array if no proposals are found.
      *
-     * @param projectId The project id
-     * @param imageId The image id
+     * @param projectId The project id.
+     * @param imageId The image id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageRegionProposal object
      */
     public Observable<ServiceResponse<ImageRegionProposal>> getImageRegionProposalsWithServiceResponseAsync(UUID projectId, UUID imageId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -3224,7 +3685,8 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getImageRegionProposals(projectId, imageId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getImageRegionProposals(projectId, imageId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageRegionProposal>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageRegionProposal>> call(Response<ResponseBody> response) {
@@ -3238,514 +3700,21 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImageRegionProposal> getImageRegionProposalsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageRegionProposal, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImageRegionProposal> getImageRegionProposalsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageRegionProposal, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImageRegionProposal>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
-    }
-
-    /**
-     * Delete a set of image regions.
-     *
-     * @param projectId The project id
-     * @param regionIds Regions to delete. Limited to 64
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteImageRegions(UUID projectId, List<String> regionIds) {
-        deleteImageRegionsWithServiceResponseAsync(projectId, regionIds).toBlocking().single().body();
-    }
-
-    /**
-     * Delete a set of image regions.
-     *
-     * @param projectId The project id
-     * @param regionIds Regions to delete. Limited to 64
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteImageRegionsWithServiceResponseAsync(projectId, regionIds), serviceCallback);
-    }
-
-    /**
-     * Delete a set of image regions.
-     *
-     * @param projectId The project id
-     * @param regionIds Regions to delete. Limited to 64
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds) {
-        return deleteImageRegionsWithServiceResponseAsync(projectId, regionIds).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete a set of image regions.
-     *
-     * @param projectId The project id
-     * @param regionIds Regions to delete. Limited to 64
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteImageRegionsWithServiceResponseAsync(UUID projectId, List<String> regionIds) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (regionIds == null) {
-            throw new IllegalArgumentException("Parameter regionIds is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(regionIds);
-        String regionIdsConverted = this.client.serializerAdapter().serializeList(regionIds, CollectionFormat.CSV);
-        return service.deleteImageRegions(projectId, regionIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteImageRegionsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteImageRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
-     There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id
-     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageRegionCreateSummary object if successful.
-     */
-    public ImageRegionCreateSummary createImageRegions(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter) {
-        return createImageRegionsWithServiceResponseAsync(projectId, createImageRegionsOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
-     There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id
-     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ImageRegionCreateSummary> createImageRegionsAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter, final ServiceCallback<ImageRegionCreateSummary> serviceCallback) {
-        return ServiceFuture.fromResponse(createImageRegionsWithServiceResponseAsync(projectId, createImageRegionsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
-     There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id
-     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageRegionCreateSummary object
-     */
-    public Observable<ImageRegionCreateSummary> createImageRegionsAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter) {
-        return createImageRegionsWithServiceResponseAsync(projectId, createImageRegionsOptionalParameter).map(new Func1<ServiceResponse<ImageRegionCreateSummary>, ImageRegionCreateSummary>() {
-            @Override
-            public ImageRegionCreateSummary call(ServiceResponse<ImageRegionCreateSummary> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
-     There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id
-     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageRegionCreateSummary object
-     */
-    public Observable<ServiceResponse<ImageRegionCreateSummary>> createImageRegionsWithServiceResponseAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        final List<ImageRegionCreateEntry> regions = createImageRegionsOptionalParameter != null ? createImageRegionsOptionalParameter.regions() : null;
-
-        return createImageRegionsWithServiceResponseAsync(projectId, regions);
-    }
-
-    /**
-     * Create a set of image regions.
-     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
-     There is a limit of 64 entries in the batch.
-     *
-     * @param projectId The project id
-     * @param regions the List&lt;ImageRegionCreateEntry&gt; value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageRegionCreateSummary object
-     */
-    public Observable<ServiceResponse<ImageRegionCreateSummary>> createImageRegionsWithServiceResponseAsync(UUID projectId, List<ImageRegionCreateEntry> regions) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(regions);
-        ImageRegionCreateBatch batch = new ImageRegionCreateBatch();
-        batch.withRegions(regions);
-        return service.createImageRegions(projectId, this.client.apiKey(), this.client.acceptLanguage(), batch, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageRegionCreateSummary>>>() {
-                @Override
-                public Observable<ServiceResponse<ImageRegionCreateSummary>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ImageRegionCreateSummary> clientResponse = createImageRegionsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ImageRegionCreateSummary> createImageRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageRegionCreateSummary, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ImageRegionCreateSummary>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    @Override
-    public TrainingsCreateImageRegionsParameters createImageRegions() {
-        return new TrainingsCreateImageRegionsParameters(this);
-    }
-
-    /**
-     * Internal class implementing TrainingsCreateImageRegionsDefinition.
-     */
-    class TrainingsCreateImageRegionsParameters implements TrainingsCreateImageRegionsDefinition {
-        private TrainingsImpl parent;
-        private UUID projectId;
-        private List<ImageRegionCreateEntry> regions;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        TrainingsCreateImageRegionsParameters(TrainingsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public TrainingsCreateImageRegionsParameters withProjectId(UUID projectId) {
-            this.projectId = projectId;
-            return this;
-        }
-
-        @Override
-        public TrainingsCreateImageRegionsParameters withRegions(List<ImageRegionCreateEntry> regions) {
-            this.regions = regions;
-            return this;
-        }
-
-        @Override
-        public ImageRegionCreateSummary execute() {
-        return createImageRegionsWithServiceResponseAsync(projectId, regions).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<ImageRegionCreateSummary> executeAsync() {
-            return createImageRegionsWithServiceResponseAsync(projectId, regions).map(new Func1<ServiceResponse<ImageRegionCreateSummary>, ImageRegionCreateSummary>() {
-                @Override
-                public ImageRegionCreateSummary call(ServiceResponse<ImageRegionCreateSummary> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Remove a set of tags from a set of images.
-     *
-     * @param projectId The project id
-     * @param imageIds Image ids. Limited to 64 images
-     * @param tagIds Tags to be deleted from the specified images. Limted to 20 tags
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteImageTags(UUID projectId, List<String> imageIds, List<String> tagIds) {
-        deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds).toBlocking().single().body();
-    }
-
-    /**
-     * Remove a set of tags from a set of images.
-     *
-     * @param projectId The project id
-     * @param imageIds Image ids. Limited to 64 images
-     * @param tagIds Tags to be deleted from the specified images. Limted to 20 tags
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds), serviceCallback);
-    }
-
-    /**
-     * Remove a set of tags from a set of images.
-     *
-     * @param projectId The project id
-     * @param imageIds Image ids. Limited to 64 images
-     * @param tagIds Tags to be deleted from the specified images. Limted to 20 tags
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds) {
-        return deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Remove a set of tags from a set of images.
-     *
-     * @param projectId The project id
-     * @param imageIds Image ids. Limited to 64 images
-     * @param tagIds Tags to be deleted from the specified images. Limted to 20 tags
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteImageTagsWithServiceResponseAsync(UUID projectId, List<String> imageIds, List<String> tagIds) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (imageIds == null) {
-            throw new IllegalArgumentException("Parameter imageIds is required and cannot be null.");
-        }
-        if (tagIds == null) {
-            throw new IllegalArgumentException("Parameter tagIds is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(imageIds);
-        Validator.validate(tagIds);
-        String imageIdsConverted = this.client.serializerAdapter().serializeList(imageIds, CollectionFormat.CSV);
-        String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
-        return service.deleteImageTags(projectId, imageIdsConverted, tagIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteImageTagsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteImageTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id
-     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageTagCreateSummary object if successful.
-     */
-    public ImageTagCreateSummary createImageTags(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter) {
-        return createImageTagsWithServiceResponseAsync(projectId, createImageTagsOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id
-     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ImageTagCreateSummary> createImageTagsAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter, final ServiceCallback<ImageTagCreateSummary> serviceCallback) {
-        return ServiceFuture.fromResponse(createImageTagsWithServiceResponseAsync(projectId, createImageTagsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id
-     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageTagCreateSummary object
-     */
-    public Observable<ImageTagCreateSummary> createImageTagsAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter) {
-        return createImageTagsWithServiceResponseAsync(projectId, createImageTagsOptionalParameter).map(new Func1<ServiceResponse<ImageTagCreateSummary>, ImageTagCreateSummary>() {
-            @Override
-            public ImageTagCreateSummary call(ServiceResponse<ImageTagCreateSummary> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id
-     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageTagCreateSummary object
-     */
-    public Observable<ServiceResponse<ImageTagCreateSummary>> createImageTagsWithServiceResponseAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        final List<ImageTagCreateEntry> tags = createImageTagsOptionalParameter != null ? createImageTagsOptionalParameter.tags() : null;
-
-        return createImageTagsWithServiceResponseAsync(projectId, tags);
-    }
-
-    /**
-     * Associate a set of images with a set of tags.
-     *
-     * @param projectId The project id
-     * @param tags the List&lt;ImageTagCreateEntry&gt; value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageTagCreateSummary object
-     */
-    public Observable<ServiceResponse<ImageTagCreateSummary>> createImageTagsWithServiceResponseAsync(UUID projectId, List<ImageTagCreateEntry> tags) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(tags);
-        ImageTagCreateBatch batch = new ImageTagCreateBatch();
-        batch.withTags(tags);
-        return service.createImageTags(projectId, this.client.apiKey(), this.client.acceptLanguage(), batch, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageTagCreateSummary>>>() {
-                @Override
-                public Observable<ServiceResponse<ImageTagCreateSummary>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ImageTagCreateSummary> clientResponse = createImageTagsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ImageTagCreateSummary> createImageTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageTagCreateSummary, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ImageTagCreateSummary>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    @Override
-    public TrainingsCreateImageTagsParameters createImageTags() {
-        return new TrainingsCreateImageTagsParameters(this);
-    }
-
-    /**
-     * Internal class implementing TrainingsCreateImageTagsDefinition.
-     */
-    class TrainingsCreateImageTagsParameters implements TrainingsCreateImageTagsDefinition {
-        private TrainingsImpl parent;
-        private UUID projectId;
-        private List<ImageTagCreateEntry> tags;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        TrainingsCreateImageTagsParameters(TrainingsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public TrainingsCreateImageTagsParameters withProjectId(UUID projectId) {
-            this.projectId = projectId;
-            return this;
-        }
-
-        @Override
-        public TrainingsCreateImageTagsParameters withTags(List<ImageTagCreateEntry> tags) {
-            this.tags = tags;
-            return this;
-        }
-
-        @Override
-        public ImageTagCreateSummary execute() {
-        return createImageTagsWithServiceResponseAsync(projectId, tags).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<ImageTagCreateSummary> executeAsync() {
-            return createImageTagsWithServiceResponseAsync(projectId, tags).map(new Func1<ServiceResponse<ImageTagCreateSummary>, ImageTagCreateSummary>() {
-                @Override
-                public ImageTagCreateSummary call(ServiceResponse<ImageTagCreateSummary> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
     /**
      * Add the specified predicted images to the set of training images.
      * This API creates a batch of images from predicted images specified. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image and tag ids. Limted to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -3757,8 +3726,8 @@ public class TrainingsImpl implements Trainings {
      * Add the specified predicted images to the set of training images.
      * This API creates a batch of images from predicted images specified. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image and tag ids. Limted to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image and tag ids. Limited to 64 images and 20 tags per batch.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -3771,8 +3740,8 @@ public class TrainingsImpl implements Trainings {
      * Add the specified predicted images to the set of training images.
      * This API creates a batch of images from predicted images specified. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image and tag ids. Limted to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
@@ -3789,12 +3758,15 @@ public class TrainingsImpl implements Trainings {
      * Add the specified predicted images to the set of training images.
      * This API creates a batch of images from predicted images specified. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image and tag ids. Limted to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
     public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromPredictionsWithServiceResponseAsync(UUID projectId, ImageIdCreateBatch batch) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -3805,7 +3777,8 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(batch);
-        return service.createImagesFromPredictions(projectId, batch, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createImagesFromPredictions(projectId, batch, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageCreateSummary>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageCreateSummary>> call(Response<ResponseBody> response) {
@@ -3819,10 +3792,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImageCreateSummary> createImagesFromPredictionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImageCreateSummary> createImagesFromPredictionsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImageCreateSummary>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -3830,10 +3803,10 @@ public class TrainingsImpl implements Trainings {
      * Add the provided images urls to the set of training images.
      * This API accepts a batch of urls, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -3845,8 +3818,8 @@ public class TrainingsImpl implements Trainings {
      * Add the provided images urls to the set of training images.
      * This API accepts a batch of urls, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -3859,8 +3832,8 @@ public class TrainingsImpl implements Trainings {
      * Add the provided images urls to the set of training images.
      * This API accepts a batch of urls, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
@@ -3877,12 +3850,15 @@ public class TrainingsImpl implements Trainings {
      * Add the provided images urls to the set of training images.
      * This API accepts a batch of urls, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch Image urls and tag ids. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
     public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromUrlsWithServiceResponseAsync(UUID projectId, ImageUrlCreateBatch batch) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -3893,7 +3869,8 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(batch);
-        return service.createImagesFromUrls(projectId, batch, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createImagesFromUrls(projectId, batch, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageCreateSummary>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageCreateSummary>> call(Response<ResponseBody> response) {
@@ -3907,10 +3884,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImageCreateSummary> createImagesFromUrlsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImageCreateSummary> createImagesFromUrlsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImageCreateSummary>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -3918,10 +3895,10 @@ public class TrainingsImpl implements Trainings {
      * Add the provided batch of images to the set of training images.
      * This API accepts a batch of files, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -3933,8 +3910,8 @@ public class TrainingsImpl implements Trainings {
      * Add the provided batch of images to the set of training images.
      * This API accepts a batch of files, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -3947,8 +3924,8 @@ public class TrainingsImpl implements Trainings {
      * Add the provided batch of images to the set of training images.
      * This API accepts a batch of files, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
@@ -3965,12 +3942,15 @@ public class TrainingsImpl implements Trainings {
      * Add the provided batch of images to the set of training images.
      * This API accepts a batch of files, and optionally tags, to create images. There is a limit of 64 images and 20 tags.
      *
-     * @param projectId The project id
-     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch
+     * @param projectId The project id.
+     * @param batch The batch of image files to add. Limited to 64 images and 20 tags per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
     public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromFilesWithServiceResponseAsync(UUID projectId, ImageFileCreateBatch batch) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -3981,7 +3961,8 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(batch);
-        return service.createImagesFromFiles(projectId, batch, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createImagesFromFiles(projectId, batch, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageCreateSummary>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageCreateSummary>> call(Response<ResponseBody> response) {
@@ -3995,48 +3976,48 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImageCreateSummary> createImagesFromFilesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImageCreateSummary> createImagesFromFilesDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImageCreateSummary>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
     /**
      * Delete images from the set of training images.
      *
-     * @param projectId The project id
-     * @param imageIds Ids of the images to be deleted. Limted to 256 images per batch
+     * @param projectId The project id.
+     * @param imageIds Ids of the images to be deleted. Limited to 256 images per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteImages(UUID projectId, List<String> imageIds) {
+    public void deleteImages(UUID projectId, List<UUID> imageIds) {
         deleteImagesWithServiceResponseAsync(projectId, imageIds).toBlocking().single().body();
     }
 
     /**
      * Delete images from the set of training images.
      *
-     * @param projectId The project id
-     * @param imageIds Ids of the images to be deleted. Limted to 256 images per batch
+     * @param projectId The project id.
+     * @param imageIds Ids of the images to be deleted. Limited to 256 images per batch.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteImagesAsync(UUID projectId, List<String> imageIds, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteImagesWithServiceResponseAsync(projectId, imageIds), serviceCallback);
     }
 
     /**
      * Delete images from the set of training images.
      *
-     * @param projectId The project id
-     * @param imageIds Ids of the images to be deleted. Limted to 256 images per batch
+     * @param projectId The project id.
+     * @param imageIds Ids of the images to be deleted. Limited to 256 images per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteImagesAsync(UUID projectId, List<String> imageIds) {
+    public Observable<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds) {
         return deleteImagesWithServiceResponseAsync(projectId, imageIds).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -4048,12 +4029,15 @@ public class TrainingsImpl implements Trainings {
     /**
      * Delete images from the set of training images.
      *
-     * @param projectId The project id
-     * @param imageIds Ids of the images to be deleted. Limted to 256 images per batch
+     * @param projectId The project id.
+     * @param imageIds Ids of the images to be deleted. Limited to 256 images per batch.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteImagesWithServiceResponseAsync(UUID projectId, List<String> imageIds) {
+    public Observable<ServiceResponse<Void>> deleteImagesWithServiceResponseAsync(UUID projectId, List<UUID> imageIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -4064,8 +4048,9 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(imageIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String imageIdsConverted = this.client.serializerAdapter().serializeList(imageIds, CollectionFormat.CSV);
-        return service.deleteImages(projectId, imageIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.deleteImages(projectId, imageIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -4079,10 +4064,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Void> deleteImagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteImagesDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -4092,11 +4077,11 @@ public class TrainingsImpl implements Trainings {
      * This API accepts body content as multipart/form-data and application/octet-stream. When using multipart
      multiple image files can be sent at once, with a maximum of 64 files.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param createImagesFromDataOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
@@ -4109,8 +4094,8 @@ public class TrainingsImpl implements Trainings {
      * This API accepts body content as multipart/form-data and application/octet-stream. When using multipart
      multiple image files can be sent at once, with a maximum of 64 files.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param createImagesFromDataOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4125,8 +4110,8 @@ public class TrainingsImpl implements Trainings {
      * This API accepts body content as multipart/form-data and application/octet-stream. When using multipart
      multiple image files can be sent at once, with a maximum of 64 files.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param createImagesFromDataOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
@@ -4145,13 +4130,16 @@ public class TrainingsImpl implements Trainings {
      * This API accepts body content as multipart/form-data and application/octet-stream. When using multipart
      multiple image files can be sent at once, with a maximum of 64 files.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param createImagesFromDataOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
     public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, CreateImagesFromDataOptionalParameter createImagesFromDataOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -4161,7 +4149,7 @@ public class TrainingsImpl implements Trainings {
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final List<String> tagIds = createImagesFromDataOptionalParameter != null ? createImagesFromDataOptionalParameter.tagIds() : null;
+        final List<UUID> tagIds = createImagesFromDataOptionalParameter != null ? createImagesFromDataOptionalParameter.tagIds() : null;
 
         return createImagesFromDataWithServiceResponseAsync(projectId, imageData, tagIds);
     }
@@ -4171,13 +4159,16 @@ public class TrainingsImpl implements Trainings {
      * This API accepts body content as multipart/form-data and application/octet-stream. When using multipart
      multiple image files can be sent at once, with a maximum of 64 files.
      *
-     * @param projectId The project id
-     * @param imageData the InputStream value
-     * @param tagIds The tags ids with which to tag each image. Limited to 20
+     * @param projectId The project id.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
+     * @param tagIds The tags ids with which to tag each image. Limited to 20.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
-    public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, List<String> tagIds) {
+    public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, List<UUID> tagIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -4188,9 +4179,10 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(tagIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
         RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
-        return service.createImagesFromData(projectId, tagIdsConverted, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.createImagesFromData(projectId, tagIdsConverted, imageDataConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageCreateSummary>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageCreateSummary>> call(Response<ResponseBody> response) {
@@ -4204,10 +4196,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<ImageCreateSummary> createImagesFromDataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ImageCreateSummary> createImagesFromDataDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageCreateSummary, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImageCreateSummary>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -4223,7 +4215,7 @@ public class TrainingsImpl implements Trainings {
         private TrainingsImpl parent;
         private UUID projectId;
         private byte[] imageData;
-        private List<String> tagIds;
+        private List<UUID> tagIds;
 
         /**
          * Constructor.
@@ -4246,7 +4238,7 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
-        public TrainingsCreateImagesFromDataParameters withTagIds(List<String> tagIds) {
+        public TrainingsCreateImagesFromDataParameters withTagIds(List<UUID> tagIds) {
             this.tagIds = tagIds;
             return this;
         }
@@ -4273,10 +4265,10 @@ public class TrainingsImpl implements Trainings {
      * This API will return a set of Images for the specified tags and optionally iteration. If no iteration is specified the
      current workspace is used.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getImagesByIdsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
@@ -4289,7 +4281,7 @@ public class TrainingsImpl implements Trainings {
      * This API will return a set of Images for the specified tags and optionally iteration. If no iteration is specified the
      current workspace is used.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getImagesByIdsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4304,7 +4296,7 @@ public class TrainingsImpl implements Trainings {
      * This API will return a set of Images for the specified tags and optionally iteration. If no iteration is specified the
      current workspace is used.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getImagesByIdsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
@@ -4323,19 +4315,22 @@ public class TrainingsImpl implements Trainings {
      * This API will return a set of Images for the specified tags and optionally iteration. If no iteration is specified the
      current workspace is used.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getImagesByIdsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
     public Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, GetImagesByIdsOptionalParameter getImagesByIdsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        final List<String> imageIds = getImagesByIdsOptionalParameter != null ? getImagesByIdsOptionalParameter.imageIds() : null;
+        final List<UUID> imageIds = getImagesByIdsOptionalParameter != null ? getImagesByIdsOptionalParameter.imageIds() : null;
         final UUID iterationId = getImagesByIdsOptionalParameter != null ? getImagesByIdsOptionalParameter.iterationId() : null;
 
         return getImagesByIdsWithServiceResponseAsync(projectId, imageIds, iterationId);
@@ -4346,13 +4341,16 @@ public class TrainingsImpl implements Trainings {
      * This API will return a set of Images for the specified tags and optionally iteration. If no iteration is specified the
      current workspace is used.
      *
-     * @param projectId The project id
-     * @param imageIds The list of image ids to retrieve. Limited to 256
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param imageIds The list of image ids to retrieve. Limited to 256.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    public Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, List<String> imageIds, UUID iterationId) {
+    public Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, List<UUID> imageIds, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -4360,8 +4358,9 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(imageIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String imageIdsConverted = this.client.serializerAdapter().serializeList(imageIds, CollectionFormat.CSV);
-        return service.getImagesByIds(projectId, imageIdsConverted, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getImagesByIds(projectId, imageIdsConverted, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Image>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<Image>>> call(Response<ResponseBody> response) {
@@ -4375,10 +4374,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<Image>> getImagesByIdsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Image>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<Image>> getImagesByIdsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Image>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<Image>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -4393,7 +4392,7 @@ public class TrainingsImpl implements Trainings {
     class TrainingsGetImagesByIdsParameters implements TrainingsGetImagesByIdsDefinition {
         private TrainingsImpl parent;
         private UUID projectId;
-        private List<String> imageIds;
+        private List<UUID> imageIds;
         private UUID iterationId;
 
         /**
@@ -4411,7 +4410,7 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
-        public TrainingsGetImagesByIdsParameters withImageIds(List<String> imageIds) {
+        public TrainingsGetImagesByIdsParameters withImageIds(List<UUID> imageIds) {
             this.imageIds = imageIds;
             return this;
         }
@@ -4440,345 +4439,14 @@ public class TrainingsImpl implements Trainings {
 
 
     /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
-     current workspace is used.
-     *
-     * @param projectId The project id
-     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
-     */
-    public int getUntaggedImageCount(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter) {
-        return getUntaggedImageCountWithServiceResponseAsync(projectId, getUntaggedImageCountOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
-     current workspace is used.
-     *
-     * @param projectId The project id
-     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Integer> getUntaggedImageCountAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter, final ServiceCallback<Integer> serviceCallback) {
-        return ServiceFuture.fromResponse(getUntaggedImageCountWithServiceResponseAsync(projectId, getUntaggedImageCountOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
-     current workspace is used.
-     *
-     * @param projectId The project id
-     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<Integer> getUntaggedImageCountAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter) {
-        return getUntaggedImageCountWithServiceResponseAsync(projectId, getUntaggedImageCountOptionalParameter).map(new Func1<ServiceResponse<Integer>, Integer>() {
-            @Override
-            public Integer call(ServiceResponse<Integer> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
-     current workspace is used.
-     *
-     * @param projectId The project id
-     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<ServiceResponse<Integer>> getUntaggedImageCountWithServiceResponseAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        final UUID iterationId = getUntaggedImageCountOptionalParameter != null ? getUntaggedImageCountOptionalParameter.iterationId() : null;
-
-        return getUntaggedImageCountWithServiceResponseAsync(projectId, iterationId);
-    }
-
-    /**
-     * Gets the number of untagged images.
-     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
-     current workspace is used.
-     *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<ServiceResponse<Integer>> getUntaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        return service.getUntaggedImageCount(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
-                @Override
-                public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Integer> clientResponse = getUntaggedImageCountDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Integer> getUntaggedImageCountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Integer, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Integer>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    @Override
-    public TrainingsGetUntaggedImageCountParameters getUntaggedImageCount() {
-        return new TrainingsGetUntaggedImageCountParameters(this);
-    }
-
-    /**
-     * Internal class implementing TrainingsGetUntaggedImageCountDefinition.
-     */
-    class TrainingsGetUntaggedImageCountParameters implements TrainingsGetUntaggedImageCountDefinition {
-        private TrainingsImpl parent;
-        private UUID projectId;
-        private UUID iterationId;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        TrainingsGetUntaggedImageCountParameters(TrainingsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public TrainingsGetUntaggedImageCountParameters withProjectId(UUID projectId) {
-            this.projectId = projectId;
-            return this;
-        }
-
-        @Override
-        public TrainingsGetUntaggedImageCountParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
-            return this;
-        }
-
-        @Override
-        public int execute() {
-        return getUntaggedImageCountWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Integer> executeAsync() {
-            return getUntaggedImageCountWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Integer>, Integer>() {
-                @Override
-                public Integer call(ServiceResponse<Integer> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id
-     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
-     */
-    public int getTaggedImageCount(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter) {
-        return getTaggedImageCountWithServiceResponseAsync(projectId, getTaggedImageCountOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id
-     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Integer> getTaggedImageCountAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter, final ServiceCallback<Integer> serviceCallback) {
-        return ServiceFuture.fromResponse(getTaggedImageCountWithServiceResponseAsync(projectId, getTaggedImageCountOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id
-     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<Integer> getTaggedImageCountAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter) {
-        return getTaggedImageCountWithServiceResponseAsync(projectId, getTaggedImageCountOptionalParameter).map(new Func1<ServiceResponse<Integer>, Integer>() {
-            @Override
-            public Integer call(ServiceResponse<Integer> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id
-     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        final UUID iterationId = getTaggedImageCountOptionalParameter != null ? getTaggedImageCountOptionalParameter.iterationId() : null;
-        final List<String> tagIds = getTaggedImageCountOptionalParameter != null ? getTaggedImageCountOptionalParameter.tagIds() : null;
-
-        return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds);
-    }
-
-    /**
-     * Gets the number of images tagged with the provided {tagIds}.
-     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
-     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
-     *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
-     * @param tagIds A list of tags ids to filter the images to count. Defaults to all tags when null.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds) {
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.client.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
-        }
-        Validator.validate(tagIds);
-        String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
-        return service.getTaggedImageCount(projectId, iterationId, tagIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
-                @Override
-                public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Integer> clientResponse = getTaggedImageCountDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Integer> getTaggedImageCountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Integer, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Integer>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    @Override
-    public TrainingsGetTaggedImageCountParameters getTaggedImageCount() {
-        return new TrainingsGetTaggedImageCountParameters(this);
-    }
-
-    /**
-     * Internal class implementing TrainingsGetTaggedImageCountDefinition.
-     */
-    class TrainingsGetTaggedImageCountParameters implements TrainingsGetTaggedImageCountDefinition {
-        private TrainingsImpl parent;
-        private UUID projectId;
-        private UUID iterationId;
-        private List<String> tagIds;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        TrainingsGetTaggedImageCountParameters(TrainingsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public TrainingsGetTaggedImageCountParameters withProjectId(UUID projectId) {
-            this.projectId = projectId;
-            return this;
-        }
-
-        @Override
-        public TrainingsGetTaggedImageCountParameters withIterationId(UUID iterationId) {
-            this.iterationId = iterationId;
-            return this;
-        }
-
-        @Override
-        public TrainingsGetTaggedImageCountParameters withTagIds(List<String> tagIds) {
-            this.tagIds = tagIds;
-            return this;
-        }
-
-        @Override
-        public int execute() {
-        return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Integer> executeAsync() {
-            return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds).map(new Func1<ServiceResponse<Integer>, Integer>() {
-                @Override
-                public Integer call(ServiceResponse<Integer> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
      * Get untagged images for a given project iteration.
      * This API supports batching and range selection. By default it will only return first 50 images matching images.
      Use the {take} and {skip} parameters to control how many images to return in a given batch.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getUntaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
@@ -4791,7 +4459,7 @@ public class TrainingsImpl implements Trainings {
      * This API supports batching and range selection. By default it will only return first 50 images matching images.
      Use the {take} and {skip} parameters to control how many images to return in a given batch.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getUntaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4806,7 +4474,7 @@ public class TrainingsImpl implements Trainings {
      * This API supports batching and range selection. By default it will only return first 50 images matching images.
      Use the {take} and {skip} parameters to control how many images to return in a given batch.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getUntaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
@@ -4825,12 +4493,15 @@ public class TrainingsImpl implements Trainings {
      * This API supports batching and range selection. By default it will only return first 50 images matching images.
      Use the {take} and {skip} parameters to control how many images to return in a given batch.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getUntaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
     public Observable<ServiceResponse<List<Image>>> getUntaggedImagesWithServiceResponseAsync(UUID projectId, GetUntaggedImagesOptionalParameter getUntaggedImagesOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -4850,22 +4521,26 @@ public class TrainingsImpl implements Trainings {
      * This API supports batching and range selection. By default it will only return first 50 images matching images.
      Use the {take} and {skip} parameters to control how many images to return in a given batch.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
      * @param orderBy The ordering. Defaults to newest. Possible values include: 'Newest', 'Oldest'
-     * @param take Maximum number of images to return. Defaults to 50, limited to 256
-     * @param skip Number of images to skip before beginning the image batch. Defaults to 0
+     * @param take Maximum number of images to return. Defaults to 50, limited to 256.
+     * @param skip Number of images to skip before beginning the image batch. Defaults to 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
     public Observable<ServiceResponse<List<Image>>> getUntaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, String orderBy, Integer take, Integer skip) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getUntaggedImages(projectId, iterationId, orderBy, take, skip, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getUntaggedImages(projectId, iterationId, orderBy, take, skip, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Image>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<Image>>> call(Response<ResponseBody> response) {
@@ -4879,10 +4554,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<Image>> getUntaggedImagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Image>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<Image>> getUntaggedImagesDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Image>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<Image>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -4964,10 +4639,10 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
@@ -4982,7 +4657,7 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4999,7 +4674,7 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
@@ -5020,12 +4695,15 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
+     * @param projectId The project id.
      * @param getTaggedImagesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
     public Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, GetTaggedImagesOptionalParameter getTaggedImagesOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -5033,7 +4711,7 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         final UUID iterationId = getTaggedImagesOptionalParameter != null ? getTaggedImagesOptionalParameter.iterationId() : null;
-        final List<String> tagIds = getTaggedImagesOptionalParameter != null ? getTaggedImagesOptionalParameter.tagIds() : null;
+        final List<UUID> tagIds = getTaggedImagesOptionalParameter != null ? getTaggedImagesOptionalParameter.tagIds() : null;
         final String orderBy = getTaggedImagesOptionalParameter != null ? getTaggedImagesOptionalParameter.orderBy() : null;
         final Integer take = getTaggedImagesOptionalParameter != null ? getTaggedImagesOptionalParameter.take() : null;
         final Integer skip = getTaggedImagesOptionalParameter != null ? getTaggedImagesOptionalParameter.skip() : null;
@@ -5048,16 +4726,19 @@ public class TrainingsImpl implements Trainings {
      The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
      "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
      *
-     * @param projectId The project id
-     * @param iterationId The iteration id. Defaults to workspace
-     * @param tagIds A list of tags ids to filter the images. Defaults to all tagged images when null. Limited to 20
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
+     * @param tagIds A list of tags ids to filter the images. Defaults to all tagged images when null. Limited to 20.
      * @param orderBy The ordering. Defaults to newest. Possible values include: 'Newest', 'Oldest'
-     * @param take Maximum number of images to return. Defaults to 50, limited to 256
-     * @param skip Number of images to skip before beginning the image batch. Defaults to 0
+     * @param take Maximum number of images to return. Defaults to 50, limited to 256.
+     * @param skip Number of images to skip before beginning the image batch. Defaults to 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    public Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (projectId == null) {
             throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
         }
@@ -5065,8 +4746,9 @@ public class TrainingsImpl implements Trainings {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
         Validator.validate(tagIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
-        return service.getTaggedImages(projectId, iterationId, tagIdsConverted, orderBy, take, skip, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getTaggedImages(projectId, iterationId, tagIdsConverted, orderBy, take, skip, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Image>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<Image>>> call(Response<ResponseBody> response) {
@@ -5080,10 +4762,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<Image>> getTaggedImagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Image>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<Image>> getTaggedImagesDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Image>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<Image>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -5099,7 +4781,7 @@ public class TrainingsImpl implements Trainings {
         private TrainingsImpl parent;
         private UUID projectId;
         private UUID iterationId;
-        private List<String> tagIds;
+        private List<UUID> tagIds;
         private String orderBy;
         private Integer take;
         private Integer skip;
@@ -5125,7 +4807,7 @@ public class TrainingsImpl implements Trainings {
         }
 
         @Override
-        public TrainingsGetTaggedImagesParameters withTagIds(List<String> tagIds) {
+        public TrainingsGetTaggedImagesParameters withTagIds(List<UUID> tagIds) {
             this.tagIds = tagIds;
             return this;
         }
@@ -5165,11 +4847,871 @@ public class TrainingsImpl implements Trainings {
     }
 
     /**
+     * Delete a set of image regions.
+     *
+     * @param projectId The project id.
+     * @param regionIds Regions to delete. Limited to 64.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteImageRegions(UUID projectId, List<UUID> regionIds) {
+        deleteImageRegionsWithServiceResponseAsync(projectId, regionIds).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a set of image regions.
+     *
+     * @param projectId The project id.
+     * @param regionIds Regions to delete. Limited to 64.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteImageRegionsWithServiceResponseAsync(projectId, regionIds), serviceCallback);
+    }
+
+    /**
+     * Delete a set of image regions.
+     *
+     * @param projectId The project id.
+     * @param regionIds Regions to delete. Limited to 64.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds) {
+        return deleteImageRegionsWithServiceResponseAsync(projectId, regionIds).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a set of image regions.
+     *
+     * @param projectId The project id.
+     * @param regionIds Regions to delete. Limited to 64.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteImageRegionsWithServiceResponseAsync(UUID projectId, List<UUID> regionIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (regionIds == null) {
+            throw new IllegalArgumentException("Parameter regionIds is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(regionIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String regionIdsConverted = this.client.serializerAdapter().serializeList(regionIds, CollectionFormat.CSV);
+        return service.deleteImageRegions(projectId, regionIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteImageRegionsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteImageRegionsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
+     There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageRegionCreateSummary object if successful.
+     */
+    public ImageRegionCreateSummary createImageRegions(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter) {
+        return createImageRegionsWithServiceResponseAsync(projectId, createImageRegionsOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
+     There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImageRegionCreateSummary> createImageRegionsAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter, final ServiceCallback<ImageRegionCreateSummary> serviceCallback) {
+        return ServiceFuture.fromResponse(createImageRegionsWithServiceResponseAsync(projectId, createImageRegionsOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
+     There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageRegionCreateSummary object
+     */
+    public Observable<ImageRegionCreateSummary> createImageRegionsAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter) {
+        return createImageRegionsWithServiceResponseAsync(projectId, createImageRegionsOptionalParameter).map(new Func1<ServiceResponse<ImageRegionCreateSummary>, ImageRegionCreateSummary>() {
+            @Override
+            public ImageRegionCreateSummary call(ServiceResponse<ImageRegionCreateSummary> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
+     There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param createImageRegionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageRegionCreateSummary object
+     */
+    public Observable<ServiceResponse<ImageRegionCreateSummary>> createImageRegionsWithServiceResponseAsync(UUID projectId, CreateImageRegionsOptionalParameter createImageRegionsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final List<ImageRegionCreateEntry> regions = createImageRegionsOptionalParameter != null ? createImageRegionsOptionalParameter.regions() : null;
+
+        return createImageRegionsWithServiceResponseAsync(projectId, regions);
+    }
+
+    /**
+     * Create a set of image regions.
+     * This API accepts a batch of image regions, and optionally tags, to update existing images with region information.
+     There is a limit of 64 entries in the batch.
+     *
+     * @param projectId The project id.
+     * @param regions the List&lt;ImageRegionCreateEntry&gt; value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageRegionCreateSummary object
+     */
+    public Observable<ServiceResponse<ImageRegionCreateSummary>> createImageRegionsWithServiceResponseAsync(UUID projectId, List<ImageRegionCreateEntry> regions) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(regions);
+        ImageRegionCreateBatch batch = new ImageRegionCreateBatch();
+        batch.withRegions(regions);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createImageRegions(projectId, this.client.apiKey(), this.client.acceptLanguage(), batch, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageRegionCreateSummary>>>() {
+                @Override
+                public Observable<ServiceResponse<ImageRegionCreateSummary>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImageRegionCreateSummary> clientResponse = createImageRegionsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImageRegionCreateSummary> createImageRegionsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageRegionCreateSummary, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImageRegionCreateSummary>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public TrainingsCreateImageRegionsParameters createImageRegions() {
+        return new TrainingsCreateImageRegionsParameters(this);
+    }
+
+    /**
+     * Internal class implementing TrainingsCreateImageRegionsDefinition.
+     */
+    class TrainingsCreateImageRegionsParameters implements TrainingsCreateImageRegionsDefinition {
+        private TrainingsImpl parent;
+        private UUID projectId;
+        private List<ImageRegionCreateEntry> regions;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TrainingsCreateImageRegionsParameters(TrainingsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TrainingsCreateImageRegionsParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public TrainingsCreateImageRegionsParameters withRegions(List<ImageRegionCreateEntry> regions) {
+            this.regions = regions;
+            return this;
+        }
+
+        @Override
+        public ImageRegionCreateSummary execute() {
+        return createImageRegionsWithServiceResponseAsync(projectId, regions).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageRegionCreateSummary> executeAsync() {
+            return createImageRegionsWithServiceResponseAsync(projectId, regions).map(new Func1<ServiceResponse<ImageRegionCreateSummary>, ImageRegionCreateSummary>() {
+                @Override
+                public ImageRegionCreateSummary call(ServiceResponse<ImageRegionCreateSummary> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * Remove a set of tags from a set of images.
+     *
+     * @param projectId The project id.
+     * @param imageIds Image ids. Limited to 64 images.
+     * @param tagIds Tags to be deleted from the specified images. Limited to 20 tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteImageTags(UUID projectId, List<UUID> imageIds, List<UUID> tagIds) {
+        deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds).toBlocking().single().body();
+    }
+
+    /**
+     * Remove a set of tags from a set of images.
+     *
+     * @param projectId The project id.
+     * @param imageIds Image ids. Limited to 64 images.
+     * @param tagIds Tags to be deleted from the specified images. Limited to 20 tags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds), serviceCallback);
+    }
+
+    /**
+     * Remove a set of tags from a set of images.
+     *
+     * @param projectId The project id.
+     * @param imageIds Image ids. Limited to 64 images.
+     * @param tagIds Tags to be deleted from the specified images. Limited to 20 tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds) {
+        return deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Remove a set of tags from a set of images.
+     *
+     * @param projectId The project id.
+     * @param imageIds Image ids. Limited to 64 images.
+     * @param tagIds Tags to be deleted from the specified images. Limited to 20 tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteImageTagsWithServiceResponseAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (imageIds == null) {
+            throw new IllegalArgumentException("Parameter imageIds is required and cannot be null.");
+        }
+        if (tagIds == null) {
+            throw new IllegalArgumentException("Parameter tagIds is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(imageIds);
+        Validator.validate(tagIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String imageIdsConverted = this.client.serializerAdapter().serializeList(imageIds, CollectionFormat.CSV);
+        String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
+        return service.deleteImageTags(projectId, imageIdsConverted, tagIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteImageTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteImageTagsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageTagCreateSummary object if successful.
+     */
+    public ImageTagCreateSummary createImageTags(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter) {
+        return createImageTagsWithServiceResponseAsync(projectId, createImageTagsOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImageTagCreateSummary> createImageTagsAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter, final ServiceCallback<ImageTagCreateSummary> serviceCallback) {
+        return ServiceFuture.fromResponse(createImageTagsWithServiceResponseAsync(projectId, createImageTagsOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageTagCreateSummary object
+     */
+    public Observable<ImageTagCreateSummary> createImageTagsAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter) {
+        return createImageTagsWithServiceResponseAsync(projectId, createImageTagsOptionalParameter).map(new Func1<ServiceResponse<ImageTagCreateSummary>, ImageTagCreateSummary>() {
+            @Override
+            public ImageTagCreateSummary call(ServiceResponse<ImageTagCreateSummary> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param createImageTagsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageTagCreateSummary object
+     */
+    public Observable<ServiceResponse<ImageTagCreateSummary>> createImageTagsWithServiceResponseAsync(UUID projectId, CreateImageTagsOptionalParameter createImageTagsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final List<ImageTagCreateEntry> tags = createImageTagsOptionalParameter != null ? createImageTagsOptionalParameter.tags() : null;
+
+        return createImageTagsWithServiceResponseAsync(projectId, tags);
+    }
+
+    /**
+     * Associate a set of images with a set of tags.
+     *
+     * @param projectId The project id.
+     * @param tags Image Tag entries to include in this batch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageTagCreateSummary object
+     */
+    public Observable<ServiceResponse<ImageTagCreateSummary>> createImageTagsWithServiceResponseAsync(UUID projectId, List<ImageTagCreateEntry> tags) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        ImageTagCreateBatch batch = new ImageTagCreateBatch();
+        batch.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createImageTags(projectId, this.client.apiKey(), this.client.acceptLanguage(), batch, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageTagCreateSummary>>>() {
+                @Override
+                public Observable<ServiceResponse<ImageTagCreateSummary>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImageTagCreateSummary> clientResponse = createImageTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImageTagCreateSummary> createImageTagsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImageTagCreateSummary, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImageTagCreateSummary>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public TrainingsCreateImageTagsParameters createImageTags() {
+        return new TrainingsCreateImageTagsParameters(this);
+    }
+
+    /**
+     * Internal class implementing TrainingsCreateImageTagsDefinition.
+     */
+    class TrainingsCreateImageTagsParameters implements TrainingsCreateImageTagsDefinition {
+        private TrainingsImpl parent;
+        private UUID projectId;
+        private List<ImageTagCreateEntry> tags;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TrainingsCreateImageTagsParameters(TrainingsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TrainingsCreateImageTagsParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public TrainingsCreateImageTagsParameters withTags(List<ImageTagCreateEntry> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        @Override
+        public ImageTagCreateSummary execute() {
+        return createImageTagsWithServiceResponseAsync(projectId, tags).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageTagCreateSummary> executeAsync() {
+            return createImageTagsWithServiceResponseAsync(projectId, tags).map(new Func1<ServiceResponse<ImageTagCreateSummary>, ImageTagCreateSummary>() {
+                @Override
+                public ImageTagCreateSummary call(ServiceResponse<ImageTagCreateSummary> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
+     current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the int object if successful.
+     */
+    public int getUntaggedImageCount(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter) {
+        return getUntaggedImageCountWithServiceResponseAsync(projectId, getUntaggedImageCountOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
+     current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Integer> getUntaggedImageCountAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter, final ServiceCallback<Integer> serviceCallback) {
+        return ServiceFuture.fromResponse(getUntaggedImageCountWithServiceResponseAsync(projectId, getUntaggedImageCountOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
+     current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Integer object
+     */
+    public Observable<Integer> getUntaggedImageCountAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter) {
+        return getUntaggedImageCountWithServiceResponseAsync(projectId, getUntaggedImageCountOptionalParameter).map(new Func1<ServiceResponse<Integer>, Integer>() {
+            @Override
+            public Integer call(ServiceResponse<Integer> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
+     current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param getUntaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Integer object
+     */
+    public Observable<ServiceResponse<Integer>> getUntaggedImageCountWithServiceResponseAsync(UUID projectId, GetUntaggedImageCountOptionalParameter getUntaggedImageCountOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final UUID iterationId = getUntaggedImageCountOptionalParameter != null ? getUntaggedImageCountOptionalParameter.iterationId() : null;
+
+        return getUntaggedImageCountWithServiceResponseAsync(projectId, iterationId);
+    }
+
+    /**
+     * Gets the number of untagged images.
+     * This API returns the images which have no tags for a given project and optionally an iteration. If no iteration is specified the
+     current workspace is used.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Integer object
+     */
+    public Observable<ServiceResponse<Integer>> getUntaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getUntaggedImageCount(projectId, iterationId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
+                @Override
+                public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Integer> clientResponse = getUntaggedImageCountDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Integer> getUntaggedImageCountDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Integer, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Integer>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public TrainingsGetUntaggedImageCountParameters getUntaggedImageCount() {
+        return new TrainingsGetUntaggedImageCountParameters(this);
+    }
+
+    /**
+     * Internal class implementing TrainingsGetUntaggedImageCountDefinition.
+     */
+    class TrainingsGetUntaggedImageCountParameters implements TrainingsGetUntaggedImageCountDefinition {
+        private TrainingsImpl parent;
+        private UUID projectId;
+        private UUID iterationId;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TrainingsGetUntaggedImageCountParameters(TrainingsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TrainingsGetUntaggedImageCountParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public TrainingsGetUntaggedImageCountParameters withIterationId(UUID iterationId) {
+            this.iterationId = iterationId;
+            return this;
+        }
+
+        @Override
+        public int execute() {
+        return getUntaggedImageCountWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Integer> executeAsync() {
+            return getUntaggedImageCountWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Integer>, Integer>() {
+                @Override
+                public Integer call(ServiceResponse<Integer> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the int object if successful.
+     */
+    public int getTaggedImageCount(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter) {
+        return getTaggedImageCountWithServiceResponseAsync(projectId, getTaggedImageCountOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Integer> getTaggedImageCountAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter, final ServiceCallback<Integer> serviceCallback) {
+        return ServiceFuture.fromResponse(getTaggedImageCountWithServiceResponseAsync(projectId, getTaggedImageCountOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Integer object
+     */
+    public Observable<Integer> getTaggedImageCountAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter) {
+        return getTaggedImageCountWithServiceResponseAsync(projectId, getTaggedImageCountOptionalParameter).map(new Func1<ServiceResponse<Integer>, Integer>() {
+            @Override
+            public Integer call(ServiceResponse<Integer> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param getTaggedImageCountOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Integer object
+     */
+    public Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, GetTaggedImageCountOptionalParameter getTaggedImageCountOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        final UUID iterationId = getTaggedImageCountOptionalParameter != null ? getTaggedImageCountOptionalParameter.iterationId() : null;
+        final List<UUID> tagIds = getTaggedImageCountOptionalParameter != null ? getTaggedImageCountOptionalParameter.tagIds() : null;
+
+        return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds);
+    }
+
+    /**
+     * Gets the number of images tagged with the provided {tagIds}.
+     * The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
+     "Cat" tags, then only images tagged with Dog and/or Cat will be returned.
+     *
+     * @param projectId The project id.
+     * @param iterationId The iteration id. Defaults to workspace.
+     * @param tagIds A list of tags ids to filter the images to count. Defaults to all tags when null.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Integer object
+     */
+    public Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.client.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
+        }
+        Validator.validate(tagIds);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String tagIdsConverted = this.client.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
+        return service.getTaggedImageCount(projectId, iterationId, tagIdsConverted, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
+                @Override
+                public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Integer> clientResponse = getTaggedImageCountDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Integer> getTaggedImageCountDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Integer, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Integer>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    @Override
+    public TrainingsGetTaggedImageCountParameters getTaggedImageCount() {
+        return new TrainingsGetTaggedImageCountParameters(this);
+    }
+
+    /**
+     * Internal class implementing TrainingsGetTaggedImageCountDefinition.
+     */
+    class TrainingsGetTaggedImageCountParameters implements TrainingsGetTaggedImageCountDefinition {
+        private TrainingsImpl parent;
+        private UUID projectId;
+        private UUID iterationId;
+        private List<UUID> tagIds;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TrainingsGetTaggedImageCountParameters(TrainingsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TrainingsGetTaggedImageCountParameters withProjectId(UUID projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        @Override
+        public TrainingsGetTaggedImageCountParameters withIterationId(UUID iterationId) {
+            this.iterationId = iterationId;
+            return this;
+        }
+
+        @Override
+        public TrainingsGetTaggedImageCountParameters withTagIds(List<UUID> tagIds) {
+            this.tagIds = tagIds;
+            return this;
+        }
+
+        @Override
+        public int execute() {
+        return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Integer> executeAsync() {
+            return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds).map(new Func1<ServiceResponse<Integer>, Integer>() {
+                @Override
+                public Integer call(ServiceResponse<Integer> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
      * Get information about a specific domain.
      *
-     * @param domainId The id of the domain to get information about
+     * @param domainId The id of the domain to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Domain object if successful.
      */
@@ -5180,7 +5722,7 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific domain.
      *
-     * @param domainId The id of the domain to get information about
+     * @param domainId The id of the domain to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -5192,7 +5734,7 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific domain.
      *
-     * @param domainId The id of the domain to get information about
+     * @param domainId The id of the domain to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Domain object
      */
@@ -5208,18 +5750,22 @@ public class TrainingsImpl implements Trainings {
     /**
      * Get information about a specific domain.
      *
-     * @param domainId The id of the domain to get information about
+     * @param domainId The id of the domain to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Domain object
      */
     public Observable<ServiceResponse<Domain>> getDomainWithServiceResponseAsync(UUID domainId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (domainId == null) {
             throw new IllegalArgumentException("Parameter domainId is required and cannot be null.");
         }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getDomain(domainId, this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getDomain(domainId, this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Domain>>>() {
                 @Override
                 public Observable<ServiceResponse<Domain>> call(Response<ResponseBody> response) {
@@ -5233,10 +5779,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<Domain> getDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Domain, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Domain> getDomainDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Domain, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Domain>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 
@@ -5244,7 +5790,7 @@ public class TrainingsImpl implements Trainings {
      * Get a list of the available domains.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Domain&gt; object if successful.
      */
@@ -5285,10 +5831,14 @@ public class TrainingsImpl implements Trainings {
      * @return the observable to the List&lt;Domain&gt; object
      */
     public Observable<ServiceResponse<List<Domain>>> getDomainsWithServiceResponseAsync() {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (this.client.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiKey() is required and cannot be null.");
         }
-        return service.getDomains(this.client.apiKey(), this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getDomains(this.client.apiKey(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Domain>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<Domain>>> call(Response<ResponseBody> response) {
@@ -5302,10 +5852,10 @@ public class TrainingsImpl implements Trainings {
             });
     }
 
-    private ServiceResponse<List<Domain>> getDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Domain>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<Domain>> getDomainsDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<Domain>, CustomVisionErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<Domain>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
 

@@ -48,10 +48,10 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
     public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId
         RetryOptions retryOptions = new RetryOptions()
-            .tryTimeout(Duration.ofSeconds(45));
+            .setTryTimeout(Duration.ofSeconds(45));
         EventHubProducerOptions options = new EventHubProducerOptions()
-            .partitionId("foo")
-            .retry(retryOptions);
+            .setPartitionId("foo")
+            .setRetry(retryOptions);
 
         EventHubAsyncProducer producer = client.createProducer(options);
         // END: com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId
@@ -72,7 +72,7 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
 
         EventHubAsyncProducer producer = client.createProducer();
         SendOptions options = new SendOptions()
-            .partitionKey("bread");
+            .setPartitionKey("bread");
 
         producer.send(events, options).subscribe(ignored -> System.out.println("sent"),
             error -> System.err.println("Error received:" + error),
@@ -94,8 +94,8 @@ public class EventHubAsyncProducerJavaDocCodeSamples {
         );
 
         final BatchOptions options = new BatchOptions()
-            .partitionKey("telemetry")
-            .maximumSizeInBytes(256);
+            .setPartitionKey("telemetry")
+            .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 

@@ -65,7 +65,7 @@ public class NetworkCallError {
      *
      * @param throwable Throwable that was thrown.
      */
-    public void throwable(Throwable throwable) {
+    public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
     }
 
@@ -75,7 +75,7 @@ public class NetworkCallError {
      *
      * @param className Class name of the throwable.
      */
-    public void className(String className) {
+    public void setClassName(String className) {
         this.className = className;
     }
 
@@ -85,7 +85,7 @@ public class NetworkCallError {
      *
      * @param errorMessage Error msg from the exception.
      */
-    public void errorMessage(String errorMessage) {
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

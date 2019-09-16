@@ -45,8 +45,8 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
- * Operations allowed by the client are creating, listing, and deleting queues, retrieving and updating properties of the account,
- * and retrieving statistics of the account.
+ * Operations allowed by the client are creating, listing, and deleting queues, retrieving and updating properties of
+ * the account, and retrieving statistics of the account.
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client</strong></p>
  *
@@ -98,8 +98,8 @@ public final class QueueServiceAsyncClient {
     }
 
     /**
-     * Creates a queue in the storage account with the specified name and returns a QueueAsyncClient to interact
-     * with it.
+     * Creates a queue in the storage account with the specified name and returns a QueueAsyncClient to interact with
+     * it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -135,7 +135,8 @@ public final class QueueServiceAsyncClient {
         return withContext(context -> createQueueWithResponse(queueName, metadata, context));
     }
 
-    Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata, Context context) {
+    Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
+        Context context) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName);
 
         return postProcessResponse(queueAsyncClient.createWithResponse(metadata, context))
@@ -201,8 +202,8 @@ public final class QueueServiceAsyncClient {
     /**
      * Lists the queues in the storage account that pass the filter.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
-     * the queues.
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned
+     * for the queues.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -217,28 +218,30 @@ public final class QueueServiceAsyncClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
-        return listQueuesWithOptionalTimeout(null, options, null, null);
+        return listQueuesWithOptionalTimeout(null, options, null, Context.NONE);
     }
 
     /**
      * Lists the queues in the storage account that pass the filter starting at the specified marker.
      *
-     * Pass true to {@link QueuesSegmentOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
-     * the queues.
+     * Pass true to {@link QueuesSegmentOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned
+     * for the queues.
      *
      * @param marker Starting point to list the queues
      * @param options Options for listing queues
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
-    PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout, Context context) {
-        final String prefix = (options != null) ? options.prefix() : null;
-        final Integer maxResults = (options != null) ? options.maxResults() : null;
+    PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout,
+        Context context) {
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            if (options.includeMetadata()) {
+            if (options.isIncludeMetadata()) {
                 include.add(ListQueuesIncludeType.fromString(ListQueuesIncludeType.METADATA.toString()));
             }
         }
@@ -247,12 +250,12 @@ public final class QueueServiceAsyncClient {
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
                     null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.request(),
-                    response.statusCode(),
-                    response.headers(),
-                    response.value().queueItems(),
-                    response.value().nextMarker(),
-                    response.deserializedHeaders())));
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getQueueItems(),
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders())));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
@@ -268,7 +271,8 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @return Storage account {@link StorageServiceProperties Queue service properties}
      */
@@ -287,7 +291,8 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @return A response containing the Storage account {@link StorageServiceProperties Queue service properties}
      */
@@ -297,15 +302,16 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(client.services().getPropertiesWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors()
+     * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -318,20 +324,22 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
      * @return An empty response
      * @throws StorageException When one of the following is true
      * <ul>
-     *     <li>A CORS rule is missing one of its fields</li>
-     *     <li>More than five CORS rules will exist for the Queue service</li>
-     *     <li>Size of all CORS rules exceeds 2KB</li>
-     *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
-     *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * <li>A CORS rule is missing one of its fields</li>
+     * <li>More than five CORS rules will exist for the Queue service</li>
+     * <li>Size of all CORS rules exceeds 2KB</li>
+     * <li>
+     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
+     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * </li>
+     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * PUT</li>
      * </ul>
      */
     public Mono<Void> setProperties(StorageServiceProperties properties) {
@@ -342,8 +350,9 @@ public final class QueueServiceAsyncClient {
      * Sets the properties for the storage account's Queue service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link StorageServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link StorageServiceProperties#getCors()
+     * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -356,20 +365,22 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
      * @throws StorageException When one of the following is true
      * <ul>
-     *     <li>A CORS rule is missing one of its fields</li>
-     *     <li>More than five CORS rules will exist for the Queue service</li>
-     *     <li>Size of all CORS rules exceeds 2KB</li>
-     *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
-     *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * <li>A CORS rule is missing one of its fields</li>
+     * <li>More than five CORS rules will exist for the Queue service</li>
+     * <li>Size of all CORS rules exceeds 2KB</li>
+     * <li>
+     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
+     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * </li>
+     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * PUT</li>
      * </ul>
      */
     public Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties) {
@@ -419,7 +430,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
@@ -442,7 +453,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     *{@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
@@ -458,13 +469,14 @@ public final class QueueServiceAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
-        SASProtocol sasProtocol) {
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
 
         SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.client.getHttpPipeline());
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
+            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
 
     }
 }

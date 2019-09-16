@@ -30,7 +30,7 @@ public final class MessagesEnqueueResponse extends ResponseBase<MessagesEnqueueH
      * @return the deserialized response body.
      */
     @Override
-    public List<EnqueuedMessage> value() {
-        return super.value();
+    public List<EnqueuedMessage> getValue() {
+        return super.getValue();
     }
 }

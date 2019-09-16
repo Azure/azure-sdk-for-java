@@ -57,7 +57,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -86,8 +86,8 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .retry(RETRY_OPTIONS)
-            .prefetchCount(2000);
+            .setRetry(RETRY_OPTIONS)
+            .setPrefetchCount(2000);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
@@ -115,7 +115,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         // Arrange
         final int eventCount = 30;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions().prefetchCount(11);
+        final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
@@ -147,13 +147,13 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .partitionId(PARTITION_ID);
+            .setPartitionId(PARTITION_ID);
         final EventHubAsyncProducer producer = client.createProducer(producerOptions);
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {
             MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events).block(RETRY_OPTIONS.tryTimeout());
+            producer.send(events).block(RETRY_OPTIONS.getTryTimeout());
         } finally {
             dispose(producer);
         }

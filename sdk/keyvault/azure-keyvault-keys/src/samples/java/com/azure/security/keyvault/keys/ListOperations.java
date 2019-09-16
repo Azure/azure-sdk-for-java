@@ -34,29 +34,29 @@ public class ListOperations {
         // Let's create Ec and Rsa keys valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048));
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(2048));
 
         keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .expires(OffsetDateTime.now().plusYears(1)));
+                .setExpires(OffsetDateTime.now().plusYears(1)));
 
         // You need to check te type of keys already exist in your key vault. Let's list the keys and print their types.
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
         for (KeyBase key : keyClient.listKeys()) {
             Key keyWithMaterial = keyClient.getKey(key);
-            System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
+            System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.getKeyMaterial().getKty());
         }
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(4096));
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(4096));
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         for (KeyBase key : keyClient.listKeyVersions("CloudRsaKey")) {
             Key keyWithMaterial  = keyClient.getKey(key);
-            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
+            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.getKeyMaterial().getKty(), keyWithMaterial.version());
         }
     }
 }

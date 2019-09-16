@@ -19,9 +19,9 @@ final class CustomHierarchicalListingDeserializer extends JsonDeserializer<BlobH
         ArrayList<BlobPrefix> blobPrefixes = new ArrayList<>();
 
         JsonDeserializer<Object> blobItemDeserializer =
-                ctxt.findRootValueDeserializer(ctxt.constructType(BlobItem.class));
+            ctxt.findRootValueDeserializer(ctxt.constructType(BlobItem.class));
         JsonDeserializer<Object> blobPrefixDeserializer =
-                ctxt.findRootValueDeserializer(ctxt.constructType(BlobPrefix.class));
+            ctxt.findRootValueDeserializer(ctxt.constructType(BlobPrefix.class));
 
         for (JsonToken currentToken = p.nextToken(); !currentToken.name().equals("END_OBJECT");
              currentToken = p.nextToken()) {
@@ -29,14 +29,13 @@ final class CustomHierarchicalListingDeserializer extends JsonDeserializer<BlobH
             p.nextToken();
 
             if (p.getCurrentName().equals("Blob")) {
-                blobItems.add((BlobItem)blobItemDeserializer.deserialize(p, ctxt));
-            }
-            else if (p.getCurrentName().equals("BlobPrefix")) {
-                blobPrefixes.add((BlobPrefix)blobPrefixDeserializer.deserialize(p, ctxt));
+                blobItems.add((BlobItem) blobItemDeserializer.deserialize(p, ctxt));
+            } else if (p.getCurrentName().equals("BlobPrefix")) {
+                blobPrefixes.add((BlobPrefix) blobPrefixDeserializer.deserialize(p, ctxt));
             }
         }
 
-        return new BlobHierarchyListSegment().blobItems(blobItems).blobPrefixes(blobPrefixes);
+        return new BlobHierarchyListSegment().setBlobItems(blobItems).setBlobPrefixes(blobPrefixes);
     }
 }
 

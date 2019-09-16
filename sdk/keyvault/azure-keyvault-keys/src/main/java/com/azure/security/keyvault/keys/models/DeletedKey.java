@@ -38,7 +38,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the recoveryId identifier.
      */
-    public String recoveryId() {
+    public String getRecoveryId() {
         return this.recoveryId;
     }
 
@@ -47,7 +47,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the scheduledPurgeDate UTC time.
      */
-    public OffsetDateTime scheduledPurgeDate() {
+    public OffsetDateTime getScheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
@@ -56,7 +56,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime deletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return this.deletedDate;
     }
 
@@ -93,7 +93,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the key value
      */
-    public JsonWebKey keyMaterial() {
+    public JsonWebKey getKeyMaterial() {
         return this.keyMaterial;
     }
 

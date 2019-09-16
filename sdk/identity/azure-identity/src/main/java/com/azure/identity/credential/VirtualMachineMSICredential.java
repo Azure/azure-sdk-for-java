@@ -30,7 +30,7 @@ class VirtualMachineMSICredential {
     /**
      * @return the client id of user assigned or system assigned identity.
      */
-    public String clientId() {
+    public String getClientId() {
         return this.clientId;
     }
 

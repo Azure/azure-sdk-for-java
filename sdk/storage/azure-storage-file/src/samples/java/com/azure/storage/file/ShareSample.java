@@ -32,7 +32,7 @@ public class ShareSample {
         // Create first snapshot on share.
         String shareSnapshot1 = null;
         try {
-            shareSnapshot1 = shareClient.createSnapshot().snapshot();
+            shareSnapshot1 = shareClient.createSnapshot().getSnapshot();
         } catch (StorageException e) {
             System.out.println("Failed to create snapshot on share. Reasons: " + e.getMessage());
         }
@@ -55,7 +55,7 @@ public class ShareSample {
         // Create another snapshot on share.
         String shareSnapshot2 = null;
         try {
-            shareSnapshot2 = shareClient.createSnapshot().snapshot();
+            shareSnapshot2 = shareClient.createSnapshot().getSnapshot();
         } catch (StorageException e) {
             System.out.println("Failed to create snapshot on share. Reasons: " + e.getMessage());
         }
@@ -78,7 +78,7 @@ public class ShareSample {
 
         try {
             ShareProperties shareProperties1 = shareClientWithSnapshot1.getProperties();
-            System.out.println("This is the first snapshot eTag: " + shareProperties1.etag());
+            System.out.println("This is the first snapshot eTag: " + shareProperties1.getEtag());
         } catch (StorageException e) {
             System.out.println("Failed to get properties for the first share snapshot. Reasons: " + e.getMessage());
         }
@@ -92,7 +92,7 @@ public class ShareSample {
 
         try {
             ShareProperties shareProperties2 = shareClientWithSnapshot2.getProperties();
-            System.out.println("This is the second snapshot eTag: " + shareProperties2.etag());
+            System.out.println("This is the second snapshot eTag: " + shareProperties2.getEtag());
         } catch (StorageException e) {
             System.out.println("Failed to get properties for the second share snapshot. Reasons: " + e.getMessage());
         }
@@ -100,7 +100,7 @@ public class ShareSample {
         // Get the root directory and list all directories.
         try {
             shareClient.getRootDirectoryClient().listFilesAndDirectories().forEach(resource ->
-                System.out.printf("Name: %s, Directory? %b%n", resource.name(), resource.isDirectory()));
+                System.out.printf("Name: %s, Directory? %b%n", resource.getName(), resource.isDirectory()));
         } catch (StorageException e) {
             System.out.println("Failed to delete the share. Reasons: " + e.getMessage());
         }

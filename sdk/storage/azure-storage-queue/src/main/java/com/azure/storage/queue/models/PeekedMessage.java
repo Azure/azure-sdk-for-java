@@ -52,7 +52,7 @@ public final class PeekedMessage {
      *
      * @return the messageId value.
      */
-    public String messageId() {
+    public String getMessageId() {
         return this.messageId;
     }
 
@@ -62,7 +62,7 @@ public final class PeekedMessage {
      * @param messageId the messageId value to set.
      * @return the PeekedMessage object itself.
      */
-    public PeekedMessage messageId(String messageId) {
+    public PeekedMessage setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -73,11 +73,11 @@ public final class PeekedMessage {
      *
      * @return the insertionTime value.
      */
-    public OffsetDateTime insertionTime() {
+    public OffsetDateTime getInsertionTime() {
         if (this.insertionTime == null) {
             return null;
         }
-        return this.insertionTime.dateTime();
+        return this.insertionTime.getDateTime();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class PeekedMessage {
      * @param insertionTime the insertionTime value to set.
      * @return the PeekedMessage object itself.
      */
-    public PeekedMessage insertionTime(OffsetDateTime insertionTime) {
+    public PeekedMessage setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -102,11 +102,11 @@ public final class PeekedMessage {
      *
      * @return the expirationTime value.
      */
-    public OffsetDateTime expirationTime() {
+    public OffsetDateTime getExpirationTime() {
         if (this.expirationTime == null) {
             return null;
         }
-        return this.expirationTime.dateTime();
+        return this.expirationTime.getDateTime();
     }
 
     /**
@@ -116,7 +116,7 @@ public final class PeekedMessage {
      * @param expirationTime the expirationTime value to set.
      * @return the PeekedMessage object itself.
      */
-    public PeekedMessage expirationTime(OffsetDateTime expirationTime) {
+    public PeekedMessage setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -131,7 +131,7 @@ public final class PeekedMessage {
      *
      * @return the dequeueCount value.
      */
-    public long dequeueCount() {
+    public long getDequeueCount() {
         return this.dequeueCount;
     }
 
@@ -142,7 +142,7 @@ public final class PeekedMessage {
      * @param dequeueCount the dequeueCount value to set.
      * @return the PeekedMessage object itself.
      */
-    public PeekedMessage dequeueCount(long dequeueCount) {
+    public PeekedMessage setDequeueCount(long dequeueCount) {
         this.dequeueCount = dequeueCount;
         return this;
     }
@@ -152,7 +152,7 @@ public final class PeekedMessage {
      *
      * @return the messageText value.
      */
-    public String messageText() {
+    public String getMessageText() {
         return this.messageText;
     }
 
@@ -162,7 +162,7 @@ public final class PeekedMessage {
      * @param messageText the messageText value to set.
      * @return the PeekedMessage object itself.
      */
-    public PeekedMessage messageText(String messageText) {
+    public PeekedMessage setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }

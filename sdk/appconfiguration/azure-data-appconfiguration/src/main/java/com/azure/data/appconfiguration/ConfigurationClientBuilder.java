@@ -203,7 +203,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder credential(ConfigurationClientCredentials credential) {
         this.credential = Objects.requireNonNull(credential);
-        this.endpoint = credential.baseUri();
+        this.endpoint = credential.getBaseUri();
         return this;
     }
 
@@ -297,7 +297,7 @@ public final class ConfigurationClientBuilder {
         if (endpoint != null) {
             return endpoint;
         } else if (buildCredentials != null) {
-            return buildCredentials.baseUri();
+            return buildCredentials.getBaseUri();
         } else {
             return null;
         }

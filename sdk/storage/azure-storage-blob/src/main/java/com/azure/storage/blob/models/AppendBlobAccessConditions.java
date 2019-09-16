@@ -34,7 +34,7 @@ public final class AppendBlobAccessConditions {
      *
      * @return the append position access conditions
      */
-    public AppendPositionAccessConditions appendPositionAccessConditions() {
+    public AppendPositionAccessConditions getAppendPositionAccessConditions() {
         return appendPositionAccessConditions;
     }
 
@@ -45,7 +45,7 @@ public final class AppendBlobAccessConditions {
      * @param appendPositionAccessConditions the append position access conditions to set
      * @return the updated AppendBlobAccessConditions object
      */
-    public AppendBlobAccessConditions appendPositionAccessConditions(AppendPositionAccessConditions appendPositionAccessConditions) {
+    public AppendBlobAccessConditions setAppendPositionAccessConditions(AppendPositionAccessConditions appendPositionAccessConditions) {
         this.appendPositionAccessConditions = appendPositionAccessConditions;
         return this;
     }
@@ -57,7 +57,7 @@ public final class AppendBlobAccessConditions {
      *
      * @return the modified access conditions
      */
-    public ModifiedAccessConditions modifiedAccessConditions() {
+    public ModifiedAccessConditions getModifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
@@ -69,7 +69,7 @@ public final class AppendBlobAccessConditions {
      * @param modifiedAccessConditions the modified access conditions to set
      * @return the updated AppendBlobAccessConditions object
      */
-    public AppendBlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public AppendBlobAccessConditions setModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -80,7 +80,7 @@ public final class AppendBlobAccessConditions {
      *
      * @return the lease access conditions
      */
-    public LeaseAccessConditions leaseAccessConditions() {
+    public LeaseAccessConditions getLeaseAccessConditions() {
         return leaseAccessConditions;
     }
 
@@ -91,7 +91,7 @@ public final class AppendBlobAccessConditions {
      * @param leaseAccessConditions the lease access conditions to set
      * @return the updated AppendBlobAccessConditions object
      */
-    public AppendBlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+    public AppendBlobAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }
