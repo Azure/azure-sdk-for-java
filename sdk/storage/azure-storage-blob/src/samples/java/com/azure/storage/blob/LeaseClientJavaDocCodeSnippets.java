@@ -3,55 +3,18 @@ package com.azure.storage.blob;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.specialized.LeaseClient;
+import com.azure.storage.blob.specialized.LeaseClientBuilder;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 public class LeaseClientJavaDocCodeSnippets {
-    private LeaseClient client = new LeaseClient(JavaDocCodeSnippetsHelpers.getBlobClient("blob"));
+    private LeaseClient client = new LeaseClientBuilder()
+        .blobClient(JavaDocCodeSnippetsHelpers.getBlobClient("blob"))
+        .buildClient();
     private Duration timeout = Duration.ofSeconds(30);
     private String key = "key";
     private String value = "value";
-
-    /**
-     * Code snippets for {@link LeaseClient#LeaseClient(BlobClient)}
-     */
-    public void constructLeaseClientFromBlobClient() {
-        BlobClient blobClient = JavaDocCodeSnippetsHelpers.getBlobClient("blob");
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClient.initializeWithBlob
-        LeaseClient leaseClient = new LeaseClient(blobClient);
-        // END: com.azure.storage.blob.specialized.LeaseClient.initializeWithBlob
-    }
-
-    /**
-     * Code snippets for {@link LeaseClient#LeaseClient(BlobClient, String)}
-     */
-    public void constructLeaseClientFromBlobClientWithLeaseId() {
-        BlobClient blobClient = JavaDocCodeSnippetsHelpers.getBlobClient("blob");
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClient.initializeWithBlobAndLeaseId
-        LeaseClient leaseClient = new LeaseClient(blobClient, "leaseId");
-        // END: com.azure.storage.blob.specialized.LeaseClient.initializeWithBlobAndLeaseId
-    }
-
-    /**
-     * Code snippets for {@link LeaseClient#LeaseClient(ContainerClient)}
-     */
-    public void constructLeaseClientFromContainerClient() {
-        ContainerClient containerClient = JavaDocCodeSnippetsHelpers.getContainerClient();
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClient.initializeWithContainer
-        LeaseClient leaseClient = new LeaseClient(containerClient);
-        // END: com.azure.storage.blob.specialized.LeaseClient.initializeWithContainer
-    }
-
-    /**
-     * Code snippets for {@link LeaseClient#LeaseClient(ContainerClient, String)}
-     */
-    public void constructLeaseClientFromContainerClientWithLeaseId() {
-        ContainerClient containerClient = JavaDocCodeSnippetsHelpers.getContainerClient();
-        // BEGIN: com.azure.storage.blob.specialized.LeaseClient.initializeWithContainerAndLeaseId
-        LeaseClient leaseClient = new LeaseClient(containerClient, "leaseId");
-        // END: com.azure.storage.blob.specialized.LeaseClient.initializeWithContainerAndLeaseId
-    }
 
     /**
      * Code snippets for {@link LeaseClient#acquireLease(int)}

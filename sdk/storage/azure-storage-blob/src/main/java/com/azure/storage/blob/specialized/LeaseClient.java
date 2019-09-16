@@ -13,69 +13,15 @@ import com.azure.storage.common.Utility;
 
 import java.net.URL;
 import java.time.Duration;
-import java.util.UUID;
 
+/**
+ *
+ */
 public final class LeaseClient {
     private final LeaseAsyncClient client;
 
-    /**
-     * Constructs a {@link LeaseClient} based on the passed {@link BlobClient} and uses a {@link UUID} as the lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.initializeWithBlob}
-     *
-     * @param blobClient BlobClient used to interact with the service.
-     * @throws NullPointerException If {@code blobClient} is {@code null}.
-     */
-    public LeaseClient(BlobClient blobClient) {
-        this(blobClient, null);
-    }
-
-    /**
-     * Constructs a {@link LeaseClient} based on the passed {@link BlobClient}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.initializeWithBlobAndLeaseId}
-     *
-     * @param blobClient BlobClient used to interact with the service.
-     * @param leaseId Optional lease ID, if {@code null} is passed a {@link UUID} will be used.
-     * @throws NullPointerException If {@code blobClient} is {@code null}.
-     */
-    public LeaseClient(BlobClient blobClient, String leaseId) {
-        this.client = new LeaseAsyncClient(blobClient.getHttpPipeline(), blobClient.getBlobUrl(), leaseId, true);
-    }
-
-    /**
-     * Constructs a {@link LeaseClient} based on the passed {@link ContainerClient} and uses a {@link UUID} as the
-     * lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.initializeWithContainer}
-     *
-     * @param containerClient ContainerClient used to interact with the service.
-     * @throws NullPointerException If {@code containerClient} is {@code null}.
-     */
-    public LeaseClient(ContainerClient containerClient) {
-        this(containerClient, null);
-    }
-
-    /**
-     * Constructs a {@link LeaseClient} based on the passed {@link ContainerClient}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.LeaseClient.initializeWithContainerAndLeaseId}
-     *
-     * @param containerClient ContainerClient used to interact with the service.
-     * @param leaseId Optional lease ID, if {@code null} is passed a {@link UUID} will be used.
-     * @throws NullPointerException If {@code containerClient} is {@code null}.
-     */
-    public LeaseClient(ContainerClient containerClient, String leaseId) {
-        this.client =
-            new LeaseAsyncClient(containerClient.getHttpPipeline(), containerClient.getContainerUrl(), leaseId, false);
+    LeaseClient(LeaseAsyncClient client) {
+        this.client = client;
     }
 
     /**

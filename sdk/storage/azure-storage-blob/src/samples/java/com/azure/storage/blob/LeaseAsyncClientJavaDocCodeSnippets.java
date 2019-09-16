@@ -2,51 +2,14 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.specialized.LeaseAsyncClient;
+import com.azure.storage.blob.specialized.LeaseClientBuilder;
 
 import java.time.OffsetDateTime;
 
 public class LeaseAsyncClientJavaDocCodeSnippets {
-    private LeaseAsyncClient client = new LeaseAsyncClient(JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blob"));
-
-    /**
-     * Code snippets for {@link LeaseAsyncClient#LeaseAsyncClient(BlobAsyncClient)}
-     */
-    public void constructLeaseAsyncClientFromBlobClient() {
-        BlobAsyncClient blobAsyncClient = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blob");
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithBlob
-        LeaseAsyncClient leaseAsyncClient = new LeaseAsyncClient(blobAsyncClient);
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithBlob
-    }
-
-    /**
-     * Code snippets for {@link LeaseAsyncClient#LeaseAsyncClient(BlobAsyncClient, String)}
-     */
-    public void constructLeaseAsyncClientFromBlobClientWithLeaseId() {
-        BlobAsyncClient blobAsyncClient = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blob");
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithBlobAndLeaseId
-        LeaseAsyncClient leaseAsyncClient = new LeaseAsyncClient(blobAsyncClient, "leaseId");
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithBlobAndLeaseId
-    }
-
-    /**
-     * Code snippets for {@link LeaseAsyncClient#LeaseAsyncClient(ContainerAsyncClient)}
-     */
-    public void constructLeaseAsyncClientFromContainerClient() {
-        ContainerAsyncClient containerAsyncClient = JavaDocCodeSnippetsHelpers.getContainerAsyncClient();
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithContainer
-        LeaseAsyncClient leaseAsyncClient = new LeaseAsyncClient(containerAsyncClient);
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithContainer
-    }
-
-    /**
-     * Code snippets for {@link LeaseAsyncClient#LeaseAsyncClient(ContainerAsyncClient, String)}
-     */
-    public void constructLeaseAsyncClientFromContainerClientWithLeaseId() {
-        ContainerAsyncClient containerAsyncClient = JavaDocCodeSnippetsHelpers.getContainerAsyncClient();
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithContainerAndLeaseId
-        LeaseAsyncClient leaseAsyncClient = new LeaseAsyncClient(containerAsyncClient, "leaseId");
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.initializeWithContainerAndLeaseId
-    }
+    private LeaseAsyncClient client = new LeaseClientBuilder()
+        .blobAsyncClient(JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blob"))
+        .buildAsyncClient();
 
     /**
      * Code snippets for {@link LeaseAsyncClient#acquireLease(int)}
