@@ -2,6 +2,9 @@ package com.microsoft.storageperf;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -83,13 +86,13 @@ public class App {
         System.out.println();
 
         AtomicInteger count = new AtomicInteger(0);
-        Flux<Flux<ByteBuffer>> downloads = DownloadLoop(client);
-        Disposable subscription = downloads.subscribe(f -> {
-            System.out.println(".");
-            count.incrementAndGet();
-        });
 
-        System.out.println("before sleep");
+        List<Disposable> subscriptions = new ArrayList<Disposable>();
+        for (int i = 0; i < parallel; i++) {
+            subscriptions.add(DownloadLoop(client).subscribe(f -> {
+                count.incrementAndGet();
+            }));
+        }
 
         try {
             Thread.sleep(duration * 1000);
@@ -98,17 +101,8 @@ public class App {
             e.printStackTrace();
         }
 
-        System.out.println("after sleep");
-
-        subscription.dispose();
-
-        System.out.println(count.get());
-
-        try {
-            Thread.sleep(duration * 1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        for (Disposable subscription : subscriptions) {
+            subscription.dispose();
         }
 
         System.out.println(count.get());
@@ -117,12 +111,42 @@ public class App {
     }
 
     static Flux<Flux<ByteBuffer>> DownloadLoop(BlockBlobAsyncClient client) {
-        return Flux.generate(
-            () -> client.download(),
-            (state, sink) -> {
-                sink.next(state.flatMapMany(response -> response));
-                return client.download();
-            });
+        return Flux.range(0, Integer.MAX_VALUE).flatMap(i -> client.download());
+    }
+
+    static class MyIterable implements Iterable<Flux<ByteBuffer>> {
+
+        private BlockBlobAsyncClient _client;
+
+        public MyIterable(BlockBlobAsyncClient client) {
+            _client = client;
+        }
+
+        @Override
+        public Iterator<Flux<ByteBuffer>> iterator() {
+            return new MyIterator(_client);
+        }
+
+        static class MyIterator implements Iterator<Flux<ByteBuffer>> {
+
+            private BlockBlobAsyncClient _client;
+
+            public MyIterator(BlockBlobAsyncClient client) {
+                _client = client;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Flux<ByteBuffer> next() {
+                return _client.download().flatMapMany(response -> response);
+            }
+
+        }
+
     }
 
     static Mono<Void> UploadAndVerifyDownload(BlockBlobAsyncClient client, int size) {
