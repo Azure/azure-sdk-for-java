@@ -32,6 +32,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     AccessTier accessTier();
 
     /**
+     * @return the azureFilesIdentityBasedAuthentication value.
+     */
+    AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication();
+
+    /**
      * @return the creationTime value.
      */
     DateTime creationTime();
@@ -40,11 +45,6 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
      * @return the customDomain value.
      */
     CustomDomain customDomain();
-
-    /**
-     * @return the enableAzureFilesAadIntegration value.
-     */
-    Boolean enableAzureFilesAadIntegration();
 
     /**
      * @return the enableHttpsTrafficOnly value.
@@ -190,6 +190,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
+         * The stage of the storageaccount definition allowing to specify AzureFilesIdentityBasedAuthentication.
+         */
+        interface WithAzureFilesIdentityBasedAuthentication {
+            /**
+             * Specifies azureFilesIdentityBasedAuthentication.
+             * @param azureFilesIdentityBasedAuthentication Provides the identity based authentication settings for Azure Files
+             * @return the next definition stage
+             */
+            WithCreate withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication);
+        }
+
+        /**
          * The stage of the storageaccount definition allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
@@ -202,24 +214,12 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
-         * The stage of the storageaccount definition allowing to specify EnableAzureFilesAadIntegration.
-         */
-        interface WithEnableAzureFilesAadIntegration {
-            /**
-             * Specifies enableAzureFilesAadIntegration.
-             * @param enableAzureFilesAadIntegration Enables Azure Files AAD Integration for SMB if sets to true
-             * @return the next definition stage
-             */
-            WithCreate withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration);
-        }
-
-        /**
          * The stage of the storageaccount definition allowing to specify EnableHttpsTrafficOnly.
          */
         interface WithEnableHttpsTrafficOnly {
             /**
              * Specifies enableHttpsTrafficOnly.
-             * @param enableHttpsTrafficOnly Allows https traffic only to storage service if sets to true
+             * @param enableHttpsTrafficOnly Allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01
              * @return the next definition stage
              */
             WithCreate withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly);
@@ -231,7 +231,7 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         interface WithEncryption {
             /**
              * Specifies encryption.
-             * @param encryption Provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted
+             * @param encryption Not applicable. Azure Storage encryption is enabled for all storage accounts and cannot be disabled
              * @return the next definition stage
              */
             WithCreate withEncryption(Encryption encryption);
@@ -278,13 +278,13 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableAzureFilesAadIntegration, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithNetworkRuleSet {
+        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithAzureFilesIdentityBasedAuthentication, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithNetworkRuleSet {
         }
     }
     /**
      * The template for a StorageAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithCustomDomain, UpdateStages.WithEnableAzureFilesAadIntegration, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
+    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithAzureFilesIdentityBasedAuthentication, UpdateStages.WithCustomDomain, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
     }
 
     /**
@@ -304,6 +304,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
+         * The stage of the storageaccount update allowing to specify AzureFilesIdentityBasedAuthentication.
+         */
+        interface WithAzureFilesIdentityBasedAuthentication {
+            /**
+             * Specifies azureFilesIdentityBasedAuthentication.
+             * @param azureFilesIdentityBasedAuthentication Provides the identity based authentication settings for Azure Files
+             * @return the next update stage
+             */
+            Update withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication);
+        }
+
+        /**
          * The stage of the storageaccount update allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
@@ -313,18 +325,6 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
              * @return the next update stage
              */
             Update withCustomDomain(CustomDomain customDomain);
-        }
-
-        /**
-         * The stage of the storageaccount update allowing to specify EnableAzureFilesAadIntegration.
-         */
-        interface WithEnableAzureFilesAadIntegration {
-            /**
-             * Specifies enableAzureFilesAadIntegration.
-             * @param enableAzureFilesAadIntegration Enables Azure Files AAD Integration for SMB if sets to true
-             * @return the next update stage
-             */
-            Update withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration);
         }
 
         /**

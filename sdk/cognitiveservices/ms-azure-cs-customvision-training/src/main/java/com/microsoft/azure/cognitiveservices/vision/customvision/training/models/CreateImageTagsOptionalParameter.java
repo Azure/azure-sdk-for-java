@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class CreateImageTagsOptionalParameter {
     /**
-     * The tags property.
+     * Image Tag entries to include in this batch.
      */
     private List<ImageTagCreateEntry> tags;
 

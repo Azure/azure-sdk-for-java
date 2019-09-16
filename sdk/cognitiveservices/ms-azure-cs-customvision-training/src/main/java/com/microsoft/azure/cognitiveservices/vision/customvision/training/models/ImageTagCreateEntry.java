@@ -12,17 +12,17 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImageTagCreateEntry model.
+ * Entry associating a tag to an image.
  */
 public class ImageTagCreateEntry {
     /**
-     * The imageId property.
+     * Id of the image.
      */
     @JsonProperty(value = "imageId")
     private UUID imageId;
 
     /**
-     * The tagId property.
+     * Id of the tag.
      */
     @JsonProperty(value = "tagId")
     private UUID tagId;
