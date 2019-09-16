@@ -349,7 +349,7 @@ public class EventHubClientBuilder {
         final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.authorizationType(), connectionOptions.host(),
+                connectionOptions.getAuthorizationType(), connectionOptions.getHost(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
             final ManagementResponseMapper mapper = new EventHubResponseMapper();
 
