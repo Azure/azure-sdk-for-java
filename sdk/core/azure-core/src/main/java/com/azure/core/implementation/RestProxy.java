@@ -37,8 +37,6 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -521,20 +519,19 @@ public class RestProxy implements InvocationHandler {
 
             switch (paramCount) {
                 case 3:
-                    return Mono.just(newInstanceHelper.apply(ctor,
-                        new Object[] {httpRequest, responseStatusCode, responseHeaders}));
+                    return Mono.just(createResponse(ctor, new Object[]
+                        {httpRequest, responseStatusCode, responseHeaders}));
                 case 4:
-                    return Mono.just(newInstanceHelper.apply(ctor, new Object[] {httpRequest, responseStatusCode,
+                    return Mono.just(createResponse(ctor, new Object[] {httpRequest, responseStatusCode,
                                       responseHeaders, bodyAsObject}));
                 case 5:
                     return response.getDecodedHeaders()
                         .map((Function<Object, Response<?>>) headers -> {
-                            return newInstanceHelper.apply(ctor, new Object[] {httpRequest, responseStatusCode,
-                                responseHeaders, bodyAsObject, headers});
+                            return createResponse(ctor, new Object[]
+                                {httpRequest, responseStatusCode, responseHeaders, bodyAsObject, headers});
                         }).switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                            return Mono.just(newInstanceHelper.apply(ctor,
-                                new Object[] {httpRequest, responseStatusCode,
-                                              responseHeaders, bodyAsObject, null}));
+                            return Mono.just(createResponse(ctor, new Object[]
+                                {httpRequest, responseStatusCode, responseHeaders, bodyAsObject, null}));
                         }));
                 default:
                     throw logger.logExceptionAsError(new IllegalStateException(
@@ -545,13 +542,13 @@ public class RestProxy implements InvocationHandler {
         throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
 
-    private BiFunction<Constructor<? extends Response<?>>,Object[], Response<?>> newInstanceHelper = (ctor, args) -> {
+    private Response<?> createResponse(Constructor<? extends Response<?>> ctor, Object[] args) {
         try {
             return ctor.newInstance(args);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
-    };
+    }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
                 final SwaggerMethodParser methodParser, final Type entityType) {
