@@ -42,8 +42,8 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static AtomicReference<EventData[]> EVENTS_PUSHED = new AtomicReference<>();
-    private static volatile IntegrationTestEventData TEST_DATA = null;
+    private static final AtomicReference<EventData[]> EVENTS_PUSHED = new AtomicReference<>();
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
 
@@ -65,16 +65,16 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            TEST_DATA = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
 
             // Receiving back those events we sent so we have something to compare to.
             logger.info("Receiving the events we sent.");
             final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-                EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime()));
+                EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
             final List<EventData> receivedEvents;
             try {
                 receivedEvents = consumer.receive()
-                    .filter(event -> isMatchingEvent(event, TEST_DATA.getMessageTrackingId()))
+                    .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                     .take(NUMBER_OF_EVENTS).collectList().block(TIMEOUT);
             } finally {
                 dispose(consumer);
@@ -145,7 +145,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, TEST_DATA.getMessageTrackingId()))
+            StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(Duration.ofSeconds(3)))
                 .expectComplete()
                 .verify();
@@ -194,7 +194,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
     public void receiveMessageFromEnqueuedTime() {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
-        final EventPosition position = EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime());
+        final EventPosition position = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
         final EventData expectedEvent = events[0];
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
@@ -254,7 +254,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, TEST_DATA.getMessageTrackingId()))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
                     Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
@@ -280,7 +280,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, TEST_DATA.getMessageTrackingId()))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
                     Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
@@ -306,7 +306,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, TEST_DATA.getMessageTrackingId()))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
                     Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
@@ -332,7 +332,7 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, TEST_DATA.getMessageTrackingId()))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
                     Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());

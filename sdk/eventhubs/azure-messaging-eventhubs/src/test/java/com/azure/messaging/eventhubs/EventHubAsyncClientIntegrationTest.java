@@ -50,7 +50,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private static final String PARTITION_ID = "1";
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static volatile IntegrationTestEventData TEST_DATA = null;
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
 
@@ -77,7 +77,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            TEST_DATA = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
     }
 
@@ -101,10 +101,10 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(2);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime()), options);
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, TEST_DATA.getMessageTrackingId()))
+        StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();

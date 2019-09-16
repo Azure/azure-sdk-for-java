@@ -29,7 +29,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static volatile IntegrationTestEventData TEST_DATA = null;
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubClient client;
     private EventHubConsumer consumer;
@@ -61,11 +61,11 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
             final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            TEST_DATA = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
 
         consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime()));
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
     }
 
     @Override

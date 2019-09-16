@@ -37,7 +37,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static volatile IntegrationTestEventData TEST_DATA = null;
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
     private EventHubAsyncConsumer consumer;
@@ -60,7 +60,7 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            TEST_DATA = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
         }
     }
 
@@ -84,10 +84,10 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
             .setPrefetchCount(2000);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime()), options);
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         final Disposable subscription = consumer.receive()
-            .filter(x -> isMatchingEvent(x, TEST_DATA.getMessageTrackingId()))
+            .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
         // Act
@@ -112,10 +112,10 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
         final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime()), options);
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         final Disposable subscription = consumer.receive()
-            .filter(x -> isMatchingEvent(x, TEST_DATA.getMessageTrackingId()))
+            .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
         try {
