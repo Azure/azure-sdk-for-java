@@ -62,23 +62,23 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     private void connectionTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout
         final Duration connectionTimeout = Duration.ofSeconds(250); // connection timeout of 250 seconds
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
                 .connectionTimeout(connectionTimeout)
                 .build();
-        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout
 
     }
 
-    private void readTimeoutTimeoutSample() {
+    private void readTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#readTimeout
         final Duration readTimeout = Duration.ofSeconds(100); // read timeout of 100 seconds
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
                 .readTimeout(readTimeout)
                 .build();
-        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#readTimeout
 
     }
 
