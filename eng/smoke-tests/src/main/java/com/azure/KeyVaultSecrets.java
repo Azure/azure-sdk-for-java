@@ -9,6 +9,7 @@ import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.azure.identity.implementation.msalextensions.cachepersister.PlatformNotSupportedException;
 
 import java.util.UUID;
 
@@ -56,6 +57,8 @@ public class KeyVaultSecrets {
         try {
             setSecret();
             getSecret();
+        } catch (PlatformNotSupportedException e) {
+            LOGGER.error(e);
         } finally {
             deleteSecret();
         }

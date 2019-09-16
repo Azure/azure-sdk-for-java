@@ -10,9 +10,14 @@ jobs:
         Java 8:
           ProfileFlag: ''
           JavaVersion: '1.8'
+          OSVmImage: ubuntu-16.04
         Java LTS:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
+          OSVmImage: ubuntu-16.04
+
+    pool:
+      vmImage: $(OSVmImage)
 
     steps:
       - task: Maven@3
