@@ -63,10 +63,9 @@ public class NettyAsyncHttpClientBuilder {
                             nettyProxy = ProxyProvider.Proxy.SOCKS5;
                             break;
                         default:
-                            throw logger.logExceptionAsWarning(
-                                new IllegalStateException(
-                                    "Unknown Proxy type '" + proxyOptions.getType()
-                                        + "' in use. Not configuring Netty proxy."));
+                            throw logger.logExceptionAsWarning(new IllegalStateException(
+                                String.format("Unknown Proxy type '%s' in use. Not configuring Netty proxy.",
+                                    proxyOptions.getType())));
                     }
 
                     return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.getAddress()));
@@ -79,6 +78,10 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Sets the {@link ProxyOptions proxy options} that the client will use.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#proxy}
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated NettyAsyncHttpClientBuilder object
@@ -111,10 +114,11 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the NIO event loop group that will be used to run IO loops. For example, a fixed thread pool can be
-     * specified as shown below:
+     * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup}
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup}
      *
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object
