@@ -1,16 +1,18 @@
-package com.azure.storage.blob;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.specialized.LeaseClient;
-import com.azure.storage.blob.specialized.LeaseClientBuilder;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 public class LeaseClientJavaDocCodeSnippets {
     private LeaseClient client = new LeaseClientBuilder()
-        .blobClient(JavaDocCodeSnippetsHelpers.getBlobClient("blob"))
+        .blobClient(new BlobClientBuilder().blobName("blob").buildBlobClient())
         .buildClient();
     private Duration timeout = Duration.ofSeconds(30);
     private String key = "key";

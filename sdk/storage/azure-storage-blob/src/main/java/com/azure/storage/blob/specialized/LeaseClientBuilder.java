@@ -15,10 +15,29 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob lease
- * clients. A new instance of {@link LeaseClient} and {@link LeaseAsyncClient} are constructed every time
+ * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Lease
+ * clients. Lease clients are able to interact with both container and blob clients and act as a supplement client. A
+ * new instance of {@link LeaseClient} and {@link LeaseAsyncClient} are constructed every time
  * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} are called
  * respectively.
+ *
+ * <p>When a client is instantiated and a {@link #leaseId(String) leaseId} hasn't been set a {@link UUID} will be used
+ * as the lease identifier.</p>
+ *
+ * <p><strong>Instantiating LeaseClients</strong></p>
+ *
+ * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
+ *
+ * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
+ *
+ * <p><strong>Instantiating LeaseAsyncClients</strong></p>
+ *
+ * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
+ *
+ * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
+ *
+ * @see LeaseClient
+ * @see LeaseAsyncClient
  */
 @ServiceClientBuilder(serviceClients = { LeaseClient.class, LeaseAsyncClient.class })
 public final class LeaseClientBuilder {
