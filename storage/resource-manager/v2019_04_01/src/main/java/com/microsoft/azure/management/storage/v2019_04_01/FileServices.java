@@ -10,31 +10,31 @@ package com.microsoft.azure.management.storage.v2019_04_01;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Observable;
-import com.microsoft.azure.management.storage.v2019_04_01.implementation.BlobServicesInner;
+import com.microsoft.azure.management.storage.v2019_04_01.implementation.FileServicesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing BlobServices.
+ * Type representing FileServices.
  */
-public interface BlobServices extends SupportsCreating<BlobServiceProperties.DefinitionStages.Blank>, HasInner<BlobServicesInner> {
+public interface FileServices extends SupportsCreating<FileServiceProperties.DefinitionStages.Blank>, HasInner<FileServicesInner> {
     /**
-     * Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
+     * List all file services in storage accounts.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BlobServiceProperties> getServicePropertiesAsync(String resourceGroupName, String accountName);
+    Observable<FileServiceItems> listAsync(String resourceGroupName, String accountName);
 
     /**
-     * List blob services of storage account. It returns a collection of one object named default.
+     * Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BlobServiceProperties> listAsync(String resourceGroupName, String accountName);
+    Observable<FileServiceProperties> getServicePropertiesAsync(String resourceGroupName, String accountName);
 
 }
