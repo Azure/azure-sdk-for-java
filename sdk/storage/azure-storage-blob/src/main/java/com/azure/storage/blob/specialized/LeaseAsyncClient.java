@@ -47,7 +47,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  *
  * @see LeaseClientBuilder
  */
-@ServiceClient(builder = LeaseClientBuilder.class)
+@ServiceClient(builder = LeaseClientBuilder.class, isAsync = true)
 public final class LeaseAsyncClient {
     private final ClientLogger logger = new ClientLogger(LeaseAsyncClient.class);
 
