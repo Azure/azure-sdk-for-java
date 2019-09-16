@@ -30,8 +30,6 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
-
-        eventHubName = getConnectionStringProperties().getEventHubName();
     }
 
     @Rule
@@ -45,6 +43,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
+        eventHubName = getConnectionStringProperties().getEventHubName();
     }
 
     @Override
