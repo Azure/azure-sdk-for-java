@@ -57,8 +57,8 @@ public class KeyVaultSecrets {
         try {
             setSecret();
             getSecret();
-        } catch (PlatformNotSupportedException e) {
-            LOGGER.error(e);
+        } catch (Exception e) {
+            System.out.println(e);
         } finally {
             deleteSecret();
         }
