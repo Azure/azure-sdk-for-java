@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -21,7 +22,6 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +29,6 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
@@ -51,8 +50,7 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private static final String PARTITION_ID = "1";
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
-    private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
+    private static volatile IntegrationTestEventData TEST_DATA = null;
 
     private EventHubAsyncClient client;
 
@@ -75,7 +73,12 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             .transportType(transportType);
         client = builder.buildAsyncClient();
 
-        setupEventTestData(client);
+        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
+            logger.info("Already pushed events to partition. Skipping.");
+        } else {
+            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            TEST_DATA = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+        }
     }
 
     @Override
@@ -98,10 +101,11 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setPrefetchCount(2);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
+            EventPosition.fromEnqueuedTime(TEST_DATA.getEnqueuedTime()), options);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, MESSAGE_TRACKING_VALUE)).take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receive().filter(x -> isMatchingEvent(x, TEST_DATA.getMessageTrackingId()))
+            .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }
@@ -170,30 +174,6 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             dispose(producer);
             dispose(consumers.toArray(new EventHubAsyncConsumer[0]));
             dispose(clients);
-        }
-    }
-
-    /**
-     * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
-     * events there.
-     */
-    private void setupEventTestData(EventHubAsyncClient client) {
-        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
-            return;
-        }
-
-        logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
-
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
-        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
-
-        try {
-            MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events).block(TIMEOUT);
-        } finally {
-            dispose(producer);
         }
     }
 }

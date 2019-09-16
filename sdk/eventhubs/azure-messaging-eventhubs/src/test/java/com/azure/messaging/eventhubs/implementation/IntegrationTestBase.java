@@ -9,7 +9,14 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubAsyncProducer;
+import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.TestUtils;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.After;
 import org.junit.Assume;
@@ -21,6 +28,9 @@ import reactor.core.scheduler.Schedulers;
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Test base for running integration tests.
@@ -101,6 +111,50 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ConnectionStringProperties getConnectionStringProperties() {
         return properties;
+    }
+
+    /**
+     * Pushes a set of {@link EventData} to Event Hubs.
+     */
+    protected IntegrationTestEventData setupEventTestData(EventHubAsyncClient client, int numberOfEvents,
+                                                          EventHubProducerOptions options) {
+        final String messageId = UUID.randomUUID().toString();
+
+        logger.info("Pushing events to partition. Message tracking value: {}", messageId);
+
+        final EventHubAsyncProducer producer = client.createProducer(options);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final Instant datePushed = Instant.now();
+
+        try {
+            producer.send(events).block(TIMEOUT);
+        } finally {
+            dispose(producer);
+        }
+
+        return new IntegrationTestEventData(options.getPartitionId(), messageId, datePushed, events);
+    }
+
+    /**
+     * Pushes a set of {@link EventData} to Event Hubs.
+     */
+    protected IntegrationTestEventData setupEventTestData(EventHubClient client, int numberOfEvents,
+                                                          EventHubProducerOptions options) {
+        final String messageId = UUID.randomUUID().toString();
+
+        logger.info("Pushing events to partition. Message tracking value: {}", messageId);
+
+        final EventHubProducer producer = client.createProducer(options);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final Instant datePushed = Instant.now();
+
+        try {
+            producer.send(events);
+        } finally {
+            dispose(producer);
+        }
+
+        return new IntegrationTestEventData(options.getPartitionId(), messageId, datePushed, events);
     }
 
     /**
