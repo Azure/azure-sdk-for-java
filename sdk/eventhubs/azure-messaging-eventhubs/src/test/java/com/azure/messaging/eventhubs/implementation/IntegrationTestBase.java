@@ -58,7 +58,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         skipIfNotRecordMode();
 
-        scheduler = Schedulers.newParallel("AMQPConnection");
+        scheduler = Schedulers.parallel();
         properties = new ConnectionStringProperties(getConnectionString());
 
         beforeTest();
@@ -70,10 +70,6 @@ public abstract class IntegrationTestBase extends TestBase {
     public void teardownTest() {
         logger.info("[{}]: Performing test clean-up.", getTestName());
         afterTest();
-
-        if (scheduler != null) {
-            scheduler.dispose();
-        }
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
