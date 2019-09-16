@@ -523,7 +523,7 @@ public class RestProxy implements InvocationHandler {
                         {httpRequest, responseStatusCode, responseHeaders}));
                 case 4:
                     return Mono.just(createResponse(ctor, new Object[] {httpRequest, responseStatusCode,
-                                      responseHeaders, bodyAsObject}));
+                        responseHeaders, bodyAsObject}));
                 case 5:
                     return response.getDecodedHeaders()
                         .map((Function<Object, Response<?>>) headers -> {
