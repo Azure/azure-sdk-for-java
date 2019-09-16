@@ -516,13 +516,12 @@ public class RestProxy implements InvocationHandler {
         if (constructors.isEmpty()) {
             throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
+        
         // try to create an instance using our list of potential candidates
         for (Constructor<?> constructor : constructors) {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
-
             try {
                 final int paramCount = constructor.getParameterCount();
-
                 switch (paramCount) {
                     case 3:
                         return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders));
@@ -531,31 +530,23 @@ public class RestProxy implements InvocationHandler {
                             bodyAsObject));
                     case 5:
                         return response.getDecodedHeaders()
-                            .defaultIfEmpty(NullObject.INSTANCE)
-                            .map(headers -> {
+                            .map((Function<Object, Response<?>>) headers -> {
                                 try {
-                                    if (headers instanceof NullObject) {
-                                        return ctor.newInstance(httpRequest, responseStatusCode,
-                                            responseHeaders, bodyAsObject, null);
-                                    }
                                     return ctor.newInstance(httpRequest, responseStatusCode,
                                         responseHeaders, bodyAsObject, headers);
                                 } catch (IllegalAccessException | InvocationTargetException
                                     | InstantiationException e) {
                                     throw logger.logExceptionAsError(Exceptions.propagate(e));
                                 }
-                            });
-//                        Function<Object, Response<?>> headersToResponse = (deserializedHeaders) -> {
-//                            try {
-//                                return ctor.newInstance(httpRequest, responseStatusCode,
-//                                    responseHeaders, bodyAsObject, deserializedHeaders);
-//                            }catch (IllegalAccessException | InvocationTargetException
-//                                | InstantiationException e) {
-//                                throw logger.logExceptionAsError(Exceptions.propagate(e));
-//                            } };
-//                        return response.getDecodedHeaders()
-//                            .map(headersToResponse)
-//                            .defaultIfEmpty(headersToResponse.apply(null));
+                            }).switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
+                                try {
+                                    return Mono.just(ctor.newInstance(httpRequest, responseStatusCode,
+                                        responseHeaders, bodyAsObject, null));
+                                } catch (IllegalAccessException | InvocationTargetException
+                                    | InstantiationException e) {
+                                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                                }
+                            }));
                     default:
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "Response constructor with expected parameters not found."));
