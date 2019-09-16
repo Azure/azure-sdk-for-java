@@ -832,9 +832,6 @@ public class FileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(fileAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, timeout, context));
     }
 
