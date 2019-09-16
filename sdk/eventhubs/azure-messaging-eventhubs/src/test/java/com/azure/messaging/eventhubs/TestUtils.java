@@ -18,7 +18,6 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -31,8 +30,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains helper methods for working with AMQP messages
  */
 public final class TestUtils {
-    static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummyaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=non-existent-hub;";
-
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
     static final Long OFFSET = 1534L;
@@ -43,9 +40,9 @@ public final class TestUtils {
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
-    static final String MESSAGE_TRACKING_ID = "message-tracking-id";
+    public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
     // An application property key to identify where in the stream this event was created.
-    static final String MESSAGE_POSITION_ID = "message-position";
+    public static final String MESSAGE_POSITION_ID = "message-position";
 
     static {
         APPLICATION_PROPERTIES.put("test-name", EventDataTest.class.getName());
@@ -121,13 +118,9 @@ public final class TestUtils {
         return new EventData(message);
     }
 
-    static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
+    public static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
         return Flux.range(0, numberOfEvents)
             .map(number -> getEvent("Event " + number, messageTrackingValue, number));
-    }
-
-    static List<EventData> getEventsAsList(int numberOfEvents, String messageTrackingValue) {
-        return getEvents(numberOfEvents, messageTrackingValue).collectList().block();
     }
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {
