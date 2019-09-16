@@ -7,8 +7,6 @@ import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.specialized.LeaseClient
-import com.azure.storage.blob.specialized.LeaseClientBuilder
 import spock.lang.Unroll
 
 class LeaseAPITest extends APISpec {
@@ -17,28 +15,6 @@ class LeaseAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         return bc
-    }
-
-    private static LeaseClient createLeaseClient(BlobClient blobClient) {
-        return createLeaseClient(blobClient, null)
-    }
-
-    private static LeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
-        return new LeaseClientBuilder()
-            .blobClient(blobClient)
-            .leaseId(leaseId)
-            .buildClient()
-    }
-
-    private static LeaseClient createLeaseClient(ContainerClient containerClient) {
-        return createLeaseClient(containerClient, null)
-    }
-
-    private static LeaseClient createLeaseClient(ContainerClient containerClient, String leaseId) {
-        return new LeaseClientBuilder()
-            .containerClient(containerClient)
-            .leaseId(leaseId)
-            .buildClient()
     }
 
     @Unroll
