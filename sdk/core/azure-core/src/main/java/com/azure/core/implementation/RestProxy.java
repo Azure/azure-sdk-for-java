@@ -459,13 +459,12 @@ public class RestProxy implements InvocationHandler {
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 asyncResult = response.getSourceResponse().getBody().ignoreElements()
-                    .then(Mono.just(createResponse(response, entityType, null)));
+                    .then(createResponse(response, entityType, null));
             } else {
                 asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                    .flatMap((Function<Object, Mono<Response<?>>>) bodyAsObject -> createResponse(response, entityType,
+                    .flatMap((Function<Object, Mono<?>>) bodyAsObject -> createResponse(response, entityType,
                         bodyAsObject))
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> createResponse(response,
-                        entityType, null)));
+                    .switchIfEmpty(createResponse(response, entityType, null));
             }
         } else {
             // For now we're just throwing if the Maybe didn't emit a value.
@@ -473,6 +472,12 @@ public class RestProxy implements InvocationHandler {
         }
 
         return asyncResult;
+    }
+
+    private static final class NullObject {
+        private NullObject() {
+        }
+        public static final NullObject INSTANCE = new NullObject();
     }
 
     @SuppressWarnings("unchecked")
@@ -511,7 +516,6 @@ public class RestProxy implements InvocationHandler {
         if (constructors.isEmpty()) {
             throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
-
         // try to create an instance using our list of potential candidates
         for (Constructor<?> constructor : constructors) {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
@@ -526,17 +530,32 @@ public class RestProxy implements InvocationHandler {
                         return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders,
                             bodyAsObject));
                     case 5:
-                        return response.getDecodedHeaders().flatMap(
-                            headers -> {
+                        return response.getDecodedHeaders()
+                            .defaultIfEmpty(NullObject.INSTANCE)
+                            .map(headers -> {
                                 try {
-                                    return Mono.justOrEmpty(ctor.newInstance(httpRequest, responseStatusCode,
-                                        responseHeaders, bodyAsObject,
-                                        headers));
+                                    if (headers instanceof NullObject) {
+                                        return ctor.newInstance(httpRequest, responseStatusCode,
+                                            responseHeaders, bodyAsObject, null);
+                                    }
+                                    return ctor.newInstance(httpRequest, responseStatusCode,
+                                        responseHeaders, bodyAsObject, headers);
                                 } catch (IllegalAccessException | InvocationTargetException
                                     | InstantiationException e) {
-                                    throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
+                                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                                 }
                             });
+//                        Function<Object, Response<?>> headersToResponse = (deserializedHeaders) -> {
+//                            try {
+//                                return ctor.newInstance(httpRequest, responseStatusCode,
+//                                    responseHeaders, bodyAsObject, deserializedHeaders);
+//                            }catch (IllegalAccessException | InvocationTargetException
+//                                | InstantiationException e) {
+//                                throw logger.logExceptionAsError(Exceptions.propagate(e));
+//                            } };
+//                        return response.getDecodedHeaders()
+//                            .map(headersToResponse)
+//                            .defaultIfEmpty(headersToResponse.apply(null));
                     default:
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "Response constructor with expected parameters not found."));
