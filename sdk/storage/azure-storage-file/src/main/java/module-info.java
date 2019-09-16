@@ -4,4 +4,11 @@ module com.azure.storage.file {
 
     exports com.azure.storage.file;
     exports com.azure.storage.file.models;
+
+    opens com.azure.storage.file.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
+    opens com.azure.storage.file.implementation to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 }

@@ -109,6 +109,18 @@
             </goals>
             <configuration>
               <compilerId>groovy-eclipse-compiler</compilerId>
+              <release>8</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <compilerId>groovy-eclipse-compiler</compilerId>
+              <release>8</release>
             </configuration>
           </execution>
         </executions>
@@ -124,6 +136,23 @@
             <version>${groovy-eclipse-batch.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <argLine>
+            --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+            --add-opens com.azure.storage.file/com.azure.storage.file=ALL-UNNAMED
+            --add-opens com.azure.storage.file/com.azure.storage.file.implementation=ALL-UNNAMED
+            --add-opens com.azure.storage.file/com.azure.storage.file.spock=ALL-UNNAMED
+          </argLine>
+        </configuration>
       </plugin>
     </plugins>
   </build>

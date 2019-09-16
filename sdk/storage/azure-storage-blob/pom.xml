@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
@@ -34,6 +34,8 @@
 
   <properties>
     <project.automatic.module.name>com.azure.storage.blob</project.automatic.module.name>
+    <src.dir>src/main/java</src.dir>
+    <test.dir>src/test/java</test.dir>
   </properties>
 
   <pluginRepositories>
@@ -120,9 +122,10 @@
     </dependency>
   </dependencies>
 
+
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <sourceDirectory>${src.dir}</sourceDirectory>
+    <testSourceDirectory>${test.dir}</testSourceDirectory>
 
     <plugins>
       <plugin>
@@ -130,8 +133,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>9</source>
+          <target>9</target>
         </configuration>
         <executions>
           <execution>
@@ -142,6 +145,18 @@
             </goals>
             <configuration>
               <compilerId>groovy-eclipse-compiler</compilerId>
+              <release>8</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <compilerId>groovy-eclipse-compiler</compilerId>
+              <release>8</release>
             </configuration>
           </execution>
         </executions>
@@ -158,7 +173,21 @@
           </dependency>
         </dependencies>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <argLine>
+            --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+            --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
+            --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
+          </argLine>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-
 </project>

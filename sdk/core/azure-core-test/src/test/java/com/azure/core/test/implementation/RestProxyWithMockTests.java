@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation;
+package com.azure.core.test.implementation;
 
-import com.azure.core.http.clients.NoOpHttpClient;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -19,20 +24,20 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.clients.MockHttpClient;
-import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.ContentType;
+import com.azure.core.test.http.MockHttpClient;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -41,12 +46,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 public class RestProxyWithMockTests extends RestProxyTests {
     @Override
@@ -535,7 +537,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @Post("anything/json")
         @ExpectedResponses({200})
         @ReturnValueWireType(Page.class)
-        Mono<PagedResponse<KeyValue>> getPageAsyncSerializes(@BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);
+        Mono<PagedResponse<KeyValue>> getPageAsyncSerializes(
+            @BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);
     }
 
     /**

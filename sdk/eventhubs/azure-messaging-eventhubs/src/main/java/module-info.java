@@ -7,4 +7,10 @@ module com.azure.messaging.eventhubs {
 
     exports com.azure.messaging.eventhubs;
     exports com.azure.messaging.eventhubs.models;
+
+    opens com.azure.messaging.eventhubs;
+    opens com.azure.messaging.eventhubs.models;
+
+    opens com.azure.messaging.eventhubs.implementation;
+    opens com.azure.messaging.eventhubs.implementation.handler;
 }

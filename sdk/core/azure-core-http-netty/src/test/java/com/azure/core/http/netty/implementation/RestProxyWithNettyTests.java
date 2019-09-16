@@ -4,12 +4,12 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.implementation.RestProxyTests;
+import com.azure.core.test.implementation.RestProxyTests;
 
 public class RestProxyWithNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return HttpClient.createDefault();
+        return HttpClient.createDefault(); //new NettyAsyncHttpClientBuilder().build();
     }
 }
