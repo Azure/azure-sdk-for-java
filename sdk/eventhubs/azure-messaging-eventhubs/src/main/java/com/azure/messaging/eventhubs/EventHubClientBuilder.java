@@ -117,8 +117,8 @@ public class EventHubClientBuilder {
      *
      * @return The updated {@link EventHubClientBuilder} object.
      *
-     * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code
-     *     connectionString} does not contain the "EntityPath" key, which is the name of the Event Hub instance.
+     * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code connectionString}
+     *     does not contain the "EntityPath" key, which is the name of the Event Hub instance.
      * @throws AzureException If the shared access signature token credential could not be created using the
      *     connection string.
      */
@@ -280,8 +280,8 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time {@code
-     * buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
+     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time
+     * {@code buildAsyncClient()} is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
