@@ -47,5 +47,18 @@
         <module>azure-security-keyvault-secrets</module>
       </modules>
     </profile>
+    <profile>
+      <id>mgmt</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>mgmt</value>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-mgmt-keyvault/v2015_06_01</module>
+        <module>azure-mgmt-keyvault/v2016_10_01</module>
+      </modules>
+    </profile>
   </profiles>
 </project>
