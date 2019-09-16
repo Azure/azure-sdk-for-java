@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2019_04_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2019_04_01.Encryption;
 import com.microsoft.azure.management.storage.v2019_04_01.AccessTier;
+import com.microsoft.azure.management.storage.v2019_04_01.AzureFilesIdentityBasedAuthentication;
 import com.microsoft.azure.management.storage.v2019_04_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_04_01.GeoReplicationStats;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -138,10 +139,10 @@ public class StorageAccountInner extends Resource {
     private AccessTier accessTier;
 
     /**
-     * Enables Azure Files AAD Integration for SMB if sets to true.
+     * Provides the identity based authentication settings for Azure Files.
      */
-    @JsonProperty(value = "properties.azureFilesAadIntegration")
-    private Boolean enableAzureFilesAadIntegration;
+    @JsonProperty(value = "properties.azureFilesIdentityBasedAuthentication")
+    private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /**
      * Allows https traffic only to storage service if sets to true.
@@ -321,22 +322,22 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Get enables Azure Files AAD Integration for SMB if sets to true.
+     * Get provides the identity based authentication settings for Azure Files.
      *
-     * @return the enableAzureFilesAadIntegration value
+     * @return the azureFilesIdentityBasedAuthentication value
      */
-    public Boolean enableAzureFilesAadIntegration() {
-        return this.enableAzureFilesAadIntegration;
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
+        return this.azureFilesIdentityBasedAuthentication;
     }
 
     /**
-     * Set enables Azure Files AAD Integration for SMB if sets to true.
+     * Set provides the identity based authentication settings for Azure Files.
      *
-     * @param enableAzureFilesAadIntegration the enableAzureFilesAadIntegration value to set
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration) {
-        this.enableAzureFilesAadIntegration = enableAzureFilesAadIntegration;
+    public StorageAccountInner withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+        this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 

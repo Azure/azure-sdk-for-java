@@ -11,28 +11,18 @@ package com.microsoft.azure.management.storage.v2019_04_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_04_01.implementation.StorageManager;
-import com.microsoft.azure.management.storage.v2019_04_01.implementation.ListContainerItemInner;
+import com.microsoft.azure.management.storage.v2019_04_01.implementation.FileShareItemInner;
 import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
- * Type representing ListContainerItem.
+ * Type representing FileShareItem.
  */
-public interface ListContainerItem extends HasInner<ListContainerItemInner>, HasManager<StorageManager> {
+public interface FileShareItem extends HasInner<FileShareItemInner>, HasManager<StorageManager> {
     /**
      * @return the etag value.
      */
     String etag();
-
-    /**
-     * @return the hasImmutabilityPolicy value.
-     */
-    Boolean hasImmutabilityPolicy();
-
-    /**
-     * @return the hasLegalHold value.
-     */
-    Boolean hasLegalHold();
 
     /**
      * @return the id value.
@@ -40,34 +30,9 @@ public interface ListContainerItem extends HasInner<ListContainerItemInner>, Has
     String id();
 
     /**
-     * @return the immutabilityPolicy value.
-     */
-    ImmutabilityPolicyProperties immutabilityPolicy();
-
-    /**
      * @return the lastModifiedTime value.
      */
     DateTime lastModifiedTime();
-
-    /**
-     * @return the leaseDuration value.
-     */
-    LeaseDuration leaseDuration();
-
-    /**
-     * @return the leaseState value.
-     */
-    LeaseState leaseState();
-
-    /**
-     * @return the leaseStatus value.
-     */
-    LeaseStatus leaseStatus();
-
-    /**
-     * @return the legalHold value.
-     */
-    LegalHoldProperties legalHold();
 
     /**
      * @return the metadata value.
@@ -80,9 +45,9 @@ public interface ListContainerItem extends HasInner<ListContainerItemInner>, Has
     String name();
 
     /**
-     * @return the publicAccess value.
+     * @return the shareQuota value.
      */
-    PublicAccess publicAccess();
+    Integer shareQuota();
 
     /**
      * @return the type value.
