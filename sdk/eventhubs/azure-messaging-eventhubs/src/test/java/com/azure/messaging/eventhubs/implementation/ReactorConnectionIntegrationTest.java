@@ -26,7 +26,7 @@ import static com.azure.messaging.eventhubs.implementation.CBSAuthorizationType.
 
 public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Mock
-    private AmqpResponseMapper responseMapper;
+    private ManagementResponseMapper responseMapper;
 
     @Rule
     public TestName testName = new TestName();
@@ -55,14 +55,16 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
             Assert.fail("Could not create tokenProvider :" + e);
         }
 
-        final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
+        final ConnectionOptions options = new ConnectionOptions(connectionString.getEndpoint().getHost(),
             connectionString.getEventHubName(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
 
+        AzureTokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(options.getAuthorizationType(),
+            options.getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
-        connection = new ReactorConnection("test-connection-id", connectionOptions, reactorProvider,
-            handlerProvider, responseMapper);
+        connection = new ReactorConnection("test-connection-id", options, reactorProvider,
+            handlerProvider, responseMapper, tokenManagerProvider);
     }
 
     @Override
@@ -85,7 +87,8 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         // Arrange
         final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            getConnectionStringProperties().getEndpoint().getHost());
+            getConnectionStringProperties().getEndpoint().getHost(),
+            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
         final String tokenAudience = provider.getResourceString(getConnectionStringProperties().getEventHubName());
 

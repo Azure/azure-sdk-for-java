@@ -35,7 +35,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
 
     @Mock
-    private AmqpResponseMapper mapper;
+    private ManagementResponseMapper mapper;
 
     @Rule
     public TestName testName = new TestName();
@@ -45,6 +45,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     private ConnectionStringProperties connectionString;
     private ReactorHandlerProvider handlerProvider;
     private AzureTokenManagerProvider azureTokenManagerProvider;
+    private ReactorProvider reactorProvider;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -60,7 +61,8 @@ public class CBSChannelTest extends IntegrationTestBase {
         MockitoAnnotations.initMocks(this);
 
         connectionString = getConnectionStringProperties();
-        azureTokenManagerProvider = new AzureTokenManagerProvider(SHARED_ACCESS_SIGNATURE, connectionString.getEndpoint().getHost());
+        azureTokenManagerProvider = new AzureTokenManagerProvider(SHARED_ACCESS_SIGNATURE,
+            connectionString.getEndpoint().getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
         TokenCredential tokenCredential = null;
         try {
@@ -77,7 +79,8 @@ public class CBSChannelTest extends IntegrationTestBase {
 
         reactorProvider = new ReactorProvider();
         handlerProvider = new ReactorHandlerProvider(reactorProvider);
-        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider, mapper);
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider, mapper,
+            azureTokenManagerProvider);
 
         cbsChannel = new CBSChannel(connection, tokenCredential, connectionOptions.getAuthorizationType(),
             reactorProvider, handlerProvider, retryOptions);

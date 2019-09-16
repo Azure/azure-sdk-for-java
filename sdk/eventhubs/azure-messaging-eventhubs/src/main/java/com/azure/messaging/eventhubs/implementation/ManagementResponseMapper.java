@@ -16,7 +16,7 @@ public interface ManagementResponseMapper {
      * @param deserializedType Class for the deserialized response body.
      * @param <T> Type to create from the AMQP response body.
      *
-     * @return The object from the AMQP response body.  Otherwise, {@code null} if it could not be deserialized.
+     * @return The object from the AMQP response body. Otherwise, {@code null} if it could not be deserialized.
      */
     <T> T deserialize(Map<?, ?> amqpBody, Class<T> deserializedType);
 }

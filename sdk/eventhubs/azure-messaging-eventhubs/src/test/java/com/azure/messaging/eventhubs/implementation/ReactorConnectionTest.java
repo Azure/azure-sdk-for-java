@@ -63,13 +63,15 @@ public class ReactorConnectionTest {
     @Mock
     private TokenCredential tokenProvider;
     @Mock
-    private AmqpResponseMapper responseMapper;
+    private ManagementResponseMapper responseMapper;
     @Mock
-    private Connection connectionProtonJ = mock(Connection.class);
+    private Connection connectionProtonJ;
     @Mock
-    private Session session = mock(Session.class);
+    private Session session;
     @Mock
-    private Record record = mock(Record.class);
+    private Record record;
+    @Mock
+    private TokenManagerProvider tokenManager;
 
     private MockReactorProvider reactorProvider;
     private MockReactorHandlerProvider reactorHandlerProvider;
@@ -92,7 +94,8 @@ public class ReactorConnectionTest {
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             CREDENTIAL_INFO.getEventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
-        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider, responseMapper);
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
+            responseMapper, tokenManager);
     }
 
     @After
@@ -294,7 +297,8 @@ public class ReactorConnectionTest {
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert
-        try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider, reactorHandlerProvider, responseMapper)) {
+        try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
+            reactorHandlerProvider, responseMapper, tokenManager)) {
             StepVerifier.create(connectionBad.getCBSNode())
                 .verifyError(TimeoutException.class);
         }
