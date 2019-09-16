@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.spock
+package com.azure.storage.file
 
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryClient
-import com.azure.storage.file.FileClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException

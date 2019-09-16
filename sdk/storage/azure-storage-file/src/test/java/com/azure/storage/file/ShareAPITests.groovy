@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.spock
+package com.azure.storage.file
 
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryClient
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.ShareClient
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
@@ -91,7 +88,8 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.value().snapshot()).buildClient()
+            .snapshot(createSnapshotResponse.value().snapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
+            .buildClient()
         then:
         Objects.equals(createSnapshotResponse.value().snapshot(),
             shareSnapshotClient.getSnapshotId())
@@ -112,7 +110,8 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.value().snapshot()).buildClient()
+            .snapshot(createSnapshotResponse.value().snapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
+            .buildClient()
         then:
         Objects.equals(createSnapshotResponse.value().snapshot(),
             shareSnapshotClient.getSnapshotId())

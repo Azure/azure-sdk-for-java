@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.spock
+package com.azure.storage.file
 
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryAsyncClient
-import com.azure.storage.file.FileAsyncClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
