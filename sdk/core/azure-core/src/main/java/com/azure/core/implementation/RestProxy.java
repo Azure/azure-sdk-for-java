@@ -37,6 +37,8 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -515,45 +517,41 @@ public class RestProxy implements InvocationHandler {
         // try to create an instance using our list of potential candidates
         for (Constructor<?> constructor : constructors) {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
-            try {
-                final int paramCount = constructor.getParameterCount();
-                
-                switch (paramCount) {
-                    case 3:
-                        return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders));
-                    case 4:
-                        return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders,
-                            bodyAsObject));
-                    case 5:
-                        return response.getDecodedHeaders()
-                            .map((Function<Object, Response<?>>) headers -> {
-                                try {
-                                    return ctor.newInstance(httpRequest, responseStatusCode,
-                                        responseHeaders, bodyAsObject, headers);
-                                } catch (IllegalAccessException | InvocationTargetException
-                                    | InstantiationException e) {
-                                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                                }
-                            }).switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                                try {
-                                    return Mono.just(ctor.newInstance(httpRequest, responseStatusCode,
-                                        responseHeaders, bodyAsObject, null));
-                                } catch (IllegalAccessException | InvocationTargetException
-                                    | InstantiationException e) {
-                                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                                }
-                            }));
-                    default:
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "Response constructor with expected parameters not found."));
-                }
-            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
+            final int paramCount = constructor.getParameterCount();
+
+            switch (paramCount) {
+                case 3:
+                    return Mono.just(newInstanceHelper.apply(ctor,
+                        new Object[] {httpRequest, responseStatusCode, responseHeaders}));
+                case 4:
+                    return Mono.just(newInstanceHelper.apply(ctor, new Object[] {httpRequest, responseStatusCode,
+                                      responseHeaders, bodyAsObject}));
+                case 5:
+                    return response.getDecodedHeaders()
+                        .map((Function<Object, Response<?>>) headers -> {
+                            return newInstanceHelper.apply(ctor, new Object[] {httpRequest, responseStatusCode,
+                                responseHeaders, bodyAsObject, headers});
+                        }).switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
+                            return Mono.just(newInstanceHelper.apply(ctor,
+                                new Object[] {httpRequest, responseStatusCode,
+                                              responseHeaders, bodyAsObject, null}));
+                        }));
+                default:
+                    throw logger.logExceptionAsError(new IllegalStateException(
+                        "Response constructor with expected parameters not found."));
             }
         }
         // error
         throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
+
+    private BiFunction<Constructor<? extends Response<?>>,Object[], Response<?>> newInstanceHelper = (ctor, args) -> {
+        try {
+            return ctor.newInstance(args);
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
+        }
+    };
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
                 final SwaggerMethodParser methodParser, final Type entityType) {
