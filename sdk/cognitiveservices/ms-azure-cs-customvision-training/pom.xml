@@ -15,7 +15,7 @@
     </parent>
     <artifactId>azure-cognitiveservices-customvision-training</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.1.0-preview.1</version>
+    <version>1.1.0-preview.2</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Custom Vision Training</name>
     <description>This package contains Microsoft Cognitive Service Custom Vision Training SDK.</description>
