@@ -462,9 +462,10 @@ public class RestProxy implements InvocationHandler {
                     .then(createResponse(response, entityType, null));
             } else {
                 asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                    .flatMap((Function<Object, Mono<?>>) bodyAsObject -> createResponse(response, entityType,
+                    .flatMap((Function<Object, Mono<Response<?>>>) bodyAsObject -> createResponse(response, entityType,
                         bodyAsObject))
-                    .switchIfEmpty(createResponse(response, entityType, null));
+                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> createResponse(response,
+                        entityType, null)));
             }
         } else {
             // For now we're just throwing if the Maybe didn't emit a value.
@@ -472,12 +473,6 @@ public class RestProxy implements InvocationHandler {
         }
 
         return asyncResult;
-    }
-
-    private static final class NullObject {
-        private NullObject() {
-        }
-        public static final NullObject INSTANCE = new NullObject();
     }
 
     @SuppressWarnings("unchecked")
@@ -522,6 +517,7 @@ public class RestProxy implements InvocationHandler {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
             try {
                 final int paramCount = constructor.getParameterCount();
+                
                 switch (paramCount) {
                     case 3:
                         return Mono.just(ctor.newInstance(httpRequest, responseStatusCode, responseHeaders));
