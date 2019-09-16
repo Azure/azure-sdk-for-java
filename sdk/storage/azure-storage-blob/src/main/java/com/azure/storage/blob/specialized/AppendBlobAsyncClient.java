@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -29,10 +33,9 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to an append blob. It may only be instantiated through a
- * {@link BlobClientBuilder#buildAppendBlobAsyncClient()}, via the method
- * {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * {@link SpecializedBlobClientBuilder#buildAppendBlobAsyncClient()} or via the method
+ * {@link BlobAsyncClient#asAppendBlobAsyncClient()}. This class does not hold any state about a particular blob, but
+ * is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},

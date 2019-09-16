@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import reactor.core.publisher.Flux;
 
 import java.io.UnsupportedEncodingException;

@@ -1,5 +1,6 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.common.Constants
 import spock.lang.Ignore
 

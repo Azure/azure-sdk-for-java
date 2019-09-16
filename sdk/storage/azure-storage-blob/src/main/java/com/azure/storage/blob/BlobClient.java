@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
@@ -107,17 +108,6 @@ public class BlobClient {
      */
     public BlobClient getSnapshotClient(String snapshot) {
         return new BlobClient(blobAsyncClient.getSnapshotClient(snapshot));
-    }
-
-    /**
-     * Initializes a {@link ContainerClient} object pointing to the container this blob is in. This method does not
-     * create a container. It simply constructs the URL to the container and offers access to methods relevant to
-     * containers.
-     *
-     * @return A {@link ContainerClient} object pointing to the container containing the blob
-     */
-    public ContainerClient getContainerClient() {
-        return new ContainerClient(blobAsyncClient.getContainerAsyncClient());
     }
 
     /**

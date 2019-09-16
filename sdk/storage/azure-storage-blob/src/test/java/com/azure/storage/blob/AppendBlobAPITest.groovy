@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
 import java.security.MessageDigest

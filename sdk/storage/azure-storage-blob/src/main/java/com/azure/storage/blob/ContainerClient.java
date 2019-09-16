@@ -61,117 +61,6 @@ public final class ContainerClient {
     }
 
     /**
-     * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of ContainerAsyncClient's
-     * URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlockBlobClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
-     */
-    public BlockBlobClient getBlockBlobClient(String blobName) {
-        return new BlockBlobClient(containerAsyncClient.getBlockBlobAsyncClient(blobName));
-    }
-
-    /**
-     * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of ContainerAsyncClient's
-     * URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
-     */
-    public BlockBlobClient getBlockBlobClient(String blobName, String snapshot) {
-        return new BlockBlobClient(containerAsyncClient.getBlockBlobAsyncClient(blobName, snapshot));
-    }
-
-    /**
-     * Creates creates a new PageBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
-     * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
-     * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getPageBlobClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
-     */
-    public PageBlobClient getPageBlobClient(String blobName) {
-        return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName));
-    }
-
-    /**
-     * Creates creates a new PageBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
-     * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
-     * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
-     */
-    public PageBlobClient getPageBlobClient(String blobName, String snapshot) {
-        return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName, snapshot));
-    }
-
-    /**
-     * Creates creates a new AppendBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new AppendBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getAppendBlobClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobClient getAppendBlobClient(String blobName) {
-        return new AppendBlobClient(containerAsyncClient.getAppendBlobAsyncClient(blobName));
-    }
-
-    /**
-     * Creates creates a new AppendBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new AppendBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobClient getAppendBlobClient(String blobName, String snapshot) {
-        return new AppendBlobClient(containerAsyncClient.getAppendBlobAsyncClient(blobName, snapshot));
-    }
-
-    /**
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
      * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
@@ -204,15 +93,6 @@ public final class ContainerClient {
      */
     public BlobClient getBlobClient(String blobName, String snapshot) {
         return new BlobClient(containerAsyncClient.getBlobAsyncClient(blobName, snapshot));
-    }
-
-    /**
-     * Initializes a {@link BlobServiceClient} object pointing to the storage account this container is in.
-     *
-     * @return A {@link BlobServiceClient} object pointing to the specified storage account
-     */
-    public BlobServiceClient getBlobServiceClient() {
-        return new BlobServiceClient(containerAsyncClient.getBlobServiceAsyncClient());
     }
 
     /**

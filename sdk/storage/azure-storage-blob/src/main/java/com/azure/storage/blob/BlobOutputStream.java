@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.common.SR;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -282,7 +283,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            LeaseAccessConditions leaseAccessConditions = (accessConditions == null) 
+            LeaseAccessConditions leaseAccessConditions = (accessConditions == null)
                 ? null : accessConditions.getLeaseAccessConditions();
 
             return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)

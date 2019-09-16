@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.specialized.AppendBlobClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

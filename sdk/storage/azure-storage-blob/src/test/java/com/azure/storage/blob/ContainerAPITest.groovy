@@ -24,6 +24,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
 import java.time.Duration

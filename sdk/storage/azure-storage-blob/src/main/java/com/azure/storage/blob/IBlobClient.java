@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
@@ -8,20 +5,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AccessTierOptional;
 import com.azure.storage.blob.models.AccessTierRequired;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
-import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -32,8 +23,6 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
-import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -46,11 +35,9 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.OffsetDateTime;
@@ -60,167 +47,27 @@ import java.util.List;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
-/**
- * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder}
- * or via the method {@link ContainerAsyncClient#getBlobAsyncClient(String)}. This class does not hold any state about a
- * particular blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
- *
- * <p>
- * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
- * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options. This
- * client can be converted into one of these clients easily through the methods {@link #asBlockBlobAsyncClient}, {@link
- * #asPageBlobAsyncClient}, and {@link #asAppendBlobAsyncClient()}.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
- *
- * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
- * Docs</a> for more information.
- *
- * <p>
- * Note this client is an async client that returns reactive responses from Spring Reactor Core project
- * (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong> start the actual network
- * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
- * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
- */
-public class BlobAsyncClient {
-    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
-
-    private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
-
-    final AzureBlobStorageImpl azureBlobStorage;
-    protected final String snapshot;
-    protected final CpkInfo cpk;
-
-    /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
-     *
-     * @param azureBlobStorage the API client for blob storage
-     */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
-        this.azureBlobStorage = azureBlobStorage;
-        this.snapshot = snapshot;
-        this.cpk = cpk;
-    }
-
-    /**
-     * Creates a new {@link BlockBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
-     * that are known to be block blobs.
-     *
-     * @return A {@link BlockBlobAsyncClient} to this resource.
-     */
-    public BlockBlobAsyncClient asBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates a new {@link AppendBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
-     * that are known to be append blobs.
-     *
-     * @return A {@link AppendBlobAsyncClient} to this resource.
-     */
-    public AppendBlobAsyncClient asAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates a new {@link PageBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
-     * that are known to be page blobs.
-     *
-     * @return A {@link PageBlobAsyncClient} to this resource.
-     */
-    public PageBlobAsyncClient asPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
-     *
-     * @param snapshot the identifier for a specific snapshot of this blob
-     * @return a {@link BlobAsyncClient} used to interact with the specific snapshot.
-     */
-    public BlobAsyncClient getSnapshotClient(String snapshot) {
-        return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Gets the URL of the blob represented by this client.
-     *
-     * @return the URL.
-     * @throws RuntimeException If the blob is using a malformed URL.
-     */
-    public URL getBlobUrl() {
-        try {
-            UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.getUrl());
-            if (snapshot != null) {
-                urlBuilder.setQuery("snapshot=" + snapshot);
-            }
-            return urlBuilder.toURL();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
-        }
-    }
-
+public interface IBlobClient {
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
-        return azureBlobStorage.getHttpPipeline();
-    }
+    HttpPipeline getHttpPipeline();
 
     /**
-     * Determines if the blob this client represents exists in the cloud.
+     * Determines if the blob this client represents exists.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.exists}
-     *
-     * @return true if the blob exists, false if it doesn't
+     * @return status of the blob's existence
      */
-    public Mono<Boolean> exists() {
-        return existsWithResponse().flatMap(FluxUtil::toMono);
-    }
+    Mono<Boolean> exists();
 
     /**
-     * Determines if the blob this client represents exists in the cloud.
+     * Determines if the blob this client represents exists.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.existsWithResponse}
-     *
-     * @return true if the blob exists, false if it doesn't
+     * @return status of the blob's existence
      */
-    public Mono<Response<Boolean>> existsWithResponse() {
-        return withContext(this::existsWithResponse);
-    }
-
-    Mono<Response<Boolean>> existsWithResponse(Context context) {
-        return this.getPropertiesWithResponse(null, context)
-            .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).getStatusCode() == 404, t -> {
-                HttpResponse response = ((StorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), false));
-            });
-    }
+    Mono<Response<Boolean>> existsWithResponse();
 
     /**
      * Copies the data at the source URL to a blob.
