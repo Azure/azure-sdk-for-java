@@ -22,6 +22,7 @@
 
 # Management Plane
 /**/resource-manager/        @yaohaizh
+/sdk/**/azure-mgmt-*/        @yaohaizh
 
 ###########
 # Eng Sys
