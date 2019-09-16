@@ -1,4 +1,4 @@
-package com.azure.storage.queue.spock
+package com.azure.storage.queue
 
 import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
@@ -6,9 +6,6 @@ import com.azure.storage.common.AccountSASService
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.credentials.SASTokenCredential
-import com.azure.storage.queue.QueueClient
-import com.azure.storage.queue.QueueSASPermission
-import com.azure.storage.queue.QueueServiceSASSignatureValues
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
 import com.azure.storage.queue.models.SignedIdentifier

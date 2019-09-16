@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue.spock
+package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
@@ -10,10 +10,6 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.queue.QueueClientBuilder
-import com.azure.storage.queue.QueueServiceAsyncClient
-import com.azure.storage.queue.QueueServiceClient
-import com.azure.storage.queue.QueueServiceClientBuilder
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 

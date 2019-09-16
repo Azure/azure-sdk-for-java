@@ -1,23 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.spock
+package com.azure.storage.file
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.ResourceNamer
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.DirectoryClientBuilder
-import com.azure.storage.file.FileClientBuilder
-import com.azure.storage.file.FileServiceAsyncClient
-import com.azure.storage.file.FileServiceClient
-import com.azure.storage.file.FileServiceClientBuilder
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 

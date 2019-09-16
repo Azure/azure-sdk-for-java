@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue.spock
+package com.azure.storage.queue
 
-import com.azure.storage.queue.QueueAsyncClient
+
 import com.azure.storage.queue.models.Logging
 import com.azure.storage.queue.models.Metrics
 import com.azure.storage.queue.models.QueueItem

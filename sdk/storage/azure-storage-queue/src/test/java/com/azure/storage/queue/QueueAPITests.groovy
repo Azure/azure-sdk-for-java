@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue.spock
+package com.azure.storage.queue
 
-import com.azure.storage.queue.QueueClient
+
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
 import com.azure.storage.queue.models.StorageException
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration

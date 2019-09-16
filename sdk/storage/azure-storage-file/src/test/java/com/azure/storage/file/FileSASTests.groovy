@@ -1,4 +1,4 @@
-package com.azure.storage.file.spock
+package com.azure.storage.file
 
 import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
@@ -7,12 +7,6 @@ import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.credentials.SASTokenCredential
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileSASPermission
-import com.azure.storage.file.FileServiceClient
-import com.azure.storage.file.FileServiceSASSignatureValues
-import com.azure.storage.file.ShareClient
-import com.azure.storage.file.ShareSASPermission
 import com.azure.storage.file.models.AccessPolicy
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageException

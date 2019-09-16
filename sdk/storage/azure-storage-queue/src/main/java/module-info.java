@@ -11,4 +11,6 @@ module com.azure.storage.queue {
     opens com.azure.storage.queue.implementation to
         com.fasterxml.jackson.databind,
         com.azure.core;
+
+    uses com.azure.core.http.HttpClientProvider;
 }
