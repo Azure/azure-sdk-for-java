@@ -516,7 +516,7 @@ public class RestProxy implements InvocationHandler {
         if (constructors.isEmpty()) {
             throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
-        
+
         // try to create an instance using our list of potential candidates
         for (Constructor<?> constructor : constructors) {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
