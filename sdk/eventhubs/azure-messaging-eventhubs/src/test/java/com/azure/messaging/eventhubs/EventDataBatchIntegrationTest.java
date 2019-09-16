@@ -165,7 +165,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             subscriptions.addAll(consumerSubscriptions);
 
             // Act
-            producer.send(batch.getEvents(), sendOptions).block(TIMEOUT);
+            producer.send(batch.getEvents(), sendOptions).block();
 
             // Assert
             // Wait for all the events we sent to be received.

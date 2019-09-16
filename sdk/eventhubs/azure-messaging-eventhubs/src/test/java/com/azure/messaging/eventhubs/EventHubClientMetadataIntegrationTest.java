@@ -10,7 +10,6 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,11 +26,12 @@ import java.security.NoSuchAlgorithmException;
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
     private EventHubAsyncClient client;
-    private ReactorHandlerProvider handlerProvider;
     private String eventHubName;
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
+
+        eventHubName = getConnectionStringProperties().getEventHubName();
     }
 
     @Rule
