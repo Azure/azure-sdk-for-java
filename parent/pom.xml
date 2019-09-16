@@ -148,7 +148,7 @@
     <cglib-nodep.version>3.2.7</cglib-nodep.version>
     <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
-    <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
+    <wiremock-standalone.version>2.24.1</wiremock-standalone.version>
     <jetty-http.version>9.4.11.v20180605</jetty-http.version>
     <jetty-server.version>9.4.11.v20180605</jetty-server.version>
     <junit.version>4.13-beta-3</junit.version>

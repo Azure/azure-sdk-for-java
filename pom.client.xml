@@ -723,37 +723,15 @@
       </activation>
       <build>
         <plugins>
-          <!-- Compile twice -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven-compiler-plugin.version}</version>
-            <executions>
-              <!-- compile first with module-info for Java 9+ -->
-              <execution>
-                <id>default-compile</id>
-                <configuration>
-                  <release>9</release>
-                </configuration>
-              </execution>
-              <!-- then compile without module-info for Java 8 -->
-              <execution>
-                <id>base-compile</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <excludes>
-                    <exclude>module-info.java</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-            </executions>
             <!-- setup defaults for compile and testCompile -->
             <configuration>
-              <source>8</source>
-              <target>8</target>
-              <release>8</release>
+              <source>9</source>
+              <target>9</target>
+<!--              <release>9</release>-->
               <showWarnings>true</showWarnings>
               <failOnWarning>false</failOnWarning> <!-- FIXME: this is false for now as it introduces a build failure -->
               <compilerArgs>
@@ -764,60 +742,30 @@
               </compilerArgs>
             </configuration>
           </plugin>
-<!--          &lt;!&ndash; Hack to extract dependencies for Surefire and Javadoc plugin &ndash;&gt;-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-dependency-plugin</artifactId>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>copy-dependencies</id>-->
-<!--                <phase>compile</phase>-->
-<!--                <goals>-->
-<!--                  <goal>copy-dependencies</goal>-->
-<!--                </goals>-->
-<!--                <configuration>-->
-<!--                  <outputDirectory>${project.build.directory}/dependencies</outputDirectory>-->
-<!--                  <overWriteReleases>true</overWriteReleases>-->
-<!--                  <overWriteIfNewer>true</overWriteIfNewer>-->
-<!--                </configuration>-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
           <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
-              <argLine>--add-opens com.azure.core/com.azure.core.entities=com.fasterxml.jackson.databind</argLine>
+<!--              <argLine>&#45;&#45;add-opens com.azure.core/com.azure.core.entities=com.fasterxml.jackson.databind</argLine>-->
+              <argLine>
+                <!-- Keyvault tests fail without these exports -->
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+              </argLine>
+<!--              <argLine>-Xmx5024m -XX:MaxPermSize=1024m</argLine>-->
+<!--              <useModulePath>true</useModulePath>-->
               <useSystemClassLoader>false</useSystemClassLoader>
-              <forkCount>0</forkCount>
-              <testFailureIgnore>true</testFailureIgnore>
+
+              <forkCount>1</forkCount>
+<!--              <reuseForks>false</reuseForks>-->
+              <testFailureIgnore>false</testFailureIgnore>
             </configuration>
           </plugin>
-<!--          &lt;!&ndash; Javadoc plugin v3.0.0 is broken, https://issues.apache.org/jira/browse/MJAVADOC-506 &ndash;&gt;-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--            <configuration>-->
-<!--              <additionalparam>${joda.javadoc.moduleargs} &#45;&#45;module-path ${project.build.directory}/dependencies</additionalparam>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
         </plugins>
       </build>
-<!--      <reporting>-->
-<!--        <plugins>-->
-<!--          &lt;!&ndash; Javadoc plugin v3.0.0 is broken &ndash;&gt;-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--            <version>${maven-javadoc-plugin.version}</version>-->
-<!--            <configuration>-->
-<!--              <additionalparam>${joda.javadoc.moduleargs} &#45;&#45;module-path ${project.build.directory}/dependencies</additionalparam>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </reporting>-->
     </profile>
 
     <!-- Customise the javadoc plugin to not include module directories in links. We don't

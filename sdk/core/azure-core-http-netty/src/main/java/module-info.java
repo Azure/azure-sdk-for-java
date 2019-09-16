@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.http.netty {
-    requires com.azure.core;
-
+    requires transitive com.azure.core;
     requires reactor.netty;
     requires io.netty.buffer;
     requires io.netty.common;
@@ -11,9 +10,15 @@ module com.azure.http.netty {
     requires io.netty.handler;
     requires io.netty.codec;
     requires io.netty.codec.http;
+    requires reactor.core;
+    requires org.reactivestreams;
+    requires com.azure.test;
 
     exports com.azure.core.http.netty;
+    exports com.azure.core.http.netty.implementation;
 
     provides com.azure.core.http.HttpClientProvider
         with com.azure.core.http.netty.implementation.ReactorNettyClientProvider;
+
+    uses com.azure.core.http.HttpClientProvider;
 }

@@ -6,4 +6,8 @@ module com.azure.security.keyvault.secrets {
 
     exports com.azure.security.keyvault.secrets;
     exports com.azure.security.keyvault.secrets.models;
+
+    opens com.azure.security.keyvault.secrets to com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.secrets.implementation to com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.secrets.models to com.fasterxml.jackson.databind;
 }
