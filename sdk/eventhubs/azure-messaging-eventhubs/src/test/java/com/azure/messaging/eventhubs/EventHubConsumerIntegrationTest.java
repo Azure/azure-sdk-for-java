@@ -6,22 +6,20 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,15 +28,14 @@ import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER
 public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
+    private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubClient client;
     private EventHubConsumer consumer;
 
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.
-    private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
-    private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
 
     public EventHubConsumerIntegrationTest() {
         super(new ClientLogger(EventHubConsumerIntegrationTest.class));
@@ -60,10 +57,15 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             .retry(RETRY_OPTIONS)
             .buildClient();
 
-        setupEventTestData(client);
+        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
+            logger.info("Already pushed events to partition. Skipping.");
+        } else {
+            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+        }
 
         consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()));
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
     }
 
     @Override
@@ -125,7 +127,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String partitionId = "1";
-        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
@@ -157,8 +159,8 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final int receiveNumber = 10;
         final String partitionId = "1";
 
-        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
-        final List<EventData> events2 = TestUtils.getEventsAsList(secondSetOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events2 = getEventsAsList(secondSetOfEvents, TestUtils.MESSAGE_TRACKING_ID);
 
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
@@ -190,7 +192,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final int receiveNumber = 10;
         final String partitionId = "1";
 
-        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
@@ -232,8 +234,8 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final int numberOfEvents = 15;
         final int numberOfEvents2 = 3;
         final String partitionId = "1";
-        final List<EventData> events = TestUtils.getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
-        final List<EventData> events2 = TestUtils.getEventsAsList(numberOfEvents2, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events2 = getEventsAsList(numberOfEvents2, TestUtils.MESSAGE_TRACKING_ID);
 
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
@@ -260,28 +262,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    /**
-     * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
-     * events there.
-     */
-    private void setupEventTestData(EventHubClient client) {
-        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
-            return;
-        }
-
-        logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
-
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducer producer = client.createProducer(producerOptions);
-        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
-
-        try {
-            // So we know what instant those messages were pushed to the service and can fetch them.
-            MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events.collectList().block());
-        } finally {
-            dispose(producer);
-        }
+    private static List<EventData> getEventsAsList(int numberOfEvents, String messageId) {
+        return TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
     }
 }
