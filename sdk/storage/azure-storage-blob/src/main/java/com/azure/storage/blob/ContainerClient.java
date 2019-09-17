@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerAccessConditions;
@@ -42,6 +43,7 @@ import java.util.List;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
  * Docs</a> for more information on containers.
  */
+@ServiceClient(builder = ContainerClientBuilder.class)
 public final class ContainerClient {
     private final ContainerAsyncClient containerAsyncClient;
 

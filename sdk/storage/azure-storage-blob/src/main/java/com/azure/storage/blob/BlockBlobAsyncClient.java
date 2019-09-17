@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -69,6 +70,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
 

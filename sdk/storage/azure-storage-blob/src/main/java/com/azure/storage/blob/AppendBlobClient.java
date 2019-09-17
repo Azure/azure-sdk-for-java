@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -39,6 +40,7 @@ import java.util.Objects;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = BlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClient {
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
