@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -92,6 +93,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {
     private final ClientLogger logger = new ClientLogger(FileAsyncClient.class);
     private static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
