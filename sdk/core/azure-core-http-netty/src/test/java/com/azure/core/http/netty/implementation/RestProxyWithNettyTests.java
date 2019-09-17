@@ -10,6 +10,6 @@ public class RestProxyWithNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return HttpClient.createDefault(); //new NettyAsyncHttpClientBuilder().build();
+        return HttpClient.createDefault();
     }
 }

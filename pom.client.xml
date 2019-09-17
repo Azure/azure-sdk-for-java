@@ -731,7 +731,6 @@
             <configuration>
               <source>9</source>
               <target>9</target>
-<!--              <release>9</release>-->
               <showWarnings>true</showWarnings>
               <failOnWarning>false</failOnWarning> <!-- FIXME: this is false for now as it introduces a build failure -->
               <compilerArgs>
@@ -748,19 +747,14 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
-<!--              <argLine>&#45;&#45;add-opens com.azure.core/com.azure.core.entities=com.fasterxml.jackson.databind</argLine>-->
               <argLine>
                 <!-- Keyvault tests fail without these exports -->
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
               </argLine>
-<!--              <argLine>-Xmx5024m -XX:MaxPermSize=1024m</argLine>-->
-<!--              <useModulePath>true</useModulePath>-->
               <useSystemClassLoader>false</useSystemClassLoader>
-
               <forkCount>1</forkCount>
-<!--              <reuseForks>false</reuseForks>-->
               <testFailureIgnore>false</testFailureIgnore>
             </configuration>
           </plugin>
