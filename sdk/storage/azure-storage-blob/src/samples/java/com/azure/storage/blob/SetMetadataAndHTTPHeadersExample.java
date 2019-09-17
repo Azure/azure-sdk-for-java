@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;

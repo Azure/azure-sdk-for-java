@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -9,6 +9,8 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AccessTierOptional;
@@ -50,14 +52,9 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobAsyncClient#asBlockBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder} orvia the method {@link
+ * BlobAsyncClient#asBlockBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -69,7 +66,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-public final class BlockBlobAsyncClient extends BlobAsyncClient {
+public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;

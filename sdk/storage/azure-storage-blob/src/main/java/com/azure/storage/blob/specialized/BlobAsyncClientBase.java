@@ -1,18 +1,31 @@
-package com.azure.storage.blob;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.HTTPGetterInfo;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AccessTierOptional;
 import com.azure.storage.blob.models.AccessTierRequired;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -35,9 +48,11 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.OffsetDateTime;
@@ -47,27 +62,128 @@ import java.util.List;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
-public interface IBlobClient {
+/**
+ * This class provides a client that contains all operations that apply to any blob type.
+ *
+ * <p>
+ * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
+ * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
+ */
+public class BlobAsyncClientBase {
+    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
+
+    private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
+
+    protected final AzureBlobStorageImpl azureBlobStorage;
+    protected final String snapshot;
+    protected final CpkInfo cpk;
+
+    /**
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param azureBlobStorage the API client for blob storage
+     */
+    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
+        this.azureBlobStorage = azureBlobStorage;
+        this.snapshot = snapshot;
+        this.cpk = cpk;
+    }
+
+    /**
+     * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this blob
+     * @return a {@link BlobAsyncClient} used to interact with the specific snapshot.
+     */
+    public BlobAsyncClientBase getSnapshotClient(String snapshot) {
+        return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
+            .url(getBlobUrl().toString())
+            .pipeline(azureBlobStorage.getHttpPipeline())
+            .build(), snapshot, cpk);
+    }
+
+    /**
+     * Gets the URL of the blob represented by this client.
+     *
+     * @return the URL.
+     * @throws RuntimeException If the blob is using a malformed URL.
+     */
+    public URL getBlobUrl() {
+        try {
+            UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.getUrl());
+            if (snapshot != null) {
+                urlBuilder.setQuery("snapshot=" + snapshot);
+            }
+            return urlBuilder.toURL();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
+        }
+    }
+
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
      */
-    HttpPipeline getHttpPipeline();
+    public HttpPipeline getHttpPipeline() {
+        return azureBlobStorage.getHttpPipeline();
+    }
 
     /**
-     * Determines if the blob this client represents exists.
+     * Gets the snapshotId for a blob resource
      *
-     * @return status of the blob's existence
+     * @return A string that represents the snapshotId of the snapshot blob
      */
-    Mono<Boolean> exists();
+    public String getSnapshotId() {
+        return this.snapshot;
+    }
 
     /**
-     * Determines if the blob this client represents exists.
+     * Determines if a blob is a snapshot
      *
-     * @return status of the blob's existence
+     * @return A boolean that indicates if a blob is a snapshot
      */
-    Mono<Response<Boolean>> existsWithResponse();
+    public boolean isSnapshot() {
+        return this.snapshot != null;
+    }
+
+    /**
+     * Determines if the blob this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.exists}
+     *
+     * @return true if the blob exists, false if it doesn't
+     */
+    public Mono<Boolean> exists() {
+        return existsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Determines if the blob this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.existsWithResponse}
+     *
+     * @return true if the blob exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> existsWithResponse() {
+        return withContext(this::existsWithResponse);
+    }
+
+    Mono<Response<Boolean>> existsWithResponse(Context context) {
+        return this.getPropertiesWithResponse(null, context)
+            .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
+            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).getStatusCode() == 404, t -> {
+                HttpResponse response = ((StorageException) t).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), false));
+            });
+    }
 
     /**
      * Copies the data at the source URL to a blob.
@@ -655,7 +771,7 @@ public interface IBlobClient {
      * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
      * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Mono<BlobAsyncClient> createSnapshot() {
+    public Mono<BlobAsyncClientBase> createSnapshot() {
         return createSnapshotWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -674,12 +790,12 @@ public interface IBlobClient {
      * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
      * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Mono<Response<BlobAsyncClient>> createSnapshotWithResponse(Metadata metadata,
+    public Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Metadata metadata,
         BlobAccessConditions accessConditions) {
         return withContext(context -> createSnapshotWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<Response<BlobAsyncClient>> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+    Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
         Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -1011,23 +1127,5 @@ public interface IBlobClient {
         }
 
         return blobServiceSASSignatureValues;
-    }
-
-    /**
-     * Gets the snapshotId for a blob resource
-     *
-     * @return A string that represents the snapshotId of the snapshot blob
-     */
-    public String getSnapshotId() {
-        return this.snapshot;
-    }
-
-    /**
-     * Determines if a blob is a snapshot
-     *
-     * @return A boolean that indicates if a blob is a snapshot
-     */
-    public boolean isSnapshot() {
-        return this.snapshot != null;
     }
 }

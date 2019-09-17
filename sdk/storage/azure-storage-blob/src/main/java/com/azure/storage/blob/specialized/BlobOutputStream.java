@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.common.SR;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -138,7 +137,7 @@ public abstract class BlobOutputStream extends OutputStream {
      * been closed.
      */
     @Override
-    public void write(@NonNull final byte[] data, final int offset, final int length) throws IOException {
+    public void write(@NonNull final byte[] data, final int offset, final int length) {
         if (offset < 0 || length < 0 || length > data.length - offset) {
             throw new IndexOutOfBoundsException();
         }

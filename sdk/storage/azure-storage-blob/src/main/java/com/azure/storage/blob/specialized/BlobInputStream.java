@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.StorageException;
@@ -23,7 +25,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the reference to the blob this stream is associated with.
      */
-    private final BlobAsyncClient blobClient;
+    private final BlobAsyncClientBase blobClient;
 
     /**
      * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
@@ -93,7 +95,7 @@ public final class BlobInputStream extends InputStream {
      * blob.
      * @throws StorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition)
+    BlobInputStream(final BlobAsyncClientBase blobClient, final BlobAccessConditions accessCondition)
         throws StorageException {
         this(blobClient, 0, null, accessCondition);
     }
@@ -109,7 +111,7 @@ public final class BlobInputStream extends InputStream {
      * blob.
      * @throws StorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClient blobClient, long blobRangeOffset, Long blobRangeLength,
+    BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength,
         final BlobAccessConditions accessCondition)
         throws StorageException {
 
@@ -139,10 +141,9 @@ public final class BlobInputStream extends InputStream {
      *
      * @return An <code>int</code> which represents an estimate of the number of bytes that can be read (or skipped
      * over) from this input stream without blocking, or 0 when it reaches the end of the input stream.
-     * @throws IOException If an I/O error occurs.
      */
     @Override
-    public synchronized int available() throws IOException {
+    public synchronized int available() {
         return this.bufferSize - (int) (this.currentAbsoluteReadPosition - this.bufferStartOffset);
     }
 
@@ -160,11 +161,9 @@ public final class BlobInputStream extends InputStream {
 
     /**
      * Closes this input stream and releases any system resources associated with the stream.
-     *
-     * @throws IOException If an I/O error occurs.
      */
     @Override
-    public synchronized void close() throws IOException {
+    public synchronized void close() {
         this.currentBuffer = null;
         this.streamFaulted = true;
         this.lastError = new IOException(SR.STREAM_CLOSED);
@@ -347,7 +346,7 @@ public final class BlobInputStream extends InputStream {
         len = Math.min(len, this.readSize);
 
         final int numberOfBytesRead;
-        if (currentBuffer.remaining() == 0) {
+        if (currentBuffer == null || currentBuffer.remaining() == 0) {
             numberOfBytesRead = -1;
         } else {
             numberOfBytesRead = Math.min(len, this.currentBuffer.remaining());
@@ -405,7 +404,7 @@ public final class BlobInputStream extends InputStream {
      * @param n A <code>long</code> which represents the number of bytes to skip.
      */
     @Override
-    public synchronized long skip(final long n) throws IOException {
+    public synchronized long skip(final long n) {
         if (n == 0) {
             return 0;
         }

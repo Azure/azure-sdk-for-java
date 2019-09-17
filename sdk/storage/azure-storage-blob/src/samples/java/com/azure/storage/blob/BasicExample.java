@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;

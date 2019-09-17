@@ -6,6 +6,8 @@ package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues
 import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
 import com.azure.storage.common.AccountSASSignatureValues

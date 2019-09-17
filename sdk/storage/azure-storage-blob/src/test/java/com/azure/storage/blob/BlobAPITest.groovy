@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.StorageAccountInfo
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.specialized.BlockBlobClient
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer

@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.PageBlobClient
 import spock.lang.Unroll
 
 import java.security.MessageDigest

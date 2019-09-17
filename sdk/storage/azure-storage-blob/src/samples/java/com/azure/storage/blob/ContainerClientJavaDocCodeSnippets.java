@@ -19,6 +19,8 @@ import com.azure.storage.blob.models.StorageErrorCode;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;

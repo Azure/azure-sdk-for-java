@@ -7,6 +7,8 @@ package com.azure.storage.blob
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageErrorException
+import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.blob.specialized.DownloadAsyncResponse
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {

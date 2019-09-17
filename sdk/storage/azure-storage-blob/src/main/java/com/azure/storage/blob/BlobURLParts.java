@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 

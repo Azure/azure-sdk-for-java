@@ -27,6 +27,8 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageErrorException
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient
+import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

@@ -6,6 +6,8 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpClient;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

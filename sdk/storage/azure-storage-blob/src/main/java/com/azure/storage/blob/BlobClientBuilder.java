@@ -10,6 +10,10 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.credentials.SASTokenCredential;
 
 import java.io.OutputStream;

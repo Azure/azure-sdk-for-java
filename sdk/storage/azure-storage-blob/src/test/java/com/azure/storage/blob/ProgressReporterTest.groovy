@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import reactor.core.publisher.Flux
 import spock.lang.Requires
 

@@ -1,5 +1,8 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.specialized.BlobInputStream
+import com.azure.storage.blob.specialized.BlobOutputStream
+import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.Constants
 import spock.lang.Requires
 

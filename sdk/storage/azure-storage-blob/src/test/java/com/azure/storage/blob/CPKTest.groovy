@@ -5,6 +5,8 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.Constants
 
 import java.time.OffsetDateTime

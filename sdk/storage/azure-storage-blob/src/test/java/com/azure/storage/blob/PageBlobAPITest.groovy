@@ -20,6 +20,8 @@ import com.azure.storage.blob.models.SequenceNumberAccessConditions
 import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.specialized.PageBlobAsyncClient
+import com.azure.storage.blob.specialized.PageBlobClient
 import spock.lang.Unroll
 
 import java.security.MessageDigest

@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -33,20 +35,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobClient#asBlockBlobClient()}, or via the method {@link ContainerClient#getBlockBlobClient(String)}. This class
- * does not hold any state about a particular blob, but is instead a convenient way of sending appropriate requests to
- * the resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
- * operations on the service are available on {@link BlobServiceClient}.
+ * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder} or via the method {@link
+ * BlobClient#asBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
-public final class BlockBlobClient extends BlobClient {
+public final class BlockBlobClient extends BlobClientBase {
     private final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**

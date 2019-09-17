@@ -31,6 +31,8 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters;
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -9,6 +9,8 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -35,14 +37,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}. This class does not hold any state about a particular
+ * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder} or via the method {@link
+ * BlobAsyncClient#asPageBlobAsyncClient()}. This class does not hold any state about a particular
  * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -54,7 +51,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-public final class PageBlobAsyncClient extends BlobAsyncClient {
+public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the number of bytes in a page.
      */

@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.ContainerSASPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
@@ -33,7 +35,7 @@ import java.time.OffsetDateTime;
  * for additional samples.</p>
  */
 
-final class BlobServiceSASSignatureValues {
+public final class BlobServiceSASSignatureValues {
     private final ClientLogger logger = new ClientLogger(BlobServiceSASSignatureValues.class);
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
@@ -92,7 +94,7 @@ final class BlobServiceSASSignatureValues {
         this.identifier = identifier;
     }
 
-    BlobServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    public BlobServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {

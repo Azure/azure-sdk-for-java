@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 

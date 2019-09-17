@@ -51,7 +51,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-public final class AppendBlobAsyncClient extends BlobAsyncClient {
+public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
