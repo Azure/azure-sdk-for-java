@@ -90,7 +90,12 @@ public class App {
         List<Disposable> subscriptions = new ArrayList<Disposable>();
         for (int i = 0; i < parallel; i++) {
             subscriptions.add(DownloadLoop(client).subscribe(f -> {
-                count.incrementAndGet();
+                f.subscribe(b -> {
+                    int remaining = b.remaining();
+                    System.out.println(remaining);
+                    b.get(new byte[remaining]);
+                });
+                f.doOnComplete(() -> count.incrementAndGet());
             }));
         }
 
