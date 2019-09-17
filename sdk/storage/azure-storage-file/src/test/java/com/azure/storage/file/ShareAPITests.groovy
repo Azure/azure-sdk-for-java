@@ -106,7 +106,7 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.getValue().snapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
+            .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
             .buildClient()
         then:
         Objects.equals(createSnapshotResponse.getValue().getSnapshot(),
@@ -130,7 +130,7 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-            .snapshot(createSnapshotResponse.getValue().snapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
+            .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
             .buildClient()
         then:
         Objects.equals(createSnapshotResponse.getValue().getSnapshot(),

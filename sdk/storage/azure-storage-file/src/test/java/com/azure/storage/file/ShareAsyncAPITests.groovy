@@ -111,8 +111,8 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-                .snapshot(it.getValue().snapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
-            assert Objects.equals(it.getValue().snapshot(),
+                .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
+            assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
 
@@ -137,8 +137,8 @@ class ShareAsyncAPITests extends APISpec {
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
             def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
-                .snapshot(it.getValue().snapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
-            assert Objects.equals(it.getValue().snapshot(),
+                .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
+            assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
         }.verifyComplete()
     }
