@@ -579,4 +579,15 @@ public class BlobClientJavaDocCodeSnippets {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
+
+
+    /**
+     * Generates a code sample for using {@link BlobClient#getName()}
+     */
+    public void getName() {
+        // BEGIN: com.azure.storage.blob.BlobClient.getName
+        String blobName = client.getName();
+        System.out.println("The name of the blob is " + blobName);
+        // END: com.azure.storage.blob.BlobClient.getName
+    }
 }

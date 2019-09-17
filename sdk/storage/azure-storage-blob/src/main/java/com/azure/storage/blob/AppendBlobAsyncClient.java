@@ -240,7 +240,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * @return The name of the append blob.
      */
-    public String getNameAsync() {
+    public String getName() {
         try {
             return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
         } catch (MalformedURLException e) {

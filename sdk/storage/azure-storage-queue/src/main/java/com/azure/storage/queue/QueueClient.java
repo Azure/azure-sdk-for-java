@@ -709,7 +709,7 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getName}
+     * {@codesnippet com.azure.storage.queue.queueClient.getName}
      *
      * @return The name of the queue.
      */
