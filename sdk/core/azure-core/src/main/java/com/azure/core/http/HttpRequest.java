@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * The outgoing Http request.
  */
-public class HttpRequest implements Cloneable, Serializable {
+public class HttpRequest implements Serializable {
     private static final long serialVersionUID = 6338479743058758810L;
 
     private HttpMethod httpMethod;
@@ -176,7 +176,6 @@ public class HttpRequest implements Cloneable, Serializable {
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */
-    @Override
     public HttpRequest clone() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
