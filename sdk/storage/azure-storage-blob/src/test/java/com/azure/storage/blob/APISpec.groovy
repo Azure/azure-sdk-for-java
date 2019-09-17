@@ -542,7 +542,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     with than was worth it.
      */
     def getStubResponse(int code, HttpRequest request) {
-        return new HttpResponse() {
+        return new HttpResponse(request) {
 
             @Override
             int getStatusCode() {
@@ -578,7 +578,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
             }
-        }.setRequest(request)
+        }
     }
 
     def waitForCopy(ContainerClient bu, String status) {
@@ -667,7 +667,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         private final Flux<ByteBuffer> body
 
         MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            this.setRequest(response.getRequest())
+            super(response.getRequest())
             this.statusCode = statusCode
             this.headers = response.getHeaders()
             this.body = body

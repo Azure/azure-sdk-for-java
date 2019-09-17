@@ -15,7 +15,11 @@ import java.nio.charset.Charset;
  * The type representing response of {@link HttpRequest}.
  */
 public abstract class HttpResponse implements Closeable {
-    private HttpRequest request;
+    private final HttpRequest request;
+
+    protected HttpResponse(HttpRequest request) {
+        this.request = request;
+    }
 
     /**
      * Get the response status code.
@@ -98,17 +102,6 @@ public abstract class HttpResponse implements Closeable {
      */
     public final HttpRequest getRequest() {
         return request;
-    }
-
-    /**
-     * Sets the request which resulted in this HttpResponse.
-     *
-     * @param request the request
-     * @return this HTTP response
-     */
-    public final HttpResponse setRequest(HttpRequest request) {
-        this.request = request;
-        return this;
     }
 
     /**

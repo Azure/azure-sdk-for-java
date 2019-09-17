@@ -33,7 +33,7 @@ public class HttpRequestTests {
                 headers,
                 Flux.empty());
 
-        final HttpRequest bufferedRequest = request.buffer();
+        final HttpRequest bufferedRequest = request.clone();
 
         assertNotSame(request, bufferedRequest);
 
