@@ -7,13 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
-import com.azure.storage.blob.specialized.AppendBlobClient;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.blob.specialized.PageBlobAsyncClient;
-import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.credentials.SASTokenCredential;
 
 import java.io.OutputStream;
@@ -22,7 +15,10 @@ import java.net.URL;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of
+ * {@link BlobClient BlobClients} and {@link BlobAsyncClient BlobAsyncClients} when
+ * {@link #buildBlobClient() buildBlobClient} and {@link #buildBlobAsyncClient() buildBlobAsyncClient} as called
+ * respectively.
  *
  * <p>
  * The following information must be provided on this builder:
@@ -33,23 +29,8 @@ import java.util.Objects;
  * <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly
  * accessible.
  * </ul>
- *
- * <p>
- * Once all the configurations are set on this builder use the following mapping to construct the given client:
- * <ul>
- * <li>{@link BlobClientBuilder#buildBlobClient()} - {@link BlobClient}</li>
- * <li>{@link BlobClientBuilder#buildBlobAsyncClient()} - {@link BlobAsyncClient}</li>
- * <li>{@link BlobClientBuilder#buildAppendBlobClient()} - {@link AppendBlobClient}</li>
- * <li>{@link BlobClientBuilder#buildAppendBlobAsyncClient()} - {@link AppendBlobAsyncClient}</li>
- * <li>{@link BlobClientBuilder#buildBlockBlobClient()} - {@link BlockBlobClient}</li>
- * <li>{@link BlobClientBuilder#buildBlockBlobAsyncClient()} - {@link BlockBlobAsyncClient}</li>
- * <li>{@link BlobClientBuilder#buildPageBlobClient()} - {@link PageBlobClient}</li>
- * <li>{@link BlobClientBuilder#buildPageBlobAsyncClient()} - {@link PageBlobAsyncClient}</li>
- * </ul>
  */
-@ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class, AppendBlobClient.class,
-    AppendBlobAsyncClient.class, BlockBlobClient.class, BlockBlobAsyncClient.class, PageBlobClient.class,
-    PageBlobAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class })
 public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
@@ -59,24 +40,10 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
     private String snapshot;
 
     /**
-     * Creates a builder instance that is able to configure and construct Storage Blob clients.
+     * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and
+     * {@link BlobAsyncClient BlobAsyncClients}.
      */
     public BlobClientBuilder() {
-    }
-
-    private AzureBlobStorageImpl constructImpl() {
-        Objects.requireNonNull(containerName);
-        Objects.requireNonNull(blobName);
-
-        HttpPipeline pipeline = super.getPipeline();
-        if (pipeline == null) {
-            pipeline = super.buildPipeline();
-        }
-
-        return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline)
-            .build();
     }
 
     /**
@@ -108,7 +75,18 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
-        return new BlobAsyncClient(constructImpl(), snapshot, cpk);
+        Objects.requireNonNull(containerName);
+        Objects.requireNonNull(blobName);
+
+        HttpPipeline pipeline = super.getPipeline();
+        if (pipeline == null) {
+            pipeline = super.buildPipeline();
+        }
+
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+            .pipeline(pipeline)
+            .build(), snapshot, cpk);
     }
 
     /**

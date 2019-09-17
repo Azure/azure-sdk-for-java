@@ -10,7 +10,7 @@ class BlobOutputStreamTest extends APISpec {
     @Requires({ liveMode() })
     def "BlockBlob output stream"() {
         setup:
-        def data = getRandomByteArray(100 * Constants.MB)
+        def data = getRandomByteArray(10 * Constants.MB)
         def blockBlobClient = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
 
         when:
@@ -26,7 +26,7 @@ class BlobOutputStreamTest extends APISpec {
     @Requires({ liveMode() })
     def "PageBlob output stream"() {
         setup:
-        def data = getRandomByteArray(1024 * Constants.MB - 512)
+        def data = getRandomByteArray(16 * Constants.MB - 512)
         def pageBlobClient = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         pageBlobClient.setCreate(data.length)
 
@@ -43,13 +43,13 @@ class BlobOutputStreamTest extends APISpec {
     @Requires({ liveMode() })
     def "AppendBlob output stream"() {
         setup:
-        def data = getRandomByteArray(64 * FOUR_MB)
+        def data = getRandomByteArray(4 * FOUR_MB)
         def appendBlobClient = cc.getBlobClient(generateBlobName()).asAppendBlobClient()
         appendBlobClient.create()
 
         when:
         def outputStream = appendBlobClient.getBlobOutputStream()
-        for (int i = 0; i != 64; i++) {
+        for (int i = 0; i != 4; i++) {
             outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
         }
         outputStream.close()

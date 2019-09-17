@@ -1028,7 +1028,7 @@ class BlockBlobAPITest extends APISpec {
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
-            .getContainerAsyncClient(generateContainerName()).getBlockBlobAsyncClient(generateBlobName())
+            .getContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName()).asBlockBlobAsyncClient()
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.

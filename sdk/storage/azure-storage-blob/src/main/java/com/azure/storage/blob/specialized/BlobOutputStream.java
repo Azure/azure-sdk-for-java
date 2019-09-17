@@ -118,11 +118,9 @@ public abstract class BlobOutputStream extends OutputStream {
      * <p>
      *
      * @param data A <code>byte</code> array which represents the data to write.
-     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
-     * been closed.
      */
     @Override
-    public void write(@NonNull final byte[] data) throws IOException {
+    public void write(@NonNull final byte[] data) {
         this.write(data, 0, data.length);
     }
 
@@ -133,8 +131,8 @@ public abstract class BlobOutputStream extends OutputStream {
      * @param data A <code>byte</code> array which represents the data to write.
      * @param offset An <code>int</code> which represents the start offset in the data.
      * @param length An <code>int</code> which represents the number of bytes to write.
-     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
-     * been closed.
+     * @throws IndexOutOfBoundsException If {@code offset} or {@code length} are less than {@code 0} or {@code offset}
+     * plus {@code length} is greater than the {@code data} length.
      */
     @Override
     public void write(@NonNull final byte[] data, final int offset, final int length) {
@@ -153,11 +151,9 @@ public abstract class BlobOutputStream extends OutputStream {
      * <code>true</code> is acceptable for you.
      *
      * @param byteVal An <code>int</code> which represents the bye value to write.
-     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
-     * been closed.
      */
     @Override
-    public void write(final int byteVal) throws IOException {
+    public void write(final int byteVal) {
         this.write(new byte[]{(byte) (byteVal & 0xFF)});
     }
 
