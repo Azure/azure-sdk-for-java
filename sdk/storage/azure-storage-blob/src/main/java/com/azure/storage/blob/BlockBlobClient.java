@@ -172,7 +172,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, null, null, null, null, null);
+        uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null, null);
     }
 
     /**
@@ -180,9 +180,10 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
+     * @param blockSize Size of the blocks to upload
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the uploaded blob
@@ -190,10 +191,10 @@ public final class BlockBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws IOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata, AccessTier tier,
-        BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+    public void uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
+        AccessTier tier, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
-            filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, tier, accessConditions);
+            filePath, blockSize, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
