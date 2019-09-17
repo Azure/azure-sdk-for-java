@@ -93,7 +93,6 @@ public class App {
                 f.doOnComplete(() -> count.incrementAndGet())
                 .subscribe(b -> {
                     int remaining = b.remaining();
-                    System.out.println(remaining);
                     b.get(new byte[remaining]);
                 });
              //   f.doOnComplete(() -> count.incrementAndGet());
