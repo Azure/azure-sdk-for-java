@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -44,6 +45,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
     private final ShareAsyncClient client;
 
