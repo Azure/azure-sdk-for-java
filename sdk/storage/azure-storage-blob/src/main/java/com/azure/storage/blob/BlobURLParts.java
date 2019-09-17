@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * <p>NOTE: Changing any SAS-related field requires computing a new SAS signature.</p>
  */
-final class BlobURLParts {
+public final class BlobURLParts {
 
     private String scheme;
 
@@ -41,7 +41,7 @@ final class BlobURLParts {
      * This may be useful for constructing a URL to a blob storage resource from scratch when the constituent parts are
      * already known.
      */
-    BlobURLParts() {
+    public BlobURLParts() {
         unparsedParameters = new HashMap<>();
     }
 

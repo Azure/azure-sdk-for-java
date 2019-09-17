@@ -55,7 +55,7 @@ class RequestRetryTestFactory {
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
     static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
-    static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
+    private static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
     private static final String RETRY_TEST_HEADER = "TestHeader";
     private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
     private static final Mono<HttpResponse> RETRY_TEST_OK_RESPONSE = Mono.just(new RetryTestResponse(200));

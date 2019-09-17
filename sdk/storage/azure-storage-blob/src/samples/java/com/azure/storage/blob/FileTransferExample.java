@@ -78,7 +78,7 @@ public class FileTransferExample {
          * Create a BlockBlobClient object that wraps a blob's endpoint and a default pipeline, the blockBlobClient give us access to upload the file.
          */
         String filename = "BigFile.bin";
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient(filename);
+        BlockBlobClient blobClient = containerClient.getBlobClient(filename).asBlockBlobClient();
 
         /*
          * Create the empty uploadFile and downloadFile.

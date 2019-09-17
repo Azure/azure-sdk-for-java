@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob
+package com.azure.storage.blob.specialized
 
-
+import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobSASPermission
+import com.azure.storage.blob.BlobURLParts
+import com.azure.storage.blob.ContainerSASPermission
+import com.azure.storage.blob.URLParser
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
-import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters
-import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues
 import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
 import com.azure.storage.common.AccountSASSignatureValues
@@ -629,7 +631,7 @@ class HelperTest extends APISpec {
             .setHost("host")
             .setContainerName("container")
             .setBlobName("blob")
-            .setSnapshot("snapshot")
+            .setSnapshot "snapshot"
 
         BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))

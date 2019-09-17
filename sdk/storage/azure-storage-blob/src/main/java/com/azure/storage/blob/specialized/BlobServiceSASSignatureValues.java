@@ -71,7 +71,7 @@ public final class BlobServiceSASSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    BlobServiceSASSignatureValues() {
+    public BlobServiceSASSignatureValues() {
     }
 
     /**

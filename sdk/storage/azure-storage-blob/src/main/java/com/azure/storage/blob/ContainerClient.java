@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
@@ -111,6 +112,16 @@ public final class ContainerClient {
      */
     public HttpPipeline getHttpPipeline() {
         return containerAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} associated with this client that will be passed to {@link BlobClient BlobClients} when
+     * {@link #getBlobClient(String) getBlobClient} is called.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCpk() {
+        return containerAsyncClient.getCpk();
     }
 
     /**

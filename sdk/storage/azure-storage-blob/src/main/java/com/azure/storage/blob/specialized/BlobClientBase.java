@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -86,6 +87,15 @@ public class BlobClientBase {
      */
     public HttpPipeline getHttpPipeline() {
         return client.getHttpPipeline();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} used to encrypt this blob's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCpk() {
+        return client.getCpk();
     }
 
     /**

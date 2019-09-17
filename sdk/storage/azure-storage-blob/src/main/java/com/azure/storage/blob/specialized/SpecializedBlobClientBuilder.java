@@ -1,17 +1,24 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClient;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.PageRange;
+import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 public final class SpecializedBlobClientBuilder {
+    private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
+
     private HttpPipeline pipeline;
     private URL url;
     private String snapshot;
@@ -101,15 +108,34 @@ public final class SpecializedBlobClientBuilder {
             .build();
     }
 
-    public SpecializedBlobClientBuilder blobClient(BlobClient blobClient) {
+    public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         this.pipeline = blobClient.getHttpPipeline();
         this.url = blobClient.getBlobUrl();
+        this.snapshot = blobClient.getSnapshotId();
+        this.cpk = blobClient.getCpk();
         return this;
     }
 
-    public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClient blobAsyncClient) {
+    public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         this.pipeline = blobAsyncClient.getHttpPipeline();
         this.url = blobAsyncClient.getBlobUrl();
+        this.snapshot = blobAsyncClient.getSnapshotId();
+        this.cpk = blobAsyncClient.getCpk();
+        return this;
+    }
+
+    public SpecializedBlobClientBuilder containerClient(ContainerClient containerClient, String blobName) {
+        this.pipeline = containerClient.getHttpPipeline();
+        this.url = addBlobToUrl(containerClient.getContainerUrl().toString(), blobName);
+        this.cpk = containerClient.getCpk();
+        return this;
+    }
+
+    public SpecializedBlobClientBuilder containerAsyncClient(ContainerAsyncClient containerAsyncClient,
+        String blobName) {
+        this.pipeline = containerAsyncClient.getHttpPipeline();
+        this.url = addBlobToUrl(containerAsyncClient.getContainerUrl().toString(), blobName);
+        this.cpk = containerAsyncClient.getCpk();
         return this;
     }
 
@@ -121,5 +147,13 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder cpk(CpkInfo cpk) {
         this.cpk = cpk;
         return this;
+    }
+
+    private URL addBlobToUrl(String url, String blobName) {
+        try {
+            return new URL(String.format("%s/%s", url, blobName));
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalStateException(ex));
+        }
     }
 }

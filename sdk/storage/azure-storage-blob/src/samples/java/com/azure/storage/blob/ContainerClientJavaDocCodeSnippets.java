@@ -18,9 +18,6 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageErrorCode;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.specialized.AppendBlobClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -125,60 +122,6 @@ public class ContainerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.ContainerClient.getBlobClient#String-String
         BlobClient blobClient = client.getBlobClient(blobName, snapshot);
         // END: com.azure.storage.blob.ContainerClient.getBlobClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getAppendBlobClient(String)}
-     */
-    public void getAppendBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String
-        AppendBlobClient appendBlobClient = client.getAppendBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getAppendBlobClient(String, String)}
-     */
-    public void getSnapshotAppendBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String
-        AppendBlobClient appendBlobClient = client.getAppendBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getBlockBlobClient(String)}
-     */
-    public void getBlockBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String
-        BlockBlobClient blockBlobClient = client.getBlockBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getBlockBlobClient(String, String)}
-     */
-    public void getSnapshotBlockBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String
-        BlockBlobClient blockBlobClient = client.getBlockBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getPageBlobClient(String)}
-     */
-    public void getPageBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getPageBlobClient#String
-        PageBlobClient pageBlobClient = client.getPageBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getPageBlobClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getPageBlobClient(String, String)}
-     */
-    public void getSnapshotPageBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String
-        PageBlobClient pageBlobClient = client.getPageBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String
     }
 
     /**

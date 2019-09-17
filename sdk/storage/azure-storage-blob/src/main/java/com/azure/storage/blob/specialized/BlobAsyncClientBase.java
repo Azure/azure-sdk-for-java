@@ -132,6 +132,15 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Gets the {@link CpkInfo} used to encrypt this blob's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCpk() {
+        return cpk;
+    }
+
+    /**
      * Gets the snapshotId for a blob resource
      *
      * @return A string that represents the snapshotId of the snapshot blob

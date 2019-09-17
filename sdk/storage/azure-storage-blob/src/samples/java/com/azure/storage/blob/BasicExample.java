@@ -21,6 +21,7 @@ public class BasicExample {
 
     /**
      * Entry point into the basic examples for Storage blobs.
+     *
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
      * @throws RuntimeException If the downloaded data doesn't match the uploaded data
@@ -70,7 +71,7 @@ public class BasicExample {
          * This returns a BlockBlobClient object that wraps the blob's endpoint, credential and a request pipeline
          * (inherited from containerClient). Note that blob names can be mixed case.
          */
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient("HelloWorld.txt");
+        BlockBlobClient blobClient = containerClient.getBlobClient("HelloWorld.txt").asBlockBlobClient();
 
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
@@ -103,8 +104,8 @@ public class BasicExample {
         for (int i = 0; i < 3; i++) {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
-            containerClient.getBlockBlobClient("myblobsforlisting" + System.currentTimeMillis())
-                    .upload(dataInBlobs, sampleData.length());
+            containerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).asBlockBlobClient()
+                .upload(dataInBlobs, sampleData.length());
             dataInBlobs.close();
         }
 

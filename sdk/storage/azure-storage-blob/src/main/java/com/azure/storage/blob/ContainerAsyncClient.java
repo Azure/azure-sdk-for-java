@@ -158,6 +158,16 @@ public final class ContainerAsyncClient {
     }
 
     /**
+     * Gets the {@link CpkInfo} associated with this client that will be passed to
+     * {@link BlobAsyncClient BlobAsyncClients} when {@link #getBlobAsyncClient(String) getBlobAsyncClient} is called.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCpk() {
+        return cpk;
+    }
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>

@@ -7,21 +7,21 @@ import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 
 /**
- * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder}
- * or via the method {@link ContainerClient#getBlobClient(String)}. This class does not hold any state about a
- * particular blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
+ * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
+ * and deleting and un-deleting a blob.
  *
  * <p>
- * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
- * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options. This
- * client can be converted into one of these clients easily through the methods {@link #asBlockBlobClient}, {@link
- * #asPageBlobClient}, and {@link #asAppendBlobClient}.
+ * This client is instantiated through {@link BlobClientBuilder} or retrieved via
+ * {@link ContainerClient#getBlobClient(String) getBlobClient}.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
- * operations on the service are available on {@link BlobServiceClient}.
+ * For operations on a specific blob type, append, block, or page, use {@link #asAppendBlobClient() asAppendBlobClient},
+ * {@link #asBlockBlobClient() asBlockBlobClient}, or {@link #asPageBlobClient() asPageBlobClient} to construct a
+ * client that allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -49,5 +49,38 @@ public class BlobClient extends BlobClientBase {
     @Override
     public BlobClient getSnapshotClient(String snapshot) {
         return new BlobClient(client.getSnapshotClient(snapshot));
+    }
+
+    /**
+     * Creates a new {@link AppendBlobClient} associated to this blob.
+     *
+     * @return a {@link AppendBlobClient} associated to this blob.
+     */
+    public AppendBlobClient asAppendBlobClient() {
+        return new SpecializedBlobClientBuilder()
+            .blobClient(this)
+            .buildAppendBlobClient();
+    }
+
+    /**
+     * Creates a new {@link BlockBlobClient} associated to this blob.
+     *
+     * @return a {@link BlockBlobClient} associated to this blob.
+     */
+    public BlockBlobClient asBlockBlobClient() {
+        return new SpecializedBlobClientBuilder()
+            .blobClient(this)
+            .buildBlockBlobClient();
+    }
+
+    /**
+     * Creates a new {@link PageBlobClient} associated to this blob.
+     *
+     * @return a {@link PageBlobClient} associated to this blob.
+     */
+    public PageBlobClient asPageBlobClient() {
+        return new SpecializedBlobClientBuilder()
+            .blobClient(this)
+            .buildPageBlobClient();
     }
 }

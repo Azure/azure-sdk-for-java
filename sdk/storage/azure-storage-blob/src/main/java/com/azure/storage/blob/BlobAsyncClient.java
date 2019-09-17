@@ -6,34 +6,29 @@ package com.azure.storage.blob;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.blob.specialized.PageBlobClient;
-import reactor.core.publisher.Mono;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 
 /**
- * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder}
- * or via the method {@link ContainerAsyncClient#getBlobAsyncClient(String)}. This class does not hold any state about a
- * particular blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
+ * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
+ * and deleting and un-deleting a blob.
  *
  * <p>
- * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
- * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
+ * This client is instantiated through {@link BlobClientBuilder} or retrieved via
+ * {@link ContainerAsyncClient#getBlobAsyncClient(String) getBlobClient}.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * For operations on a specific blob type, append, block, or page, use
+ * {@link #asAppendBlobAsyncClient() asAppendBlobAsyncClient}, {@link #asBlockBlobAsyncClient() asBlockBlobAsyncClient},
+ * or {@link #asPageBlobAsyncClient() asPageBlobAsyncClient} to construct a client that allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
- *
- * <p>
- * Note this client is an async client that returns reactive responses from Spring Reactor Core project
- * (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong> start the actual network
- * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
- * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 public class BlobAsyncClient extends BlobAsyncClientBase  {
     /**
@@ -57,5 +52,38 @@ public class BlobAsyncClient extends BlobAsyncClientBase  {
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), snapshot, cpk);
+    }
+
+    /**
+     * Creates a new {@link AppendBlobAsyncClient} associated to this blob.
+     *
+     * @return a {@link AppendBlobAsyncClient} associated to this blob.
+     */
+    public AppendBlobAsyncClient asAppendBlobAsyncClient() {
+        return new SpecializedBlobClientBuilder()
+            .blobAsyncClient(this)
+            .buildAppendBlobAsyncClient();
+    }
+
+    /**
+     * Creates a new {@link BlockBlobAsyncClient} associated to this blob.
+     *
+     * @return a {@link BlockBlobAsyncClient} associated to this blob.
+     */
+    public BlockBlobAsyncClient asBlockBlobAsyncClient() {
+        return new SpecializedBlobClientBuilder()
+            .blobAsyncClient(this)
+            .buildBlockBlobAsyncClient();
+    }
+
+    /**
+     * Creates a new {@link PageBlobAsyncClient} associated to this blob.
+     *
+     * @return a {@link PageBlobAsyncClient} associated to this blob.
+     */
+    public PageBlobAsyncClient asPageBlobAsyncClient() {
+        return new SpecializedBlobClientBuilder()
+            .blobAsyncClient(this)
+            .buildPageBlobAsyncClient();
     }
 }
