@@ -10,11 +10,11 @@ jobs:
         Java 8:
           ProfileFlag: ''
           JavaVersion: '1.8'
-          OSVmImage: windows-2019
+          OSVmImage: vs2017-win2016
         Java LTS:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
-          OSVmImage: windows-2019
+          OSVmImage: vs2017-win2016
 
     pool:
       vmImage: $(OSVmImage)
