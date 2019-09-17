@@ -755,6 +755,7 @@ public class DirectoryAsyncClient {
         return withContext(context -> deleteFileWithResponse(fileName, context));
     }
 
+
     Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
         return postProcessResponse(fileAsyncClient.deleteWithResponse(context))
@@ -775,6 +776,19 @@ public class DirectoryAsyncClient {
      */
     public String getShareSnapshotId() {
         return this.snapshot;
+    }
+
+    /**
+     * Get directory path from directory client.
+     *
+     * <p>Get directory path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getName}
+     *
+     * @return The path of the directory.
+     */
+    public String getName() {
+        return directoryPath;
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {

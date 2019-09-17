@@ -636,4 +636,11 @@ class FileAPITests extends APISpec {
         then:
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }
+
+    def "Get File Path"() {
+        given:
+        def filePath = "test_name"
+        expect:
+        filePath == primaryFileClient.getName()
+    }
 }

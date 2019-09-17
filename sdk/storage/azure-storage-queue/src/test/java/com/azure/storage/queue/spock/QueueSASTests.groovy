@@ -83,7 +83,7 @@ class QueueSASTests extends APISpec {
 
     def "queueServiceSASSignatureValues canonicalizedResource"() {
         setup:
-        def queueName = queueClient.client.queueName
+        def queueName = queueClient.client.name
         def accountName = "account"
 
         when:
@@ -115,7 +115,7 @@ class QueueSASTests extends APISpec {
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl().toString())
-            .queueName(queueClient.client.queueName)
+            .queueName(queueClient.client.name)
             .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
             .buildClient()
         clientPermissions.enqueueMessage("sastest")
@@ -156,7 +156,7 @@ class QueueSASTests extends APISpec {
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl().toString())
-            .queueName(queueClient.client.queueName)
+            .queueName(queueClient.client.name)
             .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
             .buildClient()
         clientPermissions.updateMessage("testing", resp.getMessageId(), resp.getPopReceipt(), Duration.ZERO)
@@ -200,7 +200,7 @@ class QueueSASTests extends APISpec {
         def clientBuilder = queueBuilderHelper(interceptorManager)
         def clientIdentifier = clientBuilder
             .endpoint(queueClient.getQueueUrl().toString())
-            .queueName(queueClient.client.queueName)
+            .queueName(queueClient.client.name)
             .credential(SASTokenCredential.fromSASTokenString(sasIdentifier))
             .buildClient()
         clientIdentifier.enqueueMessage("sastest")

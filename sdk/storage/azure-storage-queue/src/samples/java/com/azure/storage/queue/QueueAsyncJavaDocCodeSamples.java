@@ -509,4 +509,14 @@ public class QueueAsyncJavaDocCodeSamples {
         String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
         // END: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
     }
+
+    /**
+     * Generates a code sample for using {@link QueueAsyncClient#getName()}
+     */
+    public void getNameAsync() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.getName
+        String queueName = client.getName();
+        System.out.println("The name of the queue is " + queueName);
+        // END: com.azure.storage.queue.queueAsyncClient.getName
+    }
 }

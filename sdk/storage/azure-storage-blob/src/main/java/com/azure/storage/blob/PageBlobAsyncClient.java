@@ -553,6 +553,20 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyStatus()));
     }
 
+    /**
+     * Get the page blob name.
+     *
+     * @return The name of the page blob.
+     */
+    public String getName() {
+        try {
+            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
+                + this.azureBlobStorage.getUrl()));
+        }
+    }
+
     private static String pageRangeToString(PageRange pageRange) {
         if (pageRange.getStart() < 0 || pageRange.getEnd() <= 0) {
             throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "

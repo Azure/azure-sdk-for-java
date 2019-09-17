@@ -580,4 +580,10 @@ class DirectoryAsyncAPITests extends APISpec {
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }
 
+    def "Get Directory Path"() {
+        given:
+        def directoryPath = "test_name"
+        expect:
+        directoryPath == primaryDirectoryClient.getName()
+    }
 }

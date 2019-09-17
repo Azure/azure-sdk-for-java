@@ -688,4 +688,15 @@ public class FileAsyncJavaDocCodeSamples {
         System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
     }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getName()}
+     */
+    public void getNameAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getName
+        String filePath = fileAsyncClient.getName();
+        System.out.println("The name of the file is " + filePath);
+        // END: com.azure.storage.file.fileAsyncClient.getName
+    }
 }

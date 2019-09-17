@@ -1210,6 +1210,20 @@ public class FileAsyncClient {
         return fileServiceSASSignatureValues;
     }
 
+
+    /**
+     * Get file path from file client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getName}
+     *
+     * @return The path of the file.
+     */
+    public String getName() {
+        return filePath;
+    }
+
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();

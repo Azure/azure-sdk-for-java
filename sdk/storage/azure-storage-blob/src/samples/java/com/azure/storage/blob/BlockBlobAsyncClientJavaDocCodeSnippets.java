@@ -261,4 +261,14 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
+
+    /**
+     * Generates a code sample for using {@link BlockBlobAsyncClient#getName()}
+     */
+    public void getNameAsync() {
+        // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.getName
+        String blobName = client.getName();
+        System.out.println("The name of the blob is " + blobName);
+        // END: com.azure.storage.blob.BlockBlobAsyncClient.getName
+    }
 }

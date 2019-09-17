@@ -1693,4 +1693,11 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
+
+    def "Get Container Name"() {
+        given:
+        def containerName = "test_name"
+        expect:
+        containerName == cc.getName()
+    }
 }

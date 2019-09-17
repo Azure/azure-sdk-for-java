@@ -586,4 +586,14 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
                 response.getValue().getSkuName()));
         // END: com.azure.storage.blob.ContainerAsyncClient.getAccountInfoWithResponse
     }
+
+    /**
+     * Generates a code sample for using {@link ContainerAsyncClient#getName()}
+     */
+    public void getNameAsync() {
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getName
+        String blobName = client.getName();
+        System.out.println("The name of the blob is " + blobName);
+        // END: com.azure.storage.blob.ContainerAsyncClient.getName
+    }
 }

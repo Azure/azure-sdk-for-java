@@ -124,4 +124,14 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions
     }
+
+    /**
+     * Generates a code sample for using {@link AppendBlobAsyncClient#getName()}
+     */
+    public void getNameAsync() {
+        // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.getName
+        String appendBlobName = client.getName();
+        System.out.println("The name of the append blob is " + appendBlobName);
+        // END: com.azure.storage.blob.AppendBlobAsyncClient.getName
+    }
 }

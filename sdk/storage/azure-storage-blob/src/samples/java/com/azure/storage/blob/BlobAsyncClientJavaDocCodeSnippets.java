@@ -580,4 +580,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
+
+    /**
+     * Generates a code sample for using {@link BlobAsyncClient#getName()}
+     */
+    public void getNameAsync() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getName
+        String blobName = client.getName();
+        System.out.println("The name of the blob is " + blobName);
+        // END: com.azure.storage.blob.BlobAsyncClient.getName
+    }
 }

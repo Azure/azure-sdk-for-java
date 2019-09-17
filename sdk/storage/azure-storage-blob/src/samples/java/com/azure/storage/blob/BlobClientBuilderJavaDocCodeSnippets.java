@@ -33,12 +33,13 @@ public class BlobClientBuilderJavaDocCodeSnippets {
     /**
      * Code snippet for {@link BlobClientBuilder#buildBlobClient()} using connection string
      */
-    public void blobClientConnectionString() {
+    public BlobClient blobClientConnectionString() {
         // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildBlobClient
         BlobClient client = new BlobClientBuilder()
             .connectionString(connectionString)
             .buildBlobClient();
         // END: com.azure.storage.blob.BlobClientBuilder.buildBlobClient
+        return client;
     }
 
     /**
@@ -74,5 +75,16 @@ public class BlobClientBuilderJavaDocCodeSnippets {
             .containerName(containerName)
             .buildBlobClient();
         // END: com.azure.storage.blob.BlobClientBuilder.containerName#String
+    }
+
+    /**
+     * Generates a code sample for using {@link BlobClient#getName()}
+     */
+    public void getName() {
+        BlobClient client = blobClientConnectionString();
+        // BEGIN: com.azure.storage.blob.BlobClient.getName
+        String blobName = client.getName();
+        System.out.println("The name of the blob is " + blobName);
+        // END: com.azure.storage.blob.BlobClient.getName
     }
 }

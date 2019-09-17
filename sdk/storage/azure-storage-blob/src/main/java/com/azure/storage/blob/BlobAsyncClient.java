@@ -1443,4 +1443,22 @@ public class BlobAsyncClient {
     public boolean isSnapshot() {
         return this.snapshot != null;
     }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getName}
+     *
+     * @return The name of the blob.
+     */
+    public String getName() {
+        try {
+            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
+                + this.azureBlobStorage.getUrl()));
+        }
+    }
 }

@@ -923,5 +923,18 @@ public class FileClient {
         return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
+
+    /**
+     * Get file path from file client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getName}
+     *
+     * @return The path of the file.
+     */
+    public String getName() {
+        return this.fileAsyncClient.getName();
+    }
 }
 

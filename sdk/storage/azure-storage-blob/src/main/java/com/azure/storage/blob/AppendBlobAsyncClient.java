@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -17,6 +18,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
+import java.net.MalformedURLException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -49,6 +51,8 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
+    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
+
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -225,5 +229,23 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
                 destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders(),
                 rb.getHeaders().value("x-ms-request-server-encrypted"))));
+    }
+
+    /**
+     * Get the append blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.getName}
+     *
+     * @return The name of the append blob.
+     */
+    public String getNameAsync() {
+        try {
+            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
+                + this.azureBlobStorage.getUrl()));
+        }
     }
 }

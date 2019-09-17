@@ -427,4 +427,15 @@ public class DirectoryJavaDocCodeSamples {
         System.out.printf("Snapshot ID: %s%n", directoryClient.getShareSnapshotId());
         // END: com.azure.storage.file.directoryClient.getShareSnapshotId
     }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#getName()}
+     */
+    public void getNameAsync() {
+        DirectoryClient directoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.getName
+        String directoryPath = directoryClient.getName();
+        System.out.println("The name of the directory is " + directoryPath);
+        // END: com.azure.storage.file.directoryClient.getName
+    }
 }

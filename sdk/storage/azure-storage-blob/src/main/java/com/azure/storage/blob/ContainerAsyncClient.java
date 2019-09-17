@@ -1335,6 +1335,24 @@ public final class ContainerAsyncClient {
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getName}
+     *
+     * @return The name of container.
+     */
+    public String getName() {
+        try {
+            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
+                + this.azureBlobStorage.getUrl()));
+        }
+    }
+
+    /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
     private BlobServiceSASSignatureValues configureServiceSASSignatureValues(

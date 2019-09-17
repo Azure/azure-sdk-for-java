@@ -430,4 +430,13 @@ public final class PageBlobClient extends BlobClient {
             .copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
+
+    /**
+     * Get the page name.
+     *
+     * @return The name of the page blob.
+     */
+    public String getName() {
+        return this.pageBlobAsyncClient.getName();
+    }
 }

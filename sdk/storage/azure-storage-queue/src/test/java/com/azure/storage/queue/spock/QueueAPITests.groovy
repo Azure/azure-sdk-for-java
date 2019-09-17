@@ -437,4 +437,10 @@ class QueueAPITests extends APISpec {
         false     | false      | 400        | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
+    def "Get Queue Name"() {
+        given:
+        def queueName = "test_name"
+        expect:
+        queueName == queueClient.getName()
+    }
 }

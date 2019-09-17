@@ -1041,4 +1041,11 @@ class BlockBlobAPITest extends APISpec {
         def e = thrown(StorageException)
         e.getStatusCode() == 500
     }
+
+    def "Get Block Blob Name"() {
+        given:
+        def blockBlobName = "test_name"
+        expect:
+        blockBlobName == bc.getName()
+    }
 }

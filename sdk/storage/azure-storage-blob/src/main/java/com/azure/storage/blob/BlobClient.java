@@ -1158,4 +1158,17 @@ public class BlobClient {
     public boolean isSnapshot() {
         return this.blobAsyncClient.isSnapshot();
     }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.getName}
+     *
+     * @return The name of the blob.
+     */
+    public String getName() {
+        return this.blobAsyncClient.getName();
+    }
 }

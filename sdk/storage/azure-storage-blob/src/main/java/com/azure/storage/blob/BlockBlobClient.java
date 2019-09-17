@@ -396,4 +396,17 @@ public final class BlockBlobClient extends BlobClient {
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
+
+    /**
+     * Get the block blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.getName}
+     *
+     * @return The name of the block blob.
+     */
+    public String getName() {
+        return blockBlobAsyncClient.getName();
+    }
 }

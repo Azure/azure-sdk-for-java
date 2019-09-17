@@ -935,9 +935,7 @@ public class ShareAsyncClient {
     /**
      * Generates a SAS token with the specified parameters
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -976,6 +974,19 @@ public class ShareAsyncClient {
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return fileServiceSasQueryParameters.encode();
+    }
+
+    /**
+     * Get share name from share client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getName}
+     *
+     * @return The name of the share.
+     */
+    public String getName() {
+        return shareName;
     }
 
     /**

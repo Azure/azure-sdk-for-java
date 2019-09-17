@@ -819,6 +819,19 @@ public final class QueueAsyncClient {
         return queueServiceSasQueryParameters.encode();
     }
 
+    /**
+     * Get the queue name from client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getName}
+     *
+     * @return The name of the queue.
+     */
+    public String getName() {
+        return queueName;
+    }
+
     /*
      * Maps the HTTP headers returned from the service to the expected response type
      * @param response Service response
