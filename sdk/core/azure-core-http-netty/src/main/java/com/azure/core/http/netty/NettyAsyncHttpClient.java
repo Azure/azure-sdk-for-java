@@ -110,7 +110,8 @@ public class NettyAsyncHttpClient implements HttpClient {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
-        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection, HttpRequest httpRequest) {
+        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
+                                 HttpRequest httpRequest) {
             super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
