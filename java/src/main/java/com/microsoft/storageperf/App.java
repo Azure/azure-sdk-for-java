@@ -90,9 +90,11 @@ public class App {
         List<Disposable> subscriptions = new ArrayList<Disposable>();
         for (int i = 0; i < parallel; i++) {
             subscriptions.add(DownloadLoop(client).subscribe(f -> {
+                AtomicInteger byteCount = new AtomicInteger(0);
                 f.doOnComplete(() -> count.incrementAndGet())
                 .subscribe(b -> {
                     int remaining = b.remaining();
+                    System.out.println("Bytes read: " + byteCount.addAndGet(remaining));
                     b.get(new byte[remaining]);
                 });
              //   f.doOnComplete(() -> count.incrementAndGet());
