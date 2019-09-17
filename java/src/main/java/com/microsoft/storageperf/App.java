@@ -90,12 +90,13 @@ public class App {
         List<Disposable> subscriptions = new ArrayList<Disposable>();
         for (int i = 0; i < parallel; i++) {
             subscriptions.add(DownloadLoop(client).subscribe(f -> {
-                f.subscribe(b -> {
+                f.doOnComplete(() -> count.incrementAndGet())
+                .subscribe(b -> {
                     int remaining = b.remaining();
                     System.out.println(remaining);
                     b.get(new byte[remaining]);
                 });
-                f.doOnComplete(() -> count.incrementAndGet());
+             //   f.doOnComplete(() -> count.incrementAndGet());
             }));
         }
 
@@ -110,7 +111,7 @@ public class App {
             subscription.dispose();
         }
 
-        System.out.println(count.get());
+        System.out.println("Final Count: " + count.get());
 
         return Mono.empty();
     }
