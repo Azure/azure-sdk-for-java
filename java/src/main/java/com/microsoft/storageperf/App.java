@@ -2,32 +2,41 @@ package com.microsoft.storageperf;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.spi.SelectorProvider;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BooleanSupplier;
 
-import com.azure.storage.blob.BlobClient;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.NettyAsyncHttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlockBlobAsyncClient;
-import com.azure.storage.blob.BlockBlobClient;
 
+import io.netty.channel.DefaultSelectStrategyFactory;
+import io.netty.channel.SelectStrategyFactory;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import org.apache.commons.cli.*;
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
+import reactor.netty.tcp.ProxyProvider;
 
 public class App {
     private static final String _containerName = "testcontainer";
     private static final String _blobName = "testblob";
 
     public static void main(String[] args) throws InterruptedException, IOException {
+      //  Thread.sleep(10000);
         Options options = new Options();
 
         Option debugOption = new Option("g", "debug", false, "Enable debug mode");
@@ -58,9 +67,9 @@ public class App {
         }
 
         int duration = Integer.parseInt(cmd.getOptionValue("duration", "10"));
-        int parallel = Integer.parseInt(cmd.getOptionValue("parallel", "1"));
+        int parallel = Integer.parseInt(cmd.getOptionValue("parallel", "32"));
         int size = Integer.parseInt(cmd.getOptionValue("size", "10240"));
-        boolean upload = cmd.hasOption("upload");
+        boolean upload = true; //cmd.hasOption("upload");
         boolean debug = cmd.hasOption("debug");
 
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
@@ -68,14 +77,22 @@ public class App {
             System.out.println("Environment variable STORAGE_CONNECTION_STRING must be set");
             System.exit(1);
         }
-
         Run(connectionString, debug, upload, duration, parallel, size);
     }
 
     static Mono<Void> Run(String connectionString, Boolean debug, Boolean upload, int duration, int parallel,
-            int size) {
+                          int size) {
+
+        int numThreads =  Runtime.getRuntime().availableProcessors() * 2;
+        NioEventLoopGroup group = new NioEventLoopGroup(parallel*16);
+        HttpClient htclient = new NettyAsyncHttpClientBuilder()
+                .nioEventLoopGroup(group)
+                .build();
+
         BlockBlobAsyncClient client = new BlobClientBuilder().connectionString(connectionString)
-                .containerName(_containerName).blobName(_blobName).buildBlockBlobAsyncClient();
+                .containerName(_containerName).blobName(_blobName).httpClient(htclient).buildBlockBlobAsyncClient();
+
+        BenchmarkingTool<BlockBlobAsyncClient, Integer> benchmarkingTool = new BenchmarkingTool<>(client);
 
         if (upload) {
             UploadAndVerifyDownload(client, size).block();
@@ -85,73 +102,27 @@ public class App {
                 _blobName, parallel, duration);
         System.out.println();
 
-        AtomicInteger count = new AtomicInteger(0);
 
-        List<Disposable> subscriptions = new ArrayList<Disposable>();
-        for (int i = 0; i < parallel; i++) {
-            subscriptions.add(DownloadLoop(client).subscribe(f -> {
-                f.subscribe(b -> {
-                    int remaining = b.remaining();
-                    System.out.println(remaining);
-                    b.get(new byte[remaining]);
-                });
-                f.doOnComplete(() -> count.incrementAndGet());
-            }));
-        }
+        BenchmarkResults results = benchmarkingTool.runJobAsync((client1 -> downloadOneBlob(client1)), parallel, Duration.ofSeconds(duration));
 
-        try {
-            Thread.sleep(duration * 1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        for (Disposable subscription : subscriptions) {
-            subscription.dispose();
-        }
-
-        System.out.println(count.get());
+        System.out.println("Final Count: " + results.getRequests());
+        System.out.println("Time Taken: " + results.getTimeTaken().getSeconds());
+        Float megabytesPerSecond = (results.getRequestsPerSecond() * size) / (1024f * 1024f);
+        System.out.printf("Downloads per second: %f %n", results.getRequestsPerSecond());
+        System.out.printf("MB/s per second: %f %n", megabytesPerSecond);
 
         return Mono.empty();
     }
 
-    static Flux<Flux<ByteBuffer>> DownloadLoop(BlockBlobAsyncClient client) {
-        return Flux.range(0, Integer.MAX_VALUE).flatMap(i -> client.download());
-    }
-
-    static class MyIterable implements Iterable<Flux<ByteBuffer>> {
-
-        private BlockBlobAsyncClient _client;
-
-        public MyIterable(BlockBlobAsyncClient client) {
-            _client = client;
-        }
-
-        @Override
-        public Iterator<Flux<ByteBuffer>> iterator() {
-            return new MyIterator(_client);
-        }
-
-        static class MyIterator implements Iterator<Flux<ByteBuffer>> {
-
-            private BlockBlobAsyncClient _client;
-
-            public MyIterator(BlockBlobAsyncClient client) {
-                _client = client;
-            }
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Flux<ByteBuffer> next() {
-                return _client.download().flatMapMany(response -> response);
-            }
-
-        }
-
+    static Mono<Integer> downloadOneBlob(BlockBlobAsyncClient client) {
+        return client
+                .download()
+                .flatMap(f -> f
+                        .reduce(0, (i, b) -> {
+                            int remaining = b.remaining();
+                            b.get(new byte[remaining]);
+                            return i + remaining;
+                        }));
     }
 
     static Mono<Void> UploadAndVerifyDownload(BlockBlobAsyncClient client, int size) {
