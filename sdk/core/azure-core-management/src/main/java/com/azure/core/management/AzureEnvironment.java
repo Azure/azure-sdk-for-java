@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.management;
 
 import java.util.Arrays;
 import java.util.HashMap;

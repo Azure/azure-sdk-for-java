@@ -5,7 +5,6 @@ package com.azure.core.http;
 
 import reactor.core.publisher.Flux;
 
-import java.io.Serializable;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -13,9 +12,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * The outgoing Http request.
  */
-public class HttpRequest implements Serializable {
-    private static final long serialVersionUID = 6338479743058758810L;
-
+public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
@@ -171,12 +168,12 @@ public class HttpRequest implements Serializable {
      * Creates a clone of the request.
      *
      * The main purpose of this is so that this HttpRequest can be changed and the resulting
-     * HttpRequest can be a backup. This means that the buffered HttpHeaders and body must
+     * HttpRequest can be a backup. This means that the cloned HttpHeaders and body must
      * not be able to change from side effects of this HttpRequest.
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */
-    public HttpRequest buffer() {
+    public HttpRequest clone() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
