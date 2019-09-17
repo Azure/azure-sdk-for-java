@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import reactor.core.publisher.Flux;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +13,9 @@ import java.nio.charset.StandardCharsets;
 /**
  * The outgoing Http request.
  */
-public class HttpRequest {
+public class HttpRequest implements Cloneable, Serializable {
+    private static final long serialVersionUID = 6338479743058758810L;
+
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
@@ -173,6 +176,7 @@ public class HttpRequest {
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */
+    @Override
     public HttpRequest clone() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
