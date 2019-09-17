@@ -40,19 +40,21 @@ public final class MSIToken extends AccessToken {
     }
 
     @JsonCreator
-    private MSIToken(@JsonProperty(value = "access_token") String token, @JsonProperty(value = "expires_on") String expiresOn) {
+    private MSIToken(
+        @JsonProperty(value = "access_token") String token,
+        @JsonProperty(value = "expires_on") String expiresOn) {
         this(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
         this.accessToken = token;
         this.expiresOn =  expiresOn;
     }
 
     @Override
-    public String token() {
+    public String getToken() {
         return accessToken;
     }
 
     @Override
-    public OffsetDateTime expiresOn() {
+    public OffsetDateTime getExpiresOn() {
         return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
     }
 

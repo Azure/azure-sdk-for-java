@@ -4,6 +4,7 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 import org.junit.Assert;
@@ -22,6 +23,7 @@ import java.util.function.Function;
 
 public class PollerTests {
 
+    private final ClientLogger logger = new ClientLogger(PollerTests.class);
     private boolean debug = true;
     int count;
 
@@ -436,11 +438,12 @@ public class PollerTests {
 
     private void debug(String... messages) {
         if (debug) {
-            StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ").append(count).append(" ");
+            StringBuilder sb =
+                new StringBuilder(new Date().toString()).append(" ").append(getClass().getName()).append(" ").append(count).append(" ");
             for (String m : messages) {
                 sb.append(m);
             }
-            System.out.println(sb.toString());
+            logger.info(sb.toString());
         }
     }
 

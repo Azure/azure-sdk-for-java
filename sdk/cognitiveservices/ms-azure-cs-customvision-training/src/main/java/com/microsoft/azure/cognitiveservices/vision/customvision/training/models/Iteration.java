@@ -10,6 +10,7 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.training.model
 
 import java.util.UUID;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,15 +26,8 @@ public class Iteration {
     /**
      * Gets or sets the name of the iteration.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
-
-    /**
-     * Gets or sets a value indicating whether the iteration is the default
-     * iteration for the project.
-     */
-    @JsonProperty(value = "isDefault")
-    private boolean isDefault;
 
     /**
      * Gets the current iteration status.
@@ -72,6 +66,12 @@ public class Iteration {
     private boolean exportable;
 
     /**
+     * A set of platforms this iteration can export to.
+     */
+    @JsonProperty(value = "exportableTo", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> exportableTo;
+
+    /**
      * Get or sets a guid of the domain the iteration has been trained on.
      */
     @JsonProperty(value = "domainId", access = JsonProperty.Access.WRITE_ONLY)
@@ -83,6 +83,31 @@ public class Iteration {
      */
     @JsonProperty(value = "classificationType", access = JsonProperty.Access.WRITE_ONLY)
     private Classifier classificationType;
+
+    /**
+     * Gets the training type of the iteration. Possible values include:
+     * 'Regular', 'Advanced'.
+     */
+    @JsonProperty(value = "trainingType", access = JsonProperty.Access.WRITE_ONLY)
+    private TrainingType trainingType;
+
+    /**
+     * Gets the reserved advanced training budget for the iteration.
+     */
+    @JsonProperty(value = "reservedBudgetInHours", access = JsonProperty.Access.WRITE_ONLY)
+    private int reservedBudgetInHours;
+
+    /**
+     * Name of the published model.
+     */
+    @JsonProperty(value = "publishName", access = JsonProperty.Access.WRITE_ONLY)
+    private String publishName;
+
+    /**
+     * Resource Provider Id this iteration was originally published to.
+     */
+    @JsonProperty(value = "originalPublishResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalPublishResourceId;
 
     /**
      * Get the id value.
@@ -110,26 +135,6 @@ public class Iteration {
      */
     public Iteration withName(String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the isDefault value.
-     *
-     * @return the isDefault value
-     */
-    public boolean isDefault() {
-        return this.isDefault;
-    }
-
-    /**
-     * Set the isDefault value.
-     *
-     * @param isDefault the isDefault value to set
-     * @return the Iteration object itself.
-     */
-    public Iteration withIsDefault(boolean isDefault) {
-        this.isDefault = isDefault;
         return this;
     }
 
@@ -188,6 +193,15 @@ public class Iteration {
     }
 
     /**
+     * Get the exportableTo value.
+     *
+     * @return the exportableTo value
+     */
+    public List<String> exportableTo() {
+        return this.exportableTo;
+    }
+
+    /**
      * Get the domainId value.
      *
      * @return the domainId value
@@ -203,6 +217,42 @@ public class Iteration {
      */
     public Classifier classificationType() {
         return this.classificationType;
+    }
+
+    /**
+     * Get the trainingType value.
+     *
+     * @return the trainingType value
+     */
+    public TrainingType trainingType() {
+        return this.trainingType;
+    }
+
+    /**
+     * Get the reservedBudgetInHours value.
+     *
+     * @return the reservedBudgetInHours value
+     */
+    public int reservedBudgetInHours() {
+        return this.reservedBudgetInHours;
+    }
+
+    /**
+     * Get the publishName value.
+     *
+     * @return the publishName value
+     */
+    public String publishName() {
+        return this.publishName;
+    }
+
+    /**
+     * Get the originalPublishResourceId value.
+     *
+     * @return the originalPublishResourceId value
+     */
+    public String originalPublishResourceId() {
+        return this.originalPublishResourceId;
     }
 
 }

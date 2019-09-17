@@ -44,7 +44,7 @@ public class HttpRequestException extends AzureException {
     /**
      * @return information about the associated HTTP response
      */
-    public HttpRequest request() {
+    public HttpRequest getRequest() {
         return request;
     }
 

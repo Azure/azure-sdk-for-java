@@ -79,7 +79,7 @@ public final class FileStartCopyHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -91,7 +91,7 @@ public final class FileStartCopyHeaders {
      * @param eTag the eTag value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders eTag(String eTag) {
+    public FileStartCopyHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -102,11 +102,11 @@ public final class FileStartCopyHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -116,7 +116,7 @@ public final class FileStartCopyHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders lastModified(OffsetDateTime lastModified) {
+    public FileStartCopyHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -131,7 +131,7 @@ public final class FileStartCopyHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -142,7 +142,7 @@ public final class FileStartCopyHeaders {
      * @param requestId the requestId value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders requestId(String requestId) {
+    public FileStartCopyHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -153,7 +153,7 @@ public final class FileStartCopyHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -164,7 +164,7 @@ public final class FileStartCopyHeaders {
      * @param version the version value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders version(String version) {
+    public FileStartCopyHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -175,11 +175,11 @@ public final class FileStartCopyHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -189,7 +189,7 @@ public final class FileStartCopyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileStartCopyHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -205,7 +205,7 @@ public final class FileStartCopyHeaders {
      *
      * @return the copyId value.
      */
-    public String copyId() {
+    public String getCopyId() {
         return this.copyId;
     }
 
@@ -217,7 +217,7 @@ public final class FileStartCopyHeaders {
      * @param copyId the copyId value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders copyId(String copyId) {
+    public FileStartCopyHeaders setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -229,7 +229,7 @@ public final class FileStartCopyHeaders {
      *
      * @return the copyStatus value.
      */
-    public CopyStatusType copyStatus() {
+    public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
 
@@ -241,7 +241,7 @@ public final class FileStartCopyHeaders {
      * @param copyStatus the copyStatus value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders copyStatus(CopyStatusType copyStatus) {
+    public FileStartCopyHeaders setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -251,7 +251,7 @@ public final class FileStartCopyHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -261,7 +261,7 @@ public final class FileStartCopyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileStartCopyHeaders object itself.
      */
-    public FileStartCopyHeaders errorCode(String errorCode) {
+    public FileStartCopyHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

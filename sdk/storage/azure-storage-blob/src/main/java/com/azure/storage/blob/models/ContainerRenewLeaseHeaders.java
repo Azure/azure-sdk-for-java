@@ -80,7 +80,7 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -92,7 +92,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders eTag(String eTag) {
+    public ContainerRenewLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -105,11 +105,11 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -121,7 +121,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders lastModified(OffsetDateTime lastModified) {
+    public ContainerRenewLeaseHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -135,7 +135,7 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the leaseId value.
      */
-    public String leaseId() {
+    public String getLeaseId() {
         return this.leaseId;
     }
 
@@ -145,7 +145,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders leaseId(String leaseId) {
+    public ContainerRenewLeaseHeaders setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -157,7 +157,7 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -169,7 +169,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders clientRequestId(String clientRequestId) {
+    public ContainerRenewLeaseHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -180,7 +180,7 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -191,7 +191,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders requestId(String requestId) {
+    public ContainerRenewLeaseHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -203,7 +203,7 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -215,7 +215,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param version the version value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders version(String version) {
+    public ContainerRenewLeaseHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -226,11 +226,11 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -240,7 +240,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerRenewLeaseHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -254,7 +254,7 @@ public final class ContainerRenewLeaseHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -264,7 +264,7 @@ public final class ContainerRenewLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerRenewLeaseHeaders object itself.
      */
-    public ContainerRenewLeaseHeaders errorCode(String errorCode) {
+    public ContainerRenewLeaseHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

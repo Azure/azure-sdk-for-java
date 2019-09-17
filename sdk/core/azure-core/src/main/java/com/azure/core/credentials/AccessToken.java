@@ -25,14 +25,14 @@ public class AccessToken {
     /**
      * @return the token string.
      */
-    public String token() {
+    public String getToken() {
         return token;
     }
 
     /**
      * @return the time when the token expires, in UTC.
      */
-    public OffsetDateTime expiresOn() {
+    public OffsetDateTime getExpiresOn() {
         return expiresOn;
     }
 

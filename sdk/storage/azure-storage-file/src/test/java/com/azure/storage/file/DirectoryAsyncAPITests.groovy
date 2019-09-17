@@ -3,8 +3,15 @@
 
 package com.azure.storage.file
 
+
+import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.file.DirectoryAsyncClient
+import com.azure.storage.file.FileAsyncClient
+import com.azure.storage.file.FileSmbProperties
+import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
+import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
 import spock.lang.Ignore
@@ -16,23 +23,28 @@ import java.time.ZoneOffset
 
 class DirectoryAsyncAPITests extends APISpec {
     DirectoryAsyncClient primaryDirectoryAsyncClient
+    ShareClient shareClient
     def directoryPath
     def shareName
     static def testMetadata
+    static def smbProperties
+    static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
         directoryPath = testResourceName.randomName(methodName, 60)
-        def shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
         shareClient.create()
-        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildAsyncClient()
+        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
+        smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get directory URL"() {
         given:
-        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl().toString()
         then:
@@ -55,7 +67,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -65,7 +77,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         def testShareName = testResourceName.randomName(methodName, 60)
         when:
-        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildAsyncClient().create())
+        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryAsyncClient().create())
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, StorageErrorCode.SHARE_NOT_FOUND)
@@ -74,7 +86,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory with metadata"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, null, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -84,11 +96,47 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         def errorMetadata = Collections.singletonMap("testMeta", "value")
         when:
-        def createMetadataErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(errorMetadata))
+        def createMetadataErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, null, errorMetadata))
         then:
         createMetadataErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 403, StorageErrorCode.AUTHENTICATION_FAILED)
         }
+    }
+
+    def "Create directory with file permission"() {
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, filePermission, testMetadata))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
+            }.verifyComplete()
+    }
+
+    def "Create dir with file perm key"() {
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(smbProperties, null, null))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
+            }.verifyComplete()
     }
 
     def "Delete directory"() {
@@ -117,7 +165,15 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         getPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert it.value().eTag()
+            assert it.getValue().getETag()
+            assert it.getValue().getSmbProperties()
+            assert it.getValue().getSmbProperties().getFilePermissionKey()
+            assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+            assert it.getValue().getSmbProperties().getFileLastWriteTime()
+            assert it.getValue().getSmbProperties().getFileCreationTime()
+            assert it.getValue().getSmbProperties().getFileChangeTime()
+            assert it.getValue().getSmbProperties().getParentId()
+            assert it.getValue().getSmbProperties().getFileId()
         }.verifyComplete()
     }
 
@@ -130,9 +186,67 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    def "Set properties file permission"() {
+        given:
+        primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(null, filePermission))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 200)
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
+            }.verifyComplete()
+    }
+
+    def "Set properties file permission key"() {
+        given:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+        primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(smbProperties, null))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 200)
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
+            }.verifyComplete()
+    }
+
+    def "Set properties error"() {
+        setup:
+        primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
+        when:
+        FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey("filePermissionKey")
+        def setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setProperties(properties, filePermission))
+        then:
+        setPropertiesVerifier.verifyErrorSatisfies {
+            assert it instanceof IllegalArgumentException
+        }
+        when:
+        setPropertiesVerifier = StepVerifier.create(primaryDirectoryAsyncClient.setProperties(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))))
+        then:
+        setPropertiesVerifier.verifyErrorSatisfies {
+            assert it instanceof IllegalArgumentException
+        }
+    }
+
     def "Set metadata"() {
         given:
-        primaryDirectoryAsyncClient.createWithResponse(testMetadata).block()
+        primaryDirectoryAsyncClient.createWithResponse(null, null, testMetadata).block()
         def updatedMetadata = Collections.singletonMap("update", "value")
         when:
         def getPropertiesBeforeVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
@@ -140,13 +254,13 @@ class DirectoryAsyncAPITests extends APISpec {
         def getPropertiesAfterVerifier = StepVerifier.create(primaryDirectoryAsyncClient.getPropertiesWithResponse())
         then:
         getPropertiesBeforeVerifier.assertNext {
-            assert testMetadata.equals(it.value().metadata())
+            assert testMetadata.equals(it.getValue().getMetadata())
         }.verifyComplete()
         setPropertiesVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 200)
         }.verifyComplete()
         getPropertiesAfterVerifier.assertNext {
-            assert updatedMetadata.equals(it.value().metadata())
+            assert updatedMetadata.equals(it.getValue().getMetadata())
         }.verifyComplete()
     }
 
@@ -160,6 +274,40 @@ class DirectoryAsyncAPITests extends APISpec {
         setMetadataVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.EMPTY_METADATA_KEY)
         }
+    }
+
+    @Unroll
+    def "List files and directories"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+
+        for (def expectedFile : expectedFiles) {
+            primaryDirectoryAsyncClient.createFile(expectedFile, 2).block()
+        }
+
+        for (def expectedDirectory : expectedDirectories) {
+            primaryDirectoryAsyncClient.createSubDirectory(expectedDirectory).block()
+        }
+
+        when:
+        def foundFiles = [] as Set
+        def foundDirectories = [] as Set
+        for (def fileRef : primaryDirectoryAsyncClient.listFilesAndDirectories().toIterable()) {
+            if (fileRef.isDirectory()) {
+                foundDirectories << fileRef.getName()
+            } else {
+                foundFiles << fileRef.getName()
+            }
+        }
+
+        then:
+        expectedFiles == foundFiles
+        expectedDirectories == foundDirectories
+
+        where:
+        expectedFiles          | expectedDirectories
+        ["a", "b", "c"] as Set | ["d", "e"] as Set
+        ["a", "c", "e"] as Set | ["b", "d"] as Set
     }
 
     /**
@@ -190,11 +338,12 @@ class DirectoryAsyncAPITests extends APISpec {
         }
 
         when:
-        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix, maxResults))
+        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix,
+            maxResults))
 
         then:
         listFileAndDirVerifier.thenConsumeWhile {
-            Objects.equals(it.name(), nameList.pop())
+            Objects.equals(it.getName(), nameList.pop())
         }.verifyComplete()
         for (int i = 0; i < 3 - numOfResults; i++) {
             nameList.pop()
@@ -248,7 +397,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -269,7 +418,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, null, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -279,11 +428,35 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testsubdirectory", Collections.singletonMap("", "value")))
+        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value")))
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.EMPTY_METADATA_KEY)
         }
+    }
+
+    def "Create sub directory file permission"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", null, filePermission, null))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create sub directory file perm key"() {
+        given:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubDirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
     }
 
     def "Delete sub directory"() {
@@ -313,7 +486,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -324,7 +497,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null, null))
+        def createFileErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null, null))
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
@@ -340,9 +513,12 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("txt")
+            .setFileContentType("txt")
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -354,7 +530,8 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
 
         when:
-        def errorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, metadata))
+
+        def errorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata))
 
         then:
         errorVerifier.verifyErrorSatisfies({
@@ -363,10 +540,10 @@ class DirectoryAsyncAPITests extends APISpec {
 
         where:
         fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
-        "testfile:" | 1024    | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | new FileHTTPHeaders()                             | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | new FileHTTPHeaders()                             | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
+        "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }
 
@@ -398,7 +575,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildAsyncClient()
+        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient()
         then:
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }

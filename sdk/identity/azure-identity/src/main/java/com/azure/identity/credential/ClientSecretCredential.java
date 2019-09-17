@@ -36,10 +36,15 @@ public class ClientSecretCredential implements TokenCredential {
      * @param clientSecret the secret value of the AAD application.
      * @param identityClientOptions the options for configuring the identity client
      */
-    ClientSecretCredential(String tenantId, String clientId, String clientSecret, IdentityClientOptions identityClientOptions) {
+    ClientSecretCredential(String tenantId, String clientId, String clientSecret,
+                           IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(clientSecret);
         Objects.requireNonNull(identityClientOptions);
-        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
+        identityClient = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         this.clientSecret = clientSecret;
     }
 

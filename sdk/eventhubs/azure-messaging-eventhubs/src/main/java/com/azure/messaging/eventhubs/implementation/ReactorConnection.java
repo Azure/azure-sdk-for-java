@@ -65,9 +65,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
-        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.host(),
-            connectionOptions.transportType());
-        this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.retry());
+        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHost(),
+            connectionOptions.getTransportType());
+        this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
         this.connectionMono = Mono.fromCallable(() -> getOrCreateConnection())
             .doOnSubscribe(c -> hasConnection.set(true));
@@ -82,12 +82,13 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
-        tokenResourceProvider = new TokenResourceProvider(connectionOptions.authorizationType(), connectionOptions.host());
+        tokenResourceProvider =
+            new TokenResourceProvider(connectionOptions.getAuthorizationType(), connectionOptions.getHost());
 
         this.managementChannelMono = connectionMono.then(
             Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
-                connectionOptions.eventHubName(), connectionOptions.tokenCredential(), tokenResourceProvider,
-                reactorProvider, connectionOptions.retry(), handlerProvider, mapper))).cache();
+                connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenResourceProvider,
+                reactorProvider, connectionOptions.getRetry(), handlerProvider, mapper))).cache();
     }
 
     /**
@@ -97,7 +98,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     public Mono<CBSNode> getCBSNode() {
         final Mono<CBSNode> cbsNodeMono = RetryUtil.withRetry(
             getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
-            connectionOptions.retry().tryTimeout(), retryPolicy)
+            connectionOptions.getRetry().getTryTimeout(), retryPolicy)
             .then(Mono.fromCallable(() -> getOrCreateCBSNode()));
 
         return hasConnection.get()
@@ -151,12 +152,12 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
             final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHost(), sessionName,
-                connectionOptions.retry().tryTimeout());
+                connectionOptions.getRetry().getTryTimeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
             return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-                tokenResourceProvider, connectionOptions.retry().tryTimeout());
+                tokenResourceProvider, connectionOptions.getRetry().getTryTimeout());
         }));
     }
 
@@ -192,8 +193,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
 
-            cbsChannel = new CBSChannel(this, connectionOptions.tokenCredential(),
-                connectionOptions.authorizationType(), reactorProvider, handlerProvider, connectionOptions.retry());
+            cbsChannel = new CBSChannel(this, connectionOptions.getTokenCredential(),
+                connectionOptions.getAuthorizationType(), reactorProvider, handlerProvider,
+                connectionOptions.getRetry());
         }
 
         return cbsChannel;
@@ -207,8 +209,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
             reactorExceptionHandler = new ReactorExceptionHandler();
-            executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId,
-                reactorExceptionHandler, connectionOptions.retry().tryTimeout(), connectionOptions.host());
+            executor = new ReactorExecutor(reactor, connectionOptions.getScheduler(), connectionId,
+                reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(), connectionOptions.getHost());
 
             executor.start();
         }

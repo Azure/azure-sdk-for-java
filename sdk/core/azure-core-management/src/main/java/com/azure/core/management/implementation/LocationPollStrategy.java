@@ -57,7 +57,7 @@ public final class LocationPollStrategy extends PollStrategy {
          * Create a new LocationPollStrategyData.
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
-         *                     initiated the long running operation.
+         *     initiated the long running operation.
          * @param locationUrl The location url.
          * @param delayInMilliseconds The delay value.
          */
@@ -84,24 +84,24 @@ public final class LocationPollStrategy extends PollStrategy {
 
     @Override
     public Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        return ensureExpectedStatus(httpPollResponse, new int[] {202})
-                .map(response -> {
-                    final int httpStatusCode = response.statusCode();
-                    updateDelayInMillisecondsFrom(response);
-                    if (httpStatusCode == 202) {
-                        String newLocationUrl = getHeader(response);
-                        if (newLocationUrl != null) {
-                            try {
-                                data.locationUrl = new URL(newLocationUrl);
-                            } catch (MalformedURLException mfue) {
-                                throw logger.logExceptionAsError(Exceptions.propagate(mfue));
-                            }
+        return ensureExpectedStatus(httpPollResponse, new int[]{202})
+            .map(response -> {
+                final int httpStatusCode = response.getStatusCode();
+                updateDelayInMillisecondsFrom(response);
+                if (httpStatusCode == 202) {
+                    String newLocationUrl = getHeader(response);
+                    if (newLocationUrl != null) {
+                        try {
+                            data.locationUrl = new URL(newLocationUrl);
+                        } catch (MalformedURLException mfue) {
+                            throw logger.logExceptionAsError(Exceptions.propagate(mfue));
                         }
-                    } else {
-                        data.done = true;
                     }
-                    return response;
-                });
+                } else {
+                    data.done = true;
+                }
+                return response;
+            });
     }
 
     @Override
@@ -115,20 +115,22 @@ public final class LocationPollStrategy extends PollStrategy {
      * then null will be returned.
      * @param originalHttpRequest The original HTTP request.
      * @param methodParser The method parser that describes the service interface method that
-     *                     initiated the long running operation.
+     *     initiated the long running operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
-     *                     will be read from.
+     *     will be read from.
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
-     *                            use when polling.
+     *     use when polling.
      */
-    static PollStrategy tryToCreate(RestProxy restProxy, SwaggerMethodParser methodParser, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, SwaggerMethodParser methodParser,
+                                    HttpRequest originalHttpRequest, HttpResponse httpResponse,
+                                    long delayInMilliseconds) {
         final String locationUrl = getHeader(httpResponse);
 
         URL pollUrl = null;
         if (locationUrl != null && !locationUrl.isEmpty()) {
             if (locationUrl.startsWith("/")) {
                 try {
-                    final URL originalRequestUrl = originalHttpRequest.url();
+                    final URL originalRequestUrl = originalHttpRequest.getUrl();
                     pollUrl = new URL(originalRequestUrl, locationUrl);
                 } catch (MalformedURLException ignored) {
                 }
@@ -144,17 +146,17 @@ public final class LocationPollStrategy extends PollStrategy {
         }
 
         return pollUrl == null
-                ? null
-                : new LocationPollStrategy(
-                        new LocationPollStrategyData(restProxy, methodParser, pollUrl, delayInMilliseconds));
+            ? null
+            : new LocationPollStrategy(
+            new LocationPollStrategyData(restProxy, methodParser, pollUrl, delayInMilliseconds));
     }
 
     static String getHeader(HttpResponse httpResponse) {
-        return httpResponse.headerValue(HEADER_NAME);
+        return httpResponse.getHeaderValue(HEADER_NAME);
     }
 
     @Override
-    public Serializable strategyData() {
+    public Serializable getStrategyData() {
         return this.data;
     }
 }

@@ -25,7 +25,7 @@ public final class BlobPrefix {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -35,7 +35,7 @@ public final class BlobPrefix {
      * @param name the name value to set.
      * @return the BlobPrefix object itself.
      */
-    public BlobPrefix name(String name) {
+    public BlobPrefix setName(String name) {
         this.name = name;
         return this;
     }

@@ -11,8 +11,6 @@ import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,12 +79,12 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Creates a new InterceptorManager that replays test session records. It takes a set of
      * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
-     * {@link NetworkCallRecord#response()}.
+     * {@link NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
      * @param testName Name of the test session record.
-     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#response()} when playing
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when playing
      * back network calls.
      * @throws IOException An existing test session record could not be located or the data could not be deserialized
      * into an instance of {@link RecordedData}.

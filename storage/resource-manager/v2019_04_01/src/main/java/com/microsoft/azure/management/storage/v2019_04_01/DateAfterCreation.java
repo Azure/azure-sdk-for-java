@@ -15,27 +15,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DateAfterCreation {
     /**
-     * Integer value indicating the age in days after creation.
+     * Value indicating the age in days after creation.
      */
     @JsonProperty(value = "daysAfterCreationGreaterThan", required = true)
-    private int daysAfterCreationGreaterThan;
+    private double daysAfterCreationGreaterThan;
 
     /**
-     * Get integer value indicating the age in days after creation.
+     * Get value indicating the age in days after creation.
      *
      * @return the daysAfterCreationGreaterThan value
      */
-    public int daysAfterCreationGreaterThan() {
+    public double daysAfterCreationGreaterThan() {
         return this.daysAfterCreationGreaterThan;
     }
 
     /**
-     * Set integer value indicating the age in days after creation.
+     * Set value indicating the age in days after creation.
      *
      * @param daysAfterCreationGreaterThan the daysAfterCreationGreaterThan value to set
      * @return the DateAfterCreation object itself.
      */
-    public DateAfterCreation withDaysAfterCreationGreaterThan(int daysAfterCreationGreaterThan) {
+    public DateAfterCreation withDaysAfterCreationGreaterThan(double daysAfterCreationGreaterThan) {
         this.daysAfterCreationGreaterThan = daysAfterCreationGreaterThan;
         return this;
     }

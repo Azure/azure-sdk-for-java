@@ -27,7 +27,7 @@ class KeyOperationResult {
      *
      * @return the kid value
      */
-    public String kid() {
+    public String getKid() {
         return this.kid;
     }
 
@@ -36,7 +36,7 @@ class KeyOperationResult {
      *
      * @return the result value
      */
-    public byte[] result() {
+    public byte[] getResult() {
         if (this.result == null) {
             return new byte[0];
         }

@@ -4,6 +4,7 @@ module com.azure.messaging.eventhubs {
 
     requires proton.j;
     requires qpid.proton.j.extensions;
+    requires org.reactivestreams;
 
     exports com.azure.messaging.eventhubs;
     exports com.azure.messaging.eventhubs.models;

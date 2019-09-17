@@ -18,8 +18,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example 1:</strong></p>
  *
  * <pre>
- * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/")
- *  VirtualMachine getByResourceGroup(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String rgName, @PathParam("foo") String bar);</pre>
+ * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
+ * .Compute/virtualMachines/")
+ *  VirtualMachine getByResourceGroup(@PathParam("subscriptionId") String subscriptionId, @PathParam
+ *  ("resourceGroupName") String rgName, @PathParam("foo") String bar);</pre>
  *
  * <p>The value of parameters subscriptionId, resourceGroupName will be encoded and encoded value will be used to
  * replace the corresponding path segment <code>{subscriptionId}</code>, <code>{resourceGroupName}</code>
@@ -52,7 +54,7 @@ public @interface PathParam {
      * The name of the variable in the endpoint uri template which will be replaced with the value
      * of the parameter annotated with this annotation.
      * @return The name of the variable in the endpoint uri template which will be replaced with the
-     * value of the parameter annotated with this annotation.
+     *     value of the parameter annotated with this annotation.
      */
     String value();
     /**

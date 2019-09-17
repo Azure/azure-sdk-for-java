@@ -45,20 +45,20 @@ class AppServiceMSICredential {
     /**
      * @return the endpoint from which token needs to be retrieved.
      */
-    public String msiEndpoint() {
+    public String getMsiEndpoint() {
         return this.msiEndpoint;
     }
     /**
      * @return the secret to use to retrieve the token.
      */
-    public String msiSecret() {
+    public String getMsiSecret() {
         return this.msiSecret;
     }
 
     /**
      * @return the client id of user assigned or system assigned identity.
      */
-    public String clientId() {
+    public String getClientId() {
         return this.clientId;
     }
 

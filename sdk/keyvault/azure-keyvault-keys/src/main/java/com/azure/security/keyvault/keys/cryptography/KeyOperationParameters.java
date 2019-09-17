@@ -29,7 +29,7 @@ class KeyOperationParameters {
      *
      * @return the algorithm value
      */
-    public EncryptionAlgorithm algorithm() {
+    public EncryptionAlgorithm getAlgorithm() {
         return this.algorithm;
     }
 
@@ -39,7 +39,7 @@ class KeyOperationParameters {
      * @param algorithm the algorithm value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyOperationParameters algorithm(EncryptionAlgorithm algorithm) {
+    public KeyOperationParameters setAlgorithm(EncryptionAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -49,7 +49,7 @@ class KeyOperationParameters {
      *
      * @return the value value
      */
-    public byte[] value() {
+    public byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }
@@ -62,7 +62,7 @@ class KeyOperationParameters {
      * @param value the value value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyOperationParameters value(byte[] value) {
+    public KeyOperationParameters setValue(byte[] value) {
         if (value == null) {
             this.value = null;
         } else {

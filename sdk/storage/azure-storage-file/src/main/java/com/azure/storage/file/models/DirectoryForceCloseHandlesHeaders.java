@@ -61,7 +61,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -72,7 +72,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders requestId(String requestId) {
+    public DirectoryForceCloseHandlesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -94,7 +94,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      * @param version the version value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders version(String version) {
+    public DirectoryForceCloseHandlesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -105,11 +105,11 @@ public final class DirectoryForceCloseHandlesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -119,7 +119,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryForceCloseHandlesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -135,7 +135,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -147,7 +147,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      * @param marker the marker value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders marker(String marker) {
+    public DirectoryForceCloseHandlesHeaders setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -158,7 +158,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      *
      * @return the numberOfHandlesClosed value.
      */
-    public Integer numberOfHandlesClosed() {
+    public Integer getNumberOfHandlesClosed() {
         return this.numberOfHandlesClosed;
     }
 
@@ -169,7 +169,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      * @param numberOfHandlesClosed the numberOfHandlesClosed value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders numberOfHandlesClosed(Integer numberOfHandlesClosed) {
+    public DirectoryForceCloseHandlesHeaders setNumberOfHandlesClosed(Integer numberOfHandlesClosed) {
         this.numberOfHandlesClosed = numberOfHandlesClosed;
         return this;
     }
@@ -179,7 +179,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -189,7 +189,7 @@ public final class DirectoryForceCloseHandlesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the DirectoryForceCloseHandlesHeaders object itself.
      */
-    public DirectoryForceCloseHandlesHeaders errorCode(String errorCode) {
+    public DirectoryForceCloseHandlesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

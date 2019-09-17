@@ -22,11 +22,13 @@ class RetriableWorkItem {
     private boolean waitingForAck;
     private Exception lastKnownException;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink, Duration timeout) {
+    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
+                      Duration timeout) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout, false));
     }
 
-    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink, TimeoutTracker timeout) {
+    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
+                              TimeoutTracker timeout) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
@@ -34,15 +36,15 @@ class RetriableWorkItem {
         this.timeoutTracker = timeout;
     }
 
-    byte[] message() {
+    byte[] getMessage() {
         return amqpMessage;
     }
 
-    TimeoutTracker timeoutTracker() {
+    TimeoutTracker getTimeoutTracker() {
         return timeoutTracker;
     }
 
-    MonoSink<Void> sink() {
+    MonoSink<Void> getSink() {
         return monoSink;
     }
 
@@ -54,23 +56,23 @@ class RetriableWorkItem {
         return retryAttempts.get() == 0;
     }
 
-    int encodedMessageSize() {
+    int getEncodedMessageSize() {
         return encodedMessageSize;
     }
 
-    int messageFormat() {
+    int getMessageFormat() {
         return messageFormat;
     }
 
-    Exception lastKnownException() {
+    Exception getLastKnownException() {
         return this.lastKnownException;
     }
 
-    void lastKnownException(Exception exception) {
+    void setLastKnownException(Exception exception) {
         this.lastKnownException = exception;
     }
 
-    void setIsWaitingForAck() {
+    void setWaitingForAck() {
         this.waitingForAck = true;
     }
 

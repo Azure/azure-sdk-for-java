@@ -97,7 +97,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -109,7 +109,7 @@ public final class PageBlobClearPagesHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders eTag(String eTag) {
+    public PageBlobClearPagesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -122,11 +122,11 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -138,7 +138,7 @@ public final class PageBlobClearPagesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders lastModified(OffsetDateTime lastModified) {
+    public PageBlobClearPagesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -154,7 +154,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -166,7 +166,7 @@ public final class PageBlobClearPagesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders contentMD5(byte[] contentMD5) {
+    public PageBlobClearPagesHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -179,7 +179,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the xMsContentCrc64 value.
      */
-    public byte[] xMsContentCrc64() {
+    public byte[] getXMsContentCrc64() {
         return ImplUtils.clone(this.xMsContentCrc64);
     }
 
@@ -192,7 +192,7 @@ public final class PageBlobClearPagesHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+    public PageBlobClearPagesHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -203,7 +203,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public Long blobSequenceNumber() {
+    public Long getBlobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -214,7 +214,7 @@ public final class PageBlobClearPagesHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders blobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobClearPagesHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -226,7 +226,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -238,7 +238,7 @@ public final class PageBlobClearPagesHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders clientRequestId(String clientRequestId) {
+    public PageBlobClearPagesHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -249,7 +249,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -260,7 +260,7 @@ public final class PageBlobClearPagesHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders requestId(String requestId) {
+    public PageBlobClearPagesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -272,7 +272,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -284,7 +284,7 @@ public final class PageBlobClearPagesHeaders {
      * @param version the version value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders version(String version) {
+    public PageBlobClearPagesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -295,11 +295,11 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -309,7 +309,7 @@ public final class PageBlobClearPagesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public PageBlobClearPagesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -323,7 +323,7 @@ public final class PageBlobClearPagesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -333,7 +333,7 @@ public final class PageBlobClearPagesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobClearPagesHeaders object itself.
      */
-    public PageBlobClearPagesHeaders errorCode(String errorCode) {
+    public PageBlobClearPagesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -25,11 +25,13 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
     private final List<T> items;
     private final String nextLink;
 
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page, H deserializedHeaders) {
-        this(request, statusCode, headers, page.items(), page.nextLink(), deserializedHeaders);
+    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
+                             H deserializedHeaders) {
+        this(request, statusCode, headers, page.getItems(), page.getNextLink(), deserializedHeaders);
     }
 
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String nextLink, H deserializedHeaders) {
+    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String nextLink,
+                             H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -42,7 +44,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public List<T> items() {
+    public List<T> getItems() {
         return items;
     }
 
@@ -50,7 +52,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return nextLink;
     }
 
@@ -58,7 +60,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -66,7 +68,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
@@ -74,7 +76,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * @return the request which resulted in this PagedRequestResponse.
      */
     @Override
-    public HttpRequest request() {
+    public HttpRequest getRequest() {
         return request;
     }
 
@@ -83,7 +85,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      *
      * @return an instance of header type H, containing the HTTP response headers.
      */
-    public H deserializedHeaders() {
+    public H getDeserializedHeaders() {
         return deserializedHeaders;
     }
 

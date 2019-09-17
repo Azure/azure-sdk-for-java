@@ -80,6 +80,16 @@ public final class Constants {
          */
         public static final String CONTENT_ENCODING = "Content-Encoding";
 
+        public static final String CLIENT_REQUEST_ID = "x-ms-client-request-id";
+
+        public static final String ENCRYPTION_KEY = "x-ms-encryption-key";
+
+        public static final String ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+
+        public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
+
+        public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
+
         private HeaderConstants() {
             // Private to prevent construction.
         }
@@ -233,7 +243,8 @@ public final class Constants {
     }
 
     static final class MessageConstants {
-        static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
+        static final String ARGUMENT_NULL_OR_EMPTY =
+            "The argument must not be null or an empty string. Argument name: %s.";
         static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
         static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
         static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";

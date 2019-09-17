@@ -29,7 +29,7 @@ public final class ServicesListSharesSegmentResponse extends ResponseBase<Servic
      * @return the deserialized response body.
      */
     @Override
-    public ListSharesResponse value() {
-        return super.value();
+    public ListSharesResponse getValue() {
+        return super.getValue();
     }
 }

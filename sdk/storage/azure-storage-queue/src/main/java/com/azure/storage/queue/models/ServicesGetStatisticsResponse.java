@@ -29,7 +29,7 @@ public final class ServicesGetStatisticsResponse extends ResponseBase<ServiceGet
      * @return the deserialized response body.
      */
     @Override
-    public StorageServiceStats value() {
-        return super.value();
+    public StorageServiceStats getValue() {
+        return super.getValue();
     }
 }

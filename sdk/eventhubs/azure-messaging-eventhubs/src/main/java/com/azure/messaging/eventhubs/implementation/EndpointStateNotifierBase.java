@@ -17,7 +17,8 @@ import java.io.Closeable;
 import java.util.Objects;
 
 abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Closeable {
-    private final ReplayProcessor<AmqpEndpointState> connectionStateProcessor = ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
+    private final ReplayProcessor<AmqpEndpointState> connectionStateProcessor =
+        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final DirectProcessor<Throwable> errorContextProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
     private final Disposable subscription;

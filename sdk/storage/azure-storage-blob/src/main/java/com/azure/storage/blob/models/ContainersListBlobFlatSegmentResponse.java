@@ -29,7 +29,7 @@ public final class ContainersListBlobFlatSegmentResponse extends ResponseBase<Co
      * @return the deserialized response body.
      */
     @Override
-    public ListBlobsFlatSegmentResponse value() {
-        return super.value();
+    public ListBlobsFlatSegmentResponse getValue() {
+        return super.getValue();
     }
 }

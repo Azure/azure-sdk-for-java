@@ -347,12 +347,12 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     private static void assertHeaderCollectionsRawHeaders(Response<Void> response) {
-        final HttpHeaders responseRawHeaders = response.headers();
+        final HttpHeaders responseRawHeaders = response.getHeaders();
         assertEquals("Phillip", responseRawHeaders.value("name"));
         assertEquals("1", responseRawHeaders.value("header-collection-prefix-one"));
         assertEquals("2", responseRawHeaders.value("header-collection-prefix-two"));
         assertEquals("3", responseRawHeaders.value("header-collection-prefix-three"));
-        assertEquals(4, responseRawHeaders.size());
+        assertEquals(4, responseRawHeaders.getSize());
     }
 
     private static void assertHeaderCollections(Map<String, String> headerCollections) {
@@ -374,7 +374,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypePublicFields responseHeaders = response.deserializedHeaders();
+        final HeaderCollectionTypePublicFields responseHeaders = response.getDeserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name());
         assertHeaderCollections(responseHeaders.headerCollection());
@@ -387,7 +387,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypeProtectedFields responseHeaders = response.deserializedHeaders();
+        final HeaderCollectionTypeProtectedFields responseHeaders = response.getDeserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);
@@ -400,7 +400,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypePrivateFields responseHeaders = response.deserializedHeaders();
+        final HeaderCollectionTypePrivateFields responseHeaders = response.getDeserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);
@@ -413,7 +413,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypePackagePrivateFields responseHeaders = response.deserializedHeaders();
+        final HeaderCollectionTypePackagePrivateFields responseHeaders = response.getDeserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);
@@ -468,12 +468,12 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public List<KeyValue> items() {
+        public List<KeyValue> getItems() {
             return items;
         }
 
         @Override
-        public String nextLink() {
+        public String getNextLink() {
             return nextLink;
         }
     }
@@ -488,12 +488,12 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public List<T> items() {
+        public List<T> getItems() {
             return items;
         }
 
         @Override
-        public String nextLink() {
+        public String getNextLink() {
             return nextLink;
         }
     }
@@ -558,7 +558,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         PagedResponse<KeyValue> response = createService(Service2.class).getPage(page);
         assertNotNull(response);
-        assertEquals(array.size(), response.value().size());
+        assertEquals(array.size(), response.getValue().size());
     }
 
     /**
@@ -579,10 +579,10 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsync(page))
             .assertNext(r -> {
-                assertEquals(page.nextLink, r.nextLink());
+                assertEquals(page.nextLink, r.getNextLink());
 
-                assertEquals(r.items().size(), 3);
-                for (KeyValue keyValue : r.value()) {
+                assertEquals(r.getItems().size(), 3);
+                for (KeyValue keyValue : r.getValue()) {
                     assertTrue(array.removeIf(kv -> kv.key == keyValue.key && kv.value().equals(keyValue.value())));
                 }
                 assertTrue(array.isEmpty());
@@ -610,8 +610,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
-                assertEquals(page.nextLink(), response.nextLink());
-                assertNull(response.items());
+                assertEquals(page.nextLink(), response.getNextLink());
+                assertNull(response.getItems());
             })
             .verifyComplete();
     }

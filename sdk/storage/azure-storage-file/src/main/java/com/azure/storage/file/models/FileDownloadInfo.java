@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.storage.file.FileSmbProperties;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -20,6 +21,7 @@ public final class FileDownloadInfo {
     private final String contentType;
     private final String contentRange;
     private final Flux<ByteBuffer> body;
+    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of download information about a specific File.
@@ -31,8 +33,9 @@ public final class FileDownloadInfo {
      * @param contentType The content type specified for the file. The default content type is application/octet-stream.
      * @param contentRange Indicates the range of bytes returned if the client requested a subset of the file by setting the Range request header.
      * @param body The download request body.
+     * @param smbProperties The SMB properties of the file.
      */
-    public FileDownloadInfo(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata, final Long contentLength, final String contentType, final String contentRange, final Flux<ByteBuffer> body) {
+    public FileDownloadInfo(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata, final Long contentLength, final String contentType, final String contentRange, final Flux<ByteBuffer> body, final FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
@@ -40,54 +43,62 @@ public final class FileDownloadInfo {
         this.contentType = contentType;
         this.contentRange = contentRange;
         this.body = body;
+        this.smbProperties = smbProperties;
     }
 
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return Last time the directory was modified.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
      * @return A set of name-value pairs associated with this file as user-defined metadata.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
      * @return The number of bytes present in the response body.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return contentLength;
     }
 
     /**
      * @return The content type specified for the file. The default content type is application/octet-stream.
      */
-    public String contentType() {
+    public String getContentType() {
         return contentType;
     }
 
     /**
      * @return The range of bytes returned if the client requested a subset of the file by setting the Range request header.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return contentRange;
     }
 
     /**
      * @return The download request body.
      */
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         return body;
+    }
+
+    /**
+     * @return The SMB properties of the file.
+     */
+    public FileSmbProperties getSmbProperties() {
+        return smbProperties;
     }
 }

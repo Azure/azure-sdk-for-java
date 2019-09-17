@@ -49,7 +49,8 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility =
+    JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
     private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
 
@@ -157,7 +158,7 @@ public class JsonWebKey {
      * @return the kid value
      */
     @JsonProperty("kid")
-    public String kid() {
+    public String getKid() {
         return this.kid;
     }
 
@@ -167,7 +168,7 @@ public class JsonWebKey {
      * @param kid The kid value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey kid(String kid) {
+    public JsonWebKey setKid(String kid) {
         this.kid = kid;
         return this;
     }
@@ -178,7 +179,7 @@ public class JsonWebKey {
      * @return the kty value
      */
     @JsonProperty("kty")
-    public KeyType kty() {
+    public KeyType getKty() {
         return this.kty;
     }
 
@@ -188,7 +189,7 @@ public class JsonWebKey {
      * @param kty The key type
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey kty(KeyType kty) {
+    public JsonWebKey setKty(KeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -199,7 +200,7 @@ public class JsonWebKey {
      * @return the keyOps value
      */
     @JsonProperty("key_ops")
-    public List<KeyOperation> keyOps() {
+    public List<KeyOperation> getKeyOps() {
         return this.keyOps;
     }
 
@@ -209,7 +210,7 @@ public class JsonWebKey {
      * @param keyOps The keyOps value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey keyOps(List<KeyOperation> keyOps) {
+    public JsonWebKey setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -222,7 +223,7 @@ public class JsonWebKey {
     @JsonProperty("n")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] n() {
+    public byte[] getN() {
         return ByteExtensions.clone(this.n);
     }
 
@@ -232,7 +233,7 @@ public class JsonWebKey {
      * @param n The n value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey n(byte[] n) {
+    public JsonWebKey setN(byte[] n) {
         this.n = ByteExtensions.clone(n);
         return this;
     }
@@ -245,7 +246,7 @@ public class JsonWebKey {
     @JsonProperty("e")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] e() {
+    public byte[] getE() {
         return ByteExtensions.clone(this.e);
     }
 
@@ -255,7 +256,7 @@ public class JsonWebKey {
      * @param e The e value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey e(byte[] e) {
+    public JsonWebKey setE(byte[] e) {
         this.e = ByteExtensions.clone(e);
         return this;
     }
@@ -268,7 +269,7 @@ public class JsonWebKey {
     @JsonProperty("d")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] d() {
+    public byte[] getD() {
         return ByteExtensions.clone(this.d);
     }
 
@@ -278,7 +279,7 @@ public class JsonWebKey {
      * @param d The d value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey d(byte[] d) {
+    public JsonWebKey setD(byte[] d) {
         this.d = ByteExtensions.clone(d);
         return this;
     }
@@ -291,7 +292,7 @@ public class JsonWebKey {
     @JsonProperty("dp")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] dp() {
+    public byte[] getDp() {
         return ByteExtensions.clone(this.dp);
     }
 
@@ -301,7 +302,7 @@ public class JsonWebKey {
      * @param dp The RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey dp(byte[] dp) {
+    public JsonWebKey setDp(byte[] dp) {
         this.dp = ByteExtensions.clone(dp);
         return this;
     }
@@ -314,7 +315,7 @@ public class JsonWebKey {
     @JsonProperty("dq")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] dq() {
+    public byte[] getDq() {
         return ByteExtensions.clone(this.dq);
     }
 
@@ -324,7 +325,7 @@ public class JsonWebKey {
      * @param dq The RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey dq(byte[] dq) {
+    public JsonWebKey setDq(byte[] dq) {
         this.dq = ByteExtensions.clone(dq);
         return this;
     }
@@ -337,7 +338,7 @@ public class JsonWebKey {
     @JsonProperty("qi")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] qi() {
+    public byte[] getQi() {
         return ByteExtensions.clone(this.qi);
     }
 
@@ -347,7 +348,7 @@ public class JsonWebKey {
      * @param qi The RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey qi(byte[] qi) {
+    public JsonWebKey setQi(byte[] qi) {
         this.qi = ByteExtensions.clone(qi);
         return this;
     }
@@ -360,7 +361,7 @@ public class JsonWebKey {
     @JsonProperty("p")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] p() {
+    public byte[] getP() {
         return ByteExtensions.clone(this.p);
     }
 
@@ -370,7 +371,7 @@ public class JsonWebKey {
      * @param p The RSA secret prime value.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey p(byte[] p) {
+    public JsonWebKey setP(byte[] p) {
         this.p = ByteExtensions.clone(p);
         return this;
     }
@@ -383,7 +384,7 @@ public class JsonWebKey {
     @JsonProperty("q")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] q() {
+    public byte[] getQ() {
         return ByteExtensions.clone(this.q);
     }
 
@@ -393,7 +394,7 @@ public class JsonWebKey {
      * @param q The the RSA secret prime, with p &lt; q value to be set.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey q(byte[] q) {
+    public JsonWebKey setQ(byte[] q) {
         this.q = ByteExtensions.clone(q);
         return this;
     }
@@ -406,7 +407,7 @@ public class JsonWebKey {
     @JsonProperty("k")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] k() {
+    public byte[] getK() {
         return ByteExtensions.clone(this.k);
     }
 
@@ -416,7 +417,7 @@ public class JsonWebKey {
      * @param k The symmetric key value to set.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey k(byte[] k) {
+    public JsonWebKey setK(byte[] k) {
         this.k = ByteExtensions.clone(k);
         return this;
     }
@@ -429,7 +430,7 @@ public class JsonWebKey {
     @JsonProperty("key_hsm")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] t() {
+    public byte[] getT() {
         return ByteExtensions.clone(this.t);
     }
 
@@ -439,7 +440,7 @@ public class JsonWebKey {
      * @param t The HSM Token value to set, used with Bring Your Own Key
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey t(byte[] t) {
+    public JsonWebKey setT(byte[] t) {
         this.t = ByteExtensions.clone(t);
         return this;
     }
@@ -464,7 +465,7 @@ public class JsonWebKey {
      * @return the crv value
      */
     @JsonProperty("crv")
-    public KeyCurveName crv() {
+    public KeyCurveName getCrv() {
         return this.crv;
     }
 
@@ -474,7 +475,7 @@ public class JsonWebKey {
      * @param crv The crv value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey crv(KeyCurveName crv) {
+    public JsonWebKey setCrv(KeyCurveName crv) {
         this.crv = crv;
         return this;
     }
@@ -487,7 +488,7 @@ public class JsonWebKey {
     @JsonProperty("x")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] x() {
+    public byte[] getX() {
         return ByteExtensions.clone(this.x);
     }
 
@@ -497,7 +498,7 @@ public class JsonWebKey {
      * @param x The x value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey x(byte[] x) {
+    public JsonWebKey setX(byte[] x) {
         this.x = ByteExtensions.clone(x);
         return this;
     }
@@ -510,7 +511,7 @@ public class JsonWebKey {
     @JsonProperty("y")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    public byte[] y() {
+    public byte[] getY() {
         return ByteExtensions.clone(this.y);
     }
 
@@ -520,7 +521,7 @@ public class JsonWebKey {
      * @param y The y value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey y(byte[] y) {
+    public JsonWebKey setY(byte[] y) {
         this.y = ByteExtensions.clone(y);
         return this;
     }
@@ -543,7 +544,7 @@ public class JsonWebKey {
     private RSAPrivateKeySpec getRSAPrivateKeySpec() {
 
         return new RSAPrivateCrtKeySpec(toBigInteger(n), toBigInteger(e), toBigInteger(d), toBigInteger(p),
-                toBigInteger(q), toBigInteger(dp), toBigInteger(dq), toBigInteger(qi));
+            toBigInteger(q), toBigInteger(dp), toBigInteger(dq), toBigInteger(qi));
     }
 
     /**
@@ -557,7 +558,7 @@ public class JsonWebKey {
         try {
             RSAPublicKeySpec publicKeySpec = getRSAPublicKeySpec();
             KeyFactory factory = provider != null ? KeyFactory.getInstance("RSA", provider)
-                    : KeyFactory.getInstance("RSA");
+                : KeyFactory.getInstance("RSA");
 
             return factory.generatePublic(publicKeySpec);
         } catch (GeneralSecurityException e) {
@@ -576,7 +577,7 @@ public class JsonWebKey {
         try {
             RSAPrivateKeySpec privateKeySpec = getRSAPrivateKeySpec();
             KeyFactory factory = provider != null ? KeyFactory.getInstance("RSA", provider)
-                    : KeyFactory.getInstance("RSA");
+                : KeyFactory.getInstance("RSA");
 
             return factory.generatePrivate(privateKeySpec);
         } catch (GeneralSecurityException e) {
@@ -589,7 +590,7 @@ public class JsonWebKey {
         try {
             ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
             KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider)
-                    : KeyFactory.getInstance("EC", "SunEC");
+                : KeyFactory.getInstance("EC", "SunEC");
             return (ECPublicKey) kf.generatePublic(pubSpec);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
@@ -600,7 +601,7 @@ public class JsonWebKey {
         try {
             ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
             KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider)
-                    : KeyFactory.getInstance("EC", "SunEC");
+                : KeyFactory.getInstance("EC", "SunEC");
             return (ECPrivateKey) kf.generatePrivate(priSpec);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
@@ -651,19 +652,19 @@ public class JsonWebKey {
 
         if (privateKey != null) {
 
-            key = new JsonWebKey().kty(KeyType.RSA).n(toByteArray(privateKey.getModulus()))
-                    .e(toByteArray(privateKey.getPublicExponent()))
-                    .d(toByteArray(privateKey.getPrivateExponent())).p(toByteArray(privateKey.getPrimeP()))
-                    .q(toByteArray(privateKey.getPrimeQ())).dp(toByteArray(privateKey.getPrimeExponentP()))
-                    .dq(toByteArray(privateKey.getPrimeExponentQ()))
-                    .qi(toByteArray(privateKey.getCrtCoefficient()));
+            key = new JsonWebKey().setKty(KeyType.RSA).setN(toByteArray(privateKey.getModulus()))
+                .setE(toByteArray(privateKey.getPublicExponent()))
+                .setD(toByteArray(privateKey.getPrivateExponent())).setP(toByteArray(privateKey.getPrimeP()))
+                .setQ(toByteArray(privateKey.getPrimeQ())).setDp(toByteArray(privateKey.getPrimeExponentP()))
+                .setDq(toByteArray(privateKey.getPrimeExponentQ()))
+                .setQi(toByteArray(privateKey.getCrtCoefficient()));
         } else {
 
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
-            key = new JsonWebKey().kty(KeyType.RSA).n(toByteArray(publicKey.getModulus()))
-                    .e(toByteArray(publicKey.getPublicExponent())).d(null).p(null).q(null).dp(null)
-                    .dq(null).qi(null);
+            key = new JsonWebKey().setKty(KeyType.RSA).setN(toByteArray(publicKey.getModulus()))
+                .setE(toByteArray(publicKey.getPublicExponent())).setD(null).setP(null).setQ(null).setDp(null)
+                .setDq(null).setQi(null);
         }
 
         return key;
@@ -768,7 +769,7 @@ public class JsonWebKey {
 
             if (includePrivateParameters) {
                 realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider),
-                        getECPrivateKey(d, aspec, provider));
+                    getECPrivateKey(d, aspec, provider));
             } else {
                 realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), null);
             }
@@ -793,13 +794,13 @@ public class JsonWebKey {
         ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
 
         if (apriv != null) {
-            return new JsonWebKey().kty(KeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
-                    .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
-                    .d(apriv.getS().toByteArray()).kty(KeyType.EC);
+            return new JsonWebKey().setKty(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
+                .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
+                .setD(apriv.getS().toByteArray()).setKty(KeyType.EC);
         } else {
-            return new JsonWebKey().kty(KeyType.EC).crv(getCurveFromKeyPair(keyPair, provider))
-                    .x(point.getAffineX().toByteArray()).y(point.getAffineY().toByteArray())
-                    .kty(KeyType.EC);
+            return new JsonWebKey().setKty(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
+                .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
+                .setKty(KeyType.EC);
         }
     }
 
@@ -812,7 +813,7 @@ public class JsonWebKey {
             EllipticCurve crv = spec.getCurve();
 
             List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384,
-                    KeyCurveName.P_521, KeyCurveName.P_256K);
+                KeyCurveName.P_521, KeyCurveName.P_256K);
 
             for (KeyCurveName curve : curveList) {
                 ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
@@ -849,7 +850,7 @@ public class JsonWebKey {
             return null;
         }
 
-        return new JsonWebKey().k(secretKey.getEncoded()).kty(KeyType.OCT);
+        return new JsonWebKey().setK(secretKey.getEncoded()).setKty(KeyType.OCT);
     }
 
     /**
@@ -882,7 +883,7 @@ public class JsonWebKey {
      *
      * @param jwk The other {@link JsonWebKey} to compare with.
      * @return true if this {@link JsonWebKey} is the same as the jwk argument;
-     *         false otherwise.
+     *     false otherwise.
      */
     public boolean equals(JsonWebKey jwk) {
         if (jwk == null) {
@@ -981,7 +982,8 @@ public class JsonWebKey {
         }
 
         if (keyOps != null) {
-            final Set<KeyOperation> set = new HashSet<KeyOperation>(Collections.unmodifiableList(Arrays.asList(KeyOperation.values())));
+            final Set<KeyOperation> set =
+                new HashSet<KeyOperation>(Collections.unmodifiableList(Arrays.asList(KeyOperation.values())));
             for (int i = 0; i < keyOps.size(); i++) {
                 if (!set.contains(keyOps.get(i))) {
                     return false;

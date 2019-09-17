@@ -12,7 +12,9 @@ public interface HttpClientProvider {
 
     /**
      * Creates a new instance of the {@link HttpClient} that this HttpClientProvider is configured to create.
-     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created previously.
+     *
+     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created
+     * previously.
      */
     HttpClient createInstance();
 }

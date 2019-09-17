@@ -11,8 +11,8 @@ public class SubstitutionTests {
     @Test
     public void constructor() {
         final Substitution s = new Substitution("A", 2, true);
-        assertEquals("A", s.urlParameterName());
-        assertEquals(2, s.methodParameterIndex());
+        assertEquals("A", s.getUrlParameterName());
+        assertEquals(2, s.getMethodParameterIndex());
         assertEquals(true, s.shouldEncode());
     }
 }

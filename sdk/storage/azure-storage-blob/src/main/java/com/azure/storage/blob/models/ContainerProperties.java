@@ -70,11 +70,11 @@ public final class ContainerProperties {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -83,7 +83,7 @@ public final class ContainerProperties {
      * @param lastModified the lastModified value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties lastModified(OffsetDateTime lastModified) {
+    public ContainerProperties setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -97,7 +97,7 @@ public final class ContainerProperties {
      *
      * @return the etag value.
      */
-    public String etag() {
+    public String getEtag() {
         return this.etag;
     }
 
@@ -107,7 +107,7 @@ public final class ContainerProperties {
      * @param etag the etag value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties etag(String etag) {
+    public ContainerProperties setEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -118,7 +118,7 @@ public final class ContainerProperties {
      *
      * @return the leaseStatus value.
      */
-    public LeaseStatusType leaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
 
@@ -129,7 +129,7 @@ public final class ContainerProperties {
      * @param leaseStatus the leaseStatus value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties leaseStatus(LeaseStatusType leaseStatus) {
+    public ContainerProperties setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
     }
@@ -140,7 +140,7 @@ public final class ContainerProperties {
      *
      * @return the leaseState value.
      */
-    public LeaseStateType leaseState() {
+    public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
 
@@ -151,7 +151,7 @@ public final class ContainerProperties {
      * @param leaseState the leaseState value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties leaseState(LeaseStateType leaseState) {
+    public ContainerProperties setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
     }
@@ -162,7 +162,7 @@ public final class ContainerProperties {
      *
      * @return the leaseDuration value.
      */
-    public LeaseDurationType leaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
 
@@ -173,7 +173,7 @@ public final class ContainerProperties {
      * @param leaseDuration the leaseDuration value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties leaseDuration(LeaseDurationType leaseDuration) {
+    public ContainerProperties setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -184,7 +184,7 @@ public final class ContainerProperties {
      *
      * @return the publicAccess value.
      */
-    public PublicAccessType publicAccess() {
+    public PublicAccessType getPublicAccess() {
         return this.publicAccess;
     }
 
@@ -195,7 +195,7 @@ public final class ContainerProperties {
      * @param publicAccess the publicAccess value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties publicAccess(PublicAccessType publicAccess) {
+    public ContainerProperties setPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
         return this;
     }
@@ -206,7 +206,7 @@ public final class ContainerProperties {
      *
      * @return the hasImmutabilityPolicy value.
      */
-    public Boolean hasImmutabilityPolicy() {
+    public Boolean isHasImmutabilityPolicy() {
         return this.hasImmutabilityPolicy;
     }
 
@@ -217,7 +217,7 @@ public final class ContainerProperties {
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties hasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
+    public ContainerProperties setHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         return this;
     }
@@ -227,7 +227,7 @@ public final class ContainerProperties {
      *
      * @return the hasLegalHold value.
      */
-    public Boolean hasLegalHold() {
+    public Boolean isHasLegalHold() {
         return this.hasLegalHold;
     }
 
@@ -237,7 +237,7 @@ public final class ContainerProperties {
      * @param hasLegalHold the hasLegalHold value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties hasLegalHold(Boolean hasLegalHold) {
+    public ContainerProperties setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
         return this;
     }

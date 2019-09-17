@@ -64,7 +64,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -75,7 +75,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param contentType the contentType value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders contentType(String contentType) {
+    public ContainerListBlobHierarchySegmentHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -87,7 +87,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -99,7 +99,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders clientRequestId(String clientRequestId) {
+    public ContainerListBlobHierarchySegmentHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -110,7 +110,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -121,7 +121,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders requestId(String requestId) {
+    public ContainerListBlobHierarchySegmentHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -133,7 +133,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -145,7 +145,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param version the version value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders version(String version) {
+    public ContainerListBlobHierarchySegmentHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -156,11 +156,11 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -170,7 +170,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerListBlobHierarchySegmentHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -184,7 +184,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -194,7 +194,7 @@ public final class ContainerListBlobHierarchySegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerListBlobHierarchySegmentHeaders object itself.
      */
-    public ContainerListBlobHierarchySegmentHeaders errorCode(String errorCode) {
+    public ContainerListBlobHierarchySegmentHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

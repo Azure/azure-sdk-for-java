@@ -62,9 +62,9 @@ public class EventHubConsumerOptions implements Cloneable {
      * @param identifier The receiver name.
      * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code identifier} is greater than {@link
-     *         #MAXIMUM_IDENTIFIER_LENGTH}.
+     *     #MAXIMUM_IDENTIFIER_LENGTH}.
      */
-    public EventHubConsumerOptions identifier(String identifier) {
+    public EventHubConsumerOptions setIdentifier(String identifier) {
         if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH)));
@@ -79,7 +79,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * intended to be the only reader of events for the requested partition and an associated consumer group. To do so,
      * this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
      * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger {@link
-     * EventHubConsumerOptions#ownerLevel()} value will "win".
+     * EventHubConsumerOptions#getOwnerLevel()} value will "win".
      *
      * <p>
      * When an exclusive consumer is used, those consumers which are not exclusive or which have a lower priority will
@@ -88,13 +88,14 @@ public class EventHubConsumerOptions implements Cloneable {
      * </p>
      *
      * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this
-     *         value should be {@code null}.
+     *     value should be {@code null}.
      * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
-    public EventHubConsumerOptions ownerLevel(Long priority) {
+    public EventHubConsumerOptions setOwnerLevel(Long priority) {
         if (priority != null && priority < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'priority' cannot be a negative value. Please specify a zero or positive long value."));
         }
 
         this.ownerLevel = priority;
@@ -108,7 +109,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @param retry The retry policy to use when receiving events.
      * @return The updated {@link EventHubConsumerOptions} object.
      */
-    public EventHubConsumerOptions retry(RetryOptions retry) {
+    public EventHubConsumerOptions setRetry(RetryOptions retry) {
         this.retry = retry;
         return this;
     }
@@ -120,9 +121,9 @@ public class EventHubConsumerOptions implements Cloneable {
      * @param prefetchCount The amount of events to queue locally.
      * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link
-     *         #MINIMUM_PREFETCH_COUNT} or greater than {@link #MAXIMUM_PREFETCH_COUNT}.
+     *     #MINIMUM_PREFETCH_COUNT} or greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
-    public EventHubConsumerOptions prefetchCount(int prefetchCount) {
+    public EventHubConsumerOptions setPrefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT)));
@@ -144,7 +145,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @param scheduler The scheduler for receiving events.
      * @return The updated EventHubClientBuilder object.
      */
-    public EventHubConsumerOptions scheduler(Scheduler scheduler) {
+    public EventHubConsumerOptions setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
         return this;
     }
@@ -155,7 +156,7 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @return The identifier of the receiver.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return identifier;
     }
 
@@ -165,7 +166,7 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @return The retry options when receiving events.
      */
-    public RetryOptions retry() {
+    public RetryOptions getRetry() {
         return retry;
     }
 
@@ -176,7 +177,7 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @return An optional owner level for this consumer.
      */
-    public Long ownerLevel() {
+    public Long getOwnerLevel() {
         return ownerLevel;
     }
 
@@ -186,7 +187,7 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @return The scheduler for reading events.
      */
-    public Scheduler scheduler() {
+    public Scheduler getScheduler() {
         return scheduler;
     }
 
@@ -195,9 +196,9 @@ public class EventHubConsumerOptions implements Cloneable {
      * locally without regard to whether a receive operation is currently active.
      *
      * @return The prefetch count receiver will receive and queue locally regardless of whether or not a receive
-     *         operation is active.
+     *     operation is active.
      */
-    public int prefetchCount() {
+    public int getPrefetchCount() {
         return prefetchCount;
     }
 
@@ -215,13 +216,13 @@ public class EventHubConsumerOptions implements Cloneable {
             clone = new EventHubConsumerOptions();
         }
 
-        clone.scheduler(this.scheduler())
-            .identifier(this.identifier())
-            .prefetchCount(this.prefetchCount())
-            .ownerLevel(this.ownerLevel());
+        clone.setScheduler(this.getScheduler())
+            .setIdentifier(this.getIdentifier())
+            .setPrefetchCount(this.getPrefetchCount())
+            .setOwnerLevel(this.getOwnerLevel());
 
         if (retry != null) {
-            clone.retry(retry.clone());
+            clone.setRetry(retry.clone());
         }
 
         return clone;

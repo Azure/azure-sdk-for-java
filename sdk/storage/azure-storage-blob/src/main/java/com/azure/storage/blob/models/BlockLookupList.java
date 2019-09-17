@@ -39,7 +39,7 @@ public final class BlockLookupList {
      *
      * @return the committed value.
      */
-    public List<String> committed() {
+    public List<String> getCommitted() {
         return this.committed;
     }
 
@@ -49,7 +49,7 @@ public final class BlockLookupList {
      * @param committed the committed value to set.
      * @return the BlockLookupList object itself.
      */
-    public BlockLookupList committed(List<String> committed) {
+    public BlockLookupList setCommitted(List<String> committed) {
         this.committed = committed;
         return this;
     }
@@ -59,7 +59,7 @@ public final class BlockLookupList {
      *
      * @return the uncommitted value.
      */
-    public List<String> uncommitted() {
+    public List<String> getUncommitted() {
         return this.uncommitted;
     }
 
@@ -69,7 +69,7 @@ public final class BlockLookupList {
      * @param uncommitted the uncommitted value to set.
      * @return the BlockLookupList object itself.
      */
-    public BlockLookupList uncommitted(List<String> uncommitted) {
+    public BlockLookupList setUncommitted(List<String> uncommitted) {
         this.uncommitted = uncommitted;
         return this;
     }
@@ -79,7 +79,7 @@ public final class BlockLookupList {
      *
      * @return the latest value.
      */
-    public List<String> latest() {
+    public List<String> getLatest() {
         return this.latest;
     }
 
@@ -89,7 +89,7 @@ public final class BlockLookupList {
      * @param latest the latest value to set.
      * @return the BlockLookupList object itself.
      */
-    public BlockLookupList latest(List<String> latest) {
+    public BlockLookupList setLatest(List<String> latest) {
         this.latest = latest;
         return this;
     }

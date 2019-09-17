@@ -24,7 +24,7 @@ public final class ContainerListDetails {
      *
      * @return a flag indicating whether metadata should be returned in the listing
      */
-    public boolean metadata() {
+    public boolean getMetadata() {
         return this.metadata;
     }
 
@@ -34,7 +34,7 @@ public final class ContainerListDetails {
      * @param metadata Flag indicating whether metadata should be returned
      * @return the updated ContainerListDetails object
      */
-    public ContainerListDetails metadata(boolean metadata) {
+    public ContainerListDetails setMetadata(boolean metadata) {
         this.metadata = metadata;
         return this;
     }

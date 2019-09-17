@@ -5,17 +5,24 @@ package com.azure.storage.file
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
+
+import com.azure.storage.file.FileClientBuilder
+import com.azure.storage.file.FileServiceAsyncClient
+import com.azure.storage.file.FileServiceClient
+import com.azure.storage.file.FileServiceClientBuilder
+import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
 import spock.lang.Specification
 
+import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.Supplier
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -67,8 +74,9 @@ class APISpec extends Specification {
             FileServiceClient cleanupFileServiceClient = new FileServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupFileServiceClient.listShares(new ListSharesOptions().prefix(methodName.toLowerCase())).each {
-                cleanupFileServiceClient.deleteShare(it.name())
+            cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
+            Duration.ofSeconds(30), null).each {
+                cleanupFileServiceClient.deleteShare(it.getName())
             }
         }
     }
@@ -130,18 +138,18 @@ class APISpec extends Specification {
 
     def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
         if (testMode == TestMode.RECORD) {
-            return new DirectoryClientBuilder()
+            return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .directoryPath(directoryPath)
+                .resourcePath(directoryPath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
-            return new DirectoryClientBuilder()
+            return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .directoryPath(directoryPath)
+                .resourcePath(directoryPath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
@@ -151,7 +159,7 @@ class APISpec extends Specification {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(filePath)
+                .resourcePath(filePath)
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
@@ -159,7 +167,7 @@ class APISpec extends Specification {
             return new FileClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .filePath(filePath)
+                .resourcePath(filePath)
                 .httpClient(interceptorManager.getPlaybackClient())
         }
     }
@@ -176,12 +184,9 @@ class APISpec extends Specification {
 
     static HttpClient getHttpClient() {
         if (enableDebugging) {
-            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
-                @Override
-                ProxyOptions get() {
-                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
-                }
-            })
+            def builder = new NettyAsyncHttpClientBuilder()
+            builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            return builder.build()
         } else {
             return HttpClient.createDefault()
         }

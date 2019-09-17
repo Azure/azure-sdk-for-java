@@ -29,8 +29,8 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      * @return the stream content
      */
     @Override
-    public Flux<ByteBuffer> value() {
-        return super.value();
+    public Flux<ByteBuffer> getValue() {
+        return super.getValue();
     }
 
     /**
@@ -38,6 +38,6 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      */
     @Override
     public void close() {
-        value().subscribe().dispose();
+        getValue().subscribe().dispose();
     }
 }

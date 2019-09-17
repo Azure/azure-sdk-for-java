@@ -10,14 +10,17 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import java.util.Stack;
 
 /**
- * The @ServiceClientBuilder class should have the following rules:
- *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
- *  2) No other method have prefix 'build' other than 'build*Client' or 'build*AsyncClient'.
+ * The {@literal @ServiceClientBuilder} class should have the following rules:
+ * <ol>
+ * <li>All service client builder should be named &lt;ServiceName&gt;ClientBuilder and annotated with
+ * {@literal @ServiceClientBuilder}.</li>
+ * <li>No other method have prefix 'build' other than 'build*Client' or 'build*AsyncClient'.</li>
+ * </ol>
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
 
-    private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack();
+    private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack<>();
     private Stack<Boolean> hasBuildMethodStack = new Stack<>();
     private boolean hasServiceClientBuilderAnnotation;
     private boolean hasBuildMethod;
@@ -46,7 +49,8 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
             hasServiceClientBuilderAnnotation = hasServiceClientBuilderAnnotationStack.pop();
             hasBuildMethod = hasBuildMethodStack.pop();
             if (hasServiceClientBuilderAnnotation && !hasBuildMethod) {
-                log(token, "Class with @ServiceClientBuilder annotation must have a method starting with ''build'' and ending with ''Client''.");
+                log(token, "Class with @ServiceClientBuilder annotation must have a method starting with ''build'' "
+                    + "and ending with ''Client''.");
             }
         }
     }
@@ -63,16 +67,19 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
                 hasServiceClientBuilderAnnotation = serviceClientAnnotationBuilderToken != null;
                 if (hasServiceClientBuilderAnnotation) {
-                    // Don't need to check if the 'serviceClients' exist. It is required when using @ServiceClientBuilder
+                    // Don't need to check if the 'serviceClients' exist. It is required when using
+                    // @ServiceClientBuilder
 
                     // HAS @ServiceClientBuilder annotation but NOT named the class <ServiceName>ClientBuilder
                     if (!className.endsWith("ClientBuilder")) {
-                        log(token, String.format("Class annotated with @ServiceClientBuilder ''%s'' should be named <ServiceName>ClientBuilder.", className));
+                        log(token, String.format("Class annotated with @ServiceClientBuilder ''%s'' should be named "
+                            + "<ServiceName>ClientBuilder.", className));
                     }
                 } else {
                     // No @ServiceClientBuilder annotation but HAS named the class <ServiceName>ClientBuilder
                     if (className.endsWith("ClientBuilder")) {
-                        log(token, String.format("Class ''%s'' should be annotated with @ServiceClientBuilder.", className));
+                        log(token, String.format("Class ''%s'' should be annotated with @ServiceClientBuilder.",
+                            className));
                     }
                 }
                 break;
@@ -90,7 +97,8 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
                 // method name has prefix 'build' but not 'build*Client' or 'build*AsyncClient'
                 if (!methodName.endsWith("Client")) {
                     log(token, String.format(
-                        "@ServiceClientBuilder class should not have a method name, ''%s'' starting with ''build'' but not ending with ''Client''.", methodName));
+                        "@ServiceClientBuilder class should not have a method name, ''%s'' starting with ''build'' "
+                            + "but not ending with ''Client''.", methodName));
                 }
                 break;
             default:

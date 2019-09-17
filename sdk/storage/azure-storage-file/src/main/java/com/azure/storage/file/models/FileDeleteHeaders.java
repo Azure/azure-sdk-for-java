@@ -48,7 +48,7 @@ public final class FileDeleteHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -59,7 +59,7 @@ public final class FileDeleteHeaders {
      * @param requestId the requestId value to set.
      * @return the FileDeleteHeaders object itself.
      */
-    public FileDeleteHeaders requestId(String requestId) {
+    public FileDeleteHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -70,7 +70,7 @@ public final class FileDeleteHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -81,7 +81,7 @@ public final class FileDeleteHeaders {
      * @param version the version value to set.
      * @return the FileDeleteHeaders object itself.
      */
-    public FileDeleteHeaders version(String version) {
+    public FileDeleteHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -92,11 +92,11 @@ public final class FileDeleteHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class FileDeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileDeleteHeaders object itself.
      */
-    public FileDeleteHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileDeleteHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -120,7 +120,7 @@ public final class FileDeleteHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -130,7 +130,7 @@ public final class FileDeleteHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileDeleteHeaders object itself.
      */
-    public FileDeleteHeaders errorCode(String errorCode) {
+    public FileDeleteHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

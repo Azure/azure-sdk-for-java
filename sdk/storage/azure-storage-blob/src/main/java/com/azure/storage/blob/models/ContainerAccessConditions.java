@@ -30,7 +30,7 @@ public final class ContainerAccessConditions {
      *
      * @return the modified access conditions
      */
-    public ModifiedAccessConditions modifiedAccessConditions() {
+    public ModifiedAccessConditions getModifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
@@ -42,7 +42,7 @@ public final class ContainerAccessConditions {
      * @param modifiedAccessConditions the modified access conditions to set
      * @return the updated ContainerAccessConditions object
      */
-    public ContainerAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public ContainerAccessConditions setModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -53,7 +53,7 @@ public final class ContainerAccessConditions {
      *
      * @return the lease access conditions
      */
-    public LeaseAccessConditions leaseAccessConditions() {
+    public LeaseAccessConditions getLeaseAccessConditions() {
         return leaseAccessConditions;
     }
 
@@ -64,7 +64,7 @@ public final class ContainerAccessConditions {
      * @param leaseID the lease access conditions to set
      * @return the updated ContainerAccessConditions object
      */
-    public ContainerAccessConditions leaseAccessConditions(LeaseAccessConditions leaseID) {
+    public ContainerAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseID) {
         this.leaseAccessConditions = leaseID;
         return this;
     }

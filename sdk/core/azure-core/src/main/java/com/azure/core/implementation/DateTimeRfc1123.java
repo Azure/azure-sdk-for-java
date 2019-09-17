@@ -16,7 +16,7 @@ public final class DateTimeRfc1123 {
      * The pattern of the datetime used for RFC1123 datetime format.
      */
     private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
     /**
      * The actual datetime object.
      */
@@ -42,7 +42,7 @@ public final class DateTimeRfc1123 {
      * Returns the underlying DateTime.
      * @return The underlying DateTime.
      */
-    public OffsetDateTime dateTime() {
+    public OffsetDateTime getDateTime() {
         if (this.dateTime == null) {
             return null;
         }
@@ -70,6 +70,6 @@ public final class DateTimeRfc1123 {
         }
 
         DateTimeRfc1123 rhs = (DateTimeRfc1123) obj;
-        return this.dateTime.equals(rhs.dateTime());
+        return this.dateTime.equals(rhs.getDateTime());
     }
 }

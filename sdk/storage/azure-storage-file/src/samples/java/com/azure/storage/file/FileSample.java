@@ -42,7 +42,7 @@ public class FileSample {
         // Create a source file client
         String srcFileName = generateRandomName();
         FileClient srcFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                    .filePath(parentDirName + "/" + srcFileName).buildClient();
+                                    .resourcePath(parentDirName + "/" + srcFileName).buildFileClient();
 
         // Create a source file
         try {
@@ -62,7 +62,7 @@ public class FileSample {
         // Create a destination file client.
         String destFileName = generateRandomName();
         FileClient destFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                        .filePath(parentDirName + "/" + destFileName).buildClient();
+                                        .resourcePath(parentDirName + "/" + destFileName).buildFileClient();
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.
@@ -78,16 +78,16 @@ public class FileSample {
         }
 
         // Abort the copy if the status is pending.
-        if (copyResponse.copyStatus() == CopyStatusType.PENDING) {
+        if (copyResponse.getCopyStatus() == CopyStatusType.PENDING) {
             try {
-                destFileClient.abortCopy(copyResponse.copyId());
+                destFileClient.abortCopy(copyResponse.getCopyId());
             } catch (StorageException e) {
                 System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
             }
         }
 
         // Upload a local file to the storage.
-        String filePath = "C:/filePath/";
+        String filePath = "C:/resourcePath/";
         String uploadPath = filePath + "testfiles/" + "uploadSample.txt";
 
         try {
@@ -119,7 +119,7 @@ public class FileSample {
         // Get the file properties
         try {
             FileProperties propertiesResponse = srcFileClient.getProperties();
-            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.eTag(), propertiesResponse.fileType());
+            System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.getETag(), propertiesResponse.getFileType());
         } catch (StorageException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());
         }

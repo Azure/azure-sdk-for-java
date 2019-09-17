@@ -26,18 +26,18 @@ public class EventHubPropertiesTest {
         final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, partitionIds);
 
         // Assert
-        Assert.assertEquals(name, eventHubProperties.name());
-        Assert.assertEquals(instant, eventHubProperties.createdAt());
-        Assert.assertEquals(partitionIds.length, eventHubProperties.partitionIds().length);
+        Assert.assertEquals(name, eventHubProperties.getName());
+        Assert.assertEquals(instant, eventHubProperties.getCreatedAt());
+        Assert.assertEquals(partitionIds.length, eventHubProperties.getPartitionIds().length);
 
-        final Set<String> actual = new HashSet<>(Arrays.asList(eventHubProperties.partitionIds()));
+        final Set<String> actual = new HashSet<>(Arrays.asList(eventHubProperties.getPartitionIds()));
         for (String id : partitionIds) {
             Assert.assertTrue(actual.contains(id));
         }
     }
 
     /**
-     * Verifies that the {@link EventHubProperties#partitionIds()} array is not {@code null} when we pass {@code null}
+     * Verifies that the {@link EventHubProperties#getPartitionIds()} array is not {@code null} when we pass {@code null}
      * to the constructor.
      */
     @Test
@@ -50,9 +50,9 @@ public class EventHubPropertiesTest {
         final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, null);
 
         // Assert
-        Assert.assertEquals(name, eventHubProperties.name());
-        Assert.assertEquals(instant, eventHubProperties.createdAt());
-        Assert.assertNotNull(eventHubProperties.partitionIds());
-        Assert.assertEquals(0, eventHubProperties.partitionIds().length);
+        Assert.assertEquals(name, eventHubProperties.getName());
+        Assert.assertEquals(instant, eventHubProperties.getCreatedAt());
+        Assert.assertNotNull(eventHubProperties.getPartitionIds());
+        Assert.assertEquals(0, eventHubProperties.getPartitionIds().length);
     }
 }

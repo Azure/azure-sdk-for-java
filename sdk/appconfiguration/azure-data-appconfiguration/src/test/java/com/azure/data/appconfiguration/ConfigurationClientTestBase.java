@@ -57,7 +57,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public TestName testName = new TestName();
 
     @Override
-    public String testName() {
+    public String getTestName() {
         return testName.getMethodName();
     }
 
@@ -104,13 +104,13 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         tags.put("AnotherTag", "AnotherTagValue");
 
         final ConfigurationSetting newConfiguration = new ConfigurationSetting()
-            .key(getKey())
-            .value("myNewValue")
-            .tags(tags)
-            .contentType("text");
+            .setKey(getKey())
+            .setValue("myNewValue")
+            .setTags(tags)
+            .setContentType("text");
 
         testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label(getLabel()));
+        testRunner.accept(newConfiguration.setLabel(getLabel()));
     }
 
     @Test
@@ -121,8 +121,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     void addSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
-        ConfigurationSetting setting = new ConfigurationSetting().key(key);
-        ConfigurationSetting setting2 = new ConfigurationSetting().key(key + "-1").value("");
+        ConfigurationSetting setting = new ConfigurationSetting().setKey(key);
+        ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key + "-1").setValue("");
 
         testRunner.accept(setting);
         testRunner.accept(setting2);
@@ -135,10 +135,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void addExistingSetting();
 
     void addExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(getKey()).value("myNewValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(getKey()).setValue("myNewValue");
 
         testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label(getLabel()));
+        testRunner.accept(newConfiguration.setLabel(getLabel()));
     }
 
     @Test
@@ -148,11 +148,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         String key = getKey();
         String label = getLabel();
 
-        final ConfigurationSetting setConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
+        final ConfigurationSetting setConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().setKey(key).setValue("myUpdatedValue");
 
         testRunner.accept(setConfiguration, updateConfiguration);
-        testRunner.accept(setConfiguration.label(label), updateConfiguration.label(label));
+        testRunner.accept(setConfiguration.setLabel(label), updateConfiguration.setLabel(label));
     }
 
     @Test
@@ -162,11 +162,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         String key = getKey();
         String label = getLabel();
 
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().setKey(key).setValue("myUpdateValue");
 
         testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        testRunner.accept(newConfiguration.setLabel(label), updateConfiguration.setLabel(label));
     }
 
     @Test
@@ -178,8 +178,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void setSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
 
-        ConfigurationSetting setting = new ConfigurationSetting().key(key);
-        ConfigurationSetting setting2 = new ConfigurationSetting().key(key + "-1").value("");
+        ConfigurationSetting setting = new ConfigurationSetting().setKey(key);
+        ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key + "-1").setValue("");
 
         testRunner.accept(setting);
         testRunner.accept(setting2);
@@ -191,10 +191,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void updateNoExistingSetting();
 
     void updateNoExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
-        final ConfigurationSetting expectedFail = new ConfigurationSetting().key(getKey()).value("myFailingUpdate");
+        final ConfigurationSetting expectedFail = new ConfigurationSetting().setKey(getKey()).setValue("myFailingUpdate");
 
         testRunner.accept(expectedFail);
-        testRunner.accept(expectedFail.label(getLabel()));
+        testRunner.accept(expectedFail.setLabel(getLabel()));
     }
 
     @Test
@@ -208,20 +208,20 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
         final ConfigurationSetting original = new ConfigurationSetting()
-            .key(key)
-            .value("myNewValue")
-            .tags(tags)
-            .contentType("json");
+            .setKey(key)
+            .setValue("myNewValue")
+            .setTags(tags)
+            .setContentType("json");
 
         final Map<String, String> updatedTags = new HashMap<>(tags);
         final ConfigurationSetting updated = new ConfigurationSetting()
-            .key(original.key())
-            .value("myUpdatedValue")
-            .tags(updatedTags)
-            .contentType("text");
+            .setKey(original.getKey())
+            .setValue("myUpdatedValue")
+            .setTags(updatedTags)
+            .setContentType("text");
 
         testRunner.accept(original, updated);
-        testRunner.accept(original.label(label), updated.label(label));
+        testRunner.accept(original.setLabel(label), updated.setLabel(label));
     }
 
     @Test
@@ -230,8 +230,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void updateSettingOverloadRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
 
-        ConfigurationSetting original = new ConfigurationSetting().key(key).value("A Value");
-        ConfigurationSetting updated = new ConfigurationSetting().key(key).value("A New Value");
+        ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("A Value");
+        ConfigurationSetting updated = new ConfigurationSetting().setKey(key).setValue("A New Value");
 
         testRunner.accept(original, updated);
     }
@@ -245,12 +245,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void updateSettingIfEtagRunner(Consumer<List<ConfigurationSetting>> testRunner) {
         final String key = getKey();
         final String label = getLabel();
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
-        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().setKey(key).setValue("myUpdateValue");
+        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().setKey(key).setValue("myFinalValue");
 
         testRunner.accept(Arrays.asList(newConfiguration, updateConfiguration, finalConfiguration));
-        testRunner.accept(Arrays.asList(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label)));
+        testRunner.accept(Arrays.asList(newConfiguration.setLabel(label), updateConfiguration.setLabel(label), finalConfiguration.setLabel(label)));
     }
 
     @Test
@@ -259,10 +259,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void getSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
 
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
 
         testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label("myLabel"));
+        testRunner.accept(newConfiguration.setLabel("myLabel"));
     }
 
     @Test
@@ -275,10 +275,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         String key = getKey();
         String label = getLabel();
 
-        final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().key(key).value("myValue");
+        final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().setKey(key).setValue("myValue");
 
         testRunner.accept(deletableConfiguration);
-        testRunner.accept(deletableConfiguration.label(label));
+        testRunner.accept(deletableConfiguration.setLabel(label));
     }
 
     @Test
@@ -291,11 +291,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         String key = getKey();
         String label = getLabel();
 
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(newConfiguration.key()).value("myUpdateValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().setKey(newConfiguration.getKey()).setValue("myUpdateValue");
 
         testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        testRunner.accept(newConfiguration.setLabel(label), updateConfiguration.setLabel(label));
     }
 
     @Test
@@ -308,8 +308,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listWithMultipleKeys();
 
     void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
         testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual))));
         assertTrue(expectedSelection.isEmpty());
@@ -319,8 +319,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listWithMultipleLabels();
 
     void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label2);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
 
         for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
@@ -342,27 +342,27 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         tags.put("tag2", "value2");
 
         final SettingSelector selector = new SettingSelector()
-            .labels("*-second*")
-            .keys(keyPrefix + "-fetch-*")
-            .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
+            .setLabels("*-second*")
+            .setKeys(keyPrefix + "-fetch-*")
+            .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
 
         List<ConfigurationSetting> settings = new ArrayList<>(numberToCreate);
         for (int value = 0; value < numberToCreate; value++) {
             String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
             String lbl = value / 4 == 0 ? label : label2;
-            settings.add(new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags));
+            settings.add(new ConfigurationSetting().setKey(key).setValue("myValue2").setLabel(lbl).setTags(tags));
         }
 
         for (ConfigurationSetting setting : testRunner.apply(settings, selector)) {
-            assertNotNull(setting.etag());
-            assertNotNull(setting.key());
-            assertTrue(setting.key().contains(keyPrefix));
-            assertNotNull(setting.tags());
-            assertEquals(tags.size(), setting.tags().size());
+            assertNotNull(setting.getETag());
+            assertNotNull(setting.getKey());
+            assertTrue(setting.getKey().contains(keyPrefix));
+            assertNotNull(setting.getTags());
+            assertEquals(tags.size(), setting.getTags().size());
 
-            assertNull(setting.lastModified());
-            assertNull(setting.contentType());
-            assertNull(setting.label());
+            assertNull(setting.getLastModified());
+            assertNull(setting.getContentType());
+            assertNull(setting.getLabel());
         }
     }
 
@@ -373,20 +373,20 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisions();
 
     static void validateListRevisions(ConfigurationSetting expected, ConfigurationSetting actual) {
-        assertEquals(expected.key(), actual.key());
-        assertNotNull(actual.etag());
-        assertNull(actual.value());
-        assertNull(actual.lastModified());
+        assertEquals(expected.getKey(), actual.getKey());
+        assertNotNull(actual.getETag());
+        assertNull(actual.getValue());
+        assertNull(actual.getLastModified());
     }
 
     @Test
     public abstract void listRevisionsWithMultipleKeys();
 
     void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, Iterable<ConfigurationSetting>> testRunner) {
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
-        final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).value("updatedValue");
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
-        final ConfigurationSetting setting2Update = new ConfigurationSetting().key(setting2.key()).value("updatedValue");
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
+        final ConfigurationSetting settingUpdate = new ConfigurationSetting().setKey(setting.getKey()).setValue("updatedValue");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value");
+        final ConfigurationSetting setting2Update = new ConfigurationSetting().setKey(setting2.getKey()).setValue("updatedValue");
         final List<ConfigurationSetting> testInput = Arrays.asList(setting, settingUpdate, setting2, setting2Update);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
@@ -401,10 +401,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void listRevisionsWithMultipleLabels();
 
     void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, Iterable<ConfigurationSetting>> testRunner) {
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
-        final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).label(setting.label()).value("updatedValue");
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
-        final ConfigurationSetting setting2Update = new ConfigurationSetting().key(setting2.key()).label(setting2.label()).value("updatedValue");
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
+        final ConfigurationSetting settingUpdate = new ConfigurationSetting().setKey(setting.getKey()).setLabel(setting.getLabel()).setValue("updatedValue");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label2);
+        final ConfigurationSetting setting2Update = new ConfigurationSetting().setKey(setting2.getKey()).setLabel(setting2.getLabel()).setValue("updatedValue");
         final List<ConfigurationSetting> testInput = Arrays.asList(setting, settingUpdate, setting2, setting2Update);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
@@ -464,9 +464,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
      */
     static void assertConfigurationEquals(ConfigurationSetting expected, Response<ConfigurationSetting> response, final int expectedStatusCode) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.statusCode());
+        assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertConfigurationEquals(expected, response.value());
+        assertConfigurationEquals(expected, response.getValue());
     }
 
     /**
@@ -491,23 +491,23 @@ public abstract class ConfigurationClientTestBase extends TestBase {
      */
     private static ConfigurationSetting cleanResponse(ConfigurationSetting expected, ConfigurationSetting actual) {
         ConfigurationSetting cleanedActual = new ConfigurationSetting()
-            .key(actual.key())
-            .label(actual.label())
-            .value(actual.value())
-            .tags(actual.tags())
-            .contentType(actual.contentType())
-            .etag(expected.etag());
+            .setKey(actual.getKey())
+            .setLabel(actual.getLabel())
+            .setValue(actual.getValue())
+            .setTags(actual.getTags())
+            .setContentType(actual.getContentType())
+            .setETag(expected.getETag());
 
         try {
             Field lastModified = ConfigurationSetting.class.getDeclaredField("lastModified");
             lastModified.setAccessible(true);
-            lastModified.set(actual, expected.lastModified());
+            lastModified.set(actual, expected.getLastModified());
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             // Shouldn't happen.
         }
 
-        if (ConfigurationSetting.NO_LABEL.equals(expected.label()) && actual.label() == null) {
-            cleanedActual.label(ConfigurationSetting.NO_LABEL);
+        if (ConfigurationSetting.NO_LABEL.equals(expected.getLabel()) && actual.getLabel() == null) {
+            cleanedActual.setLabel(ConfigurationSetting.NO_LABEL);
         }
 
         return cleanedActual;
@@ -538,7 +538,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
     /**

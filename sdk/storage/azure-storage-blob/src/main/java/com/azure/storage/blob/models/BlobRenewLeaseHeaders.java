@@ -80,7 +80,7 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -92,7 +92,7 @@ public final class BlobRenewLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders eTag(String eTag) {
+    public BlobRenewLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -105,11 +105,11 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -121,7 +121,7 @@ public final class BlobRenewLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobRenewLeaseHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -135,7 +135,7 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the leaseId value.
      */
-    public String leaseId() {
+    public String getLeaseId() {
         return this.leaseId;
     }
 
@@ -145,7 +145,7 @@ public final class BlobRenewLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders leaseId(String leaseId) {
+    public BlobRenewLeaseHeaders setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -157,7 +157,7 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -169,7 +169,7 @@ public final class BlobRenewLeaseHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders clientRequestId(String clientRequestId) {
+    public BlobRenewLeaseHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -180,7 +180,7 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -191,7 +191,7 @@ public final class BlobRenewLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders requestId(String requestId) {
+    public BlobRenewLeaseHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -203,7 +203,7 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -215,7 +215,7 @@ public final class BlobRenewLeaseHeaders {
      * @param version the version value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders version(String version) {
+    public BlobRenewLeaseHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -226,11 +226,11 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -240,7 +240,7 @@ public final class BlobRenewLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobRenewLeaseHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -254,7 +254,7 @@ public final class BlobRenewLeaseHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -264,7 +264,7 @@ public final class BlobRenewLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobRenewLeaseHeaders object itself.
      */
-    public BlobRenewLeaseHeaders errorCode(String errorCode) {
+    public BlobRenewLeaseHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

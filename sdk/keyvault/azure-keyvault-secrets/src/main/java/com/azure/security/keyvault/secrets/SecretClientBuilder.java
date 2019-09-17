@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretAsyncClient secret async client} and {@link SecretClient secret client},
- * by calling {@link SecretClientBuilder#buildAsyncClient() buildAsyncClient} and {@link SecretClientBuilder#buildClient() buildClient} respectively.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
+ * SecretAsyncClient secret async client} and {@link SecretClient secret client},
+ * by calling {@link SecretClientBuilder#buildAsyncClient() buildAsyncClient} and {@link
+ * SecretClientBuilder#buildClient() buildClient} respectively.
  * It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
@@ -43,9 +45,10 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation}
  *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
+ * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
+ * {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
-
+ *
  * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation}
  *
  * @see SecretClient
@@ -81,11 +84,12 @@ public final class SecretClientBuilder {
      * {@link SecretClientBuilder#endpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link SecretClient client}.}</p>
+     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link SecretClient
+     * client}.}</p>
      *
      * @return A SecretClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
-     * {@link SecretClientBuilder#endpoint(String)} have not been set.
+     *     {@link SecretClientBuilder#endpoint(String)} have not been set.
      */
     public SecretClient buildClient() {
         return new SecretClient(buildAsyncClient());
@@ -99,19 +103,23 @@ public final class SecretClientBuilder {
      * {@link SecretClientBuilder#endpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link SecretAsyncClient client}.}</p>
+     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link
+     * SecretAsyncClient client}.}</p>
      *
      * @return A SecretAsyncClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
-     * {@link SecretClientBuilder#endpoint(String)} have not been set.
+     *     {@link SecretClientBuilder#endpoint(String)} have not been set.
      */
     public SecretAsyncClient buildAsyncClient() {
 
-        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+        Configuration buildConfiguration =
+            (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+            throw logger.logExceptionAsError(
+                new IllegalStateException(
+                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
         if (pipeline != null) {
@@ -119,12 +127,15 @@ public final class SecretClientBuilder {
         }
 
         if (credential == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
+            throw logger.logExceptionAsError(
+                new IllegalStateException(
+                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
         }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+            buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
@@ -133,9 +144,9 @@ public final class SecretClientBuilder {
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
 
         return new SecretAsyncClient(endpoint, pipeline);
     }
@@ -151,7 +162,8 @@ public final class SecretClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "The Azure Key Vault endpoint url is malformed."));
         }
         return this;
     }

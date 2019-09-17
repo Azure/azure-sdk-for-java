@@ -26,7 +26,8 @@ import java.util.function.Supplier;
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
 public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpReceiveLink {
-    // Initial value is true because we could not have created this receiver without authorising against the CBS node first.
+    // Initial value is true because we could not have created this receiver without authorising against the CBS node
+    // first.
     private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
 
     private final String entityPath;
@@ -40,7 +41,8 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
 
     private volatile Supplier<Integer> creditSupplier;
 
-    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager) {
+    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
+                    ActiveClientTokenManager tokenManager) {
         super(new ClientLogger(ReactorReceiver.class));
         this.isDisposed = new AtomicBoolean();
         this.entityPath = entityPath;
@@ -118,6 +120,11 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     @Override
     public String getEntityPath() {
         return entityPath;
+    }
+
+    @Override
+    public String getHostname() {
+        return handler.getHostname();
     }
 
     @Override

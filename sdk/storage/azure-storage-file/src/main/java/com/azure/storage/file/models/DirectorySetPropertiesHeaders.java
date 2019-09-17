@@ -114,7 +114,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -125,7 +125,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders eTag(String eTag) {
+    public DirectorySetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -136,7 +136,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -147,7 +147,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders requestId(String requestId) {
+    public DirectorySetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -160,11 +160,11 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -176,7 +176,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders lastModified(OffsetDateTime lastModified) {
+    public DirectorySetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -191,7 +191,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -202,7 +202,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param version the version value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders version(String version) {
+    public DirectorySetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -213,11 +213,11 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -227,7 +227,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectorySetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -255,7 +255,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public DirectorySetPropertiesHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -266,7 +266,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the filePermissionKey value.
      */
-    public String filePermissionKey() {
+    public String getFilePermissionKey() {
         return this.filePermissionKey;
     }
 
@@ -277,7 +277,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param filePermissionKey the filePermissionKey value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders filePermissionKey(String filePermissionKey) {
+    public DirectorySetPropertiesHeaders setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -287,7 +287,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the fileAttributes value.
      */
-    public String fileAttributes() {
+    public String getFileAttributes() {
         return this.fileAttributes;
     }
 
@@ -297,7 +297,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param fileAttributes the fileAttributes value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders fileAttributes(String fileAttributes) {
+    public DirectorySetPropertiesHeaders setFileAttributes(String fileAttributes) {
         this.fileAttributes = fileAttributes;
         return this;
     }
@@ -307,7 +307,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the fileCreationTime value.
      */
-    public OffsetDateTime fileCreationTime() {
+    public OffsetDateTime getFileCreationTime() {
         return this.fileCreationTime;
     }
 
@@ -317,7 +317,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param fileCreationTime the fileCreationTime value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders fileCreationTime(OffsetDateTime fileCreationTime) {
+    public DirectorySetPropertiesHeaders setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
         return this;
     }
@@ -327,7 +327,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the fileLastWriteTime value.
      */
-    public OffsetDateTime fileLastWriteTime() {
+    public OffsetDateTime getFileLastWriteTime() {
         return this.fileLastWriteTime;
     }
 
@@ -337,7 +337,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param fileLastWriteTime the fileLastWriteTime value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders fileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public DirectorySetPropertiesHeaders setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
         return this;
     }
@@ -347,7 +347,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the fileChangeTime value.
      */
-    public OffsetDateTime fileChangeTime() {
+    public OffsetDateTime getFileChangeTime() {
         return this.fileChangeTime;
     }
 
@@ -357,7 +357,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param fileChangeTime the fileChangeTime value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders fileChangeTime(OffsetDateTime fileChangeTime) {
+    public DirectorySetPropertiesHeaders setFileChangeTime(OffsetDateTime fileChangeTime) {
         this.fileChangeTime = fileChangeTime;
         return this;
     }
@@ -367,7 +367,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the fileId value.
      */
-    public String fileId() {
+    public String getFileId() {
         return this.fileId;
     }
 
@@ -377,7 +377,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param fileId the fileId value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders fileId(String fileId) {
+    public DirectorySetPropertiesHeaders setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -387,7 +387,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the fileParentId value.
      */
-    public String fileParentId() {
+    public String getFileParentId() {
         return this.fileParentId;
     }
 
@@ -397,7 +397,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param fileParentId the fileParentId value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders fileParentId(String fileParentId) {
+    public DirectorySetPropertiesHeaders setFileParentId(String fileParentId) {
         this.fileParentId = fileParentId;
         return this;
     }
@@ -407,7 +407,7 @@ public final class DirectorySetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -417,7 +417,7 @@ public final class DirectorySetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the DirectorySetPropertiesHeaders object itself.
      */
-    public DirectorySetPropertiesHeaders errorCode(String errorCode) {
+    public DirectorySetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

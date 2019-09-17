@@ -30,7 +30,7 @@ public final class FilesGetRangeListResponse extends ResponseBase<FileGetRangeLi
      * @return the deserialized response body.
      */
     @Override
-    public List<Range> value() {
-        return super.value();
+    public List<Range> getValue() {
+        return super.getValue();
     }
 }

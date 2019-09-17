@@ -22,7 +22,7 @@ public interface HttpResponseDecodeData {
      *
      * @return the return type
      */
-    Type returnType();
+    Type getReturnType();
 
     /**
      * Get the type of the entity to be used to deserialize 'Matching' headers.
@@ -30,13 +30,14 @@ public interface HttpResponseDecodeData {
      * The 'header entity' is optional and client can choose it when a strongly typed model is needed for headers.
      *
      * 'Matching' headers are the HTTP response headers those with:
-     *   1. header names same as name of a properties in the 'header entity'.
-     *   2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the 'header entity'.
+     * 1. header names same as name of a properties in the 'header entity'.
+     * 2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the 'header
+     * entity'.
      *
      * @return headers entity type
      */
-    default Type headersType() {
-        Type token = this.returnType();
+    default Type getHeadersType() {
+        Type token = this.getReturnType();
         Type headersType = null;
 
         if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
@@ -59,7 +60,7 @@ public interface HttpResponseDecodeData {
      *
      * @return the expected HTTP response status codes
      */
-    default int[] expectedStatusCodes() {
+    default int[] getExpectedStatusCodes() {
         return null;
     }
 
@@ -72,13 +73,13 @@ public interface HttpResponseDecodeData {
      *
      * @return the type that the raw HTTP response content will be sent as
      */
-    default Type returnValueWireType() {
+    default Type getReturnValueWireType() {
         return null;
     }
 
     /**
-     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response status
-     * code is not one of the expected status codes.
+     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response
+     * status code is not one of the expected status codes.
      *
      * @param code Exception HTTP status code return from a REST API.
      * @return the UnexpectedExceptionInformation to generate an exception to throw or return.

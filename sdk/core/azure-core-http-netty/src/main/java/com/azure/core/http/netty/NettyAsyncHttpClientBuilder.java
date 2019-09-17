@@ -52,7 +52,7 @@ public class NettyAsyncHttpClientBuilder {
 
                 if (proxyOptions != null) {
                     ProxyProvider.Proxy nettyProxy;
-                    switch (proxyOptions.type()) {
+                    switch (proxyOptions.getType()) {
                         case HTTP:
                             nettyProxy = ProxyProvider.Proxy.HTTP;
                             break;
@@ -63,10 +63,13 @@ public class NettyAsyncHttpClientBuilder {
                             nettyProxy = ProxyProvider.Proxy.SOCKS5;
                             break;
                         default:
-                            throw logger.logExceptionAsWarning(new IllegalStateException("Unknown Proxy type '" + proxyOptions.type() + "' in use. Not configuring Netty proxy."));
+                            throw logger.logExceptionAsWarning(
+                                new IllegalStateException(
+                                    "Unknown Proxy type '" + proxyOptions.getType()
+                                        + "' in use. Not configuring Netty proxy."));
                     }
 
-                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.address()));
+                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.getAddress()));
                 }
 
                 return tcpConfig;

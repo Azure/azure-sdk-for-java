@@ -3,9 +3,12 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * Contains file or directory reference information in the storage File service.
  */
+@Immutable
 public final class FileRef {
     private final String name;
     private final boolean isDirectory;
@@ -24,11 +27,10 @@ public final class FileRef {
         this.fileProperty = fileProperty;
     }
 
-
     /**
      * @return Name of the file or the directory.
      */
-    public String name() {
+    public String getName() {
         return name;
     }
 
@@ -42,7 +44,7 @@ public final class FileRef {
     /**
      * @return Property of a file. Return {@code null} if the reference is a directory.
      */
-    public FileProperty fileProperties() {
+    public FileProperty getFileProperties() {
         return fileProperty;
     }
 

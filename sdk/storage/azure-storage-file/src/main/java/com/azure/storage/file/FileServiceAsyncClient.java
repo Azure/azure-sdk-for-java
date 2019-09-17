@@ -3,13 +3,16 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -17,38 +20,34 @@ import com.azure.storage.common.AccountSASSignatureValues;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
-import com.azure.storage.file.models.ListSharesResponse;
-import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
- * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in Azure Storage.
- * Operations allowed by the azureFileStorageClient are creating, listing, and deleting shares and retrieving and updating properties
- * of the account.
+ * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
+ * Azure Storage. Operations allowed by the azureFileStorageClient are creating, listing, and deleting shares and
+ * retrieving and updating properties of the account.
  *
  * <p><strong>Instantiating an Asynchronous File Service Client</strong></p>
  *
@@ -66,20 +65,17 @@ public final class FileServiceAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
 
     /**
-     * Creates a FileServiceClient that sends requests to the storage account at {@code endpoint}.
-     * Each service call goes through the {@code httpPipeline}.
+     * Creates a FileServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
      *
-     * @param endpoint URL for the Storage File service
-     * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through
+     * @param azureFileStorage Client that interacts with the service interfaces.
      */
-    FileServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
-            .url(endpoint.toString())
-            .build();
+    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage) {
+        this.azureFileStorageClient = azureFileStorage;
     }
 
     /**
      * Get the url of the storage file service client.
+     *
      * @return the url of the Storage File service.
      * @throws RuntimeException If the file service is using a malformed URL.
      */
@@ -87,7 +83,8 @@ public final class FileServiceAsyncClient {
         try {
             return new URL(azureFileStorageClient.getUrl());
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
                 azureFileStorageClient.getUrl()), e));
         }
     }
@@ -95,14 +92,30 @@ public final class FileServiceAsyncClient {
     /**
      * Constructs a ShareAsyncClient that interacts with the specified share.
      *
-     * <p>If the share doesn't exist in the storage account {@link ShareAsyncClient#create() create} in the azureFileStorageClient will
+     * <p>If the share doesn't exist in the storage account {@link ShareAsyncClient#create() create} in the
+     * azureFileStorageClient will
      * need to be called before interaction with the share can happen.</p>
      *
      * @param shareName Name of the share
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName);
+        return this.getShareAsyncClient(shareName, null);
+    }
+
+    /**
+     * Constructs a ShareAsyncClient that interacts with the specified share.
+     *
+     * <p>If the share doesn't exist in the storage account {@link ShareAsyncClient#create() create} in the
+     * azureFileStorageClient will
+     * need to be called before interaction with the share can happen.</p>
+     *
+     * @param shareName Name of the share
+     * @param snapshot Snapshot ID of the share
+     * @return a ShareAsyncClient that interacts with the specified share
+     */
+    public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot);
     }
 
     /**
@@ -119,20 +132,22 @@ public final class FileServiceAsyncClient {
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
-    public Flux<ShareItem> listShares() {
+    public PagedFlux<ShareItem> listShares() {
         return listShares(null);
     }
 
     /**
      * Lists the shares in the Storage account that pass the options filter.
      *
-     * <p>Set starts with name filter using {@link ListSharesOptions#prefix(String) prefix} to filter shares that are
+     * <p>Set starts with name filter using {@link ListSharesOptions#setPrefix(String) prefix} to filter shares that
+     * are
      * listed.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeMetadata(boolean) includeMetadata} to have metadata returned for
+     * <p>Pass true to {@link ListSharesOptions#setIncludeMetadata(boolean) includeMetadata} to have metadata returned
+     * for
      * the shares.</p>
      *
-     * <p>Pass true to {@link ListSharesOptions#includeSnapshots(boolean) includeSnapshots} to have snapshots of the
+     * <p>Pass true to {@link ListSharesOptions#setIncludeSnapshots(boolean) includeSnapshots} to have snapshots of the
      * shares listed.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -151,8 +166,8 @@ public final class FileServiceAsyncClient {
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    public Flux<ShareItem> listShares(ListSharesOptions options) {
-        return listShares(null, options);
+    public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
+        return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
     }
 
     /**
@@ -160,51 +175,37 @@ public final class FileServiceAsyncClient {
      *
      * @param marker Starting point to list the shares
      * @param options Options for listing shares
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
-    private Flux<ShareItem> listShares(String marker, ListSharesOptions options) {
-        String prefix = null;
-        Integer maxResults = null;
+    PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout,
+        Context context) {
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
-            prefix = options.prefix();
-            maxResults = options.maxResults();
-
-            if (options.includeMetadata()) {
+            if (options.isIncludeMetadata()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
             }
 
-            if (options.includeSnapshots()) {
+            if (options.isIncludeSnapshots()) {
                 include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
             }
         }
 
-        return azureFileStorageClient.services().listSharesSegmentWithRestResponseAsync(prefix, marker, maxResults, include, null, Context.NONE)
-            .flatMapMany(response -> Flux.fromIterable(response.value().shareItems()));
-    }
-
-    /*
-     * Helper function used to auto-enumerate through paged responses
-     */
-    private Flux<ShareItem> listShares(ServicesListSharesSegmentResponse response, List<ListSharesIncludeType> include, Context context) {
-        ListSharesResponse value = response.value();
-        Mono<ServicesListSharesSegmentResponse> result = azureFileStorageClient.services()
-            .listSharesSegmentWithRestResponseAsync(value.prefix(), value.marker(), value.maxResults(), include, null, context);
-
-        return result.flatMapMany(r -> extractAndFetchShares(r, include, context));
-    }
-
-    /*
-     * Helper function used to auto-enumerate through paged responses
-     */
-    private Publisher<ShareItem> extractAndFetchShares(ServicesListSharesSegmentResponse response, List<ListSharesIncludeType> include, Context context) {
-        String nextPageLink = response.value().nextMarker();
-        if (ImplUtils.isNullOrEmpty(nextPageLink)) {
-            return Flux.fromIterable(response.value().shareItems());
-        }
-
-        return Flux.fromIterable(response.value().shareItems()).concatWith(listShares(response, include, context));
+        Function<String, Mono<PagedResponse<ShareItem>>> retriever =
+            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context),
+                timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getShareItems(),
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders())));
+        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
     /**
@@ -218,7 +219,8 @@ public final class FileServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @return Storage account {@link FileServiceProperties File service properties}
      */
@@ -237,7 +239,8 @@ public final class FileServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.getPropertiesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @return A response containing the Storage account {@link FileServiceProperties File service properties}
      */
@@ -247,15 +250,16 @@ public final class FileServiceAsyncClient {
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
         return postProcessResponse(azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context))
-            .map(response -> new SimpleResponse<>(response, response.value()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors()
+     * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -264,20 +268,22 @@ public final class FileServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @param properties Storage account File service properties
      * @return An empty response
      * @throws StorageException When one of the following is true
      * <ul>
-     *     <li>A CORS rule is missing one of its fields</li>
-     *     <li>More than five CORS rules will exist for the Queue service</li>
-     *     <li>Size of all CORS rules exceeds 2KB</li>
-     *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
-     *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * <li>A CORS rule is missing one of its fields</li>
+     * <li>More than five CORS rules will exist for the Queue service</li>
+     * <li>Size of all CORS rules exceeds 2KB</li>
+     * <li>
+     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
+     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * </li>
+     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * PUT</li>
      * </ul>
      */
     public Mono<Void> setProperties(FileServiceProperties properties) {
@@ -288,8 +294,9 @@ public final class FileServiceAsyncClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
-     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#getCors()
+     * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -302,20 +309,22 @@ public final class FileServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponseAsync#fileServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure
+     * Docs</a>.</p>
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
      * @throws StorageException When one of the following is true
      * <ul>
-     *     <li>A CORS rule is missing one of its fields</li>
-     *     <li>More than five CORS rules will exist for the Queue service</li>
-     *     <li>Size of all CORS rules exceeds 2KB</li>
-     *     <li>
-     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
-     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
-     *     </li>
-     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * <li>A CORS rule is missing one of its fields</li>
+     * <li>More than five CORS rules will exist for the Queue service</li>
+     * <li>Size of all CORS rules exceeds 2KB</li>
+     * <li>
+     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
+     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * </li>
+     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * PUT</li>
      * </ul>
      */
     public Mono<VoidResponse> setPropertiesWithResponse(FileServiceProperties properties) {
@@ -329,7 +338,8 @@ public final class FileServiceAsyncClient {
     }
 
     /**
-     * Creates a share in the storage account with the specified name and returns a ShareAsyncClient to interact with it.
+     * Creates a share in the storage account with the specified name and returns a ShareAsyncClient to interact with
+     * it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -349,8 +359,8 @@ public final class FileServiceAsyncClient {
     }
 
     /**
-     * Creates a share in the storage account with the specified name, metadata, and quota and returns a ShareAsyncClient to
-     * interact with it.
+     * Creates a share in the storage account with the specified name, metadata, and quota and returns a
+     * ShareAsyncClient to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -370,15 +380,17 @@ public final class FileServiceAsyncClient {
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
-     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the
-     * allowed range.
+     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the allowed
+     * range.
      */
-    public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB) {
+    public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
+        Integer quotaInGB) {
         return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB, context));
     }
 
-    Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata, Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName);
+    Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
+        Integer quotaInGB, Context context) {
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null);
 
         return postProcessResponse(shareAsyncClient.createWithResponse(metadata, quotaInGB, context))
             .map(response -> new SimpleResponse<>(response, shareAsyncClient));
@@ -405,8 +417,8 @@ public final class FileServiceAsyncClient {
     }
 
     /**
-     * Deletes the specific snapshot of the share in the storage account with the given name. Snapshot are identified
-     * by the time they were created.
+     * Deletes the specific snapshot of the share in the storage account with the given name. Snapshot are identified by
+     * the time they were created.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -454,6 +466,13 @@ public final class FileServiceAsyncClient {
     /**
      * Generates an account SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
+     *
      * @param accountSASService The {@code AccountSASService} services for the account SAS
      * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
      * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
@@ -468,10 +487,12 @@ public final class FileServiceAsyncClient {
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
 
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureFileStorageClient.getHttpPipeline());
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureFileStorageClient
+            .getHttpPipeline());
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
+            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
 
     }
 }

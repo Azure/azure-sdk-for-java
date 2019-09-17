@@ -160,7 +160,7 @@ public final class ServiceFilterBlobsHeaders {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**

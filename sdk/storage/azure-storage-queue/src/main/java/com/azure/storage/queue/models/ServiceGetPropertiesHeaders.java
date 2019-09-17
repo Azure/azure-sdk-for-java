@@ -41,7 +41,7 @@ public final class ServiceGetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -52,7 +52,7 @@ public final class ServiceGetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceGetPropertiesHeaders object itself.
      */
-    public ServiceGetPropertiesHeaders requestId(String requestId) {
+    public ServiceGetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -64,7 +64,7 @@ public final class ServiceGetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -76,7 +76,7 @@ public final class ServiceGetPropertiesHeaders {
      * @param version the version value to set.
      * @return the ServiceGetPropertiesHeaders object itself.
      */
-    public ServiceGetPropertiesHeaders version(String version) {
+    public ServiceGetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -86,7 +86,7 @@ public final class ServiceGetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -96,7 +96,7 @@ public final class ServiceGetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceGetPropertiesHeaders object itself.
      */
-    public ServiceGetPropertiesHeaders errorCode(String errorCode) {
+    public ServiceGetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

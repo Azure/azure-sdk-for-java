@@ -30,7 +30,7 @@ public class HttpHeader {
      *
      * @return the name of this Header
      */
-    public String name() {
+    public String getName() {
         return name;
     }
 
@@ -39,7 +39,7 @@ public class HttpHeader {
      *
      * @return the value of this Header
      */
-    public String value() {
+    public String getValue() {
         return value;
     }
 
@@ -48,7 +48,7 @@ public class HttpHeader {
      *
      * @return the values of this Header that are separated by a comma
      */
-    public String[] values() {
+    public String[] getValues() {
         return value == null ? null : value.split(",");
     }
 

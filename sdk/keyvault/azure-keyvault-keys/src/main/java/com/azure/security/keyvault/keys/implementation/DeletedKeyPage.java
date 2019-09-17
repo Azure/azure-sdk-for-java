@@ -33,7 +33,7 @@ public final class DeletedKeyPage implements Page<DeletedKey> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class DeletedKeyPage implements Page<DeletedKey> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<DeletedKey> items() {
+    public List<DeletedKey> getItems() {
         return items;
     }
 }

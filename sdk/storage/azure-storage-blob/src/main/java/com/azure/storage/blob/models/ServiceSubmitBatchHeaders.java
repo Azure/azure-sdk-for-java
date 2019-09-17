@@ -16,7 +16,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public final class ServiceSubmitBatchHeaders {
     /*
      * The media type of the body of the response. For batch requests, this is
-     * ' multipart/mixed; boundary=batchresponse_<GUID>'
+     * multipart/mixed; boundary=batchresponse_GUID
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
@@ -44,24 +44,24 @@ public final class ServiceSubmitBatchHeaders {
 
     /**
      * Get the contentType property: The media type of the body of the
-     * response. For batch requests, this is ' multipart/mixed;
-     * boundary=batchresponse_&lt;GUID&gt;'.
+     * response. For batch requests, this is multipart/mixed;
+     * boundary=batchresponse_GUID.
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
     /**
      * Set the contentType property: The media type of the body of the
-     * response. For batch requests, this is ' multipart/mixed;
-     * boundary=batchresponse_&lt;GUID&gt;'.
+     * response. For batch requests, this is multipart/mixed;
+     * boundary=batchresponse_GUID.
      *
      * @param contentType the contentType value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders contentType(String contentType) {
+    public ServiceSubmitBatchHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -72,7 +72,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -83,7 +83,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders requestId(String requestId) {
+    public ServiceSubmitBatchHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -95,7 +95,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param version the version value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders version(String version) {
+    public ServiceSubmitBatchHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -117,7 +117,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -127,7 +127,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders errorCode(String errorCode) {
+    public ServiceSubmitBatchHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

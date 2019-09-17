@@ -38,7 +38,7 @@ public final class ContainerItem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -48,7 +48,7 @@ public final class ContainerItem {
      * @param name the name value to set.
      * @return the ContainerItem object itself.
      */
-    public ContainerItem name(String name) {
+    public ContainerItem setName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public final class ContainerItem {
      *
      * @return the properties value.
      */
-    public ContainerProperties properties() {
+    public ContainerProperties getProperties() {
         return this.properties;
     }
 
@@ -68,7 +68,7 @@ public final class ContainerItem {
      * @param properties the properties value to set.
      * @return the ContainerItem object itself.
      */
-    public ContainerItem properties(ContainerProperties properties) {
+    public ContainerItem setProperties(ContainerProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -78,7 +78,7 @@ public final class ContainerItem {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -88,7 +88,7 @@ public final class ContainerItem {
      * @param metadata the metadata value to set.
      * @return the ContainerItem object itself.
      */
-    public ContainerItem metadata(Map<String, String> metadata) {
+    public ContainerItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

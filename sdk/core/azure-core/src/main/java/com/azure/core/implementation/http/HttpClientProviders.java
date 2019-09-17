@@ -12,6 +12,8 @@ import java.util.ServiceLoader;
  */
 public class HttpClientProviders {
     private static HttpClientProvider defaultProvider;
+    private static final String CANNOT_FIND_HTTP_CLIENT =
+        "Cannot find any HttpClient provider on the classpath - unable to create a default HttpClient instance";
 
     static {
         ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(HttpClientProvider.class);
@@ -28,8 +30,7 @@ public class HttpClientProviders {
 
     public static HttpClient createInstance() {
         if (defaultProvider == null) {
-            throw new IllegalStateException(
-                "Cannot find any HttpClient provider on the classpath - unable to create a default HttpClient instance");
+            throw new IllegalStateException(CANNOT_FIND_HTTP_CLIENT);
         }
 
         return defaultProvider.createInstance();

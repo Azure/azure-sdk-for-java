@@ -54,7 +54,7 @@ public final class ShareCreatePermissionHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -65,7 +65,7 @@ public final class ShareCreatePermissionHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareCreatePermissionHeaders object itself.
      */
-    public ShareCreatePermissionHeaders requestId(String requestId) {
+    public ShareCreatePermissionHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -76,7 +76,7 @@ public final class ShareCreatePermissionHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -87,7 +87,7 @@ public final class ShareCreatePermissionHeaders {
      * @param version the version value to set.
      * @return the ShareCreatePermissionHeaders object itself.
      */
-    public ShareCreatePermissionHeaders version(String version) {
+    public ShareCreatePermissionHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -98,11 +98,11 @@ public final class ShareCreatePermissionHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -112,7 +112,7 @@ public final class ShareCreatePermissionHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareCreatePermissionHeaders object itself.
      */
-    public ShareCreatePermissionHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareCreatePermissionHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -127,7 +127,7 @@ public final class ShareCreatePermissionHeaders {
      *
      * @return the filePermissionKey value.
      */
-    public String filePermissionKey() {
+    public String getFilePermissionKey() {
         return this.filePermissionKey;
     }
 
@@ -138,7 +138,7 @@ public final class ShareCreatePermissionHeaders {
      * @param filePermissionKey the filePermissionKey value to set.
      * @return the ShareCreatePermissionHeaders object itself.
      */
-    public ShareCreatePermissionHeaders filePermissionKey(String filePermissionKey) {
+    public ShareCreatePermissionHeaders setFilePermissionKey(String filePermissionKey) {
         this.filePermissionKey = filePermissionKey;
         return this;
     }
@@ -148,7 +148,7 @@ public final class ShareCreatePermissionHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -158,7 +158,7 @@ public final class ShareCreatePermissionHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareCreatePermissionHeaders object itself.
      */
-    public ShareCreatePermissionHeaders errorCode(String errorCode) {
+    public ShareCreatePermissionHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

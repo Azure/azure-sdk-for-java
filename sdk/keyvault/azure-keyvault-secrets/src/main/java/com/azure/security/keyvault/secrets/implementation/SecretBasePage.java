@@ -33,7 +33,7 @@ public final class SecretBasePage implements Page<SecretBase> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class SecretBasePage implements Page<SecretBase> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<SecretBase> items() {
+    public List<SecretBase> getItems() {
         return items;
     }
 }

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.storage.queue.models;
 
 import java.util.Map;
@@ -25,14 +26,14 @@ public final class QueueProperties {
     /**
      * @return the user-defined metadata associated with the queue
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
     /**
      * @return the approximate number of messages contained in the queue at the time of properties retrieval
      */
-    public int approximateMessagesCount() {
+    public int getApproximateMessagesCount() {
         return approximateMessagesCount;
     }
 }

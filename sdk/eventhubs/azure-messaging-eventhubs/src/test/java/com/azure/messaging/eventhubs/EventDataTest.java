@@ -13,9 +13,13 @@ import org.junit.Test;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
@@ -25,6 +29,7 @@ import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.qpid.proton.amqp.Symbol.getSymbol;
 
 public class EventDataTest {
     // Create a giant payload with 10000 characters that are "a".
@@ -41,7 +46,7 @@ public class EventDataTest {
         new EventData((ByteBuffer) null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void messageNotNull() {
         new EventData((Message) null);
     }
@@ -52,9 +57,9 @@ public class EventDataTest {
         final EventData eventData = new EventData("Test".getBytes());
 
         // Assert
-        Assert.assertNotNull(eventData.systemProperties());
-        Assert.assertNotNull(eventData.body());
-        Assert.assertNotNull(eventData.properties());
+        Assert.assertNotNull(eventData.getSystemProperties());
+        Assert.assertNotNull(eventData.getBody());
+        Assert.assertNotNull(eventData.getProperties());
     }
 
     /**
@@ -69,7 +74,7 @@ public class EventDataTest {
         final EventData eventData = new EventData(byteArray);
 
         // Assert
-        final byte[] actual = eventData.body().array();
+        final byte[] actual = eventData.getBody().array();
         Assert.assertNotNull(actual);
         Assert.assertEquals(0, actual.length);
     }
@@ -83,8 +88,8 @@ public class EventDataTest {
         final EventData eventData = new EventData(PAYLOAD_BYTES);
 
         // Assert
-        Assert.assertNotNull(eventData.body());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(eventData.body()).toString());
+        Assert.assertNotNull(eventData.getBody());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(eventData.getBody()).toString());
     }
 
     /**
@@ -122,6 +127,12 @@ public class EventDataTest {
     @Test
     public void deserializeProtonJMessage() {
         // Arrange
+        final String[] systemPropertyNames = new String[] {
+            PARTITION_KEY_ANNOTATION_NAME.getValue(),
+            OFFSET_ANNOTATION_NAME.getValue(),
+            ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
+            SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+        };
         final Message message = getMessage(PAYLOAD_BYTES);
 
         // Act
@@ -129,22 +140,29 @@ public class EventDataTest {
 
         // Assert
         // Verifying all our system properties were properly deserialized.
-        Assert.assertEquals(ENQUEUED_TIME, eventData.enqueuedTime());
-        Assert.assertEquals(OFFSET, eventData.offset());
-        Assert.assertEquals(PARTITION_KEY, eventData.partitionKey());
-        Assert.assertEquals(SEQUENCE_NUMBER, eventData.sequenceNumber());
+        Assert.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
+        Assert.assertEquals(OFFSET, eventData.getOffset());
+        Assert.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
+        Assert.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
 
-        Assert.assertTrue(eventData.systemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
-        final Object otherPropertyValue = eventData.systemProperties().get(OTHER_SYSTEM_PROPERTY);
+        Assert.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
+        final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
         Assert.assertTrue(otherPropertyValue instanceof Boolean);
         Assert.assertTrue((Boolean) otherPropertyValue);
 
         // Verifying our application properties are the same.
-        Assert.assertEquals(APPLICATION_PROPERTIES.size(), eventData.properties().size());
+        Assert.assertEquals(APPLICATION_PROPERTIES.size(), eventData.getProperties().size());
         APPLICATION_PROPERTIES.forEach((key, value) -> {
-            Assert.assertTrue(eventData.properties().containsKey(key));
-            Assert.assertEquals(value, eventData.properties().get(key));
+            Assert.assertTrue(eventData.getProperties().containsKey(key));
+            Assert.assertEquals(value, eventData.getProperties().get(key));
         });
+
+        // Verify that the partitionKey, offset, enqueued time, sequenceNumber properties are no longer in the system
+        // properties map.
+        for (String property : systemPropertyNames) {
+            Assert.assertFalse(property + " should not be in system properties map.",
+                eventData.getSystemProperties().containsKey(property));
+        }
 
         // Verifying the contents of our message is the same.
     }
@@ -154,7 +172,10 @@ public class EventDataTest {
      */
     private static EventData constructMessage(long sequenceNumber) {
         final HashMap<Symbol, Object> properties = new HashMap<>();
-        properties.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
+        properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
+        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
+        properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);
+        properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Date.from(ENQUEUED_TIME));
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(properties));

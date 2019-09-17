@@ -37,13 +37,15 @@ public final class HttpPolicyProviders {
         addRetryPolicies(policies, () -> getPolicyProviders(false, AfterRetryPolicyProvider.class));
     }
 
-    private static void addRetryPolicies(List<HttpPipelinePolicy> policies, Supplier<Iterator<? extends PolicyProvider>> policySupplier) {
+    private static void addRetryPolicies(List<HttpPipelinePolicy> policies,
+                                         Supplier<Iterator<? extends PolicyProvider>> policySupplier) {
         Iterator<? extends PolicyProvider> it = policySupplier.get();
         while (it.hasNext()) {
             PolicyProvider policyProvider = it.next();
             HttpPipelinePolicy policy = policyProvider.create();
             if (policy == null) {
-                throw new NullPointerException("HttpPipelinePolicy created with " + policyProvider.getClass() + " resulted in a null policy");
+                throw new NullPointerException("HttpPipelinePolicy created with " + policyProvider.getClass()
+                    + " resulted in a null policy");
             }
             policies.add(policy);
         }

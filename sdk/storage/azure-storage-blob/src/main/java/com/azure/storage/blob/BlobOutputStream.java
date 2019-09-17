@@ -36,15 +36,18 @@ public abstract class BlobOutputStream extends OutputStream {
      */
     volatile IOException lastError;
 
-    static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client, final AppendBlobAccessConditions appendBlobAccessConditions) {
+    static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
+        final AppendBlobAccessConditions appendBlobAccessConditions) {
         return new AppendBlobOutputStream(client, appendBlobAccessConditions);
     }
 
-    static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
+    static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
+        final BlobAccessConditions accessConditions) {
         return new BlockBlobOutputStream(client, accessConditions);
     }
 
-    static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final long length, final BlobAccessConditions accessConditions) {
+    static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final long length,
+        final BlobAccessConditions accessConditions) {
         return new PageBlobOutputStream(client, length, accessConditions);
     }
 
@@ -152,7 +155,6 @@ public abstract class BlobOutputStream extends OutputStream {
      * @param byteVal An <code>int</code> which represents the bye value to write.
      * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
      * been closed.
-
      */
     @Override
     public void write(final int byteVal) throws IOException {
@@ -193,27 +195,30 @@ public abstract class BlobOutputStream extends OutputStream {
         private final long initialBlobOffset;
         private final AppendBlobAsyncClient client;
 
-        private AppendBlobOutputStream(final AppendBlobAsyncClient client, final AppendBlobAccessConditions appendBlobAccessConditions) {
+        private AppendBlobOutputStream(final AppendBlobAsyncClient client,
+            final AppendBlobAccessConditions appendBlobAccessConditions) {
             this.client = client;
             this.writeThreshold = BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
             this.appendBlobAccessConditions = appendBlobAccessConditions;
 
             if (appendBlobAccessConditions != null) {
-                this.appendPositionAccessConditions = appendBlobAccessConditions.appendPositionAccessConditions();
+                this.appendPositionAccessConditions = appendBlobAccessConditions.getAppendPositionAccessConditions();
 
-                if (appendBlobAccessConditions.appendPositionAccessConditions().appendPosition() != null) {
-                    this.initialBlobOffset = appendBlobAccessConditions.appendPositionAccessConditions().appendPosition();
+                if (appendBlobAccessConditions.getAppendPositionAccessConditions().getAppendPosition() != null) {
+                    this.initialBlobOffset = appendBlobAccessConditions
+                        .getAppendPositionAccessConditions()
+                        .getAppendPosition();
                 } else {
-                    this.initialBlobOffset = client.getProperties().block().blobSize();
+                    this.initialBlobOffset = client.getProperties().block().getBlobSize();
                 }
             } else {
-                this.initialBlobOffset = client.getProperties().block().blobSize();
+                this.initialBlobOffset = client.getProperties().block().getBlobSize();
                 this.appendPositionAccessConditions = new AppendPositionAccessConditions();
             }
         }
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long offset, long writeLength) {
-            this.appendPositionAccessConditions.appendPosition(offset);
+            this.appendPositionAccessConditions.setAppendPosition(offset);
 
             return client.appendBlockWithResponse(blockData, writeLength, appendBlobAccessConditions)
                 .then()
@@ -233,8 +238,8 @@ public abstract class BlobOutputStream extends OutputStream {
             // first attempt and retry even for a single writer scenario. So we will eliminate the latter and handle
             // the former in the append block method.
             if (this.appendPositionAccessConditions != null
-                && this.appendPositionAccessConditions.maxSize() != null
-                && this.initialBlobOffset > this.appendPositionAccessConditions.maxSize()) {
+                && this.appendPositionAccessConditions.getMaxSize() != null
+                && this.initialBlobOffset > this.appendPositionAccessConditions.getMaxSize()) {
                 this.lastError = new IOException(SR.INVALID_BLOCK_SIZE);
                 return Mono.error(this.lastError);
             }
@@ -272,11 +277,13 @@ public abstract class BlobOutputStream extends OutputStream {
          */
         private String getCurrentBlockId() {
             String blockIdSuffix = String.format("%06d", this.blockList.size());
-            return Base64.getEncoder().encodeToString((this.blockIdPrefix + blockIdSuffix).getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString((this.blockIdPrefix + blockIdSuffix)
+                .getBytes(StandardCharsets.UTF_8));
         }
 
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            LeaseAccessConditions leaseAccessConditions = (accessConditions == null) ? null : accessConditions.leaseAccessConditions();
+            LeaseAccessConditions leaseAccessConditions = (accessConditions == null) 
+                ? null : accessConditions.getLeaseAccessConditions();
 
             return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
                 .then()
@@ -306,7 +313,7 @@ public abstract class BlobOutputStream extends OutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, this.accessConditions).block();
+            client.commitBlockListWithResponse(this.blockList, null, null, null, this.accessConditions).block();
         }
     }
 
@@ -314,21 +321,23 @@ public abstract class BlobOutputStream extends OutputStream {
         private final PageBlobAsyncClient client;
         private final PageBlobAccessConditions pageBlobAccessConditions;
 
-        private PageBlobOutputStream(final PageBlobAsyncClient client, final long length, final BlobAccessConditions blobAccessConditions) {
+        private PageBlobOutputStream(final PageBlobAsyncClient client, final long length,
+            final BlobAccessConditions blobAccessConditions) {
             this.client = client;
             this.writeThreshold = (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
 
             if (blobAccessConditions != null) {
                 this.pageBlobAccessConditions = new PageBlobAccessConditions()
-                    .modifiedAccessConditions(blobAccessConditions.modifiedAccessConditions())
-                    .leaseAccessConditions(blobAccessConditions.leaseAccessConditions());
+                    .setModifiedAccessConditions(blobAccessConditions.getModifiedAccessConditions())
+                    .setLeaseAccessConditions(blobAccessConditions.getLeaseAccessConditions());
             } else {
                 this.pageBlobAccessConditions = null;
             }
         }
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, long offset, long writeLength) {
-            return client.uploadPagesWithResponse(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
+            return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + writeLength - 1),
+                pageData, pageBlobAccessConditions)
                 .then()
                 .onErrorResume(t -> t instanceof StorageException, e -> {
                     this.lastError = new IOException(e);
@@ -343,7 +352,8 @@ public abstract class BlobOutputStream extends OutputStream {
             }
 
             if (writeLength % PageBlobAsyncClient.PAGE_BYTES != 0) {
-                return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
+                return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER,
+                    writeLength)));
             }
 
             Flux<ByteBuffer> fbb = Flux.range(0, 1)

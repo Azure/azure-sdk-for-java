@@ -7,6 +7,7 @@ module com.azure.test {
     requires junit;
     requires org.slf4j;
     requires reactor.core;
+    requires reactor.test;
 
     exports com.azure.core.test;
     exports com.azure.core.test.http;

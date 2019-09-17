@@ -43,7 +43,8 @@ class RequestResponseChannel implements Closeable {
     private static final String STATUS_CODE = "status-code";
     private static final String STATUS_DESCRIPTION = "status-description";
 
-    private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends = new ConcurrentSkipListMap<>();
+    private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
+        new ConcurrentSkipListMap<>();
     private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
 
     private final Sender sendLink;
@@ -59,7 +60,7 @@ class RequestResponseChannel implements Closeable {
 
     RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
                            RetryOptions retryOptions, ReactorHandlerProvider handlerProvider) {
-        this.operationTimeout = retryOptions.tryTimeout();
+        this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         this.replyTo = path.replace("$", "") + "-client-reply-to";
@@ -148,7 +149,8 @@ class RequestResponseChannel implements Closeable {
     private void send(final Message message) {
         sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
 
-        final int payloadSize = EventDataUtil.getDataSerializedSize(message) + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES;
+        final int payloadSize = EventDataUtil.getDataSerializedSize(message)
+            + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES;
         final byte[] bytes = new byte[payloadSize];
         final int encodedSize = message.encode(bytes, 0, payloadSize);
 
@@ -184,7 +186,8 @@ class RequestResponseChannel implements Closeable {
         final int statusCode = (int) message.getApplicationProperties().getValue().get(STATUS_CODE);
 
         if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-            final String statusDescription = (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
+            final String statusDescription =
+                (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
 
             sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription,
                 receiveLinkHandler.getErrorContext(receiveLink)));

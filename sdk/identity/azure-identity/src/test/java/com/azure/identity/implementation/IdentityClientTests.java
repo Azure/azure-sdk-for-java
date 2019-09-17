@@ -55,8 +55,8 @@ public class IdentityClientTests {
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithClientSecret(secret, scopes).block();
-        Assert.assertEquals(accessToken, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(accessToken, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 
     @Test
@@ -94,8 +94,8 @@ public class IdentityClientTests {
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithPfxCertificate(pfxPath, "StrongPass!123", scopes).block();
-        Assert.assertEquals(accessToken, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(accessToken, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 
     @Test
@@ -132,8 +132,8 @@ public class IdentityClientTests {
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
         AccessToken token = client.authenticateWithDeviceCode(scopes, deviceCodeChallenge -> { /* do nothing */ }).block();
-        Assert.assertEquals(accessToken, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(accessToken, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 
     /****** mocks ******/

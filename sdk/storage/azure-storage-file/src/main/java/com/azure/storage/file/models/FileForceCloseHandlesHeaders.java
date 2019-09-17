@@ -61,7 +61,7 @@ public final class FileForceCloseHandlesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -72,7 +72,7 @@ public final class FileForceCloseHandlesHeaders {
      * @param requestId the requestId value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders requestId(String requestId) {
+    public FileForceCloseHandlesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -83,7 +83,7 @@ public final class FileForceCloseHandlesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -94,7 +94,7 @@ public final class FileForceCloseHandlesHeaders {
      * @param version the version value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders version(String version) {
+    public FileForceCloseHandlesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -105,11 +105,11 @@ public final class FileForceCloseHandlesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -119,7 +119,7 @@ public final class FileForceCloseHandlesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileForceCloseHandlesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -135,7 +135,7 @@ public final class FileForceCloseHandlesHeaders {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -147,7 +147,7 @@ public final class FileForceCloseHandlesHeaders {
      * @param marker the marker value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders marker(String marker) {
+    public FileForceCloseHandlesHeaders setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -158,7 +158,7 @@ public final class FileForceCloseHandlesHeaders {
      *
      * @return the numberOfHandlesClosed value.
      */
-    public Integer numberOfHandlesClosed() {
+    public Integer getNumberOfHandlesClosed() {
         return this.numberOfHandlesClosed;
     }
 
@@ -169,7 +169,7 @@ public final class FileForceCloseHandlesHeaders {
      * @param numberOfHandlesClosed the numberOfHandlesClosed value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders numberOfHandlesClosed(Integer numberOfHandlesClosed) {
+    public FileForceCloseHandlesHeaders setNumberOfHandlesClosed(Integer numberOfHandlesClosed) {
         this.numberOfHandlesClosed = numberOfHandlesClosed;
         return this;
     }
@@ -179,7 +179,7 @@ public final class FileForceCloseHandlesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -189,7 +189,7 @@ public final class FileForceCloseHandlesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileForceCloseHandlesHeaders object itself.
      */
-    public FileForceCloseHandlesHeaders errorCode(String errorCode) {
+    public FileForceCloseHandlesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -63,7 +63,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+                                                          JsonDeserializer<?> deserializer) {
                 if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
                     return new FlatteningDeserializer(beanDesc.getBeanClass(), deserializer, mapper);
                 }

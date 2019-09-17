@@ -21,7 +21,8 @@ public final class ScopeUtil {
     public static String scopesToResource(String[] scopes) {
         Objects.requireNonNull(scopes);
         if (scopes.length != 1) {
-            throw new IllegalArgumentException("To convert to a resource string the specified array must be exactly length 1");
+            throw new IllegalArgumentException(
+                "To convert to a resource string the specified array must be exactly length 1");
         }
 
         if (!scopes[0].endsWith(DEFAULT_SUFFIX)) {

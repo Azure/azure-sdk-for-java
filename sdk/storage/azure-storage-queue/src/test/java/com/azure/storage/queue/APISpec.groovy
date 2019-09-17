@@ -8,11 +8,13 @@ import com.azure.core.http.ProxyOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.util.Context
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -65,8 +67,9 @@ class APISpec extends Specification {
             QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().prefix(methodName.toLowerCase())).each {
-                queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.name())
+            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
+                Duration.ofSeconds(30), Context.NONE).each {
+                queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
             }
         }
     }
@@ -140,7 +143,7 @@ class APISpec extends Specification {
 
     static HttpClient getHttpClient() {
         if (enableDebugging) {
-            return HttpClient.createDefault().proxy(new Supplier<ProxyOptions>() {
+            return HttpClient.createDefault().setProxy(new Supplier<ProxyOptions>() {
                 @Override
                 ProxyOptions get() {
                     return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))

@@ -21,19 +21,21 @@ import static java.lang.annotation.ElementType.TYPE;
  *
  * Example 1: Azure Resource Manager
  *
- *   {@literal @}AzureHost(AzureEnvironment.Endpoint.RESOURCE_MANAGER)
- *   interface VirtualMachinesService {
- *     {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
- *     VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
- *   }
+ * {@literal @}AzureHost(AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+ * interface VirtualMachinesService {
+ * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
+ * .Compute/virtualMachines/{vmName}")
+ * VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String
+ * vmName, @PathParam("subscriptionId") String subscriptionId);
+ * }
  *
  * Example 2: Azure Key Vault
  *
- *   {@literal @}AzureHost(AzureEnvironment.Endpoint.KEY_VAULT)
- *   interface KeyVaultService {
- *     {@literal @}GET("secrets/{secretName}")
- *     Secret getSecret(@HostParam String vaultName, @PathParam("secretName") String secretName);
- *   }
+ * {@literal @}AzureHost(AzureEnvironment.Endpoint.KEY_VAULT)
+ * interface KeyVaultService {
+ * {@literal @}GET("secrets/{secretName}")
+ * Secret getSecret(@HostParam String vaultName, @PathParam("secretName") String secretName);
+ * }
  */
 @Target(value = {TYPE})
 @Retention(RetentionPolicy.RUNTIME)

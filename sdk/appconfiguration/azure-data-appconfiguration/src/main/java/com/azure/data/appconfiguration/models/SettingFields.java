@@ -14,27 +14,27 @@ import java.util.Locale;
  */
 public enum SettingFields {
     /**
-     * Populates the {@link ConfigurationSetting#key()} from the service.
+     * Populates the {@link ConfigurationSetting#getKey()} from the service.
      */
     KEY,
     /**
-     * Populates the {@link ConfigurationSetting#label()} from the service.
+     * Populates the {@link ConfigurationSetting#getLabel()} from the service.
      */
     LABEL,
     /**
-     * Populates the {@link ConfigurationSetting#value()} from the service.
+     * Populates the {@link ConfigurationSetting#getValue()} from the service.
      */
     VALUE,
     /**
-     * Populates the {@link ConfigurationSetting#contentType()} from the service.
+     * Populates the {@link ConfigurationSetting#getContentType()} from the service.
      */
     CONTENT_TYPE,
     /**
-     * Populates the {@link ConfigurationSetting#etag()} from the service.
+     * Populates the {@link ConfigurationSetting#getETag()} from the service.
      */
     ETAG,
     /**
-     * Populates the {@link ConfigurationSetting#lastModified()} from the service.
+     * Populates the {@link ConfigurationSetting#getLastModified()} from the service.
      */
     LAST_MODIFIED,
     /**
@@ -42,7 +42,7 @@ public enum SettingFields {
      */
     LOCKED,
     /**
-     * Populates the {@link ConfigurationSetting#tags()} from the service.
+     * Populates the {@link ConfigurationSetting#getTags()} from the service.
      */
     TAGS;
 

@@ -1,67 +1,100 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 
+/**
+ * This class contains the properties about an append blob.
+ */
 public class AppendBlobItem {
-
-    private OffsetDateTime lastModified;
-
+    private final String eTag;
+    private final OffsetDateTime lastModified;
     private final byte[] contentMD5;
-
-    private Boolean isServerEncrypted;
-
-    private String encryptionKeySha256;
-
-    private String blobAppendOffset;
-
-    private Integer blobCommittedBlockCount;
+    private final boolean isServerEncrypted;
+    private final String encryptionKeySha256;
+    private final String blobAppendOffset;
+    private final Integer blobCommittedBlockCount;
 
     public AppendBlobItem(AppendBlobCreateHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+        this.blobAppendOffset = null;
+        this.blobCommittedBlockCount = null;
     }
 
     public AppendBlobItem(AppendBlobAppendBlockHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
-        this.blobAppendOffset = generatedHeaders.blobAppendOffset();
-        this.blobCommittedBlockCount = generatedHeaders.blobCommittedBlockCount();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+        this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
+        this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
     }
 
-    public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders) {
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
-        this.blobAppendOffset = generatedHeaders.blobAppendOffset();
-        this.blobCommittedBlockCount = generatedHeaders.blobCommittedBlockCount();
+    public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders, String isServerEncryptedHeader) {
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
+        this.isServerEncrypted = Boolean.parseBoolean(isServerEncryptedHeader);
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+        this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
+        this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
     }
 
-    public OffsetDateTime lastModified() {
+    /**
+     * @return the eTag of the append blob
+     */
+    public String getETag() {
+        return eTag;
+    }
+
+    /**
+     * @return the time this append blob was last modified
+     */
+    public OffsetDateTime getLastModified() {
         return lastModified;
     };
 
-    public Boolean isServerEncrypted() {
+    /**
+     * @return the encryption status of the append blob on the server
+     */
+    public boolean isServerEncrypted() {
         return isServerEncrypted;
     }
 
-    public String encryptionKeySha256() {
+    /**
+     * @return the key that was used to encrypt the append blob
+     */
+    public String getEncryptionKeySha256() {
         return encryptionKeySha256;
     }
 
-    public byte[] contentMD5() {
+    /**
+     * @return the calculated MD5 of the append blob
+     */
+    public byte[] getContentMD5() {
         return ImplUtils.clone(contentMD5);
     }
 
-    public String blobAppendOffset() {
+    /**
+     * @return the offset of the append blob
+     */
+    public String getBlobAppendOffset() {
         return blobAppendOffset;
-    };
+    }
 
-    public Integer blobCommittedBlockCount() {
+    /**
+     * @return the number of committed blocks in the append blob
+     */
+    public Integer getBlobCommittedBlockCount() {
         return blobCommittedBlockCount;
-    };
+    }
 }

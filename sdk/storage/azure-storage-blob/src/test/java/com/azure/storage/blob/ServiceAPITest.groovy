@@ -28,51 +28,51 @@ import java.time.OffsetDateTime
 
 class ServiceAPITest extends APISpec {
     def setup() {
-        RetentionPolicy disabled = new RetentionPolicy().enabled(false)
+        RetentionPolicy disabled = new RetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .staticWebsite(new StaticWebsite().enabled(false))
-            .deleteRetentionPolicy(disabled)
-            .cors(null)
-            .hourMetrics(new Metrics().version("1.0").enabled(false)
-                .retentionPolicy(disabled))
-            .minuteMetrics(new Metrics().version("1.0").enabled(false)
-                .retentionPolicy(disabled))
-            .logging(new Logging().version("1.0")
-                .retentionPolicy(disabled))
-            .defaultServiceVersion("2018-03-28"))
+            .setStaticWebsite(new StaticWebsite().setEnabled(false))
+            .setDeleteRetentionPolicy(disabled)
+            .setCors(null)
+            .setHourMetrics(new Metrics().setVersion("1.0").setEnabled(false)
+                .setRetentionPolicy(disabled))
+            .setMinuteMetrics(new Metrics().setVersion("1.0").setEnabled(false)
+                .setRetentionPolicy(disabled))
+            .setLogging(new Logging().setVersion("1.0")
+                .setRetentionPolicy(disabled))
+            .setDefaultServiceVersion("2018-03-28"))
     }
 
     def cleanup() {
-        RetentionPolicy disabled = new RetentionPolicy().enabled(false)
+        RetentionPolicy disabled = new RetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .staticWebsite(new StaticWebsite().enabled(false))
-            .deleteRetentionPolicy(disabled)
-            .cors(null)
-            .hourMetrics(new Metrics().version("1.0").enabled(false)
-                .retentionPolicy(disabled))
-            .minuteMetrics(new Metrics().version("1.0").enabled(false)
-                .retentionPolicy(disabled))
-            .logging(new Logging().version("1.0")
-                .retentionPolicy(disabled))
-            .defaultServiceVersion("2018-03-28"))
+            .setStaticWebsite(new StaticWebsite().setEnabled(false))
+            .setDeleteRetentionPolicy(disabled)
+            .setCors(null)
+            .setHourMetrics(new Metrics().setVersion("1.0").setEnabled(false)
+                .setRetentionPolicy(disabled))
+            .setMinuteMetrics(new Metrics().setVersion("1.0").setEnabled(false)
+                .setRetentionPolicy(disabled))
+            .setLogging(new Logging().setVersion("1.0")
+                .setRetentionPolicy(disabled))
+            .setDefaultServiceVersion("2018-03-28"))
     }
 
     def "List containers"() {
         when:
         def response =
-            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
+            primaryBlobServiceClient.listContainers(new ListContainersOptions().setPrefix(containerPrefix + testName), null)
 
         then:
         for (ContainerItem c : response) {
-            assert c.name().startsWith(containerPrefix)
-            assert c.properties().lastModified() != null
-            assert c.properties().etag() != null
-            assert c.properties().leaseStatus() != null
-            assert c.properties().leaseState() != null
-            assert c.properties().leaseDuration() == null
-            assert c.properties().publicAccess() == null
-            assert !c.properties().hasLegalHold()
-            assert !c.properties().hasImmutabilityPolicy()
+            assert c.getName().startsWith(containerPrefix)
+            assert c.getProperties().getLastModified() != null
+            assert c.getProperties().getEtag() != null
+            assert c.getProperties().getLeaseStatus() != null
+            assert c.getProperties().getLeaseState() != null
+            assert c.getProperties().getLeaseDuration() == null
+            assert c.getProperties().getPublicAccess() == null
+            assert !c.getProperties().isHasLegalHold()
+            assert !c.getProperties().isHasImmutabilityPolicy()
         }
     }
 
@@ -91,27 +91,27 @@ class ServiceAPITest extends APISpec {
         }
 
         Iterator<ContainerItem> listResponse = primaryBlobServiceClient.listContainers().iterator()
-        String firstContainerName = listResponse.next().name()
+        String firstContainerName = listResponse.next().getName()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
-        firstContainerName < listResponse.next().name()
+        firstContainerName < listResponse.next().getName()
     }
 
     def "List containers details"() {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).value()
+        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
 
         expect:
         primaryBlobServiceClient.listContainers(new ListContainersOptions()
-            .details(new ContainerListDetails().metadata(true))
-            .prefix("aaa" + containerPrefix), null)
-            .iterator().next().metadata() == metadata
+            .setDetails(new ContainerListDetails().setMetadata(true))
+            .setPrefix("aaa" + containerPrefix), null)
+            .iterator().next().getMetadata() == metadata
 
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cc.deleteWithResponse(null, null, null).statusCode() == 202
+        cc.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
 
     def "List containers maxResults"() {
@@ -125,8 +125,8 @@ class ServiceAPITest extends APISpec {
         }
 
         expect:
-        primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), null)
-            .iterableByPage().iterator().next().value().size() == PAGE_RESULTS
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), null)
+            .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
         containers.each { container -> container.delete() }
@@ -151,7 +151,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -161,69 +161,69 @@ class ServiceAPITest extends APISpec {
     }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
-        return received.logging().read() == sent.logging().read() &&
-            received.logging().delete() == sent.logging().delete() &&
-            received.logging().write() == sent.logging().write() &&
-            received.logging().version() == sent.logging().version() &&
-            received.logging().retentionPolicy().days() == sent.logging().retentionPolicy().days() &&
-            received.logging().retentionPolicy().enabled() == sent.logging().retentionPolicy().enabled() &&
+        return received.getLogging().isRead() == sent.getLogging().isRead() &&
+            received.getLogging().isDelete() == sent.getLogging().isDelete() &&
+            received.getLogging().isWrite() == sent.getLogging().isWrite() &&
+            received.getLogging().getVersion() == sent.getLogging().getVersion() &&
+            received.getLogging().getRetentionPolicy().getDays() == sent.getLogging().getRetentionPolicy().getDays() &&
+            received.getLogging().getRetentionPolicy().isEnabled() == sent.getLogging().getRetentionPolicy().isEnabled() &&
 
-            received.cors().size() == sent.cors().size() &&
-            received.cors().get(0).allowedMethods() == sent.cors().get(0).allowedMethods() &&
-            received.cors().get(0).allowedHeaders() == sent.cors().get(0).allowedHeaders() &&
-            received.cors().get(0).allowedOrigins() == sent.cors().get(0).allowedOrigins() &&
-            received.cors().get(0).exposedHeaders() == sent.cors().get(0).exposedHeaders() &&
-            received.cors().get(0).maxAgeInSeconds() == sent.cors().get(0).maxAgeInSeconds() &&
+            received.getCors().size() == sent.getCors().size() &&
+            received.getCors().get(0).getAllowedMethods() == sent.getCors().get(0).getAllowedMethods() &&
+            received.getCors().get(0).getAllowedHeaders() == sent.getCors().get(0).getAllowedHeaders() &&
+            received.getCors().get(0).getAllowedOrigins() == sent.getCors().get(0).getAllowedOrigins() &&
+            received.getCors().get(0).getExposedHeaders() == sent.getCors().get(0).getExposedHeaders() &&
+            received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds() &&
 
-            received.defaultServiceVersion() == sent.defaultServiceVersion() &&
+            received.getDefaultServiceVersion() == sent.getDefaultServiceVersion() &&
 
-            received.hourMetrics().enabled() == sent.hourMetrics().enabled() &&
-            received.hourMetrics().includeAPIs() == sent.hourMetrics().includeAPIs() &&
-            received.hourMetrics().retentionPolicy().enabled() == sent.hourMetrics().retentionPolicy().enabled() &&
-            received.hourMetrics().retentionPolicy().days() == sent.hourMetrics().retentionPolicy().days() &&
-            received.hourMetrics().version() == sent.hourMetrics().version() &&
+            received.getHourMetrics().isEnabled() == sent.getHourMetrics().isEnabled() &&
+            received.getHourMetrics().isIncludeAPIs() == sent.getHourMetrics().isIncludeAPIs() &&
+            received.getHourMetrics().getRetentionPolicy().isEnabled() == sent.getHourMetrics().getRetentionPolicy().isEnabled() &&
+            received.getHourMetrics().getRetentionPolicy().getDays() == sent.getHourMetrics().getRetentionPolicy().getDays() &&
+            received.getHourMetrics().getVersion() == sent.getHourMetrics().getVersion() &&
 
-            received.minuteMetrics().enabled() == sent.minuteMetrics().enabled() &&
-            received.minuteMetrics().includeAPIs() == sent.minuteMetrics().includeAPIs() &&
-            received.minuteMetrics().retentionPolicy().enabled() == sent.minuteMetrics().retentionPolicy().enabled() &&
-            received.minuteMetrics().retentionPolicy().days() == sent.minuteMetrics().retentionPolicy().days() &&
-            received.minuteMetrics().version() == sent.minuteMetrics().version() &&
+            received.getMinuteMetrics().isEnabled() == sent.getMinuteMetrics().isEnabled() &&
+            received.getMinuteMetrics().isIncludeAPIs() == sent.getMinuteMetrics().isIncludeAPIs() &&
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled() == sent.getMinuteMetrics().getRetentionPolicy().isEnabled() &&
+            received.getMinuteMetrics().getRetentionPolicy().getDays() == sent.getMinuteMetrics().getRetentionPolicy().getDays() &&
+            received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion() &&
 
-            received.deleteRetentionPolicy().enabled() == sent.deleteRetentionPolicy().enabled() &&
-            received.deleteRetentionPolicy().days() == sent.deleteRetentionPolicy().days() &&
+            received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled() &&
+            received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays() &&
 
-            received.staticWebsite().enabled() == sent.staticWebsite().enabled() &&
-            received.staticWebsite().indexDocument() == sent.staticWebsite().indexDocument() &&
-            received.staticWebsite().errorDocument404Path() == sent.staticWebsite().errorDocument404Path()
+            received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled() &&
+            received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument() &&
+            received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path()
     }
 
     def "Set get properties"() {
         when:
-        RetentionPolicy retentionPolicy = new RetentionPolicy().days(5).enabled(true)
-        Logging logging = new Logging().read(true).version("1.0")
-            .retentionPolicy(retentionPolicy)
+        RetentionPolicy retentionPolicy = new RetentionPolicy().setDays(5).setEnabled(true)
+        Logging logging = new Logging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
         ArrayList<CorsRule> corsRules = new ArrayList<>()
-        corsRules.add(new CorsRule().allowedMethods("GET,PUT,HEAD")
-            .allowedOrigins("*")
-            .allowedHeaders("x-ms-version")
-            .exposedHeaders("x-ms-client-request-id")
-            .maxAgeInSeconds(10))
+        corsRules.add(new CorsRule().setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10))
         String defaultServiceVersion = "2016-05-31"
-        Metrics hourMetrics = new Metrics().enabled(true).version("1.0")
-            .retentionPolicy(retentionPolicy).includeAPIs(true)
-        Metrics minuteMetrics = new Metrics().enabled(true).version("1.0")
-            .retentionPolicy(retentionPolicy).includeAPIs(true)
-        StaticWebsite website = new StaticWebsite().enabled(true)
-            .indexDocument("myIndex.html")
-            .errorDocument404Path("custom/error/path.html")
+        Metrics hourMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+        Metrics minuteMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+        StaticWebsite website = new StaticWebsite().setEnabled(true)
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html")
 
         StorageServiceProperties sentProperties = new StorageServiceProperties()
-            .logging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
-            .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
-            .deleteRetentionPolicy(retentionPolicy)
-            .staticWebsite(website)
+            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website)
 
-        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).headers()
+        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleepIfRecord(30 * 1000)
@@ -240,32 +240,32 @@ class ServiceAPITest extends APISpec {
 
     def "Set props min"() {
         setup:
-        RetentionPolicy retentionPolicy = new RetentionPolicy().days(5).enabled(true)
-        Logging logging = new Logging().read(true).version("1.0")
-            .retentionPolicy(retentionPolicy)
+        RetentionPolicy retentionPolicy = new RetentionPolicy().setDays(5).setEnabled(true)
+        Logging logging = new Logging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
         ArrayList<CorsRule> corsRules = new ArrayList<>()
-        corsRules.add(new CorsRule().allowedMethods("GET,PUT,HEAD")
-            .allowedOrigins("*")
-            .allowedHeaders("x-ms-version")
-            .exposedHeaders("x-ms-client-request-id")
-            .maxAgeInSeconds(10))
+        corsRules.add(new CorsRule().setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10))
         String defaultServiceVersion = "2016-05-31"
-        Metrics hourMetrics = new Metrics().enabled(true).version("1.0")
-            .retentionPolicy(retentionPolicy).includeAPIs(true)
-        Metrics minuteMetrics = new Metrics().enabled(true).version("1.0")
-            .retentionPolicy(retentionPolicy).includeAPIs(true)
-        StaticWebsite website = new StaticWebsite().enabled(true)
-            .indexDocument("myIndex.html")
-            .errorDocument404Path("custom/error/path.html")
+        Metrics hourMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+        Metrics minuteMetrics = new Metrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeAPIs(true)
+        StaticWebsite website = new StaticWebsite().setEnabled(true)
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html")
 
         StorageServiceProperties sentProperties = new StorageServiceProperties()
-            .logging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
-            .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
-            .deleteRetentionPolicy(retentionPolicy)
-            .staticWebsite(website)
+            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website)
 
         expect:
-        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).statusCode() == 202
+        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
     }
 
     def "Set props error"() {
@@ -279,7 +279,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props min"() {
         expect:
-        primaryBlobServiceClient.getPropertiesWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getPropertiesWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get props error"() {
@@ -299,15 +299,15 @@ class ServiceAPITest extends APISpec {
         Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKeyWithResponse(start, expiry, null, null)
 
         expect:
-        response.statusCode() == 200
-        response.value() != null
-        response.value().signedOid() != null
-        response.value().signedTid() != null
-        response.value().signedStart() != null
-        response.value().signedExpiry() != null
-        response.value().signedService() != null
-        response.value().signedVersion() != null
-        response.value().value() != null
+        response.getStatusCode() == 200
+        response.getValue() != null
+        response.getValue().getSignedOid() != null
+        response.getValue().getSignedTid() != null
+        response.getValue().getSignedStart() != null
+        response.getValue().getSignedExpiry() != null
+        response.getValue().getSignedService() != null
+        response.getValue().getSignedVersion() != null
+        response.getValue().getValue() != null
     }
 
     def "Get UserDelegationKey min"() {
@@ -317,7 +317,7 @@ class ServiceAPITest extends APISpec {
         def response = getOAuthServiceClient().getUserDelegationKeyWithResponse(null, expiry, null, null)
 
         expect:
-        response.statusCode() == 200
+        response.getStatusCode() == 200
     }
 
     def "Get UserDelegationKey error"() {
@@ -335,25 +335,25 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
         BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
         Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
-        response.headers().value("x-ms-version") != null
-        response.headers().value("x-ms-request-id") != null
-        response.headers().value("Date") != null
-        response.value().geoReplication().status() != null
-        response.value().geoReplication().lastSyncTime() != null
+        response.getHeaders().value("x-ms-version") != null
+        response.getHeaders().value("x-ms-request-id") != null
+        response.getHeaders().value("Date") != null
+        response.getValue().getGeoReplication().getStatus() != null
+        response.getValue().getGeoReplication().getLastSyncTime() != null
     }
 
     def "Get stats min"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
         BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
 
         expect:
-        serviceClient.getStatisticsWithResponse(null, null).statusCode() == 200
+        serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get stats error"() {
@@ -369,16 +369,16 @@ class ServiceAPITest extends APISpec {
         Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
-        response.headers().value("Date") != null
-        response.headers().value("x-ms-version") != null
-        response.headers().value("x-ms-request-id") != null
-        response.value().accountKind() != null
-        response.value().skuName() != null
+        response.getHeaders().value("Date") != null
+        response.getHeaders().value("x-ms-version") != null
+        response.getHeaders().value("x-ms-request-id") != null
+        response.getValue().getAccountKind() != null
+        response.getValue().getSkuName() != null
     }
 
     def "Get account info min"() {
         expect:
-        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Get account info error"() {

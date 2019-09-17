@@ -45,20 +45,20 @@ abstract class PollStrategy {
         long delayInMilliseconds;
 
         PollStrategyData(RestProxy restProxy,
-                                SwaggerMethodParser methodParser,
-                                long delayInMilliseconds) {
+                         SwaggerMethodParser methodParser,
+                         long delayInMilliseconds) {
             this.restProxy = restProxy;
             this.methodParser = methodParser;
             this.delayInMilliseconds = delayInMilliseconds;
         }
 
         abstract PollStrategy initializeStrategy(RestProxy restProxy,
-                                        SwaggerMethodParser methodParser);
+                                                 SwaggerMethodParser methodParser);
     }
 
     @SuppressWarnings("unchecked")
     protected <T> T deserialize(String value, Type returnType) throws IOException {
-        return (T) restProxy.serializer().deserialize(value, returnType, SerializerEncoding.JSON);
+        return (T) restProxy.getSerializer().deserialize(value, returnType, SerializerEncoding.JSON);
     }
 
     protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {
@@ -66,14 +66,15 @@ abstract class PollStrategy {
     }
 
     protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
-        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser);
+        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse =
+            new HttpResponseDecoder(restProxy.getSerializer()).decode(Mono.just(httpResponse), this.methodParser);
         return asyncDecodedResponse.flatMap(decodedResponse -> {
             return restProxy.ensureExpectedStatus(decodedResponse, methodParser, additionalAllowedStatusCodes);
         }).map(decodedResponse -> httpResponse);
     }
 
-    protected String fullyQualifiedMethodName() {
-        return methodParser.fullyQualifiedMethodName();
+    protected String getFullyQualifiedMethodName() {
+        return methodParser.getFullyQualifiedMethodName();
     }
 
     protected boolean expectsResourceResponse() {
@@ -101,7 +102,7 @@ abstract class PollStrategy {
     static Long delayInMillisecondsFrom(HttpResponse httpResponse) {
         Long result = null;
 
-        final String retryAfterSecondsString = httpResponse.headerValue("Retry-After");
+        final String retryAfterSecondsString = httpResponse.getHeaderValue("Retry-After");
         if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
             result = Long.parseLong(retryAfterSecondsString) * 1000;
         }
@@ -126,7 +127,7 @@ abstract class PollStrategy {
     /**
      * @return the current status of the long running operation.
      */
-    String status() {
+    String getStatus() {
         return status;
     }
 
@@ -160,18 +161,23 @@ abstract class PollStrategy {
     Mono<HttpResponse> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             final HttpRequest pollRequest = createPollRequest();
-            return restProxy.send(pollRequest, new Context("caller-method", fullyQualifiedMethodName()));
+            return restProxy.send(pollRequest, new Context("caller-method", getFullyQualifiedMethodName()));
         })).flatMap(response -> updateFromAsync(response)));
     }
 
-    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType, Context context) {
+    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse,
+            SwaggerMethodParser methodParser, Type operationStatusResultType, Context context) {
         OperationStatus<Object> operationStatus;
         if (!isDone()) {
             operationStatus = new OperationStatus<>(this, httpRequest);
         } else {
             try {
-                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType, context);
-                operationStatus = new OperationStatus<>(resultObject, status());
+                final Object resultObject =
+                    restProxy.handleRestReturnType(
+                            new HttpResponseDecoder(restProxy.getSerializer()).decode(Mono.just(httpResponse),
+                                this.methodParser),
+                            methodParser, operationStatusResultType, context);
+                operationStatus = new OperationStatus<>(resultObject, getStatus());
             } catch (HttpResponseException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
@@ -179,26 +185,28 @@ abstract class PollStrategy {
         return Mono.just(operationStatus);
     }
 
-    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType, Context context) {
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest,
+            final SwaggerMethodParser methodParser, final Type operationStatusResultType, final Context context) {
         return sendPollRequestWithDelay()
-                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType, context))
-                .repeat()
-                .takeUntil(operationStatus -> isDone());
+            .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser,
+                operationStatusResultType, context))
+            .repeat()
+            .takeUntil(operationStatus -> isDone());
     }
 
     Mono<HttpResponse> pollUntilDone() {
         return sendPollRequestWithDelay()
-                .repeat()
-                .takeUntil(ignored -> isDone())
-                .last();
+            .repeat()
+            .takeUntil(ignored -> isDone())
+            .last();
     }
 
     /**
      * @return The data for the strategy.
      */
-    public abstract Serializable strategyData();
+    public abstract Serializable getStrategyData();
 
-    SwaggerMethodParser methodParser() {
+    SwaggerMethodParser getMethodParser() {
         return this.methodParser;
     }
 }

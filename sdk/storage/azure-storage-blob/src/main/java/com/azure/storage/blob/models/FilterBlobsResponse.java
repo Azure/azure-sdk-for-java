@@ -136,7 +136,7 @@ public final class FilterBlobsResponse {
      *
      * @return the segment value.
      */
-    public FilterBlobsSegment segment() {
+    public FilterBlobsSegment getSegment() {
         return this.segment;
     }
 
@@ -156,7 +156,7 @@ public final class FilterBlobsResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 

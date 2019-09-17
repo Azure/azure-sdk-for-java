@@ -4,6 +4,7 @@
 package com.azure.core.implementation.serializer.jackson;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -41,6 +42,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  * {'properties' : { 'name' : 'my_name' }} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
+    private final ClientLogger logger = new ClientLogger(FlatteningSerializer.class);
+
     /**
      * The default mapperAdapter for the current type.
      */
@@ -74,7 +77,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         SimpleModule module = new SimpleModule();
         module.setSerializerModifier(new BeanSerializerModifier() {
             @Override
-            public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
+            public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
+                                                      JsonSerializer<?> serializer) {
                 if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
                     return new FlatteningSerializer(beanDesc.getBeanClass(), serializer, mapper);
                 }
@@ -105,10 +109,10 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
 
         if (value.getClass().isPrimitive()
-                || value.getClass().isEnum()
-                || value instanceof OffsetDateTime
-                || value instanceof Duration
-                || value instanceof String) {
+            || value.getClass().isEnum()
+            || value instanceof OffsetDateTime
+            || value instanceof Duration
+            || value instanceof String) {
             return;
         }
 
@@ -143,7 +147,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             try {
                 escapeMapKeys(f.get(value));
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw logger.logExceptionAsError(new RuntimeException(e));
             }
         }
     }
@@ -203,8 +207,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
                 } else if (field.getValue() instanceof ArrayNode
-                        && (field.getValue()).size() > 0
-                        && (field.getValue()).get(0) instanceof ObjectNode) {
+                    && (field.getValue()).size() > 0
+                    && (field.getValue()).get(0) instanceof ObjectNode) {
                     Iterator<JsonNode> sourceIt = field.getValue().elements();
                     Iterator<JsonNode> targetIt = outNode.elements();
                     while (sourceIt.hasNext()) {
@@ -223,7 +227,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     @Override
-    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSerializer) throws IOException {
+    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
+                                  TypeSerializer typeSerializer) throws IOException {
         serialize(value, gen, provider);
     }
 }

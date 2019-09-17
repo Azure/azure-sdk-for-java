@@ -81,7 +81,8 @@ module com.azure.core {
         com.azure.tracing.opentelemetry,        // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+        com.azure.storage.queue;
+    exports com.azure.core.implementation.tracing;                // FIXME this should not be a long-term solution
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;

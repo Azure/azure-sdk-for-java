@@ -35,7 +35,7 @@ public final class SourceModifiedAccessConditions {
      *
      * @return the sourceIfMatchCrc64 value.
      */
-    public byte[] sourceIfMatchCrc64() {
+    public byte[] getSourceIfMatchCrc64() {
         return ImplUtils.clone(this.sourceIfMatchCrc64);
     }
 
@@ -46,7 +46,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfMatchCrc64 the sourceIfMatchCrc64 value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions sourceIfMatchCrc64(byte[] sourceIfMatchCrc64) {
+    public SourceModifiedAccessConditions setSourceIfMatchCrc64(byte[] sourceIfMatchCrc64) {
         this.sourceIfMatchCrc64 = ImplUtils.clone(sourceIfMatchCrc64);
         return this;
     }
@@ -57,7 +57,7 @@ public final class SourceModifiedAccessConditions {
      *
      * @return the sourceIfNoneMatchCrc64 value.
      */
-    public byte[] sourceIfNoneMatchCrc64() {
+    public byte[] getSourceIfNoneMatchCrc64() {
         return ImplUtils.clone(this.sourceIfNoneMatchCrc64);
     }
 
@@ -68,7 +68,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfNoneMatchCrc64 the sourceIfNoneMatchCrc64 value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions sourceIfNoneMatchCrc64(byte[] sourceIfNoneMatchCrc64) {
+    public SourceModifiedAccessConditions setSourceIfNoneMatchCrc64(byte[] sourceIfNoneMatchCrc64) {
         this.sourceIfNoneMatchCrc64 = ImplUtils.clone(sourceIfNoneMatchCrc64);
         return this;
     }

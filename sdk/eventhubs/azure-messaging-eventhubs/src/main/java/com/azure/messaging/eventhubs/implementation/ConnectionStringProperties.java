@@ -51,7 +51,10 @@ public class ConnectionStringProperties {
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
+                throw new IllegalArgumentException(String.format(
+                    Locale.US,
+                    "Connection string has invalid key value pair: %s",
+                    tokenValuePair));
             }
 
             final String key = pair[0].trim();
@@ -61,12 +64,17 @@ public class ConnectionStringProperties {
                 try {
                     endpoint = new URI(value);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
+                    throw new IllegalArgumentException(
+                        String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
                 }
 
                 if (!SCHEME.equalsIgnoreCase(endpoint.getScheme())) {
-                    throw new IllegalArgumentException(String.format(Locale.US,
-                        "Endpoint is not the correct scheme. Expected: %s. Actual Endpoint: %s", SCHEME, endpoint.toString()));
+                    throw new IllegalArgumentException(
+                        String.format(
+                            Locale.US,
+                            "Endpoint is not the correct scheme. Expected: %s. Actual Endpoint: %s",
+                            SCHEME,
+                            endpoint.toString()));
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;
@@ -95,7 +103,7 @@ public class ConnectionStringProperties {
      *
      * @return The endpoint address, including protocol, from the connection string.
      */
-    public URI endpoint() {
+    public URI getEndpoint() {
         return endpoint;
     }
 
@@ -104,7 +112,7 @@ public class ConnectionStringProperties {
      *
      * @return The name of the specific Event Hub under the namespace.
      */
-    public String eventHubName() {
+    public String getEventHubName() {
         return eventHubName;
     }
 
@@ -113,7 +121,7 @@ public class ConnectionStringProperties {
      *
      * @return The name of the shared access key.
      */
-    public String sharedAccessKeyName() {
+    public String getSharedAccessKeyName() {
         return sharedAccessKeyName;
     }
 
@@ -122,7 +130,7 @@ public class ConnectionStringProperties {
      *
      * @return The value of the shared access key.
      */
-    public String sharedAccessKey() {
+    public String getSharedAccessKey() {
         return sharedAccessKey;
     }
 }

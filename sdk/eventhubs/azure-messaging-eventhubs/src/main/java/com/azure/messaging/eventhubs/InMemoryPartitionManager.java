@@ -48,17 +48,17 @@ public class InMemoryPartitionManager implements PartitionManager {
     public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
         return Flux.fromArray(requestedPartitionOwnerships)
             .filter(partitionOwnership -> {
-                return !partitionOwnershipMap.containsKey(partitionOwnership.partitionId())
-                    || partitionOwnershipMap.get(partitionOwnership.partitionId()).eTag()
-                    .equals(partitionOwnership.eTag());
+                return !partitionOwnershipMap.containsKey(partitionOwnership.getPartitionId())
+                    || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
+                    .equals(partitionOwnership.getETag());
             })
             .doOnNext(partitionOwnership -> logger
-                .info("Ownership of partition {} claimed by {}", partitionOwnership.partitionId(),
-                    partitionOwnership.ownerId()))
+                .info("Ownership of partition {} claimed by {}", partitionOwnership.getPartitionId(),
+                    partitionOwnership.getOwnerId()))
             .map(partitionOwnership -> {
-                partitionOwnership.eTag(UUID.randomUUID().toString())
-                    .lastModifiedTime(System.currentTimeMillis());
-                partitionOwnershipMap.put(partitionOwnership.partitionId(), partitionOwnership);
+                partitionOwnership.setETag(UUID.randomUUID().toString())
+                    .setLastModifiedTime(System.currentTimeMillis());
+                partitionOwnershipMap.put(partitionOwnership.getPartitionId(), partitionOwnership);
                 return partitionOwnership;
             });
     }
@@ -72,12 +72,12 @@ public class InMemoryPartitionManager implements PartitionManager {
     @Override
     public Mono<String> updateCheckpoint(final Checkpoint checkpoint) {
         String updatedETag = UUID.randomUUID().toString();
-        partitionOwnershipMap.get(checkpoint.partitionId())
-            .sequenceNumber(checkpoint.sequenceNumber())
-            .offset(checkpoint.offset())
-            .eTag(updatedETag);
-        logger.info("Updated checkpoint for partition {} with sequence number {}", checkpoint.partitionId(),
-            checkpoint.sequenceNumber());
+        partitionOwnershipMap.get(checkpoint.getPartitionId())
+            .setSequenceNumber(checkpoint.getSequenceNumber())
+            .setOffset(checkpoint.getOffset())
+            .setETag(updatedETag);
+        logger.info("Updated checkpoint for partition {} with sequence number {}", checkpoint.getPartitionId(),
+            checkpoint.getSequenceNumber());
         return Mono.just(updatedETag);
     }
 }

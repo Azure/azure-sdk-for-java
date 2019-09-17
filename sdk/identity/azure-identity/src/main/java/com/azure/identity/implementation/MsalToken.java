@@ -23,14 +23,15 @@ public final class MsalToken extends AccessToken {
      * @param msalResult the raw authentication result returned by MSAL
      */
     public MsalToken(IAuthenticationResult msalResult) {
-        super(msalResult.accessToken(), OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC));
+        super(msalResult.accessToken(), OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(),
+            ZoneOffset.UTC));
         this.account = msalResult.account();
     }
 
     /**
      * @return the signed in account
      */
-    public IAccount account() {
+    public IAccount getAccount() {
         return account;
     }
 }

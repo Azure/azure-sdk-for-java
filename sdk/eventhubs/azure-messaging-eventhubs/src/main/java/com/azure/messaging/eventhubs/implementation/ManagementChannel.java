@@ -124,7 +124,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         final String tokenAudience = audienceProvider.getResourceString(eventHubName);
 
         return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
-            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.token());
+            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
 
             final Message request = Proton.message();
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
@@ -132,12 +132,14 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
             return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
                 if (!(message.getBody() instanceof AmqpValue)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException("Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
                 }
 
                 AmqpValue body = (AmqpValue) message.getBody();
                 if (!(body.getValue() instanceof Map)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException("Expected message.getBody().getValue() to be of type Map"));
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "Expected message.getBody().getValue() to be of type Map"));
                 }
 
                 Map<?, ?> map = (Map<?, ?>) body.getValue();

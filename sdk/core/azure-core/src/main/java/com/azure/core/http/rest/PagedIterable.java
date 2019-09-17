@@ -8,7 +8,8 @@ import com.azure.core.util.IterableStream;
 import java.util.stream.Stream;
 
 /**
- *  This class provides utility to iterate over {@link PagedResponse} using {@link Stream} and {@link Iterable} interfaces.
+ * This class provides utility to iterate over {@link PagedResponse} using {@link Stream} and {@link Iterable}
+ * interfaces.
  *
  * <p><strong>Code sample using {@link Stream} by page</strong></p>
  *

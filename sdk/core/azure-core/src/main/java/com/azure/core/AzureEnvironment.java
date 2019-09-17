@@ -67,7 +67,8 @@ public final class AzureEnvironment {
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.chinacloudapi.cn");
             put("keyVaultDnsSuffix", ".vault.azure.cn");
-            // TODO: add dns suffixes for the china cloud for datalake store and datalake analytics once they are defined.
+            // TODO: add dns suffixes for the china cloud for datalake store and datalake analytics once they are
+            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
@@ -93,7 +94,8 @@ public final class AzureEnvironment {
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.usgovcloudapi.net");
             put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
-            // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are defined.
+            // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are
+            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
@@ -119,7 +121,8 @@ public final class AzureEnvironment {
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.cloudapi.de");
             put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
-            // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are defined.
+            // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are
+            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
@@ -144,126 +147,126 @@ public final class AzureEnvironment {
     /**
      * @return the management portal URL.
      */
-    public String portal() {
+    public String getPortal() {
         return endpoints.get("portalUrl");
     }
 
     /**
      * @return the publish settings file URL.
      */
-    public String publishingProfile() {
+    public String getPublishingProfile() {
         return endpoints.get("publishingProfileUrl");
     }
 
     /**
      * @return the management service endpoint.
      */
-    public String managementEndpoint() {
+    public String getManagementEndpoint() {
         return endpoints.get("managementEndpointUrl");
     }
 
     /**
      * @return the resource management endpoint.
      */
-    public String resourceManagerEndpoint() {
+    public String getResourceManagerEndpoint() {
         return endpoints.get("resourceManagerEndpointUrl");
     }
 
     /**
      * @return the sql server management endpoint for mobile commands.
      */
-    public String sqlManagementEndpoint() {
+    public String getSqlManagementEndpoint() {
         return endpoints.get("sqlManagementEndpointUrl");
     }
 
     /**
      * @return the dns suffix for sql servers.
      */
-    public String sqlServerHostnameSuffix() {
+    public String getSqlServerHostnameSuffix() {
         return endpoints.get("sqlServerHostnameSuffix");
     }
 
     /**
      * @return the Active Directory login endpoint.
      */
-    public String activeDirectoryEndpoint() {
+    public String getActiveDirectoryEndpoint() {
         return endpoints.get("activeDirectoryEndpointUrl").replaceAll("/$", "") + "/";
     }
 
     /**
      * @return The resource ID to obtain AD tokens for.
      */
-    public String activeDirectoryResourceId() {
+    public String getActiveDirectoryResourceId() {
         return endpoints.get("activeDirectoryResourceId");
     }
 
     /**
      * @return the template gallery endpoint.
      */
-    public String galleryEndpoint() {
+    public String getGalleryEndpoint() {
         return endpoints.get("galleryEndpointUrl");
     }
 
     /**
      * @return the Active Directory resource ID.
      */
-    public String graphEndpoint() {
+    public String getGraphEndpoint() {
         return endpoints.get("activeDirectoryGraphResourceId");
     }
 
     /**
      * @return the Data Lake resource ID.
      */
-    public String dataLakeEndpointResourceId() {
+    public String getDataLakeEndpointResourceId() {
         return endpoints.get("dataLakeEndpointResourceId");
     }
 
     /**
      * @return the Active Directory api version.
      */
-    public String activeDirectoryGraphApiVersion() {
+    public String getActiveDirectoryGraphApiVersion() {
         return endpoints.get("activeDirectoryGraphApiVersion");
     }
 
     /**
      * @return the endpoint suffix for storage accounts.
      */
-    public String storageEndpointSuffix() {
+    public String getStorageEndpointSuffix() {
         return endpoints.get("storageEndpointSuffix");
     }
 
     /**
      * @return the keyvault service dns suffix.
      */
-    public String keyVaultDnsSuffix() {
+    public String getKeyVaultDnsSuffix() {
         return endpoints.get("keyVaultDnsSuffix");
     }
 
     /**
      * @return the data lake store filesystem service dns suffix.
      */
-    public String azureDataLakeStoreFileSystemEndpointSuffix() {
+    public String getAzureDataLakeStoreFileSystemEndpointSuffix() {
         return endpoints.get("azureDataLakeStoreFileSystemEndpointSuffix");
     }
 
     /**
      * @return the data lake analytics job and catalog service dns suffix.
      */
-    public String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix() {
+    public String getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix() {
         return endpoints.get("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix");
     }
 
     /**
      * @return the log analytics endpoint.
      */
-    public String logAnalyticsEndpoint() {
+    public String getLogAnalyticsEndpoint() {
         return endpoints.get("azureLogAnalyticsResourceId");
     }
 
     /**
      * @return the log analytics endpoint.
      */
-    public String applicationInsightsEndpoint() {
+    public String getApplicationInsightsEndpoint() {
         return endpoints.get("azureApplicationInsightsResourceId");
     }
 

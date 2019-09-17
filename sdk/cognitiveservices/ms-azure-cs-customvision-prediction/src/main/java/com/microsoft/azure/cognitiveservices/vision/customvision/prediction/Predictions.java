@@ -8,12 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.prediction;
 
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageWithNoStoreOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageUrlWithNoStoreOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.PredictImageUrlOptionalParameter;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageUrlWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.DetectImageUrlOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageUrlWithNoStoreOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ClassifyImageUrlOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.CustomVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models.ImagePrediction;
+import java.io.IOException;
 import java.util.UUID;
 import rx.Observable;
 
@@ -23,42 +28,42 @@ import rx.Observable;
  */
 public interface Predictions {
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
-     * @param predictImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param detectImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    @Deprecated
-    ImagePrediction predictImageWithNoStore(UUID projectId, byte[] imageData, PredictImageWithNoStoreOptionalParameter predictImageWithNoStoreOptionalParameter);
+    ImagePrediction detectImageWithNoStore(UUID projectId, String publishedName, byte[] imageData, DetectImageWithNoStoreOptionalParameter detectImageWithNoStoreOptionalParameter);
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
-     * @param predictImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param detectImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    @Deprecated
-    Observable<ImagePrediction> predictImageWithNoStoreAsync(UUID projectId, byte[] imageData, PredictImageWithNoStoreOptionalParameter predictImageWithNoStoreOptionalParameter);
+    Observable<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageWithNoStoreOptionalParameter detectImageWithNoStoreOptionalParameter);
 
     /**
-     * Predict an image without saving the result.
+     * Detect objects in an image without saving the result.
      *
-     * @return the first stage of the predictImageWithNoStore call
+     * @return the first stage of the detectImageWithNoStore call
      */
-    PredictionsPredictImageWithNoStoreDefinitionStages.WithProjectId predictImageWithNoStore();
+    PredictionsDetectImageWithNoStoreDefinitionStages.WithProjectId detectImageWithNoStore();
 
     /**
-     * Grouping of predictImageWithNoStore definition stages.
+     * Grouping of detectImageWithNoStore definition stages.
      */
-    interface PredictionsPredictImageWithNoStoreDefinitionStages {
+    interface PredictionsDetectImageWithNoStoreDefinitionStages {
         /**
          * The stage of the definition to be specify projectId.
          */
@@ -68,18 +73,29 @@ public interface Predictions {
              *
              * @return next definition stage
              */
-            WithImageData withProjectId(UUID projectId);
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithImageData withPublishedName(String publishedName);
         }
         /**
          * The stage of the definition to be specify imageData.
          */
         interface WithImageData {
             /**
-             *
+             * Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
              *
              * @return next definition stage
              */
-            PredictionsPredictImageWithNoStoreDefinitionStages.WithExecute withImageData(byte[] imageData);
+            PredictionsDetectImageWithNoStoreDefinitionStages.WithExecute withImageData(byte[] imageData);
         }
 
         /**
@@ -87,26 +103,18 @@ public interface Predictions {
          */
         interface WithAllOptions {
             /**
-             * Optional. Specifies the id of a particular iteration to evaluate against.
-             *   The default iteration for the project will be used when not specified.
-             *
-             * @return next definition stage
-             */
-            PredictionsPredictImageWithNoStoreDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-            /**
              * Optional. Specifies the name of application using the endpoint.
              *
              * @return next definition stage
              */
-            PredictionsPredictImageWithNoStoreDefinitionStages.WithExecute withApplication(String application);
+            PredictionsDetectImageWithNoStoreDefinitionStages.WithExecute withApplication(String application);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PredictionsPredictImageWithNoStoreDefinitionStages.WithAllOptions {
+        interface WithExecute extends PredictionsDetectImageWithNoStoreDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -124,49 +132,52 @@ public interface Predictions {
     }
 
     /**
-     * The entirety of predictImageWithNoStore definition.
+     * The entirety of detectImageWithNoStore definition.
      */
-    interface PredictionsPredictImageWithNoStoreDefinition extends
-        PredictionsPredictImageWithNoStoreDefinitionStages.WithProjectId,
-        PredictionsPredictImageWithNoStoreDefinitionStages.WithImageData,
-        PredictionsPredictImageWithNoStoreDefinitionStages.WithExecute {
+    interface PredictionsDetectImageWithNoStoreDefinition extends
+        PredictionsDetectImageWithNoStoreDefinitionStages.WithProjectId,
+        PredictionsDetectImageWithNoStoreDefinitionStages.WithPublishedName,
+        PredictionsDetectImageWithNoStoreDefinitionStages.WithImageData,
+        PredictionsDetectImageWithNoStoreDefinitionStages.WithExecute {
     }
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param predictImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    @Deprecated
-    ImagePrediction predictImageUrlWithNoStore(UUID projectId, PredictImageUrlWithNoStoreOptionalParameter predictImageUrlWithNoStoreOptionalParameter);
+    ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName, String url, DetectImageUrlWithNoStoreOptionalParameter detectImageUrlWithNoStoreOptionalParameter);
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param predictImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    @Deprecated
-    Observable<ImagePrediction> predictImageUrlWithNoStoreAsync(UUID projectId, PredictImageUrlWithNoStoreOptionalParameter predictImageUrlWithNoStoreOptionalParameter);
+    Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, DetectImageUrlWithNoStoreOptionalParameter detectImageUrlWithNoStoreOptionalParameter);
 
     /**
-     * Predict an image url without saving the result.
+     * Detect objects in an image url without saving the result.
      *
-     * @return the first stage of the predictImageUrlWithNoStore call
+     * @return the first stage of the detectImageUrlWithNoStore call
      */
-    PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithProjectId predictImageUrlWithNoStore();
+    PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithProjectId detectImageUrlWithNoStore();
 
     /**
-     * Grouping of predictImageUrlWithNoStore definition stages.
+     * Grouping of detectImageUrlWithNoStore definition stages.
      */
-    interface PredictionsPredictImageUrlWithNoStoreDefinitionStages {
+    interface PredictionsDetectImageUrlWithNoStoreDefinitionStages {
         /**
          * The stage of the definition to be specify projectId.
          */
@@ -176,7 +187,29 @@ public interface Predictions {
              *
              * @return next definition stage
              */
-            PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithExecute withProjectId(UUID projectId);
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithUrl withPublishedName(String publishedName);
+        }
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Url of the image.
+             *
+             * @return next definition stage
+             */
+            PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithExecute withUrl(String url);
         }
 
         /**
@@ -184,33 +217,18 @@ public interface Predictions {
          */
         interface WithAllOptions {
             /**
-             * Optional. Specifies the id of a particular iteration to evaluate against.
-             *   The default iteration for the project will be used when not specified.
-             *
-             * @return next definition stage
-             */
-            PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-            /**
              * Optional. Specifies the name of application using the endpoint.
              *
              * @return next definition stage
              */
-            PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithExecute withApplication(String application);
-
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithExecute withUrl(String url);
+            PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithExecute withApplication(String application);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithAllOptions {
+        interface WithExecute extends PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -228,50 +246,52 @@ public interface Predictions {
     }
 
     /**
-     * The entirety of predictImageUrlWithNoStore definition.
+     * The entirety of detectImageUrlWithNoStore definition.
      */
-    interface PredictionsPredictImageUrlWithNoStoreDefinition extends
-        PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithProjectId,
-        PredictionsPredictImageUrlWithNoStoreDefinitionStages.WithExecute {
+    interface PredictionsDetectImageUrlWithNoStoreDefinition extends
+        PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithProjectId,
+        PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithPublishedName,
+        PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithUrl,
+        PredictionsDetectImageUrlWithNoStoreDefinitionStages.WithExecute {
     }
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
-     * @param predictImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param detectImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    @Deprecated
-    ImagePrediction predictImage(UUID projectId, byte[] imageData, PredictImageOptionalParameter predictImageOptionalParameter);
+    ImagePrediction detectImage(UUID projectId, String publishedName, byte[] imageData, DetectImageOptionalParameter detectImageOptionalParameter);
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param imageData the InputStream value.
-     * @param predictImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param detectImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    @Deprecated
-    Observable<ImagePrediction> predictImageAsync(UUID projectId, byte[] imageData, PredictImageOptionalParameter predictImageOptionalParameter);
+    Observable<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData, DetectImageOptionalParameter detectImageOptionalParameter);
 
     /**
-     * Predict an image and saves the result.
+     * Detect objects in an image and saves the result.
      *
-     * @return the first stage of the predictImage call
+     * @return the first stage of the detectImage call
      */
-    PredictionsPredictImageDefinitionStages.WithProjectId predictImage();
+    PredictionsDetectImageDefinitionStages.WithProjectId detectImage();
 
     /**
-     * Grouping of predictImage definition stages.
+     * Grouping of detectImage definition stages.
      */
-    interface PredictionsPredictImageDefinitionStages {
+    interface PredictionsDetectImageDefinitionStages {
         /**
          * The stage of the definition to be specify projectId.
          */
@@ -281,18 +301,29 @@ public interface Predictions {
              *
              * @return next definition stage
              */
-            WithImageData withProjectId(UUID projectId);
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithImageData withPublishedName(String publishedName);
         }
         /**
          * The stage of the definition to be specify imageData.
          */
         interface WithImageData {
             /**
-             *
+             * Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
              *
              * @return next definition stage
              */
-            PredictionsPredictImageDefinitionStages.WithExecute withImageData(byte[] imageData);
+            PredictionsDetectImageDefinitionStages.WithExecute withImageData(byte[] imageData);
         }
 
         /**
@@ -300,26 +331,18 @@ public interface Predictions {
          */
         interface WithAllOptions {
             /**
-             * Optional. Specifies the id of a particular iteration to evaluate against.
-             *   The default iteration for the project will be used when not specified.
-             *
-             * @return next definition stage
-             */
-            PredictionsPredictImageDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-            /**
              * Optional. Specifies the name of application using the endpoint.
              *
              * @return next definition stage
              */
-            PredictionsPredictImageDefinitionStages.WithExecute withApplication(String application);
+            PredictionsDetectImageDefinitionStages.WithExecute withApplication(String application);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PredictionsPredictImageDefinitionStages.WithAllOptions {
+        interface WithExecute extends PredictionsDetectImageDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -337,49 +360,52 @@ public interface Predictions {
     }
 
     /**
-     * The entirety of predictImage definition.
+     * The entirety of detectImage definition.
      */
-    interface PredictionsPredictImageDefinition extends
-        PredictionsPredictImageDefinitionStages.WithProjectId,
-        PredictionsPredictImageDefinitionStages.WithImageData,
-        PredictionsPredictImageDefinitionStages.WithExecute {
+    interface PredictionsDetectImageDefinition extends
+        PredictionsDetectImageDefinitionStages.WithProjectId,
+        PredictionsDetectImageDefinitionStages.WithPublishedName,
+        PredictionsDetectImageDefinitionStages.WithImageData,
+        PredictionsDetectImageDefinitionStages.WithExecute {
     }
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param predictImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    @Deprecated
-    ImagePrediction predictImageUrl(UUID projectId, PredictImageUrlOptionalParameter predictImageUrlOptionalParameter);
+    ImagePrediction detectImageUrl(UUID projectId, String publishedName, String url, DetectImageUrlOptionalParameter detectImageUrlOptionalParameter);
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param predictImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param detectImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    @Deprecated
-    Observable<ImagePrediction> predictImageUrlAsync(UUID projectId, PredictImageUrlOptionalParameter predictImageUrlOptionalParameter);
+    Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url, DetectImageUrlOptionalParameter detectImageUrlOptionalParameter);
 
     /**
-     * Predict an image url and saves the result.
+     * Detect objects in an image url and saves the result.
      *
-     * @return the first stage of the predictImageUrl call
+     * @return the first stage of the detectImageUrl call
      */
-    PredictionsPredictImageUrlDefinitionStages.WithProjectId predictImageUrl();
+    PredictionsDetectImageUrlDefinitionStages.WithProjectId detectImageUrl();
 
     /**
-     * Grouping of predictImageUrl definition stages.
+     * Grouping of detectImageUrl definition stages.
      */
-    interface PredictionsPredictImageUrlDefinitionStages {
+    interface PredictionsDetectImageUrlDefinitionStages {
         /**
          * The stage of the definition to be specify projectId.
          */
@@ -389,7 +415,29 @@ public interface Predictions {
              *
              * @return next definition stage
              */
-            PredictionsPredictImageUrlDefinitionStages.WithExecute withProjectId(UUID projectId);
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithUrl withPublishedName(String publishedName);
+        }
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Url of the image.
+             *
+             * @return next definition stage
+             */
+            PredictionsDetectImageUrlDefinitionStages.WithExecute withUrl(String url);
         }
 
         /**
@@ -397,33 +445,18 @@ public interface Predictions {
          */
         interface WithAllOptions {
             /**
-             * Optional. Specifies the id of a particular iteration to evaluate against.
-             *   The default iteration for the project will be used when not specified.
-             *
-             * @return next definition stage
-             */
-            PredictionsPredictImageUrlDefinitionStages.WithExecute withIterationId(UUID iterationId);
-
-            /**
              * Optional. Specifies the name of application using the endpoint.
              *
              * @return next definition stage
              */
-            PredictionsPredictImageUrlDefinitionStages.WithExecute withApplication(String application);
-
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            PredictionsPredictImageUrlDefinitionStages.WithExecute withUrl(String url);
+            PredictionsDetectImageUrlDefinitionStages.WithExecute withApplication(String application);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PredictionsPredictImageUrlDefinitionStages.WithAllOptions {
+        interface WithExecute extends PredictionsDetectImageUrlDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -441,11 +474,469 @@ public interface Predictions {
     }
 
     /**
-     * The entirety of predictImageUrl definition.
+     * The entirety of detectImageUrl definition.
      */
-    interface PredictionsPredictImageUrlDefinition extends
-        PredictionsPredictImageUrlDefinitionStages.WithProjectId,
-        PredictionsPredictImageUrlDefinitionStages.WithExecute {
+    interface PredictionsDetectImageUrlDefinition extends
+        PredictionsDetectImageUrlDefinitionStages.WithProjectId,
+        PredictionsDetectImageUrlDefinitionStages.WithPublishedName,
+        PredictionsDetectImageUrlDefinitionStages.WithUrl,
+        PredictionsDetectImageUrlDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param classifyImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    ImagePrediction classifyImageWithNoStore(UUID projectId, String publishedName, byte[] imageData, ClassifyImageWithNoStoreOptionalParameter classifyImageWithNoStoreOptionalParameter);
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param classifyImageWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageWithNoStoreOptionalParameter classifyImageWithNoStoreOptionalParameter);
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @return the first stage of the classifyImageWithNoStore call
+     */
+    PredictionsClassifyImageWithNoStoreDefinitionStages.WithProjectId classifyImageWithNoStore();
+
+    /**
+     * Grouping of classifyImageWithNoStore definition stages.
+     */
+    interface PredictionsClassifyImageWithNoStoreDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithImageData withPublishedName(String publishedName);
+        }
+        /**
+         * The stage of the definition to be specify imageData.
+         */
+        interface WithImageData {
+            /**
+             * Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageWithNoStoreDefinitionStages.WithExecute withImageData(byte[] imageData);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Optional. Specifies the name of application using the endpoint.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageWithNoStoreDefinitionStages.WithExecute withApplication(String application);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PredictionsClassifyImageWithNoStoreDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImagePrediction object if successful.
+             */
+            ImagePrediction execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImagePrediction object
+             */
+            Observable<ImagePrediction> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of classifyImageWithNoStore definition.
+     */
+    interface PredictionsClassifyImageWithNoStoreDefinition extends
+        PredictionsClassifyImageWithNoStoreDefinitionStages.WithProjectId,
+        PredictionsClassifyImageWithNoStoreDefinitionStages.WithPublishedName,
+        PredictionsClassifyImageWithNoStoreDefinitionStages.WithImageData,
+        PredictionsClassifyImageWithNoStoreDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName, String url, ClassifyImageUrlWithNoStoreOptionalParameter classifyImageUrlWithNoStoreOptionalParameter);
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlWithNoStoreOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlWithNoStoreOptionalParameter classifyImageUrlWithNoStoreOptionalParameter);
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @return the first stage of the classifyImageUrlWithNoStore call
+     */
+    PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithProjectId classifyImageUrlWithNoStore();
+
+    /**
+     * Grouping of classifyImageUrlWithNoStore definition stages.
+     */
+    interface PredictionsClassifyImageUrlWithNoStoreDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithUrl withPublishedName(String publishedName);
+        }
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Url of the image.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithExecute withUrl(String url);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Optional. Specifies the name of application using the endpoint.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithExecute withApplication(String application);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImagePrediction object if successful.
+             */
+            ImagePrediction execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImagePrediction object
+             */
+            Observable<ImagePrediction> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of classifyImageUrlWithNoStore definition.
+     */
+    interface PredictionsClassifyImageUrlWithNoStoreDefinition extends
+        PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithProjectId,
+        PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithPublishedName,
+        PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithUrl,
+        PredictionsClassifyImageUrlWithNoStoreDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param classifyImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    ImagePrediction classifyImage(UUID projectId, String publishedName, byte[] imageData, ClassifyImageOptionalParameter classifyImageOptionalParameter);
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param classifyImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData, ClassifyImageOptionalParameter classifyImageOptionalParameter);
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @return the first stage of the classifyImage call
+     */
+    PredictionsClassifyImageDefinitionStages.WithProjectId classifyImage();
+
+    /**
+     * Grouping of classifyImage definition stages.
+     */
+    interface PredictionsClassifyImageDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithImageData withPublishedName(String publishedName);
+        }
+        /**
+         * The stage of the definition to be specify imageData.
+         */
+        interface WithImageData {
+            /**
+             * Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageDefinitionStages.WithExecute withImageData(byte[] imageData);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Optional. Specifies the name of application using the endpoint.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageDefinitionStages.WithExecute withApplication(String application);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PredictionsClassifyImageDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImagePrediction object if successful.
+             */
+            ImagePrediction execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImagePrediction object
+             */
+            Observable<ImagePrediction> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of classifyImage definition.
+     */
+    interface PredictionsClassifyImageDefinition extends
+        PredictionsClassifyImageDefinitionStages.WithProjectId,
+        PredictionsClassifyImageDefinitionStages.WithPublishedName,
+        PredictionsClassifyImageDefinitionStages.WithImageData,
+        PredictionsClassifyImageDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    ImagePrediction classifyImageUrl(UUID projectId, String publishedName, String url, ClassifyImageUrlOptionalParameter classifyImageUrlOptionalParameter);
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
+     * @param classifyImageUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url, ClassifyImageUrlOptionalParameter classifyImageUrlOptionalParameter);
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @return the first stage of the classifyImageUrl call
+     */
+    PredictionsClassifyImageUrlDefinitionStages.WithProjectId classifyImageUrl();
+
+    /**
+     * Grouping of classifyImageUrl definition stages.
+     */
+    interface PredictionsClassifyImageUrlDefinitionStages {
+        /**
+         * The stage of the definition to be specify projectId.
+         */
+        interface WithProjectId {
+            /**
+             * The project id.
+             *
+             * @return next definition stage
+             */
+            WithPublishedName withProjectId(UUID projectId);
+        }
+        /**
+         * The stage of the definition to be specify publishedName.
+         */
+        interface WithPublishedName {
+            /**
+             * Specifies the name of the model to evaluate against.
+             *
+             * @return next definition stage
+             */
+            WithUrl withPublishedName(String publishedName);
+        }
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Url of the image.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageUrlDefinitionStages.WithExecute withUrl(String url);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Optional. Specifies the name of application using the endpoint.
+             *
+             * @return next definition stage
+             */
+            PredictionsClassifyImageUrlDefinitionStages.WithExecute withApplication(String application);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PredictionsClassifyImageUrlDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImagePrediction object if successful.
+             */
+            ImagePrediction execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImagePrediction object
+             */
+            Observable<ImagePrediction> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of classifyImageUrl definition.
+     */
+    interface PredictionsClassifyImageUrlDefinition extends
+        PredictionsClassifyImageUrlDefinitionStages.WithProjectId,
+        PredictionsClassifyImageUrlDefinitionStages.WithPublishedName,
+        PredictionsClassifyImageUrlDefinitionStages.WithUrl,
+        PredictionsClassifyImageUrlDefinitionStages.WithExecute {
     }
 
 }

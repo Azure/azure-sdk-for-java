@@ -29,7 +29,7 @@ class KeyWrapUnwrapRequest {
      *
      * @return the algorithm value
      */
-    public KeyWrapAlgorithm algorithm() {
+    public KeyWrapAlgorithm getAlgorithm() {
         return this.algorithm;
     }
 
@@ -39,7 +39,7 @@ class KeyWrapUnwrapRequest {
      * @param algorithm the algorithm value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyWrapUnwrapRequest algorithm(KeyWrapAlgorithm algorithm) {
+    public KeyWrapUnwrapRequest setAlgorithm(KeyWrapAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -49,7 +49,7 @@ class KeyWrapUnwrapRequest {
      *
      * @return the value value
      */
-    public byte[] value() {
+    public byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }
@@ -62,7 +62,7 @@ class KeyWrapUnwrapRequest {
      * @param value the value value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyWrapUnwrapRequest value(byte[] value) {
+    public KeyWrapUnwrapRequest setValue(byte[] value) {
         if (value == null) {
             this.value = null;
         } else {

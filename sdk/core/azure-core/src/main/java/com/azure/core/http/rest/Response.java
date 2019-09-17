@@ -8,7 +8,7 @@ import com.azure.core.http.HttpRequest;
 /**
  * REST response with a strongly-typed content specified.
  *
- * @param <T> The deserialized type of the response content, available from {@link #value()}.
+ * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  * @see ResponseBase
  */
 public interface Response<T> {
@@ -18,24 +18,24 @@ public interface Response<T> {
      *
      * @return the status code of the HTTP response.
      */
-    int statusCode();
+    int getStatusCode();
 
     /**
      * Get the headers from the HTTP response.
      *
      * @return an HttpHeaders instance containing the HTTP response headers.
      */
-    HttpHeaders headers();
+    HttpHeaders getHeaders();
 
     /**
      * Get the HTTP request which resulted in this response.
      *
      * @return the HTTP request.
      */
-    HttpRequest request();
+    HttpRequest getRequest();
 
     /**
      * @return the deserialized value of the HTTP response.
      */
-    T value();
+    T getValue();
 }
