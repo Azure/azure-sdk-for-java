@@ -5,9 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.implementation.annotation.Immutable;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
@@ -27,14 +25,14 @@ class AppServiceMSICredential {
      * @param identityClient the identity client to acquire a token with.
      */
     AppServiceMSICredential(String clientId, IdentityClient identityClient) {
-        Configuration configuration = ConfigurationManager.getConfiguration();
-        if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
-            msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+            msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         } else {
             msiEndpoint = null;
         }
-        if (configuration.contains(BaseConfigurations.MSI_SECRET)) {
-            msiSecret = configuration.get(BaseConfigurations.MSI_SECRET);
+        if (configuration.contains(Configuration.PROPERTY_MSI_SECRET)) {
+            msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         } else {
             msiSecret = null;
         }

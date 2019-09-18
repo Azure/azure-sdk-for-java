@@ -3,9 +3,7 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -65,7 +63,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
      */
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration) {
-        boolean telemetryDisabled = configuration.get(BaseConfigurations.AZURE_TELEMETRY_DISABLED, false);
+        boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
             this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion);
         } else {
@@ -93,9 +91,9 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     private static String getPlatformInfo() {
-        String javaVersion = ConfigurationManager.getConfiguration().get("java.version");
-        String osName = ConfigurationManager.getConfiguration().get("os.name");
-        String osVersion = ConfigurationManager.getConfiguration().get("os.version");
+        String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
+        String osName = Configuration.getGlobalConfiguration().get("os.name");
+        String osVersion = Configuration.getGlobalConfiguration().get("os.version");
 
         return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }

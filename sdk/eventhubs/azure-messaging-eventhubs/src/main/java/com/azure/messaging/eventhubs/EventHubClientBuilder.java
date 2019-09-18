@@ -11,9 +11,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -269,12 +267,12 @@ public class EventHubClientBuilder {
      * The following options are used if ones are not specified in the builder:
      *
      * <ul>
-     * <li>If no configuration is specified, the {@link ConfigurationManager#getConfiguration() global configuration}
+     * <li>If no configuration is specified, the {@link Configuration#getGlobalConfiguration() global configuration}
      * is used to provide any shared configuration values. The configuration values read are the {@link
-     * BaseConfigurations#HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
+     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
      * ProxyConfiguration#PROXY_PASSWORD}.</li>
      * <li>If no retry is specified, the default retry options are used.</li>
-     * <li>If no proxy is specified, the builder checks the {@link ConfigurationManager#getConfiguration() global
+     * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
      * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
      * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
@@ -302,12 +300,12 @@ public class EventHubClientBuilder {
      * The following options are used if ones are not specified in the builder:
      *
      * <ul>
-     * <li>If no configuration is specified, the {@link ConfigurationManager#getConfiguration() global configuration}
+     * <li>If no configuration is specified, the {@link Configuration#getGlobalConfiguration() global configuration}
      * is used to provide any shared configuration values. The configuration values read are the {@link
-     * BaseConfigurations#HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
+     * Configuration#PROPERTY_HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
      * ProxyConfiguration#PROXY_PASSWORD}.</li>
      * <li>If no retry is specified, the default retry options are used.</li>
-     * <li>If no proxy is specified, the builder checks the {@link ConfigurationManager#getConfiguration() global
+     * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
      * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
      * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
@@ -330,7 +328,7 @@ public class EventHubClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
-        configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
+        configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         if (credentials == null) {
             final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
@@ -379,7 +377,7 @@ public class EventHubClientBuilder {
             authentication = proxyConfiguration.getAuthentication();
         }
 
-        String proxyAddress = configuration.get(BaseConfigurations.HTTP_PROXY);
+        String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
 
         if (ImplUtils.isNullOrEmpty(proxyAddress)) {
             return ProxyConfiguration.SYSTEM_DEFAULTS;
