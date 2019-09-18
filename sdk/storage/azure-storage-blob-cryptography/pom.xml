@@ -42,12 +42,17 @@
       <artifactId>azure-storage-blob</artifactId>
       <version>12.0.0-preview.4</version>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-core-test</artifactId>-->
-<!--      <version>1.0.0-preview.4</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-cryptography</artifactId>
+      <version>1.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.5</version>
+      <scope>test</scope>
+    </dependency>
 <!--    <dependency>-->
 <!--      <groupId>com.azure</groupId>-->
 <!--      <artifactId>azure-core-http-netty</artifactId>-->
@@ -60,12 +65,23 @@
 <!--      <scope>test</scope>-->
 <!--    </dependency>-->
 <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.spockframework/spock-core &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.spockframework</groupId>-->
-<!--      <artifactId>spock-core</artifactId>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-cryptography</artifactId>
+      <version>1.2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-cryptography</artifactId>
+      <version>1.2.2</version>
+    </dependency>
+    <!--    <dependency>-->
 <!--      <groupId>io.projectreactor</groupId>-->
 <!--      <artifactId>reactor-test</artifactId>-->
 <!--      <scope>test</scope>-->
@@ -73,6 +89,9 @@
   </dependencies>
 
   <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

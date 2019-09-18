@@ -14,8 +14,10 @@ import java.util.TreeMap;
 
 /**
  * A class used to conveniently parse URLs into {@link BlobURLParts} to modify the components of the URL.
+ *
+ * RESERVED FOR INTERNAL USE ONLY
  */
-final class URLParser {
+public final class URLParser {
 
     /**
      * URLParser parses a URL initializing BlobURLParts' fields including any SAS-related and snapshot query parameters.

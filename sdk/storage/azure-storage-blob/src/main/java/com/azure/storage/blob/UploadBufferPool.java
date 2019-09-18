@@ -27,8 +27,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * to be available, and either store the incomplete buffer to be filled on the next write or return the filled buffer to
  * be sent. Filled buffers can be uploaded in parallel and should return buffers to the pool after the upload completes.
  * Once the source terminates, it should call flush.
+ *
+ * RESERVED FOR INTERNAL USE ONLY
  */
-final class UploadBufferPool {
+public final class UploadBufferPool {
     private final ClientLogger logger = new ClientLogger(UploadBufferPool.class);
 
     /*
@@ -47,7 +49,12 @@ final class UploadBufferPool {
 
     private ByteBuffer currentBuf;
 
-    UploadBufferPool(final int numBuffs, final int buffSize) {
+    /**
+     * Creates a new instance of UploadBufferPool
+     * @param numBuffs The number of buffers in the buffer pool.
+     * @param buffSize The size of the buffers
+     */
+    public UploadBufferPool(final int numBuffs, final int buffSize) {
         /*
         We require at least two buffers because it is possible that a given write will spill over into a second buffer.
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
@@ -72,7 +79,13 @@ final class UploadBufferPool {
     Note that the upload method will be calling write sequentially as there is only one worker reading from the source
     and calling write. This means operations like currentBuf.remaining() will not result in race conditions.
      */
-    Flux<ByteBuffer> write(ByteBuffer buf) {
+
+    /**
+     * Writes ByteBuffers to a Flux<ByteBuffer>
+     * @param buf The buffer to write
+     * @return The Flux<ByteBuffer>
+     */
+    public Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
@@ -148,7 +161,11 @@ final class UploadBufferPool {
         return result;
     }
 
-    Flux<ByteBuffer> flush() {
+    /**
+     * Flushes the current buffer
+     * @return the flushed buffer
+     */
+    public Flux<ByteBuffer> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
@@ -163,7 +180,11 @@ final class UploadBufferPool {
         return Flux.empty();
     }
 
-    void returnBuffer(ByteBuffer b) {
+    /**
+     * Returns the ByteBuffer
+     * @param b The ByteBuffer to reset and return
+     */
+    public void returnBuffer(ByteBuffer b) {
         // Reset the buffer.
         b.position(0);
         b.limit(b.capacity());

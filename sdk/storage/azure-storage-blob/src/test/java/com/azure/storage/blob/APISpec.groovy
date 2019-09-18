@@ -209,48 +209,48 @@ class APISpec extends Specification {
             accountKey = "astorageaccountkey"
         }
 
-    if (accountName == null || accountKey == null) {
-        logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-        return null
-    }
-
-    return new SharedKeyCredential(accountName, accountKey)
-}
-
-BlobServiceClient setClient(SharedKeyCredential credential) {
-    try {
-        return getServiceClient(credential)
-    } catch (Exception ignore) {
-        return null
-    }
-}
-
-def getOAuthServiceClient() {
-    BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-        .httpClient(getHttpClient())
-        .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
-    if (testMode == TestMode.RECORD) {
-        if (recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (accountName == null || accountKey == null) {
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+            return null
         }
 
-        // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-        return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
-    } else {
-        // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-        return builder.credential(primaryCredential).buildClient()
+        return new SharedKeyCredential(accountName, accountKey)
     }
-}
 
-BlobServiceClient getServiceClient(String endpoint) {
-    return getServiceClient(null, endpoint, null)
-}
+    BlobServiceClient setClient(SharedKeyCredential credential) {
+        try {
+            return getServiceClient(credential)
+        } catch (Exception ignore) {
+            return null
+        }
+    }
 
-BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
-}
+    def getOAuthServiceClient() {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            if (recordLiveMode) {
+                builder.addPolicy(interceptorManager.getRecordPolicy())
+            }
+
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(primaryCredential).buildClient()
+        }
+    }
+
+    BlobServiceClient getServiceClient(String endpoint) {
+        return getServiceClient(null, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential) {
+        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
         return getServiceClient(credential, endpoint, null)

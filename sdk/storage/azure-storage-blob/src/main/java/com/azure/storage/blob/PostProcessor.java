@@ -8,8 +8,11 @@ import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-final class PostProcessor {
-    static <T> Mono<T> postProcessResponse(Mono<T> response) {
+/**
+ * RESERVED FOR INTERNAL USE ONLY
+ */
+public final class PostProcessor {
+    public static <T> Mono<T> postProcessResponse(Mono<T> response) {
         return Utility.postProcessResponse(response, (errorResponse) ->
             errorResponse.onErrorResume(StorageErrorException.class, resume ->
                 resume.getResponse()

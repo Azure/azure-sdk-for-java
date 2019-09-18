@@ -18,8 +18,10 @@ import java.util.Map;
  * {@link #toURL()}. It is also possible to use the empty constructor to buildClient a blobURL from scratch.
  *
  * <p>NOTE: Changing any SAS-related field requires computing a new SAS signature.</p>
+ *
+ * RESERVED FOR INTERNAL USE ONLY
  */
-final class BlobURLParts {
+public final class BlobURLParts {
 
     private String scheme;
 
