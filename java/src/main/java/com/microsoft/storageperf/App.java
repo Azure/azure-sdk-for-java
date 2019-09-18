@@ -2,26 +2,17 @@ package com.microsoft.storageperf;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.time.Duration;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlockBlobAsyncClient;
-import com.azure.storage.blob.BlockBlobClient;
 
 import org.apache.commons.cli.*;
 
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 public class App {
     private static final String _containerName = "testcontainer";
@@ -29,9 +20,6 @@ public class App {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         Options options = new Options();
-
-        Option debugOption = new Option("g", "debug", false, "Enable debug mode");
-        options.addOption(debugOption);
 
         Option durationOption = new Option("d", "duration", true, "Duration in seconds");
         options.addOption(durationOption);
@@ -72,10 +60,10 @@ public class App {
         Run(connectionString, debug, upload, duration, parallel, size);
     }
 
-    static Mono<Void> Run(String connectionString, Boolean debug, Boolean upload, int duration, int parallel,
+    static void Run(String connectionString, Boolean debug, Boolean upload, int duration, int parallel,
             int size) {
         BlockBlobAsyncClient client = new BlobClientBuilder().connectionString(connectionString)
-                .containerName(_containerName).blobName(_blobName).buildBlockBlobAsyncClient();
+            .containerName(_containerName).blobName(_blobName).buildBlockBlobAsyncClient();
 
         if (upload) {
             UploadAndVerifyDownload(client, size).block();
@@ -85,75 +73,45 @@ public class App {
                 _blobName, parallel, duration);
         System.out.println();
 
-        AtomicInteger count = new AtomicInteger(0);
+        AtomicInteger receivedSize = new AtomicInteger(-1);
+        AtomicInteger counter = new AtomicInteger();
+        Flux.interval(Duration.ofSeconds(1)).subscribe(i -> System.out.println(counter.get()));
 
-        List<Disposable> subscriptions = new ArrayList<Disposable>();
-        for (int i = 0; i < parallel; i++) {
-            subscriptions.add(DownloadLoop(client).subscribe(f -> {
-                AtomicInteger byteCount = new AtomicInteger(0);
-                f.doOnComplete(() -> count.incrementAndGet())
-                .subscribe(b -> {
+        long start = System.nanoTime();
+        Flux<Integer> downloads = downloadParallel(client, parallel)
+            .take(Duration.ofSeconds(duration))
+            .doOnNext(i -> {
+                if (receivedSize.get() == -1) {
+                    receivedSize.set(i);
+                }
+                counter.incrementAndGet();
+            });
+        downloads.blockLast();
+        long end = System.nanoTime();
+        
+        double elapsedSeconds = 1.0 * (end - start) / 1000000000;
+        double downloadsPerSecond = counter.get() / elapsedSeconds;
+        double megabytesPerSecond = (downloadsPerSecond * receivedSize.get()) / (1024 * 1024);
+
+        System.out.println();
+        System.out.printf("Downloaded %d blobs of size %d in %.2fs (%.2f blobs/s, %.2f MB/s)", counter.get(), receivedSize.get(),
+            elapsedSeconds, downloadsPerSecond, megabytesPerSecond);
+    }
+
+    static Flux<Integer> downloadParallel(BlockBlobAsyncClient client, int parallel) {
+        return Flux.just(1).repeat().flatMap(i -> downloadOneBlob(client), parallel);
+    }
+    
+    static Mono<Integer> downloadOneBlob(BlockBlobAsyncClient client) {
+        return client
+            .download() // Mono<Flux<ByteBuffer>>
+            .flatMap(f -> f
+                .reduce(0, (i, b) -> {
+                    // System.out.println(Thread.currentThread().getName());
                     int remaining = b.remaining();
-                    System.out.println("Bytes read: " + byteCount.addAndGet(remaining));
                     b.get(new byte[remaining]);
-                });
-             //   f.doOnComplete(() -> count.incrementAndGet());
-            }));
-        }
-
-        try {
-            Thread.sleep(duration * 1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        for (Disposable subscription : subscriptions) {
-            subscription.dispose();
-        }
-
-        System.out.println("Final Count: " + count.get());
-
-        return Mono.empty();
-    }
-
-    static Flux<Flux<ByteBuffer>> DownloadLoop(BlockBlobAsyncClient client) {
-        return Flux.range(0, Integer.MAX_VALUE).flatMap(i -> client.download());
-    }
-
-    static class MyIterable implements Iterable<Flux<ByteBuffer>> {
-
-        private BlockBlobAsyncClient _client;
-
-        public MyIterable(BlockBlobAsyncClient client) {
-            _client = client;
-        }
-
-        @Override
-        public Iterator<Flux<ByteBuffer>> iterator() {
-            return new MyIterator(_client);
-        }
-
-        static class MyIterator implements Iterator<Flux<ByteBuffer>> {
-
-            private BlockBlobAsyncClient _client;
-
-            public MyIterator(BlockBlobAsyncClient client) {
-                _client = client;
-            }
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Flux<ByteBuffer> next() {
-                return _client.download().flatMapMany(response -> response);
-            }
-
-        }
-
+                    return i + remaining;
+                }));
     }
 
     static Mono<Void> UploadAndVerifyDownload(BlockBlobAsyncClient client, int size) {
