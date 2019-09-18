@@ -78,9 +78,6 @@ class FileAPITests extends APISpec {
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
-//        ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName)
-//            .snapshot(shareSnapshotInfo.getSnapshot()).buildClient()
-//        def shareURL = newShareClient.getFileClient(filePath).getFileUrl().toString()
         FileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getFileClient(filePath)
         def fileURL = newFileClient.getFileUrl().toString()

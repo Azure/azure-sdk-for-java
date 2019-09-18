@@ -29,10 +29,6 @@ class AppendBlobAPITest extends APISpec {
         bc.create()
     }
 
-    def "Get URL"() {
-        cc
-    }
-
     def "Create defaults"() {
         when:
         Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null)
