@@ -21,8 +21,6 @@ import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
-import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -80,18 +78,14 @@ public class EventHubAsyncClient implements Closeable {
     private final EventHubConsumerOptions defaultConsumerOptions;
     private final TracerProvider tracerProvider;
 
-    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider,
-                        ReactorHandlerProvider handlerProvider, TracerProvider tracerProvider,
+    EventHubAsyncClient(ConnectionOptions connectionOptions, TracerProvider tracerProvider,
                         Mono<EventHubConnection> eventHubConnectionMono) {
-        Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
-        Objects.requireNonNull(provider, "'provider' cannot be null.");
-        Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
-        Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
 
-        this.connectionOptions = connectionOptions;
-        this.tracerProvider = tracerProvider;
+        this.connectionOptions = Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
+        this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.eventHubName = connectionOptions.getEventHubName();
-        this.connectionMono = eventHubConnectionMono.doOnSubscribe(c -> hasConnection.set(true))
+        this.connectionMono = Objects.requireNonNull(eventHubConnectionMono, "'eventHubConnectionMono' cannot be null.")
+            .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
 
         this.defaultProducerOptions = new EventHubProducerOptions()

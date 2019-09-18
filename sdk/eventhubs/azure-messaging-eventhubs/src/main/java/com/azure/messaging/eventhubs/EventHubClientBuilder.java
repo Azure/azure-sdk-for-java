@@ -357,7 +357,7 @@ public class EventHubClientBuilder {
                 tokenManagerProvider, mapper);
         });
 
-        return new EventHubAsyncClient(connectionOptions, provider, handlerProvider, tracerProvider, connectionMono);
+        return new EventHubAsyncClient(connectionOptions, tracerProvider, connectionMono);
     }
 
     private ConnectionOptions getConnectionOptions() {

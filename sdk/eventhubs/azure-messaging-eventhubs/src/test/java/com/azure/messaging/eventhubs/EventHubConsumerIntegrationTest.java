@@ -249,9 +249,10 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             // Act
             final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(3));
 
-            System.out.println("Sending second batch.");
+            logger.info("Sending second batch.");
             producer.send(events2);
-            System.out.println("Receiving second batch.");
+
+            logger.info("Receiving second batch.");
             final IterableStream<EventData> receive2 = consumer.receive(100, Duration.ofSeconds(5));
 
             // Assert
