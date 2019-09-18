@@ -16,7 +16,6 @@ module com.azure.core {
     requires org.slf4j;
 
     // public API surface area
-    exports com.azure.core;
     exports com.azure.core.annotation;
     exports com.azure.core.credentials;
     exports com.azure.core.exception;
