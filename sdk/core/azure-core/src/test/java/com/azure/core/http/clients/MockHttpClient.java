@@ -3,10 +3,10 @@
 
 package com.azure.core.http.clients;
 
-import com.azure.core.entities.HttpBinFormDataJSON;
-import com.azure.core.entities.HttpBinFormDataJSON.Form;
-import com.azure.core.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.entities.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.implementation.entities.HttpBinFormDataJSON.Form;
+import com.azure.core.implementation.entities.HttpBinFormDataJSON.PizzaSize;
+import com.azure.core.implementation.entities.HttpBinJSON;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;

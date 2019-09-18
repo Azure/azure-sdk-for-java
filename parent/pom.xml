@@ -163,7 +163,7 @@
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.2</maven-build-tools.version>
     <sdk-build-tools.version>1.0.0</sdk-build-tools.version>
-    <maven-javadoc.version>3.0.1</maven-javadoc.version>
+    <maven-javadoc.version>3.1.1</maven-javadoc.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <jetty-maven-plugin.version>9.3.22.v20171030</jetty-maven-plugin.version>

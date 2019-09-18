@@ -3,7 +3,6 @@
 
 package com.azure.core.test;
 
-import com.azure.core.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 

@@ -60,7 +60,7 @@
   </Match>
 
   <Match>
-    <Class name="com\.azure\.core\.util\.Base64Url"/>
+    <Class name="com.azure.core.util.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -615,5 +615,21 @@
   <Match>
     <Class name="com.azure.core.implementation.serializer.jackson.FlatteningSerializer"/>
     <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Package name="com.azure.core.test"/>
+      <Package name="com.azure.core.test.implementation"/>
+      <Package name="com.azure.core.test.http"/>
+    </Or>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING,
+                  DM_CONVERT_CASE,
+                  EC_UNRELATED_TYPES,
+                  REC_CATCH_EXCEPTION,
+                  DM_DEFAULT_ENCODING,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 </FindBugsFilter>

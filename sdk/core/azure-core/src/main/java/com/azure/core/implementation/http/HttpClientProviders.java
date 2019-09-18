@@ -10,7 +10,7 @@ import java.util.ServiceLoader;
 /**
  * This class handles loading available HTTP clients
  */
-public class HttpClientProviders {
+public final class HttpClientProviders {
     private static HttpClientProvider defaultProvider;
     private static final String CANNOT_FIND_HTTP_CLIENT =
         "Cannot find any HttpClient provider on the classpath - unable to create a default HttpClient instance";

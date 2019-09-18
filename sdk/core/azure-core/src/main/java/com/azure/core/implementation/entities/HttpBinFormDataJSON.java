@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.entities;
+package com.azure.core.implementation.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -48,14 +48,6 @@ public class HttpBinFormDataJSON {
 
         private String value;
         PizzaSize(String value) {
-            this.value = value;
-        }
-
-        public String value() {
-            return this.value;
-        }
-
-        public void value(String value) {
             this.value = value;
         }
     }

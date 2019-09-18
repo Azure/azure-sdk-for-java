@@ -336,7 +336,7 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <configuration>
-            <source>8</source>
+            <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
@@ -445,6 +445,9 @@
             <failOnError>false</failOnError>
             <failOnWarnings>false</failOnWarnings>
             <doclint>all</doclint>
+            <sourceFileExcludes>
+              <sourceFileExclude>module-info.java</sourceFileExclude>
+            </sourceFileExcludes>
           </configuration>
         </plugin>
 

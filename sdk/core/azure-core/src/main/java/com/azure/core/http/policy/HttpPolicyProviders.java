@@ -23,6 +23,7 @@ public final class HttpPolicyProviders {
 
     /**
      * Adds SPI policies that implement {@link BeforeRetryPolicyProvider}.
+     *
      * @param policies Policy list to append the policies.
      */
     public static void addBeforeRetryPolicies(List<HttpPipelinePolicy> policies) {
@@ -31,6 +32,7 @@ public final class HttpPolicyProviders {
 
     /**
      * Adds SPI policies that implement {@link AfterRetryPolicyProvider}.
+     *
      * @param policies Policy list to append the policies.
      */
     public static void addAfterRetryPolicies(List<HttpPipelinePolicy> policies) {
@@ -38,7 +40,7 @@ public final class HttpPolicyProviders {
     }
 
     private static void addRetryPolicies(List<HttpPipelinePolicy> policies,
-                                         Supplier<Iterator<? extends PolicyProvider>> policySupplier) {
+        Supplier<Iterator<? extends PolicyProvider>> policySupplier) {
         Iterator<? extends PolicyProvider> it = policySupplier.get();
         while (it.hasNext()) {
             PolicyProvider policyProvider = it.next();
@@ -51,8 +53,10 @@ public final class HttpPolicyProviders {
         }
     }
 
-    private static Iterator<? extends PolicyProvider> getPolicyProviders(boolean reload, Class<? extends PolicyProvider> cls) {
-        ServiceLoader<? extends PolicyProvider> serviceLoader = SERVICE_LOADERS.computeIfAbsent(cls, ServiceLoader::load);
+    private static Iterator<? extends PolicyProvider> getPolicyProviders(boolean reload,
+        Class<? extends PolicyProvider> cls) {
+        ServiceLoader<? extends PolicyProvider> serviceLoader = SERVICE_LOADERS
+            .computeIfAbsent(cls, ServiceLoader::load);
 
         if (reload) {
             serviceLoader.reload();

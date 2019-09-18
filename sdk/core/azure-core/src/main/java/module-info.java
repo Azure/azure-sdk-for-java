@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 module com.azure.core {
     requires java.xml;
 
@@ -16,7 +19,6 @@ module com.azure.core {
     exports com.azure.core;
     exports com.azure.core.annotation;
     exports com.azure.core.credentials;
-    exports com.azure.core.entities;
     exports com.azure.core.exception;
     exports com.azure.core.http;
     exports com.azure.core.http.policy;
@@ -31,7 +33,7 @@ module com.azure.core {
     opens com.azure.core.http to azure.core, com.azure.test, com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
-    opens com.azure.core.entities to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.entities to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jackson to com.azure.core,com.fasterxml.jackson.databind;
@@ -46,6 +48,19 @@ module com.azure.core {
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
+    exports com.azure.core.implementation.entities to
+        com.azure.core.management,
+        com.azure.test,
+        com.azure.http.netty,
+        com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
+        com.azure.identity,                     // FIXME this should not be a long-term solution
+        com.azure.security.keyvault.keys,
+        com.azure.security.keyvault.secrets,
+        com.azure.storage.common,               // FIXME this should not be a long-term solution
+        com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.file,                 // FIXME this should not be a long-term solution
+        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+
     exports com.azure.core.implementation.http to
         com.azure.core.management,
         com.azure.test,

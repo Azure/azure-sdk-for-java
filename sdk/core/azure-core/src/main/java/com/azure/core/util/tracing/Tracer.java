@@ -73,6 +73,7 @@ public interface Tracer {
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
+     * @param processKind AMQP message process kind.
      * @return An updated context object.
      */
     Context start(String methodName, Context context, ProcessKind processKind);

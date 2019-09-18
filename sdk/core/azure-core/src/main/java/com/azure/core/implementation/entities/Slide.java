@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.entities;
+package com.azure.core.implementation.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import java.util.Arrays;
 
 public class Slide {
     @JacksonXmlProperty(localName = "type", isAttribute = true)
@@ -40,6 +41,9 @@ public class Slide {
      * @return The content strings of the slide.
      */
     public String[] items() {
-        return items;
+        if (items == null) {
+            return new String[0];
+        }
+        return Arrays.copyOf(items, items.length);
     }
 }
