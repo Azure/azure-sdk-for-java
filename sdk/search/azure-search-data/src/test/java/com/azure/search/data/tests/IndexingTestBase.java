@@ -162,7 +162,8 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         Assert.assertFalse(result.succeeded());
     }
 
-    public abstract void indexWithInvalidDocumentThrowsException();
+    @Test
+    public abstract void indexWithInvalidDocumentThrowsException() throws Exception;
 
     @Test
     public abstract void canUseIndexWithReservedName();
@@ -175,6 +176,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void staticallyTypedDateTimesRoundTripAsUtc() throws Exception;
+
+    @Test
+    public abstract void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception;
 
     @Test
     public abstract void canMergeStaticallyTypedDocuments() throws ParseException;

@@ -11,8 +11,6 @@ import com.azure.search.data.customization.Document;
 import com.azure.search.data.customization.IndexBatchBuilder;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.IndexingResult;
 import com.azure.search.data.models.Book;
@@ -23,6 +21,7 @@ import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -38,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 
 public class IndexingSyncTests extends IndexingTestBase {
@@ -61,9 +59,8 @@ public class IndexingSyncTests extends IndexingTestBase {
         Long expectedHotelCount = 1L;
 
         Hotel myHotel = new Hotel().hotelId(expectedHotelId);
-        List<Hotel> toUpload = Arrays.asList(myHotel);
 
-        List<IndexingResult> result = client.uploadDocuments(toUpload).results();
+        List<IndexingResult> result = client.uploadDocument(myHotel).results();
         this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
 
         waitFor(2);
@@ -80,9 +77,8 @@ public class IndexingSyncTests extends IndexingTestBase {
                 hotelName("My Pascal Hotel").
                 description("A Great Pascal Description.").
                 category("Category Pascal");
-        List<Hotel> toUpload = Arrays.asList(myHotel);
 
-        List<IndexingResult> result = client.uploadDocuments(toUpload).results();
+        List<IndexingResult> result = client.uploadDocument(myHotel).results();
         this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
 
         waitFor(2);
@@ -158,30 +154,14 @@ public class IndexingSyncTests extends IndexingTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexAction uploadAction = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
+        IndexBatch indexBatch = new IndexBatchBuilder()
+            .upload(hotel1)
+            .delete(randomHotel)
+            .merge(nonExistingHotel)
+            .mergeOrUpload(hotel3)
+            .upload(hotel2)
+            .build();
 
-        IndexAction deleteAction = new IndexAction()
-            .actionType(IndexActionType.DELETE)
-            .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
-        IndexAction mergeNonExistingAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(nonExistingHotel, Map.class));
-        IndexAction mergeOrUploadAction = new IndexAction()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel3, Map.class));
-        IndexAction uploadAction2 = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel2, Map.class));
-
-        IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
-            uploadAction,
-            deleteAction,
-            mergeNonExistingAction,
-            mergeOrUploadAction,
-            uploadAction2
-        ));
         List<IndexingResult> results =  client.index(indexBatch).results();
         Assert.assertEquals(results.size(), indexBatch.actions().size());
 
@@ -212,33 +192,13 @@ public class IndexingSyncTests extends IndexingTestBase {
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
         Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexAction uploadAction = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(hotel1);
-
-        IndexAction deleteAction = new IndexAction()
-            .actionType(IndexActionType.DELETE)
-            .additionalProperties(randomHotel);
-
-        IndexAction mergeNonExistingAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(nonExistingHotel);
-
-        IndexAction mergeOrUploadAction = new IndexAction()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(hotel3);
-
-        IndexAction uploadAction2 = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(hotel2);
-
-        IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
-            uploadAction,
-            deleteAction,
-            mergeNonExistingAction,
-            mergeOrUploadAction,
-            uploadAction2
-        ));
+        IndexBatch indexBatch = new IndexBatchBuilder()
+            .upload(hotel1)
+            .delete(randomHotel)
+            .merge(nonExistingHotel)
+            .mergeOrUpload(hotel3)
+            .upload(hotel2)
+            .build();
 
         List<IndexingResult> results =  client.index(indexBatch).results();
         Assert.assertEquals(results.size(), indexBatch.actions().size());
@@ -260,12 +220,12 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void indexWithInvalidDocumentThrowsException() {
+    public void indexWithInvalidDocumentThrowsException() throws Exception {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("The request is invalid. Details: actions : 0: Document key cannot be missing or empty.");
 
-        List<Document> toUpload = Arrays.asList(new Document());
-        client.uploadDocuments(toUpload);
+        Document toUpload = new Document();
+        client.uploadDocument(toUpload);
     }
 
     @Override
@@ -281,10 +241,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         indexData.put("ID", "1");
 
         client.setIndexName(indexWithReservedName.name())
-            .index(new IndexBatch()
-                .actions(Collections.singletonList(new IndexAction()
-                    .actionType(IndexActionType.UPLOAD)
-                    .additionalProperties(indexData))));
+            .uploadDocument(indexData);
 
         Document actual = client.getDocument("1");
         Assert.assertNotNull(actual);
@@ -297,15 +254,7 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
-        List<IndexAction> actions = boundaryConditionDocs.stream()
-            .map(h -> new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties((Map<String, Object>) jsonApi.convertObjectToType(h, Map.class)))
-            .collect(Collectors.toList());
-        IndexBatch batch = new IndexBatch()
-            .actions(actions);
-
-        client.index(batch);
+        client.uploadDocuments(boundaryConditionDocs);
 
         // Wait 2 secs to allow index request to finish
         Thread.sleep(2000);
@@ -480,36 +429,22 @@ public class IndexingSyncTests extends IndexingTestBase {
             .address(address)
             .rooms(updatedRooms);
 
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
+        client.uploadDocument(originalDoc);
 
-        // Upload an original doc and merge it with an updated doc
-        IndexAction uploadOriginalDocAction = new IndexAction()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(originalDoc, Map.class));
-        IndexAction replaceWithUpdatedDocAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(updatedDoc, Map.class));
-        IndexBatch batch1 = new IndexBatch()
-            .actions(Arrays.asList(uploadOriginalDocAction));
-        IndexBatch batch2 = new IndexBatch()
-            .actions(Arrays.asList(replaceWithUpdatedDocAction));
-
-        // Verify
-        Assert.assertEquals(batch1.actions().size(), client.index(batch1).results().size());
-        Assert.assertEquals(batch2.actions().size(), client.index(batch2).results().size());
+        client.mergeDocument(updatedDoc);
         Assert.assertEquals(expectedDoc, client.getDocument(hotelId).as(Hotel.class));
 
-        // Merge with the original doc
-        IndexAction replaceWithOriginalDocAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(originalDoc, Map.class));
-        IndexBatch batch3 = new IndexBatch()
-            .actions(Arrays.asList(replaceWithOriginalDocAction));
-
-        // Verify
-        Assert.assertEquals(batch3.actions().size(), client.index(batch3).results().size());
+        client.mergeDocument(originalDoc);
         Assert.assertEquals(originalDoc, client.getDocument(hotelId).as(Hotel.class));
+    }
+
+    @Override
+    public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
+        Hotel hotel = prepareStaticallyTypedHotel("1");
+
+        List<IndexingResult> indexingResults = client.mergeDocument(hotel).results();
+        assertFailedIndexResult(indexingResults.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
+        Assert.assertEquals(1, indexingResults.size());
     }
 
     @Override

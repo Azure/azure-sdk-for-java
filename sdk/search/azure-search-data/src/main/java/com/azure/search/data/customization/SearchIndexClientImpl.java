@@ -40,8 +40,38 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
+    public <T> DocumentIndexResult uploadDocument(T document) {
+        return this.index(new IndexBatchBuilder().upload(document).build());
+    }
+
+    @Override
     public <T> DocumentIndexResult uploadDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder().upload(documents).build());
+    }
+
+    @Override
+    public <T> DocumentIndexResult mergeDocument(T document) {
+        return this.index(new IndexBatchBuilder().merge(document).build());
+    }
+
+    @Override
+    public <T> DocumentIndexResult mergeDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().merge(documents).build());
+    }
+
+    @Override
+    public <T> DocumentIndexResult mergeOrUploadDocument(T document) {
+        return this.index(new IndexBatchBuilder().mergeOrUpload(document).build());
+    }
+
+    @Override
+    public <T> DocumentIndexResult mergeOrUploadDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().mergeOrUpload(documents).build());
+    }
+
+    @Override
+    public <T> DocumentIndexResult deleteDocument(T document) {
+        return this.index(new IndexBatchBuilder().delete(document).build());
     }
 
     @Override
@@ -51,13 +81,11 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
 
     @Override
     public String getApiVersion() {
-
         return asyncClient.getApiVersion();
     }
 
     @Override
     public String getSearchDnsSuffix() {
-
         return asyncClient.getSearchDnsSuffix();
     }
 
