@@ -824,11 +824,11 @@ public final class QueueAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getName}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getQueueName}
      *
      * @return The name of the queue.
      */
-    public String getName() {
+    public String getQueueName() {
         return queueName;
     }
 

@@ -663,6 +663,19 @@ public class DirectoryClient {
     }
 
     /**
+     * Get the share name of directory client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.getShareName}
+     *
+     * @return The share name of the directory.
+     */
+    public String getShareName() {
+        return directoryAsyncClient.getShareName();
+    }
+
+    /**
      * Get directory path from directory client.
      *
      * <p>Get directory path. </p>
@@ -671,7 +684,7 @@ public class DirectoryClient {
      *
      * @return The path of the directory.
      */
-    public String getName() {
-        return directoryAsyncClient.getName();
+    public String getDirectoryPath() {
+        return directoryAsyncClient.getDirectoryPath();
     }
 }

@@ -1160,15 +1160,28 @@ public class BlobClient {
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getContainerName}
+     *
+     * @return The name of the container.
+     */
+    public String getContainerName() {
+        return this.blobAsyncClient.getContainerName();
+    }
+
+    /**
      * Get the blob name.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.getName}
+     * {@codesnippet com.azure.storage.blob.BlobClient.getBlobName}
      *
      * @return The name of the blob.
      */
-    public String getName() {
-        return this.blobAsyncClient.getName();
+    public String getBlobName() {
+        return this.blobAsyncClient.getBlobName();
     }
 }

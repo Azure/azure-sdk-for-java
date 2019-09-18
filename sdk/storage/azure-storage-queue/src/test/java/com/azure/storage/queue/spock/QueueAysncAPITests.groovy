@@ -514,6 +514,6 @@ class QueueAysncAPITests extends APISpec {
 
     def "Get Queue Name"() {
         expect:
-        queueName == queueAsyncClient.getName()
+        queueName == queueAsyncClient.getQueueName()
     }
 }

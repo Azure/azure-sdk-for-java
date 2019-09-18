@@ -779,15 +779,28 @@ public class DirectoryAsyncClient {
     }
 
     /**
+     * Get the share name of directory client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getShareName}
+     *
+     * @return The share name of the directory.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
      * Get directory path from directory client.
      *
      * <p>Get directory path. </p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getName}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getDirectoryPath}
      *
      * @return The path of the directory.
      */
-    public String getName() {
+    public String getDirectoryPath() {
         return directoryPath;
     }
 

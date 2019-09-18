@@ -1932,8 +1932,13 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
     def "Get Blob Name"() {
         expect:
-        blobName == bc.getName()
+        blobName == bc.getBlobName()
     }
 }

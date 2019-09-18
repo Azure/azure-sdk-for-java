@@ -497,8 +497,13 @@ class AppendBlobAPITest extends APISpec {
         null                  | null                    | null          | receivedEtag
     }
 
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
     def "Get Append Blob Name"() {
         expect:
-        blobName == bc.getName()
+        blobName == bc.getBlobName()
     }
 }

@@ -576,8 +576,13 @@ class DirectoryAPITests extends APISpec {
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }
 
+    def "Get Share Name"() {
+        expect:
+        shareName == primaryDirectoryClient.getShareName()
+    }
+
     def "Get Directory Path"() {
         expect:
-        directoryPath == primaryDirectoryClient.getName()
+        directoryPath == primaryDirectoryClient.getDirectoryPath()
     }
 }

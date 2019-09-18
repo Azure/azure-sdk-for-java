@@ -925,16 +925,29 @@ public class FileClient {
     }
 
     /**
+     * Get the share name of file client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getShareName}
+     *
+     * @return The share name of the file.
+     */
+    public String getShareName() {
+        return this.fileAsyncClient.getShareName();
+    }
+
+    /**
      * Get file path from file client.
      *
      * <p>Get the file path. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.getName}
+     * {@codesnippet com.azure.storage.file.fileClient.getFilePath}
      *
      * @return The path of the file.
      */
-    public String getName() {
-        return this.fileAsyncClient.getName();
+    public String getFilePath() {
+        return this.fileAsyncClient.getFilePath();
     }
 }
 

@@ -429,13 +429,24 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#getName()}
+     * Generates a code sample for using {@link DirectoryClient#getShareName()}
      */
-    public void getNameAsync() {
+    public void getShareName() {
+        DirectoryClient directoryAsyncClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.directoryClient.getShareName
+        String shareName = directoryAsyncClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.directoryClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#getDirectoryPath()}
+     */
+    public void getDirectoryPath() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.getName
-        String directoryPath = directoryClient.getName();
+        // BEGIN: com.azure.storage.file.directoryClient.getDirectoryPath
+        String directoryPath = directoryClient.getDirectoryPath();
         System.out.println("The name of the directory is " + directoryPath);
-        // END: com.azure.storage.file.directoryClient.getName
+        // END: com.azure.storage.file.directoryClient.getDirectoryPath
     }
 }

@@ -709,11 +709,11 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getName}
+     * {@codesnippet com.azure.storage.queue.queueClient.getQueueName}
      *
      * @return The name of the queue.
      */
-    public String getName() {
-        return this.client.getName();
+    public String getQueueName() {
+        return this.client.getQueueName();
     }
 }

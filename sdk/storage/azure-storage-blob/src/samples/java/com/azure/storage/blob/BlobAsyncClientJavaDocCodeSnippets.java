@@ -582,12 +582,22 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link BlobAsyncClient#getName()}
+     * Generates a code sample for using {@link BlobAsyncClient#getContainerName()}
      */
-    public void getName() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getName
-        String blobName = client.getName();
+    public void getContainerName() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getContainerName
+        String containerName = client.getContainerName();
+        System.out.println("The name of the container is " + containerName);
+        // END: com.azure.storage.blob.BlobAsyncClient.getContainerName
+    }
+
+    /**
+     * Generates a code sample for using {@link BlobAsyncClient#getBlobName()}
+     */
+    public void getBlobName() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getBlobName
+        String blobName = client.getBlobName();
         System.out.println("The name of the blob is " + blobName);
-        // END: com.azure.storage.blob.BlobAsyncClient.getName
+        // END: com.azure.storage.blob.BlobAsyncClient.getBlobName
     }
 }

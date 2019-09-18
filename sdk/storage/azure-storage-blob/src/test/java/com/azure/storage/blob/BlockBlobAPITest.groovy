@@ -1044,8 +1044,13 @@ class BlockBlobAPITest extends APISpec {
         e.getStatusCode() == 500
     }
 
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
     def "Get Block Blob Name"() {
         expect:
-        blobName == bc.getName()
+        blobName == bc.getBlobName()
     }
 }

@@ -981,11 +981,11 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.getName}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getShareName}
      *
      * @return The name of the share.
      */
-    public String getName() {
+    public String getShareName() {
         return shareName;
     }
 

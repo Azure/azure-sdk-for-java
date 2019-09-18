@@ -1339,11 +1339,11 @@ public final class ContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getName}
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getContainerName}
      *
      * @return The name of container.
      */
-    public String getName() {
+    public String getContainerName() {
         return URLParser.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
     }
 

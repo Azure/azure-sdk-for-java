@@ -645,13 +645,24 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#getName()}
+     * Generates a code sample for using {@link FileClient#getShareName()}
+     */
+    public void getShareName() {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getShareName
+        String shareName = fileClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.fileAsyncClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link FileClient#getFilePath()}
      */
     public void getName() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.getName
-        String filePath = fileClient.getName();
+        // BEGIN: com.azure.storage.file.fileClient.getFilePath
+        String filePath = fileClient.getFilePath();
         System.out.println("The name of the file is " + filePath);
-        // END: com.azure.storage.file.fileClient.getName
+        // END: com.azure.storage.file.fileClient.getFilePath
     }
 }

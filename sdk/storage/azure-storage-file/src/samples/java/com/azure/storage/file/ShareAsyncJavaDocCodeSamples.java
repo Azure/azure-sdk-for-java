@@ -554,13 +554,13 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#getName()}
+     * Generates a code sample for using {@link ShareAsyncClient#getShareName()}
      */
-    public void getNameAsync() {
+    public void getShareNameAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.getName
-        String shareName = shareAsyncClient.getName();
+        // BEGIN: com.azure.storage.file.shareAsyncClient.getShareName
+        String shareName = shareAsyncClient.getShareName();
         System.out.println("The name of the share is " + shareName);
-        // END: com.azure.storage.file.shareAsyncClient.getName
+        // END: com.azure.storage.file.shareAsyncClient.getShareName
     }
 }

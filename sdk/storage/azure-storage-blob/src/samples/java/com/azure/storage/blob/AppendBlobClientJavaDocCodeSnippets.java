@@ -177,11 +177,11 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link AppendBlobClient#getName()}
+     * Generates a code sample for using {@link AppendBlobClient#getBlobName()}
      */
     public void getName() {
         // BEGIN: com.azure.storage.blob.AppendBlobClient.getName
-        String appendBlobName = client.getName();
+        String appendBlobName = client.getBlobName();
         System.out.println("The name of the append blob is " + appendBlobName);
         // END: com.azure.storage.blob.AppendBlobClient.getName
     }

@@ -245,11 +245,11 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link BlockBlobClient#getName()}
+     * Generates a code sample for using {@link BlockBlobClient#getBlobName()}
      */
     public void getName() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.getName
-        String blobName = client.getName();
+        String blobName = client.getBlobName();
         System.out.println("The name of the blob is " + blobName);
         // END: com.azure.storage.blob.BlockBlobClient.getName
     }

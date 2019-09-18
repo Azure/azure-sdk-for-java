@@ -470,12 +470,12 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#getName()}
+     * Generates a code sample for using {@link QueueClient#getQueueName()}
      */
     public void getName() {
-        // BEGIN: com.azure.storage.queue.queueClient.getName
-        String queueName = client.getName();
+        // BEGIN: com.azure.storage.queue.queueClient.getQueueName
+        String queueName = client.getQueueName();
         System.out.println("The name of the queue is " + queueName);
-        // END: com.azure.storage.queue.queueClient.getName
+        // END: com.azure.storage.queue.queueClient.getQueueName
     }
 }

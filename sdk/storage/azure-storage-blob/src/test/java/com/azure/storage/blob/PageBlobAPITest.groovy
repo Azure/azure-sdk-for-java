@@ -1110,8 +1110,13 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
     def "Get Page Blob Name"() {
         expect:
-        blobName == bc.getName()
+        blobName == bc.getBlobName()
     }
 }

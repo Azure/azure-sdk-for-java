@@ -690,13 +690,24 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#getName()}
+     * Generates a code sample for using {@link FileAsyncClient#getShareName()}
      */
-    public void getNameAsync() {
+    public void getShareNameAsync() {
+        FileAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getShareName
+        String shareName = directoryAsyncClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.fileAsyncClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getFilePath()}
+     */
+    public void getFilePathAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.getName
-        String filePath = fileAsyncClient.getName();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getFilePath
+        String filePath = fileAsyncClient.getFilePath();
         System.out.println("The name of the file is " + filePath);
-        // END: com.azure.storage.file.fileAsyncClient.getName
+        // END: com.azure.storage.file.fileAsyncClient.getFilePath
     }
 }

@@ -142,7 +142,7 @@ class FileSASTests extends APISpec {
 
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
-        def fileName = primaryFileClient.fileAsyncClient.name
+        def fileName = primaryFileClient.fileAsyncClient.filePath
         def shareName = primaryFileClient.fileAsyncClient.shareName
         def accountName = "account"
 
@@ -265,7 +265,7 @@ class FileSASTests extends APISpec {
         when:
         String sasWithId = primaryShareClient.generateSAS(identifier.getId())
 
-        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.name)
+        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryShareClient.getShareUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sasWithId))
             .buildClient()
@@ -275,7 +275,7 @@ class FileSASTests extends APISpec {
 
         String sasWithPermissions = primaryShareClient.generateSAS(expiryTime, permissions)
 
-        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.name)
+        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
             .buildClient()

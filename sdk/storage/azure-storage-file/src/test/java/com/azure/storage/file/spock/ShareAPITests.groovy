@@ -476,6 +476,6 @@ class ShareAPITests extends APISpec {
 
     def "Get Share Name"() {
         expect:
-        shareName == primaryShareClient.getName()
+        shareName == primaryShareClient.getShareName()
     }
 }

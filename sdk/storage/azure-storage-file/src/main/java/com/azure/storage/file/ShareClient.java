@@ -860,11 +860,11 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.getName}
+     * {@codesnippet com.azure.storage.file.shareClient.getShareName}
      *
      * @return The name of the share.
      */
-    public String getName() {
-        return this.client.getName();
+    public String getShareName() {
+        return this.client.getShareName();
     }
 }
