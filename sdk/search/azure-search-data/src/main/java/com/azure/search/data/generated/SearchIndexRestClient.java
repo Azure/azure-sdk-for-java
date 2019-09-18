@@ -21,9 +21,8 @@ public interface SearchIndexRestClient {
      * Sets Client Api Version.
      *
      * @param apiVersion the apiVersion value.
-     * @return the service client itself.
      */
-    SearchIndexRestClient setApiVersion(String apiVersion);
+    void setApiVersion(String apiVersion);
 
     /**
      * Gets The name of the Azure Search service.
@@ -36,9 +35,8 @@ public interface SearchIndexRestClient {
      * Sets The name of the Azure Search service.
      *
      * @param searchServiceName the searchServiceName value.
-     * @return the service client itself.
      */
-    SearchIndexRestClient setSearchServiceName(String searchServiceName);
+    void setSearchServiceName(String searchServiceName);
 
     /**
      * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
@@ -51,9 +49,8 @@ public interface SearchIndexRestClient {
      * Sets The DNS suffix of the Azure Search service. The default is search.windows.net.
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
-     * @return the service client itself.
      */
-    SearchIndexRestClient setSearchDnsSuffix(String searchDnsSuffix);
+    void setSearchDnsSuffix(String searchDnsSuffix);
 
     /**
      * Gets The name of the Azure Search index.
@@ -66,9 +63,8 @@ public interface SearchIndexRestClient {
      * Sets The name of the Azure Search index.
      *
      * @param indexName the indexName value.
-     * @return the service client itself.
      */
-    SearchIndexRestClient setIndexName(String indexName);
+    void setIndexName(String indexName);
 
     /**
      * Gets The HTTP pipeline to send requests through.

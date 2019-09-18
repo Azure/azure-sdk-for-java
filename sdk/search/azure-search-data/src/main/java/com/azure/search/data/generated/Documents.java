@@ -3,11 +3,11 @@
 // regenerated.
 
 package com.azure.search.data.generated;
+import com.azure.search.data.customization.Document;
 
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteRequest;
 import com.azure.search.data.generated.models.AutocompleteResult;

@@ -3,6 +3,7 @@
 // regenerated.
 
 package com.azure.search.data.generated.implementation;
+import com.azure.search.data.customization.Document;
 
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.CollectionFormat;
@@ -20,7 +21,6 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceInterface;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.search.data.customization.Document;
 import com.azure.search.data.generated.Documents;
 import com.azure.search.data.generated.models.AutocompleteMode;
 import com.azure.search.data.generated.models.AutocompleteParameters;

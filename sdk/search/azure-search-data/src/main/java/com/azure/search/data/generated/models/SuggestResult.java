@@ -5,8 +5,9 @@
 package com.azure.search.data.generated.models;
 
 import com.azure.core.implementation.annotation.Fluent;
-import com.azure.search.data.customization.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import com.azure.search.data.customization.Document;
 
 /**
  * A result containing a document found by a suggestion query, plus associated

@@ -31,11 +31,9 @@ public final class SearchIndexRestClientImpl implements SearchIndexRestClient {
      * Sets Client Api Version.
      *
      * @param apiVersion the apiVersion value.
-     * @return the service client itself.
      */
-    public SearchIndexRestClientImpl setApiVersion(String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
-        return this;
     }
 
     /**
@@ -56,11 +54,9 @@ public final class SearchIndexRestClientImpl implements SearchIndexRestClient {
      * Sets The name of the Azure Search service.
      *
      * @param searchServiceName the searchServiceName value.
-     * @return the service client itself.
      */
-    public SearchIndexRestClientImpl setSearchServiceName(String searchServiceName) {
+    public void setSearchServiceName(String searchServiceName) {
         this.searchServiceName = searchServiceName;
-        return this;
     }
 
     /**
@@ -81,11 +77,9 @@ public final class SearchIndexRestClientImpl implements SearchIndexRestClient {
      * Sets The DNS suffix of the Azure Search service. The default is search.windows.net.
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
-     * @return the service client itself.
      */
-    public SearchIndexRestClientImpl setSearchDnsSuffix(String searchDnsSuffix) {
+    public void setSearchDnsSuffix(String searchDnsSuffix) {
         this.searchDnsSuffix = searchDnsSuffix;
-        return this;
     }
 
     /**
@@ -106,11 +100,9 @@ public final class SearchIndexRestClientImpl implements SearchIndexRestClient {
      * Sets The name of the Azure Search index.
      *
      * @param indexName the indexName value.
-     * @return the service client itself.
      */
-    public SearchIndexRestClientImpl setIndexName(String indexName) {
+    public void setIndexName(String indexName) {
         this.indexName = indexName;
-        return this;
     }
 
     /**
