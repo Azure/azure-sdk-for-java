@@ -613,73 +613,6 @@
   </reporting>
   <profiles>
 
-    <!--
-     By default we build against our baseline, Java 8, but we also want to ensure compatibility
-     against the latest Java LTS release, currently Java 11. We therefore have two profiles:
-       * The default 'java8', which will perform a build using Java 8 as its target.
-       * The non-default 'java-lts' profile, which will build against the current LTS release.
-   -->
-<!--    <profile>-->
-<!--      <id>java8</id>-->
-<!--      <activation>-->
-<!--        <activeByDefault>true</activeByDefault>-->
-<!--        <property>-->
-<!--          <name>!java-lts</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-compiler-plugin</artifactId>-->
-<!--            <version>${maven-compiler-plugin.version}</version>-->
-<!--            <configuration>-->
-<!--              <source>1.8</source>-->
-<!--              <target>1.8</target>-->
-<!--              <showWarnings>true</showWarnings>-->
-<!--              <failOnWarning>true</failOnWarning>-->
-<!--              <compilerArgs>-->
-<!--                <arg>-Xlint:all</arg>-->
-<!--                <arg>-Xlint:-serial</arg>-->
-<!--                <arg>-Xlint:-deprecation</arg>-->
-<!--                <arg>-Xlint:-processing</arg>-->
-<!--              </compilerArgs>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-
-<!--    <profile>-->
-<!--      <id>java-lts</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>java-lts</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-compiler-plugin</artifactId>-->
-<!--            <version>${maven-compiler-plugin.version}</version>-->
-<!--            <configuration>-->
-<!--              <source>11</source>-->
-<!--              <target>11</target>-->
-<!--              <showWarnings>true</showWarnings>-->
-<!--              <failOnWarning>true</failOnWarning>-->
-<!--              <compilerArgs>-->
-<!--                <arg>-Xlint:all</arg>-->
-<!--                <arg>-Xlint:-serial</arg>-->
-<!--                <arg>-Xlint:-deprecation</arg>-->
-<!--                <arg>-Xlint:-processing</arg>-->
-<!--              </compilerArgs>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-
     <!-- Skip module-info.java on Java 8 -->
     <profile>
       <id>java8</id>
@@ -776,11 +709,14 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
 
                 <!-- AMQP tests fail without this -->
                 --add-opens com.azure.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+
+
               </argLine>
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>

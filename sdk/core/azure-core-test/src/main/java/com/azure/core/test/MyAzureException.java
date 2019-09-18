@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management;
+package com.azure.core.test;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;

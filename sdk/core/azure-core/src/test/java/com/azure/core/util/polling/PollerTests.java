@@ -125,9 +125,9 @@ public class PollerTests {
         });
 
         Thread.sleep(totalTimeoutInMillis + 3 * pollInterval.toMillis());
-//        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-//        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-//        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     /* Test where SDK Client is subscribed all responses.
