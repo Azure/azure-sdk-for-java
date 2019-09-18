@@ -33,7 +33,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
                     connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
-                    reactorProvider, mapper);
+                    mapper);
             }))
             .cache();
     }

@@ -46,7 +46,6 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
-    private final ReactorProvider provider;
     private final String eventHubName;
     private final ManagementResponseMapper mapper;
     private final TokenManagerProvider tokenManagerProvider;
@@ -56,17 +55,14 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      *
      * @param eventHubName The name of the Event Hub.
      * @param credential A provider that generates authorization tokens.
-     * @param provider The dispatcher to execute work on Reactor.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-                      TokenManagerProvider tokenManagerProvider, ReactorProvider provider,
-                      ManagementResponseMapper mapper) {
+                      TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {
         super(new ClientLogger(ManagementChannel.class));
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.provider = Objects.requireNonNull(provider, "'provider' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.mapper = Objects.requireNonNull(mapper, "'mapper' cannot be null.");
 
