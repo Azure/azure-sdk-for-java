@@ -11,7 +11,7 @@ public interface AmqpLink {
      */
     void onOpenComplete(Exception completionException);
 
-    void onError(Exception exception);
+    void onError(Exception exception, String failingLinkName);
 
-    void onClose(ErrorCondition condition);
+    void onClose(ErrorCondition condition, String errorContext);
 }
