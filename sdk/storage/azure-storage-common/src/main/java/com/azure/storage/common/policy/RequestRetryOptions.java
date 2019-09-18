@@ -3,33 +3,27 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Options for configuring the {@link RequestRetryPolicy}. Please refer to the Factory for more information. Note that
- * there is no option for overall operation timeout. This is because Rx object have a timeout field which provides this
- * functionality.
+ * Configuration options for {@link RequestRetryPolicy}.
  */
 public final class RequestRetryOptions {
-    private static final String BOUNDS_MESSAGE = "The value of the parameter '%s' should be between %s and %s.";
-
     private final ClientLogger logger = new ClientLogger(RequestRetryOptions.class);
 
     private final int maxTries;
     private final int tryTimeout;
     private final long retryDelayInMs;
     private final long maxRetryDelayInMs;
-    /**
-     * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
-     */
     private final RetryPolicyType retryPolicyType;
     private final String secondaryHost;
 
     /**
-     * Constructor with default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,
-     * maxRetryDelayInMs=120000, secondaryHost=null.
+     * Configures how the {@link HttpPipeline} should retry requests.
      */
     public RequestRetryOptions() {
         this(RetryPolicyType.EXPONENTIAL, null,
@@ -37,29 +31,26 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Configures how the {@link com.azure.core.http.HttpPipeline} should retry requests.
+     * Configures how the {@link HttpPipeline} should retry requests.
      *
-     * @param retryPolicyType A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of
-     * {@code null} accepts the default.
-     * @param maxTries Specifies the maximum number of attempts an operation will be tried before producing an error. A
-     * value of {@code null} means that you accept our default policy. A value of 1 means 1 try and no retries.
-     * @param tryTimeout Indicates the maximum time allowed for any single try of an HTTP request. A value of
-     * {@code null} means that you accept our default. NOTE: When transferring large amounts of data, the default
-     * TryTimeout will probably not be sufficient. You should override this value based on the bandwidth available to
-     * the host machine and proximity to the Storage service. A good starting point may be something like (60 seconds
-     * per MB of anticipated-payload-size).
-     * @param retryDelayInMs Specifies the amount of delay to use before retrying an operation. A value of {@code null}
-     * means you accept the default value. The delay increases (exponentially or linearly) with each retry up to a
-     * maximum specified by MaxRetryDelay. If you specify {@code null}, then you must also specify {@code null} for
-     * MaxRetryDelay.
-     * @param maxRetryDelayInMs Specifies the maximum delay allowed before retrying an operation. A value of
-     * {@code null} means you accept the default value. If you specify {@code null}, then you must also specify
-     * {@code null} for RetryDelay.
-     * @param secondaryHost If a secondaryHost is specified, retries will be tried against this host. If secondaryHost
-     * is {@code null} (the default) then operations are not retried against another host. NOTE: Before setting this
-     * field, make sure you understand the issues around reading stale and potentially-inconsistent data at
-     * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this
-     * webpage</a>
+     * @param retryPolicyType Optional. A {@link RetryPolicyType} specifying the type of retry pattern to use, default
+     * value is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL}.
+     * @param maxTries Optional. Maximum number of attempts an operation will be retried, default is {@code 4}.
+     * @param tryTimeout Optional. Specified the maximum time allowed before a request is cancelled and assumed failed,
+     * default is {@link Integer#MAX_VALUE}.
+     *
+     * <p>This value should be based on the bandwidth available to the host machine and proximity to the Storage
+     * service, a good starting point may be 60 seconds per MB of anticipated payload size.</p>
+     * @param retryDelayInMs Optional. Specifies the amount of delay to use before retrying an operation, default value
+     * is {@code 4ms} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code 30ms}
+     * when {@code retryPolicyType} is {@link RetryPolicyType#FIXED FIXED}.
+     * @param maxRetryDelayInMs Optional. Specifies the maximum delay allowed before retrying an operation, default
+     * value is {@code 120ms}.
+     * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
+     *
+     * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
+     * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
+     * for more information.</p>
      * @throws IllegalArgumentException If {@code retryDelayInMs} and {@code maxRetryDelayInMs} are not both null or
      * non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL} or {@link RetryPolicyType#FIXED}.
      */
@@ -67,27 +58,28 @@ public final class RequestRetryOptions {
         Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
         this.retryPolicyType = retryPolicyType == null ? RetryPolicyType.EXPONENTIAL : retryPolicyType;
         if (maxTries != null) {
-            assertInBounds("maxRetries", maxTries, 1, Integer.MAX_VALUE);
+            Utility.assertInBounds("maxRetries", maxTries, 1, Integer.MAX_VALUE);
             this.maxTries = maxTries;
         } else {
             this.maxTries = 4;
         }
 
         if (tryTimeout != null) {
-            assertInBounds("tryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
+            Utility.assertInBounds("tryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
-            this.tryTimeout = 60;
+            this.tryTimeout = Integer.MAX_VALUE;
         }
 
         if ((retryDelayInMs == null && maxRetryDelayInMs != null)
             || (retryDelayInMs != null && maxRetryDelayInMs == null)) {
-            throw new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null"));
         }
 
-        if (retryDelayInMs != null && maxRetryDelayInMs != null) {
-            assertInBounds("maxRetryDelayInMs", maxRetryDelayInMs, 1, Long.MAX_VALUE);
-            assertInBounds("retryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
+        if (retryDelayInMs != null) {
+            Utility.assertInBounds("maxRetryDelayInMs", maxRetryDelayInMs, 1, Long.MAX_VALUE);
+            Utility.assertInBounds("retryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
             this.maxRetryDelayInMs = maxRetryDelayInMs;
             this.retryDelayInMs = retryDelayInMs;
         } else {
@@ -99,7 +91,7 @@ public final class RequestRetryOptions {
                     this.retryDelayInMs = TimeUnit.SECONDS.toMillis(30);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unrecognize retry policy type.");
+                    throw logger.logExceptionAsError(new IllegalArgumentException("Invalid 'RetryPolicyType'."));
             }
             this.maxRetryDelayInMs = TimeUnit.SECONDS.toMillis(120);
         }
@@ -152,7 +144,7 @@ public final class RequestRetryOptions {
         long delay;
         switch (this.retryPolicyType) {
             case EXPONENTIAL:
-                delay = (pow(2L, tryCount - 1) - 1L) * this.retryDelayInMs;
+                delay = ((tryCount - 1) * (tryCount - 1) - 1L) * this.retryDelayInMs;
                 break;
 
             case FIXED:
@@ -163,20 +155,5 @@ public final class RequestRetryOptions {
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);
-    }
-
-    private long pow(long number, int exponent) {
-        long result = 1;
-        for (int i = 0; i < exponent; i++) {
-            result *= number;
-        }
-
-        return result;
-    }
-
-    private static void assertInBounds(final String param, final long value, final long min, final long max) {
-        if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(BOUNDS_MESSAGE, param, min, max));
-        }
     }
 }
