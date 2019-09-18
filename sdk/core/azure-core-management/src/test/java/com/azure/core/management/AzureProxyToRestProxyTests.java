@@ -312,10 +312,10 @@ public abstract class AzureProxyToRestProxyTests {
         assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders(json.headers());
-        assertEquals("A", headers.value("A"));
-        assertArrayEquals(new String[]{"A"}, headers.values("A"));
-        assertEquals("15", headers.value("B"));
-        assertArrayEquals(new String[]{"15"}, headers.values("B"));
+        assertEquals("A", headers.getValue("A"));
+        assertArrayEquals(new String[]{"A"}, headers.getValues("A"));
+        assertEquals("15", headers.getValue("B"));
+        assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
     }
 
     @Test
@@ -327,10 +327,10 @@ public abstract class AzureProxyToRestProxyTests {
         assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders(json.headers());
-        assertEquals("A", headers.value("A"));
-        assertArrayEquals(new String[]{"A"}, headers.values("A"));
-        assertEquals("15", headers.value("B"));
-        assertArrayEquals(new String[]{"15"}, headers.values("B"));
+        assertEquals("A", headers.getValue("A"));
+        assertArrayEquals(new String[]{"A"}, headers.getValues("A"));
+        assertEquals("15", headers.getValue("B"));
+        assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
     }
 
     @Host("http://httpbin.org")
@@ -560,10 +560,10 @@ public abstract class AzureProxyToRestProxyTests {
         assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders(json.headers());
-        assertEquals("MyHeaderValue", headers.value("MyHeader"));
-        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
-        assertEquals("My,Header,Value", headers.value("MyOtherHeader"));
-        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.values("MyOtherHeader"));
+        assertEquals("MyHeaderValue", headers.getValue("MyHeader"));
+        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues("MyHeader"));
+        assertEquals("My,Header,Value", headers.getValue("MyOtherHeader"));
+        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.getValues("MyOtherHeader"));
     }
 
     @Test
@@ -575,8 +575,8 @@ public abstract class AzureProxyToRestProxyTests {
         assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders(json.headers());
-        assertEquals("MyHeaderValue", headers.value("MyHeader"));
-        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
+        assertEquals("MyHeaderValue", headers.getValue("MyHeader"));
+        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues("MyHeader"));
     }
 
     @Host("https://httpbin.org")
@@ -602,7 +602,7 @@ public abstract class AzureProxyToRestProxyTests {
         assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders(json.headers());
-        assertEquals("MyHeaderValue", headers.value("MyHeader"));
+        assertEquals("MyHeaderValue", headers.getValue("MyHeader"));
     }
 
     @Host("https://httpbin.org")

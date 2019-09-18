@@ -348,10 +348,10 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     private static void assertHeaderCollectionsRawHeaders(Response<Void> response) {
         final HttpHeaders responseRawHeaders = response.getHeaders();
-        assertEquals("Phillip", responseRawHeaders.value("name"));
-        assertEquals("1", responseRawHeaders.value("header-collection-prefix-one"));
-        assertEquals("2", responseRawHeaders.value("header-collection-prefix-two"));
-        assertEquals("3", responseRawHeaders.value("header-collection-prefix-three"));
+        assertEquals("Phillip", responseRawHeaders.getValue("name"));
+        assertEquals("1", responseRawHeaders.getValue("header-collection-prefix-one"));
+        assertEquals("2", responseRawHeaders.getValue("header-collection-prefix-two"));
+        assertEquals("3", responseRawHeaders.getValue("header-collection-prefix-three"));
         assertEquals(4, responseRawHeaders.getSize());
     }
 

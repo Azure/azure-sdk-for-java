@@ -68,10 +68,10 @@ public class MockHttpResponse extends HttpResponse {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        super(request);
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = ImplUtils.clone(bodyBytes);
-        this.setRequest(request);
     }
 
     /**
@@ -115,7 +115,7 @@ public class MockHttpResponse extends HttpResponse {
      */
     @Override
     public String getHeaderValue(String name) {
-        return headers.value(name);
+        return headers.getValue(name);
     }
 
     /**

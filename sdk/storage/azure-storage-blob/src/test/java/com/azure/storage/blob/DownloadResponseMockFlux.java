@@ -161,7 +161,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                          This validates that we don't retry in the getter even if it's a retryable error from the
                          service.
                          */
-                        throw new StorageErrorException("Message", new HttpResponse() {
+                        throw new StorageErrorException("Message", new HttpResponse(null) {
                             @Override
                             public int getStatusCode() {
                                 return 500;

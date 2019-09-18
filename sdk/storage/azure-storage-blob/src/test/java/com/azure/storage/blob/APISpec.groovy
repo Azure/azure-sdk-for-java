@@ -542,7 +542,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     with than was worth it.
      */
     def getStubResponse(int code, HttpRequest request) {
-        return new HttpResponse() {
+        return new HttpResponse(request) {
 
             @Override
             int getStatusCode() {
@@ -578,13 +578,13 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
             }
-        }.setRequest(request)
+        }
     }
 
     def waitForCopy(ContainerClient bu, String status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().value("x-ms-copy-status")
+            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -602,13 +602,13 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
      * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(HttpHeaders headers) {
-        return headers.value("etag") != null &&
+        return headers.getValue("etag") != null &&
             // Quotes should be scrubbed from etag header values
-            !headers.value("etag").contains("\"") &&
-            headers.value("last-modified") != null &&
-            headers.value("x-ms-request-id") != null &&
-            headers.value("x-ms-version") != null &&
-            headers.value("date") != null
+            !headers.getValue("etag").contains("\"") &&
+            headers.getValue("last-modified") != null &&
+            headers.getValue("x-ms-request-id") != null &&
+            headers.getValue("x-ms-version") != null &&
+            headers.getValue("date") != null
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
@@ -618,7 +618,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMD5() == contentMD5 &&
-            response.getHeaders().value("Content-Type") == contentType
+            response.getHeaders().getValue("Content-Type") == contentType
     }
 
     def enableSoftDelete() {
@@ -646,7 +646,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().flatMap { HttpResponse response ->
-                if (response.getRequest().getHeaders().value("x-ms-range") != "bytes=2-6") {
+                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
                     return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
                 } else {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
@@ -667,7 +667,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         private final Flux<ByteBuffer> body
 
         MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            this.setRequest(response.getRequest())
+            super(response.getRequest())
             this.statusCode = statusCode
             this.headers = response.getHeaders()
             this.body = body
@@ -680,7 +680,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
         @Override
         String getHeaderValue(String s) {
-            return headers.value(s)
+            return headers.getValue(s)
         }
 
         @Override

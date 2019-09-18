@@ -87,7 +87,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request) {
-        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().value("User-Agent"));
+        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
     }

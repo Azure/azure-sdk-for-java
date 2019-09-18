@@ -138,7 +138,7 @@
     <nanohttpd.version>2.3.1</nanohttpd.version>
 
     <!-- Test Dependency Versions -->
-    <adal4j.version>1.6.3</adal4j.version>
+    <adal4j.version>1.6.4</adal4j.version>
     <msal4j.version>0.5.0-preview</msal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>

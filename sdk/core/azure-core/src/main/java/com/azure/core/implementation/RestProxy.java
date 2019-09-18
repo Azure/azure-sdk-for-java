@@ -174,7 +174,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         return Flux.defer(() -> {
-            Long expectedLength = Long.valueOf(request.getHeaders().value("Content-Length"));
+            Long expectedLength = Long.valueOf(request.getHeaders().getValue("Content-Length"));
             final long[] currentTotalLength = new long[1];
             return bbFlux.doOnEach(s -> {
                 if (s.isOnNext()) {

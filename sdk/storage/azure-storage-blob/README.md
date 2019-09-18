@@ -257,7 +257,7 @@ The [Azure Identity library][identity] provides Azure Active Directory support f
 ```java
 BlobServiceClient storageClient = BlobServiceClient.storageClientBuilder()
         .endpoint(endpoint)
-        .credential(new DefaultAzureCredential())
+        .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 ```
 
