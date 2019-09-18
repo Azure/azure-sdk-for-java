@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.StorageException;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
  * Sample demonstrates how to create, list and delete shares, and get and set properties.
  */
 public class FileServiceSample {
-    private static final String CONNECTION_STRING = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
+    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
