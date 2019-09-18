@@ -8,7 +8,9 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.Document;
+import com.azure.search.data.customization.IndexBatchBuilder;
 import com.azure.search.data.customization.models.GeoPoint;
+import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -85,6 +87,65 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         waitFor(2);
         Assert.assertEquals(expectedHotelCount, client.countDocuments());
+    }
+
+    @Override
+    public void canDeleteBatchByKeys() {
+        client.uploadDocuments(Arrays.asList(
+            new Hotel().hotelId("1"),
+            new Hotel().hotelId("2")
+        ));
+        waitFor(2);
+        Assert.assertEquals(2, client.countDocuments().intValue());
+
+        IndexBatch deleteBatch = new IndexBatchBuilder()
+            .delete("HotelId", Arrays.asList("1", "2"))
+            .build();
+
+        DocumentIndexResult documentIndexResult = client.index(deleteBatch);
+        waitFor(2);
+
+        Assert.assertEquals(2, documentIndexResult.results().size());
+        assertIndexActionSucceeded("1", documentIndexResult.results().get(0), 200);
+        assertIndexActionSucceeded("2", documentIndexResult.results().get(1), 200);
+
+        Assert.assertEquals(0, client.countDocuments().intValue());
+    }
+
+    @Override
+    public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
+        Hotel document = new Hotel().hotelId("1").category("Luxury");
+
+        client.uploadDocuments(Arrays.asList(document));
+        waitFor(2);
+        Assert.assertEquals(1, client.countDocuments().intValue());
+
+        document.category("ignored");
+        DocumentIndexResult documentIndexResult = client.deleteDocuments(Arrays.asList(document));
+        waitFor(2);
+
+        Assert.assertEquals(1, documentIndexResult.results().size());
+        assertIndexActionSucceeded("1", documentIndexResult.results().get(0), 200);
+        Assert.assertEquals(0, client.countDocuments().intValue());
+    }
+
+    @Override
+    public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
+        Document document = new Document();
+        document.put("HotelId", "1");
+        document.put("Category", "Luxury");
+        client.uploadDocuments(Arrays.asList(document));
+
+        waitFor(2);
+        Assert.assertEquals(1, client.countDocuments().intValue());
+
+        document.put("Category", "ignored");
+        DocumentIndexResult documentIndexResult = client.deleteDocuments(Arrays.asList(document));
+        waitFor(2);
+
+        Assert.assertEquals(1, documentIndexResult.results().size());
+        assertIndexActionSucceeded("1", documentIndexResult.results().get(0), 200);
+        Assert.assertEquals(0, client.countDocuments().intValue());
     }
 
     public void canIndexStaticallyTypedDocuments() throws ParseException {

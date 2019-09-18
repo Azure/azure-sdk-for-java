@@ -1,24 +1,24 @@
 {
-    "networkCallRecords" : [ {
-        "Method" : "GET",
-        "Uri" : "https://azs-sdk2fc750137474.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06",
-        "Headers" : { },
-        "Response" : {
-            "Pragma" : "no-cache",
-            "retry-after" : "0",
-            "request-id" : "8d205486-d762-4cb4-902c-7a85ad06678c",
-            "StatusCode" : "200",
-            "Date" : "Fri, 13 Sep 2019 00:39:44 GMT",
-            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-            "Cache-Control" : "no-cache",
-            "elapsed-time" : "88",
-            "OData-Version" : "4.0",
-            "Expires" : "-1",
-            "Content-Length" : "4",
-            "Body" : "﻿0",
-            "Preference-Applied" : "odata.include-annotations=\"*\"",
-            "Content-Type" : "text/plain"
-        }
-    } ],
-    "variables" : [ ]
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdke45248695423.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d4ae9e61-8dd0-44dd-ac65-e25ac8c6a02c",
+      "StatusCode" : "200",
+      "Date" : "Mon, 16 Sep 2019 20:16:38 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "61",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "4",
+      "Body" : "﻿0",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "text/plain"
+    }
+  } ],
+  "variables" : [ ]
 }

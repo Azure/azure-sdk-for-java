@@ -517,6 +517,91 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
+    public void canDeleteBatchByKeys() {
+        client.uploadDocuments(Arrays.asList(
+            new Hotel().hotelId("1"),
+            new Hotel().hotelId("2")
+        )).block();
+        waitFor(2);
+        StepVerifier.create(client.countDocuments())
+            .expectNext(2L)
+            .verifyComplete();
+
+        IndexBatch deleteBatch = new IndexBatchBuilder()
+            .delete("HotelId", Arrays.asList("1", "2"))
+            .build();
+
+        Mono<DocumentIndexResult> documentIndexResult = client.index(deleteBatch);
+
+        StepVerifier.create(documentIndexResult)
+            .assertNext(res -> {
+                Assert.assertEquals(2, res.results().size());
+                assertIndexActionSucceeded("1", res.results().get(0), 200);
+                assertIndexActionSucceeded("2", res.results().get(1), 200);
+            })
+            .verifyComplete();
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments())
+            .expectNext(0L)
+            .verifyComplete();
+    }
+
+    @Override
+    public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
+        Hotel document = new Hotel().hotelId("1").category("Luxury");
+
+        client.uploadDocuments(Arrays.asList(document)).block();
+        waitFor(2);
+        StepVerifier.create(client.countDocuments())
+            .expectNext(1L)
+            .verifyComplete();
+
+        document.category("ignored");
+        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocuments(Arrays.asList(document));
+
+        StepVerifier.create(documentIndexResult)
+            .assertNext(res -> {
+                Assert.assertEquals(1, res.results().size());
+                assertIndexActionSucceeded("1", res.results().get(0), 200);
+            })
+            .verifyComplete();
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments())
+            .expectNext(0L)
+            .verifyComplete();
+    }
+
+    @Override
+    public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
+        Document document = new Document();
+        document.put("HotelId", "1");
+        document.put("Category", "Luxury");
+
+        client.uploadDocuments(Arrays.asList(document)).block();
+        waitFor(2);
+        StepVerifier.create(client.countDocuments())
+            .expectNext(1L)
+            .verifyComplete();
+
+        document.put("Category", "ignored");
+        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocuments(Arrays.asList(document));
+
+        StepVerifier.create(documentIndexResult)
+            .assertNext(res -> {
+                Assert.assertEquals(1, res.results().size());
+                assertIndexActionSucceeded("1", res.results().get(0), 200);
+            })
+            .verifyComplete();
+        waitFor(2);
+
+        StepVerifier.create(client.countDocuments())
+            .expectNext(0L)
+            .verifyComplete();
+    }
+
+    @Override
     protected void initializeClient() {
         client = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
     }

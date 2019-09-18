@@ -45,6 +45,11 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
+    public <T> DocumentIndexResult deleteDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().delete(documents).build());
+    }
+
+    @Override
     public String getApiVersion() {
 
         return asyncClient.getApiVersion();
