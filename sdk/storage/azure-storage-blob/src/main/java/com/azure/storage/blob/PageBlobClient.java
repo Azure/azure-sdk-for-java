@@ -431,12 +431,4 @@ public final class PageBlobClient extends BlobClient {
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
-    /**
-     * Get the page name.
-     *
-     * @return The name of the page blob.
-     */
-    public String getName() {
-        return this.pageBlobAsyncClient.getName();
-    }
 }

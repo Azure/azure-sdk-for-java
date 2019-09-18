@@ -231,21 +231,4 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
                 rb.getHeaders().value("x-ms-request-server-encrypted"))));
     }
 
-    /**
-     * Get the append blob name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.getName}
-     *
-     * @return The name of the append blob.
-     */
-    public String getName() {
-        try {
-            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
-                + this.azureBlobStorage.getUrl()));
-        }
-    }
 }

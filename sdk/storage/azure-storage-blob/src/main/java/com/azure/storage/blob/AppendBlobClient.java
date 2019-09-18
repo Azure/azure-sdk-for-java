@@ -258,16 +258,4 @@ public final class AppendBlobClient extends BlobClient {
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
-    /**
-     * Get the append blob name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.getName}
-     *
-     * @return The name of the append blob.
-     */
-    public String getName() {
-        return appendBlobAsyncClient.getName();
-    }
 }

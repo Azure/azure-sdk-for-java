@@ -642,21 +642,4 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 
-    /**
-     * Get the block blob name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.getName}
-     *
-     * @return The name of the block blob.
-     */
-    public String getName() {
-        try {
-            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
-                + this.azureBlobStorage.getUrl()));
-        }
-    }
 }
