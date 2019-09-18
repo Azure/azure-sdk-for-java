@@ -12,7 +12,7 @@ module azure.core.http.okhttp {
     requires com.azure.test;
 
     exports com.azure.core.http.okhttp;
-    exports com.azure.core.http.okhttp.implementation;
+    exports com.azure.core.http.okhttp.implementation;      // FIXME this should not be a long-term solution
 
     provides com.azure.core.http.HttpClientProvider
         with com.azure.core.http.okhttp.implementation.OkHttpClientProvider;

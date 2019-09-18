@@ -15,7 +15,7 @@ module com.azure.http.netty {
     requires com.azure.test;
 
     exports com.azure.core.http.netty;
-    exports com.azure.core.http.netty.implementation;
+    exports com.azure.core.http.netty.implementation;       // FIXME this should not be a long-term solution
 
     provides com.azure.core.http.HttpClientProvider
         with com.azure.core.http.netty.implementation.ReactorNettyClientProvider;

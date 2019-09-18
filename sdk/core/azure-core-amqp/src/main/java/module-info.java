@@ -10,5 +10,5 @@ module com.azure.amqp {
     exports com.azure.core.amqp.exception;
 
     exports com.azure.core.amqp.implementation to
-        com.azure.messaging.eventhubs;
+        com.azure.messaging.eventhubs;                  // FIXME this should not be a long-term solution
 }
