@@ -3,7 +3,7 @@
 
 package com.azure.core.management.implementation;
 
-import com.azure.core.AzureEnvironment;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;

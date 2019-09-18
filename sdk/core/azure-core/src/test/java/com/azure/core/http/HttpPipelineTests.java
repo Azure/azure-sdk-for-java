@@ -31,7 +31,7 @@ public class HttpPipelineTests {
                 }
             }).build();
         assertEquals(0, pipeline.getPolicyCount());
-        assertNotNull(pipeline.httpClient());
+        assertNotNull(pipeline.getHttpClient());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class HttpPipelineTests {
         assertEquals(PortPolicy.class, pipeline.getPolicy(0).getClass());
         assertEquals(ProtocolPolicy.class, pipeline.getPolicy(1).getClass());
         assertEquals(RetryPolicy.class, pipeline.getPolicy(2).getClass());
-        assertNotNull(pipeline.httpClient());
+        assertNotNull(pipeline.getHttpClient());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class HttpPipelineTests {
 
         HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
-        assertNotNull(pipeline.httpClient());
+        assertNotNull(pipeline.getHttpClient());
     }
 
     @Test

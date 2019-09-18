@@ -173,6 +173,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
         OkHttpResponse(Response innerResponse, HttpRequest request) {
+            super(request);
             this.statusCode = innerResponse.code();
             this.headers = fromOkHttpHeaders(innerResponse.headers());
             if (innerResponse.body() == null) {
@@ -190,7 +191,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
                     ResponseBody::close);
             }
-            super.setRequest(request);
         }
 
         @Override

@@ -107,6 +107,7 @@ class RequestRetryTestFactory {
         int statusCode;
 
         RetryTestResponse(int statusCode) {
+            super(null);
             this.statusCode = statusCode;
         }
 
