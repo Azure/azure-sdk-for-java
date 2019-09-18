@@ -6,8 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
-import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -113,7 +112,7 @@ public final class SecretClientBuilder {
     public SecretAsyncClient buildAsyncClient() {
 
         Configuration buildConfiguration =
-            (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
@@ -241,7 +240,7 @@ public final class SecretClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to

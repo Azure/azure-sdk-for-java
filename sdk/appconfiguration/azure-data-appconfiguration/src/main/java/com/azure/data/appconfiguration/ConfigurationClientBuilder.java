@@ -9,8 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -136,7 +135,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
-            (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
         URL buildEndpoint = getBuildEndpoint(configurationCredentials);
 
@@ -269,7 +268,7 @@ public final class ConfigurationClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
