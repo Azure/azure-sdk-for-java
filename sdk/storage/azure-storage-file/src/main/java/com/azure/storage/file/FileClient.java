@@ -938,7 +938,7 @@ public class FileClient {
     }
 
     /**
-     * Get file path from file client.
+     * Get file path of the client.
      *
      * <p>Get the file path. </p>
      *

@@ -792,7 +792,7 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Get directory path from directory client.
+     * Get directory path of the client.
      *
      * <p>Get directory path. </p>
      *

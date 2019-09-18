@@ -676,7 +676,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Get directory path from directory client.
+     * Get the directory path of the client.
      *
      * <p>Get directory path. </p>
      *
