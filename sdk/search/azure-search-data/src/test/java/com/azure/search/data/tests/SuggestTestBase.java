@@ -13,7 +13,9 @@ import com.azure.search.data.generated.models.SuggestResult;
 import com.azure.search.data.models.Hotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Comparator;
 import java.util.List;
