@@ -48,7 +48,6 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
-
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */

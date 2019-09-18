@@ -754,8 +754,7 @@ public class DirectoryAsyncClient {
     public Mono<VoidResponse> deleteFileWithResponse(String fileName) {
         return withContext(context -> deleteFileWithResponse(fileName, context));
     }
-
-
+    
     Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
         return postProcessResponse(fileAsyncClient.deleteWithResponse(context))
