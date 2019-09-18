@@ -11,6 +11,8 @@ resources:
       name: Azure/azure-sdk-tools
       endpoint: azure
  
+ 
+ 
 trigger:
   branches:
     include:
