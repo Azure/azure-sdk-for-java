@@ -574,6 +574,7 @@
                 -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java

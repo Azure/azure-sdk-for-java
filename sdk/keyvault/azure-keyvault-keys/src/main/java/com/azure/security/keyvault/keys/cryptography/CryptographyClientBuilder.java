@@ -14,8 +14,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
@@ -126,7 +125,7 @@ public final class CryptographyClientBuilder {
      */
     public CryptographyAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
-            (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
@@ -272,7 +271,7 @@ public final class CryptographyClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to

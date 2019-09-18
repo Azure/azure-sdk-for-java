@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util.configuration;
+package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
@@ -18,6 +18,115 @@ public class Configuration implements Cloneable {
      * Noop Configuration object used to opt out of using global configurations when constructing client libraries.
      */
     public static final Configuration NONE = new NoopConfiguration();
+
+    // Default properties - these are what we read from the environment
+    /**
+     * URI of the proxy for HTTP connections.
+     */
+    public static final String PROPERTY_HTTP_PROXY = "HTTP_PROXY";
+
+    /**
+     * URI of the proxy for HTTPS connections.
+     */
+    public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
+
+    /**
+     * List of hosts or CIDR to not proxy.
+     */
+    public static final String PROPERTY_NO_PROXY = "NO_PROXY";
+
+    /**
+     * AAD MSI Credentials.
+     */
+    public static final String PROPERTY_MSI_ENDPOINT = "MSI_ENDPOINT";
+
+    /**
+     * AAD MSI Credentials.
+     */
+    public static final String PROPERTY_MSI_SECRET = "MSI_SECRET";
+
+    /**
+     * Azure subscription.
+     */
+    public static final String PROPERTY_AZURE_SUBSCRIPTION_ID = "AZURE_SUBSCRIPTION_ID";
+
+    /**
+     * Azure username for U/P Auth.
+     */
+    public static final String PROPERTY_AZURE_USERNAME = "AZURE_USERNAME";
+
+    /**
+     * Azure password for U/P Auth.
+     */
+    public static final String PROPERTY_AZURE_PASSWORD = "AZURE_PASSWORD";
+
+    /**
+     * AAD
+     */
+    public static final String PROPERTY_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+
+    /**
+     * AAD
+     */
+    public static final String PROPERTY_AZURE_CLIENT_SECRET = "AZURE_CLIENT_SECRET";
+
+    /**
+     * AAD
+     */
+    public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
+
+    /**
+     * Azure resource group.
+     */
+    public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
+
+    /**
+     * The name of the Azure cloud to connect to.
+     */
+    public static final String PROPERTY_AZURE_CLOUD = "AZURE_CLOUD";
+
+    /**
+     * Disables telemetry.
+     */
+    public static final String PROPERTY_AZURE_TELEMETRY_DISABLED = "AZURE_TELEMETRY_DISABLED";
+
+
+    /**
+     * Enable console logging by setting a log level.
+     */
+    public static final String PROPERTY_AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
+
+    /**
+     * Disables tracing.
+     */
+    public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
+
+    /*
+     * Configurations that are loaded into the global configuration store when the application starts.
+     */
+    private static final String[] DEFAULT_CONFIGURATIONS = {
+        PROPERTY_HTTP_PROXY,
+        PROPERTY_HTTPS_PROXY,
+        PROPERTY_NO_PROXY,
+        PROPERTY_MSI_ENDPOINT,
+        PROPERTY_MSI_SECRET,
+        PROPERTY_AZURE_SUBSCRIPTION_ID,
+        PROPERTY_AZURE_USERNAME,
+        PROPERTY_AZURE_PASSWORD,
+        PROPERTY_AZURE_CLIENT_ID,
+        PROPERTY_AZURE_CLIENT_SECRET,
+        PROPERTY_AZURE_TENANT_ID,
+        PROPERTY_AZURE_RESOURCE_GROUP,
+        PROPERTY_AZURE_CLOUD,
+        PROPERTY_AZURE_TELEMETRY_DISABLED,
+        PROPERTY_AZURE_LOG_LEVEL,
+        PROPERTY_AZURE_TRACING_DISABLED,
+    };
+
+    /**
+     * TODO
+     */
+    private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
     private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters with value {}.";
     private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables with value {}.";
@@ -36,6 +145,13 @@ public class Configuration implements Cloneable {
 
     private Configuration(ConcurrentMap<String, String> configurations) {
         this.configurations = new ConcurrentHashMap<>(configurations);
+    }
+
+    /**
+     * @return the global configuration store.
+     */
+    public static Configuration getGlobalConfiguration() {
+        return GLOBAL_CONFIGURATION;
     }
 
     /**
@@ -94,8 +210,7 @@ public class Configuration implements Cloneable {
 
         // Special handling for tracing disabled and log level as they need to be updated instantly on
         // configuration change.
-        if (BaseConfigurations.AZURE_TRACING_DISABLED.equalsIgnoreCase(name)
-            || BaseConfigurations.AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
+        if (PROPERTY_AZURE_TRACING_DISABLED.equalsIgnoreCase(name) || PROPERTY_AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
             load(name);
         }
 
@@ -244,7 +359,7 @@ public class Configuration implements Cloneable {
             return;
         }
 
-        for (String config : BaseConfigurations.DEFAULT_CONFIGURATIONS) {
+        for (String config : DEFAULT_CONFIGURATIONS) {
             if (!configurations.containsKey(config)) {
                 load(config);
             }

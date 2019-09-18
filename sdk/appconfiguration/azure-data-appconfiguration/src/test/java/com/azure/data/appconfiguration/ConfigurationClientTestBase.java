@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -10,7 +11,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
@@ -70,7 +70,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : ConfigurationManager.getConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+                : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
         }
 
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");

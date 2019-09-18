@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -20,7 +20,7 @@ import java.util.UUID;
  * Sample demonstrates how to create, copy and delete a file and how to get and set properties.
  */
 public class FileSample {
-    private static final String ENDPOINT = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {

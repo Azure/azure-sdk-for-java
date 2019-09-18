@@ -4,9 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
@@ -18,10 +16,10 @@ import static org.junit.Assert.fail;
 public class EnvironmentCredentialTests {
     @Test
     public void testCreateEnvironmentCredential() {
-        Configuration configuration = ConfigurationManager.getConfiguration();
-        configuration.put(BaseConfigurations.AZURE_CLIENT_ID, "foo");
-        configuration.put(BaseConfigurations.AZURE_CLIENT_SECRET, "bar");
-        configuration.put(BaseConfigurations.AZURE_TENANT_ID, "baz");
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo");
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar");
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 

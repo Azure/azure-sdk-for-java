@@ -6,9 +6,7 @@ package com.azure.identity.credential;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -32,8 +30,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        Configuration configuration = ConfigurationManager.getConfiguration();
-        if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             appServiceMSICredential = new AppServiceMSICredential(clientId, identityClient);
             virtualMachineMSICredential = null;
         } else {

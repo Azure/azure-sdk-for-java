@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.After;
@@ -100,7 +100,7 @@ public abstract class TestBase {
 
     private static TestMode initializeTestMode() {
         final ClientLogger logger = new ClientLogger(TestBase.class);
-        final String azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE);
+        final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {
