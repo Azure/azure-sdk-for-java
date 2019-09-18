@@ -228,5 +228,4 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders(),
                 rb.getHeaders().value("x-ms-request-server-encrypted"))));
     }
-
 }

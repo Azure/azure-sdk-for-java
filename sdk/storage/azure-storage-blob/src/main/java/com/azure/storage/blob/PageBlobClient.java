@@ -430,5 +430,4 @@ public final class PageBlobClient extends BlobClient {
             .copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
-
 }

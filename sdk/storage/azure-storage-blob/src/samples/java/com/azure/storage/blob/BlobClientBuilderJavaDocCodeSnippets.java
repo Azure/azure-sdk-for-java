@@ -75,5 +75,4 @@ public class BlobClientBuilderJavaDocCodeSnippets {
             .buildBlobClient();
         // END: com.azure.storage.blob.BlobClientBuilder.containerName#String
     }
-
 }

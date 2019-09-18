@@ -243,14 +243,4 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
     }
-
-    /**
-     * Generates a code sample for using {@link BlockBlobClient#getBlobName()}
-     */
-    public void getName() {
-        // BEGIN: com.azure.storage.blob.BlockBlobClient.getName
-        String blobName = client.getBlobName();
-        System.out.println("The name of the blob is " + blobName);
-        // END: com.azure.storage.blob.BlockBlobClient.getName
-    }
 }

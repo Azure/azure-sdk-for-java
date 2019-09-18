@@ -396,5 +396,4 @@ public final class BlockBlobClient extends BlobClient {
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
-
 }

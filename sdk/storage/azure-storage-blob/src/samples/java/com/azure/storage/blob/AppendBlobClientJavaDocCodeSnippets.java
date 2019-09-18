@@ -175,14 +175,4 @@ public class AppendBlobClientJavaDocCodeSnippets {
                 context).getValue().getBlobCommittedBlockCount());
         // END: com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
-
-    /**
-     * Generates a code sample for using {@link AppendBlobClient#getBlobName()}
-     */
-    public void getName() {
-        // BEGIN: com.azure.storage.blob.AppendBlobClient.getName
-        String appendBlobName = client.getBlobName();
-        System.out.println("The name of the append blob is " + appendBlobName);
-        // END: com.azure.storage.blob.AppendBlobClient.getName
-    }
 }

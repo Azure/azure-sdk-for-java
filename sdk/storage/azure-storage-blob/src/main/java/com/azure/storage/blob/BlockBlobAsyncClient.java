@@ -640,5 +640,4 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
-
 }

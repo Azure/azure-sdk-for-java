@@ -257,5 +257,4 @@ public final class AppendBlobClient extends BlobClient {
             sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
-
 }

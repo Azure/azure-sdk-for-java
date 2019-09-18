@@ -261,5 +261,4 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
-    
 }
