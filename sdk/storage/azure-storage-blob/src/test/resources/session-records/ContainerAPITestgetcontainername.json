@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.blob.core.windows.net/jtcgetcontainername0containerapitestgetcontainernamedcb529325?restype=container",
+    "Uri" : "https://sima.blob.core.windows.net/jtcgetcontainername0containerapitestgetcontainernamec22325554?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "9e23e546-82ee-4e8e-805e-e47b64d51a10"
+      "x-ms-client-request-id" : "d9b9d928-4950-4952-8ff1-81843e2a0933"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D73BF1E8D6318F\"",
-      "Last-Modified" : "Wed, 18 Sep 2019 04:37:27 GMT",
+      "ETag" : "\"0x8D73BFEE39E9A13\"",
+      "Last-Modified" : "Wed, 18 Sep 2019 06:10:22 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "6bc2f36b-d01e-008c-4bda-6d82c9000000",
-      "Date" : "Wed, 18 Sep 2019 04:37:27 GMT",
-      "x-ms-client-request-id" : "9e23e546-82ee-4e8e-805e-e47b64d51a10"
+      "x-ms-request-id" : "a445901c-301e-0063-5de7-6d89b7000000",
+      "Date" : "Wed, 18 Sep 2019 06:10:22 GMT",
+      "x-ms-client-request-id" : "d9b9d928-4950-4952-8ff1-81843e2a0933"
     },
     "Exception" : null
   }, {
@@ -26,7 +26,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "af5c4581-5bd7-4c1e-b091-485c2ee17b6c"
+      "x-ms-client-request-id" : "9e7a112c-19ac-4bf4-a5d4-17c88d05c38f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -34,20 +34,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "6bc2f4c5-d01e-008c-78da-6d82c9000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.blob.core.windows.net/\"><Prefix>jtcgetcontainername</Prefix><Containers><Container><Name>jtcgetcontainername0containerapitestgetcontainername48664316a</Name><Properties><Last-Modified>Wed, 18 Sep 2019 04:33:51 GMT</Last-Modified><Etag>\"0x8D73BF168583BC8\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcgetcontainername0containerapitestgetcontainernamedcb529325</Name><Properties><Last-Modified>Wed, 18 Sep 2019 04:37:27 GMT</Last-Modified><Etag>\"0x8D73BF1E8D6318F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 18 Sep 2019 04:37:28 GMT",
-      "x-ms-client-request-id" : "af5c4581-5bd7-4c1e-b091-485c2ee17b6c",
+      "x-ms-request-id" : "a4459123-301e-0063-4be7-6d89b7000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.blob.core.windows.net/\"><Prefix>jtcgetcontainername</Prefix><Containers><Container><Name>jtcgetcontainername0containerapitestgetcontainernamec22325554</Name><Properties><Last-Modified>Wed, 18 Sep 2019 06:10:22 GMT</Last-Modified><Etag>\"0x8D73BFEE39E9A13\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 18 Sep 2019 06:10:22 GMT",
+      "x-ms-client-request-id" : "9e7a112c-19ac-4bf4-a5d4-17c88d05c38f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.blob.core.windows.net/jtcgetcontainername0containerapitestgetcontainername48664316a?restype=container",
+    "Uri" : "https://sima.blob.core.windows.net/jtcgetcontainername0containerapitestgetcontainernamec22325554?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "411f551d-f40e-4191-8c22-4f85e994d832"
+      "x-ms-client-request-id" : "1f859131-2f9a-4e75-b022-ca4427f17bad"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -55,30 +55,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "6bc2f5be-d01e-008c-5fda-6d82c9000000",
-      "Date" : "Wed, 18 Sep 2019 04:37:28 GMT",
-      "x-ms-client-request-id" : "411f551d-f40e-4191-8c22-4f85e994d832"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://sima.blob.core.windows.net/jtcgetcontainername0containerapitestgetcontainernamedcb529325?restype=container",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "d444dd8a-f772-4798-a376-cc821e19733d"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "202",
-      "x-ms-request-id" : "6bc2f5f8-d01e-008c-16da-6d82c9000000",
-      "Date" : "Wed, 18 Sep 2019 04:37:28 GMT",
-      "x-ms-client-request-id" : "d444dd8a-f772-4798-a376-cc821e19733d"
+      "x-ms-request-id" : "a44591eb-301e-0063-80e7-6d89b7000000",
+      "Date" : "Wed, 18 Sep 2019 06:10:23 GMT",
+      "x-ms-client-request-id" : "1f859131-2f9a-4e75-b022-ca4427f17bad"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcgetcontainername0containerapitestgetcontainernamedcb529325", "jtcgetcontainername1containerapitestgetcontainernamedcb443397" ]
+  "variables" : [ "jtcgetcontainername0containerapitestgetcontainernamec22325554", "jtcgetcontainername1containerapitestgetcontainernamec22690598" ]
 }

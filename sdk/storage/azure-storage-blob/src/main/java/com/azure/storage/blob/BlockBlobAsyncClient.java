@@ -24,7 +24,6 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import java.net.MalformedURLException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

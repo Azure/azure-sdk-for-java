@@ -1164,7 +1164,7 @@ public class BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getContainerName}
+     * {@codesnippet com.azure.storage.blob.BlobClient.getContainerName}
      *
      * @return The name of the container.
      */

@@ -649,10 +649,10 @@ public class FileJavaDocCodeSamples {
      */
     public void getShareName() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.getShareName
+        // BEGIN: com.azure.storage.file.fileClient.getShareName
         String shareName = fileClient.getShareName();
         System.out.println("The share name of the directory is " + shareName);
-        // END: com.azure.storage.file.fileAsyncClient.getShareName
+        // END: com.azure.storage.file.fileClient.getShareName
     }
 
     /**

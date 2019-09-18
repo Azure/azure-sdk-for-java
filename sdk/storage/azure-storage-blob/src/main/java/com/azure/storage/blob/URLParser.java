@@ -20,9 +20,9 @@ import java.util.TreeMap;
 final class URLParser {
 
     /**
-     * URLParser parses a string URL initializing BlobURLParts' fields including any SAS-related and snapshot query parameters.
-     * Any other query parameters remain in the UnparsedParams field. This method overwrites all fields in the
-     * BlobURLParts object.
+     * URLParser parses a string URL initializing BlobURLParts' fields including any SAS-related and snapshot query
+     * parameters. Any other query parameters remain in the UnparsedParams field. This method overwrites all fields
+     * in the BlobURLParts object.
      *
      * @param url The string URL to be parsed.
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.

@@ -18,7 +18,6 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
-import java.net.MalformedURLException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +26,6 @@ import java.nio.ByteBuffer;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
-
 
 /**
  * Client to an append blob. It may only be instantiated through a

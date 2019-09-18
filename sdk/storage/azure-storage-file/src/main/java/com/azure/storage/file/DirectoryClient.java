@@ -680,7 +680,7 @@ public class DirectoryClient {
      *
      * <p>Get directory path. </p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.getName}
+     * {@codesnippet com.azure.storage.file.directoryClient.getDirectoryPath}
      *
      * @return The path of the directory.
      */
