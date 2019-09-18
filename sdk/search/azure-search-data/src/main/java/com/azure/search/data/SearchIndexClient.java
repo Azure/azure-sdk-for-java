@@ -164,5 +164,8 @@ public interface SearchIndexClient {
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */
-    PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
+    PagedIterable<AutocompleteItem> autocomplete(String searchText,
+                                                 String suggesterName,
+                                                 SearchRequestOptions searchRequestOptions,
+                                                 AutocompleteParameters autocompleteParameters);
 }

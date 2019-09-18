@@ -261,7 +261,9 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             SearchRequestOptions searchRequestOptions,
             AutocompleteParameters autocompleteParameters) {
 
-        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText, suggesterName, autocompleteParameters);
+        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
+            suggesterName,
+            autocompleteParameters);
         Mono<PagedResponse<AutocompleteItem>> first = restClient.documents()
                 .autocompletePostWithRestResponseAsync(autocompleteRequest)
                 .map(res -> {
@@ -386,8 +388,12 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
      * @param autocompleteParameters autocomplete parameters
      * @return AutocompleteRequest
      */
-    private AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName, AutocompleteParameters autocompleteParameters) {
-        AutocompleteRequest autoCompleteRequest = new AutocompleteRequest().searchText(searchText).suggesterName(suggesterName);
+    private AutocompleteRequest createAutoCompleteRequest(String searchText,
+                                                          String suggesterName,
+                                                          AutocompleteParameters autocompleteParameters) {
+        AutocompleteRequest autoCompleteRequest = new AutocompleteRequest()
+                                                        .searchText(searchText)
+                                                        .suggesterName(suggesterName);
         if (autocompleteParameters != null) {
             autoCompleteRequest.
                     filter(autocompleteParameters.filter()).
