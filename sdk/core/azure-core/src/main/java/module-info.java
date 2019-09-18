@@ -48,6 +48,7 @@ module com.azure.core {
     exports com.azure.core.implementation.http to
         com.azure.test,
         com.azure.http.netty,
+        com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
         com.azure.identity,                     // FIXME this should not be a long-term solution
         com.azure.security.keyvault.keys,
         com.azure.security.keyvault.secrets,
@@ -74,6 +75,7 @@ module com.azure.core {
         com.azure.amqp,                         // FIXME this should not be a long-term solution
         com.azure.http.netty,
         com.azure.messaging.eventhubs,          // FIXME this should not be a long-term solution
+        com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
         com.azure.identity,                     // FIXME this should not be a long-term solution
         com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution

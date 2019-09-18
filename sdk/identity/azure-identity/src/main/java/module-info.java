@@ -7,10 +7,10 @@ module com.azure.identity {
 
     requires transitive com.azure.core;
 
-    // FIXME this is temporary - reactor.netty is only required until this branch syncs with the repo
-    requires reactor.netty;
-
     requires msal4j;
+    requires jna;
+    requires jna.platform;
+    requires nanohttpd;
 
     exports com.azure.identity;
     exports com.azure.identity.credential;
