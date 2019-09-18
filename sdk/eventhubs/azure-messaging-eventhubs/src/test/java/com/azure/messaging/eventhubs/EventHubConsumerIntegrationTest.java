@@ -14,6 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -229,7 +230,10 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
      * Verify that we can receive until the timeout multiple times.
      */
     @Test
-    public void receiveUntilTimeoutMultipleTimes() {
+    public void receiveUntilTimeoutMultipleTimes() throws IOException {
+        this.consumer.close();
+        this.consumer = null;
+
         // Arrange
         final int numberOfEvents = 15;
         final int numberOfEvents2 = 3;
@@ -247,9 +251,10 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
             // Act
             final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(3));
 
+            System.out.println("Sending second batch.");
             producer.send(events2);
-
-            final IterableStream<EventData> receive2 = consumer.receive(100, Duration.ofSeconds(3));
+            System.out.println("Receiving second batch.");
+            final IterableStream<EventData> receive2 = consumer.receive(100, Duration.ofSeconds(5));
 
             // Assert
             final List<EventData> asList = receive.stream().collect(Collectors.toList());

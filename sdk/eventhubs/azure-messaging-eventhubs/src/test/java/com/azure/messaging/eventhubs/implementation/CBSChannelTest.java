@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
@@ -19,10 +18,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -36,12 +35,10 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Rule
     public TestName testName = new TestName();
 
-    private AmqpConnection connection;
+    private TestReactorConnection connection;
     private CBSChannel cbsChannel;
     private ConnectionStringProperties connectionString;
-    private ReactorHandlerProvider handlerProvider;
     private AzureTokenManagerProvider azureTokenManagerProvider;
-    private ReactorProvider reactorProvider;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -73,13 +70,16 @@ public class CBSChannelTest extends IntegrationTestBase {
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
         final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
-        reactorProvider = new ReactorProvider();
-        handlerProvider = new ReactorHandlerProvider(reactorProvider);
-        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
+        ReactorProvider reactorProvider = new ReactorProvider();
+        ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
+        connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider);
 
-        cbsChannel = new CBSChannel(connection, tokenCredential, connectionOptions.getAuthorizationType(),
-            reactorProvider, handlerProvider, retryOptions);
+        final Mono<RequestResponseChannel> requestResponseChannel =
+            connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
+
+        cbsChannel = new CBSChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
+            retryOptions);
     }
 
     @Override
@@ -88,12 +88,8 @@ public class CBSChannelTest extends IntegrationTestBase {
             cbsChannel.close();
         }
 
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (IOException e) {
-            Assert.fail("Could not close connection." + e.toString());
+        if (connection != null) {
+            connection.close();
         }
     }
 
@@ -121,8 +117,11 @@ public class CBSChannelTest extends IntegrationTestBase {
             Assert.fail("Could not create token provider: " + e.toString());
         }
 
-        final CBSNode node = new CBSChannel(connection, tokenProvider, SHARED_ACCESS_SIGNATURE, reactorProvider,
-            handlerProvider, new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
+        final Mono<RequestResponseChannel> requestResponseChannel =
+            connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
+
+        final CBSNode node = new CBSChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
+            new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
 
         // Act & Assert
         StepVerifier.create(node.authorize(tokenAudience))
@@ -135,5 +134,13 @@ public class CBSChannelTest extends IntegrationTestBase {
                 Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
+    }
+
+    private static final class TestReactorConnection extends ReactorConnection {
+        private TestReactorConnection(String connectionId, ConnectionOptions connectionOptions,
+                              ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+                              TokenManagerProvider tokenManagerProvider) {
+            super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
+        }
     }
 }
