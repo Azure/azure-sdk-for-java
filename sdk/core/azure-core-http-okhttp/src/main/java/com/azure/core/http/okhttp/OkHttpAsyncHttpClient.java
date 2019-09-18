@@ -105,7 +105,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             : toByteString(bbFlux);
 
         return bsMono.map(bs -> {
-            String contentType = headers.value("Content-Type");
+            String contentType = headers.getValue("Content-Type");
             if (contentType == null) {
                 return RequestBody.create(bs, MEDIA_TYPE_OCTET_STREAM);
             } else {
@@ -200,7 +200,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public String getHeaderValue(String name) {
-            return this.headers.value(name);
+            return this.headers.getValue(name);
         }
 
         @Override

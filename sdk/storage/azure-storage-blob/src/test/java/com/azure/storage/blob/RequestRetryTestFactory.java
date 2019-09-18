@@ -184,7 +184,7 @@ class RequestRetryTestFactory {
              This policy will add test headers and query parameters. Ensure they are removed/reset for each retry.
              The retry policy should be starting with a fresh copy of the request for every try.
              */
-            if (request.getHeaders().value(RETRY_TEST_HEADER) != null) {
+            if (request.getHeaders().getValue(RETRY_TEST_HEADER) != null) {
                 throw new IllegalArgumentException("Headers not reset.");
             }
             if ((request.getUrl().getQuery() != null && request.getUrl().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {

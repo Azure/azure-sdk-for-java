@@ -53,29 +53,29 @@ class BlobAPITest extends APISpec {
         then:
         body == defaultData
         headers.toMap().keySet().stream().noneMatch({ it.startsWith("x-ms-meta-") })
-        headers.value("Content-Length") != null
-        headers.value("Content-Type") != null
-        headers.value("Content-Range") == null
-        headers.value("Content-MD5") != null
-        headers.value("Content-Encoding") == null
-        headers.value("Cache-Control") == null
-        headers.value("Content-Disposition") == null
-        headers.value("Content-Language") == null
-        headers.value("x-ms-blob-sequence-number") == null
-        headers.value("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
-        headers.value("x-ms-copy-completion-time") == null
-        headers.value("x-ms-copy-status-description") == null
-        headers.value("x-ms-copy-id") == null
-        headers.value("x-ms-copy-progress") == null
-        headers.value("x-ms-copy-source") == null
-        headers.value("x-ms-copy-status") == null
-        headers.value("x-ms-lease-duration") == null
-        headers.value("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
-        headers.value("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
-        headers.value("Accept-Ranges") == "bytes"
-        headers.value("x-ms-blob-committed-block-count") == null
-        headers.value("x-ms-server-encrypted") != null
-        headers.value("x-ms-blob-content-md5") == null
+        headers.getValue("Content-Length") != null
+        headers.getValue("Content-Type") != null
+        headers.getValue("Content-Range") == null
+        headers.getValue("Content-MD5") != null
+        headers.getValue("Content-Encoding") == null
+        headers.getValue("Cache-Control") == null
+        headers.getValue("Content-Disposition") == null
+        headers.getValue("Content-Language") == null
+        headers.getValue("x-ms-blob-sequence-number") == null
+        headers.getValue("x-ms-blob-type") == BlobType.BLOCK_BLOB.toString()
+        headers.getValue("x-ms-copy-completion-time") == null
+        headers.getValue("x-ms-copy-status-description") == null
+        headers.getValue("x-ms-copy-id") == null
+        headers.getValue("x-ms-copy-progress") == null
+        headers.getValue("x-ms-copy-source") == null
+        headers.getValue("x-ms-copy-status") == null
+        headers.getValue("x-ms-lease-duration") == null
+        headers.getValue("x-ms-lease-state") == LeaseStateType.AVAILABLE.toString()
+        headers.getValue("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
+        headers.getValue("Accept-Ranges") == "bytes"
+        headers.getValue("x-ms-blob-committed-block-count") == null
+        headers.getValue("x-ms-server-encrypted") != null
+        headers.getValue("x-ms-blob-content-md5") == null
     }
 
     def "Download empty file"() {
@@ -211,7 +211,7 @@ class BlobAPITest extends APISpec {
     def "Download md5"() {
         when:
         VoidResponse response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
-        byte[] contentMD5 = response.getHeaders().value("content-md5").getBytes()
+        byte[] contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
 
         then:
         contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))
@@ -307,7 +307,7 @@ class BlobAPITest extends APISpec {
         properties.getContentLanguage() == null // tested in "set HTTP headers"
         properties.getCacheControl() == null // tested in "set HTTP headers"
         properties.getBlobSequenceNumber() == null // tested in PageBlob."create sequence number"
-        headers.value("Accept-Ranges") == "bytes"
+        headers.getValue("Accept-Ranges") == "bytes"
         properties.getCommittedBlockCount() == null // tested in AppendBlob."append block"
         properties.isServerEncrypted()
         properties.getAccessTier() == AccessTier.HOT
@@ -505,7 +505,7 @@ class BlobAPITest extends APISpec {
         bc.getProperties().getMetadata().size() == 0
         response.getStatusCode() == 200
         validateBasicHeaders(response.getHeaders())
-        Boolean.parseBoolean(response.getHeaders().value("x-ms-request-server-encrypted"))
+        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
     }
 
     def "Set metadata min"() {
@@ -1136,7 +1136,7 @@ class BlobAPITest extends APISpec {
         properties.getCopyProgress() != null
         properties.getCopySource() != null
         validateBasicHeaders(headers)
-        headers.value("x-ms-copy-id") != null
+        headers.getValue("x-ms-copy-id") != null
     }
 
     def "Copy min"() {
@@ -1157,12 +1157,12 @@ class BlobAPITest extends APISpec {
         }
 
         def status = bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null, null)
-            .getHeaders().value("x-ms-copy-status")
+            .getHeaders().getValue("x-ms-copy-status")
 
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
             sleepIfRecord(1000)
-            status = bu2.getPropertiesWithResponse(null, null, null).getHeaders().value("x-ms-copy-status")
+            status = bu2.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -1331,9 +1331,9 @@ class BlobAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 204
-        headers.value("x-ms-request-id") != null
-        headers.value("x-ms-version") != null
-        headers.value("Date") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
@@ -1412,8 +1412,8 @@ class BlobAPITest extends APISpec {
         HttpHeaders headers = bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
 
         then:
-        headers.value("x-ms-copy-status") == SyncCopyStatusType.SUCCESS.toString()
-        headers.value("x-ms-copy-id") != null
+        headers.getValue("x-ms-copy-status") == SyncCopyStatusType.SUCCESS.toString()
+        headers.getValue("x-ms-copy-id") != null
         validateBasicHeaders(headers)
     }
 
@@ -1579,9 +1579,9 @@ class BlobAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 202
-        headers.value("x-ms-request-id") != null
-        headers.value("x-ms-version") != null
-        headers.value("Date") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
     }
 
     def "Delete min"() {
@@ -1687,8 +1687,8 @@ class BlobAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 200 || initialResponse.getStatusCode() == 202
-        headers.value("x-ms-version") != null
-        headers.value("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("x-ms-request-id") != null
         bc.getProperties().getAccessTier() == tier
         cc.listBlobsFlat().iterator().next().getProperties().getAccessTier() == tier
 
@@ -1877,9 +1877,9 @@ class BlobAPITest extends APISpec {
 
         then:
         notThrown(StorageException)
-        undeleteHeaders.value("x-ms-request-id") != null
-        undeleteHeaders.value("x-ms-version") != null
-        undeleteHeaders.value("Date") != null
+        undeleteHeaders.getValue("x-ms-request-id") != null
+        undeleteHeaders.getValue("x-ms-version") != null
+        undeleteHeaders.getValue("Date") != null
 
         disableSoftDelete() == null
     }
@@ -1908,9 +1908,9 @@ class BlobAPITest extends APISpec {
         Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
-        response.getHeaders().value("Date") != null
-        response.getHeaders().value("x-ms-request-id") != null
-        response.getHeaders().value("x-ms-version") != null
+        response.getHeaders().getValue("Date") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("x-ms-version") != null
         response.getValue().getAccountKind() != null
         response.getValue().getSkuName() != null
     }
