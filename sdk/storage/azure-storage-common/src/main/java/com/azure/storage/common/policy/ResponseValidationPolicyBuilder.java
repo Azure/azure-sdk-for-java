@@ -39,7 +39,7 @@ public class ResponseValidationPolicyBuilder {
      */
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
-            String requestHeaderValue = httpResponse.getRequest().getHeaders().value(headerName);
+            String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
             String responseHeaderValue = httpResponse.getHeaderValue(headerName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
                 throw logger.logExceptionAsError(new RuntimeException(String.format(
