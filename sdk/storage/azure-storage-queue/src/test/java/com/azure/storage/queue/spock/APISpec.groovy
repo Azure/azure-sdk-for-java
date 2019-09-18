@@ -51,8 +51,7 @@ class APISpec extends Specification {
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
         interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode,
-            interceptorManager.getRecordedData())
+        testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
         if (getTestMode() == TestMode.RECORD) {
             connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {

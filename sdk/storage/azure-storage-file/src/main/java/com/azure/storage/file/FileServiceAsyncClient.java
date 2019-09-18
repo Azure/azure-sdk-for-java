@@ -22,6 +22,7 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.DeleteSnapshotsOptionType;

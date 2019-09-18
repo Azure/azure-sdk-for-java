@@ -100,12 +100,15 @@ public class DirectoryAsyncClient {
      * @throws RuntimeException If the directory is using a malformed URL.
      */
     public URL getDirectoryUrl() {
+        String directoryURLString = String.format("%s/%s/%s",azureFileStorageClient.getUrl(), shareName, directoryPath);
+        if (snapshot != null) {
+            directoryURLString = directoryURLString + "?snapshot=" + snapshot;
+        }
         try {
-            return new URL(azureFileStorageClient.getUrl());
+            return new URL(directoryURLString);
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                    azureFileStorageClient.getUrl()), e));
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), directoryURLString), e));
         }
     }
 

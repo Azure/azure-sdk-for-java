@@ -10,6 +10,7 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.file.DirectoryClient
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.FileSASPermission
 import com.azure.storage.file.ShareClient
@@ -18,6 +19,7 @@ import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.ShareSnapshotInfo
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
@@ -59,13 +61,31 @@ class FileAPITests extends APISpec {
     def "Get file URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
         def fileURL = primaryFileClient.getFileUrl().toString()
 
         then:
         expectURL == fileURL
+    }
+
+    def "Get share snapshot URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accoutName, shareName, filePath)
+
+        when:
+        ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
+        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+//        ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName)
+//            .snapshot(shareSnapshotInfo.getSnapshot()).buildClient()
+//        def shareURL = newShareClient.getFileClient(filePath).getFileUrl().toString()
+        FileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+            .buildClient().getFileClient(filePath)
+        def fileURL = newFileClient.getFileUrl().toString()
+        then:
+        expectURL.equals(fileURL)
     }
 
     def "Create file"() {

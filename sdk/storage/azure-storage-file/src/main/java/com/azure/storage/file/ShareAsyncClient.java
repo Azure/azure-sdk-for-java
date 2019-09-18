@@ -11,6 +11,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -95,12 +96,15 @@ public class ShareAsyncClient {
      * @throws RuntimeException If the share is using a malformed URL.
      */
     public URL getShareUrl() {
+        String shareURLString = String.format("%s/%s", azureFileStorageClient.getUrl(), shareName);
+        if (snapshot != null) {
+            shareURLString = String.format("%s?snapshot=%s", shareURLString, snapshot);
+        }
         try {
-            return new URL(azureFileStorageClient.getUrl());
+            return new URL(shareURLString);
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                    azureFileStorageClient.getUrl()), e));
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), shareURLString), e));
         }
     }
 
@@ -140,7 +144,7 @@ public class ShareAsyncClient {
      * @return a {@link FileAsyncClient} that interacts with the file in the share
      */
     public FileAsyncClient getFileClient(String filePath) {
-        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, null);
+        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot);
     }
 
     /**

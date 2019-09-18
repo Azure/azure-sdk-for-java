@@ -94,7 +94,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
         }
 
         return new AzureFileStorageBuilder()
-            .url(super.endpoint)
+            .url(endpoint)
             .pipeline(pipeline)
             .build();
     }
