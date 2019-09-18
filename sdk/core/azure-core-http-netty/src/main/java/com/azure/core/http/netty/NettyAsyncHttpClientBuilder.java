@@ -63,7 +63,7 @@ public class NettyAsyncHttpClientBuilder {
                             nettyProxy = ProxyProvider.Proxy.SOCKS5;
                             break;
                         default:
-                            throw logger.logExceptionAsWarning(new IllegalStateException(
+                            throw logger.logExceptionAsError(new IllegalStateException(
                                 String.format("Unknown Proxy type '%s' in use. Not configuring Netty proxy.",
                                     proxyOptions.getType())));
                     }

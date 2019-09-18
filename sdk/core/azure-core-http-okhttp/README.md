@@ -29,11 +29,10 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create the simplest OkHttp client.
+Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
 
 ```java
-HttpClient client = new OkHttpAsyncHttpClientBuilder()
-    .build();
+HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy

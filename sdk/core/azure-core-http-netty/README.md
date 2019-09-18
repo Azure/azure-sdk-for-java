@@ -29,11 +29,10 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create the simplest Netty Http client.
+Create a Netty Http client that uses port 80 and has no proxy.
 
 ```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .build();
+HttpClient client = new NettyAsyncHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy
