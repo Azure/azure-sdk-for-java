@@ -53,8 +53,11 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
+     * @param responseChannelMono Mono that completes with a new {@link RequestResponseChannel}.
      * @param eventHubName The name of the Event Hub.
-     * @param credential A provider that generates authorization tokens.
+     * @param credential Credential to authorize user for access to the Event Hub.
+     * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
+     * @param mapper Maps responses from the management channel.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
                       TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {

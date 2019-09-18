@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -130,7 +129,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String partitionId = "1";
-        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
@@ -162,8 +161,8 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final int receiveNumber = 10;
         final String partitionId = "1";
 
-        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
-        final List<EventData> events2 = getEventsAsList(secondSetOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents);
+        final List<EventData> events2 = getEventsAsList(secondSetOfEvents);
 
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
@@ -195,7 +194,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         final int receiveNumber = 10;
         final String partitionId = "1";
 
-        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId, position);
@@ -232,16 +231,13 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
      * Verify that we can receive until the timeout multiple times.
      */
     @Test
-    public void receiveUntilTimeoutMultipleTimes() throws IOException {
-        this.consumer.close();
-        this.consumer = null;
-
+    public void receiveUntilTimeoutMultipleTimes() {
         // Arrange
         final int numberOfEvents = 15;
         final int numberOfEvents2 = 3;
         final String partitionId = "1";
-        final List<EventData> events = getEventsAsList(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID);
-        final List<EventData> events2 = getEventsAsList(numberOfEvents2, TestUtils.MESSAGE_TRACKING_ID);
+        final List<EventData> events = getEventsAsList(numberOfEvents);
+        final List<EventData> events2 = getEventsAsList(numberOfEvents2);
 
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.fromEnqueuedTime(Instant.now()));
@@ -269,7 +265,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    private static List<EventData> getEventsAsList(int numberOfEvents, String messageId) {
-        return TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+    private static List<EventData> getEventsAsList(int numberOfEvents) {
+        return TestUtils.getEvents(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID).collectList().block();
     }
 }
