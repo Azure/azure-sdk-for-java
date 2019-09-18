@@ -6,6 +6,9 @@ package com.azure.messaging.eventhubs.implementation;
 import org.apache.qpid.proton.engine.BaseHandler;
 import reactor.core.publisher.Mono;
 
+/**
+ * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
+ */
 public class EventHubReactorConnection extends ReactorConnection implements EventHubConnection {
     private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
