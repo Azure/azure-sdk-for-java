@@ -7,8 +7,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.generated.models.AutocompleteItem;
 import com.azure.search.data.generated.models.AutocompleteParameters;
-import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
@@ -124,16 +124,21 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public AutocompleteResult autocomplete(String searchText, String suggesterName) {
-        return null;
+    public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
+        PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText, suggesterName, null, null);
+        return new PagedIterable<>(result);
     }
 
     @Override
-    public AutocompleteResult autocomplete(String searchText,
-                                           String suggesterName,
-                                           SearchRequestOptions searchRequestOptions,
-                                           AutocompleteParameters autocompleteParameters) {
-        return null;
+    public PagedIterable<AutocompleteItem> autocomplete(String searchText,
+                                                        String suggesterName,
+                                                        SearchRequestOptions searchRequestOptions,
+                                                        AutocompleteParameters autocompleteParameters) {
+        PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText,
+                                                                    suggesterName,
+                                                                    searchRequestOptions,
+                                                                    autocompleteParameters);
+        return new PagedIterable<>(result);
     }
 
     private <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {

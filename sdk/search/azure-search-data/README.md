@@ -41,6 +41,7 @@ The APIs documented in this section provide access to operations on search data,
 * [A simple search index example](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/SearchIndexClientExample.java).
 * [Handle a generic document search results](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/GenericDocumentSearchExample.java).
 * [Get a single generic document](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/GenericSingleDocumentGetExample.java).
+* [Using suggestions](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/SearchSuggestionExample.java).
 
 ## How to provide feedback
 

@@ -101,9 +101,6 @@ public final class SearchIndexRestClientBuilder {
      * @return an instance of SearchIndexRestClient.
      */
     public SearchIndexRestClient build() {
-        if (searchDnsSuffix == null) {
-            this.searchDnsSuffix = "search.windows.net";
-        }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
@@ -116,6 +113,8 @@ public final class SearchIndexRestClientBuilder {
         }
         if (this.searchDnsSuffix != null) {
             client.setSearchDnsSuffix(this.searchDnsSuffix);
+        } else {
+            client.setSearchDnsSuffix("search.windows.net");
         }
         if (this.indexName != null) {
             client.setIndexName(this.indexName);

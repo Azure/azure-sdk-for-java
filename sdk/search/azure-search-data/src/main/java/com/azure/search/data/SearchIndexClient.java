@@ -5,8 +5,8 @@ package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.search.data.customization.Document;
+import com.azure.search.data.generated.models.AutocompleteItem;
 import com.azure.search.data.generated.models.AutocompleteParameters;
-import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
@@ -153,7 +153,7 @@ public interface SearchIndexClient {
      * @param suggesterName suggester name
      * @return auto complete result
      */
-    AutocompleteResult autocomplete(String searchText, String suggesterName);
+    PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
@@ -164,8 +164,5 @@ public interface SearchIndexClient {
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */
-    AutocompleteResult autocomplete(String searchText,
-                                    String suggesterName,
-                                    SearchRequestOptions searchRequestOptions,
-                                    AutocompleteParameters autocompleteParameters);
+    PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
 }
