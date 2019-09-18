@@ -994,8 +994,9 @@ public class ShareAsyncClient {
     }
 
     private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {
-        String eTag = response.getHeaders().value("ETag");
-        OffsetDateTime lastModified = new DateTimeRfc1123(response.getHeaders().value("Last-Modified")).getDateTime();
+        String eTag = response.getHeaders().getValue("ETag");
+        OffsetDateTime lastModified =
+            new DateTimeRfc1123(response.getHeaders().getValue("Last-Modified")).getDateTime();
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             new ShareInfo(eTag, lastModified));

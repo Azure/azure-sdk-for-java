@@ -169,7 +169,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         downloadStream.toByteArray() == defaultData.array()
         validateBasicHeaders(appendResponse.getHeaders())
-        appendResponse.getHeaders().value("x-ms-content-crc64") != null
+        appendResponse.getHeaders().getValue("x-ms-content-crc64") != null
         appendResponse.getValue().getBlobAppendOffset() != null
         appendResponse.getValue().getBlobCommittedBlockCount() != null
 

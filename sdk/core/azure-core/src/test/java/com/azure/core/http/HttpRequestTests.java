@@ -47,7 +47,7 @@ public class HttpRequestTests {
                 assertNotSame(clonedHeader, originalHeader);
             }
 
-            assertEquals(clonedHeader.getValue(), request.getHeaders().value(clonedHeader.getName()));
+            assertEquals(clonedHeader.getValue(), request.getHeaders().getValue(clonedHeader.getName()));
         }
 
         assertSame(request.getBody(), bufferedRequest.getBody());
