@@ -121,26 +121,22 @@ public final class InkRecognizerClient {
                 .build();
         request = credentials.SetRequestCredentials(request);
 
+        okhttp3.Response response = null;
         for (int retryAttempt = 0; retryAttempt < retryCount; ++retryAttempt) {
-            try (okhttp3.Response response = client.newCall(request).execute()) {
-                if (response.code() != 200) {
-                    // If last attempt failed, return the error
-                    if (retryAttempt == retryCount - 1) {
-                        throw new Exception("Request unsuccessful: " + response);
-                    } else {
-                        continue;
-                    }
+            try {
+                response = client.newCall(request).execute();
+                if (response.code() == 200) {
+                    // Successful response
+                    String responseString = response.body().string();
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    JsonNode jsonResponse = objectMapper.readValue(responseString, JsonNode.class);
+                    return new Response<>(response.code(), responseString, new InkRecognitionRoot(jsonResponse.get("recognitionUnits"), unit, displayMetrics));
                 }
-                // Successful response
-                String responseString = response.body().string();
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode jsonResponse = objectMapper.readValue(responseString, JsonNode.class);
-                return new Response<>(response.code(), responseString, new InkRecognitionRoot(jsonResponse.get("recognitionUnits"), unit, displayMetrics));
             } catch (Exception e) {
             }
         }
 
-        throw new Exception("Request unsuccessful");
+        throw new Exception("Request unsuccessful" + response);
     }
 
     InkRecognizerClient setCredentials(InkRecognizerCredentials credentials) {
