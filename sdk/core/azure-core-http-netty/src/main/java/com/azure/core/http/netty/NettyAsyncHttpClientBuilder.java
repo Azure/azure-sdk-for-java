@@ -35,13 +35,13 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Creates a new {@link NettyAsyncHttpClient} instance on every call, using the configuration set in the builder at
-     * the time of the build method call.
+     * Creates a new Netty-backed {@link com.azure.core.http.HttpClient} instance on every call, using the
+     * configuration set in the builder at the time of the build method call.
      *
-     * @return A new NettyAsyncHttpClient instance.
+     * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
-    public NettyAsyncHttpClient build() {
+    public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient = HttpClient.create()
             .port(port)
             .wiretap(enableWiretap)
