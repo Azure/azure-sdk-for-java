@@ -55,7 +55,7 @@ public enum InkRecognitionUnitKind {
 
     static {
         for (InkRecognitionUnitKind inkRecognitionUnitKind : InkRecognitionUnitKind.values()) {
-            map.put(inkRecognitionUnitKind.toString(), inkRecognitionUnitKind);
+            map.put(inkRecognitionUnitKind.toString().toLowerCase(), inkRecognitionUnitKind);
         }
     }
 
@@ -64,8 +64,8 @@ public enum InkRecognitionUnitKind {
     }
 
     static InkRecognitionUnitKind getInkRecognitionUnitKindOrDefault(String inkRecognitionKindString) {
-        if (map.containsKey(inkRecognitionKindString)) {
-            return map.get(inkRecognitionKindString);
+        if (inkRecognitionKindString != null && map.containsKey(inkRecognitionKindString.toLowerCase())) {
+            return map.get(inkRecognitionKindString.toLowerCase());
         } else {
             return InkRecognitionUnitKind.UNKNOWN;
         }

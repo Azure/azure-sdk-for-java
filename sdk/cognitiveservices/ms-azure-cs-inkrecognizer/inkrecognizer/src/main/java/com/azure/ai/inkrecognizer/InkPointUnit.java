@@ -38,7 +38,7 @@ public enum InkPointUnit {
 
     static {
         for (InkPointUnit inkPointUnit : InkPointUnit.values()) {
-            map.put(inkPointUnit.toString(), inkPointUnit);
+            map.put(inkPointUnit.toString().toLowerCase(), inkPointUnit);
         }
     }
 
@@ -47,8 +47,8 @@ public enum InkPointUnit {
     }
 
     static InkPointUnit getInkPointUnitOrDefault(String inkPointUnitString) {
-        if (map.containsKey(inkPointUnitString)) {
-            return map.get(inkPointUnitString);
+        if (inkPointUnitString != null && map.containsKey(inkPointUnitString.toLowerCase())) {
+            return map.get(inkPointUnitString.toLowerCase());
         } else {
             return InkPointUnit.PIXEL;
         }

@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * The StrokeKind enum represents the class a stroke belongs to.
  * The user of the Ink recognizer service is expected to set this value
- * when it is known with absolute certainty. The default value is "UNKNOWN"
+ * when it is known with absolute certainty. The default value is InkStrokeKind.UNKNOWN
  * @author Microsoft
  * @version 1.0
  */
@@ -34,7 +34,7 @@ public enum InkStrokeKind {
 
     static {
         for (InkStrokeKind inkStrokeKind : InkStrokeKind.values()) {
-            map.put(inkStrokeKind.toString(), inkStrokeKind);
+            map.put(inkStrokeKind.toString().toLowerCase(), inkStrokeKind);
         }
     }
 
@@ -43,8 +43,8 @@ public enum InkStrokeKind {
     }
 
     static InkStrokeKind getInkStrokeKindOrDefault(String inkStrokeKindString) {
-        if (map.containsKey(inkStrokeKindString)) {
-            return map.get(inkStrokeKindString);
+        if (inkStrokeKindString != null && map.containsKey(inkStrokeKindString.toLowerCase())) {
+            return map.get(inkStrokeKindString.toLowerCase());
         } else {
             return InkStrokeKind.UNKNOWN;
         }

@@ -10,7 +10,7 @@ import java.util.Map;
  * The ApplicationKind enum allows an application to identify its domain (when it has one).
  * Specifying a domain allows the application to inform the service of its contents. This
  * can facilitate faster processing as the service will skip some classification steps.
- * Applications that don't have a specific domain can simply specify "Mixed" which is the default.
+ * Applications that don't have a specific domain can simply specify ApplicationKind.MIXED which is the default.
  * @author Microsoft
  * @version 1.0
  */
@@ -36,7 +36,7 @@ public enum ApplicationKind {
 
     static {
         for (ApplicationKind applicationKind : ApplicationKind.values()) {
-            map.put(applicationKind.toString(), applicationKind);
+            map.put(applicationKind.toString().toLowerCase(), applicationKind);
         }
     }
 
@@ -45,8 +45,8 @@ public enum ApplicationKind {
     }
 
     static ApplicationKind getApplicationKindOrDefault(String applicationKindString) {
-        if (map.containsKey(applicationKindString)) {
-            return map.get(applicationKindString);
+        if (applicationKindString != null && map.containsKey(applicationKindString.toLowerCase())) {
+            return map.get(applicationKindString.toLowerCase());
         } else {
             return ApplicationKind.MIXED;
         }

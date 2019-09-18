@@ -18,7 +18,7 @@ public enum ServiceVersion {
 
     static {
         for (ServiceVersion serviceVersion : ServiceVersion.values()) {
-            map.put(serviceVersion.toString(), serviceVersion);
+            map.put(serviceVersion.toString().toLowerCase(), serviceVersion);
         }
     }
 
@@ -27,8 +27,8 @@ public enum ServiceVersion {
     }
 
     static ServiceVersion getServiceVersionOrDefault(String serviceVersionString) {
-        if (map.containsKey(serviceVersionString)) {
-            return map.get(serviceVersionString);
+        if (serviceVersionString != null && map.containsKey(serviceVersionString.toLowerCase())) {
+            return map.get(serviceVersionString.toLowerCase());
         } else {
             return PREVIEW_1_0_0;
         }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * The Shape enum represents different shapes that can be reported by the ink recognizer
- * service. Any unrecognized shape will be reported as "DRAWING"
+ * service. Any unrecognized shape will be reported as Shape.DRAWING
  * @author Microsoft
  * @version 1.0
  */
@@ -134,7 +134,7 @@ public enum Shape {
 
     static {
         for (Shape shape : Shape.values()) {
-            map.put(shape.toString(), shape);
+            map.put(shape.toString().toLowerCase(), shape);
         }
     }
 
@@ -143,8 +143,8 @@ public enum Shape {
     }
 
     static Shape getShapeOrDefault(String shapeString) {
-        if (map.containsKey(shapeString)) {
-            return map.get(shapeString);
+        if (shapeString != null && map.containsKey(shapeString.toLowerCase())) {
+            return map.get(shapeString.toLowerCase());
         } else {
             return Shape.DRAWING;
         }

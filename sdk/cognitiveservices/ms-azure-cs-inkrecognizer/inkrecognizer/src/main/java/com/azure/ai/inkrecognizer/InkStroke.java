@@ -4,7 +4,7 @@
 package com.azure.ai.inkrecognizer;
 
 /**
- * The InkStroke interface represents an ink stroke (a collection of ink points from the time a user places his writing instrument on
+ * The InkStroke interface represents an ink stroke (a collection of ink points from the time a user places the writing instrument on
  * the writing surface until the the instrument is lifted.
  * Clients of the Ink Recognizer services are expected to implement this interface on the data store
  * used to store ink data so the InkRecognizer object can use it to translate the ink to JSON for delivery
