@@ -39,7 +39,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-class RequestResponseChannel implements Closeable {
+/**
+ * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
+ * broker and receive the associated response.
+ */
+public class RequestResponseChannel implements Closeable {
     private static final String STATUS_CODE = "status-code";
     private static final String STATUS_DESCRIPTION = "status-description";
 
@@ -58,8 +62,8 @@ class RequestResponseChannel implements Closeable {
     private final Disposable subscription;
     private final RetryPolicy retryPolicy;
 
-    RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
-                           RetryOptions retryOptions, ReactorHandlerProvider handlerProvider) {
+    public RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
+                                  RetryOptions retryOptions, ReactorHandlerProvider handlerProvider) {
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
@@ -101,8 +105,19 @@ class RequestResponseChannel implements Closeable {
         }
     }
 
-    Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
-        start();
+    /**
+     * Sends a message to the message broker using the {@code dispatcher} and gets the response.
+     *
+     * @param message AMQP message to send.
+     * @param dispatcher The reactor dispatcher that the request will be sent with.
+     *
+     * @return An AMQP message representing the service's response to the message.
+     */
+    public Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
+        if (!hasOpened.getAndSet(true)) {
+            sendLink.open();
+            receiveLink.open();
+        }
 
         if (message == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
@@ -135,13 +150,6 @@ class RequestResponseChannel implements Closeable {
                         sink.error(e);
                     }
                 }));
-    }
-
-    private void start() {
-        if (!hasOpened.getAndSet(true)) {
-            sendLink.open();
-            receiveLink.open();
-        }
     }
 
     // Not thread-safe This must be invoked from reactor/dispatcher thread. And assumes that this is run on a link
