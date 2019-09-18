@@ -198,7 +198,8 @@ public class FileSmbProperties {
             .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME));
         this.fileLastWriteTime = OffsetDateTime.parse(httpHeaders
             .getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME));
-        this.fileChangeTime = OffsetDateTime.parse(httpHeaders.getValue(FileConstants.HeaderConstants.FILE_CHANGE_TIME));
+        this.fileChangeTime = OffsetDateTime.parse(httpHeaders
+            .getValue(FileConstants.HeaderConstants.FILE_CHANGE_TIME));
         this.fileId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ID);
         this.parentId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PARENT_ID);
     }
