@@ -95,22 +95,28 @@ public class ConfigurationTests {
     @Test
     public void logLevelUpdatesInstantly() {
         String initialLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "123456789");
-        assertNotEquals(initialLogLevel, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL));
 
-        // Cleanup the test
-        if (initialLogLevel != null) {
-            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, initialLogLevel);
+        try {
+            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "123456789");
+            assertNotEquals(initialLogLevel, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL));
+        } finally {
+            // Cleanup the test
+            if (initialLogLevel != null) {
+                System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, initialLogLevel);
+            }
         }
     }
 
     @Test
     public void tracingDisabledUpdatesInstantly() {
         boolean initialTracingDisabled = Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
-        System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(!initialTracingDisabled));
-        assertNotEquals(initialTracingDisabled, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
 
-        // Cleanup the test
-        System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(initialTracingDisabled));
+        try {
+            System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(!initialTracingDisabled));
+            assertNotEquals(initialTracingDisabled, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
+        } finally {
+            // Cleanup the test
+            System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(initialTracingDisabled));
+        }
     }
 }
