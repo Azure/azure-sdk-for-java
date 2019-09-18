@@ -19,7 +19,7 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.ContainerItem
@@ -180,7 +180,7 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
-        String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (testMode != null) {
             try {
@@ -202,8 +202,8 @@ class APISpec extends Specification {
         String accountKey
 
         if (testMode == TestMode.RECORD) {
-            accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             accountName = "storageaccount"
             accountKey = "astorageaccountkey"
@@ -396,7 +396,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
-            if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 

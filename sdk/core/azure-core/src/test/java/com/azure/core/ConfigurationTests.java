@@ -3,8 +3,7 @@
 
 package com.azure.core;
 
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -30,7 +29,7 @@ public class ConfigurationTests {
      */
     @Test
     public void runtimeConfigurationFound() {
-        assertNotNull(ConfigurationManager.getConfiguration().get(runtimeConfigurationName));
+        assertNotNull(Configuration.getGlobalConfiguration().get(runtimeConfigurationName));
     }
 
     /**
@@ -38,7 +37,7 @@ public class ConfigurationTests {
      */
     @Test
     public void environmentConfigurationFound() {
-        assertNotNull(ConfigurationManager.getConfiguration().get(environmentConfigurationName));
+        assertNotNull(Configuration.getGlobalConfiguration().get(environmentConfigurationName));
     }
 
     /**
@@ -46,7 +45,7 @@ public class ConfigurationTests {
      */
     @Test
     public void configurationNotFound() {
-        assertNull(ConfigurationManager.getConfiguration().get("invalidConfiguration"));
+        assertNull(Configuration.getGlobalConfiguration().get("invalidConfiguration"));
     }
 
     /**
@@ -54,7 +53,7 @@ public class ConfigurationTests {
      */
     @Test
     public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
-        String configurationValue = ConfigurationManager.getConfiguration().get(runtimeOverEnvironmentName);
+        String configurationValue = Configuration.getGlobalConfiguration().get(runtimeOverEnvironmentName);
         assertEquals(runtimeConfiguration, configurationValue);
     }
 
@@ -63,7 +62,7 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationPreferredOverDefault() {
-        String configurationValue = ConfigurationManager.getConfiguration().get(environmentConfigurationName, defaultConfiguration);
+        String configurationValue = Configuration.getGlobalConfiguration().get(environmentConfigurationName, defaultConfiguration);
         assertEquals(environmentConfiguration, configurationValue);
     }
 
@@ -72,7 +71,7 @@ public class ConfigurationTests {
      */
     @Test
     public void fallbackToDefaultConfiguration() {
-        String configurationValue = ConfigurationManager.getConfiguration().get("invalidConfiguration", defaultConfiguration);
+        String configurationValue = Configuration.getGlobalConfiguration().get("invalidConfiguration", defaultConfiguration);
         assertEquals(defaultConfiguration, configurationValue);
     }
 
@@ -81,7 +80,7 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationIsConverted() {
-        String configurationValue = ConfigurationManager.getConfiguration().get(runtimeConfigurationName, String::toUpperCase);
+        String configurationValue = Configuration.getGlobalConfiguration().get(runtimeConfigurationName, String::toUpperCase);
         assertEquals(runtimeConfiguration.toUpperCase(), configurationValue);
     }
 
@@ -90,28 +89,28 @@ public class ConfigurationTests {
      */
     @Test
     public void notFoundConfigurationIsConvertedToNull() {
-        assertNull(ConfigurationManager.getConfiguration().get("invalidConfiguration", String::toUpperCase));
+        assertNull(Configuration.getGlobalConfiguration().get("invalidConfiguration", String::toUpperCase));
     }
 
     @Test
     public void logLevelUpdatesInstantly() {
-        String initialLogLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL);
-        System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, "123456789");
-        assertNotEquals(initialLogLevel, ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL));
+        String initialLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "123456789");
+        assertNotEquals(initialLogLevel, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL));
 
         // Cleanup the test
         if (initialLogLevel != null) {
-            System.setProperty(BaseConfigurations.AZURE_LOG_LEVEL, initialLogLevel);
+            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, initialLogLevel);
         }
     }
 
     @Test
     public void tracingDisabledUpdatesInstantly() {
-        boolean initialTracingDisabled = Boolean.parseBoolean(ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TRACING_DISABLED));
-        System.setProperty(BaseConfigurations.AZURE_TRACING_DISABLED, Boolean.toString(!initialTracingDisabled));
-        assertNotEquals(initialTracingDisabled, ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TRACING_DISABLED));
+        boolean initialTracingDisabled = Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
+        System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(!initialTracingDisabled));
+        assertNotEquals(initialTracingDisabled, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
 
         // Cleanup the test
-        System.setProperty(BaseConfigurations.AZURE_TRACING_DISABLED, Boolean.toString(initialTracingDisabled));
+        System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(initialTracingDisabled));
     }
 }

@@ -17,8 +17,9 @@ import java.util.Objects;
  * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose}
  * logging the stack trace for the throwable will be included in the log message.</p>
  *
- * <p>A minimum logging level threshold is determined by the {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
- * environment configuration, by default logging is disabled.</p>
+ * <p>A minimum logging level threshold is determined by the
+ * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration, by default logging is
+ * disabled.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>

@@ -26,16 +26,8 @@ class AppServiceMSICredential {
      */
     AppServiceMSICredential(String clientId, IdentityClient identityClient) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
-        } else {
-            msiEndpoint = null;
-        }
-        if (configuration.contains(Configuration.PROPERTY_MSI_SECRET)) {
-            msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
-        } else {
-            msiSecret = null;
-        }
+        this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
+        this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         this.identityClient = identityClient;
         this.clientId = clientId;
     }

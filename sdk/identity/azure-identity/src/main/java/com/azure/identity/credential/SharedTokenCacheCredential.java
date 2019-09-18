@@ -45,11 +45,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
         this.configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
-            if (configuration.contains(Configuration.PROPERTY_AZURE_USERNAME)) {
-                this.username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
-            } else {
-                this.username = null;
-            }
+            this.username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         } else {
             this.username = username;
         }
