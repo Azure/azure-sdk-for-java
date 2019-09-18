@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
+import com.azure.storage.blob.BlobSASPermission;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -21,65 +22,72 @@ import com.azure.storage.common.SASProtocol;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
 /**
- * Code snippets for {@link BlobAsyncClient}
+ * Code snippets for {@link BlobAsyncClientBase}
  */
 @SuppressWarnings("unused")
-public class BlobAsyncClientJavaDocCodeSnippets {
-    private BlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName");
+public class BlobAsyncClientBaseJavaDocCodeSnippets {
+    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, null);
     private String leaseId = "leaseId";
     private String copyId = "copyId";
-    private URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
+    private URL url = new URL("https://sample.com");
     private String file = "file";
 
     /**
-     * Code snippet for {@link BlobAsyncClient#exists()}
+     * @throws MalformedURLException Ignore
+     */
+    public BlobAsyncClientBaseJavaDocCodeSnippets() throws MalformedURLException {
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#exists()}
      */
     public void existsCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.exists
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.exists
         client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.exists
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.exists
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(URL)}
+     * Code snippets for {@link BlobAsyncClientBase#startCopyFromURL(URL)}
      */
     public void startCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL
         client.startCopyFromURL(url)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromURL(String)}
      */
     public void abortCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
         client.abortCopyFromURL(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
-        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURL(URL)}
+     * Code snippets for {@link BlobAsyncClientBase#copyFromURL(URL)}
      */
     public void copyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#URL
         client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#URL
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#download()}
+     * Code snippets for {@link BlobAsyncClientBase#download()}
      *
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.download
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.download
         client.download().subscribe(response -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
             response.subscribe(piece -> {
@@ -90,9 +98,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         });
-        // END: com.azure.storage.blob.BlobAsyncClient.download
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.download
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
@@ -106,121 +114,121 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         });
-        // END: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClient#downloadToFile(String,
+     * Code snippets for {@link BlobAsyncClientBase#downloadToFile(String)} and {@link BlobAsyncClientBase#downloadToFile(String,
      * BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean)}
      */
     public void downloadToFileCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String
         client.downloadToFile(file).subscribe(response -> System.out.println("Completed download to file"));
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         client.downloadToFile(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#delete()}
+     * Code snippets for {@link BlobAsyncClientBase#delete()}
      */
     public void deleteCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.delete
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.delete
         client.delete().doOnSuccess(response -> System.out.println("Completed delete"));
-        // END: com.azure.storage.blob.BlobAsyncClient.delete
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.delete
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#getProperties()}
+     * Code snippets for {@link BlobAsyncClientBase#getProperties()}
      */
     public void getPropertiesCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getProperties
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties
         client.getProperties().subscribe(response ->
             System.out.printf("Type: %s, Size: %d%n", response.getBlobType(), response.getBlobSize()));
-        // END: com.azure.storage.blob.BlobAsyncClient.getProperties
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeaders(BlobHTTPHeaders)}
+     * Code snippets for {@link BlobAsyncClientBase#setHTTPHeaders(BlobHTTPHeaders)}
      */
     public void setHTTPHeadersCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeaders#BlobHTTPHeaders
         client.setHTTPHeaders(new BlobHTTPHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
-        // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeaders#BlobHTTPHeaders
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setMetadata(Metadata)}
+     * Code snippets for {@link BlobAsyncClientBase#setMetadata(Metadata)}
      */
     public void setMetadataCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Metadata
         client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")));
-        // END: com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Metadata
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#createSnapshot()}
+     * Code snippets for {@link BlobAsyncClientBase#createSnapshot()}
      */
     public void createSnapshotCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshot
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot
         client.createSnapshot()
             .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n",
                 response.getSnapshotId()));
-        // END: com.azure.storage.blob.BlobAsyncClient.createSnapshot
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setTier(AccessTier)}
+     * Code snippets for {@link BlobAsyncClientBase#setTier(AccessTier)}
      */
     public void setTierCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier
         client.setTier(AccessTier.HOT);
-        // END: com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#undelete()}
+     * Code snippet for {@link BlobAsyncClientBase#undelete()}
      */
     public void undeleteCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.undelete
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete
         client.undelete().doOnSuccess(response -> System.out.println("Completed undelete"));
-        // END: com.azure.storage.blob.BlobAsyncClient.undelete
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#getAccountInfo()}
+     * Code snippet for {@link BlobAsyncClientBase#getAccountInfo()}
      */
     public void getAccountInfoCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getAccountInfo
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo
         client.getAccountInfo().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
             response.getAccountKind(), response.getSkuName()));
-        // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfo
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#existsWithResponse()}
+     * Code snippet for {@link BlobAsyncClientBase#existsWithResponse()}
      */
     public void existsWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.existsWithResponse
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.existsWithResponse
         client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobAsyncClient.existsWithResponse
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.existsWithResponse
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Metadata, AccessTier,
+     * Code snippets for {@link BlobAsyncClientBase#startCopyFromURLWithResponse(URL, Metadata, AccessTier,
      * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -230,28 +238,28 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
      */
     public void abortCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
             .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, AccessTier,
+     * Code snippets for {@link BlobAsyncClientBase#copyFromURLWithResponse(URL, Metadata, AccessTier,
      * ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -260,17 +268,17 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * Code snippets for {@link BlobAsyncClientBase#downloadWithResponse(BlobRange, ReliableDownloadOptions,
      * BlobAccessConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, (long) 2048);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
@@ -284,41 +292,41 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         });
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#deleteWithResponse(DeleteSnapshotsOptionType, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#deleteWithResponse(DeleteSnapshotsOptionType, BlobAccessConditions)}
      */
     public void deleteWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
         client.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
             .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#getPropertiesWithResponse(BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#getPropertiesWithResponse(BlobAccessConditions)}
      */
     public void getPropertiesWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getPropertiesWithResponse#BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobAccessConditions
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.getPropertiesWithResponse(accessConditions).subscribe(
             response -> System.out.printf("Type: %s, Size: %d%n", response.getValue().getBlobType(),
                 response.getValue().getBlobSize()));
-        // END: com.azure.storage.blob.BlobAsyncClient.getPropertiesWithResponse#BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeadersWithResponse(BlobHTTPHeaders, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#setHTTPHeadersWithResponse(BlobHTTPHeaders, BlobAccessConditions)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
@@ -328,77 +336,77 @@ public class BlobAsyncClientJavaDocCodeSnippets {
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setMetadataWithResponse(Metadata, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#setMetadataWithResponse(Metadata, BlobAccessConditions)}
      */
     public void setMetadataWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.setMetadataWithResponse(new Metadata(Collections.singletonMap("metadata", "value")), accessConditions)
             .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#createSnapshotWithResponse(Metadata, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#createSnapshotWithResponse(Metadata, BlobAccessConditions)}
      */
     public void createSnapshotWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshotWithResponse#Metadata-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions
         Metadata snapshotMetadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.createSnapshotWithResponse(snapshotMetadata, accessConditions)
             .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobAsyncClient.createSnapshotWithResponse#Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setTierWithResponse(AccessTier, RehydratePriority,
+     * Code snippets for {@link BlobAsyncClientBase#setTierWithResponse(AccessTier, RehydratePriority,
      * LeaseAccessConditions)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
         client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#undeleteWithResponse()}
+     * Code snippet for {@link BlobAsyncClientBase#undeleteWithResponse()}
      */
     public void undeleteWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse
         client.undeleteWithResponse()
             .subscribe(response -> System.out.printf("Undelete completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#getAccountInfoWithResponse()}
+     * Code snippet for {@link BlobAsyncClientBase#getAccountInfoWithResponse()}
      */
     public void getAccountInfoWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse
         client.getAccountInfoWithResponse().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
             response.getValue().getAccountKind(), response.getValue().getSkuName()));
-        // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
      * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         BlobSASPermission permissions = new BlobSASPermission()
             .setRead(true)
             .setWrite(true)
@@ -423,15 +431,15 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
+     * Code snippet for {@link BlobAsyncClientBase#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
      * String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         BlobSASPermission permissions = new BlobSASPermission()
             .setRead(true)
             .setWrite(true)
@@ -455,6 +463,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 }

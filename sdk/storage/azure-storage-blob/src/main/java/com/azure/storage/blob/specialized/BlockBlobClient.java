@@ -7,8 +7,8 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder} or via the method {@link
- * BlobClient#asBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobClient#asBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead a
  * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
@@ -44,6 +44,8 @@ import java.util.Objects;
  * Docs</a> for more information.
  */
 public final class BlockBlobClient extends BlobClientBase {
+    private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
+
     private final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**
@@ -62,7 +64,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param blockBlobAsyncClient the async block blob client
      */
@@ -139,11 +141,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the uploaded block blob.
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
         Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
-        Context context) throws IOException {
+        Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
@@ -154,7 +156,7 @@ public final class BlockBlobClient extends BlobClientBase {
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw e.getCause();
+            throw logger.logExceptionAsError(e);
         }
     }
 
@@ -185,17 +187,17 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param tier {@link AccessTier} for the uploaded blob
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata, AccessTier tier,
-        BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+        BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
             filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw e.getCause();
+            throw logger.logExceptionAsError(e);
         }
     }
 

@@ -35,6 +35,9 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     private long offset = 1024;
     private long count = 1024;
 
+    /**
+     * @throws MalformedURLException Ignore
+     */
     public AppendBlobAsyncClientJavaDocCodeSnippets() throws MalformedURLException {
     }
 

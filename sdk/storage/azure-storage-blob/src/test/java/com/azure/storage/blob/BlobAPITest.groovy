@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus

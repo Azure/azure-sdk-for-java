@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.ContainerClient;
@@ -16,6 +20,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * This class provides a fluent builder API to help aid the configuration and instantiation of specialized Storage Blob
+ * clients, {@link AppendBlobClient}, {@link AppendBlobAsyncClient}, {@link BlockBlobClient},
+ * {@link BlockBlobAsyncClient}, {@link PageBlobClient}, and {@link PageBlobAsyncClient}. These clients are used to
+ * perform operations that are specific to the blob type.
+ *
+ * @see AppendBlobClient
+ * @see AppendBlobAsyncClient
+ * @see BlockBlobClient
+ * @see BlockBlobAsyncClient
+ * @see PageBlobClient
+ * @see PageBlobAsyncClient
+ */
+@ServiceClientBuilder(serviceClients = {
+    AppendBlobClient.class, AppendBlobAsyncClient.class,
+    BlockBlobClient.class, BlockBlobAsyncClient.class,
+    PageBlobClient.class, PageBlobAsyncClient.class
+})
 public final class SpecializedBlobClientBuilder {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
@@ -108,6 +130,12 @@ public final class SpecializedBlobClientBuilder {
             .build();
     }
 
+    /**
+     * Configures the builder based on the {@link BlobClientBase}.
+     *
+     * @param blobClient The {@code BlobClientBase} used to configure this builder.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         this.pipeline = blobClient.getHttpPipeline();
         this.url = blobClient.getBlobUrl();
@@ -116,6 +144,12 @@ public final class SpecializedBlobClientBuilder {
         return this;
     }
 
+    /**
+     * Configures the builder based on the {@link BlobAsyncClientBase}.
+     *
+     * @param blobAsyncClient The {@code BlobAsyncClientBase} used to configure this builder.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         this.pipeline = blobAsyncClient.getHttpPipeline();
         this.url = blobAsyncClient.getBlobUrl();
@@ -124,6 +158,13 @@ public final class SpecializedBlobClientBuilder {
         return this;
     }
 
+    /**
+     * Configures the builder based on the {@link ContainerClient} and appends the blob name to the container's URL.
+     *
+     * @param containerClient The {@code ContainerClient} used to configure this builder.
+     * @param blobName Name of the blob.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
     public SpecializedBlobClientBuilder containerClient(ContainerClient containerClient, String blobName) {
         this.pipeline = containerClient.getHttpPipeline();
         this.url = addBlobToUrl(containerClient.getContainerUrl().toString(), blobName);
@@ -131,6 +172,14 @@ public final class SpecializedBlobClientBuilder {
         return this;
     }
 
+    /**
+     * Configures the builder based on the {@link ContainerAsyncClient} and appends the blob name to the container's
+     * URL.
+     *
+     * @param containerAsyncClient The {@code ContainerAsyncClient} used to configure this builder.
+     * @param blobName Name of the blob.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
     public SpecializedBlobClientBuilder containerAsyncClient(ContainerAsyncClient containerAsyncClient,
         String blobName) {
         this.pipeline = containerAsyncClient.getHttpPipeline();
@@ -139,11 +188,23 @@ public final class SpecializedBlobClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the snapshot identifier that will be used to associate the client to a specific snapshot.
+     *
+     * @param snapshot The snapshot identifier.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
     public SpecializedBlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
 
+    /**
+     * Sets the customer provided key that will be used to encrypt the blob's content on the server.
+     *
+     * @param cpk The customer provided key.
+     * @return the updated SpecializedBlobClientBuilder object.
+     */
     public SpecializedBlobClientBuilder cpk(CpkInfo cpk) {
         this.cpk = cpk;
         return this;

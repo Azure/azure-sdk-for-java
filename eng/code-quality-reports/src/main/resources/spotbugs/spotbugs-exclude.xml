@@ -449,8 +449,8 @@
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
     <Or>
-      <Class name="com.azure.storage.blob.BlobInputStream"/>
-      <Class name="com.azure.storage.blob.BlobOutputStream$AppendBlobOutputStream"/>
+      <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
+      <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
@@ -575,7 +575,7 @@
 
   <!-- This is a false positive, it is possible for usingUserDelegation to be false. -->
   <Match>
-    <Class name="com.azure.storage.blob.BlobServiceSASSignatureValues"/>
+    <Class name="com.azure.storage.blob.specialized.BlobServiceSASSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
 

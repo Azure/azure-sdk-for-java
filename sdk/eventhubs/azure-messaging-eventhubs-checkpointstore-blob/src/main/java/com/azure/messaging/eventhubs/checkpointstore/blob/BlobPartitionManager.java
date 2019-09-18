@@ -44,7 +44,7 @@ public class BlobPartitionManager implements PartitionManager {
     private static final String ETAG = "eTag";
 
     private static final String BLOB_PATH_SEPARATOR = "/";
-    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("" .getBytes(UTF_8));
+    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
 
     private final ContainerAsyncClient containerAsyncClient;
     private final ClientLogger logger = new ClientLogger(BlobPartitionManager.class);
@@ -121,10 +121,10 @@ public class BlobPartitionManager implements PartitionManager {
                             partitionOwnership.setETag(response.getHeaders().get(ETAG).getValue());
                             return Mono.just(partitionOwnership);
                         }, error -> {
-                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                    error.getMessage());
-                                return Mono.empty();
-                            }, Mono::empty);
+                            logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
+                                error.getMessage());
+                            return Mono.empty();
+                        }, Mono::empty);
                 } else {
                     // update existing blob
                     blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -134,10 +134,10 @@ public class BlobPartitionManager implements PartitionManager {
                             partitionOwnership.setETag(response.getHeaders().get(ETAG).getValue());
                             return Mono.just(partitionOwnership);
                         }, error -> {
-                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                    error.getMessage());
-                                return Mono.empty();
-                            }, () -> Mono.empty());
+                            logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
+                                error.getMessage());
+                            return Mono.empty();
+                        }, () -> Mono.empty());
                 }
             }
         );

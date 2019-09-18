@@ -10,7 +10,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AccessTierOptional;
@@ -52,8 +51,8 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder} orvia the method {@link
- * BlobAsyncClient#asBlockBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobAsyncClient#asBlockBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
@@ -88,7 +87,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
@@ -213,8 +212,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
      * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
      * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information,
-     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and
-     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
+     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
+     * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
+     * Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -418,11 +418,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * @code Flux} must produce the same data each time it is subscribed to.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -431,6 +426,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @return A reactive response signalling completion.
+     * @code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      */
     public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length) {
         return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);

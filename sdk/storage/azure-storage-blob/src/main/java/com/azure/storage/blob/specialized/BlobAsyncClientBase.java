@@ -12,7 +12,6 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobSASPermission;
 import com.azure.storage.blob.HTTPGetterInfo;
@@ -73,7 +72,7 @@ public class BlobAsyncClientBase {
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
-    private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 
     protected final AzureBlobStorageImpl azureBlobStorage;
     protected final String snapshot;
@@ -83,6 +82,8 @@ public class BlobAsyncClientBase {
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
+     * @param snapshot Optional. The snapshot identifier for the snapshot blob.
+     * @param cpk Optional. Customer provided key used during encryption of the blob's data on the server.
      */
     protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
@@ -91,10 +92,10 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
+     * Creates a new {@link BlobAsyncClientBase} linked to the {@code snapshot} of this blob resource.
      *
      * @param snapshot the identifier for a specific snapshot of this blob
-     * @return a {@link BlobAsyncClient} used to interact with the specific snapshot.
+     * @return a {@link BlobAsyncClientBase} used to interact with the specific snapshot.
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
@@ -163,7 +164,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.exists}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.exists}
      *
      * @return true if the blob exists, false if it doesn't
      */
@@ -176,7 +177,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.existsWithResponse}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.existsWithResponse}
      *
      * @return true if the blob exists, false if it doesn't
      */
@@ -199,7 +200,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -216,7 +217,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -267,7 +268,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -285,7 +286,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -312,7 +313,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -329,7 +330,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -379,7 +380,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.download}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.download}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -396,7 +397,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -478,7 +479,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadToFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -500,12 +501,11 @@ public class BlobAsyncClientBase {
      * AppendBlobClient}.</p>
      *
      * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call,
-     * provide the {@link BlobRange} parameter.</p>
+     * call, provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -586,7 +586,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.delete}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
@@ -602,7 +602,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
@@ -634,7 +634,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getProperties}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -650,7 +650,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getPropertiesWithResponse#BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -677,7 +677,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeaders#BlobHTTPHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -695,7 +695,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -725,7 +725,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Metadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -743,7 +743,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -772,13 +772,13 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.createSnapshot}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
-     * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
-     * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
+     * @return A response containing a {@link BlobAsyncClientBase} which is used to interact with the created snapshot,
+     * use {@link #getSnapshotId()} to get the identifier for the snapshot.
      */
     public Mono<BlobAsyncClientBase> createSnapshot() {
         return createSnapshotWithResponse(null, null).flatMap(FluxUtil::toMono);
@@ -789,23 +789,23 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.createSnapshotWithResponse#Metadata-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
-     * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
+     * @return A response containing a {@link BlobAsyncClientBase} which is used to interact with the created snapshot,
+     * use {@link #getSnapshotId()} to get the identifier for the snapshot.
      */
     public Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Metadata metadata,
         BlobAccessConditions accessConditions) {
         return withContext(context -> createSnapshotWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
-        Context context) {
+    Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Metadata metadata,
+        BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -823,7 +823,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -843,7 +843,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -874,7 +874,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.undelete}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
@@ -890,7 +890,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.undeleteWithResponse}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
@@ -912,7 +912,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfo}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -928,7 +928,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -987,7 +987,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
@@ -1075,7 +1075,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
@@ -1119,7 +1119,7 @@ public class BlobAsyncClientBase {
     /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    BlobServiceSASSignatureValues configureServiceSASSignatureValues(
+    private BlobServiceSASSignatureValues configureServiceSASSignatureValues(
         BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
 
         // Set canonical name

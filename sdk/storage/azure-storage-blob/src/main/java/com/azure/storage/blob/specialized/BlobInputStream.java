@@ -4,7 +4,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
@@ -90,7 +89,8 @@ public final class BlobInputStream extends InputStream {
     /**
      * Initializes a new instance of the BlobInputStream class.
      *
-     * @param blobClient A {@link BlobClient} object which represents the blob that this stream is associated with.
+     * @param blobClient A {@link BlobAsyncClientBase} object which represents the blob that this stream is associated
+     * with.
      * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the
      * blob.
      * @throws StorageException An exception representing any error which occurred during the operation.
@@ -104,7 +104,8 @@ public final class BlobInputStream extends InputStream {
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
      * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
-     * @param blobClient A {@link BlobClient} object which represents the blob that this stream is associated with.
+     * @param blobClient A {@link BlobAsyncClientBase} object which represents the blob that this stream is associated
+     * with.
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
      * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the

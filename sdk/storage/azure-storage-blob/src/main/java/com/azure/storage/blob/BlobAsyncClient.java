@@ -30,7 +30,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
-public class BlobAsyncClient extends BlobAsyncClientBase  {
+public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobSASPermission;
 import com.azure.storage.blob.models.AccessTier;
@@ -27,6 +26,7 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
@@ -62,10 +62,10 @@ public class BlobClientBase {
     }
 
     /**
-     * Creates a new {@link BlobClient} linked to the {@code snapshot} of this blob resource.
+     * Creates a new {@link BlobClientBase} linked to the {@code snapshot} of this blob resource.
      *
      * @param snapshot the identifier for a specific snapshot of this blob
-     * @return a {@link BlobClient} used to interact with the specific snapshot.
+     * @return a {@link BlobClientBase} used to interact with the specific snapshot.
      */
     public BlobClientBase getSnapshotClient(String snapshot) {
         return new BlobClientBase(client.getSnapshotClient(snapshot));
@@ -146,7 +146,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.exists}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.exists}
      *
      * @return true if the container exists, false if it doesn't
      */
@@ -159,7 +159,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.existsWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.existsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -176,7 +176,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.startCopyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -193,7 +193,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -226,7 +226,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.abortCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -243,7 +243,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -269,7 +269,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.copyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -286,7 +286,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -319,7 +319,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.download#OutputStream}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.download#OutputStream}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -337,7 +337,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -381,7 +381,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -407,7 +407,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -435,7 +435,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.delete}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
@@ -449,7 +449,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
@@ -475,7 +475,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.getProperties}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -491,7 +491,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.getPropertiesWithResponse#BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -514,7 +514,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeaders#BlobHTTPHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -531,7 +531,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeadersWithResponse#BlobHTTPHeaders-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -556,7 +556,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setMetadata#Metadata}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadata#Metadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -573,7 +573,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -596,7 +596,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.createSnapshot}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.createSnapshot}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
@@ -614,7 +614,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.createSnapshotWithResponse#Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
@@ -643,7 +643,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setTier#AccessTier}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTier#AccessTier}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -662,7 +662,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -688,7 +688,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.undelete}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.undelete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
@@ -702,7 +702,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.undeleteWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.undeleteWithResponse#Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
@@ -722,7 +722,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.getAccountInfo}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getAccountInfo}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -738,7 +738,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.getAccountInfoWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getAccountInfoWithResponse#Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -792,7 +792,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
@@ -866,7 +866,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>

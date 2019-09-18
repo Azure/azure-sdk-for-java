@@ -7,7 +7,6 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -33,8 +32,8 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder} or via the method {@link
- * BlobClient#asPageBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobClient#asPageBlobClient()}. This class does not hold any state about a particular blob, but is instead a
  * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
@@ -55,7 +54,7 @@ public final class PageBlobClient extends BlobClientBase {
     public static final int MAX_PUT_PAGES_BYTES = PageBlobAsyncClient.MAX_PUT_PAGES_BYTES;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param pageBlobAsyncClient the async page blob client
      */

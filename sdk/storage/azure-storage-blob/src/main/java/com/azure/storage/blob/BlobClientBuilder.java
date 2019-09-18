@@ -53,7 +53,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildBlobClient}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.buildBlobClient}
      *
      * @return a {@link BlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -69,7 +69,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildBlobAsyncClient}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.buildBlobAsyncClient}
      *
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -94,7 +94,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.endpoint#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.endpoint#String}
      *
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
@@ -104,7 +104,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
     public BlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = URLParser.parse(url);
+            BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getContainerName();
@@ -128,7 +128,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.containerName#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
      *
      * @param containerName the name of the container
      * @return the updated BlobClientBuilder object

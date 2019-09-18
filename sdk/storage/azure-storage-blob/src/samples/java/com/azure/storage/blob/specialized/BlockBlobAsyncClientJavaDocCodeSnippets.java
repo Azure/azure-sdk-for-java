@@ -42,7 +42,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     private int numBuffers = 2;
 
     /**
-     *
+     * @throws MalformedURLException Ignore
      */
     public BlockBlobAsyncClientJavaDocCodeSnippets() throws MalformedURLException {
     }

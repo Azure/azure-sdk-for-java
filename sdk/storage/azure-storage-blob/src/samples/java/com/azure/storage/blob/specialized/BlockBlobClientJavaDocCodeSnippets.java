@@ -45,7 +45,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private long count = length;
 
     /**
-     *
+     * @throws MalformedURLException Ignore
      */
     public BlockBlobClientJavaDocCodeSnippets() throws MalformedURLException {
     }

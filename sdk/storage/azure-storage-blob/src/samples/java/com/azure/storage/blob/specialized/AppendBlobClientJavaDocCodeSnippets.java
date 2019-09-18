@@ -16,7 +16,6 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -41,9 +40,9 @@ public class AppendBlobClientJavaDocCodeSnippets {
     private long count = 1024;
 
     /**
-     * @throws UnsupportedEncodingException if cannot get bytes from sample sting as utf-8 encoding
+     * @throws MalformedURLException Ignore
      */
-    AppendBlobClientJavaDocCodeSnippets() throws MalformedURLException {
+    public AppendBlobClientJavaDocCodeSnippets() throws MalformedURLException {
     }
 
     /**

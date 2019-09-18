@@ -77,7 +77,7 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
             super.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
             SASTokenCredential sasTokenCredential = SASTokenCredential
-                .fromSASTokenString(URLParser.parse(url).getSasQueryParameters().encode());
+                .fromSASTokenString(BlobURLParts.parse(url).getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

@@ -10,7 +10,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -37,9 +36,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder} or via the method {@link
- * BlobAsyncClient#asPageBlobAsyncClient()}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobAsyncClient#asPageBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -65,7 +64,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(PageBlobAsyncClient.class);
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
@@ -528,7 +527,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response emitting the copy status.
-     * @throws Error If {@code source} and {@code snapshot} form a malformed URL.
+     * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions) {
@@ -543,7 +542,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             source = builder.toURL();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
-            throw new Error(e);
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
         return postProcessResponse(this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(
             null, null, source, null, null, modifiedAccessConditions, context))
