@@ -186,7 +186,7 @@ public class RestProxyXMLTests {
 
         assertEquals("all", slideshow.slides()[0].type());
         assertEquals("Wake up to WonderWidgets!", slideshow.slides()[0].title());
-        assertNull(slideshow.slides()[0].items());
+        assertEquals(0, slideshow.slides()[0].items().length);
 
         assertEquals("all", slideshow.slides()[1].type());
         assertEquals("Overview", slideshow.slides()[1].title());
