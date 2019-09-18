@@ -50,15 +50,15 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     private HttpPipeline pipeline;
 
     // for when a user wants to add policies to our pre-constructed pipeline
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    protected final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     protected String endpoint;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
-    private HttpClient httpClient;
-    private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    protected SharedKeyCredential sharedKeyCredential;
+    protected TokenCredential tokenCredential;
+    protected SASTokenCredential sasTokenCredential;
+    protected HttpClient httpClient;
+    protected HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
+    protected RequestRetryOptions retryOptions = new RequestRetryOptions();
     private Configuration configuration;
 
     /**
@@ -72,6 +72,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        addOptionalEncryptionPolicy(policies);
         policies.add(getUserAgentPolicy());
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -107,13 +108,20 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      *
      * @return The validation policy.
      */
-    private HttpPipelinePolicy makeValidationPolicy() {
+    protected HttpPipelinePolicy makeValidationPolicy() {
         ResponseValidationPolicyBuilder builder = new ResponseValidationPolicyBuilder()
             .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID); // echo client request id
 
         applyServiceSpecificValidations(builder);
 
         return builder.build();
+    }
+
+    /**
+     * Adds an optional encryption policy that decrypts encrypted blobs.
+     * @param policies The list of policies to add an optional encryption policy to.
+     */
+    protected void addOptionalEncryptionPolicy(List<HttpPipelinePolicy> policies) {
     }
 
     /**

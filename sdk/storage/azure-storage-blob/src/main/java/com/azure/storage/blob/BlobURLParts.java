@@ -18,8 +18,10 @@ import java.util.Map;
  * {@link #toURL()}. It is also possible to use the empty constructor to buildClient a blobURL from scratch.
  *
  * <p>NOTE: Changing any SAS-related field requires computing a new SAS signature.</p>
+ *
+ * RESERVED FOR INTERNAL USE ONLY
  */
-final class BlobURLParts {
+public final class BlobURLParts {
 
     private String scheme;
 
@@ -46,6 +48,7 @@ final class BlobURLParts {
 
     /**
      * The scheme. Ex: "https://".
+     * @return The scheme.
      */
     public String getScheme() {
         return scheme;
@@ -53,6 +56,8 @@ final class BlobURLParts {
 
     /**
      * The scheme. Ex: "https://".
+     * @param scheme The scheme.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setScheme(String scheme) {
         this.scheme = scheme;
@@ -61,6 +66,7 @@ final class BlobURLParts {
 
     /**
      * The host. Ex: "account.blob.core.windows.net".
+     * @return The host.
      */
     public String getHost() {
         return host;
@@ -68,6 +74,8 @@ final class BlobURLParts {
 
     /**
      * The host. Ex: "account.blob.core.windows.net".
+     * @param host The host.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setHost(String host) {
         this.host = host;
@@ -76,6 +84,7 @@ final class BlobURLParts {
 
     /**
      * The container name or {@code null} if a {@link BlobServiceAsyncClient} was parsed.
+     * @return The container name.
      */
     public String getContainerName() {
         return containerName;
@@ -83,6 +92,8 @@ final class BlobURLParts {
 
     /**
      * The container name or {@code null} if a {@link BlobServiceAsyncClient} was parsed.
+     * @param containerName The container name.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setContainerName(String containerName) {
         this.containerName = containerName;
@@ -91,6 +102,7 @@ final class BlobURLParts {
 
     /**
      * The blob name or {@code null} if a {@link BlobServiceAsyncClient} or {@link ContainerAsyncClient} was parsed.
+     * @return The blob name.
      */
     public String getBlobName() {
         return blobName;
@@ -98,6 +110,8 @@ final class BlobURLParts {
 
     /**
      * The blob name or {@code null} if a {@link BlobServiceAsyncClient} or {@link ContainerAsyncClient} was parsed.
+     * @param blobName The blob name.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setBlobName(String blobName) {
         this.blobName = blobName;
@@ -106,6 +120,7 @@ final class BlobURLParts {
 
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
+     * @return The snapshot time.
      */
     public String getSnapshot() {
         return snapshot;
@@ -113,6 +128,8 @@ final class BlobURLParts {
 
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
+     * @param snapshot The snapshot time.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setSnapshot(String snapshot) {
         this.snapshot = snapshot;
@@ -122,6 +139,7 @@ final class BlobURLParts {
     /**
      * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no
      * such parameters.
+     * @return The {@code BlobServiceSASQueryParameters}.
      */
     public BlobServiceSASQueryParameters getSasQueryParameters() {
         return blobServiceSasQueryParameters;
@@ -130,6 +148,8 @@ final class BlobURLParts {
     /**
      * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no
      * such parameters.
+     * @param blobServiceSasQueryParameters The {@code BlobServiceSASQueryParameters}.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setSasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
         this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
@@ -139,6 +159,7 @@ final class BlobURLParts {
     /**
      * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were no
      * such parameters.
+     * @return The query parameter key value pairs.
      */
     public Map<String, String[]> getUnparsedParameters() {
         return unparsedParameters;
@@ -147,6 +168,8 @@ final class BlobURLParts {
     /**
      * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were no
      * such parameters.
+     * @param unparsedParameters The unparsed query parameter key value pairs.
+     * @return The updated {@code BlobURLParts}.
      */
     public BlobURLParts setUnparsedParameters(Map<String, String[]> unparsedParameters) {
         this.unparsedParameters = unparsedParameters;

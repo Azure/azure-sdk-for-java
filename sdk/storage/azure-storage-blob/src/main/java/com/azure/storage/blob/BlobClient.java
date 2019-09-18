@@ -62,11 +62,11 @@ public class BlobClient {
     private final BlobAsyncClient blobAsyncClient;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Protected constructor for use by {@link BlobClientBuilder}.
      *
      * @param blobAsyncClient the async blob client
      */
-    BlobClient(BlobAsyncClient blobAsyncClient) {
+    protected BlobClient(BlobAsyncClient blobAsyncClient) {
         this.blobAsyncClient = blobAsyncClient;
     }
 
