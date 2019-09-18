@@ -30,6 +30,10 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReactorConnection extends EndpointStateNotifierBase implements AmqpConnection {
+    private static final String CBS_SESSION_NAME = "cbs-session";
+    private static final String CBS_ADDRESS = "$cbs";
+    private static final String CBS_LINK_NAME = "cbs";
+
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
     private final AtomicBoolean hasConnection = new AtomicBoolean();
 
@@ -189,12 +193,30 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         return connectionMono;
     }
 
+    /**
+     * Creates a bidirectional link between the message broker and the client.
+     *
+     * @param sessionName Name of the session.
+     * @param linkName Name of the link.
+     * @param entityPath Address to the message broker.
+     * @return A new {@link RequestResponseChannel} to communicate with the message broker.
+     */
+    protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
+                                                                        String entityPath) {
+        return createSession(sessionName)
+            .cast(ReactorSession.class)
+            .map(reactorSession -> new RequestResponseChannel(getIdentifier(), getHost(), linkName, entityPath,
+                reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
+                reactorProvider));
+    }
+
     private synchronized CBSNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
 
-            cbsChannel = new CBSChannel(this, connectionOptions.getTokenCredential(),
-                connectionOptions.getAuthorizationType(), reactorProvider, handlerProvider,
+            cbsChannel = new CBSChannel(
+                createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS),
+                connectionOptions.getTokenCredential(), connectionOptions.getAuthorizationType(),
                 connectionOptions.getRetry());
         }
 

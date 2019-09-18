@@ -7,6 +7,10 @@ import org.apache.qpid.proton.engine.BaseHandler;
 import reactor.core.publisher.Mono;
 
 public class EventHubReactorConnection extends ReactorConnection implements EventHubConnection {
+    private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
+    private static final String MANAGEMENT_LINK_NAME = "mgmt";
+    private static final String MANAGEMENT_ADDRESS = "$management";
+
     private final Mono<EventHubManagementNode> managementChannelMono;
 
     /**
@@ -25,9 +29,13 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
 
         this.managementChannelMono = getReactorConnection().then(
-            Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
-                connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
-                reactorProvider, connectionOptions.getRetry(), handlerProvider, mapper))).cache();
+            Mono.fromCallable(() -> {
+                return (EventHubManagementNode) new ManagementChannel(
+                    createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+                    connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
+                    reactorProvider, mapper);
+            }))
+            .cache();
     }
 
     @Override
