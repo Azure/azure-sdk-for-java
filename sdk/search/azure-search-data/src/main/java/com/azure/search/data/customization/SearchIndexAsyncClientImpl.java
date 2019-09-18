@@ -140,6 +140,11 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
+    public <T> Mono<DocumentIndexResult> deleteDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().delete(documents).build());
+    }
+
+    @Override
     public String getApiVersion() {
         return this.apiVersion;
     }

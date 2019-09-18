@@ -68,7 +68,16 @@ public interface SearchIndexClient {
      * @param <T> The type of object to serialize.
      * @return document index result.
      */
-    <T> DocumentIndexResult  uploadDocuments(List<T> documents);
+    <T> DocumentIndexResult uploadDocuments(List<T> documents);
+
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
+    <T> DocumentIndexResult deleteDocuments(List<T> documents);
 
     /**
      * Gets the number of documents

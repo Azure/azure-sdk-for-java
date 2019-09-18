@@ -70,7 +70,16 @@ public interface SearchIndexAsyncClient {
      * @param <T> The type of object to serialize.
      * @return document index result.
      */
-    <T> Mono<DocumentIndexResult>  uploadDocuments(List<T> documents);
+    <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents);
+
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
+    <T> Mono<DocumentIndexResult> deleteDocuments(List<T> documents);
 
     /**
      * Gets the number of documents

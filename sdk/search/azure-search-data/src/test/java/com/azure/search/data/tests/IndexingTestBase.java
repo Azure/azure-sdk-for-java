@@ -59,6 +59,15 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canIndexDynamicDocuments() throws Exception;
 
+    @Test
+    public abstract void canDeleteBatchByKeys();
+
+    @Test
+    public abstract void indexDoesNotThrowWhenDeletingDocumentWithExtraFields();
+
+    @Test
+    public abstract void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields();
+
     protected Hotel prepareStaticallyTypedHotel(String hotelId) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return new Hotel()
