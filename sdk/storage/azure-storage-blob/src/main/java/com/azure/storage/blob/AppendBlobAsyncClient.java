@@ -7,7 +7,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -49,7 +48,6 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
-    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.

@@ -1168,7 +1168,7 @@ public class BlobClient {
      *
      * @return The name of the container.
      */
-    public String getContainerName() {
+    public final String getContainerName() {
         return this.blobAsyncClient.getContainerName();
     }
 
@@ -1181,7 +1181,7 @@ public class BlobClient {
      *
      * @return The name of the blob.
      */
-    public String getBlobName() {
+    public final String getBlobName() {
         return this.blobAsyncClient.getBlobName();
     }
 }
