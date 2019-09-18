@@ -10,7 +10,6 @@ import com.azure.storage.file.FileClient
 import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
-import com.azure.storage.file.models.FileProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
@@ -38,12 +37,12 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties()
-            .ntfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get directory URL"() {
         given:
-        def accountName = SharedKeyCredential.fromConnectionString(connectionString).accountName()
+        def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
@@ -109,41 +108,41 @@ class DirectoryAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     def "Create directory with file permission key"() {
         setup:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
         when:
         def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(resp, 201)
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     @Unroll
     def "Create directory permission and key error"() {
         when:
-        FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
+        FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
         primaryDirectoryClient.createWithResponse(properties, permission, null, null, null)
         then:
         thrown(IllegalArgumentException)
@@ -177,15 +176,15 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().eTag()
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.getValue().getETag()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     def "Get properties error"() {
@@ -203,41 +202,41 @@ class DirectoryAPITests extends APISpec {
         def resp = primaryDirectoryClient.setPropertiesWithResponse(null, filePermission, null, null)
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     def "Set properties file permission key"() {
         given:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
         primaryDirectoryClient.create()
         def resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null, null)
 
         expect:
         FileTestHelper.assertResponseStatusCode(resp, 200)
-        resp.value().smbProperties()
-        resp.value().smbProperties().filePermissionKey()
-        resp.value().smbProperties().ntfsFileAttributes()
-        resp.value().smbProperties().fileLastWriteTime()
-        resp.value().smbProperties().fileCreationTime()
-        resp.value().smbProperties().fileChangeTime()
-        resp.value().smbProperties().parentId()
-        resp.value().smbProperties().fileId()
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
     }
 
     @Unroll
     def "Set properties error"() {
         when:
-        FileSmbProperties properties = new FileSmbProperties().filePermissionKey(filePermissionKey)
+        FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
         primaryDirectoryClient.create()
         primaryDirectoryClient.setPropertiesWithResponse(properties, permission, null, null)
 
@@ -261,9 +260,9 @@ class DirectoryAPITests extends APISpec {
         def getPropertiesAfter = primaryDirectoryClient.getProperties()
 
         then:
-        testMetadata == getPropertiesBefore.metadata()
+        testMetadata == getPropertiesBefore.getMetadata()
         FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 200)
-        updatedMetadata == getPropertiesAfter.metadata()
+        updatedMetadata == getPropertiesAfter.getMetadata()
     }
 
     def "Set metadata error"() {
@@ -297,9 +296,9 @@ class DirectoryAPITests extends APISpec {
         def foundDirectories = [] as Set
         for (def fileRef : primaryDirectoryClient.listFilesAndDirectories()) {
             if (fileRef.isDirectory()) {
-                foundDirectories << fileRef.name()
+                foundDirectories << fileRef.getName()
             } else {
-                foundFiles << fileRef.name()
+                foundFiles << fileRef.getName()
             }
         }
 
@@ -345,7 +344,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         for (int i = 0; i < numOfResults; i++) {
-            Objects.equals(nameList.pop(), fileRefIter.next().name())
+            Objects.equals(nameList.pop(), fileRefIter.next().getName())
         }
         !fileRefIter.hasNext()
 
@@ -450,9 +449,9 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
-            .filePermissionKey(filePermissionKey)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryDirectoryClient.createSubDirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null, null, null), 201)
@@ -512,9 +511,9 @@ class DirectoryAPITests extends APISpec {
         given:
         primaryDirectoryClient.create()
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
-            .fileContentType("txt")
-        smbProperties.fileCreationTime(getUTCNow())
-            .fileLastWriteTime(getUTCNow())
+            .setFileContentType("txt")
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
 
         expect:
         FileTestHelper.assertResponseStatusCode(
@@ -537,7 +536,7 @@ class DirectoryAPITests extends APISpec {
         fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
         "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
         "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHTTPHeaders().fileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
         "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
 
     }

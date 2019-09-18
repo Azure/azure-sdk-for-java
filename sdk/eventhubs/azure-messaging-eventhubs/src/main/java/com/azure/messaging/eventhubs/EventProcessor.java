@@ -72,7 +72,7 @@ public class EventProcessor {
             initialEventPosition, eventHubAsyncClient, tracerProvider);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.partitionManager, eventHubAsyncClient,
-                eventHubAsyncClient.eventHubName(),
+                eventHubAsyncClient.getEventHubName(),
                 consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
     }
 
@@ -117,7 +117,7 @@ public class EventProcessor {
      *
      * @return Identifier for this event processor.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return this.identifier;
     }
 

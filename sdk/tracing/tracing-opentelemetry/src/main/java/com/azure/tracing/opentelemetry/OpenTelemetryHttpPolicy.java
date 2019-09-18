@@ -58,10 +58,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
-        HttpRequest request = context.httpRequest();
+        HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(request.url().getPath(), parentSpan);
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(request.getUrl().getPath(), parentSpan);
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request); useful for Gantt chart
         spanBuilder.setSpanKind(Kind.CLIENT);
@@ -87,9 +87,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request) {
-        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.headers().value("User-Agent"));
-        putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.httpMethod().toString());
-        putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.url().toString());
+        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
+        putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
+        putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
     }
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
@@ -127,7 +127,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             error = signal.getThrowable();
             if (error instanceof HttpResponseException) {
                 HttpResponseException exception = (HttpResponseException) error;
-                httpResponse = exception.response();
+                httpResponse = exception.getResponse();
             }
         }
 
@@ -145,8 +145,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             int statusCode = 0;
             String requestId = null;
             if (response != null) {
-                statusCode = response.statusCode();
-                requestId = response.headerValue(REQUEST_ID);
+                statusCode = response.getStatusCode();
+                requestId = response.getHeaderValue(REQUEST_ID);
             }
 
             putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
@@ -162,7 +162,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private final TextFormat.Setter<HttpRequest> contextSetter = new TextFormat.Setter<HttpRequest>() {
         @Override
         public void put(HttpRequest request, String key, String value) {
-            request.header(key, value);
+            request.setHeader(key, value);
         }
     };
 }

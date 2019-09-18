@@ -67,10 +67,10 @@ public class StorageAccountUpdateParameters {
     private AccessTier accessTier;
 
     /**
-     * Enables Azure Files AAD Integration for SMB if sets to true.
+     * Provides the identity based authentication settings for Azure Files.
      */
-    @JsonProperty(value = "properties.azureFilesAadIntegration")
-    private Boolean enableAzureFilesAadIntegration;
+    @JsonProperty(value = "properties.azureFilesIdentityBasedAuthentication")
+    private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /**
      * Allows https traffic only to storage service if sets to true.
@@ -213,22 +213,22 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get enables Azure Files AAD Integration for SMB if sets to true.
+     * Get provides the identity based authentication settings for Azure Files.
      *
-     * @return the enableAzureFilesAadIntegration value
+     * @return the azureFilesIdentityBasedAuthentication value
      */
-    public Boolean enableAzureFilesAadIntegration() {
-        return this.enableAzureFilesAadIntegration;
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
+        return this.azureFilesIdentityBasedAuthentication;
     }
 
     /**
-     * Set enables Azure Files AAD Integration for SMB if sets to true.
+     * Set provides the identity based authentication settings for Azure Files.
      *
-     * @param enableAzureFilesAadIntegration the enableAzureFilesAadIntegration value to set
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration) {
-        this.enableAzureFilesAadIntegration = enableAzureFilesAadIntegration;
+    public StorageAccountUpdateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+        this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 

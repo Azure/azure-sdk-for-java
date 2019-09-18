@@ -85,15 +85,15 @@ public class IdentityClient {
         if (clientId == null) {
             this.publicClientApplication = null;
         } else {
-            String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsWarning(new IllegalStateException(e));
             }
-            if (options.proxyOptions() != null) {
-                publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            if (options.getProxyOptions() != null) {
+                publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
@@ -107,13 +107,13 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, String[] scopes) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
                     .authority(authorityUrl);
-            if (options.proxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            if (options.getProxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
@@ -136,14 +136,14 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String pfxCertificatePath, String pfxCertificatePassword,
                                                             String[] scopes) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId,
                     ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
                     .authority(authorityUrl);
-            if (options.proxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            if (options.getProxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
@@ -169,15 +169,15 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, String[] scopes) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId,
                     ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                         CertificateUtil.publicKeyFromPem(pemCertificateBytes))).authority(authorityUrl);
-            if (options.proxyOptions() != null) {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            if (options.getProxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
@@ -213,8 +213,8 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithUserRefreshToken(String[] scopes, MsalToken msalToken) {
         SilentParameters parameters;
-        if (msalToken.account() != null) {
-            parameters = SilentParameters.builder(new HashSet<>(Arrays.asList(scopes)), msalToken.account()).build();
+        if (msalToken.getAccount() != null) {
+            parameters = SilentParameters.builder(new HashSet<>(Arrays.asList(scopes)), msalToken.getAccount()).build();
         } else {
             parameters = SilentParameters.builder(new HashSet<>(Arrays.asList(scopes))).build();
         }
@@ -274,7 +274,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(String[] scopes, int port) {
-        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + "common";
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + "common";
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
                 URI redirectUri;
@@ -381,7 +381,7 @@ public class IdentityClient {
         }
 
         int retry = 1;
-        while (retry <= options.maxRetry()) {
+        while (retry <= options.getMaxRetry()) {
             URL url = null;
             HttpURLConnection connection = null;
             try {
@@ -413,14 +413,14 @@ public class IdentityClient {
                     || responseCode == 429
                     || responseCode == 404
                     || (responseCode >= 500 && responseCode <= 599)) {
-                    int retryTimeoutInMs = options.retryTimeout().apply(RANDOM.nextInt(retry));
+                    int retryTimeoutInMs = options.getRetryTimeout().apply(RANDOM.nextInt(retry));
                     // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                     //
                     retryTimeoutInMs =
                         (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs
                             : retryTimeoutInMs;
                     retry++;
-                    if (retry > options.maxRetry()) {
+                    if (retry > options.getMaxRetry()) {
                         break;
                     } else {
                         sleep(retryTimeoutInMs);
@@ -437,7 +437,7 @@ public class IdentityClient {
             }
         }
         return Mono.error(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times",
-            options.maxRetry())));
+            options.getMaxRetry())));
     }
 
     private static void sleep(int millis) {
@@ -449,13 +449,13 @@ public class IdentityClient {
     }
 
     private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {
-        switch (options.type()) {
+        switch (options.getType()) {
             case SOCKS4:
             case SOCKS5:
-                return new Proxy(Type.SOCKS, options.address());
+                return new Proxy(Type.SOCKS, options.getAddress());
             case HTTP:
             default:
-                return new Proxy(Type.HTTP, options.address());
+                return new Proxy(Type.HTTP, options.getAddress());
         }
     }
 }

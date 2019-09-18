@@ -21,13 +21,13 @@ class SecretRequestAttributes {
      * @param secretBase the {@link SecretBase} object with populated attributes
      */
     SecretRequestAttributes(SecretBase secretBase) {
-        if (secretBase.notBefore() != null) {
-            this.notBefore = secretBase.notBefore().toEpochSecond();
+        if (secretBase.getNotBefore() != null) {
+            this.notBefore = secretBase.getNotBefore().toEpochSecond();
         }
-        if (secretBase.expires() != null) {
-            this.expires = secretBase.expires().toEpochSecond();
+        if (secretBase.getExpires() != null) {
+            this.expires = secretBase.getExpires().toEpochSecond();
         }
-        this.enabled = secretBase.enabled();
+        this.enabled = secretBase.isEnabled();
     }
 
     /**
@@ -77,7 +77,7 @@ class SecretRequestAttributes {
      *
      * @return the enabled value
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -87,7 +87,7 @@ class SecretRequestAttributes {
      * @param enabled the enabled value to set
      * @return the Attributes object itself.
      */
-    public SecretRequestAttributes enabled(Boolean enabled) {
+    public SecretRequestAttributes getEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -97,7 +97,7 @@ class SecretRequestAttributes {
      *
      * @return the notBefore value
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         if (this.notBefore == null) {
             return null;
         }
@@ -110,7 +110,7 @@ class SecretRequestAttributes {
      * @param notBefore the notBefore value to set
      * @return the Attributes object itself.
      */
-    public SecretRequestAttributes notBefore(OffsetDateTime notBefore) {
+    public SecretRequestAttributes setNotBefore(OffsetDateTime notBefore) {
         if (notBefore == null) {
             this.notBefore = null;
         } else {
@@ -124,7 +124,7 @@ class SecretRequestAttributes {
      *
      * @return the expires value
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         if (this.expires == null) {
             return null;
         }
@@ -137,7 +137,7 @@ class SecretRequestAttributes {
      * @param expires the expires value to set
      * @return the Attributes object itself.
      */
-    public SecretRequestAttributes expires(OffsetDateTime expires) {
+    public SecretRequestAttributes setExpires(OffsetDateTime expires) {
         if (expires == null) {
             this.expires = null;
         } else {
@@ -151,7 +151,7 @@ class SecretRequestAttributes {
      *
      * @return the created value
      */
-    public OffsetDateTime created() {
+    public OffsetDateTime getCreated() {
         if (this.created == null) {
             return null;
         }
@@ -163,7 +163,7 @@ class SecretRequestAttributes {
      *
      * @return the updated value
      */
-    public OffsetDateTime updated() {
+    public OffsetDateTime getUpdated() {
         if (this.updated == null) {
             return null;
         }

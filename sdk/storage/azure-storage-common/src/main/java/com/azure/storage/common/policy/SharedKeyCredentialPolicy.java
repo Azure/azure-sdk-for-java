@@ -34,10 +34,10 @@ public final class SharedKeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String authorizationValue = credential.generateAuthorizationHeader(context.httpRequest().url(),
-            context.httpRequest().httpMethod().toString(),
-            context.httpRequest().headers().toMap());
-        context.httpRequest().header("Authorization", authorizationValue);
+        String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
+            context.getHttpRequest().getHttpMethod().toString(),
+            context.getHttpRequest().getHeaders().toMap());
+        context.getHttpRequest().setHeader("Authorization", authorizationValue);
         return next.process();
     }
 }

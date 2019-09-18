@@ -70,26 +70,26 @@ public class ConfigurationSets {
 
         // For your services, you can select settings with "beta" or "production" label, depending on what you want your
         // services to communicate with. The sample below fetches all of the "beta" settings.
-        SettingSelector selector = new SettingSelector().labels(BETA);
+        SettingSelector selector = new SettingSelector().setLabels(BETA);
 
         client.listSettings(selector).toStream().forEach(setting -> {
-            System.out.println("Key: " + setting.key());
-            if ("application/json".equals(setting.contentType())) {
+            System.out.println("Key: " + setting.getKey());
+            if ("application/json".equals(setting.getContentType())) {
                 try {
-                    ComplexConfiguration kv = MAPPER.readValue(setting.value(), ComplexConfiguration.class);
+                    ComplexConfiguration kv = MAPPER.readValue(setting.getValue(), ComplexConfiguration.class);
                     System.out.println("Value: " + kv.toString());
                 } catch (IOException e) {
-                    System.err.println(String.format("Could not deserialize %s%n%s", setting.value(), e.toString()));
+                    System.err.println(String.format("Could not deserialize %s%n%s", setting.getValue(), e.toString()));
                 }
             } else {
-                System.out.println("Value: " + setting.value());
+                System.out.println("Value: " + setting.getValue());
             }
         });
 
         // For the BETA and PRODUCTION sets, we fetch all of the settings we created in each set, and delete them.
         // Blocking so that the program does not exit before these tasks have completed.
         Flux.fromArray(new String[]{BETA, PRODUCTION})
-            .flatMap(set -> client.listSettings(new SettingSelector().labels(set)))
+            .flatMap(set -> client.listSettings(new SettingSelector().setLabels(set)))
             .map(client::deleteSetting)
             .blockLast();
     }
@@ -100,14 +100,14 @@ public class ConfigurationSets {
     private static Mono<Void> addConfigurations(ConfigurationAsyncClient client, String configurationSet,
                                                 String storageEndpoint, ComplexConfiguration complexConfiguration) throws JsonProcessingException {
         ConfigurationSetting endpointSetting = new ConfigurationSetting()
-            .key(CONNECTION_STRING_KEY)
-            .label(configurationSet)
-            .value(storageEndpoint);
+            .setKey(CONNECTION_STRING_KEY)
+            .setLabel(configurationSet)
+            .setValue(storageEndpoint);
         ConfigurationSetting keyVaultSetting = new ConfigurationSetting()
-            .key(COMPLEX_SETTING_KEY)
-            .label(configurationSet)
-            .value(MAPPER.writeValueAsString(complexConfiguration))
-            .contentType("application/json");
+            .setKey(COMPLEX_SETTING_KEY)
+            .setLabel(configurationSet)
+            .setValue(MAPPER.writeValueAsString(complexConfiguration))
+            .setContentType("application/json");
 
         return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting)).then();
     }

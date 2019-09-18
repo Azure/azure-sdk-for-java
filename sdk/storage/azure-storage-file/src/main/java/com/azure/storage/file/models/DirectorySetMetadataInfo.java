@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.models;
 
 /**
@@ -21,7 +24,7 @@ public class DirectorySetMetadataInfo {
     /**
      * @return The entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 

@@ -45,12 +45,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptAsync(context, next, context.httpRequest(), 0);
+        return attemptAsync(context, next, context.getHttpRequest(), 0);
     }
 
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
                                             final HttpRequest originalHttpRequest, final int tryCount) {
-        context.httpRequest(originalHttpRequest.buffer());
+        context.setHttpRequest(originalHttpRequest.clone());
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
@@ -71,7 +71,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
-        int code = response.statusCode();
+        int code = response.getStatusCode();
         return tryCount < maxRetries
             && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
@@ -86,7 +86,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      *     otherwise the duration used during the construction of the policy.
      */
     private Duration determineDelayDuration(HttpResponse response) {
-        int code = response.statusCode();
+        int code = response.getStatusCode();
 
         // Response will not have a retry-after-ms header.
         if (code != 429        // too many requests
@@ -94,7 +94,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return this.delayDuration;
         }
 
-        String retryHeader = response.headerValue(RETRY_AFTER_MS_HEADER);
+        String retryHeader = response.getHeaderValue(RETRY_AFTER_MS_HEADER);
 
         // Retry header is missing or empty, return the default delay duration.
         if (retryHeader == null || retryHeader.isEmpty()) {

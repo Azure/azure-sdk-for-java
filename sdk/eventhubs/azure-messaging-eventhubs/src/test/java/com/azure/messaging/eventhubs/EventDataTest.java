@@ -57,9 +57,9 @@ public class EventDataTest {
         final EventData eventData = new EventData("Test".getBytes());
 
         // Assert
-        Assert.assertNotNull(eventData.systemProperties());
-        Assert.assertNotNull(eventData.body());
-        Assert.assertNotNull(eventData.properties());
+        Assert.assertNotNull(eventData.getSystemProperties());
+        Assert.assertNotNull(eventData.getBody());
+        Assert.assertNotNull(eventData.getProperties());
     }
 
     /**
@@ -74,7 +74,7 @@ public class EventDataTest {
         final EventData eventData = new EventData(byteArray);
 
         // Assert
-        final byte[] actual = eventData.body().array();
+        final byte[] actual = eventData.getBody().array();
         Assert.assertNotNull(actual);
         Assert.assertEquals(0, actual.length);
     }
@@ -88,8 +88,8 @@ public class EventDataTest {
         final EventData eventData = new EventData(PAYLOAD_BYTES);
 
         // Assert
-        Assert.assertNotNull(eventData.body());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(eventData.body()).toString());
+        Assert.assertNotNull(eventData.getBody());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(eventData.getBody()).toString());
     }
 
     /**
@@ -140,28 +140,28 @@ public class EventDataTest {
 
         // Assert
         // Verifying all our system properties were properly deserialized.
-        Assert.assertEquals(ENQUEUED_TIME, eventData.enqueuedTime());
-        Assert.assertEquals(OFFSET, eventData.offset());
-        Assert.assertEquals(PARTITION_KEY, eventData.partitionKey());
-        Assert.assertEquals(SEQUENCE_NUMBER, eventData.sequenceNumber());
+        Assert.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
+        Assert.assertEquals(OFFSET, eventData.getOffset());
+        Assert.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
+        Assert.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
 
-        Assert.assertTrue(eventData.systemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
-        final Object otherPropertyValue = eventData.systemProperties().get(OTHER_SYSTEM_PROPERTY);
+        Assert.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
+        final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
         Assert.assertTrue(otherPropertyValue instanceof Boolean);
         Assert.assertTrue((Boolean) otherPropertyValue);
 
         // Verifying our application properties are the same.
-        Assert.assertEquals(APPLICATION_PROPERTIES.size(), eventData.properties().size());
+        Assert.assertEquals(APPLICATION_PROPERTIES.size(), eventData.getProperties().size());
         APPLICATION_PROPERTIES.forEach((key, value) -> {
-            Assert.assertTrue(eventData.properties().containsKey(key));
-            Assert.assertEquals(value, eventData.properties().get(key));
+            Assert.assertTrue(eventData.getProperties().containsKey(key));
+            Assert.assertEquals(value, eventData.getProperties().get(key));
         });
 
         // Verify that the partitionKey, offset, enqueued time, sequenceNumber properties are no longer in the system
         // properties map.
         for (String property : systemPropertyNames) {
             Assert.assertFalse(property + " should not be in system properties map.",
-                eventData.systemProperties().containsKey(property));
+                eventData.getSystemProperties().containsKey(property));
         }
 
         // Verifying the contents of our message is the same.

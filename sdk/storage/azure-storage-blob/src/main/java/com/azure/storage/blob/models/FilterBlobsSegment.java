@@ -27,7 +27,7 @@ public final class FilterBlobsSegment {
      *
      * @return the blobItems value.
      */
-    public List<FilterBlobsItem> blobItems() {
+    public List<FilterBlobsItem> getBlobItems() {
         return this.blobItems;
     }
 

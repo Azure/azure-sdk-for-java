@@ -49,7 +49,7 @@ public final class BlobSetTierHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -61,7 +61,7 @@ public final class BlobSetTierHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders clientRequestId(String clientRequestId) {
+    public BlobSetTierHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -72,7 +72,7 @@ public final class BlobSetTierHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -83,7 +83,7 @@ public final class BlobSetTierHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders requestId(String requestId) {
+    public BlobSetTierHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -95,7 +95,7 @@ public final class BlobSetTierHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -107,7 +107,7 @@ public final class BlobSetTierHeaders {
      * @param version the version value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders version(String version) {
+    public BlobSetTierHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -117,7 +117,7 @@ public final class BlobSetTierHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -127,7 +127,7 @@ public final class BlobSetTierHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobSetTierHeaders object itself.
      */
-    public BlobSetTierHeaders errorCode(String errorCode) {
+    public BlobSetTierHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

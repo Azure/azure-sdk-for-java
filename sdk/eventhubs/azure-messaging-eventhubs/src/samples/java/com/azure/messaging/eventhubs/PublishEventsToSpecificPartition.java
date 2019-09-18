@@ -47,7 +47,7 @@ public class PublishEventsToSpecificPartition {
         //
         // If you attempt to use a partition key with an Event Hub producer that is associated with a partition, an exception
         // will occur. Otherwise, publishing to a specific partition is exactly the same as other publishing scenarios.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(firstPartition);
+        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(firstPartition);
 
         // Create a producer. Consequently, events sent from this producer will deliver to the specific partition ID Event Hub instance.
         EventHubAsyncProducer producer = client.createProducer(producerOptions);

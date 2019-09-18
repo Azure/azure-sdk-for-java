@@ -33,12 +33,12 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
-        if (overwrite || urlBuilder.scheme() == null) {
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        if (overwrite || urlBuilder.getScheme() == null) {
             logger.info("Setting protocol to {}", protocol);
 
             try {
-                context.httpRequest().url(urlBuilder.scheme(protocol).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

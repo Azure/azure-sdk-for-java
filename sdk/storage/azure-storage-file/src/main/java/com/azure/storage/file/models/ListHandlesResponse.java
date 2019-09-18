@@ -45,7 +45,7 @@ public final class ListHandlesResponse {
      *
      * @return the handleList value.
      */
-    public List<HandleItem> handleList() {
+    public List<HandleItem> getHandleList() {
         if (this.handleList == null) {
             this.handleList = new EntriesWrapper(new ArrayList<HandleItem>());
         }
@@ -58,7 +58,7 @@ public final class ListHandlesResponse {
      * @param handleList the handleList value to set.
      * @return the ListHandlesResponse object itself.
      */
-    public ListHandlesResponse handleList(List<HandleItem> handleList) {
+    public ListHandlesResponse setHandleList(List<HandleItem> handleList) {
         this.handleList = new EntriesWrapper(handleList);
         return this;
     }
@@ -68,7 +68,7 @@ public final class ListHandlesResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -78,7 +78,7 @@ public final class ListHandlesResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListHandlesResponse object itself.
      */
-    public ListHandlesResponse nextMarker(String nextMarker) {
+    public ListHandlesResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

@@ -50,7 +50,7 @@ public class ReactorConnectionTest {
     private static final String SESSION_NAME = "test-session-name";
     private static final Duration TEST_DURATION = Duration.ofSeconds(30);
     private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties("Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
-    private static final String HOSTNAME = CREDENTIAL_INFO.endpoint().getHost();
+    private static final String HOSTNAME = CREDENTIAL_INFO.getEndpoint().getHost();
     private static final Scheduler SCHEDULER = Schedulers.elastic();
 
     private AmqpConnection connection;
@@ -88,9 +88,9 @@ public class ReactorConnectionTest {
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
-        final RetryOptions retryOptions = new RetryOptions().tryTimeout(TEST_DURATION);
-        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
-            CREDENTIAL_INFO.eventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+        final RetryOptions retryOptions = new RetryOptions().setTryTimeout(TEST_DURATION);
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+            CREDENTIAL_INFO.getEventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider, responseMapper);
     }
@@ -285,12 +285,12 @@ public class ReactorConnectionTest {
         // Arrange
         Duration timeout = Duration.ofSeconds(2);
         RetryOptions retryOptions = new RetryOptions()
-            .maxRetries(2)
-            .delay(Duration.ofMillis(200))
-            .retryMode(RetryMode.FIXED)
-            .tryTimeout(timeout);
-        ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.endpoint().getHost(),
-            CREDENTIAL_INFO.eventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
+            .setMaxRetries(2)
+            .setDelay(Duration.ofMillis(200))
+            .setRetryMode(RetryMode.FIXED)
+            .setTryTimeout(timeout);
+        ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+            CREDENTIAL_INFO.getEventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert

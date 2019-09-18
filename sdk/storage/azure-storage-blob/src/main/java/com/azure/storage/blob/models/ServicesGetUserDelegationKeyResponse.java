@@ -29,7 +29,7 @@ public final class ServicesGetUserDelegationKeyResponse extends ResponseBase<Ser
      * @return the deserialized response body.
      */
     @Override
-    public UserDelegationKey value() {
-        return super.value();
+    public UserDelegationKey getValue() {
+        return super.getValue();
     }
 }

@@ -19,6 +19,12 @@ public class CreateTagOptionalParameter {
     private String description;
 
     /**
+     * Optional type for the tag. Possible values include: 'Regular',
+     * 'Negative'.
+     */
+    private String type;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -40,6 +46,26 @@ public class CreateTagOptionalParameter {
      */
     public CreateTagOptionalParameter withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the CreateTagOptionalParameter object itself.
+     */
+    public CreateTagOptionalParameter withType(String type) {
+        this.type = type;
         return this;
     }
 

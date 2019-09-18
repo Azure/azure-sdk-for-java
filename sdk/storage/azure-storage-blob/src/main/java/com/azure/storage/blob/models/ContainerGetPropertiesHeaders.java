@@ -120,7 +120,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -130,7 +130,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param metadata the metadata value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders metadata(Map<String, String> metadata) {
+    public ContainerGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -142,7 +142,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -154,7 +154,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders eTag(String eTag) {
+    public ContainerGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -167,11 +167,11 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -183,7 +183,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders lastModified(OffsetDateTime lastModified) {
+    public ContainerGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -199,7 +199,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the leaseDuration value.
      */
-    public LeaseDurationType leaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
 
@@ -211,7 +211,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param leaseDuration the leaseDuration value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders leaseDuration(LeaseDurationType leaseDuration) {
+    public ContainerGetPropertiesHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -222,7 +222,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the leaseState value.
      */
-    public LeaseStateType leaseState() {
+    public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
 
@@ -233,7 +233,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param leaseState the leaseState value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders leaseState(LeaseStateType leaseState) {
+    public ContainerGetPropertiesHeaders setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
     }
@@ -244,7 +244,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the leaseStatus value.
      */
-    public LeaseStatusType leaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
 
@@ -255,7 +255,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param leaseStatus the leaseStatus value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders leaseStatus(LeaseStatusType leaseStatus) {
+    public ContainerGetPropertiesHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
     }
@@ -267,7 +267,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -279,7 +279,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders clientRequestId(String clientRequestId) {
+    public ContainerGetPropertiesHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -290,7 +290,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -301,7 +301,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders requestId(String requestId) {
+    public ContainerGetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -313,7 +313,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -325,7 +325,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param version the version value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders version(String version) {
+    public ContainerGetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -336,11 +336,11 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -350,7 +350,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ContainerGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -366,7 +366,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the blobPublicAccess value.
      */
-    public PublicAccessType blobPublicAccess() {
+    public PublicAccessType getBlobPublicAccess() {
         return this.blobPublicAccess;
     }
 
@@ -378,7 +378,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param blobPublicAccess the blobPublicAccess value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders blobPublicAccess(PublicAccessType blobPublicAccess) {
+    public ContainerGetPropertiesHeaders setBlobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
         return this;
     }
@@ -389,7 +389,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the hasImmutabilityPolicy value.
      */
-    public Boolean hasImmutabilityPolicy() {
+    public Boolean isHasImmutabilityPolicy() {
         return this.hasImmutabilityPolicy;
     }
 
@@ -400,7 +400,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders hasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
+    public ContainerGetPropertiesHeaders setHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         return this;
     }
@@ -411,7 +411,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the hasLegalHold value.
      */
-    public Boolean hasLegalHold() {
+    public Boolean isHasLegalHold() {
         return this.hasLegalHold;
     }
 
@@ -422,7 +422,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param hasLegalHold the hasLegalHold value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders hasLegalHold(Boolean hasLegalHold) {
+    public ContainerGetPropertiesHeaders setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
         return this;
     }
@@ -432,7 +432,7 @@ public final class ContainerGetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -442,7 +442,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders errorCode(String errorCode) {
+    public ContainerGetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

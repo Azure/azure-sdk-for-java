@@ -13,20 +13,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Fluent BlobServiceClientBuilder for instantiating a {@link BlobServiceClient} or {@link BlobServiceAsyncClient}
- * using {@link BlobServiceClientBuilder#buildClient()} or {@link BlobServiceClientBuilder#buildAsyncClient()} respectively.
+ * Fluent BlobServiceClientBuilder for instantiating a {@link BlobServiceClient} or {@link BlobServiceAsyncClient} using
+ * {@link BlobServiceClientBuilder#buildClient()} or {@link BlobServiceClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
  * The following information must be provided on this builder:
  *
  * <ul>
- *     <li>the endpoint through {@code .endpoint()}, in the format of {@code https://{accountName}.blob.core.windows.net}.
- *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
+ * <li>the endpoint through {@code .endpoint()}, in the format of {@code https://{accountName}.blob.core.windows.net}.
+ * <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly
+ * accessible.
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link BlobServiceClient} or {@code .buildAsyncClient()} to create a {@link BlobServiceAsyncClient}.
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a {@link
+ * BlobServiceClient} or {@code .buildAsyncClient()} to create a {@link BlobServiceAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = {BlobServiceClient.class, BlobServiceAsyncClient.class})
 public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobServiceClientBuilder> {
@@ -38,7 +39,8 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
      * and {@link BlobServiceAsyncClient BlobServiceAsyncClients}.
      */
-    public BlobServiceClientBuilder() { }
+    public BlobServiceClientBuilder() {
+    }
 
     /**
      * @return a {@link BlobServiceClient} created from the configurations in this builder.
@@ -74,12 +76,14 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
             URL url = new URL(endpoint);
             super.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(URLParser.parse(url).sasQueryParameters().encode());
+            SASTokenCredential sasTokenCredential = SASTokenCredential
+                .fromSASTokenString(URLParser.parse(url).getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
         }
 
         return this;

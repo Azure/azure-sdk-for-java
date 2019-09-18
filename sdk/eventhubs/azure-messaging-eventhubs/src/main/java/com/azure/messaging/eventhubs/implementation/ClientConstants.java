@@ -13,7 +13,7 @@ public final class ClientConstants {
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
 
     public static final String PRODUCT_NAME = "azsdk-java-eventhubs";
-    public static final String CURRENT_JAVA_CLIENT_VERSION = "1.0.0-preview.2";
+    public static final String CURRENT_JAVA_CLIENT_VERSION = "5.0.0-preview.4";
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
 

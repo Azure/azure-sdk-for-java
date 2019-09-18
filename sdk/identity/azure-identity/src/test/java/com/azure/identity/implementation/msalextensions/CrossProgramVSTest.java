@@ -38,7 +38,7 @@ public class CrossProgramVSTest {
 
     @Before
     public void setup() throws Exception {
-        org.junit.Assume.assumeTrue("Record".equalsIgnoreCase(System.getenv("AZURE_TEST_MODE")));
+        org.junit.Assume.assumeTrue("Skipping these tests until we mock or record it", false);
         //using the default cachepersister and accessAspect objects
         cachePersister = new CachePersister.Builder().build();
         accessAspect = new PersistentTokenCacheAccessAspect();

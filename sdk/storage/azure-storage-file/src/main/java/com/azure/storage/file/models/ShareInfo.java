@@ -26,14 +26,14 @@ public final class ShareInfo {
     /**
      * @return the entity tag that corresponds to the share
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return the last time the share was modified
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 }

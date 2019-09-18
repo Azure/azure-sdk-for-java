@@ -3,10 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
@@ -36,7 +35,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Tests that {@link EventHubAsyncConsumer} can be created with various {@link EventPosition EventPositions}.
  */
-public class EventPositionIntegrationTest extends ApiTestBase {
+public class EventPositionIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
 
@@ -44,8 +43,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
     // our own.
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static final AtomicReference<EventData[]> EVENTS_PUSHED = new AtomicReference<>();
-    private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
-    private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
 
@@ -57,20 +55,36 @@ public class EventPositionIntegrationTest extends ApiTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
+        client = createBuilder().buildAsyncClient();
 
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+        if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
+            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
 
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+            // Receiving back those events we sent so we have something to compare to.
+            logger.info("Receiving the events we sent.");
+            final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+                EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+            final List<EventData> receivedEvents;
+            try {
+                receivedEvents = consumer.receive()
+                    .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
+                    .take(NUMBER_OF_EVENTS).collectList().block(TIMEOUT);
+            } finally {
+                dispose(consumer);
+            }
 
-        setupEventTestData(client);
+            Assert.assertNotNull(receivedEvents);
+            Assert.assertEquals(NUMBER_OF_EVENTS, receivedEvents.size());
+
+            EVENTS_PUSHED.set(receivedEvents.toArray(new EventData[0]));
+        }
     }
 
     @Override
@@ -112,11 +126,11 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         for (int i = 0; i < NUMBER_OF_EVENTS; i++) {
             final EventData event = earliestEvents.get(i);
             final EventData event2 = enqueuedEvents.get(i);
-            final String eventBody = UTF_8.decode(event.body()).toString();
-            final String event2Body = UTF_8.decode(event2.body()).toString();
+            final String eventBody = UTF_8.decode(event.getBody()).toString();
+            final String event2Body = UTF_8.decode(event2.getBody()).toString();
 
-            Assert.assertEquals(event.sequenceNumber(), event2.sequenceNumber());
-            Assert.assertEquals(event.offset(), event2.offset());
+            Assert.assertEquals(event.getSequenceNumber(), event2.getSequenceNumber());
+            Assert.assertEquals(event.getOffset(), event2.getOffset());
             Assert.assertEquals(eventBody, event2Body);
         }
     }
@@ -131,7 +145,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, MESSAGE_TRACKING_VALUE))
+            StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(Duration.ofSeconds(3)))
                 .expectComplete()
                 .verify();
@@ -148,7 +162,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
-        final EventHubProducerOptions options = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
         final EventHubAsyncProducer producer = client.createProducer(options);
         final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
             final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
@@ -180,7 +194,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
     public void receiveMessageFromEnqueuedTime() {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
-        final EventPosition position = EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get());
+        final EventPosition position = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
         final EventData expectedEvent = events[0];
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
@@ -189,9 +203,9 @@ public class EventPositionIntegrationTest extends ApiTestBase {
             StepVerifier.create(consumer.receive()
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
-                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
-                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -207,7 +221,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData secondEvent = events[1];
-        final EventPosition position = EventPosition.fromEnqueuedTime(secondEvent.enqueuedTime());
+        final EventPosition position = EventPosition.fromEnqueuedTime(secondEvent.getEnqueuedTime());
         final EventData expectedEvent = events[2];
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
@@ -216,9 +230,9 @@ public class EventPositionIntegrationTest extends ApiTestBase {
             StepVerifier.create(consumer.receive()
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
-                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
-                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -234,18 +248,18 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
-        final EventPosition position = EventPosition.fromOffset(expectedEvent.offset());
+        final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset());
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, MESSAGE_TRACKING_VALUE))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
-                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
-                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -260,18 +274,18 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
-        final EventPosition position = EventPosition.fromOffset(events[3].offset(), false);
+        final EventPosition position = EventPosition.fromOffset(events[3].getOffset(), false);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, MESSAGE_TRACKING_VALUE))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
-                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
-                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -286,18 +300,18 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[3];
-        final EventPosition position = EventPosition.fromSequenceNumber(expectedEvent.sequenceNumber(), true);
+        final EventPosition position = EventPosition.fromSequenceNumber(expectedEvent.getSequenceNumber(), true);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, MESSAGE_TRACKING_VALUE))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
-                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
-                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
@@ -312,64 +326,21 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         // Arrange
         final EventData[] events = EVENTS_PUSHED.get();
         final EventData expectedEvent = events[4];
-        final EventPosition position = EventPosition.fromSequenceNumber(events[3].sequenceNumber());
+        final EventPosition position = EventPosition.fromSequenceNumber(events[3].getSequenceNumber());
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
 
         // Act & Assert
         try {
             StepVerifier.create(consumer.receive()
-                .filter(event -> isMatchingEvent(event, MESSAGE_TRACKING_VALUE))
+                .filter(event -> isMatchingEvent(event, testData.getMessageTrackingId()))
                 .take(1))
                 .assertNext(event -> {
-                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
-                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
-                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                    Assert.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                    Assert.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                    Assert.assertEquals(expectedEvent.getOffset(), event.getOffset());
                 }).verifyComplete();
         } finally {
             dispose(consumer);
         }
-    }
-
-    /**
-     * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
-     * events there.
-     */
-    private void setupEventTestData(EventHubAsyncClient client) {
-        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
-            return;
-        }
-
-        logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
-
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
-        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
-
-        try {
-            // So we know what instant those messages were pushed to the service and can fetch them.
-            MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events).block(TIMEOUT);
-        } finally {
-            dispose(producer);
-        }
-
-        // Receiving back those events we sent so we have something to compare to.
-        logger.info("Receiving the events we sent.");
-        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()));
-        final List<EventData> receivedEvents;
-        try {
-            receivedEvents = consumer.receive()
-                .filter(event -> isMatchingEvent(event, MESSAGE_TRACKING_VALUE))
-                .take(NUMBER_OF_EVENTS).collectList().block(TIMEOUT);
-        } finally {
-            dispose(consumer);
-        }
-
-        Assert.assertNotNull(receivedEvents);
-        Assert.assertEquals(NUMBER_OF_EVENTS, receivedEvents.size());
-
-        EVENTS_PUSHED.set(receivedEvents.toArray(new EventData[0]));
     }
 }

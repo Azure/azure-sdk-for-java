@@ -42,9 +42,9 @@ public class SignVerifyOperationsAsync {
         // Let's create a signature from a simple digest.
         cryptoAsyncClient.sign(SignatureAlgorithm.RS256, digest)
             .subscribe(signResult -> {
-                System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signResult.signature().length, signResult.algorithm().toString());
+                System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signResult.getSignature().length, signResult.getAlgorithm().toString());
                 // Let's verify the signature against the digest.
-                cryptoAsyncClient.verify(SignatureAlgorithm.RS256, digest, signResult.signature())
+                cryptoAsyncClient.verify(SignatureAlgorithm.RS256, digest, signResult.getSignature())
                     .subscribe(verifyResult -> System.out.printf("Signature verified : %s\n", verifyResult.isValid()));
             });
 
@@ -53,9 +53,9 @@ public class SignVerifyOperationsAsync {
         // We can sign the raw plain text data without having to create a digest
         cryptoAsyncClient.sign(SignatureAlgorithm.RS256, digest)
             .subscribe(signResult -> {
-                System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signResult.signature().length, signResult.algorithm().toString());
+                System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signResult.getSignature().length, signResult.getAlgorithm().toString());
                 // Let's verify the signature against the raw plain text data.
-                cryptoAsyncClient.verify(SignatureAlgorithm.RS256, digest, signResult.signature())
+                cryptoAsyncClient.verify(SignatureAlgorithm.RS256, digest, signResult.getSignature())
                     .subscribe(verifyDataResult -> System.out.printf("Signature verified : %s\n", verifyDataResult.isValid()));
             });
 

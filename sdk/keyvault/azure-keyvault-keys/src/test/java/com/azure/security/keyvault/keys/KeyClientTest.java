@@ -78,7 +78,7 @@ public class KeyClientTest extends KeyClientTestBase {
         updateKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
             Key keyToUpdate = client.getKey(original.name());
-            client.updateKey(keyToUpdate.expires(updated.expires()));
+            client.updateKey(keyToUpdate.setExpires(updated.expires()));
             assertKeyEquals(updated, client.getKey(original.name()));
         });
     }
@@ -90,7 +90,7 @@ public class KeyClientTest extends KeyClientTestBase {
         updateDisabledKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
             Key keyToUpdate = client.getKey(original.name());
-            client.updateKey(keyToUpdate.expires(updated.expires()));
+            client.updateKey(keyToUpdate.setExpires(updated.expires()));
             assertKeyEquals(updated, client.getKey(original.name()));
         });
     }
@@ -132,9 +132,9 @@ public class KeyClientTest extends KeyClientTestBase {
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
             DeletedKey deletedKey = client.deleteKey(keyToDelete.name());
             pollOnKeyDeletion(keyToDelete.name());
-            assertNotNull(deletedKey.deletedDate());
-            assertNotNull(deletedKey.recoveryId());
-            assertNotNull(deletedKey.scheduledPurgeDate());
+            assertNotNull(deletedKey.getDeletedDate());
+            assertNotNull(deletedKey.getRecoveryId());
+            assertNotNull(deletedKey.getScheduledPurgeDate());
             assertEquals(keyToDelete.name(), deletedKey.name());
             client.purgeDeletedKey(keyToDelete.name());
             pollOnKeyPurge(keyToDelete.name());
@@ -256,9 +256,9 @@ public class KeyClientTest extends KeyClientTestBase {
             pollOnKeyDeletion(keyToDeleteAndGet.name());
             sleepInRecordMode(30000);
             DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.name());
-            assertNotNull(deletedKey.deletedDate());
-            assertNotNull(deletedKey.recoveryId());
-            assertNotNull(deletedKey.scheduledPurgeDate());
+            assertNotNull(deletedKey.getDeletedDate());
+            assertNotNull(deletedKey.getRecoveryId());
+            assertNotNull(deletedKey.getScheduledPurgeDate());
             assertEquals(keyToDeleteAndGet.name(), deletedKey.name());
             client.purgeDeletedKey(keyToDeleteAndGet.name());
             pollOnKeyPurge(keyToDeleteAndGet.name());
@@ -286,8 +286,8 @@ public class KeyClientTest extends KeyClientTestBase {
             Iterable<DeletedKey> deletedKeys =  client.listDeletedKeys();
             for (DeletedKey actualKey : deletedKeys) {
                 if (keysToDelete.containsKey(actualKey.name())) {
-                    assertNotNull(actualKey.deletedDate());
-                    assertNotNull(actualKey.recoveryId());
+                    assertNotNull(actualKey.getDeletedDate());
+                    assertNotNull(actualKey.getRecoveryId());
                     keysToDelete.remove(actualKey.name());
                 }
             }

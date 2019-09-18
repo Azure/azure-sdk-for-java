@@ -4,31 +4,84 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
+import com.azure.storage.blob.models.LeaseDurationType;
+import com.azure.storage.blob.models.LeaseStateType;
+import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 
 import java.time.OffsetDateTime;
 
 public final class ContainerProperties {
 
+    private final Metadata metadata;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final LeaseDurationType leaseDuration;
+    private final LeaseStateType leaseState;
+    private final LeaseStatusType leaseStatus;
     private final PublicAccessType blobPublicAccess;
-
     private final boolean hasImmutabilityPolicy;
-
     private final boolean hasLegalHold;
 
-    private final OffsetDateTime lastModified;
-
     ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
-        this.blobPublicAccess = generatedResponseHeaders.blobPublicAccess();
-        this.hasImmutabilityPolicy = generatedResponseHeaders.hasImmutabilityPolicy();
-        this.hasLegalHold = generatedResponseHeaders.hasLegalHold();
-        this.lastModified = generatedResponseHeaders.lastModified();
+        this.metadata = new Metadata(generatedResponseHeaders.getMetadata());
+        this.eTag = generatedResponseHeaders.getETag();
+        this.lastModified = generatedResponseHeaders.getLastModified();
+        this.leaseDuration = generatedResponseHeaders.getLeaseDuration();
+        this.leaseState = generatedResponseHeaders.getLeaseState();
+        this.leaseStatus = generatedResponseHeaders.getLeaseStatus();
+        this.blobPublicAccess = generatedResponseHeaders.getBlobPublicAccess();
+        this.hasImmutabilityPolicy = generatedResponseHeaders.isHasImmutabilityPolicy();
+        this.hasLegalHold = generatedResponseHeaders.isHasLegalHold();
+    }
+
+    /**
+     * @return the metadata associated with the container
+     */
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * @return the eTag of the container
+     */
+    public String getETag() {
+        return eTag;
+    }
+
+    /**
+     * @return the time the container was last modified
+     */
+    public OffsetDateTime getLastModified() {
+        return lastModified;
+    }
+
+    /**
+     * @return the type of lease on the container
+     */
+    public LeaseDurationType getLeaseDuration() {
+        return leaseDuration;
+    }
+
+    /**
+     * @return the lease state of the container
+     */
+    public LeaseStateType getLeaseState() {
+        return leaseState;
+    }
+
+    /**
+     * @return the lease status of the container
+     */
+    public LeaseStatusType getLeaseStatus() {
+        return leaseStatus;
     }
 
     /**
      * @return the access type for the container
      */
-    public PublicAccessType blobPublicAccess() {
+    public PublicAccessType getBlobPublicAccess() {
         return blobPublicAccess;
     }
 
@@ -46,10 +99,7 @@ public final class ContainerProperties {
         return hasLegalHold;
     }
 
-    /**
-     * @return the time the container was last modified
-     */
-    public OffsetDateTime lastModified() {
-        return lastModified;
-    }
+
+
+
 }

@@ -27,7 +27,7 @@ public final class SASTokenCredential {
     /**
      * @return the SAS token
      */
-    public String sasToken() {
+    public String getSasToken() {
         return sasToken;
     }
 

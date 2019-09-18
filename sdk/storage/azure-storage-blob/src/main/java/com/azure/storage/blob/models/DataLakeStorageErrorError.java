@@ -31,7 +31,7 @@ public final class DataLakeStorageErrorError {
      *
      * @return the code value.
      */
-    public String code() {
+    public String getCode() {
         return this.code;
     }
 
@@ -41,7 +41,7 @@ public final class DataLakeStorageErrorError {
      * @param code the code value to set.
      * @return the DataLakeStorageErrorError object itself.
      */
-    public DataLakeStorageErrorError code(String code) {
+    public DataLakeStorageErrorError setCode(String code) {
         this.code = code;
         return this;
     }
@@ -51,7 +51,7 @@ public final class DataLakeStorageErrorError {
      *
      * @return the message value.
      */
-    public String message() {
+    public String getMessage() {
         return this.message;
     }
 
@@ -61,7 +61,7 @@ public final class DataLakeStorageErrorError {
      * @param message the message value to set.
      * @return the DataLakeStorageErrorError object itself.
      */
-    public DataLakeStorageErrorError message(String message) {
+    public DataLakeStorageErrorError setMessage(String message) {
         this.message = message;
         return this;
     }

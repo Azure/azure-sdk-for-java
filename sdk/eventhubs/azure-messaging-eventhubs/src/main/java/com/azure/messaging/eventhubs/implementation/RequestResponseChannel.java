@@ -60,7 +60,7 @@ class RequestResponseChannel implements Closeable {
 
     RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
                            RetryOptions retryOptions, ReactorHandlerProvider handlerProvider) {
-        this.operationTimeout = retryOptions.tryTimeout();
+        this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         this.replyTo = path.replace("$", "") + "-client-reply-to";

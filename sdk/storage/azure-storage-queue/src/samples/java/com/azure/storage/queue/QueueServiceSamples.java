@@ -23,8 +23,8 @@ public class QueueServiceSamples {
         queueServiceClient.createQueue(generateRandomName("create-extra", 16));
         queueServiceClient.listQueues().forEach(
             queueItem -> {
-                System.out.println("The queue name is: " + queueItem.name());
-                queueServiceClient.deleteQueue(queueItem.name());
+                System.out.println("The queue name is: " + queueItem.getName());
+                queueServiceClient.deleteQueue(queueItem.getName());
             }
         );
     }

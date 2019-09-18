@@ -24,13 +24,23 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
+ *
+ * <p><strong>Creating a synchronous consumer</strong></p>
+ * Create an {@link EventHubConsumer} using {@link EventHubClient}.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.instantiation}
+ *
+ * <p><strong>Consuming events from an Event Hub</strong></p>
+ * Events can be consumed using {@link #receive(int)} or {@link #receive(int, Duration)}. The call to `receive`
+ * completes and returns an {@link IterableStream} when either the number of events is reached, or the
+ * timeout duration is reached.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive#int-duration}
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)

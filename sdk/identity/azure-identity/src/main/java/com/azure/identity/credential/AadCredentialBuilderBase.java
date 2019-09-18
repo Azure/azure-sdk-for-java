@@ -17,7 +17,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
-        this.identityClientOptions.authorityHost(authorityHost);
+        this.identityClientOptions.setAuthorityHost(authorityHost);
         return (T) this;
     }
 

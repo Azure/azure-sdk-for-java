@@ -26,7 +26,7 @@ public final class StorageServiceStats {
      *
      * @return the geoReplication value.
      */
-    public GeoReplication geoReplication() {
+    public GeoReplication getGeoReplication() {
         return this.geoReplication;
     }
 
@@ -37,7 +37,7 @@ public final class StorageServiceStats {
      * @param geoReplication the geoReplication value to set.
      * @return the StorageServiceStats object itself.
      */
-    public StorageServiceStats geoReplication(GeoReplication geoReplication) {
+    public StorageServiceStats setGeoReplication(GeoReplication geoReplication) {
         this.geoReplication = geoReplication;
         return this;
     }

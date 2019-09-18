@@ -33,7 +33,7 @@ public final class KeyBasePage implements Page<KeyBase> {
      * @return The link to the next page.
      */
     @Override
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 
@@ -43,7 +43,7 @@ public final class KeyBasePage implements Page<KeyBase> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<KeyBase> items() {
+    public List<KeyBase> getItems() {
         return items;
     }
 }

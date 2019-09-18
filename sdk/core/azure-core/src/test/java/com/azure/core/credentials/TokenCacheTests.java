@@ -100,7 +100,7 @@ public class TokenCacheTests {
         private OffsetDateTime expiry;
 
         @Override
-        public String token() {
+        public String getToken() {
             return token;
         }
 
@@ -115,7 +115,7 @@ public class TokenCacheTests {
         }
 
         @Override
-        public OffsetDateTime expiresOn() {
+        public OffsetDateTime getExpiresOn() {
             return expiry;
         }
 

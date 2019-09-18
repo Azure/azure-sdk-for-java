@@ -26,14 +26,14 @@ public final class UpdatedMessage {
     /**
      * @return the unique identifier used to verify that the operation is allowed on the message
      */
-    public String popReceipt() {
+    public String getPopReceipt() {
         return popReceipt;
     }
 
     /**
      * @return the next time the message will be visible to other operations in the queue
      */
-    public OffsetDateTime timeNextVisible() {
+    public OffsetDateTime getTimeNextVisible() {
         return timeNextVisible;
     }
 }

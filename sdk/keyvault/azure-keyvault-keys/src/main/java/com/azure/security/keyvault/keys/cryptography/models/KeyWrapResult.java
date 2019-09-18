@@ -34,7 +34,7 @@ public final class KeyWrapResult {
      * Get the encrypted key content.
      * @return The encrypted key.
      */
-    public byte[] encryptedKey() {
+    public byte[] getEncryptedKey() {
         return ImplUtils.clone(encryptedKey);
     }
 
@@ -42,7 +42,7 @@ public final class KeyWrapResult {
      * Get the key wrap algorithm used to wrap the key content.
      * @return The key wrap algorithm.
      */
-    public KeyWrapAlgorithm algorithm() {
+    public KeyWrapAlgorithm getAlgorithm() {
         return algorithm;
     }
 }

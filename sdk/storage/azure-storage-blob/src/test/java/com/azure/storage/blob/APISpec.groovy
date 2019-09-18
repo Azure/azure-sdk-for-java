@@ -26,7 +26,6 @@ import com.azure.storage.blob.models.ContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListContainersOptions
-import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.common.BaseClientBuilder
@@ -161,11 +160,11 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def options = new ListContainersOptions().prefix(containerPrefix + testName)
+        def options = new ListContainersOptions().setPrefix(containerPrefix + testName)
         for (ContainerItem container : primaryBlobServiceClient.listContainers(options, Duration.ofSeconds(120))) {
-            ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.name())
+            ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.getName())
 
-            if (container.properties().leaseState() == LeaseStateType.LEASED) {
+            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 containerClient.breakLeaseWithResponse(0, null, null, null)
             }
 
@@ -186,7 +185,7 @@ class APISpec extends Specification {
         if (testMode != null) {
             try {
                 return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ignore) {
                 return TestMode.PLAYBACK
             }
         }
@@ -221,14 +220,14 @@ class APISpec extends Specification {
 BlobServiceClient setClient(SharedKeyCredential credential) {
     try {
         return getServiceClient(credential)
-    } catch (Exception ex) {
+    } catch (Exception ignore) {
         return null
     }
 }
 
 def getOAuthServiceClient() {
     BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.accountName()))
+        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
         .httpClient(getHttpClient())
         .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
@@ -250,7 +249,7 @@ BlobServiceClient getServiceClient(String endpoint) {
 }
 
 BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.accountName()), null)
+    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
 }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
@@ -267,7 +266,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
-        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.accountName()))
+        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
             .buildAsyncClient()
     }
 
@@ -395,10 +394,10 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.setWiretap(true)
+            builder.wiretap(true)
 
             if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
             return builder.build()
@@ -461,7 +460,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
      */
     def setupBlobMatchCondition(BlobClient bc, String match) {
         if (match == receivedEtag) {
-            return bc.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return bc.getProperties().getETag()
         } else {
             return match
         }
@@ -469,7 +468,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
         if (match == receivedEtag) {
-            return bac.getPropertiesWithResponse(null, null).block().headers().value("ETag")
+            return bac.getProperties().block().getETag()
         } else {
             return match
         }
@@ -515,7 +514,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getPropertiesWithResponse(null, null, null).headers().value("ETag")
+            return cu.getProperties().getETag()
         } else {
             return match
         }
@@ -523,7 +522,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLeaseWithResponse(null, -1, null, null, null).value()
+            return cu.acquireLease(null, -1)
         } else {
             return leaseID
         }
@@ -543,49 +542,49 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     with than was worth it.
      */
     def getStubResponse(int code, HttpRequest request) {
-        return new HttpResponse() {
+        return new HttpResponse(request) {
 
             @Override
-            int statusCode() {
+            int getStatusCode() {
                 return code
             }
 
             @Override
-            String headerValue(String s) {
+            String getHeaderValue(String s) {
                 return null
             }
 
             @Override
-            HttpHeaders headers() {
+            HttpHeaders getHeaders() {
                 return new HttpHeaders()
             }
 
             @Override
-            Flux<ByteBuffer> body() {
+            Flux<ByteBuffer> getBody() {
                 return Flux.empty()
             }
 
             @Override
-            Mono<byte[]> bodyAsByteArray() {
+            Mono<byte[]> getBodyAsByteArray() {
                 return Mono.just(new byte[0])
             }
 
             @Override
-            Mono<String> bodyAsString() {
+            Mono<String> getBodyAsString() {
                 return Mono.just("")
             }
 
             @Override
-            Mono<String> bodyAsString(Charset charset) {
+            Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
             }
-        }.request(request)
+        }
     }
 
     def waitForCopy(ContainerClient bu, String status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu.getPropertiesWithResponse(null, null, null).headers().value("x-ms-copy-status")
+            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -603,48 +602,35 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
      * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(HttpHeaders headers) {
-        return headers.value("etag") != null &&
+        return headers.getValue("etag") != null &&
             // Quotes should be scrubbed from etag header values
-            !headers.value("etag").contains("\"") &&
-            headers.value("last-modified") != null &&
-            headers.value("x-ms-request-id") != null &&
-            headers.value("x-ms-version") != null &&
-            headers.value("date") != null
+            !headers.getValue("etag").contains("\"") &&
+            headers.getValue("last-modified") != null &&
+            headers.getValue("x-ms-request-id") != null &&
+            headers.getValue("x-ms-version") != null &&
+            headers.getValue("date") != null
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
                                String contentLanguage, byte[] contentMD5, String contentType) {
-        return response.value().cacheControl() == cacheControl &&
-            response.value().contentDisposition() == contentDisposition &&
-            response.value().contentEncoding() == contentEncoding &&
-            response.value().contentLanguage() == contentLanguage &&
-            response.value().contentMD5() == contentMD5 &&
-            response.headers().value("Content-Type") == contentType
-    }
-
-    Metadata getMetadataFromHeaders(HttpHeaders headers) {
-        Metadata metadata = new Metadata()
-
-        for (Map.Entry<String, String> header : headers.toMap()) {
-            if (header.getKey().startsWith("x-ms-meta-")) {
-                String metadataKey = header.getKey().substring(10)
-                metadata.put(metadataKey, header.getValue())
-            }
-        }
-
-        return metadata
+        return response.getValue().getCacheControl() == cacheControl &&
+            response.getValue().getContentDisposition() == contentDisposition &&
+            response.getValue().getContentEncoding() == contentEncoding &&
+            response.getValue().getContentLanguage() == contentLanguage &&
+            response.getValue().getContentMD5() == contentMD5 &&
+            response.getHeaders().getValue("Content-Type") == contentType
     }
 
     def enableSoftDelete() {
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .deleteRetentionPolicy(new RetentionPolicy().enabled(true).days(2)))
+            .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(true).setDays(2)))
 
         sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
         primaryBlobServiceClient.setProperties(new StorageServiceProperties()
-            .deleteRetentionPolicy(new RetentionPolicy().enabled(false)))
+            .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(false)))
 
         sleepIfRecord(30000)
     }
@@ -660,7 +646,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().flatMap { HttpResponse response ->
-                if (response.request().headers().value("x-ms-range") != "bytes=2-6") {
+                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
                     return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
                 } else {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
@@ -681,44 +667,44 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         private final Flux<ByteBuffer> body
 
         MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            this.request(response.request())
+            super(response.getRequest())
             this.statusCode = statusCode
-            this.headers = response.headers()
+            this.headers = response.getHeaders()
             this.body = body
         }
 
         @Override
-        int statusCode() {
+        int getStatusCode() {
             return statusCode
         }
 
         @Override
-        String headerValue(String s) {
-            return headers.value(s)
+        String getHeaderValue(String s) {
+            return headers.getValue(s)
         }
 
         @Override
-        HttpHeaders headers() {
+        HttpHeaders getHeaders() {
             return headers
         }
 
         @Override
-        Flux<ByteBuffer> body() {
+        Flux<ByteBuffer> getBody() {
             return body
         }
 
         @Override
-        Mono<byte[]> bodyAsByteArray() {
+        Mono<byte[]> getBodyAsByteArray() {
             return Mono.error(new IOException())
         }
 
         @Override
-        Mono<String> bodyAsString() {
+        Mono<String> getBodyAsString() {
             return Mono.error(new IOException())
         }
 
         @Override
-        Mono<String> bodyAsString(Charset charset) {
+        Mono<String> getBodyAsString(Charset charset) {
             return Mono.error(new IOException())
         }
     }

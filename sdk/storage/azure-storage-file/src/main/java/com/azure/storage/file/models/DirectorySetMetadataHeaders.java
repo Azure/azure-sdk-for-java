@@ -63,7 +63,7 @@ public final class DirectorySetMetadataHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -74,7 +74,7 @@ public final class DirectorySetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectorySetMetadataHeaders object itself.
      */
-    public DirectorySetMetadataHeaders eTag(String eTag) {
+    public DirectorySetMetadataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -85,7 +85,7 @@ public final class DirectorySetMetadataHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -96,7 +96,7 @@ public final class DirectorySetMetadataHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectorySetMetadataHeaders object itself.
      */
-    public DirectorySetMetadataHeaders requestId(String requestId) {
+    public DirectorySetMetadataHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -107,7 +107,7 @@ public final class DirectorySetMetadataHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -118,7 +118,7 @@ public final class DirectorySetMetadataHeaders {
      * @param version the version value to set.
      * @return the DirectorySetMetadataHeaders object itself.
      */
-    public DirectorySetMetadataHeaders version(String version) {
+    public DirectorySetMetadataHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -129,11 +129,11 @@ public final class DirectorySetMetadataHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -143,7 +143,7 @@ public final class DirectorySetMetadataHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectorySetMetadataHeaders object itself.
      */
-    public DirectorySetMetadataHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectorySetMetadataHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -171,7 +171,7 @@ public final class DirectorySetMetadataHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the DirectorySetMetadataHeaders object itself.
      */
-    public DirectorySetMetadataHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public DirectorySetMetadataHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -181,7 +181,7 @@ public final class DirectorySetMetadataHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -191,7 +191,7 @@ public final class DirectorySetMetadataHeaders {
      * @param errorCode the errorCode value to set.
      * @return the DirectorySetMetadataHeaders object itself.
      */
-    public DirectorySetMetadataHeaders errorCode(String errorCode) {
+    public DirectorySetMetadataHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }
