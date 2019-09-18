@@ -42,7 +42,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void searchFieldsExcludesFieldsFromSuggest()  {
+    public void searchFieldsExcludesFieldsFromSuggest() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.searchFields(new LinkedList<>(Arrays.asList("HotelName")));
@@ -96,5 +96,42 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         //assert
         verifyCanSuggestStaticallyTypedDocuments(iterator.next(), hotels);
+    }
+
+    @Override
+    public void canSuggestWithDateTimeInStaticModel() {
+    }
+
+    @Override
+    public void fuzzyIsOffByDefault() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", null, null);
+        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        verifyFuzzyIsOffByDefault(iterator.next());
+    }
+
+    @Override
+    public void suggestThrowsWhenGivenBadSuggesterName() throws Exception {
+        try {
+            PagedIterable<SuggestResult> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
+            Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+        } catch (Throwable error) {
+            verifySuggestThrowsWhenGivenBadSuggesterName(error);
+        }
+    }
+
+    @Override
+    public void suggestThrowsWhenRequestIsMalformed() throws Exception {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        SuggestParameters suggestParams = new SuggestParameters();
+        suggestParams.orderBy(new LinkedList<>(Arrays.asList("This is not a valid orderby.")));
+        try {
+            PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+            Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+        } catch (Throwable error) {
+            verifySuggestThrowsWhenRequestIsMalformed(error);
+        }
     }
 }
