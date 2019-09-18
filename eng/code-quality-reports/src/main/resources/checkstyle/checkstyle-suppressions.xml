@@ -145,6 +145,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlobOutputStream.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlockBlobClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.PageBlobAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.java"/>
 
   <!-- Suppress requirement that abstract builder classes require the ServiceClientBuilder annotation -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.common.BaseClientBuilder.java"/>
@@ -198,4 +199,8 @@
   <!-- Suppress CRUD operation names as they won't feel fluent -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseAsyncClient.java"/>
+
+  <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobClient.java"/>
 </suppressions>

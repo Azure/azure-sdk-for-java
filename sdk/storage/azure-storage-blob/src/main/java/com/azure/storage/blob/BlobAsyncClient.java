@@ -90,16 +90,18 @@ public class BlobAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
-    final AzureBlobStorageImpl azureBlobStorage;
+    protected final AzureBlobStorageImpl azureBlobStorage;
     protected final String snapshot;
     protected final CpkInfo cpk;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Protected constructor for use by {@link BlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
+     * @param snapshot The optional snapshot id of the snapshot blob
+     * @param cpk The optional client provided key
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
+    protected BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
         this.cpk = cpk;

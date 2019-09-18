@@ -10,7 +10,10 @@ import com.azure.storage.common.BaseClientBuilder;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 
-abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends BaseClientBuilder<T> {
+/**
+ * RESERVED FOR INTERNAL USE ONLY
+ */
+public abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> extends BaseClientBuilder<T> {
 
     private static final String BLOB_ENDPOINT_MIDFIX = "blob";
 

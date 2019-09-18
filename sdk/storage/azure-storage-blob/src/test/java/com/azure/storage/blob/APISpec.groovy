@@ -233,12 +233,10 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
         if (testMode == TestMode.RECORD) {
             if (recordLiveMode) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
-
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
