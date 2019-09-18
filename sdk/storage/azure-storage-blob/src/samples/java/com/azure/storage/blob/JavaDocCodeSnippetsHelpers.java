@@ -30,6 +30,13 @@ final class JavaDocCodeSnippetsHelpers {
             .buildPageBlobClient();
     }
 
+    static PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String containerName) {
+        return new BlobClientBuilder()
+            .blobName(blobName)
+            .containerName(containerName)
+            .buildPageBlobAsyncClient();
+    }
+
     static BlobServiceAsyncClient getBlobServiceAsyncClient() {
         return new BlobServiceClientBuilder().buildAsyncClient();
     }
