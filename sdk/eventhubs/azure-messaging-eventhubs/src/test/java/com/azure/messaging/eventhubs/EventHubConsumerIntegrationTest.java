@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -55,6 +56,7 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         super.beforeTest();
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
+            .scheduler(Schedulers.single())
             .retry(RETRY_OPTIONS)
             .buildClient();
 

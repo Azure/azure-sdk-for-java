@@ -53,7 +53,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
 
         final ConnectionOptions options = new ConnectionOptions(connectionString.getEndpoint().getHost(),
             connectionString.getEventHubName(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
-            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
+            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.single());
 
         AzureTokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(options.getAuthorizationType(),
             options.getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
