@@ -23,9 +23,11 @@ import java.security.MessageDigest
 
 class AppendBlobAPITest extends APISpec {
     AppendBlobClient bc
+    String blobName
 
     def setup() {
-        bc = cc.getAppendBlobClient(generateBlobName())
+        blobName = generateBlobName()
+        bc = cc.getAppendBlobClient(blobName)
         bc.create()
     }
 
@@ -496,9 +498,7 @@ class AppendBlobAPITest extends APISpec {
     }
 
     def "Get Append Blob Name"() {
-        given:
-        def appendBlobName = "test_name"
         expect:
-        appendBlobName == bc.getName()
+        blobName == bc.getName()
     }
 }

@@ -1696,8 +1696,9 @@ class ContainerAPITest extends APISpec {
 
     def "Get Container Name"() {
         given:
-        def containerName = "test_name"
+        def containerName = generateContainerName()
+        def newcc = primaryBlobServiceClient.getContainerClient(containerName)
         expect:
-        containerName == cc.getName()
+        containerName == newcc.getName()
     }
 }

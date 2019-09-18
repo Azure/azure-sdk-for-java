@@ -577,8 +577,6 @@ class DirectoryAPITests extends APISpec {
     }
 
     def "Get Directory Path"() {
-        given:
-        def directoryPath = "test_name"
         expect:
         directoryPath == primaryDirectoryClient.getName()
     }

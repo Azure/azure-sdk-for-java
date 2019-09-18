@@ -666,8 +666,6 @@ class FileAsyncAPITests extends APISpec {
     }
 
     def "Get File Path"() {
-        given:
-        def filePath = "test_name"
         expect:
         filePath == primaryFileAsyncClient.getName()
     }

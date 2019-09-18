@@ -22,9 +22,12 @@ class QueueAysncAPITests extends APISpec {
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
 
+    String queueName
+
     def setup() {
+        queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
-        queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName(methodName, 60))
+        queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
     }
 
     def "Create queue with shared key"() {
@@ -510,8 +513,6 @@ class QueueAysncAPITests extends APISpec {
     }
 
     def "Get Queue Name"() {
-        given:
-        def queueName = "test_async_name"
         expect:
         queueName == queueAsyncClient.getName()
     }

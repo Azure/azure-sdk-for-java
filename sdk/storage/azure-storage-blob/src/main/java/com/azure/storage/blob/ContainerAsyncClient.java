@@ -1345,7 +1345,7 @@ public final class ContainerAsyncClient {
      */
     public String getName() {
         try {
-            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getBlobName();
+            return URLParser.parse(new URL(this.azureBlobStorage.getUrl())).getContainerName();
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
                 + this.azureBlobStorage.getUrl()));
