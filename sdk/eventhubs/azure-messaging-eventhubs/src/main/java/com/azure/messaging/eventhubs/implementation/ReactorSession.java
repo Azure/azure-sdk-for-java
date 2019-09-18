@@ -47,7 +47,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     private final SessionHandler sessionHandler;
     private final String sessionName;
     private final ReactorProvider provider;
-    private final TokenResourceProvider audienceProvider;
+    private final TokenManagerProvider tokenManagerProvider;
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
@@ -55,7 +55,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
                    ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier,
-                   TokenResourceProvider audienceProvider, Duration openTimeout) {
+                   TokenManagerProvider tokenManagerProvider, Duration openTimeout) {
         super(new ClientLogger(ReactorSession.class));
         this.session = session;
         this.sessionHandler = sessionHandler;
@@ -63,7 +63,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
         this.sessionName = sessionName;
         this.provider = provider;
         this.cbsNodeSupplier = cbsNodeSupplier;
-        this.audienceProvider = audienceProvider;
+        this.tokenManagerProvider = tokenManagerProvider;
         this.openTimeout = openTimeout;
 
         this.subscriptions = Disposables.composite(
@@ -118,7 +118,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
-        final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
+        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(
             getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
@@ -168,7 +168,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression,
                                          Duration timeout, RetryPolicy retry, Long ownerLevel,
                                          String consumerIdentifier) {
-        final ActiveClientTokenManager tokenManager = createTokenManager(entityPath);
+        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(
             getConnectionStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
@@ -252,10 +252,5 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     @Override
     public boolean removeLink(String linkName) {
         return (openSendLinks.remove(linkName) != null) || openReceiveLinks.remove(linkName) != null;
-    }
-
-    private ActiveClientTokenManager createTokenManager(String entityPath) {
-        final String tokenAudience = audienceProvider.getResourceString(entityPath);
-        return new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience);
     }
 }
