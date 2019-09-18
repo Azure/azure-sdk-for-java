@@ -820,7 +820,7 @@ public final class QueueAsyncClient {
     }
 
     /**
-     * Get the queue name from client.
+     * Get the queue name of the client.
      *
      * <p><strong>Code Samples</strong></p>
      *
