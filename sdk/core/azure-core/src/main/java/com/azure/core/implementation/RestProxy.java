@@ -54,7 +54,9 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -74,6 +76,8 @@ public class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
 
+    private final Map<Class<?>, Constructor<? extends Response<?>>> classConstructorMap;
+
     /**
      * Create a RestProxy.
      *
@@ -88,6 +92,7 @@ public class RestProxy implements InvocationHandler {
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
+        this.classConstructorMap = new HashMap<>();
     }
 
     /**
@@ -477,11 +482,6 @@ public class RestProxy implements InvocationHandler {
 
     @SuppressWarnings("unchecked")
     private Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
-        final HttpResponse httpResponse = response.getSourceResponse();
-        final HttpRequest httpRequest = httpResponse.getRequest();
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final HttpHeaders responseHeaders = httpResponse.getHeaders();
-
         // determine the type of response class. If the type is the 'RestResponse' interface, we will use the
         // 'RestResponseBase' class instead.
         Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
@@ -496,53 +496,75 @@ public class RestProxy implements InvocationHandler {
             }
         }
 
-        // we try to find the most specific constructor, which we do in the following order:
-        // 1) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body, Object deserializedHeaders)
-        // 2) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body)
-        // 3) (HttpRequest httpRequest, int statusCode, HttpHeaders headers)
-        List<Constructor<?>> constructors = Arrays.stream(cls.getDeclaredConstructors())
-            .filter(constructor -> {
-                int paramCount = constructor.getParameterCount();
-                return paramCount >= 3 && paramCount <= 5;
-            })
-            .sorted(Comparator.comparingInt(Constructor::getParameterCount))
-            .collect(Collectors.toList());
+        final Class<?> _cls = cls;
 
-        if (constructors.isEmpty()) {
-            throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
+        // see if we have already cached the best constructor for the given class
+        if (classConstructorMap.containsKey(cls)) {
+            final Constructor<? extends Response<?>> ctor = classConstructorMap.get(cls);
+            final Optional<Mono<Response<?>>> newResponse = createNewInstance(ctor, response, bodyAsObject);
+
+            return newResponse.orElseThrow(() ->
+               logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + _cls)));
+        } else {
+            // we try to find the most specific constructor, which we do in the following order:
+            // 1) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body, Object deserializedHeaders)
+            // 2) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body)
+            // 3) (HttpRequest httpRequest, int statusCode, HttpHeaders headers)
+            return Arrays.stream(cls.getDeclaredConstructors())
+                       .filter(constructor -> {
+                           int paramCount = constructor.getParameterCount();
+                           return paramCount >= 3 && paramCount <= 5;
+                       })
+                       .sorted(Comparator.comparingInt(Constructor::getParameterCount))
+                       .map(constructor -> {
+                           final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
+
+                           // attempt to create an instance
+                           Optional<Mono<Response<?>>> newResponse = createNewInstance(ctor, response, bodyAsObject);
+
+                           // if the instance is present, we cache it for future use
+                           if (newResponse.isPresent()) {
+                               classConstructorMap.put(_cls, ctor);
+                           }
+
+                           // and then we return it, still wrapped in the Optional
+                           return newResponse;
+                       }).filter(Optional::isPresent)
+                       .map(Optional::get)
+                       .findFirst()
+                       .get();
         }
-
-        // try to create an instance using our list of potential candidates
-        for (Constructor<?> constructor : constructors) {
-            final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
-            final int paramCount = constructor.getParameterCount();
-
-            switch (paramCount) {
-                case 3:
-                    return Mono.just(createResponse(ctor, new Object[]
-                        {httpRequest, responseStatusCode, responseHeaders}));
-                case 4:
-                    return Mono.just(createResponse(ctor, new Object[] {httpRequest, responseStatusCode,
-                        responseHeaders, bodyAsObject}));
-                case 5:
-                    return response.getDecodedHeaders()
-                        .map((Function<Object, Response<?>>) headers -> {
-                            return createResponse(ctor, new Object[]
-                                {httpRequest, responseStatusCode, responseHeaders, bodyAsObject, headers});
-                        }).switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                            return Mono.just(createResponse(ctor, new Object[]
-                                {httpRequest, responseStatusCode, responseHeaders, bodyAsObject, null}));
-                        }));
-                default:
-                    throw logger.logExceptionAsError(new IllegalStateException(
-                        "Response constructor with expected parameters not found."));
-            }
-        }
-        // error
-        throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
 
-    private Response<?> createResponse(Constructor<? extends Response<?>> ctor, Object[] args) {
+    private Optional<Mono<Response<?>>> createNewInstance(final Constructor<? extends Response<?>> ctor,
+                                                final HttpDecodedResponse response, final Object bodyAsObject) {
+        final HttpResponse httpResponse = response.getSourceResponse();
+        final HttpRequest httpRequest = httpResponse.getRequest();
+        final int responseStatusCode = httpResponse.getStatusCode();
+        final HttpHeaders responseHeaders = httpResponse.getHeaders();
+
+        final int paramCount = ctor.getParameterCount();
+        switch (paramCount) {
+            case 3:
+                return Optional.of(Mono.just(createResponse(ctor, httpRequest, responseStatusCode, responseHeaders)));
+            case 4:
+                return Optional.of(Mono.just(createResponse(ctor, httpRequest, responseStatusCode,
+                    responseHeaders, bodyAsObject)));
+            case 5:
+                return Optional.of(response.getDecodedHeaders()
+                    .map((Function<Object, Response<?>>) headers -> {
+                        return createResponse(ctor, httpRequest, responseStatusCode, responseHeaders,
+                            bodyAsObject, headers);
+                    }).switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
+                        return Mono.just(createResponse(ctor, httpRequest, responseStatusCode,
+                            responseHeaders, bodyAsObject, null));
+                    })));
+            default:
+                return Optional.empty();
+        }
+    }
+
+    private Response<?> createResponse(Constructor<? extends Response<?>> ctor, Object... args) {
         try {
             return ctor.newInstance(args);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
