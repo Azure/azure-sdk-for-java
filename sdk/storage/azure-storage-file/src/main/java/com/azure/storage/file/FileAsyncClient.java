@@ -127,9 +127,9 @@ public class FileAsyncClient {
      * @throws RuntimeException If the file is using a malformed URL.
      */
     public URL getFileUrl() {
-        String fileURLString = String.format("%s/%s/%s",azureFileStorageClient.getUrl(), shareName, filePath);
+        String fileURLString = String.format("%s/%s/%s", azureFileStorageClient.getUrl(), shareName, filePath);
         if (snapshot != null) {
-            fileURLString = fileURLString + "?snapshot=" + snapshot;
+            fileURLString = String.format("%s?snapshot=%s", fileURLString, snapshot);
         }
         try {
             return new URL(fileURLString);

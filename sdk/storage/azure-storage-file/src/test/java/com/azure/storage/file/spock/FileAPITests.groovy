@@ -412,7 +412,7 @@ class FileAPITests extends APISpec {
             .buildFileClient()
 
         client.create(1024)
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI())
+        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl().toString() +"?" + sasToken).toURI())
 
         then:
         def result = new String(client.downloadWithProperties().getBody().blockLast().array())
@@ -427,7 +427,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
-        def sourceURL = primaryFileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath
+        def sourceURL = primaryFileClient.getFileUrl().toString()
 
         when:
         Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null, null)

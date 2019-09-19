@@ -152,7 +152,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
             // Attempt to get the share name from the URL passed
             String[] pathSegments = fullURL.getPath().split("/");
             int length = pathSegments.length;
-            if (length >= 3) {
+            if (length > 3) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
                     "Cannot accept a URL to a file or directory to construct a file share client"));
             }
