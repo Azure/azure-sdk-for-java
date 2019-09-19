@@ -85,7 +85,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
         }
 
         return new AzureFileStorageBuilder()
-            .url(endpoint)
+            .url(super.endpoint)
             .pipeline(pipeline)
             .build();
     }
