@@ -24,8 +24,6 @@ class QueueAysncAPITests extends APISpec {
     static def createMetadata = Collections.singletonMap("metadata1", "value")
     def queueName
 
-    String queueName
-
     def setup() {
         queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
