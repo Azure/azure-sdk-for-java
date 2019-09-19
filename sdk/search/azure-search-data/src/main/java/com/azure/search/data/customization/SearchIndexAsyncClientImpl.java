@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.AutoCompletePagedResponse;
 import com.azure.search.data.common.DocumentResponseConversions;
@@ -281,7 +282,18 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public Mono<DocumentIndexResult> index(IndexBatch batch) {
-        return restClient.documents().indexAsync(batch);
+        Mono<SimpleResponse<DocumentIndexResult>> responseMono = restClient
+            .documents()
+            .indexWithRestResponseAsync(batch);
+
+        return responseMono.handle((res, sink) -> {
+            if (res.statusCode() == 207) {
+                IndexBatchException ex = new IndexBatchException(res.value());
+                sink.error(ex);
+            } else {
+                sink.next(res.value());
+            }
+        });
     }
 
     @Override

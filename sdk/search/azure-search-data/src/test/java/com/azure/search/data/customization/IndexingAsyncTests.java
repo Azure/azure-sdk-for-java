@@ -114,8 +114,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<DocumentIndexResult> response = client.index(batch);
 
         StepVerifier.create(response)
-            .assertNext(documentIndexResult -> {
-                List<IndexingResult> indexingResults = documentIndexResult.results();
+            .verifyErrorSatisfies(err -> {
+                Assert.assertEquals(IndexBatchException.class, err.getClass());
+
+                List<IndexingResult> indexingResults = ((IndexBatchException) err).getIndexingResults();
 
                 Assert.assertEquals(batch.actions().size(), indexingResults.size());
 
@@ -124,8 +126,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertFailedIndexResult(indexingResults.get(2), "nonExistingHotel", 404, "Document not found.");
                 assertSuccessfulIndexResult(indexingResults.get(3), "3", 201);
                 assertSuccessfulIndexResult(indexingResults.get(4), "2", 201);
-            })
-            .verifyComplete();
+            });
 
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
             .assertNext(result -> {
@@ -169,18 +170,18 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<DocumentIndexResult> response = client.index(batch);
 
         StepVerifier.create(response)
-            .assertNext(documentIndexResult -> {
-                List<IndexingResult> results = documentIndexResult.results();
+            .verifyErrorSatisfies(err -> {
+                Assert.assertEquals(IndexBatchException.class, err.getClass());
+
+                List<IndexingResult> results = ((IndexBatchException) err).getIndexingResults();
 
                 assertSuccessfulIndexResult(results.get(0), "1", 201);
                 assertSuccessfulIndexResult(results.get(1), "randomId", 200);
                 assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
                 assertSuccessfulIndexResult(results.get(3), "3", 201);
                 assertSuccessfulIndexResult(results.get(4), "2", 201);
-
                 Assert.assertEquals(batch.actions().size(), results.size());
-            })
-            .verifyComplete();
+            });
 
         StepVerifier.create(client.getDocument(hotel1.get("HotelId").toString()))
             .expectNext(hotel1)
@@ -312,12 +313,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier
             .create(documentIndexResult)
-            .assertNext(result -> {
-                List<IndexingResult> indexingResults = result.results();
+            .verifyErrorSatisfies(err -> {
+                Assert.assertEquals(IndexBatchException.class, err.getClass());
+
+                List<IndexingResult> indexingResults = ((IndexBatchException) err).getIndexingResults();
                 assertFailedIndexResult(indexingResults.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
                 Assert.assertEquals(1, indexingResults.size());
-            })
-            .verifyComplete();
+            });
     }
 
     @Override

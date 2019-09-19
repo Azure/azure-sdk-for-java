@@ -160,14 +160,22 @@ public class IndexingSyncTests extends IndexingTestBase {
             .upload(hotel2)
             .build();
 
-        List<IndexingResult> results =  client.index(indexBatch).results();
-        Assert.assertEquals(results.size(), indexBatch.actions().size());
 
-        assertSuccessfulIndexResult(results.get(0), "1", 201);
-        assertSuccessfulIndexResult(results.get(1), "randomId", 200);
-        assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
-        assertSuccessfulIndexResult(results.get(3), "3", 201);
-        assertSuccessfulIndexResult(results.get(4), "2", 201);
+        try {
+            client.index(indexBatch).results();
+            Assert.fail("indexing did not throw an expected Exception");
+        } catch (IndexBatchException ex) {
+            List<IndexingResult> results = ex.getIndexingResults();
+            Assert.assertEquals(results.size(), indexBatch.actions().size());
+
+            assertSuccessfulIndexResult(results.get(0), "1", 201);
+            assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+            assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
+            assertSuccessfulIndexResult(results.get(3), "3", 201);
+            assertSuccessfulIndexResult(results.get(4), "2", 201);
+        } catch (Exception ex) {
+            Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
+        }
 
         Hotel actualHotel1 = client.getDocument(hotel1.hotelId()).as(Hotel.class);
         Assert.assertEquals(hotel1, actualHotel1);
@@ -198,14 +206,21 @@ public class IndexingSyncTests extends IndexingTestBase {
             .upload(hotel2)
             .build();
 
-        List<IndexingResult> results =  client.index(indexBatch).results();
-        Assert.assertEquals(results.size(), indexBatch.actions().size());
+        try {
+            client.index(indexBatch).results();
+            Assert.fail("indexing did not throw an expected Exception");
+        } catch (IndexBatchException ex) {
+            List<IndexingResult> results = ex.getIndexingResults();
+            Assert.assertEquals(results.size(), indexBatch.actions().size());
 
-        assertSuccessfulIndexResult(results.get(0), "1", 201);
-        assertSuccessfulIndexResult(results.get(1), "randomId", 200);
-        assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
-        assertSuccessfulIndexResult(results.get(3), "3", 201);
-        assertSuccessfulIndexResult(results.get(4), "2", 201);
+            assertSuccessfulIndexResult(results.get(0), "1", 201);
+            assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+            assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
+            assertSuccessfulIndexResult(results.get(3), "3", 201);
+            assertSuccessfulIndexResult(results.get(4), "2", 201);
+        } catch (Exception ex) {
+            Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
+        }
 
         Document actualHotel1 = client.getDocument(hotel1.get("HotelId").toString());
         Assert.assertEquals(hotel1, actualHotel1);
@@ -440,9 +455,16 @@ public class IndexingSyncTests extends IndexingTestBase {
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
         Hotel hotel = prepareStaticallyTypedHotel("1");
 
-        List<IndexingResult> indexingResults = client.mergeDocument(hotel).results();
-        assertFailedIndexResult(indexingResults.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
-        Assert.assertEquals(1, indexingResults.size());
+        try {
+            client.mergeDocument(hotel).results();
+            Assert.fail("merge did not throw an expected Exception");
+        } catch (IndexBatchException ex) {
+            List<IndexingResult> results = ex.getIndexingResults();
+            assertFailedIndexResult(results.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
+            Assert.assertEquals(1, results.size());
+        } catch (Exception ex) {
+            Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
+        }
     }
 
     @Override
