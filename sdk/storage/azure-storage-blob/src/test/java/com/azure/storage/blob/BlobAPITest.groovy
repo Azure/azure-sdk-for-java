@@ -226,7 +226,7 @@ class BlobAPITest extends APISpec {
         bc.download(null)
 
         then:
-        thrown(StorageException)
+        thrown(IllegalArgumentException)
     }
 
     def "Download snapshot"() {
