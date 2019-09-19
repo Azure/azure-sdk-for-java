@@ -55,7 +55,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     private final ConcurrentHashMap<UUID, Instant> requestResponseLockTokensToLockTimesMap;
 
-    private MessageReceiver(ReceiveMode receiveMode) {
+    protected MessageReceiver(ReceiveMode receiveMode) {
         super(StringUtil.getShortRandomString());
         this.receiveMode = receiveMode;
         this.requestResponseLockTokensToLockTimesMap = new ConcurrentHashMap<>();
@@ -570,7 +570,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         }
     }
 
-    private void disposeLockToken(UUID lockToken, TransactionContext transaction) {
+    protected void disposeLockToken(UUID lockToken, TransactionContext transaction) {
         if (transaction != TransactionContext.NULL_TXN) {
             transaction.registerHandler((commit) -> {
                 if (commit) {
