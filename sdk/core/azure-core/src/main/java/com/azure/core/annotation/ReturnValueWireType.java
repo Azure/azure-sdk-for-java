@@ -3,10 +3,14 @@
 
 package com.azure.core.annotation;
 
+import com.azure.core.http.rest.Page;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.List;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -17,10 +21,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <ol>
  *     <li>{@link Base64Url}</li>
- *     <li>{@link com.azure.core.implementation.DateTimeRfc1123}</li>
- *     <li>{@link com.azure.core.implementation.UnixTime}</li>
- *     <li>{@link com.azure.core.http.rest.Page}</li>
- *     <li>{@link java.util.List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
+ *     <li>{@link DateTimeRfc1123}</li>
+ *     <li>{@link UnixTime}</li>
+ *     <li>{@link Page}</li>
+ *     <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
  * </ol>
  */
 @Retention(RUNTIME)
