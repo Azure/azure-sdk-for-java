@@ -19,7 +19,7 @@
     <azure-eventhubs-eph.version>2.5.1</azure-eventhubs-eph.version>
     <azure-keyvault.track-one.version>1.2.0</azure-keyvault.track-one.version>
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
-    <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
+    <azure-storage-blob.version>11.0.2</azure-storage-blob.version>
 
     <!-- Track 2 client library versions -->
     <azure-core.version>1.0.0-preview.5</azure-core.version>
