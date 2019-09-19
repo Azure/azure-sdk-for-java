@@ -378,9 +378,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key) {
-        return withContext(
-            context -> getSetting(key, null, null, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        return getSetting(key, null, null);
     }
 
     /**
@@ -392,20 +390,19 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting}
      *
-     * @param key The key of the setting to retrieve based on its key and optional label combination.
-     * @param label The label of the setting to retrieve based on its key and optional label combination.
-     * @param dateTime The date time of the setting to retrieve based on its key and optional label combination.
+     * @param key The key of the setting to retrieve.
+     * @param label Optional. A label used to create the key-label combination to identify the setting.
+     * @param dateTime Optional. A date time used to retrieve the setting state at the passed time.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
      * key is an invalid value (which will also throw HttpResponseException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws NullPointerException If {@code key} is {@code null}.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime dateTime) {
-        return withContext(context -> getSetting(key, label, dateTime, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        return getSettingWithResponse(key, label, dateTime).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -418,13 +415,13 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
      * @param key The key of the setting to retrieve based on its key and optional label combination.
-     * @param label The label of the setting to retrieve based on its key and optional label combination.
-     * @param dateTime The date time of the setting to retrieve based on its key and optional label combination.
+     * @param label Optional. A label used to create the key-label combination to identify the setting.
+     * @param dateTime Optional. A date time used to retrieve the setting state at the passed time.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
      * value does not exist or the key is an invalid value (which will also throw HttpResponseException described
      * below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws NullPointerException If {@code key} is {@code null}.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
@@ -462,49 +459,15 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(String key) {
-        return withContext(
-            context -> deleteSetting(key, null, null, context))
+        return withContext(context -> deleteSetting(key, null, null, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and eTag.
      *
-     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the eTag matches the current eTag; this means that no one has updated the
-     * ConfigurationSetting yet.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting}
-     *
-     * @param key The key of the setting to delete.
-     * @param label The label of the setting to delete.
-     * @param eTag The entity tag of the setting to delete.
-     * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if the
-     * {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
-     * current eTag (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws NullPointerException When {@code setting} is {@code null}.
-     * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current eTag value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(String key, String label, String eTag) {
-        return withContext(context -> deleteSetting(key, label, eTag, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and eTag.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the eTag matches the current eTag; this means that no one has updated the
-     * ConfigurationSetting yet.
+     * If {@code eTag} is specified and is not the wildcard character ({@code "*"}), then the setting is <b>only</b>
+     * deleted if the eTag matches the current eTag; this means that no one has updated the ConfigurationSetting yet.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -516,13 +479,13 @@ public final class ConfigurationAsyncClient {
      * @param label The label of the setting to delete.
      * @param eTag The entity tag of the setting to delete.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
-     * is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but
-     * does not match the current eTag (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws NullPointerException When {@code setting} is {@code null}.
+     * is also returned if the {@code key} is an invalid value or {@code eTag} is set but does not match the current
+     * eTag (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws NullPointerException When {@code key} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current eTag value.
+     * @throws ResourceNotFoundException If {@code eTag} is specified, not the wildcard character, and does not match
+     * the current eTag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

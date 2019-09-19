@@ -308,7 +308,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key) {
-        return getSetting(key, null, null, Context.NONE).getValue();
+        return getSetting(key, null, null);
     }
 
     /**
@@ -332,7 +332,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key, String label, OffsetDateTime dateTime) {
-        return getSetting(key, label, dateTime, Context.NONE).getValue();
+        return getSettingWithResponse(key, label, dateTime, Context.NONE).getValue();
     }
 
     /**
@@ -359,10 +359,6 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getSettingWithResponse(String key, String label, OffsetDateTime dateTime,
                                                                  Context context) {
-        return getSetting(key, label, dateTime, context);
-    }
-
-    private Response<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime dateTime, Context context) {
         return client.getSetting(key, label, dateTime, context).block();
     }
 
