@@ -3,7 +3,7 @@
 package com.azure.search.data.customization;
 
 import com.azure.search.data.customization.models.GeoPoint;
-import com.azure.search.setupTestEnvironment.SearchIndexService;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.customization.models.Hotel;
 import com.azure.search.data.customization.models.HotelAddress;
 import com.azure.search.data.customization.models.HotelRoom;

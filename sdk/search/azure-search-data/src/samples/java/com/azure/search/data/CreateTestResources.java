@@ -3,9 +3,9 @@
 
 package com.azure.search.data;
 
-import com.azure.search.setupTestEnvironment.AzureSearchResources;
-import com.azure.search.setupTestEnvironment.SearchIndexDocs;
-import com.azure.search.setupTestEnvironment.SearchIndexService;
+import com.azure.search.test.environment.setup.AzureSearchResources;
+import com.azure.search.test.environment.setup.SearchIndexDocs;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;

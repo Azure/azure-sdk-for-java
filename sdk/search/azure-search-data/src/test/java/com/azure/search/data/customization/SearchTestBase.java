@@ -5,7 +5,7 @@ package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.customization.models.CoordinateSystem;
-import com.azure.search.setupTestEnvironment.SearchIndexService;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;

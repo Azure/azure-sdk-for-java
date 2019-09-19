@@ -8,7 +8,7 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.models.GeoPoint;
-import com.azure.search.setupTestEnvironment.SearchIndexService;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.customization.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
 import org.junit.Test;
