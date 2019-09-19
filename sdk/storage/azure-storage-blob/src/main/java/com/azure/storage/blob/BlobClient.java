@@ -931,4 +931,30 @@ public class BlobClient {
     public boolean isSnapshot() {
         return this.blobAsyncClient.isSnapshot();
     }
+
+    /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.getContainerName}
+     *
+     * @return The name of the container.
+     */
+    public final String getContainerName() {
+        return this.blobAsyncClient.getContainerName();
+    }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.getBlobName}
+     *
+     * @return The name of the blob.
+     */
+    public final String getBlobName() {
+        return this.blobAsyncClient.getBlobName();
+    }
 }

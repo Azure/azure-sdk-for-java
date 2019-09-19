@@ -128,6 +128,7 @@ class APISpec extends Specification {
     private boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
+    def containerName
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -155,7 +156,7 @@ class APISpec extends Specification {
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
 
-        def containerName = generateContainerName()
+        containerName = generateContainerName()
         cc = primaryBlobServiceClient.getContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
         cc.create()

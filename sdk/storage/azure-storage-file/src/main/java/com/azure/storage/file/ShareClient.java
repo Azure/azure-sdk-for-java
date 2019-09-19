@@ -854,4 +854,17 @@ public class ShareClient {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
+
+    /**
+     * Get share name from share client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getShareName}
+     *
+     * @return The name of the share.
+     */
+    public String getShareName() {
+        return this.client.getShareName();
+    }
 }

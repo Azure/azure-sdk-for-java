@@ -483,4 +483,14 @@ public class ContainerClientJavaDocCodeSnippets {
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.getAccountKind(), accountInfo.getSkuName());
         // END: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
     }
+
+    /**
+     * Generates a code sample for using {@link ContainerClient#getContainerName()}
+     */
+    public void getContainerName() {
+        // BEGIN: com.azure.storage.blob.ContainerClient.getContainerName
+        String containerName = client.getContainerName();
+        System.out.println("The name of the blob is " + containerName);
+        // END: com.azure.storage.blob.ContainerClient.getContainerName
+    }
 }
