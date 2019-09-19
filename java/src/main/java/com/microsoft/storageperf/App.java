@@ -120,7 +120,7 @@ public class App {
         double megabytesPerSecond = (downloadsPerSecond * receivedSize.get()) / (1024 * 1024);
 
         System.out.println();
-        System.out.printf("Downloaded %d blobs of size %d in %.2fs (%.2f blobs/s, %.2f MB/s)", counter.get(), receivedSize.get(),
+        System.out.printf("Downloaded %d blobs of size %d in %.2fs (%.2f blobs/s, %.2f MB/s)%n", counter.get(), receivedSize.get(),
             elapsedSeconds, downloadsPerSecond, megabytesPerSecond);
     }
 
