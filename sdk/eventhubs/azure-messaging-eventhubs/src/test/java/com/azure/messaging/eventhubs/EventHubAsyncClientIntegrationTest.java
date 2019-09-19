@@ -86,11 +86,6 @@ public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         dispose(client);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void nullConstructor() throws NullPointerException {
-        new EventHubAsyncClient(null, null, null, null);
-    }
-
     /**
      * Verifies that we can receive messages, and that the receiver continues to fetch messages when the prefetch queue
      * is exhausted.

@@ -181,59 +181,8 @@ public class BlobClientJavaDocCodeSnippets {
     public void unsetDelete() {
         // BEGIN: com.azure.storage.blob.BlobClient.undelete
         client.undelete();
-        System.out.printf("Undelete completed");
+        System.out.println("Undelete completed");
         // END: com.azure.storage.blob.BlobClient.undelete
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#acquireLease(String, int)}
-     */
-    public void acquireLease() {
-        // BEGIN: com.azure.storage.blob.BlobClient.acquireLease#String-int
-        System.out.printf("Lease ID is %s%n", client.acquireLease("proposedId", 60));
-        // END: com.azure.storage.blob.BlobClient.acquireLease#String-int
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#renewLease(String)}
-     */
-    public void renewLease() {
-        // BEGIN: com.azure.storage.blob.BlobClient.renewLease#String
-        System.out.printf("Renewed lease ID is %s%n", client.renewLease(leaseId));
-        // END: com.azure.storage.blob.BlobClient.renewLease#String
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#releaseLease(String)}
-     */
-    public void releaseLease() {
-        // BEGIN: com.azure.storage.blob.BlobClient.releaseLease#String
-        client.releaseLease(leaseId);
-        System.out.printf("Release lease completed");
-        // END: com.azure.storage.blob.BlobClient.releaseLease#String
-
-
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#breakLease()}
-     */
-    public void breakLease() {
-        // BEGIN: com.azure.storage.blob.BlobClient.breakLease
-        System.out.printf("The broken lease has %d seconds remaining on the lease", client.breakLease());
-        // END: com.azure.storage.blob.BlobClient.breakLease
-
-
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#changeLease(String, String)}
-     */
-    public void changeLease() {
-        // BEGIN: com.azure.storage.blob.BlobClient.changeLease#String-String
-        System.out.printf("Changed lease ID is %s%n", client.changeLease(leaseId, "proposedId"));
-        // END: com.azure.storage.blob.BlobClient.changeLease#String-String
-
     }
 
     /**
@@ -424,85 +373,6 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.printf("Undelete completed with status %d%n", client.undeleteWithResponse(timeout,
             new Context(key1, value1)).getStatusCode());
         // END: com.azure.storage.blob.BlobClient.undeleteWithResponse#Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#acquireLeaseWithResponse(String, int, ModifiedAccessConditions, Duration,
-     * Context)}
-     */
-    public void acquireLeaseWithResponseCodeSnippets() {
-
-        // BEGIN: com.azure.storage.blob.BlobClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfModifiedSince(OffsetDateTime.now().minusDays(3));
-
-        System.out.printf("Lease ID is %s%n",
-            client.acquireLeaseWithResponse("proposedId", 60, modifiedAccessConditions, timeout,
-                new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#renewLeaseWithResponse(String, ModifiedAccessConditions, Duration, Context)}
-     */
-    public void renewLeaseWithResponseCodeSnippets() {
-
-        // BEGIN: com.azure.storage.blob.BlobClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        System.out.printf("Renewed lease ID is %s%n",
-            client.renewLeaseWithResponse(leaseId, modifiedAccessConditions, timeout,
-                new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#releaseLeaseWithResponse(String, ModifiedAccessConditions, Duration,
-     * Context)}
-     */
-    public void releaseLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        System.out.printf("Release lease completed with status %d%n",
-            client.releaseLeaseWithResponse(leaseId, modifiedAccessConditions, timeout,
-                new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions, Duration, Context)}
-     */
-    public void breakLeaseWithResponseCodeSnippets() {
-
-        // BEGIN: com.azure.storage.blob.BlobClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
-        Integer retainLeaseInSeconds = 5;
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        System.out.printf("The broken lease has %d seconds remaining on the lease",
-            client.breakLeaseWithResponse(retainLeaseInSeconds, modifiedAccessConditions, timeout,
-                new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#changeLeaseWithResponse(String, String, ModifiedAccessConditions, Duration,
-     * Context)}
-     */
-    public void changeLeaseWithResponseCodeSnippets() {
-
-
-        // BEGIN: com.azure.storage.blob.BlobClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        System.out.printf("Changed lease ID is %s%n",
-            client.changeLeaseWithResponse(leaseId, "proposedId", modifiedAccessConditions, timeout,
-                new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context
     }
 
     /**

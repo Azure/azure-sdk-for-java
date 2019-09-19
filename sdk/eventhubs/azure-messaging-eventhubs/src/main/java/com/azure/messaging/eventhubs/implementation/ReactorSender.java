@@ -69,7 +69,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
 
-    private final ActiveClientTokenManager tokenManager;
+    private final TokenManager tokenManager;
     private final RetryPolicy retry;
     private final Duration timeout;
     private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
@@ -86,7 +86,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-                  ActiveClientTokenManager tokenManager, Duration timeout, RetryPolicy retry, int maxMessageSize) {
+                  TokenManager tokenManager, Duration timeout, RetryPolicy retry, int maxMessageSize) {
         super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
@@ -246,7 +246,13 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     @Override
     public void close() {
         subscriptions.dispose();
-        tokenManager.close();
+
+        try {
+            tokenManager.close();
+        } catch (IOException e) {
+            logger.warning("IOException occurred trying to close tokenManager for {}.", entityPath, e);
+        }
+
         super.close();
     }
 

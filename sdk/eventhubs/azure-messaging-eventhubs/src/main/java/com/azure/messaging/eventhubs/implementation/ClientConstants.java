@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import java.time.Duration;
 
 public final class ClientConstants {
+    public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://eventhubs.azure.net//.default";
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
     public static final String NOT_APPLICABLE = "n/a";
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;

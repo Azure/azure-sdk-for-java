@@ -20,7 +20,7 @@ import java.util.Objects;
 import reactor.core.publisher.Flux;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation Storage Blob clients.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
  *
  * <p>
  * The following information must be provided on this builder:

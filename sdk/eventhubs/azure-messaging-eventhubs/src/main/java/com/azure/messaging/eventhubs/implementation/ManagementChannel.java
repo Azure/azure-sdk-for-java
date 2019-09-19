@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.AmqpConnection;
-import com.azure.core.amqp.RetryOptions;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
@@ -19,7 +17,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
@@ -37,10 +34,6 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
     public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
 
-    private static final String SESSION_NAME = "mgmt-session";
-    private static final String LINK_NAME = "mgmt";
-    private static final String ADDRESS = "$management";
-
     // Well-known keys for management plane service requests.
     private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
     private static final String MANAGEMENT_OPERATION_KEY = "operation";
@@ -51,45 +44,33 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
 
-    private final AmqpConnection connection;
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
-    private final ReactorProvider provider;
     private final String eventHubName;
-    private final AmqpResponseMapper mapper;
-    private final TokenResourceProvider audienceProvider;
+    private final ManagementResponseMapper mapper;
+    private final TokenManagerProvider tokenManagerProvider;
 
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
+     * @param responseChannelMono Mono that completes with a new {@link RequestResponseChannel}.
      * @param eventHubName The name of the Event Hub.
-     * @param tokenProvider A provider that generates authorization tokens.
-     * @param provider The dispatcher to execute work on Reactor.
+     * @param credential Credential to authorize user for access to the Event Hub.
+     * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
+     * @param mapper Maps responses from the management channel.
      */
-    ManagementChannel(AmqpConnection connection, String eventHubName, TokenCredential tokenProvider,
-                      TokenResourceProvider audienceProvider, ReactorProvider provider, RetryOptions retryOptions,
-                      ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
+    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
+                      TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {
         super(new ClientLogger(ManagementChannel.class));
 
-        Objects.requireNonNull(connection);
-        Objects.requireNonNull(eventHubName);
-        Objects.requireNonNull(tokenProvider);
-        Objects.requireNonNull(audienceProvider);
-        Objects.requireNonNull(provider);
-        Objects.requireNonNull(handlerProvider);
-        Objects.requireNonNull(mapper);
-        Objects.requireNonNull(retryOptions);
+        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
+            "'tokenManagerProvider' cannot be null.");
+        this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+        this.mapper = Objects.requireNonNull(mapper, "'mapper' cannot be null.");
 
-        this.audienceProvider = audienceProvider;
-        this.connection = connection;
-        this.tokenProvider = tokenProvider;
-        this.provider = provider;
-        this.eventHubName = eventHubName;
-        this.mapper = mapper;
-        this.channelMono = connection.createSession(SESSION_NAME)
-            .cast(ReactorSession.class)
-            .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                ADDRESS, session.session(), retryOptions, handlerProvider))
+        // Cache the first response from this mono, so we don't keep creating it.
+        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.")
             .cache();
     }
 
@@ -103,7 +84,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, mapper::toEventHubProperties);
+        return getProperties(properties, EventHubProperties.class);
     }
 
     /**
@@ -117,11 +98,11 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, mapper::toPartitionProperties);
+        return getProperties(properties, PartitionProperties.class);
     }
 
-    private <T> Mono<T> getProperties(Map<String, Object> properties, Function<Map<?, ?>, T> mapper) {
-        final String tokenAudience = audienceProvider.getResourceString(eventHubName);
+    private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
+        final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
 
         return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
@@ -130,7 +111,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).map(message -> {
+            return channelMono.flatMap(x -> x.sendWithAck(request)).map(message -> {
                 if (!(message.getBody() instanceof AmqpValue)) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
                         "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
@@ -144,7 +125,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
                 Map<?, ?> map = (Map<?, ?>) body.getValue();
 
-                return mapper.apply(map);
+                return mapper.deserialize(map, responseType);
             });
         });
     }
@@ -157,10 +138,6 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         final RequestResponseChannel channel = channelMono.block(Duration.ofSeconds(60));
         if (channel != null) {
             channel.close();
-        }
-
-        if (!connection.removeSession(SESSION_NAME)) {
-            logger.info("Unable to remove CBSChannel {} from connection", SESSION_NAME);
         }
     }
 }

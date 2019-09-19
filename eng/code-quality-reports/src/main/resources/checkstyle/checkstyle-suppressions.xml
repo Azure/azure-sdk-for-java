@@ -194,4 +194,8 @@
   <!--  -->
   <suppress checks="LineLength" files="com.azure.storage.common.SR.java"/>
   <suppress checks="LineLength" files=".*[/\\]storage[/\\].*(implementation|models)[/\\].*"/>
+
+  <!-- Suppress CRUD operation names as they won't feel fluent -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseAsyncClient.java"/>
 </suppressions>
