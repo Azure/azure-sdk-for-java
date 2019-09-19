@@ -52,7 +52,7 @@ class Utils {
                     jsonStroke.put("language", stroke.getLanguage());
                 }
 
-                if (stroke.getKind() != null) {
+                if (stroke.getKind() != null && stroke.getKind() != InkStrokeKind.UNKNOWN) {
                     jsonStroke.put("kind", stroke.getKind().toString());
                 }
 
