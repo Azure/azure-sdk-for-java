@@ -76,7 +76,7 @@ import java.io.IOException;
 
 We have a get started sample app available [here](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started).
 
-Also We have more examples in form of standalone unit tests in [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+Also We have more examples in form of standalone unit tests in [examples project](/sdk/cosmos/microsoft-azure-cosmos-examples/src/test/java/com/azure/data/cosmos/rx/examples).
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
