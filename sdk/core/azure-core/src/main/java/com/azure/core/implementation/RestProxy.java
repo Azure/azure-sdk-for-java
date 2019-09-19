@@ -60,7 +60,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -496,7 +495,7 @@ public class RestProxy implements InvocationHandler {
             }
         }
 
-        final Class<?> _cls = cls;
+        final Class<?> finalCls = cls;
 
         // see if we have already cached the best constructor for the given class
         if (classConstructorMap.containsKey(cls)) {
@@ -504,12 +503,13 @@ public class RestProxy implements InvocationHandler {
             final Optional<Mono<Response<?>>> newResponse = createNewInstance(ctor, response, bodyAsObject);
 
             return newResponse.orElseThrow(() ->
-               logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + _cls)));
+               logger.logExceptionAsError(
+                   new RuntimeException("Cannot find suitable constructor for class " + finalCls)));
         } else {
             // we try to find the most specific constructor, which we do in the following order:
-            // 1) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body, Object deserializedHeaders)
-            // 2) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body)
-            // 3) (HttpRequest httpRequest, int statusCode, HttpHeaders headers)
+            // 1) (httpRequest, statusCode, headers, body, deserializedHeaders)
+            // 2) (httpRequest, statusCode, headers, body)
+            // 3) (httpRequest, statusCode, headers)
             return Arrays.stream(cls.getDeclaredConstructors())
                        .filter(constructor -> {
                            int paramCount = constructor.getParameterCount();
@@ -517,14 +517,15 @@ public class RestProxy implements InvocationHandler {
                        })
                        .sorted(Comparator.comparingInt(Constructor::getParameterCount))
                        .map(constructor -> {
-                           final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
+                           final Constructor<? extends Response<?>> ctor =
+                               (Constructor<? extends Response<?>>) constructor;
 
                            // attempt to create an instance
                            Optional<Mono<Response<?>>> newResponse = createNewInstance(ctor, response, bodyAsObject);
 
                            // if the instance is present, we cache it for future use
                            if (newResponse.isPresent()) {
-                               classConstructorMap.put(_cls, ctor);
+                               classConstructorMap.put(finalCls, ctor);
                            }
 
                            // and then we return it, still wrapped in the Optional
