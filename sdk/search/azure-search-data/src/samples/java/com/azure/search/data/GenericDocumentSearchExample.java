@@ -1,6 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.search.data;
 
-import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
@@ -61,7 +62,7 @@ public class GenericDocumentSearchExample {
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
             .apiVersion(apiVersion)
-            .addPolicy(new SearchPipelinePolicy(apiKey))
+            .credential(apiKey)
             .buildAsyncClient();
 
         return searchClient;

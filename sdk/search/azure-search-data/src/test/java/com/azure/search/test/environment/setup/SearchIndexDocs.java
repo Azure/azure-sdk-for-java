@@ -5,7 +5,6 @@ package com.azure.search.test.environment.setup;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
-import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -63,7 +62,7 @@ public class SearchIndexDocs {
                 .searchDnsSuffix(dnsSuffix)
                 .indexName(indexName)
                 .apiVersion(apiVersion)
-                .addPolicy(new SearchPipelinePolicy(apiAdminKey))
+                .credential(apiAdminKey)
                 .buildAsyncClient();
         }
         addDocsData();
@@ -100,7 +99,7 @@ public class SearchIndexDocs {
                 .searchDnsSuffix(dnsSuffix)
                 .indexName(indexName)
                 .apiVersion(apiVersion)
-                .addPolicy(new SearchPipelinePolicy(apiAdminKey))
+                .credential(apiAdminKey)
                 .buildAsyncClient();
         }
 

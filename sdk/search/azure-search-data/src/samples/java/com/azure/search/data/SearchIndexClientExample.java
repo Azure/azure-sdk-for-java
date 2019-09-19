@@ -4,7 +4,6 @@
 package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.SearchResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -37,7 +36,7 @@ public class SearchIndexClientExample {
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
             .apiVersion(apiVersion)
-            .addPolicy(new SearchPipelinePolicy(apiKey))
+            .credential(apiKey)
             .buildAsyncClient();
 
         List<SearchResult> results = searchClient

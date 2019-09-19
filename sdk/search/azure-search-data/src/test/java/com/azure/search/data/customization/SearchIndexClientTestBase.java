@@ -12,16 +12,15 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
-import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.api.Type;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
-import com.azure.search.test.environment.setup.AzureSearchResources;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.test.environment.setup.SearchIndexService;
+import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -119,7 +118,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
                 .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
-                .addPolicy(new SearchPipelinePolicy(apiKey))
+                .credential(apiKey)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .addPolicy(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
@@ -129,7 +128,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .searchDnsSuffix("search.windows.net")
                 .apiVersion("2019-05-06")
                 .httpClient(interceptorManager.getPlaybackClient())
-                .addPolicy(new SearchPipelinePolicy("apiKey"))
+                .credential("apiKey")
                 .addPolicy(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
         }
     }

@@ -7,8 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.common.SearchApiKeyPipelinePolicy;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +39,15 @@ import java.util.List;
 @ServiceClientBuilder(serviceClients = SearchIndexClientImpl.class)
 public class SearchIndexClientBuilder {
 
+    private String apiKey;
     private String apiVersion;
     private String serviceName;
     private String indexName;
     private String searchDnsSuffix;
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> policies;
+
+    private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
 
     /**
      * Default Constructor
@@ -97,6 +103,20 @@ public class SearchIndexClientBuilder {
     }
 
     /**
+     * Sets the api key to use for requests authentication.
+     * @param apiKey api key for requests authentication
+     * @throws IllegalArgumentException when the api key is empty
+     * @return the updated SearchIndexClientBuilder object
+     */
+    public SearchIndexClientBuilder credential(String apiKey) {
+        if (StringUtils.isBlank(apiKey)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKey"));
+        }
+        this.apiKey = apiKey;
+        return this;
+    }
+
+    /**
      * Http Pipeline policy
      *
      * @param policy policy to add to the pipeline
@@ -122,7 +142,6 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexClient} created from the configurations in this builder.
      */
     public SearchIndexClient buildClient() {
-
         return new SearchIndexClientImpl(buildAsyncClient());
     }
 
@@ -130,6 +149,10 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
+        if (StringUtils.isNotBlank(apiKey)) {
+            this.policies.add(new SearchApiKeyPipelinePolicy(apiKey));
+        }
+
         return new SearchIndexAsyncClientImpl(serviceName,
             searchDnsSuffix,
             indexName,
