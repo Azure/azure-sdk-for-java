@@ -306,7 +306,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key) {
-        return getSetting(new ConfigurationSetting().setKey(key), Context.NONE).getValue();
+        return getSetting(key, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -318,7 +318,9 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting}
      *
-     * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param key The key of the setting to retrieve based on its key and optional label combination.
+     * @param label The label of the setting to retrieve based on its key and optional label combination.
+     * @param dateTime The date time of the setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -327,8 +329,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE).getValue();
+    public ConfigurationSetting getSetting(String key, String label, String dateTime) {
+        return getSetting(key, label, dateTime, Context.NONE).getValue();
     }
 
     /**
@@ -340,7 +342,9 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context}
      *
-     * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param key The key of the setting to retrieve based on its key and optional label combination.
+     * @param label The label of the setting to retrieve based on its key and optional label combination.
+     * @param dateTime The date time of the setting to retrieve based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containg the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
      * configuration value does not exist or the key is an invalid value (which will also throw ServiceRequestException
@@ -351,12 +355,13 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return getSetting(setting, context);
+    public Response<ConfigurationSetting> getSettingWithResponse(String key, String label, String dateTime,
+                                                                 Context context) {
+        return getSetting(key, label, dateTime, context);
     }
 
-    private Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
-        return client.getSetting(setting, context).block();
+    private Response<ConfigurationSetting> getSetting(String key, String label, String dateTime, Context context) {
+        return client.getSetting(key, label, dateTime, context).block();
     }
 
     /**
@@ -377,7 +382,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().setKey(key), Context.NONE).getValue();
+        return deleteSetting(key, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -393,7 +398,9 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting}
      *
-     * @param setting The ConfigurationSetting to delete.
+     * @param key The key of the setting to delete.
+     * @param label The label of the setting to delete.
+     * @param etag The entity tag of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
      * current etag (which will also throw ServiceRequestException described below).
@@ -405,8 +412,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE).getValue();
+    public ConfigurationSetting deleteSetting(String key, String label, String etag) {
+        return deleteSetting(key, label, etag, Context.NONE).getValue();
     }
 
     /**
@@ -422,7 +429,9 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context}
      *
-     * @param setting The ConfigurationSetting to delete.
+     * @param key The key of the setting to delete.
+     * @param label The label of the setting to delete.
+     * @param etag The entity tag of the setting to delete.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but
@@ -435,12 +444,12 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return deleteSetting(setting, context);
+    public Response<ConfigurationSetting> deleteSettingWithResponse(String key, String label, String etag, Context context) {
+        return deleteSetting(key, label, etag, context);
     }
 
-    private Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
-        return client.deleteSetting(setting, context).block();
+    private Response<ConfigurationSetting> deleteSetting(String key, String label, String etag, Context context) {
+        return client.deleteSetting(key, label, etag, context).block();
     }
 
     /**

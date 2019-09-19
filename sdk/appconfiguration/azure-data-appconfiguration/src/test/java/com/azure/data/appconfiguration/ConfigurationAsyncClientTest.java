@@ -58,7 +58,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-                    return client.deleteSetting(configurationSetting);
+                    return client.deleteSetting(configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.getETag());
                 })
                 .blockLast();
 
@@ -146,7 +146,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.setSetting(initial))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            StepVerifier.create(client.getSetting(update))
+            StepVerifier.create(client.getSetting(update.getKey(), update.getLabel(), null))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         });
@@ -246,7 +246,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().setKey(last.getKey()).setLabel(last.getLabel()).setValue(last.getValue()).setETag(initialEtag)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            StepVerifier.create(client.getSetting(update))
+            StepVerifier.create(client.getSetting(update.getKey(), update.getLabel(), null))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
@@ -254,7 +254,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(last))
+            StepVerifier.create(client.getSetting(last.getKey(), last.getLabel(), null))
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
 
@@ -268,7 +268,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void getSetting() {
         getSettingRunner((expected) ->
-            StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
+            StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected.getKey(), expected.getLabel(), null)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
@@ -279,7 +279,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void getSettingNotFound() {
         final String key = getKey();
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().setKey(key).setValue("myNeverRetreivedValue");
-        final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().setKey(key).setLabel("myNonExistentLabel");
 
         StepVerifier.create(client.addSetting(neverRetrievedConfiguration))
             .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
@@ -289,7 +288,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
 
 
-        StepVerifier.create(client.getSetting(nonExistentLabel))
+        StepVerifier.create(client.getSetting(key,"myNonExistentLabel", null))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
@@ -300,15 +299,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSetting() {
         deleteSettingRunner((expected) -> {
-            StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
+            StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected.getKey(), expected.getLabel(), null)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.deleteSetting(expected))
+            StepVerifier.create(client.deleteSetting(expected.getKey(), expected.getLabel(), expected.getETag()))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(expected))
+            StepVerifier.create(client.getSetting(expected.getKey(), expected.getLabel(), null))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
@@ -324,11 +323,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().setKey("myNonExistentKey")))
+        StepVerifier.create(client.deleteSettingWithResponse("myNonExistentKey", null, null))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().setKey(neverDeletedConfiguration.getKey()).setLabel("myNonExistentLabel")))
+        StepVerifier.create(client.deleteSettingWithResponse(neverDeletedConfiguration.getKey(), "myNonExistentLabel", null))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
@@ -346,18 +345,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block();
             final ConfigurationSetting updatedConfig = client.updateSetting(update).block();
 
-            StepVerifier.create(client.getSetting(initial))
+            StepVerifier.create(client.getSetting(initial.getKey(), initial.getLabel(), null))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.deleteSetting(initiallyAddedConfig))
+            StepVerifier.create(client.deleteSetting(initiallyAddedConfig.getKey(), initiallyAddedConfig.getLabel(),
+                initiallyAddedConfig.getETag()))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            StepVerifier.create(client.deleteSetting(updatedConfig))
+            StepVerifier.create(client.deleteSetting(updatedConfig.getKey(), updatedConfig.getLabel(),
+                updatedConfig.getETag()))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(initial))
+            StepVerifier.create(client.getSetting(initial.getKey(), initial.getLabel(), null))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
@@ -366,8 +367,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
     public void deleteSettingNullKey() {
-        assertRunnableThrowsException(() -> client.deleteSetting((String) null).block(), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null).block(), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting(null).block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting(null, null, null).block(), NullPointerException.class);
     }
 
     /**
@@ -821,7 +822,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-                return client.deleteSetting(configurationSetting);
+                return client.deleteSetting(configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.getETag());
             }).blockLast();
     }
 }

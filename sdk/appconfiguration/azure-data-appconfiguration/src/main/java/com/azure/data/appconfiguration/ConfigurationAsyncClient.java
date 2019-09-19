@@ -378,7 +378,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key) {
         return withContext(
-            context -> getSetting(new ConfigurationSetting().setKey(key), context))
+            context -> getSetting(key, null, null, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -391,7 +391,9 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting}
      *
-     * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param key The key of the setting to retrieve based on its key and optional label combination.
+     * @param label The label of the setting to retrieve based on its key and optional label combination.
+     * @param dateTime The date time of the setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
      * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -400,8 +402,8 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return withContext(context -> getSetting(setting, context))
+    public Mono<ConfigurationSetting> getSetting(String key, String label, String dateTime) {
+        return withContext(context -> getSetting(key, label, dateTime, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -414,7 +416,9 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
-     * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param key The key of the setting to retrieve based on its key and optional label combination.
+     * @param label The label of the setting to retrieve based on its key and optional label combination.
+     * @param dateTime The date time of the setting to retrieve based on its key and optional label combination.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
      * value does not exist or the key is an invalid value (which will also throw HttpResponseException described
      * below).
@@ -424,19 +428,21 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> getSetting(setting, context));
+    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(String key, String label, String dateTime) {
+        return withContext(context -> getSetting(key, label, dateTime, context));
     }
 
-    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null, null, null, null,
+    Mono<Response<ConfigurationSetting>> getSetting(String key, String label, String datetime, Context context) {
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
+        }
+        return service.getKeyValue(serviceEndpoint, key, label, null, datetime, null, null,
             context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
+            .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - key:{}, label:{}, dateTime:{}",
+                key, label, datetime))
+            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - value:{}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - key:{}, label:{}, dateTime:{}",
+                key, label, datetime, error));
     }
 
     /**
@@ -458,7 +464,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(String key) {
         return withContext(
-            context -> deleteSetting(new ConfigurationSetting().setKey(key), context))
+            context -> deleteSetting(key, null, null, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -475,7 +481,9 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting}
      *
-     * @param setting The ConfigurationSetting to delete.
+     * @param key The key of the setting to delete.
+     * @param label The label of the setting to delete.
+     * @param etag The etag of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
      * current etag (which will also throw HttpResponseException described below).
@@ -487,8 +495,8 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return withContext(context -> deleteSetting(setting, context))
+    public Mono<ConfigurationSetting> deleteSetting(String key, String label, String etag) {
+        return withContext(context -> deleteSetting(key, label, etag, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -517,19 +525,23 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> deleteSetting(setting, context));
+    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(String key, String label, String etag) {
+        return withContext(context -> deleteSetting(key, label, etag, context));
     }
 
-    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> deleteSetting(String key, String label, String etag, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
+        }
 
-        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), getETagValue(setting.getETag()),
+        return service.delete(serviceEndpoint, key, label, getETagValue(etag),
             null, context)
-            .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
+            .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - key:{}, label:{}, etag:{}",
+                key, label, etag))
+            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - value:{}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting -  key:{}, label:{}, etag:{}",
+                key, label, etag, error));
     }
 
     /**
