@@ -47,7 +47,7 @@ public class MockHttpClient extends NoOpHttpClient {
         try {
             final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
-            final String contentType = request.getHeaders().value("Content-Type");
+            final String contentType = request.getHeaders().getValue("Content-Type");
             if ("httpbin.org".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();

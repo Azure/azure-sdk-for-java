@@ -9,9 +9,8 @@ package com.azure.storage.blob.models;
  */
 public final class BlockItem {
     /* Internal block object. */
-    private Block block;
-
-    private boolean isCommitted;
+    private final Block block;
+    private final boolean isCommitted;
 
     /**
      * Creates an instance of a BlobItem.

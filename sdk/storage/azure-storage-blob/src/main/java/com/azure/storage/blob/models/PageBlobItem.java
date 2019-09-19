@@ -10,10 +10,10 @@ import java.time.OffsetDateTime;
 public class PageBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
-    private byte[] contentMD5;
-    private Boolean isServerEncrypted;
-    private String encryptionKeySha256;
-    private Long blobSequenceNumber;
+    private final byte[] contentMD5;
+    private final Boolean isServerEncrypted;
+    private final String encryptionKeySha256;
+    private final Long blobSequenceNumber;
 
     public PageBlobItem(PageBlobCreateHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
@@ -21,6 +21,7 @@ public class PageBlobItem {
         this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
+        this.blobSequenceNumber = null;
     }
 
     public PageBlobItem(PageBlobUploadPagesHeaders generatedHeaders) {
@@ -55,12 +56,18 @@ public class PageBlobItem {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
+        this.isServerEncrypted = null;
+        this.encryptionKeySha256 = null;
+        this.contentMD5 = null;
     }
 
     public PageBlobItem(PageBlobUpdateSequenceNumberHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
+        this.isServerEncrypted = null;
+        this.encryptionKeySha256 = null;
+        this.contentMD5 = null;
     }
 
     /**

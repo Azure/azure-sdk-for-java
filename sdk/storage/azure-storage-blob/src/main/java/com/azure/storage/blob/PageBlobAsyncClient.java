@@ -36,9 +36,9 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobAsyncClient#asPageBlobAsyncClient()}, or via the method {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}.
- * This class does not hold any state about a particular blob, but is instead a convenient way of sending appropriate
- * requests to the resource on the service.
+ * BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
+ * {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}. This class does not hold any state about a particular
+ * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
@@ -107,7 +107,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
         Metadata metadata, BlobAccessConditions accessConditions) {
-        return withContext(context -> createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context));
+        return withContext(context ->
+            createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context));
     }
 
     Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
@@ -117,12 +118,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         metadata = metadata == null ? new Metadata() : metadata;
 
@@ -175,7 +178,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() : pageBlobAccessConditions;
+        pageBlobAccessConditions = pageBlobAccessConditions == null
+            ? new PageBlobAccessConditions()
+            : pageBlobAccessConditions;
 
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -210,7 +215,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null).flatMap(FluxUtil::toMono);
+        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -234,10 +240,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
-        byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL,
+        Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
-        return withContext(context -> uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context));
+        return withContext(context -> uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, sourceContentMD5,
+            destAccessConditions, sourceAccessConditions, context));
     }
 
     Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
@@ -255,17 +262,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             sourceOffset = 0L;
         }
 
-        String sourceRangeString = pageRangeToString(new PageRange().setStart(sourceOffset).setEnd(sourceOffset + (range.getEnd() - range.getStart())));
+        String sourceRangeString = pageRangeToString(new PageRange()
+            .setStart(sourceOffset)
+            .setEnd(sourceOffset + (range.getEnd() - range.getStart())));
 
         destAccessConditions = destAccessConditions == null ? new PageBlobAccessConditions() : destAccessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
-            null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null,
-            null, null, cpk, destAccessConditions.getLeaseAccessConditions(),
-            destAccessConditions.getSequenceNumberAccessConditions(), destAccessConditions.getModifiedAccessConditions(),
-            sourceAccessConditions, context))
+            null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, cpk,
+            destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
+            destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().value("x-ms-encryption-key-sha256"))));
+                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
     }
 
     /**
@@ -299,7 +307,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() : pageBlobAccessConditions;
+        pageBlobAccessConditions = pageBlobAccessConditions == null
+            ? new PageBlobAccessConditions()
+            : pageBlobAccessConditions;
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -313,8 +323,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().value("x-ms-request-server-encrypted"),
-                rb.getHeaders().value("x-ms-encryption-key-sha256"))));
+                rb.getHeaders().getValue("x-ms-request-server-encrypted"),
+                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
     }
 
     /**
@@ -336,11 +346,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response emitting all the page ranges.
      */
-    public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions) {
+    public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
+        BlobAccessConditions accessConditions) {
         return withContext(context -> getPageRangesWithResponse(blobRange, accessConditions, context));
     }
 
-    Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions, Context context) {
+    Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
+        Context context) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -378,11 +390,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response emitting all the different page ranges.
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
-        return withContext(context -> getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
+    public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
+        BlobAccessConditions accessConditions) {
+        return withContext(context ->
+            getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
     }
 
-    Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Context context) {
+    Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
+        BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -427,7 +442,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -461,15 +477,19 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response emitting the updated page blob.
      * @throws IllegalArgumentException If {@code sequenceNumber} isn't null and is less than 0
      */
-    public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions) {
-        return withContext(context -> updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
+    public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
+        Long sequenceNumber, BlobAccessConditions accessConditions) {
+        return withContext(context ->
+            updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
     }
 
-    Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
+    Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber,
+        BlobAccessConditions accessConditions, Context context) {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
@@ -513,11 +533,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response emitting the copy status.
      * @throws Error If {@code source} and {@code snapshot} form a malformed URL.
      */
-    public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot, ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
+        ModifiedAccessConditions modifiedAccessConditions) {
         return withContext(context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
     }
 
-    Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
         try {

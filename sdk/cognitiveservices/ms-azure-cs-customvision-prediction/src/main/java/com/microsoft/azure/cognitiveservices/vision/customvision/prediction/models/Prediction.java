@@ -12,29 +12,29 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Prediction model.
+ * Prediction result.
  */
 public class Prediction {
     /**
-     * The probability property.
+     * Probability of the tag.
      */
     @JsonProperty(value = "probability", access = JsonProperty.Access.WRITE_ONLY)
     private double probability;
 
     /**
-     * The tagId property.
+     * Id of the predicted tag.
      */
     @JsonProperty(value = "tagId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tagId;
 
     /**
-     * The tagName property.
+     * Name of the predicted tag.
      */
     @JsonProperty(value = "tagName", access = JsonProperty.Access.WRITE_ONLY)
     private String tagName;
 
     /**
-     * The boundingBox property.
+     * Bounding box of the prediction.
      */
     @JsonProperty(value = "boundingBox", access = JsonProperty.Access.WRITE_ONLY)
     private BoundingBox boundingBox;

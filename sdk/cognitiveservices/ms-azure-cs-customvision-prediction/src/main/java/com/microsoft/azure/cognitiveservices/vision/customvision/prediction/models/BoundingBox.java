@@ -11,31 +11,31 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.prediction.mod
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The BoundingBox model.
+ * Bounding box that defines a region of an image.
  */
 public class BoundingBox {
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**

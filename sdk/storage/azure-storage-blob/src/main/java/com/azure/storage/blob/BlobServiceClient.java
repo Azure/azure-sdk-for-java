@@ -31,9 +31,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does not
- * hold any state about a particular storage account but is instead a convenient way of sending off appropriate requests
- * to the resource on the service. It may also be used to construct URLs to blobs and containers.
+ * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
+ * not hold any state about a particular storage account but is instead a convenient way of sending off appropriate
+ * requests to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient} through
@@ -109,9 +109,11 @@ public final class BlobServiceClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ContainerClient} used to interact with the container created.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ContainerClient} used to
+     * interact with the container created.
      */
-    public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata, PublicAccessType accessType, Context context) {
+    public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata,
+        PublicAccessType accessType, Context context) {
         ContainerClient client = getContainerClient(containerName);
 
         return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
@@ -119,7 +121,8 @@ public final class BlobServiceClient {
 
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
-     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
+     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -133,7 +136,8 @@ public final class BlobServiceClient {
 
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
-     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
+     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
      *
      * @param containerName Name of the container to delete
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -248,7 +252,8 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The storage account properties.
      */
-    public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout, Context context) {
+    public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
+        Context context) {
         Mono<VoidResponse> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -285,8 +290,9 @@ public final class BlobServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
      */
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
-                                                            Duration timeout, Context context) {
-        Mono<Response<UserDelegationKey>> response = blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry, context);
+        Duration timeout, Context context) {
+        Mono<Response<UserDelegationKey>> response = blobServiceAsyncClient.getUserDelegationKeyWithResponse(start,
+            expiry, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -366,7 +372,8 @@ public final class BlobServiceClient {
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
+            accountSASPermission, expiryTime);
     }
 
     /**
@@ -392,6 +399,7 @@ public final class BlobServiceClient {
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
-        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
+            accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

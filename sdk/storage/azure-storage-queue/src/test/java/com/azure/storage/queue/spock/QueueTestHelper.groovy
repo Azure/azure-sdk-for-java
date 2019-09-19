@@ -5,7 +5,7 @@ package com.azure.storage.queue.spock
 
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.ImplUtils
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration
 import com.azure.storage.queue.models.CorsRule
 import com.azure.storage.queue.models.Logging
 import com.azure.storage.queue.models.Metrics
@@ -127,7 +127,7 @@ class QueueTestHelper {
     }
 
     static void sleepInRecord(Duration time) {
-        String azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE")
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE")
         if ("RECORD".equalsIgnoreCase(azureTestMode)) {
             sleep(time)
         }

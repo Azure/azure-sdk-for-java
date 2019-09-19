@@ -505,4 +505,8 @@ class ShareAsyncAPITests extends APISpec {
         snapshot.equals(shareSnapshotClient.getSnapshotId())
     }
 
+    def "Get Share Name"() {
+        expect:
+        shareName == primaryShareAsyncClient.getShareName()
+    }
 }

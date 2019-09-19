@@ -90,7 +90,8 @@ public final class Utility {
         return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
-    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString, Function<String, T> valueParser) {
+    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString,
+        Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
         if (ImplUtils.isNullOrEmpty(queryString)) {
@@ -281,7 +282,8 @@ public final class Utility {
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -297,7 +299,8 @@ public final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
         }
     }
 
@@ -334,7 +337,8 @@ public final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT,
+                    Constants.MessageConstants.INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -342,8 +346,8 @@ public final class Utility {
     }
 
     /**
-     * Wraps any potential error responses from the service and applies post processing of the response's eTag header
-     * to standardize the value.
+     * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
+     * standardize the value.
      *
      * @param response Response from a service call
      * @param errorWrapper Error wrapping function that is applied to the response
@@ -461,7 +465,8 @@ public final class Utility {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.getPath() == null || !builder.getPath().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
         }
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
@@ -490,8 +495,8 @@ public final class Utility {
     }
 
     /**
-     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of
-     * entity length and the input length.
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
+     * and the input length.
      *
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.

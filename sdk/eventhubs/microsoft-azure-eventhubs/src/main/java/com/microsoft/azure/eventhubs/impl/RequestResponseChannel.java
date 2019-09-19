@@ -201,18 +201,18 @@ public class RequestResponseChannel implements IOObject {
         }
 
         @Override
-        public void onError(Exception exception) {
+        public void onError(Exception exception, String failingLinkName) {
 
             onLinkCloseComplete(exception);
         }
 
         @Override
-        public void onClose(ErrorCondition condition) {
+        public void onClose(ErrorCondition condition, String errorContext) {
 
             if (condition == null || condition.getCondition() == null) {
                 onLinkCloseComplete(null);
             } else {
-                onError(ExceptionUtil.toException(condition));
+                onError(ExceptionUtil.toException(condition), errorContext);
             }
         }
 
@@ -245,7 +245,7 @@ public class RequestResponseChannel implements IOObject {
         }
 
         @Override
-        public void onError(Exception exception) {
+        public void onError(Exception exception, String failingLinkName) {
 
             this.cancelPendingRequests(exception);
 
@@ -255,7 +255,7 @@ public class RequestResponseChannel implements IOObject {
         }
 
         @Override
-        public void onClose(ErrorCondition condition) {
+        public void onClose(ErrorCondition condition, String errorContext) {
 
             if (condition == null || condition.getCondition() == null) {
                 this.cancelPendingRequests(
@@ -267,7 +267,7 @@ public class RequestResponseChannel implements IOObject {
                     onLinkCloseComplete(null);
                 }
             } else {
-                this.onError(ExceptionUtil.toException(condition));
+                this.onError(ExceptionUtil.toException(condition), errorContext);
             }
         }
 

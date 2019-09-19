@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
  */
-public class NettyAsyncHttpClient implements HttpClient {
+class NettyAsyncHttpClient implements HttpClient {
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
@@ -103,15 +103,16 @@ public class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection)
-                .setRequest(restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest));
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
-        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection) {
+        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
+                                 HttpRequest httpRequest) {
+            super(httpRequest);
             this.reactorNettyResponse = reactorNettyResponse;
             this.reactorNettyConnection = reactorNettyConnection;
         }

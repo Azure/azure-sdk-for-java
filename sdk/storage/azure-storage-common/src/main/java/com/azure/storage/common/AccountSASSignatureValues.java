@@ -8,9 +8,9 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link AccountSASQueryParameters} exist because
+ * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all
+ * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
+ * can actually be applied to blob urls. Note: that both this class and {@link AccountSASQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  * <p>
@@ -46,8 +46,8 @@ public final class AccountSASSignatureValues {
     private String resourceTypes;
 
     /**
-     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
-     * other values empty.
+     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all other
+     * values empty.
      */
     public AccountSASSignatureValues() {
     }
@@ -66,8 +66,8 @@ public final class AccountSASSignatureValues {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService accountSASService,
-        AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
+    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService
+        accountSASService, AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
         OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange, SASProtocol sasProtocol) {
 
         AccountSASSignatureValues values = new AccountSASSignatureValues();
@@ -242,11 +242,10 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Generates a {@link AccountSASQueryParameters} object which contains all SAS query parameters needed to make an actual
-     * REST request.
+     * Generates a {@link AccountSASQueryParameters} object which contains all SAS query parameters needed to make an
+     * actual REST request.
      *
      * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
-     *
      * @return {@link AccountSASQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
      */
@@ -262,21 +261,22 @@ public final class AccountSASSignatureValues {
         String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
 
         return new AccountSASQueryParameters(this.version, this.services, resourceTypes,
-                this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
+            this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
     }
 
     private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
-                sharedKeyCredentials.getAccountName(),
-                AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
-                this.services,
-                resourceTypes,
-                this.startTime == null ? Constants.EMPTY_STRING : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                this.ipRange == null ? Constants.EMPTY_STRING : this.ipRange.toString(),
-                this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
-                this.version,
-                Constants.EMPTY_STRING // Account SAS requires an additional newline character
+            sharedKeyCredentials.getAccountName(),
+            AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
+            this.services,
+            resourceTypes,
+            this.startTime == null ? Constants.EMPTY_STRING
+                : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.ipRange == null ? Constants.EMPTY_STRING : this.ipRange.toString(),
+            this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
+            this.version,
+            Constants.EMPTY_STRING // Account SAS requires an additional newline character
         );
     }
 }

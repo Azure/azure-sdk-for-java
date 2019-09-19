@@ -24,10 +24,10 @@ public class MockHttpResponse extends HttpResponse {
     private final byte[] bodyBytes;
 
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        super(request);
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = bodyBytes;
-        this.setRequest(request);
     }
 
     public MockHttpResponse(HttpRequest request, int statusCode) {
@@ -64,7 +64,7 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public String getHeaderValue(String name) {
-        return headers.value(name);
+        return headers.getValue(name);
     }
 
     @Override
