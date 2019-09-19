@@ -6,11 +6,15 @@ import java.time.Duration;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlockBlobAsyncClient;
 
 import org.apache.commons.cli.*;
 
+import io.netty.channel.nio.NioEventLoopGroup;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,6 +27,9 @@ public class App {
 
         Option durationOption = new Option("d", "duration", true, "Duration in seconds");
         options.addOption(durationOption);
+
+        Option nettyThreadsOption = new Option("n", "nettyThreads", true, "Netty threads");
+        options.addOption(nettyThreadsOption);
 
         Option parallelOption = new Option("p", "parallel", true, "Number of tasks to execute in parallel");
         options.addOption(parallelOption);
@@ -47,6 +54,7 @@ public class App {
 
         int duration = Integer.parseInt(cmd.getOptionValue("duration", "10"));
         int parallel = Integer.parseInt(cmd.getOptionValue("parallel", "1"));
+        int nettyThreads = Integer.parseInt(cmd.getOptionValue("nettyThreads", "-1"));
         int size = Integer.parseInt(cmd.getOptionValue("size", "10240"));
         boolean upload = cmd.hasOption("upload");
         boolean debug = cmd.hasOption("debug");
@@ -57,13 +65,28 @@ public class App {
             System.exit(1);
         }
 
-        Run(connectionString, debug, upload, duration, parallel, size);
+        Run(connectionString, debug, upload, duration, parallel, nettyThreads, size);
+
+        System.exit(0);
     }
 
-    static void Run(String connectionString, Boolean debug, Boolean upload, int duration, int parallel,
+    static void Run(String connectionString, Boolean debug, Boolean upload, int duration, int parallel, int nettyThreads,
             int size) {
-        BlockBlobAsyncClient client = new BlobClientBuilder().connectionString(connectionString)
-            .containerName(_containerName).blobName(_blobName).buildBlockBlobAsyncClient();
+
+        BlobClientBuilder clientBuilder = new BlobClientBuilder()
+            .connectionString(connectionString)
+            .containerName(_containerName).
+            blobName(_blobName);
+
+        if (nettyThreads != -1) {
+            HttpClient httpClient = new NettyAsyncHttpClientBuilder()
+                .setNioEventLoopGroup(new NioEventLoopGroup(nettyThreads))
+                .build();
+            
+            clientBuilder.httpClient(httpClient);
+        }
+
+        BlockBlobAsyncClient client = clientBuilder.buildBlockBlobAsyncClient();
 
         if (upload) {
             UploadAndVerifyDownload(client, size).block();
@@ -75,7 +98,8 @@ public class App {
 
         AtomicInteger receivedSize = new AtomicInteger(-1);
         AtomicInteger counter = new AtomicInteger();
-        Flux.interval(Duration.ofSeconds(1)).subscribe(i -> System.out.println(counter.get()));
+        
+        Disposable printStatus = Flux.interval(Duration.ofSeconds(1)).subscribe(i -> System.out.println(counter.get()));
 
         long start = System.nanoTime();
         Flux<Integer> downloads = downloadParallel(client, parallel)
@@ -89,6 +113,8 @@ public class App {
         downloads.blockLast();
         long end = System.nanoTime();
         
+        printStatus.dispose();
+
         double elapsedSeconds = 1.0 * (end - start) / 1000000000;
         double downloadsPerSecond = counter.get() / elapsedSeconds;
         double megabytesPerSecond = (downloadsPerSecond * receivedSize.get()) / (1024 * 1024);
