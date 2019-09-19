@@ -107,7 +107,7 @@ public class MockHttpResponse extends HttpResponse {
      */
     @Override
     public String getHeaderValue(String name) {
-        return headers.value(name);
+        return headers.getValue(name);
     }
 
     /**

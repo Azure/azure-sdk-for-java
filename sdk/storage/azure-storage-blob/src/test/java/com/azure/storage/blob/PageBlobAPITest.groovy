@@ -184,7 +184,7 @@ class PageBlobAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(response.getHeaders())
-        response.getHeaders().value("x-ms-content-crc64") != null
+        response.getHeaders().getValue("x-ms-content-crc64") != null
         response.getValue().getBlobSequenceNumber() == 0
         response.getValue().isServerEncrypted()
     }
@@ -729,7 +729,7 @@ class PageBlobAPITest extends APISpec {
         response.getValue().getClearRange().get(0).getStart() == PageBlobClient.PAGE_BYTES
         response.getValue().getClearRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES * 2 - 1
         validateBasicHeaders(response.getHeaders())
-        Integer.parseInt(response.getHeaders().value("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
+        Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
     }
 
     def "Get page ranges diff min"() {
@@ -1015,7 +1015,7 @@ class PageBlobAPITest extends APISpec {
         properties.isIncrementalCopy()
         properties.getCopyDestinationSnapshot() != null
         validateBasicHeaders(copyResponse.getHeaders())
-        copyResponse.getHeaders().value("x-ms-copy-id") != null
+        copyResponse.getHeaders().getValue("x-ms-copy-id") != null
         copyResponse.getValue() != null
     }
 

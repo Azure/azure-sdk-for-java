@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
  */
-public class NettyAsyncHttpClient implements HttpClient {
+class NettyAsyncHttpClient implements HttpClient {
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**

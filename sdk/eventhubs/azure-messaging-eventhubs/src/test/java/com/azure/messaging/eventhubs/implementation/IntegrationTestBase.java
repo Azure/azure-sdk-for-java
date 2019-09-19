@@ -58,7 +58,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         skipIfNotRecordMode();
 
-        scheduler = Schedulers.parallel();
+        scheduler = Schedulers.single();
         properties = new ConnectionStringProperties(getConnectionString());
 
         beforeTest();

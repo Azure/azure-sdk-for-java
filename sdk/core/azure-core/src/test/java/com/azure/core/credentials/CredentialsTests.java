@@ -24,7 +24,7 @@ public class CredentialsTests {
         BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "pass");
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().value("Authorization");
+            String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");
             Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
             return next.process();
         };
@@ -52,7 +52,7 @@ public class CredentialsTests {
         };
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().value("Authorization");
+            String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");
             Assert.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };

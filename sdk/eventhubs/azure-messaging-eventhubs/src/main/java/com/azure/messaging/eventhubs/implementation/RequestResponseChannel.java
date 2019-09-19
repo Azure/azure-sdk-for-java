@@ -39,7 +39,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-class RequestResponseChannel implements Closeable {
+/**
+ * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
+ * broker and receive the associated response.
+ */
+public class RequestResponseChannel implements Closeable {
     private static final String STATUS_CODE = "status-code";
     private static final String STATUS_DESCRIPTION = "status-description";
 
@@ -50,6 +54,7 @@ class RequestResponseChannel implements Closeable {
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final String replyTo;
+    private final ReactorProvider provider;
     private final Duration operationTimeout;
     private final AtomicBoolean hasOpened = new AtomicBoolean();
     private final AtomicLong requestId = new AtomicLong(0);
@@ -58,31 +63,46 @@ class RequestResponseChannel implements Closeable {
     private final Disposable subscription;
     private final RetryPolicy retryPolicy;
 
-    RequestResponseChannel(String connectionId, String host, String linkName, String path, Session session,
-                           RetryOptions retryOptions, ReactorHandlerProvider handlerProvider) {
+    /**
+     * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
+     * {@code entityPath} in the message broker.
+     *
+     * @param connectionId Identifier of the connection.
+     * @param host Fully qualified domain name for the the host.
+     * @param linkName Name of the link.
+     * @param entityPath Address in the message broker to send message to.
+     * @param session Reactor session associated with this link.
+     * @param retryOptions Retry options to use for sending the request response.
+     * @param handlerProvider Provides handlers that interact with proton-j's reactor.
+     * @param provider The reactor provider that the request will be sent with.
+     */
+    public RequestResponseChannel(String connectionId, String host, String linkName, String entityPath, Session session,
+                                  RetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+                                  ReactorProvider provider) {
+        this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-        this.replyTo = path.replace("$", "") + "-client-reply-to";
+        this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
-        target.setAddress(path);
+        target.setAddress(entityPath);
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName, path);
+        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName, entityPath);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
-        source.setAddress(path);
+        source.setAddress(entityPath);
         this.receiveLink.setSource(source);
         final Target receiverTarget = new Target();
         receiverTarget.setAddress(replyTo);
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName, path);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
@@ -101,8 +121,18 @@ class RequestResponseChannel implements Closeable {
         }
     }
 
-    Mono<Message> sendWithAck(final Message message, final ReactorDispatcher dispatcher) {
-        start();
+    /**
+     * Sends a message to the message broker using the {@code dispatcher} and gets the response.
+     *
+     * @param message AMQP message to send.
+     *
+     * @return An AMQP message representing the service's response to the message.
+     */
+    public Mono<Message> sendWithAck(final Message message) {
+        if (!hasOpened.getAndSet(true)) {
+            sendLink.open();
+            receiveLink.open();
+        }
 
         if (message == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
@@ -128,20 +158,13 @@ class RequestResponseChannel implements Closeable {
                         logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
                         unconfirmedSends.putIfAbsent(messageId, sink);
 
-                        dispatcher.invoke(() -> {
+                        provider.getReactorDispatcher().invoke(() -> {
                             send(message);
                         });
                     } catch (IOException e) {
                         sink.error(e);
                     }
                 }));
-    }
-
-    private void start() {
-        if (!hasOpened.getAndSet(true)) {
-            sendLink.open();
-            receiveLink.open();
-        }
     }
 
     // Not thread-safe This must be invoked from reactor/dispatcher thread. And assumes that this is run on a link
