@@ -26,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -350,9 +351,9 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        String etag = setting.getETag() == null ? ETAG_ANY : setting.getETag();
+        String eTag = setting.getETag() == null ? ETAG_ANY : setting.getETag();
 
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, getETagValue(etag),
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, getETagValue(eTag),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Updating ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.getValue()))
@@ -402,7 +403,7 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(String key, String label, String dateTime) {
+    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime dateTime) {
         return withContext(context -> getSetting(key, label, dateTime, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
@@ -428,15 +429,13 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(String key, String label, String dateTime) {
+    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(String key, String label, OffsetDateTime dateTime) {
         return withContext(context -> getSetting(key, label, dateTime, context));
     }
 
-    Mono<Response<ConfigurationSetting>> getSetting(String key, String label, String datetime, Context context) {
-        if (key == null) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
-        }
-        return service.getKeyValue(serviceEndpoint, key, label, null, datetime, null, null,
+    Mono<Response<ConfigurationSetting>> getSetting(String key, String label, OffsetDateTime datetime, Context context) {
+        Objects.requireNonNull(key);
+        return service.getKeyValue(serviceEndpoint, key, label, null, datetime.toString(), null, null,
             context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - key:{}, label:{}, dateTime:{}",
                 key, label, datetime))
@@ -469,10 +468,10 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
+     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and eTag.
      *
      * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated the
+     * the setting is <b>only</b> deleted if the eTag matches the current eTag; this means that no one has updated the
      * ConfigurationSetting yet.
      *
      * <p><strong>Code Samples</strong></p>
@@ -483,28 +482,28 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the setting to delete.
      * @param label The label of the setting to delete.
-     * @param etag The etag of the setting to delete.
+     * @param eTag The entity tag of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
-     * current etag (which will also throw HttpResponseException described below).
+     * current eTag (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
+     * character, and does not match the current eTag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(String key, String label, String etag) {
-        return withContext(context -> deleteSetting(key, label, etag, context))
+    public Mono<ConfigurationSetting> deleteSetting(String key, String label, String eTag) {
+        return withContext(context -> deleteSetting(key, label, eTag, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
-     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
+     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and eTag.
      *
      * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated the
+     * the setting is <b>only</b> deleted if the eTag matches the current eTag; this means that no one has updated the
      * ConfigurationSetting yet.
      *
      * <p><strong>Code Samples</strong></p>
@@ -513,35 +512,34 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting}
      *
-     * @param setting The ConfigurationSetting to delete.
+     * @param key The key of the setting to delete.
+     * @param label The label of the setting to delete.
+     * @param eTag The entity tag of the setting to delete.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but
-     * does not match the current etag (which will also throw HttpResponseException described below).
+     * does not match the current eTag (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
+     * character, and does not match the current eTag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(String key, String label, String etag) {
-        return withContext(context -> deleteSetting(key, label, etag, context));
+    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(String key, String label, String eTag) {
+        return withContext(context -> deleteSetting(key, label, eTag, context));
     }
 
-    Mono<Response<ConfigurationSetting>> deleteSetting(String key, String label, String etag, Context context) {
+    Mono<Response<ConfigurationSetting>> deleteSetting(String key, String label, String eTag, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        if (key == null) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
-        }
-
-        return service.delete(serviceEndpoint, key, label, getETagValue(etag),
+        Objects.requireNonNull(key);
+        return service.delete(serviceEndpoint, key, label, getETagValue(eTag),
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - key:{}, label:{}, etag:{}",
-                key, label, etag))
+                key, label, eTag))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - value:{}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting -  key:{}, label:{}, etag:{}",
-                key, label, etag, error));
+                key, label, eTag, error));
     }
 
     /**
@@ -683,11 +681,11 @@ public final class ConfigurationAsyncClient {
     /*
      * Azure Configuration service requires that the etag value is surrounded in quotation marks.
      *
-     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
+     * @param eTag The eTag to get the value for. If null is pass in, an empty string is returned.
      * @return The etag surrounded by quotations. (ex. "etag")
      */
-    private static String getETagValue(String etag) {
-        return etag == null ? "" : "\"" + etag + "\"";
+    private static String getETagValue(String eTag) {
+        return eTag == null ? "" : "\"" + eTag + "\"";
     }
 
     /*

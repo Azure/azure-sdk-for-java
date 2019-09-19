@@ -16,6 +16,8 @@ import com.azure.data.appconfiguration.credentials.ConfigurationClientCredential
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
+import java.time.OffsetDateTime;
+
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
@@ -329,7 +331,7 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(String key, String label, String dateTime) {
+    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime dateTime) {
         return getSetting(key, label, dateTime, Context.NONE).getValue();
     }
 
@@ -355,12 +357,12 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSettingWithResponse(String key, String label, String dateTime,
+    public Response<ConfigurationSetting> getSettingWithResponse(String key, String label, OffsetDateTime dateTime,
                                                                  Context context) {
         return getSetting(key, label, dateTime, context);
     }
 
-    private Response<ConfigurationSetting> getSetting(String key, String label, String dateTime, Context context) {
+    private Response<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime dateTime, Context context) {
         return client.getSetting(key, label, dateTime, context).block();
     }
 
