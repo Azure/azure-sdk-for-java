@@ -5,20 +5,21 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockItem;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 
@@ -94,7 +96,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws StorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
-        return new BlobOutputStream(blockBlobAsyncClient, accessConditions);
+        return BlobOutputStream.blockBlobOutputStream(blockBlobAsyncClient, accessConditions);
     }
 
     /**
@@ -104,6 +106,10 @@ public final class BlockBlobClient extends BlobClient {
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.upload#InputStream-long}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
@@ -113,7 +119,7 @@ public final class BlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public BlockBlobItem upload(InputStream data, long length) throws IOException {
-        return uploadWithResponse(data, length, null, null, null, null, Context.NONE).value();
+        return uploadWithResponse(data, length, null, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -124,34 +130,32 @@ public final class BlockBlobClient extends BlobClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the data
      *         provided in the {@link InputStream}.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded block blob.
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      * @throws IOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-                                                      Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
-            .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
-                byte[] cache = new byte[(int) count];
-                int read = 0;
-                while (read < count) {
-                    read += data.read(cache, read, (int) count - read);
-                }
-                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
-            }));
-
+            Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout, Context context)
+            throws IOException {
+        Objects.requireNonNull(data);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context);
+            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier, accessConditions, context);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
@@ -162,27 +166,39 @@ public final class BlockBlobClient extends BlobClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadFromFile#String}
+     *
      * @param filePath Path of the file to upload
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, null, null, null, null);
+        uploadFromFile(filePath, null, null, null, null, null);
     }
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     *
      * @param filePath Path of the file to upload
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the uploaded blob
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @throws IOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata, AccessTier tier,
                                BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, accessConditions);
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
+            filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
@@ -195,6 +211,10 @@ public final class BlockBlobClient extends BlobClient {
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlock#String-InputStream-long}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
@@ -211,6 +231,10 @@ public final class BlockBlobClient extends BlobClient {
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context}
+     *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param data The data to write to the block.
@@ -222,21 +246,13 @@ public final class BlockBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
      */
     public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
-            .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
-                byte[] cache = new byte[(int) count];
-                int read = 0;
-                while (read < count) {
-                    read += data.read(cache, read, (int) count - read);
-                }
-                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
-            }));
+        Objects.requireNonNull(data);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
@@ -246,6 +262,10 @@ public final class BlockBlobClient extends BlobClient {
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
@@ -262,6 +282,10 @@ public final class BlockBlobClient extends BlobClient {
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
@@ -293,12 +317,16 @@ public final class BlockBlobClient extends BlobClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.listBlocks#BlockListType}
+     *
      * @param listType Specifies which type of blocks to return.
      *
      * @return The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null, null);
+    public BlockList listBlocks(BlockListType listType) {
+        return this.listBlocksWithResponse(listType, null, null, Context.NONE).value();
     }
 
     /**
@@ -306,18 +334,23 @@ public final class BlockBlobClient extends BlobClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context}
+     *
      * @param listType Specifies which type of blocks to return.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The list of blocks.
      */
-    public Iterable<BlockItem> listBlocks(BlockListType listType,
-                                          LeaseAccessConditions leaseAccessConditions, Duration timeout) {
-        Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
+    public Response<BlockList> listBlocksWithResponse(BlockListType listType,
+                                          LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
+        Mono<Response<BlockList>> response = blockBlobAsyncClient.listBlocksWithResponse(listType, leaseAccessConditions, context);
 
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -328,13 +361,17 @@ public final class BlockBlobClient extends BlobClient {
      * blocks together. Any blocks not specified in the block list and permanently deleted.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.commitBlockList#List}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      *
      * @return The information of the block blob.
      */
     public BlockBlobItem commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, Context.NONE).value();
+        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -346,9 +383,14 @@ public final class BlockBlobClient extends BlobClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -356,10 +398,10 @@ public final class BlockBlobClient extends BlobClient {
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout,
-            Context context) {
+            BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+            Duration timeout,  Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
-            base64BlockIDs, headers, metadata, accessConditions, context);
+            base64BlockIDs, headers, metadata, tier, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

@@ -4,7 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
@@ -14,11 +14,11 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credential(credentials)
-                    .httpClient(HttpClient.createDefault().wiretap(true))
+                    .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())
@@ -80,7 +80,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void addSettingEmptyKey() {
         StepVerifier.create(client.addSetting("", "A value"))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     /**
@@ -112,7 +112,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void addExistingSetting() {
         addExistingSettingRunner((expected) ->
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code())));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
@@ -135,7 +135,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setSetting(initial.etag("badEtag")))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             final String etag = client.addSetting(initial).block().etag();
 
@@ -144,7 +144,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.setSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getSetting(update))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -157,7 +157,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void setSettingEmptyKey() {
         StepVerifier.create(client.setSetting("", "A value"))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     /**
@@ -191,7 +191,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void updateNoExistingSetting() {
         updateNoExistingSettingRunner((expected) ->
             StepVerifier.create(client.updateSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code())));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
@@ -244,7 +244,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // The setting does not exist in the service yet, so we cannot update it.
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getSetting(update))
                 .assertNext(response -> assertConfigurationEquals(update, response))
@@ -259,7 +259,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().key(initial.key()).label(initial.label()).value(initial.value()).etag(updateEtag)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
         });
     }
 
@@ -286,11 +286,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(client.getSetting("myNonExistentKey"))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
 
 
         StepVerifier.create(client.getSetting(nonExistentLabel))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -309,7 +309,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.getSetting(expected))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -325,11 +325,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key("myNonExistentKey")))
-            .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+            .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
         StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key(neverDeletedConfiguration.key()).label("myNonExistentLabel")))
-            .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+            .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
         StepVerifier.create(client.getSetting(neverDeletedConfiguration.key()))
@@ -351,14 +351,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.deleteSetting(initiallyAddedConfig))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.deleteSetting(updatedConfig))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
             StepVerifier.create(client.getSetting(initial))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -656,7 +656,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(0, 10))))
-            .verifyErrorSatisfies(exception -> assertRestException(exception, HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code()));
+            .verifyErrorSatisfies(exception -> assertRestException(exception, 416)); // REQUESTED_RANGE_NOT_SATISFIABLE
     }
 
     /**

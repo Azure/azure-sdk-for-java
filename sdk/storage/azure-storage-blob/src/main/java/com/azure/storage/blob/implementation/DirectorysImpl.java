@@ -8,9 +8,11 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.Delete;
 import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Head;
 import com.azure.core.implementation.annotation.HeaderParam;
 import com.azure.core.implementation.annotation.Host;
 import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Patch;
 import com.azure.core.implementation.annotation.PathParam;
 import com.azure.core.implementation.annotation.Put;
 import com.azure.core.implementation.annotation.QueryParam;
@@ -23,7 +25,9 @@ import com.azure.storage.blob.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.models.DirectorysCreateResponse;
 import com.azure.storage.blob.models.DirectorysDeleteResponse;
+import com.azure.storage.blob.models.DirectorysGetAccessControlResponse;
 import com.azure.storage.blob.models.DirectorysRenameResponse;
+import com.azure.storage.blob.models.DirectorysSetAccessControlResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PathRenameMode;
@@ -77,6 +81,16 @@ public final class DirectorysImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
         Mono<DirectorysDeleteResponse> delete(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("recursive") boolean recursiveDirectoryDelete, @QueryParam("continuation") String marker, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+
+        @Patch("{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
+        Mono<DirectorysSetAccessControlResponse> setAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String posixPermissions, @HeaderParam("x-ms-acl") String posixAcl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+
+        @Head("{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
+        Mono<DirectorysGetAccessControlResponse> getAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
     }
 
     /**
@@ -359,5 +373,133 @@ public final class DirectorysImpl {
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.delete(filesystem, path, this.client.getUrl(), timeout, recursiveDirectoryDelete, marker, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a directory.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectorysSetAccessControlResponse> setAccessControlWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final String owner = null;
+        final String group = null;
+        final String posixPermissions = null;
+        final String posixAcl = null;
+        final String requestId = null;
+        final String action = "setAccessControl";
+        final String leaseId = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, posixPermissions, posixAcl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a directory.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param posixPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     * @param posixAcl Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectorysSetAccessControlResponse> setAccessControlWithRestResponseAsync(Integer timeout, String owner, String group, String posixPermissions, String posixAcl, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "setAccessControl";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.ifMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, posixPermissions, posixAcl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Get the owner, group, permissions, or access control list for a directory.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectorysGetAccessControlResponse> getAccessControlWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final Boolean upn = null;
+        final String requestId = null;
+        final String action = "getAccessControl";
+        final String leaseId = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.getAccessControl(this.client.getUrl(), timeout, upn, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Get the owner, group, permissions, or access control list for a directory.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectorysGetAccessControlResponse> getAccessControlWithRestResponseAsync(Integer timeout, Boolean upn, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "getAccessControl";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.ifMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.getAccessControl(this.client.getUrl(), timeout, upn, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 }

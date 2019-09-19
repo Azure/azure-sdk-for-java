@@ -3,7 +3,7 @@
 
 package com.azure.search.data.env;
 
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -117,7 +117,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .searchDnsSuffix("search.windows.net")
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
-                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
                 .addPolicy(new SearchPipelinePolicy(apiKey))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())

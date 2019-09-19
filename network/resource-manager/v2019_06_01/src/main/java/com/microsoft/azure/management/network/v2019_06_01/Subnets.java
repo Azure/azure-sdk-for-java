@@ -31,6 +31,17 @@ public interface Subnets extends SupportsCreating<Subnet.DefinitionStages.Blank>
     Completable prepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName, PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters);
 
     /**
+     * Unprepares a subnet by removing network intent policies.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable unprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName);
+
+    /**
      * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.

@@ -118,7 +118,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20, (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
             (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66, (byte) 0x66, (byte) 0x73
         };
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#asymmetric-encrypt
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
         byte[] plainText = new byte[100];
         new Random(0x1234567L).nextBytes(plainText);
         cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
@@ -126,16 +126,16 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.cipherText().length, encryptResult.algorithm().toString()));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#asymmetric-encrypt
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#symmetric-encrypt
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-byte-byte
         cryptographyAsyncClient.encrypt(EncryptionAlgorithm.A192CBC_HS384, plainText, iv, authData)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.cipherText().length, encryptResult.algorithm().toString()));
 
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.encrypt#symmetric-encrypt
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-byte-byte
     }
 
     /**
@@ -151,23 +151,23 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66, (byte) 0x66, (byte) 0x73
         };
         byte[] authTag = {(byte) 0x65, (byte) 0x2c, (byte) 0x3f, (byte) 0xa3, (byte) 0x6b, (byte) 0x0a, (byte) 0x7c, (byte) 0x5b, (byte) 0x32, (byte) 0x19, (byte) 0xfa, (byte) 0xb3, (byte) 0xa3, (byte) 0x0b, (byte) 0xc1, (byte) 0xc4};
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#asymmetric-decrypt
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
         byte[] plainText = new byte[100];
         new Random(0x1234567L).nextBytes(plainText);
         cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.plainText().length));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#asymmetric-decrypt
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#symmetric-decrypt
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-byte-byte-byte
         cryptographyAsyncClient.decrypt(EncryptionAlgorithm.A192CBC_HS384, plainText, iv, authData, authTag)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received decrypted content of length %d with algorithm %s \n",
                     encryptResult.plainText().length));
 
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.decrypt#symmetric-decrypt
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-byte-byte-byte
     }
 
     /**
@@ -179,7 +179,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     public void signVerify() throws NoSuchAlgorithmException {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
         byte[] signature = new byte[100];
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte
         byte[] data = new byte[100];
         new Random(0x1234567L).nextBytes(data);
         MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -189,14 +189,14 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(signResult ->
                 System.out.printf("Received signature of length %d with algorithm %s", signResult.signature().length));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, digest, signature)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(verifyResult ->
                 System.out.printf("Verification status %s", verifyResult.isValid()));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
     }
 
 
@@ -209,21 +209,21 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     public void signDataVerifyData() throws NoSuchAlgorithmException {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
         byte[] signature = new byte[100];
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign-data
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
         byte[] data = new byte[100];
         new Random(0x1234567L).nextBytes(data);
         cryptographyAsyncClient.sign(SignatureAlgorithm.ES256, data)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(signResult ->
                 System.out.printf("Received signature of length %d with algorithm %s", signResult.signature().length));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.sign-data
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify-data
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, data, signature)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(verifyResult ->
                 System.out.printf("Verification status %s", verifyResult.isValid()));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.verify-data
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
     }
 
     /**
@@ -233,7 +233,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     public void wrapKeyUnwrapKey() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
         byte[] encryptedKey = new byte[100];
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.wrap-key
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte
         byte[] key = new byte[100];
         new Random(0x1234567L).nextBytes(key);
         cryptographyAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, key)
@@ -241,14 +241,14 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .subscribe(keyWrapResult ->
                 System.out.printf("Received encypted key of length %d with algorithm %s",
                     keyWrapResult.encryptedKey().length, keyWrapResult.algorithm().toString()));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.wrap-key
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte
         cryptographyAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, encryptedKey)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(keyUnwrapResult ->
                 System.out.printf("Received key of length %d", keyUnwrapResult.key().length));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.unwrap-key
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte
     }
 
     /**

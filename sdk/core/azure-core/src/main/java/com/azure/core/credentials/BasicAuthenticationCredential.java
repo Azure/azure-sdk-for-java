@@ -4,6 +4,7 @@
 package com.azure.core.credentials;
 
 import com.azure.core.implementation.util.Base64Util;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
@@ -13,15 +14,16 @@ import java.time.OffsetDateTime;
  * Basic Auth credentials for use with a REST Service Client.
  */
 public class BasicAuthenticationCredential implements TokenCredential {
+    private final ClientLogger logger = new ClientLogger(BasicAuthenticationCredential.class);
     /**
      * Basic auth user name.
      */
-    private String userName;
+    private final String userName;
 
     /**
      * Basic auth password.
      */
-    private String password;
+    private final String password;
 
     /**
      * Creates a basic authentication credential.
@@ -45,7 +47,7 @@ public class BasicAuthenticationCredential implements TokenCredential {
             encodedCredential = Base64Util.encodeToString(credential.getBytes("UTF8"));
         } catch (UnsupportedEncodingException e) {
             // The encoding is hard-coded, so if it's unsupported, it needs to be fixed right here.
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
 
         return Mono.just(new AccessToken(encodedCredential, OffsetDateTime.MAX));

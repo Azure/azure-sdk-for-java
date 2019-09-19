@@ -27,7 +27,7 @@ public class AsyncSample {
                                                             .buildAsyncClient();
         // Create a share
         String shareName = generateRandomName();
-        fileServiceAsyncClient.createShare(shareName).subscribe(
+        fileServiceAsyncClient.createShareWithResponse(shareName, null, null).subscribe(
             response -> {
                 System.out.printf("Successfully created a share with status code: %d.", response.statusCode());
             },

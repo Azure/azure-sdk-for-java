@@ -16,7 +16,7 @@ public final class DateTimeRfc1123 {
      * The pattern of the datetime used for RFC1123 datetime format.
      */
     private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
     /**
      * The actual datetime object.
      */

@@ -19,15 +19,17 @@ import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.blob.models.StorageServiceStats
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
-import org.junit.Assume
+import com.azure.storage.common.policy.RequestRetryPolicy
 
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class ServiceAPITest extends APISpec {
     def setup() {
         RetentionPolicy disabled = new RetentionPolicy().enabled(false)
-        primaryServiceURL.setPropertiesWithResponse(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
             .staticWebsite(new StaticWebsite().enabled(false))
             .deleteRetentionPolicy(disabled)
             .cors(null)
@@ -37,29 +39,28 @@ class ServiceAPITest extends APISpec {
                 .retentionPolicy(disabled))
             .logging(new Logging().version("1.0")
                 .retentionPolicy(disabled))
-            .defaultServiceVersion("2018-03-28"), null, null)
+            .defaultServiceVersion("2018-03-28"))
     }
 
     def cleanup() {
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"))
         RetentionPolicy disabled = new RetentionPolicy().enabled(false)
-        primaryServiceURL.setPropertiesWithResponse(new StorageServiceProperties()
-                .staticWebsite(new StaticWebsite().enabled(false))
-                .deleteRetentionPolicy(disabled)
-                .cors(null)
-                .hourMetrics(new Metrics().version("1.0").enabled(false)
+        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
+            .staticWebsite(new StaticWebsite().enabled(false))
+            .deleteRetentionPolicy(disabled)
+            .cors(null)
+            .hourMetrics(new Metrics().version("1.0").enabled(false)
                 .retentionPolicy(disabled))
-                .minuteMetrics(new Metrics().version("1.0").enabled(false)
+            .minuteMetrics(new Metrics().version("1.0").enabled(false)
                 .retentionPolicy(disabled))
-                .logging(new Logging().version("1.0")
+            .logging(new Logging().version("1.0")
                 .retentionPolicy(disabled))
-                .defaultServiceVersion("2018-03-28"), null, null)
+            .defaultServiceVersion("2018-03-28"))
     }
 
     def "List containers"() {
         when:
-        Iterable<ContainerItem> response =
-                primaryServiceURL.listContainers(new ListContainersOptions().prefix(containerPrefix), null)
+        def response =
+            primaryBlobServiceClient.listContainers(new ListContainersOptions().prefix(containerPrefix + testName), null)
 
         then:
         for (ContainerItem c : response) {
@@ -77,7 +78,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers min"() {
         when:
-        primaryServiceURL.listContainers().iterator().hasNext()
+        primaryBlobServiceClient.listContainers().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -86,10 +87,10 @@ class ServiceAPITest extends APISpec {
     def "List containers marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
-            primaryServiceURL.createContainer(generateContainerName())
+            primaryBlobServiceClient.createContainer(generateContainerName())
         }
 
-        Iterator<ContainerItem> listResponse = primaryServiceURL.listContainers().iterator()
+        Iterator<ContainerItem> listResponse = primaryBlobServiceClient.listContainers().iterator()
         String firstContainerName = listResponse.next().name()
 
         expect:
@@ -101,110 +102,133 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cu = primaryServiceURL.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).value()
+        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).value()
 
         expect:
-        primaryServiceURL.listContainers(new ListContainersOptions()
-                .details(new ContainerListDetails().metadata(true))
-                .prefix("aaa" + containerPrefix), null)
+        primaryBlobServiceClient.listContainers(new ListContainersOptions()
+            .details(new ContainerListDetails().metadata(true))
+            .prefix("aaa" + containerPrefix), null)
             .iterator().next().metadata() == metadata
 
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cu.deleteWithResponse(null, null, null).statusCode() == 202
+        cc.deleteWithResponse(null, null, null).statusCode() == 202
     }
 
-    // TODO (alzimmer): Turn this test back on when listing by page is implemented
-    /*def "List containers maxResults"() {
+    def "List containers maxResults"() {
         setup:
-        for (int i = 0; i < 11; i++) {
-            primaryServiceURL.createContainer(generateContainerName())
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+
+        def containers = [] as Collection<ContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createContainer(generateContainerName())
         }
 
         expect:
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), null)
+            .iterableByPage().iterator().next().value().size() == PAGE_RESULTS
 
-        primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions().maxResults(10), null)
-                .blockingGet().body().containerItems().size() == 10
-    }*/
+        cleanup:
+        containers.each { container -> container.delete() }
+    }
 
-    // TODO (alzimmer): Turn this test back on when listing by page is implemented as this requires being able to set a marker
-    /*def "List containers error"() {
+    def "List containers error"() {
         when:
-        primaryServiceURL.listContainers("garbage", null, null).blockingGet()
+        primaryBlobServiceClient.listContainers().streamByPage("garbage continuation token").count()
 
         then:
         thrown(StorageException)
-    }*/
+    }
+
+    def "List containers with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+
+        def containers = [] as Collection<ContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createContainer(generateContainerName())
+        }
+
+        when: "Consume results by page"
+        primaryBlobServiceClient.listContainers(new ListContainersOptions().maxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
+
+        cleanup:
+        containers.each { container -> container.delete() }
+    }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
         return received.logging().read() == sent.logging().read() &&
-                received.logging().delete() == sent.logging().delete() &&
-                received.logging().write() == sent.logging().write() &&
-                received.logging().version() == sent.logging().version() &&
-                received.logging().retentionPolicy().days() == sent.logging().retentionPolicy().days() &&
-                received.logging().retentionPolicy().enabled() == sent.logging().retentionPolicy().enabled() &&
+            received.logging().delete() == sent.logging().delete() &&
+            received.logging().write() == sent.logging().write() &&
+            received.logging().version() == sent.logging().version() &&
+            received.logging().retentionPolicy().days() == sent.logging().retentionPolicy().days() &&
+            received.logging().retentionPolicy().enabled() == sent.logging().retentionPolicy().enabled() &&
 
-                received.cors().size() == sent.cors().size() &&
-                received.cors().get(0).allowedMethods() == sent.cors().get(0).allowedMethods() &&
-                received.cors().get(0).allowedHeaders() == sent.cors().get(0).allowedHeaders() &&
-                received.cors().get(0).allowedOrigins() == sent.cors().get(0).allowedOrigins() &&
-                received.cors().get(0).exposedHeaders() == sent.cors().get(0).exposedHeaders() &&
-                received.cors().get(0).maxAgeInSeconds() == sent.cors().get(0).maxAgeInSeconds() &&
+            received.cors().size() == sent.cors().size() &&
+            received.cors().get(0).allowedMethods() == sent.cors().get(0).allowedMethods() &&
+            received.cors().get(0).allowedHeaders() == sent.cors().get(0).allowedHeaders() &&
+            received.cors().get(0).allowedOrigins() == sent.cors().get(0).allowedOrigins() &&
+            received.cors().get(0).exposedHeaders() == sent.cors().get(0).exposedHeaders() &&
+            received.cors().get(0).maxAgeInSeconds() == sent.cors().get(0).maxAgeInSeconds() &&
 
-                received.defaultServiceVersion() == sent.defaultServiceVersion() &&
+            received.defaultServiceVersion() == sent.defaultServiceVersion() &&
 
-                received.hourMetrics().enabled() == sent.hourMetrics().enabled() &&
-                received.hourMetrics().includeAPIs() == sent.hourMetrics().includeAPIs() &&
-                received.hourMetrics().retentionPolicy().enabled() == sent.hourMetrics().retentionPolicy().enabled() &&
-                received.hourMetrics().retentionPolicy().days() == sent.hourMetrics().retentionPolicy().days() &&
-                received.hourMetrics().version() == sent.hourMetrics().version() &&
+            received.hourMetrics().enabled() == sent.hourMetrics().enabled() &&
+            received.hourMetrics().includeAPIs() == sent.hourMetrics().includeAPIs() &&
+            received.hourMetrics().retentionPolicy().enabled() == sent.hourMetrics().retentionPolicy().enabled() &&
+            received.hourMetrics().retentionPolicy().days() == sent.hourMetrics().retentionPolicy().days() &&
+            received.hourMetrics().version() == sent.hourMetrics().version() &&
 
-                received.minuteMetrics().enabled() == sent.minuteMetrics().enabled() &&
-                received.minuteMetrics().includeAPIs() == sent.minuteMetrics().includeAPIs() &&
-                received.minuteMetrics().retentionPolicy().enabled() == sent.minuteMetrics().retentionPolicy().enabled() &&
-                received.minuteMetrics().retentionPolicy().days() == sent.minuteMetrics().retentionPolicy().days() &&
-                received.minuteMetrics().version() == sent.minuteMetrics().version() &&
+            received.minuteMetrics().enabled() == sent.minuteMetrics().enabled() &&
+            received.minuteMetrics().includeAPIs() == sent.minuteMetrics().includeAPIs() &&
+            received.minuteMetrics().retentionPolicy().enabled() == sent.minuteMetrics().retentionPolicy().enabled() &&
+            received.minuteMetrics().retentionPolicy().days() == sent.minuteMetrics().retentionPolicy().days() &&
+            received.minuteMetrics().version() == sent.minuteMetrics().version() &&
 
-                received.deleteRetentionPolicy().enabled() == sent.deleteRetentionPolicy().enabled() &&
-                received.deleteRetentionPolicy().days() == sent.deleteRetentionPolicy().days() &&
+            received.deleteRetentionPolicy().enabled() == sent.deleteRetentionPolicy().enabled() &&
+            received.deleteRetentionPolicy().days() == sent.deleteRetentionPolicy().days() &&
 
-                received.staticWebsite().enabled() == sent.staticWebsite().enabled() &&
-                received.staticWebsite().indexDocument() == sent.staticWebsite().indexDocument() &&
-                received.staticWebsite().errorDocument404Path() == sent.staticWebsite().errorDocument404Path()
+            received.staticWebsite().enabled() == sent.staticWebsite().enabled() &&
+            received.staticWebsite().indexDocument() == sent.staticWebsite().indexDocument() &&
+            received.staticWebsite().errorDocument404Path() == sent.staticWebsite().errorDocument404Path()
     }
 
     def "Set get properties"() {
         when:
         RetentionPolicy retentionPolicy = new RetentionPolicy().days(5).enabled(true)
         Logging logging = new Logging().read(true).version("1.0")
-                .retentionPolicy(retentionPolicy)
+            .retentionPolicy(retentionPolicy)
         ArrayList<CorsRule> corsRules = new ArrayList<>()
         corsRules.add(new CorsRule().allowedMethods("GET,PUT,HEAD")
-                .allowedOrigins("*")
-                .allowedHeaders("x-ms-version")
-                .exposedHeaders("x-ms-client-request-id")
-                .maxAgeInSeconds(10))
+            .allowedOrigins("*")
+            .allowedHeaders("x-ms-version")
+            .exposedHeaders("x-ms-client-request-id")
+            .maxAgeInSeconds(10))
         String defaultServiceVersion = "2016-05-31"
         Metrics hourMetrics = new Metrics().enabled(true).version("1.0")
-                .retentionPolicy(retentionPolicy).includeAPIs(true)
+            .retentionPolicy(retentionPolicy).includeAPIs(true)
         Metrics minuteMetrics = new Metrics().enabled(true).version("1.0")
-                .retentionPolicy(retentionPolicy).includeAPIs(true)
+            .retentionPolicy(retentionPolicy).includeAPIs(true)
         StaticWebsite website = new StaticWebsite().enabled(true)
-                .indexDocument("myIndex.html")
-                .errorDocument404Path("custom/error/path.html")
+            .indexDocument("myIndex.html")
+            .errorDocument404Path("custom/error/path.html")
 
         StorageServiceProperties sentProperties = new StorageServiceProperties()
-                .logging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
-                .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
-                .deleteRetentionPolicy(retentionPolicy)
-                .staticWebsite(website)
+            .logging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
+            .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
+            .deleteRetentionPolicy(retentionPolicy)
+            .staticWebsite(website)
 
-        HttpHeaders headers = primaryServiceURL.setPropertiesWithResponse(sentProperties, null, null).headers()
+        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).headers()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-        sleep(30 * 1000)
+        sleepIfRecord(30 * 1000)
 
-        StorageServiceProperties receivedProperties = primaryServiceURL.getProperties()
+        StorageServiceProperties receivedProperties = primaryBlobServiceClient.getProperties()
 
         then:
         headers.value("x-ms-request-id") != null
@@ -218,38 +242,35 @@ class ServiceAPITest extends APISpec {
         setup:
         RetentionPolicy retentionPolicy = new RetentionPolicy().days(5).enabled(true)
         Logging logging = new Logging().read(true).version("1.0")
-                .retentionPolicy(retentionPolicy)
+            .retentionPolicy(retentionPolicy)
         ArrayList<CorsRule> corsRules = new ArrayList<>()
         corsRules.add(new CorsRule().allowedMethods("GET,PUT,HEAD")
-                .allowedOrigins("*")
-                .allowedHeaders("x-ms-version")
-                .exposedHeaders("x-ms-client-request-id")
-                .maxAgeInSeconds(10))
+            .allowedOrigins("*")
+            .allowedHeaders("x-ms-version")
+            .exposedHeaders("x-ms-client-request-id")
+            .maxAgeInSeconds(10))
         String defaultServiceVersion = "2016-05-31"
         Metrics hourMetrics = new Metrics().enabled(true).version("1.0")
-                .retentionPolicy(retentionPolicy).includeAPIs(true)
+            .retentionPolicy(retentionPolicy).includeAPIs(true)
         Metrics minuteMetrics = new Metrics().enabled(true).version("1.0")
-                .retentionPolicy(retentionPolicy).includeAPIs(true)
+            .retentionPolicy(retentionPolicy).includeAPIs(true)
         StaticWebsite website = new StaticWebsite().enabled(true)
-                .indexDocument("myIndex.html")
-                .errorDocument404Path("custom/error/path.html")
+            .indexDocument("myIndex.html")
+            .errorDocument404Path("custom/error/path.html")
 
         StorageServiceProperties sentProperties = new StorageServiceProperties()
-                .logging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
-                .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
-                .deleteRetentionPolicy(retentionPolicy)
-                .staticWebsite(website)
+            .logging(logging).cors(corsRules).defaultServiceVersion(defaultServiceVersion)
+            .minuteMetrics(minuteMetrics).hourMetrics(hourMetrics)
+            .deleteRetentionPolicy(retentionPolicy)
+            .staticWebsite(website)
 
         expect:
-        primaryServiceURL.setPropertiesWithResponse(sentProperties, null, null).statusCode() == 202
+        primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).statusCode() == 202
     }
 
     def "Set props error"() {
         when:
-        new BlobServiceClientBuilder()
-            .endpoint("https://error.blob.core.windows.net")
-            .credential(primaryCreds)
-            .buildClient()
+        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
             .setProperties(new StorageServiceProperties())
 
         then:
@@ -258,15 +279,12 @@ class ServiceAPITest extends APISpec {
 
     def "Get props min"() {
         expect:
-        primaryServiceURL.getPropertiesWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getPropertiesWithResponse(null, null).statusCode() == 200
     }
 
     def "Get props error"() {
         when:
-        new BlobServiceClientBuilder()
-            .endpoint("https://error.blob.core.windows.net")
-            .credential(primaryCreds)
-            .buildClient()
+        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -278,7 +296,7 @@ class ServiceAPITest extends APISpec {
         def start = OffsetDateTime.now()
         def expiry = start.plusDays(1)
 
-        Response<UserDelegationKey> response = getOAuthServiceURL().getUserDelegationKeyWithResponse(start, expiry, null, null)
+        Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKeyWithResponse(start, expiry, null, null)
 
         expect:
         response.statusCode() == 200
@@ -296,7 +314,7 @@ class ServiceAPITest extends APISpec {
         setup:
         def expiry = OffsetDateTime.now().plusDays(1)
 
-        def response = getOAuthServiceURL().getUserDelegationKeyWithResponse(null, expiry, null, null)
+        def response = getOAuthServiceClient().getUserDelegationKeyWithResponse(null, expiry, null, null)
 
         expect:
         response.statusCode() == 200
@@ -304,7 +322,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get UserDelegationKey error"() {
         when:
-        getOAuthServiceURL().getUserDelegationKey(start, expiry)
+        getOAuthServiceClient().getUserDelegationKey(start, expiry)
 
         then:
         thrown(exception)
@@ -317,9 +335,8 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
-                                        .credential(primaryCreds).buildClient()
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
         Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
@@ -332,16 +349,16 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats min"() {
         setup:
-        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(secondaryEndpoint)
-            .credential(primaryCreds).buildClient()
+        String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.accountName())
+        BlobServiceClient serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+
         expect:
         serviceClient.getStatisticsWithResponse(null, null).statusCode() == 200
     }
 
     def "Get stats error"() {
         when:
-        primaryServiceURL.getStatistics()
+        primaryBlobServiceClient.getStatistics()
 
         then:
         thrown(StorageException)
@@ -349,7 +366,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info"() {
         when:
-        Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfoWithResponse(null, null)
+        Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
         response.headers().value("Date") != null
@@ -361,14 +378,12 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info min"() {
         expect:
-        primaryServiceURL.getAccountInfoWithResponse(null, null).statusCode() == 200
+        primaryBlobServiceClient.getAccountInfoWithResponse(null, null).statusCode() == 200
     }
 
     def "Get account info error"() {
         when:
-        BlobServiceClient serviceURL = new BlobServiceClientBuilder()
-            .endpoint(primaryServiceURL.getAccountUrl().toString())
-            .buildClient()
+        BlobServiceClient serviceURL = getServiceClient((SharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl().toString())
         serviceURL.getAccountInfo()
 
         then:
@@ -380,11 +395,8 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         URL badURL = new URL("http://fake.blobfake.core.windows.net")
-        BlobServiceClient client = new BlobServiceClientBuilder()
-            .endpoint(badURL.toString())
-            .credential(primaryCreds)
-            .retryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
-            .buildClient()
+        BlobServiceClient client = getServiceClient(primaryCredential, badURL.toString(),
+            new RequestRetryPolicy(new RequestRetryOptions(null, 2, null, null, null, null)))
 
         when:
         client.getProperties()

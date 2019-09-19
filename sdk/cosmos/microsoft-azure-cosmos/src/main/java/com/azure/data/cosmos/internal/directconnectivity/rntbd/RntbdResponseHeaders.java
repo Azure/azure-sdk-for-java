@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
 
 import java.math.BigDecimal;
@@ -131,9 +132,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     // endregion
 
-    private RntbdResponseHeaders() {
+    private RntbdResponseHeaders(ByteBuf in) {
 
-        super(RntbdResponseHeader.set, RntbdResponseHeader.map);
+        super(RntbdResponseHeader.set, RntbdResponseHeader.map, in);
 
         this.LSN = this.get(RntbdResponseHeader.LSN);
         this.collectionLazyIndexProgress = this.get(RntbdResponseHeader.CollectionLazyIndexProgress);
@@ -193,7 +194,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     List<Map.Entry<String, String>> asList(final RntbdContext context, final UUID activityId) {
 
         final ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount() + 2);
-        builder.add(new Entry(HttpHeaders.SERVER_VERSION, context.getServerVersion()));
+        builder.add(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
         builder.add(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
         this.collectEntries((token, toEntry) -> {
@@ -208,7 +209,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     public Map<String, String> asMap(final RntbdContext context, final UUID activityId) {
 
         final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
-        builder.put(new Entry(HttpHeaders.SERVER_VERSION, context.getServerVersion()));
+        builder.put(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
         builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
         this.collectEntries((token, toEntry) -> {
@@ -221,14 +222,14 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     }
 
     static RntbdResponseHeaders decode(final ByteBuf in) {
-        final RntbdResponseHeaders headers = new RntbdResponseHeaders();
-        RntbdTokenStream.decode(in, headers);
+        final RntbdResponseHeaders headers = new RntbdResponseHeaders(in);
+        RntbdTokenStream.decode(headers);
         return headers;
     }
 
     public static RntbdResponseHeaders fromMap(final Map<String, String> map, final boolean payloadPresent) {
 
-        final RntbdResponseHeaders headers = new RntbdResponseHeaders();
+        final RntbdResponseHeaders headers = new RntbdResponseHeaders(Unpooled.EMPTY_BUFFER);
         headers.payloadPresent.setValue(payloadPresent);
         headers.setValues(map);
 

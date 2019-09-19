@@ -4,7 +4,8 @@
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=QueueServiceAPITestsListEmptyQueues&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "a37f5a1c-17f3-4896-9d55-9faf5507d85a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,11 +14,12 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "14882d28-6003-00ea-1b88-53cf77000000",
+      "x-ms-request-id" : "7c5360fd-2003-0003-4cc2-623371000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>QueueServiceAPITestsListEmptyQueues</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 15 Aug 2019 16:40:47 GMT",
+      "Date" : "Wed, 04 Sep 2019 01:46:04 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueserviceapitestslistemptyqueues28264ca30cb29e2" ]
+  "variables" : [ "queueserviceapitestslistemptyqueues34218ff482bae80" ]
 }

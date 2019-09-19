@@ -15,7 +15,8 @@ public abstract class Type<T> {
     public Type() {
         java.lang.reflect.Type superClass = this.getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
-            throw new IllegalArgumentException("Internal error: TypeReference constructed without actual type information");
+            throw new IllegalArgumentException(
+                "Internal error: TypeReference constructed without actual type information");
         } else {
             this.javaType = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }

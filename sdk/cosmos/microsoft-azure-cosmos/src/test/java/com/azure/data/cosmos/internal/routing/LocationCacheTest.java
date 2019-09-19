@@ -6,8 +6,8 @@ package com.azure.data.cosmos.internal.routing;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.BridgeUtils;
 import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.internal.DatabaseAccount;
-import com.azure.data.cosmos.internal.DatabaseAccountLocation;
+import com.azure.data.cosmos.DatabaseAccount;
+import com.azure.data.cosmos.DatabaseAccountLocation;
 import com.azure.data.cosmos.internal.DatabaseAccountManagerInternal;
 import com.azure.data.cosmos.internal.*;
 import com.google.common.collect.ImmutableList;
@@ -198,19 +198,19 @@ public class LocationCacheTest {
                 UnmodifiableList<URL> currentWriteEndpoints = this.cache.getWriteEndpoints();
                 UnmodifiableList<URL> currentReadEndpoints = this.cache.getReadEndpoints();
                 for (int i = 0; i < readLocationIndex; i++) {
-                    this.cache.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));
-                    this.endpointManager.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));;
+                    this.cache.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.readableLocations(), i).endpoint()));
+                    this.endpointManager.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.readableLocations(), i).endpoint()));;
                 }
                 for (int i = 0; i < writeLocationIndex; i++) {
-                    this.cache.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), i).getEndpoint()));
-                    this.endpointManager.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), i).getEndpoint()));
+                    this.cache.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.writableLocations(), i).endpoint()));
+                    this.endpointManager.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.writableLocations(), i).endpoint()));
                 }
 
-                Map<String, URL> writeEndpointByLocation = toStream(this.databaseAccount.getWritableLocations())
-                        .collect(Collectors.toMap(i -> i.getName(), i -> createUrl(i.getEndpoint())));
+                Map<String, URL> writeEndpointByLocation = toStream(this.databaseAccount.writableLocations())
+                        .collect(Collectors.toMap(i -> i.name(), i -> createUrl(i.endpoint())));
 
-                Map<String, URL> readEndpointByLocation = toStream(this.databaseAccount.getReadableLocations())
-                        .collect(Collectors.toMap(i -> i.getName(), i -> createUrl(i.getEndpoint())));
+                Map<String, URL> readEndpointByLocation = toStream(this.databaseAccount.readableLocations())
+                        .collect(Collectors.toMap(i -> i.name(), i -> createUrl(i.endpoint())));
 
                 URL[] preferredAvailableWriteEndpoints = toStream(this.preferredLocations).skip(writeLocationIndex)
                         .filter(location -> writeEndpointByLocation.containsKey(location))
@@ -264,8 +264,8 @@ public class LocationCacheTest {
                 false : isFirstWriteEndpointUnavailable;
         if (this.preferredLocations.size() > 0) {
             String mostPreferredReadLocationName = this.preferredLocations.stream()
-                    .filter(location -> toStream(databaseAccount.getReadableLocations())
-                            .anyMatch(readLocation -> readLocation.getName().equals(location)))
+                    .filter(location -> toStream(databaseAccount.readableLocations())
+                            .anyMatch(readLocation -> readLocation.name().equals(location)))
                     .findFirst().orElse(null);
 
             URL mostPreferredReadEndpoint = LocationCacheTest.EndpointByLocation.get(mostPreferredReadLocationName);
@@ -273,8 +273,8 @@ public class LocationCacheTest {
                     true : (!areEqual(preferredAvailableReadEndpoints[0], mostPreferredReadEndpoint));
 
             String mostPreferredWriteLocationName = this.preferredLocations.stream()
-                    .filter(location -> toStream(databaseAccount.getWritableLocations())
-                            .anyMatch(writeLocation -> writeLocation.getName().equals(location)))
+                    .filter(location -> toStream(databaseAccount.writableLocations())
+                            .anyMatch(writeLocation -> writeLocation.name().equals(location)))
                     .findFirst().orElse(null);
 
             URL mostPreferredWriteEndpoint = LocationCacheTest.EndpointByLocation.get(mostPreferredWriteLocationName);
@@ -335,18 +335,18 @@ public class LocationCacheTest {
             firstAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
             secondAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
         } else if (!useMultipleWriteLocations) {
-            firstAvailableWriteEndpoint = createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 0).getEndpoint());
-            secondAvailableWriteEndpoint = createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 1).getEndpoint());
+            firstAvailableWriteEndpoint = createUrl(Iterables.get(this.databaseAccount.writableLocations(), 0).endpoint());
+            secondAvailableWriteEndpoint = createUrl(Iterables.get(this.databaseAccount.writableLocations(), 1).endpoint());
         } else if (availableWriteEndpoints.length > 1) {
             firstAvailableWriteEndpoint = availableWriteEndpoints[0];
             secondAvailableWriteEndpoint = availableWriteEndpoints[1];
         } else if (availableWriteEndpoints.length > 0) {
             firstAvailableWriteEndpoint = availableWriteEndpoints[0];
-            Iterator<DatabaseAccountLocation> writeLocationsIterator = databaseAccount.getWritableLocations().iterator();        
-            String writeEndpoint = writeLocationsIterator.next().getEndpoint();
+            Iterator<DatabaseAccountLocation> writeLocationsIterator = databaseAccount.writableLocations().iterator();
+            String writeEndpoint = writeLocationsIterator.next().endpoint();
             secondAvailableWriteEndpoint = writeEndpoint != firstAvailableWriteEndpoint.toString()
                     ? new URL(writeEndpoint)
-                    : new URL(writeLocationsIterator.next().getEndpoint());
+                    : new URL(writeLocationsIterator.next().endpoint());
         } else {
             firstAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
             secondAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
@@ -366,11 +366,11 @@ public class LocationCacheTest {
 
         URL firstWriteEnpoint = !endpointDiscoveryEnabled ?
                 LocationCacheTest.DefaultEndpoint :
-                    createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 0).getEndpoint());
+                    createUrl(Iterables.get(this.databaseAccount.writableLocations(), 0).endpoint());
 
         URL secondWriteEnpoint = !endpointDiscoveryEnabled ?
                 LocationCacheTest.DefaultEndpoint :
-                    createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 1).getEndpoint());
+                    createUrl(Iterables.get(this.databaseAccount.writableLocations(), 1).endpoint());
 
         // If current write endpoint is unavailable, write endpoints order doesn't change
         // ALL write requests flip-flop between current write and alternate write endpoint

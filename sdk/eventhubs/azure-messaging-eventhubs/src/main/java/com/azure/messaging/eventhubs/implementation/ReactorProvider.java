@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.CustomIOHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReactorHandler;
 import org.apache.qpid.proton.Proton;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class ReactorProvider {
+    private final ClientLogger logger = new ClientLogger(ReactorProvider.class);
     private final Object lock = new Object();
     private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
@@ -52,12 +54,13 @@ public class ReactorProvider {
      * @param baseHandlers Handler for reactor instance. Usually: {@link ReactorHandler}
      * @return A new reactor instance.
      */
-    private Reactor createReactor(final int maxFrameSize, final Handler globalHandler, final BaseHandler... baseHandlers) throws IOException {
+    private Reactor createReactor(final int maxFrameSize, final Handler globalHandler,
+                                  final BaseHandler... baseHandlers) throws IOException {
         Objects.requireNonNull(baseHandlers);
         Objects.requireNonNull(globalHandler);
 
         if (maxFrameSize <= 0) {
-            throw new IllegalArgumentException("'maxFrameSize' must be a positive number.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
         }
 
         final ReactorOptions reactorOptions = new ReactorOptions();

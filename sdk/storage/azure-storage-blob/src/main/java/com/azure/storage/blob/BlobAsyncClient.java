@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -10,18 +11,22 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.AccessTierOptional;
 import com.azure.storage.blob.models.AccessTierRequired;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -32,7 +37,6 @@ import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -44,14 +48,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder}
@@ -82,17 +87,21 @@ public class BlobAsyncClient {
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
+    private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
+
     final AzureBlobStorageImpl azureBlobStorage;
     protected final String snapshot;
+    protected final CpkInfo cpk;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
+        this.cpk = cpk;
     }
 
     /**
@@ -105,7 +114,7 @@ public class BlobAsyncClient {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -118,7 +127,7 @@ public class BlobAsyncClient {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -131,7 +140,7 @@ public class BlobAsyncClient {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -144,7 +153,7 @@ public class BlobAsyncClient {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot);
+            .build(), snapshot, cpk);
     }
 
     /**
@@ -159,7 +168,7 @@ public class BlobAsyncClient {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build());
+            .build(), cpk);
     }
 
     /**
@@ -176,8 +185,17 @@ public class BlobAsyncClient {
             }
             return urlBuilder.toURL();
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e);
+            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureBlobStorage.getHttpPipeline();
     }
 
     /**
@@ -229,7 +247,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<String> startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null).flatMap(FluxUtil::toMono);
+        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -237,13 +255,15 @@ public class BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param priority {@link RehydratePriority} for rehydrating the blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
@@ -251,15 +271,21 @@ public class BlobAsyncClient {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
-        return withContext(context -> startCopyFromURLWithResponse(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, context));
+    public Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions) {
+        return withContext(context -> startCopyFromURLWithResponse(sourceURL, metadata, tier, priority,
+            sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions, Context context) {
+    Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -269,7 +295,7 @@ public class BlobAsyncClient {
             .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, null, null, null, null, sourceConditions,
+            null, null, sourceURL, null, metadata, tierOp, priority, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
@@ -332,7 +358,7 @@ public class BlobAsyncClient {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<String> copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null).flatMap(FluxUtil::toMono);
+        return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -340,13 +366,14 @@ public class BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
+     * @param tier {@link AccessTier} for the destination blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
@@ -354,15 +381,20 @@ public class BlobAsyncClient {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromURLWithResponse(URL copySource, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
-        return withContext(context -> copyFromURLWithResponse(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, context));
+    public Mono<Response<String>> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
+        return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
+            sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> copyFromURLWithResponse(URL copySource, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions, Context context) {
+    Mono<Response<String>> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -372,7 +404,7 @@ public class BlobAsyncClient {
             .sourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, copySource, null, metadata, null, null, null, sourceConditions,
+            null, null, copySource, null, metadata, tierOp, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyId()));
     }
@@ -419,7 +451,7 @@ public class BlobAsyncClient {
         return download(range, accessConditions, rangeGetContentMD5, context)
             .map(response -> new SimpleResponse<>(
                 response.rawResponse(),
-                response.body(options).map(ByteBuf::nioBuffer).switchIfEmpty(Flux.just(ByteBuffer.allocate(0)))));
+                response.body(options).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])))));
     }
 
     /**
@@ -453,9 +485,8 @@ public class BlobAsyncClient {
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
-            null, null, snapshot, null, null, range.toHeaderValue(), getMD5, null,
-            null, null, null, null,
-            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context))
+            null, null, snapshot, null, range.toHeaderValue(), getMD5, null, null,
+            accessConditions.leaseAccessConditions(), cpk, accessConditions.modifiedAccessConditions(), context))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
@@ -471,12 +502,13 @@ public class BlobAsyncClient {
 
 
     /**
-     * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.
-     * <p>
-     * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
-     * use the other overload providing the {@link BlobRange} parameter.
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -493,12 +525,16 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.
-     * <p>
-     * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
-     * provide the {@link BlobRange} parameter.
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
+     * AppendBlobClient}.</p>
+     *
+     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
+     * provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -524,8 +560,8 @@ public class BlobAsyncClient {
 
     Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
                               BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        if (blockSize < 0 || blockSize > BLOB_MAX_DOWNLOAD_BLOCK_SIZE) {
-            throw new IllegalArgumentException("Block size should not exceed 100MB");
+        if (blockSize != null) {
+            Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
@@ -534,15 +570,15 @@ public class BlobAsyncClient {
                 .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
                 .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
+                    .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
                 .then(), this::downloadToFileCleanup);
     }
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
         try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -550,7 +586,7 @@ public class BlobAsyncClient {
         try {
             channel.close();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -615,7 +651,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
-            null, null, snapshot, null, null, deleteBlobSnapshotOptions,
+            null, null, snapshot, null, deleteBlobSnapshotOptions,
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             context))
             .map(VoidResponse::new);
@@ -658,8 +694,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, null, null,
-            null, null, null, accessConditions.leaseAccessConditions(),
+            null, null, snapshot, null, null, accessConditions.leaseAccessConditions(), cpk,
             accessConditions.modifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlobProperties(rb.deserializedHeaders())));
     }
@@ -752,8 +787,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, null, null,
-            null, null, accessConditions.leaseAccessConditions(), null,
+            null, null, null, metadata, null, accessConditions.leaseAccessConditions(), cpk,
             accessConditions.modifiedAccessConditions(), context))
             .map(VoidResponse::new);
     }
@@ -799,8 +833,7 @@ public class BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, null, null,
-            null, null, null, accessConditions.modifiedAccessConditions(),
+            null, null, null, metadata, null, cpk, accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().snapshot())));
     }
@@ -822,7 +855,7 @@ public class BlobAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setTier(AccessTier tier) {
-        return setTierWithResponse(tier, null).flatMap(FluxUtil::toMono);
+        return setTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -833,26 +866,27 @@ public class BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
+     * @param priority Optional priority to set for re-hydrating blobs.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> setTierWithResponse(tier, leaseAccessConditions, context));
+    public Mono<VoidResponse> setTierWithResponse(AccessTier tier, RehydratePriority priority, LeaseAccessConditions leaseAccessConditions) {
+        return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> setTierWithResponse(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Context context) {
+    Mono<VoidResponse> setTierWithResponse(AccessTier tier, RehydratePriority priority, LeaseAccessConditions leaseAccessConditions, Context context) {
         Utility.assertNotNull("tier", tier);
         AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, accessTierRequired, null, null, null, leaseAccessConditions, context))
+            null, null, accessTierRequired, null, priority, null, leaseAccessConditions, context))
             .map(VoidResponse::new);
     }
 
@@ -942,7 +976,7 @@ public class BlobAsyncClient {
         if (!(duration == -1 || (duration >= 15 && duration <= 60))) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
-            throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Duration must be -1 or between 15 and 60."));
         }
 
         return postProcessResponse(this.azureBlobStorage.blobs().acquireLeaseWithRestResponseAsync(
@@ -1151,7 +1185,7 @@ public class BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfo}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -1178,7 +1212,7 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null /*
         startTime */, null /* version */, null /*sasProtocol */, null /* ipRange */, null /* cacheControl */, null
             /*contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1198,8 +1232,8 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1208,9 +1242,16 @@ public class BlobAsyncClient {
     /**
      * Generates a user delegation SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure Docs</a></p>
+     *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1224,25 +1265,25 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-                                            BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
-                                            String contentEncoding, String contentLanguage, String contentType) {
+        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, String contentType) {
 
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, accountName);
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
@@ -1268,7 +1309,7 @@ public class BlobAsyncClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1277,7 +1318,7 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
@@ -1286,8 +1327,15 @@ public class BlobAsyncClient {
     /**
      * Generates a SAS token with the specified parameters
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
+     *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
@@ -1301,10 +1349,10 @@ public class BlobAsyncClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
             startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -1313,34 +1361,34 @@ public class BlobAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.accountName());
 
-        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
-        return sasQueryParameters.encode();
+        return blobServiceSasQueryParameters.encode();
     }
 
     /**
-     * Sets serviceSASSignatureValues parameters dependent on the current blob type
+     * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    ServiceSASSignatureValues configureServiceSASSignatureValues(ServiceSASSignatureValues serviceSASSignatureValues,
-                                                                 String accountName) {
+    BlobServiceSASSignatureValues configureServiceSASSignatureValues(BlobServiceSASSignatureValues blobServiceSASSignatureValues,
+        String accountName) {
 
         // Set canonical name
-        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
+        blobServiceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId
-        serviceSASSignatureValues.snapshotId(getSnapshotId());
+        blobServiceSASSignatureValues.snapshotId(getSnapshotId());
 
         // Set resource
         if (isSnapshot()) {
-            serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
+            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT);
         } else {
-            serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
+            blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT);
         }
 
-        return serviceSASSignatureValues;
+        return blobServiceSASSignatureValues;
     }
 
     /**

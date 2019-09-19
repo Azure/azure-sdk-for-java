@@ -1,5 +1,5 @@
-// Licensed under the MIT License.
 // Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.tools.checkstyle.checks;
 
@@ -9,19 +9,21 @@ import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 /**
- *  Description text should only have one space character after the parameter name or {@code @return} statement.
- *  Text should not start on a new line or have any additional spacing or indentation.
+ * Description text should only have one space character after the parameter name or {@code @return} statement.
+ * Text should not start on a new line or have any additional spacing or indentation.
  */
 public class JavaDocFormatting extends AbstractJavadocCheck {
 
     private static final String JAVA_DOC_RETURN = "javadoc return";
     private static final String JAVA_DOC_PARAMETER = "javadoc parameter";
     private static final String JAVA_DOC_THROW = "javadoc throw";
+    private static final String JAVA_DOC_DEPRECATED = "javadoc deprecated";
 
     private static final String ERROR_DESCRIPTION_ON_NEW_LINE = "Description for %s must be on same the same line.";
     private static final String ERROR_NO_DESCRIPTION = "Description is missing for %s. Consider adding a description.";
     private static final String ERROR_NO_WS_AFTER_IDENT = "No white space after %s. Consider fixing format.";
-    private static final String ERROR_EXTRA_SPACE = "Only one white space is expected after %s. Consider removing extra spaces.";
+    private static final String ERROR_EXTRA_SPACE =
+        "Only one white space is expected after %s. Consider removing extra spaces.";
 
     @Override
     public int[] getAcceptableJavadocTokens() {
@@ -34,6 +36,7 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
             JavadocTokenTypes.PARAMETER_NAME,
             JavadocTokenTypes.RETURN_LITERAL,
             JavadocTokenTypes.THROWS_LITERAL,
+            JavadocTokenTypes.DEPRECATED_LITERAL,
         };
     }
 
@@ -47,6 +50,7 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
         switch (javaDocTag.getType()) {
             case JavadocTokenTypes.RETURN_LITERAL:
                 evaluateValidFormat(javaDocTag, JAVA_DOC_RETURN);
+                break;
             case JavadocTokenTypes.PARAMETER_NAME:
                 evaluateValidFormat(javaDocTag, JAVA_DOC_PARAMETER);
                 break;
@@ -54,6 +58,10 @@ public class JavaDocFormatting extends AbstractJavadocCheck {
                 // Evaluate what is the format after the CLASS_NAME of a @throw
                 DetailNode throwFormat = JavadocUtil.getNextSibling(javaDocTag, JavadocTokenTypes.CLASS_NAME);
                 evaluateValidFormat(throwFormat, JAVA_DOC_THROW);
+                break;
+            case JavadocTokenTypes.DEPRECATED_LITERAL:
+                evaluateValidFormat(javaDocTag, JAVA_DOC_DEPRECATED);
+                break;
             default:
                 break;
         }

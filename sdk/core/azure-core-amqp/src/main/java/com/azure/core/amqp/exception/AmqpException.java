@@ -12,7 +12,8 @@ import java.util.Locale;
  * General exception for AMQP related failures.
  *
  * @see ErrorCondition
- * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging Exceptions</a>
+ * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
+ *     Exceptions</a>
  */
 public class AmqpException extends AzureException {
     private static final long serialVersionUID = -3654294093967132325L;
@@ -24,8 +25,8 @@ public class AmqpException extends AzureException {
     /**
      * Initializes a new instance of the AmqpException class.
      *
-     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
-     *         can be retried; otherwise not.
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the
+     *     request can be retried; otherwise not.
      * @param message Text containing any supplementary details of the exception.
      * @param errorContext The context that caused this AMQP error.
      */
@@ -36,14 +37,15 @@ public class AmqpException extends AzureException {
     /**
      * Initializes a new instance of the AmqpException class.
      *
-     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
-     *         can be retried; otherwise not.
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the
+     *     request can be retried; otherwise not.
      * @param errorCondition The symbolic value indicating the error condition.
      * @param message Text containing any supplementary details not indicated by the condition field. This text can
-     *         be logged as an aid to resolving issues.
+     *     be logged as an aid to resolving issues.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, String message, ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, ErrorCondition errorCondition, String message,
+                         ErrorContext errorContext) {
         super(message);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -53,11 +55,11 @@ public class AmqpException extends AzureException {
     /**
      * Initializes a new instance of the AmqpException class.
      *
-     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
-     *         can be retried; otherwise not.
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the
+     *     request can be retried; otherwise not.
      * @param errorCondition The symbolic value indicating the error condition.
      * @param message Text containing any supplementary details not indicated by the condition field. This text can
-     *         be logged as an aid to resolving issues.
+     *     be logged as an aid to resolving issues.
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
@@ -72,13 +74,14 @@ public class AmqpException extends AzureException {
     /**
      * Initializes a new instance of the AmqpException class.
      *
-     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
-     *         can be retried; otherwise not.
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the
+     *     request can be retried; otherwise not.
      * @param errorCondition The symbolic value indicating the error condition.
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, ErrorCondition errorCondition, Throwable cause, ErrorContext errorContext) {
+    public AmqpException(boolean isTransient, ErrorCondition errorCondition, Throwable cause,
+                         ErrorContext errorContext) {
         super(cause.getMessage(), cause);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -88,10 +91,10 @@ public class AmqpException extends AzureException {
     /**
      * Initializes a new instance of the AmqpException class.
      *
-     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the request
-     *         can be retried; otherwise not.
+     * @param isTransient A boolean indicating if the exception is a transient error or not. If true, then the
+     *     request can be retried; otherwise not.
      * @param message Text containing any supplementary details not indicated by the condition field. This text can
-     *         be logged as an aid to resolving issues.
+     *     be logged as an aid to resolving issues.
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
@@ -118,7 +121,8 @@ public class AmqpException extends AzureException {
     /**
      * A boolean indicating if the exception is a transient error or not.
      *
-     * @return returns true when user can retry the operation that generated the exception without additional intervention.
+     * @return returns true when user can retry the operation that generated the exception without additional
+     * intervention.
      */
     public boolean isTransient() {
         return this.isTransient;

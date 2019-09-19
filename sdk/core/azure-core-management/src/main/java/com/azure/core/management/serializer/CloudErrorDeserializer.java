@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
     /** Object mapper for default deserializations. */
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     /**
      * Creates an instance of CloudErrorDeserializer.

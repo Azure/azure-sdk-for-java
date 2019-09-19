@@ -4,9 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -26,6 +27,7 @@ import reactor.test.StepVerifier;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -41,7 +43,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests scenarios on {@link EventHubAsyncClient}.
  */
 @RunWith(Parameterized.class)
-public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
+public class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
 
     @Parameterized.Parameters(name = "{index}: transportType={0}")
@@ -72,12 +74,11 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionOptions connectionOptions = getConnectionOptions();
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
 
         setupEventTestData(client);
     }
@@ -89,7 +90,7 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() throws NullPointerException {
-        new EventHubAsyncClient(null, null, null);
+        new EventHubAsyncClient(null, null, null, null);
     }
 
     /**
@@ -116,8 +117,6 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
     @Ignore("Investigate. Only 2 of the 4 consumers get the events. The other two consumers do not.")
     @Test
     public void parallelEventHubClients() throws InterruptedException {
-        skipIfNotRecordMode();
-
         // Arrange
         final int numberOfClients = 4;
         final int numberOfEvents = 10;
@@ -132,7 +131,7 @@ public class EventHubAsyncClientIntegrationTest extends ApiTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
         final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
+            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()), null);
         }
 
         final EventHubAsyncProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));

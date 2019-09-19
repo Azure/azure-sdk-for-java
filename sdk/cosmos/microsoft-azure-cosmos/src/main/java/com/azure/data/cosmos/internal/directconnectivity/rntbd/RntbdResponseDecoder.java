@@ -34,7 +34,8 @@ public final class RntbdResponseDecoder extends ByteToMessageDecoder {
             if (response != null) {
                 Logger.debug("{} DECODE COMPLETE: {}", context.channel(), response);
                 in.discardReadBytes();
-                out.add(response.retain());
+                response.retain();
+                out.add(response);
             }
         }
     }

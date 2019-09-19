@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.FluxUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -45,7 +44,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      *
      * @param detailLevel The HTTP logging detail level.
      * @param prettyPrintJSON If true, pretty prints JSON message bodies when logging.
-     *                        If the detailLevel does not include body logging, this flag does nothing.
+     *     If the detailLevel does not include body logging, this flag does nothing.
      */
     public HttpLoggingPolicy(HttpLogDetailLevel detailLevel, boolean prettyPrintJSON) {
         this.detailLevel = detailLevel;
@@ -62,10 +61,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final long startNs = System.nanoTime();
         //
         Mono<Void> logRequest = logRequest(logger, context.httpRequest());
-        Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate = logResponseDelegate(logger, context.httpRequest().url(), startNs);
+        Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate =
+            logResponseDelegate(logger, context.httpRequest().url(), startNs);
         //
         return logRequest.then(next.process()).flatMap(logResponseDelegate)
-                .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+            .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
@@ -86,15 +86,19 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 logger.info("(empty body)");
                 logger.info("--> END {}", request.httpMethod());
             } else {
-                boolean isHumanReadableContentType = !"application/octet-stream".equalsIgnoreCase(request.headers().value("Content-Type"));
+                boolean isHumanReadableContentType =
+                    !"application/octet-stream".equalsIgnoreCase(request.headers().value("Content-Type"));
                 final long contentLength = getContentLength(request.headers());
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
-                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufStream(request.body(), true);
+                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.body());
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
-                            bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
+                            bodyString = prettyPrintIfNeeded(
+                                logger,
+                                request.headers().value("Content-Type"),
+                                bodyString);
                             logger.info("{}-byte body:%n{}", contentLength, bodyString);
                             logger.info("--> END {}", request.httpMethod());
                             return Mono.empty();
@@ -111,7 +115,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return reqBodyLoggingMono;
     }
 
-    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url, final long startNs) {
+    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url,
+                                                                           final long startNs) {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
             //
@@ -123,9 +128,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 bodySize = contentLengthString + "-byte";
             }
 
-            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
+            //            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
             if (detailLevel.shouldLogURL()) {
-                logger.info("<-- {} {} {} ({} ms, {} body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize);
+                logger.info("<-- {} {} ({} ms, {} body)", response.statusCode(), url, tookMs, bodySize);
             }
 
             if (detailLevel.shouldLogHeaders()) {
@@ -138,7 +143,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 long contentLength = getContentLength(response.headers());
                 final String contentTypeHeader = response.headerValue("Content-Type");
                 if (!"application/octet-stream".equalsIgnoreCase(contentTypeHeader)
-                        && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
+                    && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
                     final HttpResponse bufferedResponse = response.buffer();
                     return bufferedResponse.bodyAsString().map(bodyStr -> {
                         bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
@@ -159,7 +164,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private String prettyPrintIfNeeded(ClientLogger logger, String contentType, String body) {
         String result = body;
-        if (prettyPrintJSON && contentType != null && (contentType.startsWith("application/json") || contentType.startsWith("text/json"))) {
+        if (prettyPrintJSON && contentType != null
+            && (contentType.startsWith("application/json") || contentType.startsWith("text/json"))) {
             try {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);
                 result = PRETTY_PRINTER.writeValueAsString(deserialized);

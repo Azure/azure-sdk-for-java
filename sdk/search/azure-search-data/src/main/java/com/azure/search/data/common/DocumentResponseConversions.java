@@ -19,17 +19,19 @@ import java.util.Set;
 public class DocumentResponseConversions {
 
     private static final String ODATA_CONTEXT = "@odata.context";
+
     /**
      * Convert a Linked HashMap object to Map object
+     *
      * @param linkedMapObject object to convert
      * @return {@link Map}{@code <}{@link String}{@code ,}{@link Object}{@code >}
      */
     public static Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
         /** This SuppressWarnings is for the checkstyle
-            it is used because api return type can be anything and therefore is an Object
-            in our case we know and we use it only when the return type is LinkedHashMap
+         it is used because api return type can be anything and therefore is an Object
+         in our case we know and we use it only when the return type is LinkedHashMap
          **/
-        @SuppressWarnings (value = "unchecked")
+        @SuppressWarnings(value = "unchecked")
         LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
 
         Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
@@ -52,9 +54,10 @@ public class DocumentResponseConversions {
 
         return convertedMap;
     }
-    
+
     /**
      * Convert Array Object elements
+     *
      * @param array which elements will be converted
      * @return {@link ArrayList}{@code <}{@link Object}{@code >}
      */
@@ -72,12 +75,14 @@ public class DocumentResponseConversions {
 
     /**
      * Map exceptions to be more informative
+     *
      * @param throwable to convert
      * @return Throwable
      */
     public static Throwable exceptionMapper(Throwable throwable) {
 
-        if (throwable instanceof HttpResponseException && throwable.getMessage().equals("Status code 404, (empty body)")) {
+        if (throwable instanceof HttpResponseException
+            && throwable.getMessage().equals("Status code 404, (empty body)")) {
             return new ResourceNotFoundException("Document not found", ((HttpResponseException) throwable).response());
         }
 
@@ -86,6 +91,7 @@ public class DocumentResponseConversions {
 
     /**
      * Drop fields that shouldn't be in the returned object
+     *
      * @param document document object
      * @return document without the redundant fields
      */

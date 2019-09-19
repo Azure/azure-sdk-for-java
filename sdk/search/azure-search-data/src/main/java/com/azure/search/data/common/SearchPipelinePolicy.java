@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 public class SearchPipelinePolicy implements HttpPipelinePolicy {
 
-    private String apiKey;
+    private final String apiKey;
 
     /**
      * Constrcutor

@@ -72,6 +72,11 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-client-runtime</artifactId>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
     <build>
         <plugins>
