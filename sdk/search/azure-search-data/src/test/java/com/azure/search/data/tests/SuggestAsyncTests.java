@@ -102,7 +102,6 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyComplete();
     }
 
-    @Test
     @Override
     public void testTopTrimsResults(){
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
