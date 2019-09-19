@@ -23,7 +23,6 @@ module com.azure.core {
     exports com.azure.core.http.policy;
     exports com.azure.core.http.rest;
     exports com.azure.core.util;
-    exports com.azure.core.util.configuration;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.polling;
     exports com.azure.core.util.tracing;

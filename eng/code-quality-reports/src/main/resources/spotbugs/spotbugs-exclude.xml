@@ -616,6 +616,7 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- FIXME: spotbugs issues in core test packages -->
   <Match>
     <Or>
       <Package name="com.azure.core.test"/>
