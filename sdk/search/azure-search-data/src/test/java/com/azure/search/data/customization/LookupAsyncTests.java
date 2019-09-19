@@ -4,10 +4,10 @@ package com.azure.search.data.customization;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SearchRequestOptions;
-import com.azure.search.data.customization.models.Hotel;
-import com.azure.search.data.customization.models.HotelAddress;
-import com.azure.search.data.customization.models.HotelRoom;
-import com.azure.search.data.customization.models.ModelWithPrimitiveCollections;
+import com.azure.search.test.environment.models.Hotel;
+import com.azure.search.test.environment.models.HotelAddress;
+import com.azure.search.test.environment.models.HotelRoom;
+import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
 

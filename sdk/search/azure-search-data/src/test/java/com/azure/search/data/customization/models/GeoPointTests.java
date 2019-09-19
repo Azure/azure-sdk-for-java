@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.data.customization;
+package com.azure.search.data.customization.models;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchPagedResponse;
-import com.azure.search.data.customization.models.GeoPoint;
+import com.azure.search.data.customization.SearchIndexClientTestBase;
 import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexAction;

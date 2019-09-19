@@ -8,7 +8,7 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.generated.models.SuggestResult;
-import com.azure.search.data.customization.models.Hotel;
+import com.azure.search.test.environment.models.Hotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;

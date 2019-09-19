@@ -1,4 +1,4 @@
-package com.azure.search.data.customization.models;
+package com.azure.search.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

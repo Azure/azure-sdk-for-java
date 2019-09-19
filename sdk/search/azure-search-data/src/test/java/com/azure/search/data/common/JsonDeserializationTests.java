@@ -8,10 +8,10 @@ import com.azure.search.data.common.jsonwrapper.api.Deserializer;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.api.Node;
 import com.azure.search.data.common.jsonwrapper.api.Type;
-import com.azure.search.data.customization.models.Car;
-import com.azure.search.data.customization.models.Foo;
-import com.azure.search.data.customization.models.FooWithInner;
-import com.azure.search.data.customization.models.GenericFoo;
+import com.azure.search.test.environment.models.Car;
+import com.azure.search.test.environment.models.Foo;
+import com.azure.search.test.environment.models.FooWithInner;
+import com.azure.search.test.environment.models.GenericFoo;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.data.customization.models;
+package com.azure.search.test.environment.models;
 
+import com.azure.search.data.customization.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;

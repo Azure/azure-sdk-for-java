@@ -4,9 +4,9 @@ package com.azure.search.data.customization;
 
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.IndexingResult;
-import com.azure.search.data.customization.models.Hotel;
-import com.azure.search.data.customization.models.HotelAddress;
-import com.azure.search.data.customization.models.HotelRoom;
+import com.azure.search.test.environment.models.Hotel;
+import com.azure.search.test.environment.models.HotelAddress;
+import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.service.SearchServiceClient;
 import com.azure.search.service.customization.SearchCredentials;
 import com.azure.search.service.implementation.SearchServiceClientImpl;
