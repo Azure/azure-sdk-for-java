@@ -171,7 +171,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#getSetting(ConfigurationSetting)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting
-        client.getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        client.getSetting("prodDBConnection", "westUS", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
@@ -182,7 +182,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#getSettingWithResponse(String, String)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting
-        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        client.getSettingWithResponse("prodDBConnection", "westUS", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
@@ -208,7 +208,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#deleteSetting(ConfigurationSetting)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting
-        client.deleteSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        client.deleteSetting("prodDBConnection", "westUS", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
@@ -219,7 +219,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#deleteSettingWithResponse(String, String)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting
-        client.deleteSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        client.deleteSettingWithResponse("prodDBConnection", "westUS", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();

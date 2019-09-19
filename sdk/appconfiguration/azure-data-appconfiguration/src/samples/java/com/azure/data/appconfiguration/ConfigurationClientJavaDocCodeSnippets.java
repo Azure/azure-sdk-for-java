@@ -192,7 +192,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         ConfigurationSetting resultSetting = configurationClient
-            .getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+            .getSetting("prodDBConnection", "westUS", null);
         System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting
 
@@ -202,8 +202,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         Response<ConfigurationSetting> responseResultSetting = configurationClient
-            .getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
-                new Context(key1, value1));
+            .getSettingWithResponse("prodDBConnection", "westUS", null, new Context(key1, value1));
         System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
             responseResultSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context
@@ -262,7 +261,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
         ConfigurationSetting resultSetting = configurationClient
-            .deleteSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+            .deleteSetting("prodDBConnection", "westUS", null);
         System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
 
@@ -271,8 +270,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseSetting = configurationClient
-            .deleteSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
-                new Context(key2, value2));
+            .deleteSettingWithResponse("prodDBConnection", "westUS", null, new Context(key2, value2));
         System.out
             .printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
