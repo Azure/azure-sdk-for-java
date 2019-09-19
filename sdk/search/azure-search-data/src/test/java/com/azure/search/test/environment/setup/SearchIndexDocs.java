@@ -5,16 +5,11 @@ package com.azure.search.test.environment.setup;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,20 +68,16 @@ public class SearchIndexDocs {
             getClass().getClassLoader().getResourceAsStream(HOTELS_DATA_JSON));
         List<Map> hotels = new ObjectMapper().readValue(docsData, List.class);
 
-        List<IndexAction> indexActions = createIndexActions(hotels);
-
-        System.out.println("Indexing " + indexActions.size() + " docs");
+        System.out.println("Indexing " + hotels.size() + " docs");
         System.out.println("Indexing Results:");
-        searchIndexAsyncClient.index(
-            new IndexBatch()
-                .actions(indexActions))
-                .doOnSuccess(documentIndexResult ->
-                    documentIndexResult
-                        .results().forEach(
-                            result ->
-                                System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
-                .doOnError(e -> System.out.println(e.getMessage()))
-                .block();
+        searchIndexAsyncClient.uploadDocuments(hotels)
+            .doOnSuccess(documentIndexResult ->
+                documentIndexResult
+                    .results().forEach(
+                        result ->
+                        System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+            .doOnError(e -> System.out.println(e.getMessage()))
+            .block();
 
 
     }
@@ -103,34 +94,15 @@ public class SearchIndexDocs {
                 .buildAsyncClient();
         }
 
-        List<Map> documents = new ArrayList<>();
-        documents.add(document);
-        List<IndexAction> indexActions = createIndexActions(documents);
-
-        System.out.println("Indexing " + indexActions.size() + " docs");
+        System.out.println("Indexing 1 doc");
         System.out.println("Indexing Results:");
-        searchIndexAsyncClient.index(
-            new IndexBatch()
-                .actions(indexActions))
-                .doOnSuccess(documentIndexResult ->
-                    documentIndexResult
-                        .results().forEach(
-                            result ->
-                                System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
-                .doOnError(e -> System.out.println(e.getMessage()))
-                .block();
-    }
-
-    private List<IndexAction> createIndexActions(List<Map> hotels) {
-        List<IndexAction> indexActions = new ArrayList<>();
-        assert hotels != null;
-        hotels.forEach(h -> {
-            Map<String, Object> hotel = new HashMap<String, Object>(h);
-            indexActions.add(new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(hotel)
-            );
-        });
-        return indexActions;
+        searchIndexAsyncClient.uploadDocument(document)
+            .doOnSuccess(documentIndexResult ->
+                documentIndexResult
+                    .results().forEach(
+                        result ->
+                        System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+            .doOnError(e -> System.out.println(e.getMessage()))
+            .block();
     }
 }

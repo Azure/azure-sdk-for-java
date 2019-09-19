@@ -4,9 +4,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.common.jsonwrapper.JsonWrapper;
-import com.azure.search.data.common.jsonwrapper.api.JsonApi;
-import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -15,6 +12,7 @@ import com.azure.search.test.environment.models.Book;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
+import com.azure.search.test.environment.models.LoudHotel;
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
@@ -60,7 +58,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
         }).verifyComplete();
 
-        waitFor(2);
+        waitForIndexing();
 
         StepVerifier.create(client.countDocuments()).
             expectNext(expectedHotelCount).
@@ -85,7 +83,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
         }).verifyComplete();
 
-        waitFor(2);
+        waitForIndexing();
 
         StepVerifier.create(client.countDocuments()).
             expectNext(expectedHotelCount).
@@ -94,16 +92,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void canIndexStaticallyTypedDocuments() throws ParseException {
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
-
         Hotel hotel1 = prepareStaticallyTypedHotel("1");
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
         Hotel hotel3 = prepareStaticallyTypedHotel("3");
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexBatch batch = new IndexBatchBuilder()
+        IndexBatch<Hotel> batch = new IndexBatchBuilder<Hotel>()
             .upload(hotel1)
             .delete(randomHotel)
             .merge(nonExistingHotel)
@@ -159,7 +154,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexBatch batch = new IndexBatchBuilder()
+        IndexBatch<Document> batch = new IndexBatchBuilder<Document>()
             .upload(hotel1)
             .delete(randomHotel)
             .merge(nonExistingHotel)
@@ -237,9 +232,6 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void canRoundtripBoundaryValues() throws Exception {
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
-
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
         client.uploadDocuments(boundaryConditionDocs).block();
@@ -284,7 +276,11 @@ public class IndexingAsyncTests extends IndexingTestBase {
         }
 
         // Upload and retrieve book documents
-        uploadDocuments(client, BOOKS_INDEX_NAME, books);
+        client.setIndexName(BOOKS_INDEX_NAME)
+            .uploadDocuments(books)
+            .block();
+        waitForIndexing();
+
         Mono<Document> actualBook1 = client.getDocument(ISBN1);
         Mono<Document> actualBook2 = client.getDocument(ISBN2);
 
@@ -344,7 +340,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         }
 
         // Upload and retrieve book documents
-        uploadDocuments(client, BOOKS_INDEX_NAME, books);
+        client.setIndexName(BOOKS_INDEX_NAME).uploadDocuments(books).block();
         Mono<Document> actualBook1 = client.getDocument(ISBN1);
         Mono<Document> actualBook2 = client.getDocument(ISBN2);
 
@@ -464,7 +460,6 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         client.uploadDocument(originalDoc).block();
         client.mergeDocument(updatedDoc).block();
-
         // Verify
         StepVerifier.create(client.getDocument("1"))
             .assertNext(result -> Assert.assertEquals(expectedDoc, result.as(Hotel.class)))
@@ -484,12 +479,12 @@ public class IndexingAsyncTests extends IndexingTestBase {
             new Hotel().hotelId("1"),
             new Hotel().hotelId("2")
         )).block();
-        waitFor(2);
+        waitForIndexing();
         StepVerifier.create(client.countDocuments())
             .expectNext(2L)
             .verifyComplete();
 
-        IndexBatch deleteBatch = new IndexBatchBuilder()
+        IndexBatch<Hotel> deleteBatch = new IndexBatchBuilder<Hotel>()
             .delete("HotelId", Arrays.asList("1", "2"))
             .build();
 
@@ -502,7 +497,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertIndexActionSucceeded("2", res.results().get(1), 200);
             })
             .verifyComplete();
-        waitFor(2);
+        waitForIndexing();
 
         StepVerifier.create(client.countDocuments())
             .expectNext(0L)
@@ -513,14 +508,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
         Hotel document = new Hotel().hotelId("1").category("Luxury");
 
-        client.uploadDocuments(Arrays.asList(document)).block();
-        waitFor(2);
+        client.uploadDocument(document).block();
+        waitForIndexing();
         StepVerifier.create(client.countDocuments())
             .expectNext(1L)
             .verifyComplete();
 
         document.category("ignored");
-        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocuments(Arrays.asList(document));
+        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocument(document);
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
@@ -528,7 +523,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertIndexActionSucceeded("1", res.results().get(0), 200);
             })
             .verifyComplete();
-        waitFor(2);
+        waitForIndexing();
 
         StepVerifier.create(client.countDocuments())
             .expectNext(0L)
@@ -541,14 +536,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         document.put("HotelId", "1");
         document.put("Category", "Luxury");
 
-        client.uploadDocuments(Arrays.asList(document)).block();
-        waitFor(2);
+        client.uploadDocument(document).block();
+        waitForIndexing();
         StepVerifier.create(client.countDocuments())
             .expectNext(1L)
             .verifyComplete();
 
         document.put("Category", "ignored");
-        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocuments(Arrays.asList(document));
+        Mono<DocumentIndexResult> documentIndexResult = client.deleteDocument(document);
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
@@ -556,10 +551,131 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertIndexActionSucceeded("1", res.results().get(0), 200);
             })
             .verifyComplete();
-        waitFor(2);
+        waitForIndexing();
 
         StepVerifier.create(client.countDocuments())
             .expectNext(0L)
+            .verifyComplete();
+    }
+
+    @Override
+    public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        LoudHotel originalDoc = new LoudHotel()
+            .HOTELID("1")
+            .HOTELNAME("Secret Point Motel")
+            .DESCRIPTION("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .CATEGORY("Boutique")
+            .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
+            .PARKINGINCLUDED(false)
+            .SMOKINGALLOWED(false)
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
+            .RATING(4)
+            .LOCATION(GeoPoint.createWithDefaultCrs(-73.975403, 40.760586))     // todo: swap lat/long after merging GeoPoint fix
+            .ADDRESS(new HotelAddress()
+                .streetAddress("677 5th Ave")
+                .city("New York")
+                .stateProvince("NY")
+                .country("USA")
+                .postalCode("10022")
+            ).ROOMS(Arrays.asList(
+                new HotelRoom()
+                    .description("Budget Room, 1 Queen Bed (Cityside)")
+                    .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
+                    .type("Budget Room")
+                    .baseRate(9.69)
+                    .bedOptions("1 Queen Bed")
+                    .sleepsCount(2)
+                    .smokingAllowed(true)
+                    .tags(Arrays.asList("vcr/dvd")),
+                new HotelRoom()
+                    .description("Budget Room, 1 King Bed (Mountain View)")
+                    .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
+                    .type("Budget Room")
+                    .baseRate(8.09)
+                    .bedOptions("1 King Bed")
+                    .sleepsCount(2)
+                    .smokingAllowed(true)
+                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+            ));
+
+        LoudHotel updatedDoc = new LoudHotel()
+            .HOTELID("1")
+            .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
+            .TAGS(Arrays.asList("pool", "air conditioning"))
+            .PARKINGINCLUDED(true)
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
+            .RATING(3)
+            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .ADDRESS(new HotelAddress())
+            .ROOMS(Arrays.asList(
+                new HotelRoom()
+                    .description(null)
+                    .type("Budget Room")
+                    .baseRate(10.5)
+                    .smokingAllowed(false)
+                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+            ));
+
+        LoudHotel expectedDoc = new LoudHotel()
+            .HOTELID("1")
+            .HOTELNAME("Secret Point Motel")
+            .DESCRIPTION(null)
+            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .CATEGORY("Boutique")
+            .TAGS(Arrays.asList("pool", "air conditioning"))
+            .PARKINGINCLUDED(true)
+            .SMOKINGALLOWED(false)
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
+            .RATING(3)
+            .LOCATION(null)
+            .ADDRESS(new HotelAddress()
+                .streetAddress("677 5th Ave")
+                .city("New York")
+                .stateProvince("NY")
+                .country("USA")
+                .postalCode("10022")
+            ).ROOMS(Arrays.asList(
+                // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
+                // because we don't support partial updates for complex collections.
+                new HotelRoom()
+                    .description(null)
+                    .descriptionFr(null)
+                    .type("Budget Room")
+                    .baseRate(10.5)
+                    .bedOptions(null)
+                    .sleepsCount(null)
+                    .smokingAllowed(false)
+                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+            ));
+
+        client.uploadDocuments(Arrays.asList(originalDoc)).block();
+        waitForIndexing();
+
+        client.mergeDocument(updatedDoc).block();
+        waitForIndexing();
+
+        Mono<Document> mono = client.getDocument("1");
+
+        StepVerifier.create(mono)
+            .expectNextMatches(result -> {
+                LoudHotel actual = result.as(LoudHotel.class);
+                return actual.equals(expectedDoc);
+            })
+            .verifyComplete();
+
+        client.uploadDocument(originalDoc).block();
+        waitForIndexing();
+        mono = client.getDocument("1");
+
+        StepVerifier.create(mono)
+            .expectNextMatches(result -> {
+                LoudHotel actual = result.as(LoudHotel.class);
+                return actual.equals(originalDoc);
+            })
             .verifyComplete();
     }
 

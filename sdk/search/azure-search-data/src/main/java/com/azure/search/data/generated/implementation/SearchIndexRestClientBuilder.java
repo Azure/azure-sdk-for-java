@@ -7,6 +7,8 @@ package com.azure.search.data.generated.implementation;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.serializer.SerializerAdapter;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.search.data.generated.Documents;
 import com.azure.search.data.generated.SearchIndexRestClient;
 
@@ -80,6 +82,22 @@ public final class SearchIndexRestClientBuilder {
     }
 
     /*
+     * The serializer to use for requests
+     */
+    private SerializerAdapter serializer;
+
+    /**
+     * Sets The serializer to use for requests.
+     *
+     * @param serializer the serializer value.
+     * @return the SearchIndexRestClientBuilder.
+     */
+    public SearchIndexRestClientBuilder serializer(SerializerAdapter serializer) {
+        this.serializer = serializer;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -104,7 +122,10 @@ public final class SearchIndexRestClientBuilder {
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
-        SearchIndexRestClientImpl client = new SearchIndexRestClientImpl(pipeline);
+        if (serializer == null) {
+            this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        SearchIndexRestClientImpl client = new SearchIndexRestClientImpl(pipeline, serializer);
         if (this.apiVersion != null) {
             client.setApiVersion(this.apiVersion);
         }

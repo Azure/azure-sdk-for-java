@@ -181,6 +181,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canMergeStaticallyTypedDocuments() throws ParseException;
 
+    @Test
+    public abstract void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException;
+
     protected abstract void initializeClient();
 
     protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
@@ -188,15 +191,6 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         Assert.assertTrue(result.succeeded());
         Assert.assertNull(result.errorMessage());
         Assert.assertEquals(expectedStatusCode, result.statusCode());
-    }
-
-    protected void waitFor(int seconds) {
-        seconds = seconds * 1000;
-        try {
-            Thread.sleep(seconds);
-        } catch (InterruptedException e) {
-            Assert.fail(e.getMessage());
-        }
     }
 
     protected List<Hotel> getBoundaryValues() throws ParseException {

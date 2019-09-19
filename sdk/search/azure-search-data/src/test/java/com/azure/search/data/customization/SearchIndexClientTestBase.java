@@ -16,9 +16,6 @@ import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.api.Type;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.microsoft.azure.AzureEnvironment;
@@ -29,7 +26,6 @@ import org.junit.rules.TestName;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,13 +60,13 @@ public class SearchIndexClientTestBase extends TestBase {
 
     protected <T> void uploadDocuments(SearchIndexClient client, String indexName, T uploadDoc) {
         client.setIndexName(indexName)
-            .index(new IndexBatch().actions(createIndexActions(uploadDoc)));
+            .uploadDocument(uploadDoc);
         waitForIndexing();
     }
 
     protected <T> void uploadDocuments(SearchIndexAsyncClient client, String indexName, T uploadDoc) {
         client.setIndexName(indexName)
-            .index(new IndexBatch().actions(createIndexActions(uploadDoc)))
+            .uploadDocument(uploadDoc)
             .block();
         waitForIndexing();
     }
@@ -94,18 +90,6 @@ public class SearchIndexClientTestBase extends TestBase {
         uploadDocuments(client, indexName, documents);
 
         return documents;
-    }
-
-    private <T> List<IndexAction> createIndexActions(T uploadDoc) {
-        jsonApi.configureTimezone();
-        List<IndexAction> indexActions = new LinkedList<>();
-        if (uploadDoc instanceof List) {
-            ((List) uploadDoc)
-                .forEach(d -> addDocumentToIndexActions(indexActions, jsonApi.convertObjectToType(d, Map.class)));
-        } else {
-            addDocumentToIndexActions(indexActions, jsonApi.convertObjectToType(uploadDoc, Map.class));
-        }
-        return indexActions;
     }
 
     protected SearchIndexClientBuilder builderSetup() {
@@ -175,24 +159,14 @@ public class SearchIndexClientTestBase extends TestBase {
         }
     }
 
-    /**
-     * Add a given document to the index actions list
-     *
-     * @param indexActions object to be modified
-     * @param document     the document to be added
-     */
-    private void addDocumentToIndexActions(List<IndexAction> indexActions, Map<String, Object> document) {
-        indexActions.add(new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(document));
-    }
-
-    private void waitForIndexing() {
+    protected void waitForIndexing() {
         // Wait 2 secs to allow index request to finish
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (!interceptorManager.isPlaybackMode()) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

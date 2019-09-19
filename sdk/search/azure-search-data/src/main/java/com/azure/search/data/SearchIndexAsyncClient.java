@@ -211,9 +211,10 @@ public interface SearchIndexAsyncClient {
      * Sends a batch of document write actions to the Azure Search index.
      *
      * @param batch batch of documents to send to the index with the requested action
+     * @param <T> the type of document to index
      * @return document index result
      */
-    Mono<DocumentIndexResult> index(IndexBatch batch);
+    <T> Mono<DocumentIndexResult> index(IndexBatch<T> batch);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.

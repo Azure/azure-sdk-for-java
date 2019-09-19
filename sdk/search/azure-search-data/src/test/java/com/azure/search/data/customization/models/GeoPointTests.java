@@ -10,9 +10,6 @@ import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.customization.SearchIndexClientTestBase;
 import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
@@ -26,10 +23,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,16 +59,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
             getClass().getClassLoader().getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS));
 
         List<Map<String, Object>> documents = new ObjectMapper().readValue(docsData, List.class);
-        List<IndexAction> indexActions = new LinkedList<>();
-
-        documents.forEach(d -> {
-            HashMap<String, Object> doc = new HashMap<>(d);
-            indexActions.add(new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties(doc));
-        });
-
-        client.index(new IndexBatch().actions(indexActions));
+        client.uploadDocuments(documents);
 
         // Wait 2 secs to allow index request to finish
         Thread.sleep(2000);
@@ -103,12 +89,8 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
-        Map indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(100.0, 1.0));
-        DocumentIndexResult indexResult = client.setIndexName(INDEX_NAME_GEO_POINTS)
-            .index(new IndexBatch()
-                .actions(Collections.singletonList(new IndexAction()
-                    .actionType(IndexActionType.UPLOAD)
-                    .additionalProperties(indexObjectMap))));
+        Map<String, Object> indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(100.0, 1.0));
+        DocumentIndexResult indexResult = client.setIndexName(INDEX_NAME_GEO_POINTS).uploadDocument(indexObjectMap);
         Assert.assertNotNull(indexResult);
         Assert.assertTrue(indexResult.results().get(0).succeeded());
     }

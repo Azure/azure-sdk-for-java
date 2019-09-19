@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.data.customization;
 
-import com.azure.search.data.common.jsonwrapper.JsonWrapper;
-import com.azure.search.data.common.jsonwrapper.api.JsonApi;
-import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -13,19 +10,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
-public class IndexBatchBuilder {
-    private final JsonApi jsonApi;
-    private final List<IndexAction> indexActions;
+public class IndexBatchBuilder<T> {
+    private final List<IndexAction<T>> indexActions;
 
     /**
      * Public constructor with no parameters.
      */
     public IndexBatchBuilder() {
-        jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
         indexActions = new ArrayList<>();
     }
 
@@ -33,10 +26,9 @@ public class IndexBatchBuilder {
      * Adds an Upload IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder upload(T document) {
+    public IndexBatchBuilder<T> upload(T document) {
         appendDocumentAction(document, IndexActionType.UPLOAD);
         return this;
     }
@@ -45,10 +37,9 @@ public class IndexBatchBuilder {
      * Adds Upload IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder upload(List<T> documents) {
+    public IndexBatchBuilder<T> upload(List<T> documents) {
         appendDocumentAction(documents, IndexActionType.UPLOAD);
         return this;
     }
@@ -57,10 +48,9 @@ public class IndexBatchBuilder {
      * Adds a Delete IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder delete(T document) {
+    public IndexBatchBuilder<T> delete(T document) {
         appendDocumentAction(document, IndexActionType.DELETE);
         return this;
     }
@@ -69,10 +59,9 @@ public class IndexBatchBuilder {
      * Adds Delete IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder delete(List<T> documents) {
+    public IndexBatchBuilder<T> delete(List<T> documents) {
         appendDocumentAction(documents, IndexActionType.DELETE);
         return this;
     }
@@ -84,13 +73,13 @@ public class IndexBatchBuilder {
      * @param keyValues The keys of the documents to delete.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public IndexBatchBuilder delete(String keyName, List<String> keyValues) {
+    public IndexBatchBuilder<T> delete(String keyName, List<String> keyValues) {
         for (String val : keyValues) {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put(keyName, val);
             this.indexActions.add(new IndexAction()
                 .actionType(IndexActionType.DELETE)
-                .additionalProperties(map));
+                .document(map));
         }
         return this;
     }
@@ -99,10 +88,9 @@ public class IndexBatchBuilder {
      * Adds a Merge IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder merge(T document) {
+    public IndexBatchBuilder<T> merge(T document) {
         appendDocumentAction(document, IndexActionType.MERGE);
         return this;
     }
@@ -111,10 +99,9 @@ public class IndexBatchBuilder {
      * Adds Merge IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder merge(List<T> documents) {
+    public IndexBatchBuilder<T> merge(List<T> documents) {
         appendDocumentAction(documents, IndexActionType.MERGE);
         return this;
     }
@@ -123,10 +110,9 @@ public class IndexBatchBuilder {
      * Adds a Merge or Upload IndexAction to the IndexAction chain for a document.
      *
      * @param document The document to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder mergeOrUpload(T document) {
+    public IndexBatchBuilder<T> mergeOrUpload(T document) {
         appendDocumentAction(document, IndexActionType.MERGE_OR_UPLOAD);
         return this;
     }
@@ -135,29 +121,25 @@ public class IndexBatchBuilder {
      * Adds Merge or Upload IndexActions to the IndexAction chain for a collection of documents.
      *
      * @param documents The document collection to be uploaded.
-     * @param <T> The type of object to serialize.
      * @return IndexBatchBuilder with the desired actions.
      */
-    public <T> IndexBatchBuilder mergeOrUpload(List<T> documents) {
+    public IndexBatchBuilder<T> mergeOrUpload(List<T> documents) {
         appendDocumentAction(documents, IndexActionType.MERGE_OR_UPLOAD);
         return this;
     }
 
-    private <T> void appendDocumentAction(T document, IndexActionType actionType) {
-        this.indexActions.add(new IndexAction().
+    private void appendDocumentAction(T document, IndexActionType actionType) {
+        this.indexActions.add(new IndexAction<T>().
             actionType(actionType).
-            additionalProperties(entityToMap(document)));
+            document(document));
     }
 
-    private <T> void appendDocumentAction(List<T> documents, IndexActionType actionType) {
-        this.indexActions.addAll(documents.stream()
-            .map(doc -> new IndexAction()
+    private void appendDocumentAction(List<T> documents, IndexActionType actionType) {
+        documents.forEach(d -> {
+            this.indexActions.add(new IndexAction<T>()
                 .actionType(actionType)
-                .additionalProperties(entityToMap(doc))).collect(Collectors.toList()));
-    }
-
-    private <T> Map<String, Object> entityToMap(T entity) {
-        return this.jsonApi.convertObjectToType(entity, Map.class);
+                .document(d));
+        });
     }
 
     /**
@@ -165,8 +147,8 @@ public class IndexBatchBuilder {
      *
      * @return An IndexBatch with the desired actions.
      */
-    public IndexBatch build() {
-        return new IndexBatch().actions(this.indexActions);
+    public IndexBatch<T> build() {
+        return new IndexBatch<T>().actions(this.indexActions);
     }
 
     /**

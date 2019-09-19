@@ -9,6 +9,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.serializer.SerializerAdapter;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.AutoCompletePagedResponse;
 import com.azure.search.data.common.DocumentResponseConversions;
@@ -32,10 +34,17 @@ import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements SearchIndexAsyncClient {
+
+    /**
+     * The lazily-created serializer for search index client.
+     */
+    private static SerializerAdapter serializer;
 
     /**
      * Search Service dns suffix
@@ -115,6 +124,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     private void initialize() {
+        initializeSerializerAdapter();
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(searchServiceName)
             .indexName(indexName)
@@ -123,6 +133,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .pipeline(new HttpPipelineBuilder()
                 .httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0])).build())
+                .serializer(serializer)
             .build();
     }
 
@@ -140,42 +151,42 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     @Override
     public <T> Mono<DocumentIndexResult> uploadDocument(T document) {
-        return this.index(new IndexBatchBuilder().upload(document).build());
+        return this.index(new IndexBatchBuilder<T>().upload(document).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().upload(documents).build());
+        return this.index(new IndexBatchBuilder<T>().upload(documents).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> mergeDocument(T document) {
-        return this.index(new IndexBatchBuilder().merge(document).build());
+        return this.index(new IndexBatchBuilder<T>().merge(document).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> mergeDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().merge(documents).build());
+        return this.index(new IndexBatchBuilder<T>().merge(documents).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> mergeOrUploadDocument(T document) {
-        return this.index(new IndexBatchBuilder().mergeOrUpload(document).build());
+        return this.index(new IndexBatchBuilder<T>().mergeOrUpload(document).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> mergeOrUploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().mergeOrUpload(documents).build());
+        return this.index(new IndexBatchBuilder<T>().mergeOrUpload(documents).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> deleteDocument(T document) {
-        return this.index(new IndexBatchBuilder().delete(document).build());
+        return this.index(new IndexBatchBuilder<T>().delete(document).build());
     }
 
     @Override
     public <T> Mono<DocumentIndexResult> deleteDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().delete(documents).build());
+        return this.index(new IndexBatchBuilder<T>().delete(documents).build());
     }
 
     @Override
@@ -281,7 +292,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
-    public Mono<DocumentIndexResult> index(IndexBatch batch) {
+    public <T> Mono<DocumentIndexResult> index(IndexBatch<T> batch) {
         Mono<SimpleResponse<DocumentIndexResult>> responseMono = restClient
             .documents()
             .indexWithRestResponseAsync(batch);
@@ -457,5 +468,20 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         }
 
         return autoCompleteRequest;
+    }
+
+    /**
+     * initialize singleton instance of the default serializer adapter.
+     */
+    private static synchronized void initializeSerializerAdapter() {
+        if (serializer == null) {
+            JacksonAdapter adapter = new JacksonAdapter();
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            df.setTimeZone(TimeZone.getDefault());
+            adapter.serializer().setDateFormat(df);
+
+            serializer = adapter;
+        }
     }
 }
