@@ -51,10 +51,15 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals("10", hotel.hotelId());
     }
 
-    protected void verifyCanSuggestStaticallyTypedDocuments(PagedResponse<SuggestResult> suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
+    protected void verifyCanSuggestStaticallyTypedDocuments(PagedResponse<SuggestResult> suggestResultPagedResponse,
+                                                            List<Map<String, Object>> expectedHotels) {
         //sanity
         Assert.assertNotNull(suggestResultPagedResponse);
-        List<Document> docs = suggestResultPagedResponse.value().stream().map(h -> h.additionalProperties()).collect(Collectors.toList());
+        List<Document> docs = suggestResultPagedResponse
+                                    .value()
+                                    .stream()
+                                    .map(h -> h.additionalProperties())
+                                    .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.value();
 
 
@@ -68,6 +73,18 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(2, docs.size());
         Assert.assertEquals(hotelsList.stream().map(h -> h.text()).collect(Collectors.toList()),
             expectedHotelsList.stream().map(h -> h.description()).collect(Collectors.toList()));
+    }
+
+    protected void verifyTopDocumentSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+        Assert.assertNotNull(suggestResultPagedResponse);
+        Assert.assertEquals(3, suggestResultPagedResponse.value().size());
+        List<String> resultIds = suggestResultPagedResponse
+                                    .value()
+                                    .stream()
+                                    .map(hotel -> hotel.additionalProperties().as(Hotel.class).hotelId())
+                                    .collect(Collectors.toList());
+
+        Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
     }
 
     @Test
@@ -84,5 +101,8 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canSuggestStaticallyTypedDocuments();
+
+    @Test
+    public abstract void testTopTrimsResults();
 
 }

@@ -101,4 +101,23 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .assertNext(result -> verifyCanSuggestStaticallyTypedDocuments(result, hotels))
             .verifyComplete();
     }
+
+    @Test
+    @Override
+    public void testTopTrimsResults(){
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        //arrange
+        SuggestParameters suggestParams = new SuggestParameters();
+        suggestParams.orderBy(new LinkedList<>(Arrays.asList("HotelId")));
+        suggestParams.top(3);
+
+        //act
+        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(this::verifyTopDocumentSuggest)
+            .verifyComplete();
+    }
 }
