@@ -63,13 +63,79 @@ public interface SearchIndexClient {
     // Index Operations
 
     /**
+     * Uploads a document to the target index.
+     *
+     * @param document the document to upload to the target Index
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> DocumentIndexResult  uploadDocument(T document);
+
+    /**
      * Uploads a collection of documents to the target index
      *
      * @param documents collection of documents to upload to the target Index.
      * @param <T> The type of object to serialize.
      * @return document index result.
      */
-    <T> DocumentIndexResult  uploadDocuments(List<T> documents);
+    <T> DocumentIndexResult uploadDocuments(List<T> documents);
+
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
+    <T> DocumentIndexResult deleteDocuments(List<T> documents);
+
+    /**
+     * Merges a document with an existing document in the target index.
+     *
+     * @param document the document to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> DocumentIndexResult  mergeDocument(T document);
+
+    /**
+     * Merges a collection of documents with existing documents in the target index.
+     *
+     * @param documents collection of documents to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> DocumentIndexResult  mergeDocuments(List<T> documents);
+
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param document the document to be merged, if exists, otherwise uploaded as a new document
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> DocumentIndexResult mergeOrUploadDocument(T document);
+
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> DocumentIndexResult  mergeOrUploadDocuments(List<T> documents);
+
+    /**
+     * Deletes a document from the target index.
+     * Note that any field you specify in a delete operation, other than the key field, will be ignored.
+     *
+     * @param document the document to delete from the target Index
+     * @param <T> The type of object to serialize
+     * @return document index result
+     */
+    <T> DocumentIndexResult deleteDocument(T document);
 
     /**
      * Gets the number of documents

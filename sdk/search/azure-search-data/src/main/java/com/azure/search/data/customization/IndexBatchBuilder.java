@@ -10,6 +10,7 @@ import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,6 +74,24 @@ public class IndexBatchBuilder {
      */
     public <T> IndexBatchBuilder delete(List<T> documents) {
         appendDocumentAction(documents, IndexActionType.DELETE);
+        return this;
+    }
+
+    /**
+     * Adds Delete IndexActions to the IndexAction chain for a collection of documents.
+     *
+     * @param keyName The name of the key field that uniquely identifies documents in the index.
+     * @param keyValues The keys of the documents to delete.
+     * @return IndexBatchBuilder with the desired actions.
+     */
+    public IndexBatchBuilder delete(String keyName, List<String> keyValues) {
+        for (String val : keyValues) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put(keyName, val);
+            this.indexActions.add(new IndexAction()
+                .actionType(IndexActionType.DELETE)
+                .additionalProperties(map));
+        }
         return this;
     }
 
