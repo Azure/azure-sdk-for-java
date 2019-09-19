@@ -3,18 +3,30 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.storage.common.AccountSASPermission;
+import com.azure.storage.common.AccountSASResourceType;
+import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.core.util.Context;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
+
 import java.net.URL;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a fileServiceAsyncClient that contains all the operations for interacting with a file account in Azure Storage.
@@ -80,8 +92,8 @@ public final class FileServiceClient {
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
-    public Iterable<ShareItem> listShares() {
-        return listShares(null);
+    public PagedIterable<ShareItem> listShares() {
+        return listShares(null, null, null);
     }
 
     /**
@@ -100,20 +112,23 @@ public final class FileServiceClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context1}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.listShares#ListSharesOptions-Duration-Context2}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-shares">Azure Docs</a>.</p>
      *
      * @param options Options for listing shares
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Iterable<ShareItem> listShares(ListSharesOptions options) {
-        return fileServiceAsyncClient.listShares(options).toIterable();
+    public PagedIterable<ShareItem> listShares(ListSharesOptions options, Duration timeout, Context context) {
+        return new PagedIterable<>(fileServiceAsyncClient.listSharesWithOptionalTimeout(null, options, timeout, context));
     }
 
     /**
@@ -129,10 +144,33 @@ public final class FileServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
      *
-     * @return Storage account File service properties
+     * @return Storage account {@link FileServiceProperties File service properties}
      */
-    public Response<FileServiceProperties> getProperties() {
-        return fileServiceAsyncClient.getProperties().block();
+    public FileServiceProperties getProperties() {
+        return getPropertiesWithResponse(null, Context.NONE).value();
+    }
+
+    /**
+     * Retrieves the properties of the storage account's File service. The properties range from storage analytics and
+     * metrics to CORS (Cross-Origin Resource Sharing).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve File service properties</p>
+     *
+     * {@codesnippet com.azure.storage.file.fileServiceClient.getPropertiesWithResponse#duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-service-properties">Azure Docs</a>.</p>
+     *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the Storage account {@link FileServiceProperties File service properties} with headers and response status code
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<FileServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        Mono<Response<FileServiceProperties>> response = fileServiceAsyncClient.getPropertiesWithResponse(context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -146,7 +184,7 @@ public final class FileServiceClient {
      *
      * <p>Clear CORS in the File service</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
@@ -156,8 +194,7 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
      *
      * @param properties Storage account File service properties
-     * @return A response that only contains headers and response status code
-     * @throws StorageErrorException When one of the following is true
+     * @throws StorageException When one of the following is true
      * <ul>
      *     <li>A CORS rule is missing one of its fields</li>
      *     <li>More than five CORS rules will exist for the Queue service</li>
@@ -169,8 +206,50 @@ public final class FileServiceClient {
      *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
      * </ul>
      */
-    public VoidResponse setProperties(FileServiceProperties properties) {
-        return fileServiceAsyncClient.setProperties(properties).block();
+    public void setProperties(FileServiceProperties properties) {
+        setPropertiesWithResponse(properties, null, Context.NONE);
+    }
+
+    /**
+     * Sets the properties for the storage account's File service. The properties range from storage analytics and
+     * metric to CORS (Cross-Origin Resource Sharing).
+     *
+     * To maintain the CORS in the Queue service pass a {@code null} value for {@link FileServiceProperties#cors() CORS}.
+     * To disable all CORS in the Queue service pass an empty list for {@link FileServiceProperties#cors() CORS}.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p>Clear CORS in the File service</p>
+     *
+     * {@codesnippet com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS}
+     *
+     * <p>Enable Minute and Hour Metrics</p>
+     *
+     * {@codesnippet com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties">Azure Docs</a>.</p>
+     *
+     * @param properties Storage account File service properties
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code
+     * @throws StorageException When one of the following is true
+     * <ul>
+     *     <li>A CORS rule is missing one of its fields</li>
+     *     <li>More than five CORS rules will exist for the Queue service</li>
+     *     <li>Size of all CORS rules exceeds 2KB</li>
+     *     <li>
+     *         Length of {@link CorsRule#allowedHeaders() allowed headers}, {@link CorsRule#exposedHeaders() exposed headers},
+     *         or {@link CorsRule#allowedOrigins() allowed origins} exceeds 256 characters.
+     *     </li>
+     *     <li>{@link CorsRule#allowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or PUT</li>
+     * </ul>
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public VoidResponse setPropertiesWithResponse(FileServiceProperties properties, Duration timeout, Context context) {
+        Mono<VoidResponse> response = fileServiceAsyncClient.setPropertiesWithResponse(properties, context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -186,11 +265,11 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
-     * @return A response containing the ShareClient and the status of creating the share.
-     * @throws StorageErrorException If a share with the same name already exists
+     * @return The {@link ShareClient ShareClient}
+     * @throws StorageException If a share with the same name already exists
      */
-    public Response<ShareClient> createShare(String shareName) {
-        return createShare(shareName, null, null);
+    public ShareClient createShare(String shareName) {
+        return createShareWithResponse(shareName, null, null, null, Context.NONE).value();
     }
 
     /**
@@ -199,13 +278,9 @@ public final class FileServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Create the share "test" with metadata "share:metadata"</p>
-     *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata}
-     *
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota}
+     * {@codesnippet com.azure.storage.file.FileServiceClient.createShareWithResponse#string-map-integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -214,13 +289,17 @@ public final class FileServiceClient {
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
-     * @return A response containing the ShareClient and the status of creating the share.
-     * @throws StorageErrorException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
+     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareClient> createShare(String shareName, Map<String, String> metadata, Integer quotaInGB) {
+    public Response<ShareClient> createShareWithResponse(String shareName, Map<String, String> metadata,
+                                                         Integer quotaInGB, Duration timeout, Context context) {
         ShareClient shareClient = getShareClient(shareName);
-        return new SimpleResponse<>(shareClient.create(metadata, quotaInGB), shareClient);
+        return new SimpleResponse<>(shareClient.createWithResponse(metadata, quotaInGB, null, context), shareClient);
     }
 
     /**
@@ -236,11 +315,10 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
-     * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist
+     * @throws StorageException If the share doesn't exist
      */
-    public VoidResponse deleteShare(String shareName) {
-        return deleteShare(shareName, null);
+    public void deleteShare(String shareName) {
+        deleteShareWithResponse(shareName, null, null, Context.NONE);
     }
 
     /**
@@ -251,17 +329,61 @@ public final class FileServiceClient {
      *
      * <p>Delete the snapshot of share "test" that was created at current time. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string-string}
+     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
+     * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteShare(String shareName, String snapshot) {
-        return fileServiceAsyncClient.deleteShare(shareName, snapshot).block();
+    public VoidResponse deleteShareWithResponse(String shareName, String snapshot, Duration timeout, Context context) {
+        Mono<VoidResponse> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        return this.fileServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.FileServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
+     *
+     * @param accountSASService The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime The {@code OffsetDateTime} start time for the account SAS
+     * @param version The {@code String} version for the account SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IPRange ipRange, SASProtocol sasProtocol) {
+        return this.fileServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

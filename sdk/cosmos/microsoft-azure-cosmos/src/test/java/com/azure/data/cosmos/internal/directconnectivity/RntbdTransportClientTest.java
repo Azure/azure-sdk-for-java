@@ -3,14 +3,20 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.ConflictException;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.data.cosmos.ForbiddenException;
 import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.InternalServerErrorException;
+import com.azure.data.cosmos.InvalidPartitionException;
 import com.azure.data.cosmos.LockedException;
 import com.azure.data.cosmos.MethodNotAllowedException;
+import com.azure.data.cosmos.NotFoundException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
 import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.PreconditionFailedException;
 import com.azure.data.cosmos.RequestEntityTooLargeException;
 import com.azure.data.cosmos.RequestRateTooLargeException;
@@ -18,6 +24,15 @@ import com.azure.data.cosmos.RequestTimeoutException;
 import com.azure.data.cosmos.RetryWithException;
 import com.azure.data.cosmos.ServiceUnavailableException;
 import com.azure.data.cosmos.UnauthorizedException;
+import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.Paths;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.UserAgentContainer;
+import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContext;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContextNegotiator;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdContextRequest;
@@ -31,15 +46,9 @@ import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdRequestTimer
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdResponse;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdResponseDecoder;
 import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdUUID;
-import com.azure.data.cosmos.BadRequestException;
-import com.azure.data.cosmos.internal.*;
-import com.azure.data.cosmos.InternalServerErrorException;
-import com.azure.data.cosmos.InvalidPartitionException;
-import com.azure.data.cosmos.NotFoundException;
-import com.azure.data.cosmos.PartitionIsMigratingException;
-import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -50,14 +59,12 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.ConnectException;
+import java.net.SocketAddress;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Arrays;
@@ -76,7 +83,6 @@ import static org.testng.Assert.fail;
 
 public final class RntbdTransportClientTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(RntbdTransportClientTest.class);
     private static final int lsn = 5;
     private static final ByteBuf noContent = Unpooled.wrappedBuffer(new byte[0]);
     private static final String partitionKeyRangeId = "3";
@@ -599,7 +605,7 @@ public final class RntbdTransportClientTest {
     /**
      * Verifies that a request for a non-existent resource produces a {@link }GoneException}
      */
-    @Test(enabled = false, groups = { "direct" })
+    @Test(enabled = false, groups = "direct")
     public void verifyGoneResponseMapsToGoneException() throws Exception {
 
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(requestTimeout).build();
@@ -681,9 +687,7 @@ public final class RntbdTransportClientTest {
      * @param request   An RNTBD request instance
      * @param response  The RNTBD response instance to be returned as a result of the request
      */
-    //FIXME: Test inconsistently flakes with assertion error.
-    @Ignore
-    @Test(enabled = true, groups = { "unit" }, dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
+    @Test(enabled = false, groups = "unit", dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
     public void verifyRequestFailures(
         final FailureValidator.Builder builder,
         final RxDocumentServiceRequest request,
@@ -805,6 +809,7 @@ public final class RntbdTransportClientTest {
         final RntbdRequestTimer requestTimer;
         final FakeChannel fakeChannel;
         final URI physicalAddress;
+        final Tag tag;
 
         private FakeEndpoint(
             final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
@@ -815,22 +820,75 @@ public final class RntbdTransportClientTest {
                 expected.length, true, Arrays.asList(expected)
             );
 
-            RntbdRequestManager requestManager = new RntbdRequestManager(30);
+            RntbdRequestManager requestManager = new RntbdRequestManager(new RntbdClientChannelHealthChecker(config), 30);
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,
-                new RntbdContextNegotiator(requestManager, config.getUserAgent()),
+                new RntbdContextNegotiator(requestManager, config.userAgent()),
                 new RntbdRequestEncoder(),
                 new RntbdResponseDecoder(),
                 requestManager
             );
+
+            this.tag = Tag.of(FakeEndpoint.class.getSimpleName(), this.fakeChannel.remoteAddress().toString());
+        }
+
+        // region Accessors
+
+        @Override
+        public int channelsAcquired() {
+            return 0;
         }
 
         @Override
-        public String getName() {
-            return "FakeEndpoint";
+        public int channelsAvailable() {
+            return 0;
         }
+
+        @Override
+        public int concurrentRequests() {
+            return 0;
+        }
+
+        @Override
+        public long id() {
+            return 0L;
+        }
+
+        @Override
+        public boolean isClosed() {
+            return !this.fakeChannel.isOpen();
+        }
+
+        @Override
+        public SocketAddress remoteAddress() {
+            return this.fakeChannel.remoteAddress();
+        }
+
+        @Override
+        public int requestQueueLength() {
+            return 0;
+        }
+
+        @Override
+        public Tag tag() {
+            return this.tag;
+        }
+
+        @Override
+        public long usedDirectMemory() {
+            return 0;
+        }
+
+        @Override
+        public long usedHeapMemory() {
+            return 0;
+        }
+
+        // endregion
+
+        // region Methods
 
         @Override
         public void close() {
@@ -844,6 +902,10 @@ public final class RntbdTransportClientTest {
             return requestRecord;
         }
 
+        // endregion
+
+        // region Types
+
         static class Provider implements RntbdEndpoint.Provider {
 
             final Config config;
@@ -852,7 +914,7 @@ public final class RntbdTransportClientTest {
 
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
-                this.timer = new RntbdRequestTimer(config.getRequestTimeout());
+                this.timer = new RntbdRequestTimer(config.requestTimeout());
                 this.expected = expected;
             }
 
@@ -872,6 +934,11 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
+            public int evictions() {
+                return 0;
+            }
+
+            @Override
             public RntbdEndpoint get(URI physicalAddress) {
                 return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
@@ -881,6 +948,8 @@ public final class RntbdTransportClientTest {
                 return Stream.empty();
             }
         }
+
+        // endregion
     }
 
     private static final class RntbdTestConfiguration {

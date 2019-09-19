@@ -3,12 +3,11 @@
 
 package com.azure.storage.queue.spock
 
-
+import com.azure.storage.queue.QueueClient
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
-import com.azure.storage.queue.models.StorageErrorException
-import reactor.test.StepVerifier
+import com.azure.storage.queue.models.StorageException
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -18,7 +17,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class QueueAPITests extends APISpec {
-    def queueClient
+    QueueClient queueClient
 
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
@@ -30,20 +29,14 @@ class QueueAPITests extends APISpec {
 
     def "Create queue with shared key"() {
         expect:
-        QueueTestHelper.assertResponseStatusCode(queueClient.create(), 201)
-    }
-
-    // TODO: Will implement the test after introduce the sas token generator
-    @Ignore
-    def "Create queue with sas token"() {
-
+        QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null, null), 201)
     }
 
     def "Delete exist queue"() {
         given:
         queueClient.create()
         when:
-        def deleteQueueResponse = queueClient.delete()
+        def deleteQueueResponse = queueClient.deleteWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
 
@@ -53,15 +46,15 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.delete()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Get properties"() {
         given:
-        queueClient.create(testMetadata)
+        queueClient.createWithResponse(testMetadata, null, null)
         when:
-        def getPropertiesResponse = queueClient.getProperties()
+        def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
         getPropertiesResponse.value().approximateMessagesCount() == 0
@@ -72,24 +65,24 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.getProperties()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
     @Unroll
     def "Set and clear metadata"() {
         given:
-        queueClient.create(matadataInCreate)
+        queueClient.createWithResponse(matadataInCreate, null, null)
         when:
-        def getPropertiesResponseBefore = queueClient.getProperties()
-        def setMetadataResponse = queueClient.setMetadata(metadataInSet)
-        def getPropertiesResponseAfter = queueClient.getProperties()
+        def getPropertiesResponseBefore = queueClient.getPropertiesWithResponse(null, null)
+        def setMetadataResponse = queueClient.setMetadataWithResponse(metadataInSet, null, null)
+        def getPropertiesResponseAfter = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseBefore, 200)
         expectMetadataInCreate.equals(getPropertiesResponseBefore.value().metadata())
         QueueTestHelper.assertResponseStatusCode(setMetadataResponse, 204)
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponseAfter, 200)
-        expectMetadataInSet.equals(getPropertiesResponseAfter.value().metadata)
+        expectMetadataInSet.equals(getPropertiesResponseAfter.value().metadata())
         where:
         matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
         null             | testMetadata  | Collections.emptyMap() | testMetadata
@@ -103,7 +96,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setMetadata(testMetadata)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -115,11 +108,11 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setMetadata(invalidMetadata)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
         where:
         invalidKey     | statusCode | errMessage
-        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_ERROR
+        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_FAILED
         "invalid-meta" | 400        | StorageErrorCode.INVALID_METADATA
         "12345"        | 400        | StorageErrorCode.INVALID_METADATA
         ""             | 400        | StorageErrorCode.EMPTY_METADATA_KEY
@@ -138,7 +131,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.getAccessPolicy().iterator().next()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -153,7 +146,7 @@ class QueueAPITests extends APISpec {
             .id("testpermission")
             .accessPolicy(accessPolicy)
         when:
-        def setAccessPolicyResponse = queueClient.setAccessPolicy(Collections.singletonList(permission))
+        def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(Collections.singletonList(permission), null, null)
         def nextAccessPolicy = queueClient.getAccessPolicy().iterator().next()
         then:
         QueueTestHelper.assertResponseStatusCode(setAccessPolicyResponse, 204)
@@ -174,7 +167,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setAccessPolicy(Collections.singletonList(permission))
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
     }
 
@@ -193,7 +186,7 @@ class QueueAPITests extends APISpec {
         }
         queueClient.create()
         when:
-        def setAccessPolicyResponse = queueClient.setAccessPolicy(permissions)
+        def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(permissions, null, null)
         def nextAccessPolicy = queueClient.getAccessPolicy().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(setAccessPolicyResponse, 204)
@@ -218,9 +211,9 @@ class QueueAPITests extends APISpec {
         }
         queueClient.create()
         when:
-        queueClient.setAccessPolicy(permissions)
+        queueClient.setAccessPolicyWithResponse(permissions, null, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_XML_DOCUMENT)
     }
 
@@ -229,7 +222,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = "test message"
         when:
-        def enqueueMsgResponse = queueClient.enqueueMessage(expectMsg)
+        def enqueueMsgResponse = queueClient.enqueueMessageWithResponse(expectMsg, null, null, null, null)
         def peekMsgIter = queueClient.peekMessages().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
@@ -242,7 +235,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = ""
         when:
-        def enqueueMsgResponse = queueClient.enqueueMessage(expectMsg)
+        def enqueueMsgResponse = queueClient.enqueueMessageWithResponse(expectMsg, null, null, null, null)
         def peekMsgIter = queueClient.peekMessages().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
@@ -254,8 +247,8 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         when:
-        def enqueueMsgResponse = queueClient.enqueueMessage("test message",
-            Duration.ofSeconds(0), Duration.ofSeconds(2))
+        def enqueueMsgResponse = queueClient.enqueueMessageWithResponse("test message",
+            Duration.ofSeconds(0), Duration.ofSeconds(2), Duration.ofSeconds(5), null)
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
     }
@@ -291,7 +284,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.dequeueMessages(33).iterator().next()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
@@ -314,7 +307,7 @@ class QueueAPITests extends APISpec {
         queueClient.enqueueMessage(expectMsg1)
         queueClient.enqueueMessage(expectMsg2)
         when:
-        def peekMsgIter = queueClient.peekMessages(2).iterator()
+        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
         then:
         expectMsg1.equals(peekMsgIter.next().messageText())
         expectMsg2.equals(peekMsgIter.next().messageText())
@@ -325,9 +318,9 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         when:
-        queueClient.peekMessages(33).iterator().next()
+        queueClient.peekMessages(33, null, null).iterator().next()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
@@ -335,7 +328,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.peekMessages().iterator().next()
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -346,9 +339,9 @@ class QueueAPITests extends APISpec {
         queueClient.enqueueMessage("test message 2")
         queueClient.enqueueMessage("test message 3")
         when:
-        def getPropertiesResponse = queueClient.getProperties()
-        def clearMsgResponse = queueClient.clearMessages()
-        def getPropertiesAfterResponse = queueClient.getProperties()
+        def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
+        def clearMsgResponse = queueClient.clearMessagesWithResponse(null, null)
+        def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
         getPropertiesResponse.value().approximateMessagesCount() == 3
@@ -359,9 +352,9 @@ class QueueAPITests extends APISpec {
 
     def "Clear messages error"() {
         when:
-        StepVerifier.create(queueClient.clearMessages())
+        queueClient.clearMessagesWithResponse(null, null)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -373,9 +366,10 @@ class QueueAPITests extends APISpec {
         queueClient.enqueueMessage("test message 3")
         def dequeueMsg = queueClient.dequeueMessages().iterator().next()
         when:
-        def getPropertiesResponse = queueClient.getProperties()
-        def deleteMsgResponse = queueClient.deleteMessage(dequeueMsg.messageId(), dequeueMsg.popReceipt())
-        def getPropertiesAfterResponse = queueClient.getProperties()
+        def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
+        def deleteMsgResponse = queueClient.deleteMessageWithResponse(dequeueMsg.messageId(), dequeueMsg.popReceipt(),
+            null, null)
+        def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
         then:
         QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
         getPropertiesResponse.value().approximateMessagesCount() == 3
@@ -396,7 +390,7 @@ class QueueAPITests extends APISpec {
         def deletePopReceipt = popReceipt ? dequeueMessageIter.popReceipt() : dequeueMessageIter.popReceipt() + "Random"
         queueClient.deleteMessage(deleteMessageId, deletePopReceipt)
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         messageId | popReceipt | statusCode | errMsg
@@ -413,8 +407,8 @@ class QueueAPITests extends APISpec {
 
         def dequeueMsg = queueClient.dequeueMessages().iterator().next()
         when:
-        def updateMsgResponse = queueClient.updateMessage(updateMsg,
-            dequeueMsg.messageId(), dequeueMsg.popReceipt(), Duration.ofSeconds(1))
+        def updateMsgResponse = queueClient.updateMessageWithResponse(updateMsg,
+            dequeueMsg.messageId(), dequeueMsg.popReceipt(), Duration.ofSeconds(1), null,  null)
         QueueTestHelper.sleepInRecord(Duration.ofSeconds(2))
         def peekMsgIter = queueClient.peekMessages().iterator().next()
         then:
@@ -434,7 +428,7 @@ class QueueAPITests extends APISpec {
         def updatePopReceipt = popReceipt ? dequeueMessageIter.popReceipt() : dequeueMessageIter.popReceipt() + "Random"
         queueClient.updateMessage(updateMsg, updateMessageId, updatePopReceipt, Duration.ofSeconds(1))
         then:
-        def e = thrown(StorageErrorException)
+        def e = thrown(StorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         messageId | popReceipt | statusCode | errMsg

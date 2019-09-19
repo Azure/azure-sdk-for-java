@@ -7,6 +7,7 @@ import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -29,6 +30,8 @@ import java.util.List;
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
+    private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
+
     /**
      * An instance of {@link ObjectMapper} to serialize/deserialize objects.
      */
@@ -147,6 +150,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (value.startsWith(BOM)) {
             value = value.replaceFirst(BOM, "");
         }
+
         final JavaType javaType = createJavaType(type);
         try {
             if (encoding == SerializerEncoding.XML) {
@@ -155,7 +159,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 return (T) serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
-            throw new MalformedValueException(jpe.getMessage(), jpe);
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
         }
     }
 
@@ -201,9 +205,11 @@ public class JacksonAdapter implements SerializerAdapter {
             for (int i = 0; i != actualTypeArguments.length; i++) {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
-            result = mapper.getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
+            result = mapper
+                .getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
         } else {
-            result = mapper.getTypeFactory().constructType(type);
+            result = mapper
+                .getTypeFactory().constructType(type);
         }
         return result;
     }

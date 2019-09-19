@@ -32,6 +32,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <project.automatic.module.name>com.azure.storage.file</project.automatic.module.name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -62,13 +66,13 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.3</version>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -76,6 +80,48 @@
       <artifactId>reactor-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <compilerId>groovy-eclipse-compiler</compilerId>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+          <source>1.8</source>
+          <target>1.8</target>
+          <showDeprecation>true</showDeprecation>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>${groovy-eclipse-compiler.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-batch</artifactId>
+            <version>${groovy-eclipse-batch.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

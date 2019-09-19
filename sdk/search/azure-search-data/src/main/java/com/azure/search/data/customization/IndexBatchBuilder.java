@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 
 public class IndexBatchBuilder {
-    private JsonApi jsonApi;
-    private List<IndexAction> indexActions;
+    private final JsonApi jsonApi;
+    private final List<IndexAction> indexActions;
 
     /**
      * Public constructor with no parameters.

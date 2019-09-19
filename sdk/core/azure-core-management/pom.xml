@@ -44,6 +44,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <project.automatic.module.name>com.azure.core.management</project.automatic.module.name>
   </properties>
 
   <developers>
@@ -69,7 +70,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.3</version>
+      <version>1.0.0-preview.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.4</version>
       <scope>test</scope>
     </dependency>
 
@@ -79,4 +86,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
 </project>

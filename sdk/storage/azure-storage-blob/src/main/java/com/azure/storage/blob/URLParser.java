@@ -61,7 +61,7 @@ final class URLParser {
             queryParamsMap.remove("snapshot");
         }
 
-        SASQueryParameters sasQueryParameters = new SASQueryParameters(queryParamsMap, true);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters = new BlobServiceSASQueryParameters(queryParamsMap, true);
 
         return new BlobURLParts()
                 .scheme(scheme)
@@ -69,7 +69,7 @@ final class URLParser {
                 .containerName(containerName)
                 .blobName(blobName)
                 .snapshot(snapshot)
-                .sasQueryParameters(sasQueryParameters)
+                .sasQueryParameters(blobServiceSasQueryParameters)
                 .unparsedParameters(queryParamsMap);
     }
 

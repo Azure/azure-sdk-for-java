@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.credentials;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import io.netty.buffer.ByteBuf;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +14,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
  * @see ConfigurationClientBuilder
  */
 public class ConfigurationClientCredentials {
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
+
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -49,11 +52,14 @@ public class ConfigurationClientCredentials {
     /**
      * Creates an instance that is able to authorize requests to Azure App Configuration service.
      *
-     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
+     *     secret={secret_value}"
      * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
-     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.
+     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the
+     *     HMAC-SHA256 algorithm.
      */
-    public ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
+    public ConfigurationClientCredentials(String connectionString)
+        throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
@@ -75,35 +81,42 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuf> contents) {
+    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod,
+                                                                  Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {
                     return MessageDigest.getInstance("SHA-256");
                 } catch (NoSuchAlgorithmException e) {
-                    throw Exceptions.propagate(e);
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
                 }
             }, (messageDigest, byteBuffer) -> {
                     if (messageDigest != null) {
-                        messageDigest.update(byteBuffer.nioBuffer());
+                        messageDigest.update(byteBuffer);
                     }
                 })
-            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(url, httpMethod, messageDigest)));
+            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(
+                url,
+                httpMethod,
+                messageDigest)));
     }
 
     private static class AuthorizationHeaderProvider {
         private final String signedHeadersValue = String.join(";", SIGNED_HEADERS);
+        private static final String HMAC_SHA256 = "HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s";
         private final CredentialInformation credentials;
         private final Mac sha256HMAC;
 
-        AuthorizationHeaderProvider(CredentialInformation credentials) throws NoSuchAlgorithmException, InvalidKeyException {
+        AuthorizationHeaderProvider(CredentialInformation credentials)
+            throws NoSuchAlgorithmException, InvalidKeyException {
             this.credentials = credentials;
 
             sha256HMAC = Mac.getInstance("HmacSHA256");
             sha256HMAC.init(new SecretKeySpec(credentials.secret(), "HmacSHA256"));
         }
 
-        private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod, final MessageDigest messageDigest) {
+        private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod,
+                                                             final MessageDigest messageDigest) {
             final Map<String, String> headers = new HashMap<>();
             final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
@@ -136,11 +149,10 @@ public class ConfigurationClientCredentials {
             // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
             String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
 
-            final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-            httpHeaders.put(AUTHORIZATION_HEADER, String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
-                credentials.id(),
-                signedHeadersValue,
-                signature));
+            final String signature =
+                Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            httpHeaders.put(AUTHORIZATION_HEADER,
+                String.format(HMAC_SHA256, credentials.id(), signedHeadersValue, signature));
         }
     }
 
@@ -149,9 +161,9 @@ public class ConfigurationClientCredentials {
         private static final String ID = "id=";
         private static final String SECRET = "secret=";
 
-        private URL baseUri;
-        private String id;
-        private byte[] secret;
+        private final URL baseUri;
+        private final String id;
+        private final byte[] secret;
 
         URL baseUri() {
             return baseUri;
@@ -175,23 +187,31 @@ public class ConfigurationClientCredentials {
                 throw new IllegalArgumentException("invalid connection string segment count");
             }
 
+            URL baseUri = null;
+            String id = null;
+            byte[] secret = null;
+
             for (String arg : args) {
                 String segment = arg.trim();
                 String lowerCase = segment.toLowerCase(Locale.US);
 
                 if (lowerCase.startsWith(ENDPOINT)) {
                     try {
-                        this.baseUri = new URL(segment.substring(ENDPOINT.length()));
+                        baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
                 } else if (lowerCase.startsWith(ID)) {
-                    this.id = segment.substring(ID.length());
+                    id = segment.substring(ID.length());
                 } else if (lowerCase.startsWith(SECRET)) {
                     String secretBase64 = segment.substring(SECRET.length());
-                    this.secret = Base64.getDecoder().decode(secretBase64);
+                    secret = Base64.getDecoder().decode(secretBase64);
                 }
             }
+
+            this.baseUri = baseUri;
+            this.id = id;
+            this.secret = secret;
 
             if (this.baseUri == null || this.id == null || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."

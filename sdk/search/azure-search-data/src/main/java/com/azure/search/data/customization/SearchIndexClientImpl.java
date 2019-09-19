@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SearchIndexClientImpl extends SearchIndexBaseClient implements SearchIndexClient {
 
-    private SearchIndexAsyncClientImpl asyncClient;
+    private final SearchIndexAsyncClientImpl asyncClient;
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
@@ -113,7 +113,9 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public PagedIterable<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+    public PagedIterable<SearchResult> search(String searchText,
+                                              SearchParameters searchParameters,
+                                              SearchRequestOptions searchRequestOptions) {
         PagedFlux<SearchResult> result = asyncClient.search(searchText, searchParameters, searchRequestOptions);
         return new PagedIterable<>(result);
     }
@@ -137,8 +139,14 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public PagedIterable<SuggestResult> suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions) {
-        PagedFlux<SuggestResult> result = asyncClient.suggest(searchText, suggesterName, suggestParameters, searchRequestOptions);
+    public PagedIterable<SuggestResult> suggest(String searchText,
+                                                String suggesterName,
+                                                SuggestParameters suggestParameters,
+                                                SearchRequestOptions searchRequestOptions) {
+        PagedFlux<SuggestResult> result = asyncClient.suggest(searchText,
+            suggesterName,
+            suggestParameters,
+            searchRequestOptions);
         return new PagedIterable<>(result);
     }
 
@@ -155,8 +163,14 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters) {
-        PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText, suggesterName, searchRequestOptions, autocompleteParameters);
+    public PagedIterable<AutocompleteItem> autocomplete(String searchText,
+                                                        String suggesterName,
+                                                        SearchRequestOptions searchRequestOptions,
+                                                        AutocompleteParameters autocompleteParameters) {
+        PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText,
+                                                                    suggesterName,
+                                                                    searchRequestOptions,
+                                                                    autocompleteParameters);
         return new PagedIterable<>(result);
     }
 

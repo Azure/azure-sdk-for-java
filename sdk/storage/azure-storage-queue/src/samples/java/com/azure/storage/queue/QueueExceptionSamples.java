@@ -4,8 +4,11 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.queue.models.StorageErrorCode;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.models.StorageException;
+
+import java.time.Duration;
 
 import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
@@ -26,10 +29,11 @@ public class QueueExceptionSamples {
         // Create queue client.
         Response<QueueClient> queueClientResponse;
         try {
-            queueClientResponse = queueServiceClient.createQueue(generateRandomName("delete-not-exist", 16));
-            System.out.println("Successfully create the queue! Status code: " + String.valueOf(queueClientResponse.statusCode()));
-        } catch (StorageErrorException e) {
-            System.out.println(String.format("Error creating a queue. Error message: %s", e.value().message()));
+            queueClientResponse = queueServiceClient.createQueueWithResponse(generateRandomName("delete-not-exist",
+                16), null, Duration.ofSeconds(1), new Context("key1", "value1"));
+            System.out.println("Successfully create the queue! Status code: " + queueClientResponse.statusCode());
+        } catch (StorageException e) {
+            System.out.println(String.format("Error creating a queue. Error message: %s", e.serviceMessage()));
             throw new RuntimeException(e);
         }
         QueueClient queueClient = queueClientResponse.value();
@@ -43,7 +47,7 @@ public class QueueExceptionSamples {
                     queueClient.deleteMessage("wrong id", msg.popReceipt());
                 }
             );
-        } catch (StorageErrorException e) {
+        } catch (StorageException e) {
             if (e.getMessage().contains(StorageErrorCode.MESSAGE_NOT_FOUND.toString())) {
                 System.out.println("This is the error expected to throw");
             } else {
@@ -58,7 +62,7 @@ public class QueueExceptionSamples {
                     queueClient.deleteMessage(msg.messageId(), "Wrong Pop Receipt");
                 }
             );
-        } catch (StorageErrorException e) {
+        } catch (StorageException e) {
             if (e.getMessage().contains(StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE.toString())) {
                 System.out.println("This is the error expected to throw");
             } else {

@@ -22,6 +22,7 @@ import java.util.List;
  */
 public interface SearchIndexClient {
     // Indices
+
     /**
      * Gets Client Api Version.
      *
@@ -152,12 +153,15 @@ public interface SearchIndexClient {
 
     /**
      * Searches for documents in the Azure Search index
+     *
      * @param searchText Search Test
      * @param searchParameters Search Parameters
-     * @param  searchRequestOptions Search Request Options
+     * @param searchRequestOptions Search Request Options
      * @return A {@link PagedIterable} of SearchResults
      */
-    PagedIterable<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
+    PagedIterable<SearchResult> search(String searchText,
+                                       SearchParameters searchParameters,
+                                       SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -195,7 +199,10 @@ public interface SearchIndexClient {
      * @param searchRequestOptions search request options
      * @return suggests results
      */
-    PagedIterable<SuggestResult> suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
+    PagedIterable<SuggestResult> suggest(String searchText,
+                                         String suggesterName,
+                                         SuggestParameters suggestParameters,
+                                         SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -223,5 +230,8 @@ public interface SearchIndexClient {
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */
-    PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
+    PagedIterable<AutocompleteItem> autocomplete(String searchText,
+                                                 String suggesterName,
+                                                 SearchRequestOptions searchRequestOptions,
+                                                 AutocompleteParameters autocompleteParameters);
 }

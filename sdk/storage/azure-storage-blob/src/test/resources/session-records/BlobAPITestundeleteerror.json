@@ -1,0 +1,112 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcundeleteerror0blobapitestundeleteerrorc6e1233250ef121?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "32126d81-68fa-406c-8eef-7d0c725ed4b5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D73561758844BF\"",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c5cb16de-301e-0042-564a-67cbbf000000",
+      "Date" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "x-ms-client-request-id" : "32126d81-68fa-406c-8eef-7d0c725ed4b5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcundeleteerror0blobapitestundeleteerrorc6e1233250ef121/javablobundeleteerror1blobapitestundeleteerrorc6e89543cd9d",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "3633f712-df89-4dea-96dd-5d1bc2ddfbf7",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "\"0x8D73561759595D9\"",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c5cb16f7-301e-0042-6e4a-67cbbf000000",
+      "x-ms-client-request-id" : "3633f712-df89-4dea-96dd-5d1bc2ddfbf7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcundeleteerror0blobapitestundeleteerrorc6e1233250ef121/javablobundeleteerror2blobapitestundeleteerrorc6e018226cdb?comp=undelete",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "7c7c3044-7f03-44b3-b48c-c225703d857e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "BlobNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "215",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "c5cb170a-301e-0042-014a-67cbbf000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:c5cb170a-301e-0042-014a-67cbbf000000\nTime:2019-09-09T20:08:19.7880331Z</Message></Error>",
+      "Date" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "x-ms-client-request-id" : "7c7c3044-7f03-44b3-b48c-c225703d857e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net?prefix=jtcundeleteerror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "4d00d3e7-9e70-45b9-bd42-b262cd1dca70"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c5cb1722-301e-0042-164a-67cbbf000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://jaschrepragrs.blob.core.windows.net/\"><Prefix>jtcundeleteerror</Prefix><Containers><Container><Name>jtcundeleteerror0blobapitestundeleteerrorc6e1233250ef121</Name><Properties><Last-Modified>Mon, 09 Sep 2019 20:08:19 GMT</Last-Modified><Etag>\"0x8D73561758844BF\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "x-ms-client-request-id" : "4d00d3e7-9e70-45b9-bd42-b262cd1dca70",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://jaschrepragrs.blob.core.windows.net/jtcundeleteerror0blobapitestundeleteerrorc6e1233250ef121?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
+      "x-ms-client-request-id" : "3f29b7d3-2e9d-44fd-8adb-efbab582efe5"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c5cb1730-301e-0042-244a-67cbbf000000",
+      "Date" : "Mon, 09 Sep 2019 20:08:19 GMT",
+      "x-ms-client-request-id" : "3f29b7d3-2e9d-44fd-8adb-efbab582efe5"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcundeleteerror0blobapitestundeleteerrorc6e1233250ef121", "javablobundeleteerror1blobapitestundeleteerrorc6e89543cd9d", "javablobundeleteerror2blobapitestundeleteerrorc6e018226cdb" ]
+}

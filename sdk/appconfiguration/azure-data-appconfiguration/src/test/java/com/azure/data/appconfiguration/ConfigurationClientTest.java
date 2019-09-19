@@ -2,20 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
+import java.net.HttpURLConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                 .credential(credentials)
-                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
@@ -73,7 +73,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
     public void addSettingEmptyKey() {
-        assertRestException(() -> client.addSetting("", "A value"), HttpResponseStatus.METHOD_NOT_ALLOWED.code());
+        assertRestException(() -> client.addSetting("", "A value"), HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     /**
@@ -100,7 +100,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void addExistingSetting() {
         addExistingSettingRunner((expected) -> {
             client.addSetting(expected);
-            assertRestException(() -> client.addSetting(expected), ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.addSetting(expected), ResourceModifiedException.class, HttpURLConnection.HTTP_PRECON_FAILED);
         });
     }
 
@@ -120,12 +120,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setSettingIfEtag() {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setSetting(initial.etag("badEtag")), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.setSetting(initial.etag("badEtag")), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addSetting(initial).etag();
 
             assertConfigurationEquals(update, client.setSetting(update.etag(etag)));
-            assertRestException(() -> client.setSetting(initial), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.setSetting(initial), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.getSetting(update));
         });
     }
@@ -134,7 +134,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
     public void setSettingEmptyKey() {
-        assertRestException(() -> client.setSetting("", "A value"), HttpResponseStatus.METHOD_NOT_ALLOWED.code());
+        assertRestException(() -> client.setSetting("", "A value"), HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     /**
@@ -162,7 +162,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void updateNoExistingSetting() {
         updateNoExistingSettingRunner((expected) ->
-            assertRestException(() -> client.updateSetting(expected), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code())
+            assertRestException(() -> client.updateSetting(expected), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED)
         );
     }
 
@@ -201,7 +201,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // The setting does not exist in the service yet, so we cannot update it.
             assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)),
                 ResourceNotFoundException.class,
-                HttpResponseStatus.PRECONDITION_FAILED.code());
+                HttpURLConnection.HTTP_PRECON_FAILED);
 
             assertConfigurationEquals(update, client.getSetting(update));
             assertConfigurationEquals(last, client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(updateEtag)));
@@ -209,7 +209,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(initial.key()).label(initial.label()).value(initial.value()).etag(updateEtag)),
                 ResourceNotFoundException.class,
-                HttpResponseStatus.PRECONDITION_FAILED.code());
+                HttpURLConnection.HTTP_PRECON_FAILED);
         });
     }
 
@@ -241,8 +241,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverRetrievedConfiguration, client.addSetting(neverRetrievedConfiguration));
 
-        assertRestException(() -> client.getSetting("myNonExistentKey"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
-        assertRestException(() -> client.getSetting(nonExistentLabel), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getSetting("myNonExistentKey"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getSetting(nonExistentLabel), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -256,7 +256,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(expected, client.getSetting(expected));
 
             assertConfigurationEquals(expected, client.deleteSetting(expected));
-            assertRestException(() -> client.getSetting(expected), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+            assertRestException(() -> client.getSetting(expected), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -271,7 +271,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(neverDeletedConfiguation, client.addSetting(neverDeletedConfiguation));
 
         assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"));
-        assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpResponseStatus.NO_CONTENT.code());
+        assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpURLConnection.HTTP_NO_CONTENT);
 
         assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation.key()));
     }
@@ -286,9 +286,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting updatedConfig = client.updateSetting(update);
 
             assertConfigurationEquals(update, client.getSetting(initial));
-            assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.deleteSetting(updatedConfig));
-            assertRestException(() -> client.getSetting(initial), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+            assertRestException(() -> client.getSetting(initial), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -474,13 +474,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
      */
+    @Override
     public void listRevisionsInvalidRange() {
         final String key = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
 
         assertConfigurationEquals(original, client.addSetting(original));
-        assertRestException(() -> client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(0, 10))).forEach(cs -> cs.key()),
-            HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code());
+        assertRestException(() -> client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(0, 10))),
+            416); // REQUESTED_RANGE_NOT_SATISFIABLE
     }
 
     /**

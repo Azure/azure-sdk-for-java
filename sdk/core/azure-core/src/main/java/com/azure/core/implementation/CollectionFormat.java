@@ -6,7 +6,9 @@ package com.azure.core.implementation;
 /**
  * Swagger collection format to use for joining {@link java.util.List} parameters in
  * paths, queries, and headers.
- * See <a href="https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7">https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7</a>.
+ * See
+ * <a href="https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7">
+ *     https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7</a>.
  */
 public enum CollectionFormat {
     /**

@@ -30,11 +30,9 @@ public final class AzureBlobStorageImpl {
      * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
      * @param url the url value.
-     * @return the service client itself.
      */
-    AzureBlobStorageImpl setUrl(String url) {
+    void setUrl(String url) {
         this.url = url;
-        return this;
     }
 
     /**
@@ -55,36 +53,9 @@ public final class AzureBlobStorageImpl {
      * Sets Specifies the version of the operation to use for this request.
      *
      * @param version the version value.
-     * @return the service client itself.
      */
-    AzureBlobStorageImpl setVersion(String version) {
+    void setVersion(String version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     */
-    private String filter;
-
-    /**
-     * Gets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     *
-     * @return the filter value.
-     */
-    public String getFilter() {
-        return this.filter;
-    }
-
-    /**
-     * Sets The filter parameter enables the caller to query blobs whose tags match a given expression. The given expression must evaluate to true for a blob to be returned in the results.
-     *
-     * @param filter the filter value.
-     * @return the service client itself.
-     */
-    AzureBlobStorageImpl setFilter(String filter) {
-        this.filter = filter;
-        return this;
     }
 
     /**
@@ -105,11 +76,9 @@ public final class AzureBlobStorageImpl {
      * Sets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
      *
      * @param pathRenameMode the pathRenameMode value.
-     * @return the service client itself.
      */
-    AzureBlobStorageImpl setPathRenameMode(PathRenameMode pathRenameMode) {
+    void setPathRenameMode(PathRenameMode pathRenameMode) {
         this.pathRenameMode = pathRenameMode;
-        return this;
     }
 
     /**

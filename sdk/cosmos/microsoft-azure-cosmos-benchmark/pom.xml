@@ -8,7 +8,7 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmos-parent</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
@@ -43,28 +43,46 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
+      <version>${metrics.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-jvm</artifactId>
+      <version>${metrics.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-graphite</artifactId>
+      <version>${metrics.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-azure-monitor</artifactId>
+      <version>${micrometer.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-graphite</artifactId>
+      <version>${micrometer.version}</version>
+    </dependency>
+
+    <!-- Issue: We have a problem with Direct TCP with using netty-tcnative when OpenSSL 1.1 is installed
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative</artifactId>
       <classifier>linux-x86_64</classifier>
     </dependency>
+    -->
 
     <dependency>
       <groupId>log4j</groupId>

@@ -9,6 +9,7 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
 import com.azure.core.management.OperationState;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +21,8 @@ import java.lang.reflect.Type;
  * further polling.
  */
 public class CompletedPollStrategy extends PollStrategy {
+    private final ClientLogger logger = new ClientLogger(CompletedPollStrategy.class);
+
     private final HttpResponse firstHttpResponse;
     private CompletedPollStrategyData data;
 
@@ -47,10 +50,11 @@ public class CompletedPollStrategy extends PollStrategy {
          * Create a new CompletedPollStrategyData.
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
-         *                     initiated the long running operation.
+         *     initiated the long running operation.
          * @param firstHttpResponse The HTTP response to the original HTTP request.
          */
-        public CompletedPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse firstHttpResponse) {
+        public CompletedPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser,
+                                         HttpResponse firstHttpResponse) {
             super(restProxy, methodParser, 0);
             this.firstHttpResponse = firstHttpResponse;
         }
@@ -65,7 +69,7 @@ public class CompletedPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
@@ -78,9 +82,13 @@ public class CompletedPollStrategy extends PollStrategy {
         return true;
     }
 
-    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType, Context context) {
-        return createOperationStatusMono(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType, context)
-                .flatMapMany(cos -> Flux.just(cos));
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest,
+                                                                 final SwaggerMethodParser methodParser,
+                                                                 final Type operationStatusResultType,
+                                                                 Context context) {
+        return createOperationStatusMono(originalHttpRequest, firstHttpResponse, methodParser,
+            operationStatusResultType, context)
+            .flatMapMany(cos -> Flux.just(cos));
     }
 
     Mono<HttpResponse> pollUntilDone() {

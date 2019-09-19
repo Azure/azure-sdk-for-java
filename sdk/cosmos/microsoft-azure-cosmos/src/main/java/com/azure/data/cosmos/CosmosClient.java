@@ -5,9 +5,10 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Database;
-import com.azure.data.cosmos.internal.DatabaseAccount;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Permission;
+import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdMetrics;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class CosmosClient implements AutoCloseable {
 
-    //Document client wrapper
+    // Async document client wrapper
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
@@ -62,6 +63,14 @@ public class CosmosClient implements AutoCloseable {
      */
     public static CosmosClientBuilder builder(){
          return new CosmosClientBuilder();
+    }
+
+    /**
+     * Monitor Cosmos client performance and resource utilization using the specified meter registry
+     * @param registry  meter registry to use for performance monitoring
+     */
+    static void monitorTelemetry(MeterRegistry registry) {
+        RntbdMetrics.add(registry);
     }
 
     /**
@@ -347,7 +356,7 @@ public class CosmosClient implements AutoCloseable {
                         response.responseHeaders()));
     }
 
-    Mono<DatabaseAccount> getDatabaseAccount() {
+    public Mono<DatabaseAccount> readDatabaseAccount() {
         return asyncDocumentClient.getDatabaseAccount().single();
     }
 

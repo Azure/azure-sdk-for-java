@@ -5,15 +5,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-eventhubs-clients</artifactId>
-    <version>3.0.0</version>
-    <relativePath>../pom.data.xml</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-sdk-parent</artifactId>
+    <version>1.2.0</version>
+    <relativePath>../../../pom.data.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs</artifactId>
+  <version>3.1.0</version>
 
   <name>Microsoft Azure SDK for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
@@ -32,28 +33,70 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.qpid</groupId>
+      <artifactId>proton-j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>qpid-proton-j-extensions</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- Explicitly list this as a compile dependency because in parent/pom.xml, this is a test dependency. -->
+    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
       <version>${client-runtime.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-    	<groupId>com.microsoft.azure</groupId>
-    	<artifactId>msal4j</artifactId>
-    	<version>0.4.0-preview</version>
-    	<scope>test</scope>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>6.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>com.microsoft.azure</groupId>
-    	<artifactId>adal4j</artifactId>
-    	<version>${adal4j.version}</version>
-    	<scope>test</scope>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>com.nimbusds</groupId>
-    	<artifactId>nimbus-jose-jwt</artifactId>
-    	<version>6.0.1</version>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>msal4j</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>adal4j</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
+<!--  <build>-->
+<!--    <plugins>-->
+<!--      &lt;!&ndash; Now that all checkstyle issues have been resolved, override the-->
+<!--        default behavior to make checkstyle fail on error and violation. &ndash;&gt;-->
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--        <configuration>-->
+<!--          <failsOnError>true</failsOnError>-->
+<!--          <failOnViolation>true</failOnViolation>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
+<!--    </plugins>-->
+<!--  </build>-->
 </project>

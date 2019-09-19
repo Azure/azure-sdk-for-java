@@ -37,7 +37,7 @@ public final class RntbdReporter {
     }
 
     public static void reportIssueUnless(
-        boolean predicate, Logger logger, Object subject, String format, Object... arguments
+        Logger logger, boolean predicate, Object subject, String format, Object... arguments
     ) {
         if (!predicate && logger.isErrorEnabled()) {
             doReportIssue(logger, subject, format, arguments);
@@ -55,9 +55,9 @@ public final class RntbdReporter {
                 codeSource, subject, stackTraceElements[2], formattingTuple.getMessage()
             );
         } else {
-            logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}{}]",
+            logger.error("Report this {} issue to ensure it is addressed:\n[{}]\n[{}]\n[{}{}]",
                 codeSource, subject, stackTraceElements[2], formattingTuple.getMessage(),
-                throwable, ExceptionUtils.getStackTrace(throwable)
+                ExceptionUtils.getStackTrace(throwable)
             );
         }
     }

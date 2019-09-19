@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2019_06_01.implementation.NetworkManager;
 import java.util.List;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2019_06_01.implementation.PublicIPPrefixInner;
 
 /**
@@ -39,6 +40,11 @@ public interface PublicIPPrefix extends HasInner<PublicIPPrefixInner>, Resource,
      * @return the ipTags value.
      */
     List<IpTag> ipTags();
+
+    /**
+     * @return the loadBalancerFrontendIpConfiguration value.
+     */
+    SubResource loadBalancerFrontendIpConfiguration();
 
     /**
      * @return the prefixLength value.

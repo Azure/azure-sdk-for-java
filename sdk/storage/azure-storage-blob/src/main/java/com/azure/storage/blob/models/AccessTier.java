@@ -28,6 +28,11 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     public static final AccessTier P10 = fromString("P10");
 
     /**
+     * Static value P15 for AccessTier.
+     */
+    public static final AccessTier P15 = fromString("P15");
+
+    /**
      * Static value P20 for AccessTier.
      */
     public static final AccessTier P20 = fromString("P20");
@@ -46,6 +51,21 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
      * Static value P50 for AccessTier.
      */
     public static final AccessTier P50 = fromString("P50");
+
+    /**
+     * Static value P60 for AccessTier.
+     */
+    public static final AccessTier P60 = fromString("P60");
+
+    /**
+     * Static value P70 for AccessTier.
+     */
+    public static final AccessTier P70 = fromString("P70");
+
+    /**
+     * Static value P80 for AccessTier.
+     */
+    public static final AccessTier P80 = fromString("P80");
 
     /**
      * Static value Hot for AccessTier.

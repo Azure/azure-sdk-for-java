@@ -4,6 +4,7 @@
 package com.azure.search.data.customization;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.search.data.SearchIndexAsyncClient;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fluent SearchIndexClientBuilder for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
+ * Fluent SearchIndexClientBuilder
+ * for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
  * using {@link SearchIndexClientBuilder#buildClient()} or {@link SearchIndexClientBuilder#buildAsyncClient()}
  *
  * <p>
@@ -39,14 +41,14 @@ public class SearchIndexClientBuilder {
     private String indexName;
     private String searchDnsSuffix;
     private HttpClient httpClient;
-    private List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> policies;
 
     /**
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
         searchDnsSuffix = "search.windows.net";
-        httpClient = HttpClient.createDefault();
+        httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
         policies = new ArrayList<>();
     }
 
@@ -128,6 +130,11 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
-        return new SearchIndexAsyncClientImpl(serviceName, searchDnsSuffix, indexName, apiVersion, httpClient, policies);
+        return new SearchIndexAsyncClientImpl(serviceName,
+            searchDnsSuffix,
+            indexName,
+            apiVersion,
+            httpClient,
+            policies);
     }
 }

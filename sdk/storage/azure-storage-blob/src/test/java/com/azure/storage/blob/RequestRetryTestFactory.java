@@ -9,25 +9,25 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Supplier;
 
 import static java.lang.StrictMath.pow;
 
@@ -55,7 +55,7 @@ class RequestRetryTestFactory {
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
     static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
-    static final ByteBuf RETRY_TEST_DEFAULT_DATA = Unpooled.wrappedBuffer("Default data".getBytes());
+    static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
     private static final String RETRY_TEST_HEADER = "TestHeader";
     private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
     private static final Mono<HttpResponse> RETRY_TEST_OK_RESPONSE = Mono.just(new RetryTestResponse(200));
@@ -126,7 +126,7 @@ class RequestRetryTestFactory {
         }
 
         @Override
-        public Flux<ByteBuf> body() {
+        public Flux<ByteBuffer> body() {
             return null;
         }
 
@@ -192,12 +192,18 @@ class RequestRetryTestFactory {
             }
 
             // Subscribe and block until all information is read to prevent a blocking on another thread exception from Reactor.
-            ByteBuf buf = Unpooled.buffer();
-            Disposable disposable = request.body().subscribe(buf::writeBytes);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Disposable disposable = request.body().subscribe(data -> {
+                try {
+                    outputStream.write(data.array());
+                } catch (IOException ex) {
+                    throw Exceptions.propagate(ex);
+                }
+            });
             while (!disposable.isDisposed()) {
                 System.out.println("Waiting for Flux to finish to prevent blocking on another thread exception");
             }
-            if (RETRY_TEST_DEFAULT_DATA.compareTo(buf) != 0) {
+            if (RETRY_TEST_DEFAULT_DATA.compareTo(ByteBuffer.wrap(outputStream.toByteArray())) != 0) {
                 throw new IllegalArgumentException(("Body not reset."));
             }
 
@@ -345,21 +351,6 @@ class RequestRetryTestFactory {
                 default:
                     throw new IllegalArgumentException("Invalid retry test scenario.");
             }
-        }
-
-        @Override
-        public HttpClient proxy(Supplier<ProxyOptions> supplier) {
-            return null;
-        }
-
-        @Override
-        public HttpClient wiretap(boolean b) {
-            return null;
-        }
-
-        @Override
-        public HttpClient port(int i) {
-            return null;
         }
 
         /*

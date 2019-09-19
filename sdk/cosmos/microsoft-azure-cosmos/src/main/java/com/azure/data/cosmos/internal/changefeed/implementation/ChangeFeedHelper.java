@@ -133,8 +133,7 @@ class ChangeFeedHelper {
         private K key;
         private V value;
 
-        public KeyValuePair(K key, V value)
-        {
+        public KeyValuePair(K key, V value) {
             this.key = key;
             this.value = value;
         }

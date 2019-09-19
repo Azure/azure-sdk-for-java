@@ -42,8 +42,6 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
-import com.microsoft.azure.LongRunningFinalState;
-import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -842,6 +840,7 @@ public class VirtualNetworkGatewayConnectionsInner implements InnerSupportsGet<V
     private ServiceResponse<VirtualNetworkGatewayConnectionInner> beginUpdateTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<VirtualNetworkGatewayConnectionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualNetworkGatewayConnectionInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

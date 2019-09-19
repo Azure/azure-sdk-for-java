@@ -33,13 +33,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final int maxBatchSize;
 
     public PartitionSynchronizerImpl(
-        ChangeFeedContextClient documentClient,
-        CosmosContainer collectionSelfLink,
-        LeaseContainer leaseContainer,
-        LeaseManager leaseManager,
-        int degreeOfParallelism,
-        int maxBatchSize)
-    {
+            ChangeFeedContextClient documentClient,
+            CosmosContainer collectionSelfLink,
+            LeaseContainer leaseContainer,
+            LeaseManager leaseManager,
+            int degreeOfParallelism,
+            int maxBatchSize) {
+
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
         this.leaseContainer = leaseContainer;
@@ -50,8 +50,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        PartitionSynchronizerImpl self = this;
-
         return this.enumPartitionKeyRanges()
             .map(partitionKeyRange -> {
                 // TODO: log the partition key ID found.
@@ -60,7 +58,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .collectList()
             .flatMap( partitionKeyRangeIds -> {
                 Set<String> leaseTokens = new HashSet<>(partitionKeyRangeIds);
-                return self.createLeases(leaseTokens).then();
+                return this.createLeases(leaseTokens).then();
             })
             .onErrorResume( throwable -> {
                 // TODO: log the exception.
@@ -70,13 +68,14 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Flux<Lease> splitPartition(Lease lease) {
-        if (lease == null) throw new IllegalArgumentException("lease");
+        if (lease == null) {
+            throw new IllegalArgumentException("lease");
+        }
 
-        PartitionSynchronizerImpl self = this;
         String leaseToken = lease.getLeaseToken();
         String lastContinuationToken = lease.getContinuationToken();
 
-        logger.info(String.format("Partition %s is gone due to split.", leaseToken));
+        logger.info("Partition {} is gone due to split.", leaseToken);
 
         // After a split, the children are either all or none available
         return this.enumPartitionKeyRanges()
@@ -85,23 +84,22 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .collectList()
             .flatMapMany(addedLeaseTokens -> {
                 if (addedLeaseTokens.size() == 0) {
-                    logger.error(String.format("Partition %s had split but we failed to find at least one child partition", leaseToken));
+                    logger.error("Partition {} had split but we failed to find at least one child partition", leaseToken);
                     throw new RuntimeException(String.format("Partition %s had split but we failed to find at least one child partition", leaseToken));
                 }
                 return Flux.fromIterable(addedLeaseTokens);
             })
             .flatMap(addedRangeId -> {
                 // Creating new lease.
-                return self.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
-            }, self.degreeOfParallelism)
+                return this.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
+            }, this.degreeOfParallelism)
             .map(newLease -> {
-                logger.info(String.format("Partition %s split into new partition with lease token %s.", leaseToken, newLease.getLeaseToken()));
+                logger.info("Partition {} split into new partition with lease token {}.", leaseToken, newLease.getLeaseToken());
                 return newLease;
             });
     }
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
-        // STRING partitionKeyRangesPath = STRING.format("%spkranges", this.collectionSelfLink);
         String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.maxItemCount(this.maxBatchSize);
@@ -129,7 +127,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      */
     private Flux<Lease> createLeases(Set<String> leaseTokens)
     {
-        PartitionSynchronizerImpl self = this;
         Set<String> addedLeaseTokens = new HashSet<>(leaseTokens);
 
         return this.leaseContainer.getAllLeases()
@@ -144,7 +141,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             })
             .thenMany(Flux.fromIterable(addedLeaseTokens)
                 .flatMap( addedRangeId ->
-                    self.leaseManager.createLeaseIfNotExist(addedRangeId, null), self.degreeOfParallelism)
+                    this.leaseManager.createLeaseIfNotExist(addedRangeId, null), this.degreeOfParallelism)
                 .map( lease -> {
                     // TODO: log the lease info that was added.
                     return lease;

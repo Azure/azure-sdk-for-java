@@ -5,7 +5,8 @@ package com.azure.search.data.common.jsonwrapper.spi;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 
 /**
- * Interface to be implemented by all JSON libraries that want to provide their services to the JSON Wrapper abstraction.
+ * Interface to be implemented by all JSON libraries
+ * that want to provide their services to the JSON Wrapper abstraction.
  */
 public interface JsonPlugin {
 

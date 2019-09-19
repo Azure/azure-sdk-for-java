@@ -153,14 +153,16 @@ public interface SearchIndexAsyncClient {
     PagedFlux<SearchResult> search();
 
     /**
-     * Searches for documents in the Azure Search index.
+     * Searches for documents in the Azure Search index
      *
-     * @param searchText search text
-     * @param searchParameters search parameters
-     * @param  searchRequestOptions search request options
-     * @return PagedFlux of the search result
+     * @param searchText Search Test
+     * @param searchParameters Search Parameters
+     * @param searchRequestOptions Search Request Options
+     * @return PagedFlux of the search result.
      */
-    PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
+    PagedFlux<SearchResult> search(String searchText,
+                                   SearchParameters searchParameters,
+                                   SearchRequestOptions searchRequestOptions);
 
     /**
      * Retrieves a document from the Azure Search index.
@@ -178,7 +180,9 @@ public interface SearchIndexAsyncClient {
      * @param searchRequestOptions search request options
      * @return document object
      */
-    Mono<Document> getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions);
+    Mono<Document> getDocument(String key,
+                               List<String> selectedFields,
+                               SearchRequestOptions searchRequestOptions);
 
     /**
      * Suggests documents in the Azure Search index that match the given partial query text.
@@ -198,7 +202,10 @@ public interface SearchIndexAsyncClient {
      * @param searchRequestOptions search request options
      * @return suggests results
      */
-    PagedFlux<SuggestResult> suggest(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions);
+    PagedFlux<SuggestResult> suggest(String searchText,
+                                     String suggesterName,
+                                     SuggestParameters suggestParameters,
+                                     SearchRequestOptions searchRequestOptions);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -226,5 +233,8 @@ public interface SearchIndexAsyncClient {
      * @param autocompleteParameters auto complete parameters
      * @return auto complete result
      */
-    PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters);
+    PagedFlux<AutocompleteItem> autocomplete(String searchText,
+                                             String suggesterName,
+                                             SearchRequestOptions searchRequestOptions,
+                                             AutocompleteParameters autocompleteParameters);
 }
