@@ -923,5 +923,31 @@ public class FileClient {
         return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
+
+    /**
+     * Get the share name of file client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getShareName}
+     *
+     * @return The share name of the file.
+     */
+    public String getShareName() {
+        return this.fileAsyncClient.getShareName();
+    }
+
+    /**
+     * Get file path of the client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getFilePath}
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return this.fileAsyncClient.getFilePath();
+    }
 }
 

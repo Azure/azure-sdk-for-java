@@ -17,6 +17,7 @@ import org.junit.rules.TestName;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -62,7 +63,9 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder()
+            .scheduler(Schedulers.single())
+            .buildAsyncClient();
     }
 
     @Override
@@ -186,8 +189,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             .setOwnerLevel(1L);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             position, options);
-        final EventHubAsyncConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
-            position, options);
+
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -212,7 +214,9 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         Thread.sleep(2000);
 
-        logger.info("STARTED CONSUMING FROM PARTITION 1 with a different consumer");
+        logger.info("STARTED CONSUMING FROM PARTITION 1 with C3");
+        final EventHubAsyncConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            position, options);
         subscriptions.add(consumer2.receive()
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(

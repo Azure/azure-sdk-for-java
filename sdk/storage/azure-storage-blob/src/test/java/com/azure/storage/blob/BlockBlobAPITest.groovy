@@ -40,6 +40,7 @@ import java.security.MessageDigest
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
     BlockBlobAsyncClient bac
+    String blobName
 
     def setup() {
         bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
@@ -55,11 +56,11 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         response.getStatusCode() == 201
-        headers.value("x-ms-content-crc64") != null
-        headers.value("x-ms-request-id") != null
-        headers.value("x-ms-version") != null
-        headers.value("Date") != null
-        Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
+        headers.getValue("x-ms-content-crc64") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
     def "Stage block min"() {
@@ -146,10 +147,10 @@ class BlockBlobAPITest extends APISpec {
         def headers = bu2.stageBlockFromURLWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
 
         then:
-        headers.value("x-ms-request-id") != null
-        headers.value("x-ms-version") != null
-        headers.value("x-ms-content-crc64") != null
-        headers.value("x-ms-request-server-encrypted") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("x-ms-content-crc64") != null
+        headers.getValue("x-ms-request-server-encrypted") != null
 
         def response = bu2.listBlocks(BlockListType.ALL)
         response.getUncommittedBlocks().size() == 1
@@ -338,8 +339,8 @@ class BlockBlobAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(headers)
-        headers.value("x-ms-content-crc64")
-        Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
+        headers.getValue("x-ms-content-crc64")
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
     def "Commit block list min"() {
@@ -584,8 +585,8 @@ class BlockBlobAPITest extends APISpec {
         bc.download(outStream)
         outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
         validateBasicHeaders(response.getHeaders())
-        response.getHeaders().value("Content-MD5") != null
-        Boolean.parseBoolean(response.getHeaders().value("x-ms-request-server-encrypted"))
+        response.getHeaders().getValue("Content-MD5") != null
+        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
     }
 
     def "Upload min"() {
@@ -1039,5 +1040,15 @@ class BlockBlobAPITest extends APISpec {
         // A second subscription to a download stream will
         def e = thrown(StorageException)
         e.getStatusCode() == 500
+    }
+
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
+    def "Get Block Blob Name"() {
+        expect:
+        blobName == bc.getBlobName()
     }
 }

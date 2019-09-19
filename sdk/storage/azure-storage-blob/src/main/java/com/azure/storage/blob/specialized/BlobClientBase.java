@@ -81,6 +81,32 @@ public class BlobClientBase {
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getContainerName}
+     *
+     * @return The name of the container.
+     */
+    public final String getContainerName() {
+        return client.getContainerName();
+    }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getBlobName}
+     *
+     * @return The name of the blob.
+     */
+    public final String getBlobName() {
+        return client.getBlobName();
+    }
+
+    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.

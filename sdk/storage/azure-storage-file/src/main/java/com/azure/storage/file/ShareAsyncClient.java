@@ -979,6 +979,19 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Get share name from share client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getShareName}
+     *
+     * @return The name of the share.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
      * Sets fileServiceSASSignatureValues parameters dependent on the current file type
      */
     FileServiceSASSignatureValues configureServiceSASSignatureValues(
@@ -994,8 +1007,9 @@ public class ShareAsyncClient {
     }
 
     private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {
-        String eTag = response.getHeaders().value("ETag");
-        OffsetDateTime lastModified = new DateTimeRfc1123(response.getHeaders().value("Last-Modified")).getDateTime();
+        String eTag = response.getHeaders().getValue("ETag");
+        OffsetDateTime lastModified =
+            new DateTimeRfc1123(response.getHeaders().getValue("Last-Modified")).getDateTime();
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             new ShareInfo(eTag, lastModified));

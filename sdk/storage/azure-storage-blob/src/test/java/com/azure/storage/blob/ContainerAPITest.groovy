@@ -472,9 +472,9 @@ class ContainerAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 202
-        response.getHeaders().value("x-ms-request-id") != null
-        response.getHeaders().value("x-ms-version") != null
-        response.getHeaders().value("Date") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("Date") != null
     }
 
     def "Delete min"() {
@@ -1179,7 +1179,7 @@ class ContainerAPITest extends APISpec {
         setup:
         cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
-        if (!cc.exists().value()) {
+        if (!cc.exists().getValue()) {
             cc.setCreate()
         }
 
@@ -1197,7 +1197,7 @@ class ContainerAPITest extends APISpec {
         then:
         createResponse.getStatusCode() == 201
         propsResponse.getStatusCode() == 200
-        propsResponse.value().getBlobType() == BlobType.APPEND_BLOB
+        propsResponse.getValue().getBlobType() == BlobType.APPEND_BLOB
     }
     */
 
@@ -1228,9 +1228,9 @@ class ContainerAPITest extends APISpec {
         def response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
-        response.getHeaders().value("Date") != null
-        response.getHeaders().value("x-ms-version") != null
-        response.getHeaders().value("x-ms-request-id") != null
+        response.getHeaders().getValue("Date") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
         response.getValue().getAccountKind() != null
         response.getValue().getSkuName() != null
     }
@@ -1248,5 +1248,13 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get Container Name"() {
+        given:
+        def containerName = generateContainerName()
+        def newcc = primaryBlobServiceClient.getContainerClient(containerName)
+        expect:
+        containerName == newcc.getContainerName()
     }
 }

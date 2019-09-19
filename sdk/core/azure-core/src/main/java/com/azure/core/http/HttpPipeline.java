@@ -56,7 +56,7 @@ public final class HttpPipeline {
      *
      * @return the {@link HttpClient} associated with the pipeline
      */
-    public HttpClient httpClient() {
+    public HttpClient getHttpClient() {
         return this.httpClient;
     }
 

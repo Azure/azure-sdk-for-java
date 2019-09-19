@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.HTTPGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -121,6 +122,32 @@ public class BlobAsyncClientBase {
             throw logger.logExceptionAsError(new RuntimeException(
                 String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
+    }
+
+    /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerName}
+     *
+     * @return The name of the container.
+     */
+    public final String getContainerName() {
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName}
+     *
+     * @return The name of the blob.
+     */
+    public final String getBlobName() {
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
     }
 
     /**

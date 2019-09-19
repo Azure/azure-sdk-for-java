@@ -28,16 +28,6 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * Creates BearerTokenAuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
-     * @param scope the scope of authentication the credential should get token for
-     */
-    public BearerTokenAuthenticationPolicy(TokenCredential credential, String scope) {
-        this(credential, new String[] { scope });
-    }
-
-    /**
-     * Creates BearerTokenAuthenticationPolicy.
-     *
-     * @param credential the token credential to authenticate the request
      * @param scopes the scopes of authentication the credential should get token for
      */
     public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {

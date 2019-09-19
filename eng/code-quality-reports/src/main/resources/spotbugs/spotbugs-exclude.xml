@@ -268,7 +268,12 @@
 
   <!-- No need to implements cloneable. -->
   <Match>
-    <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+    <Or>
+      <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+      <Class name="com.azure.core.http.HttpRequest"/>
+      <Class
+          name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+    </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
@@ -276,12 +281,6 @@
   <Match>
     <Class name="com.azure.core.implementation.util.FluxUtil"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
-  <Match>
-    <Class
-        name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
-    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
   <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
@@ -476,7 +475,7 @@
 
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
-    <Class name="com.azure.core.util.configuration.Configuration"/>
+    <Class name="com.azure.core.util.Configuration"/>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 

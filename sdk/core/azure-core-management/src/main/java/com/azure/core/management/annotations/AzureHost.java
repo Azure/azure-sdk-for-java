@@ -3,8 +3,8 @@
 
 package com.azure.core.management.annotations;
 
-import com.azure.core.AzureEnvironment;
-import com.azure.core.AzureEnvironment.Endpoint;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.AzureEnvironment.Endpoint;
 import com.azure.core.implementation.annotation.Host;
 
 import java.lang.annotation.Retention;

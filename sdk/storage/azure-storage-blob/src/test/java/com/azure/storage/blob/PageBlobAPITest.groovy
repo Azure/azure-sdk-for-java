@@ -28,11 +28,12 @@ import java.time.OffsetDateTime
 class PageBlobAPITest extends APISpec {
     PageBlobClient bc
     PageBlobAsyncClient bcAsync
+    String blobName
 
     def setup() {
-        def name = generateBlobName()
-        bc = cc.getBlobClient(name).asPageBlobClient()
-        bcAsync = ccAsync.getBlobAsyncClient(name).asPageBlobAsyncClient()
+        blobName = generateBlobName()
+        bc = cc.getBlobClient(blobName).asPageBlobClient()
+        bcAsync = ccAsync.getBlobAsyncClient(blobName).asPageBlobAsyncClient()
         bc.setCreate(PageBlobClient.PAGE_BYTES)
     }
 
@@ -184,7 +185,7 @@ class PageBlobAPITest extends APISpec {
         then:
         response.getStatusCode() == 201
         validateBasicHeaders(response.getHeaders())
-        response.getHeaders().value("x-ms-content-crc64") != null
+        response.getHeaders().getValue("x-ms-content-crc64") != null
         response.getValue().getBlobSequenceNumber() == 0
         response.getValue().isServerEncrypted()
     }
@@ -729,7 +730,7 @@ class PageBlobAPITest extends APISpec {
         response.getValue().getClearRange().get(0).getStart() == PageBlobClient.PAGE_BYTES
         response.getValue().getClearRange().get(0).getEnd() == PageBlobClient.PAGE_BYTES * 2 - 1
         validateBasicHeaders(response.getHeaders())
-        Integer.parseInt(response.getHeaders().value("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
+        Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
     }
 
     def "Get page ranges diff min"() {
@@ -1015,7 +1016,7 @@ class PageBlobAPITest extends APISpec {
         properties.isIncrementalCopy()
         properties.getCopyDestinationSnapshot() != null
         validateBasicHeaders(copyResponse.getHeaders())
-        copyResponse.getHeaders().value("x-ms-copy-id") != null
+        copyResponse.getHeaders().getValue("x-ms-copy-id") != null
         copyResponse.getValue() != null
     }
 
@@ -1107,5 +1108,15 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
+    def "Get Page Blob Name"() {
+        expect:
+        blobName == bc.getBlobName()
     }
 }

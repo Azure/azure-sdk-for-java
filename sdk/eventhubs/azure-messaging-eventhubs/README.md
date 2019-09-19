@@ -147,9 +147,11 @@ service principal and a client secret. The corresponding `clientId` and `tenantI
 obtained from the [App registration page][app_registration_page].
 
 ```java
-ClientSecretCredential credential = new ClientSecretCredential()
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<< APPLICATION (CLIENT) ID >>")
-    .tenantId("<< DIRECTORY (TENANT) ID >>");
+    .clientSecret("<< APPLICATION SECRET >>")
+    .tenantId("<< DIRECTORY (TENANT) ID >>")
+    .build();
 
 // The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net

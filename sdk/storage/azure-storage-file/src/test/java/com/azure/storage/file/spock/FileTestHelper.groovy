@@ -4,7 +4,7 @@
 package com.azure.storage.file.spock
 
 import com.azure.core.http.rest.Response
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.file.models.CorsRule
 import com.azure.storage.file.models.FileServiceProperties
@@ -113,7 +113,7 @@ class FileTestHelper {
     }
 
     static void sleepInRecord(Duration time) {
-        String azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE")
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE")
         if ("RECORD".equalsIgnoreCase(azureTestMode)) {
             sleep(time)
         }

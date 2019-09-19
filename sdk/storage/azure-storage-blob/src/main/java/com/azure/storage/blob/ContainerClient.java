@@ -673,4 +673,17 @@ public final class ContainerClient {
         return this.containerAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version,
             sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
+
+    /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getContainerName}
+     *
+     * @return The name of container.
+     */
+    public String getContainerName() {
+        return this.containerAsyncClient.getContainerName();
+    }
 }

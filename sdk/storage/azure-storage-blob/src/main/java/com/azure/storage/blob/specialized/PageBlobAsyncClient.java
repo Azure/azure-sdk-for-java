@@ -269,7 +269,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().value("x-ms-encryption-key-sha256"))));
+                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
     }
 
     /**
@@ -319,8 +319,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().value("x-ms-request-server-encrypted"),
-                rb.getHeaders().value("x-ms-encryption-key-sha256"))));
+                rb.getHeaders().getValue("x-ms-request-server-encrypted"),
+                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
     }
 
     /**
