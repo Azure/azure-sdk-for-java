@@ -29,5 +29,13 @@
             "name": "PublishDate",
             "type": "Edm.DateTimeOffset"
         }
+    ],
+    "suggesters": [
+        {
+            "name": "sg",
+            "sourceFields": [
+                "Title"
+            ]
+        }
     ]
 }

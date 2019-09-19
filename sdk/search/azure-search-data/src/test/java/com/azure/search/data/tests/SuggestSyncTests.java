@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.search.data.tests;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -22,6 +25,9 @@ import static com.azure.search.data.tests.SearchTestBase.HOTELS_INDEX_NAME;
 public class SuggestSyncTests extends SuggestTestBase {
 
     private SearchIndexClient client;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Override
     protected void initializeClient() {
@@ -42,7 +48,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void searchFieldsExcludesFieldsFromSuggest()  {
+    public void searchFieldsExcludesFieldsFromSuggest() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.searchFields(new LinkedList<>(Arrays.asList("HotelName")));
@@ -96,5 +102,40 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         //assert
         verifyCanSuggestStaticallyTypedDocuments(iterator.next(), hotels);
+    }
+
+    @Override
+    public void canSuggestWithDateTimeInStaticModel() {
+    }
+
+    @Override
+    public void fuzzyIsOffByDefault() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", null, null);
+        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        verifyFuzzyIsOffByDefault(iterator.next());
+    }
+
+    @Override
+    public void suggestThrowsWhenGivenBadSuggesterName() throws Exception {
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage("The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
+
+        PagedIterable<SuggestResult> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
+        suggestResult.iterableByPage().iterator().next();
+    }
+
+    @Override
+    public void suggestThrowsWhenRequestIsMalformed() throws Exception {
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
+
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        SuggestParameters suggestParams = new SuggestParameters();
+        suggestParams.orderBy(new LinkedList<>(Arrays.asList("This is not a valid orderby.")));
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        suggestResult.iterableByPage().iterator().next();
     }
 }
