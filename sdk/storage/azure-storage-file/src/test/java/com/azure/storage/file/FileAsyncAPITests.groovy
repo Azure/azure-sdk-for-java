@@ -664,4 +664,14 @@ class FileAsyncAPITests extends APISpec {
         then:
         snapshot.equals(shareSnapshotClient.getShareSnapshotId())
     }
+
+    def "Get Share Name"() {
+        expect:
+        shareName == primaryFileAsyncClient.getShareName()
+    }
+
+    def "Get File Path"() {
+        expect:
+        filePath == primaryFileAsyncClient.getFilePath()
+    }
 }

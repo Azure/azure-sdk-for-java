@@ -28,11 +28,12 @@ import java.time.OffsetDateTime
 class PageBlobAPITest extends APISpec {
     PageBlobClient bc
     PageBlobAsyncClient bcAsync
+    String blobName
 
     def setup() {
-        def name = generateBlobName()
-        bc = cc.getPageBlobClient(name)
-        bcAsync = ccAsync.getPageBlobAsyncClient(name)
+        blobName = generateBlobName()
+        bc = cc.getPageBlobClient(blobName)
+        bcAsync = ccAsync.getPageBlobAsyncClient(blobName)
         bc.setCreate(PageBlobClient.PAGE_BYTES)
     }
 
@@ -1107,5 +1108,15 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
+    def "Get Page Blob Name"() {
+        expect:
+        blobName == bc.getBlobName()
     }
 }

@@ -832,9 +832,6 @@ public class FileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(fileAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, timeout, context));
     }
 
@@ -922,6 +919,32 @@ public class FileClient {
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    }
+
+    /**
+     * Get the share name of file client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getShareName}
+     *
+     * @return The share name of the file.
+     */
+    public String getShareName() {
+        return this.fileAsyncClient.getShareName();
+    }
+
+    /**
+     * Get file path of the client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getFilePath}
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return this.fileAsyncClient.getFilePath();
     }
 }
 

@@ -533,9 +533,6 @@ public class DirectoryAsyncClient {
 
     PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, boolean recursive, Duration timeout,
         Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
@@ -754,7 +751,7 @@ public class DirectoryAsyncClient {
     public Mono<VoidResponse> deleteFileWithResponse(String fileName) {
         return withContext(context -> deleteFileWithResponse(fileName, context));
     }
-
+    
     Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
         return postProcessResponse(fileAsyncClient.deleteWithResponse(context))
@@ -775,6 +772,32 @@ public class DirectoryAsyncClient {
      */
     public String getShareSnapshotId() {
         return this.snapshot;
+    }
+
+    /**
+     * Get the share name of directory client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getShareName}
+     *
+     * @return The share name of the directory.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
+     * Get directory path of the client.
+     *
+     * <p>Get directory path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getDirectoryPath}
+     *
+     * @return The path of the directory.
+     */
+    public String getDirectoryPath() {
+        return directoryPath;
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {

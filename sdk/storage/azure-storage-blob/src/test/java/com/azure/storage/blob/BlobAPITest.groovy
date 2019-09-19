@@ -36,9 +36,11 @@ import java.time.OffsetDateTime
 
 class BlobAPITest extends APISpec {
     BlobClient bc
+    String blobName
 
     def setup() {
-        bc = cc.getBlockBlobClient(generateBlobName())
+        blobName = generateBlobName()
+        bc = cc.getBlockBlobClient(blobName)
         bc.upload(defaultInputStream.get(), defaultDataSize)
     }
 
@@ -1519,5 +1521,15 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
+    def "Get Blob Name"() {
+        expect:
+        blobName == bc.getBlobName()
     }
 }

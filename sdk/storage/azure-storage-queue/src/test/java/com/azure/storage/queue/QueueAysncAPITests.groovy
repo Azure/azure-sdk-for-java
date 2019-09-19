@@ -22,9 +22,12 @@ class QueueAysncAPITests extends APISpec {
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
 
+    String queueName
+
     def setup() {
+        queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
-        queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(testResourceName.randomName(methodName, 60))
+        queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
     }
 
     def "Create queue with shared key"() {
@@ -509,4 +512,8 @@ class QueueAysncAPITests extends APISpec {
         false     | false      | 400        | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
+    def "Get Queue Name"() {
+        expect:
+        queueName == queueAsyncClient.getQueueName()
+    }
 }
