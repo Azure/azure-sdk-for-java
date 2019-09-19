@@ -26,7 +26,6 @@ import java.nio.ByteBuffer;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
 
-
 /**
  * Client to an append blob. It may only be instantiated through a
  * {@link BlobClientBuilder#buildAppendBlobAsyncClient()}, via the method

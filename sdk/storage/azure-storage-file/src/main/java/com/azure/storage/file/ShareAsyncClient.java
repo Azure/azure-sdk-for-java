@@ -982,6 +982,19 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Get share name from share client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getShareName}
+     *
+     * @return The name of the share.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
      * Sets fileServiceSASSignatureValues parameters dependent on the current file type
      */
     FileServiceSASSignatureValues configureServiceSASSignatureValues(

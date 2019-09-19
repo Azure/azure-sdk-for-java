@@ -1266,4 +1266,12 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
+
+    def "Get Container Name"() {
+        given:
+        def containerName = generateContainerName()
+        def newcc = primaryBlobServiceClient.getContainerClient(containerName)
+        expect:
+        containerName == newcc.getContainerName()
+    }
 }

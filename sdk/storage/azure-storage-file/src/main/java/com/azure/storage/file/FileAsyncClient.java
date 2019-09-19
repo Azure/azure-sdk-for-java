@@ -1213,6 +1213,32 @@ public class FileAsyncClient {
         return fileServiceSASSignatureValues;
     }
 
+    /**
+     * Get the share name of file client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getShareName}
+     *
+     * @return The share name of the file.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
+     * Get file path of the client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getFilePath}
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return filePath;
+    }
+
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();

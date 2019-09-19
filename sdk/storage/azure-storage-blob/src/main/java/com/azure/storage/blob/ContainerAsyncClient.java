@@ -1080,6 +1080,19 @@ public final class ContainerAsyncClient {
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getContainerName}
+     *
+     * @return The name of container.
+     */
+    public String getContainerName() {
+        return URLParser.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    }
+
+    /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
     private BlobServiceSASSignatureValues configureServiceSASSignatureValues(

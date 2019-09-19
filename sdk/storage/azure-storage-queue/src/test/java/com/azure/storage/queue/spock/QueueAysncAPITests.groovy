@@ -24,6 +24,8 @@ class QueueAysncAPITests extends APISpec {
     static def createMetadata = Collections.singletonMap("metadata1", "value")
     def queueName
 
+    String queueName
+
     def setup() {
         queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
@@ -524,4 +526,8 @@ class QueueAysncAPITests extends APISpec {
         false     | false      | 400        | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
+    def "Get Queue Name"() {
+        expect:
+        queueName == queueAsyncClient.getQueueName()
+    }
 }

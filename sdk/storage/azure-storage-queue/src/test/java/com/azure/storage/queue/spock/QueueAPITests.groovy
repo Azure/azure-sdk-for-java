@@ -22,7 +22,8 @@ class QueueAPITests extends APISpec {
 
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
-    def queueName
+    String queueName
+  
     def setup() {
         queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
@@ -451,4 +452,8 @@ class QueueAPITests extends APISpec {
         false     | false      | 400        | StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
     }
 
+    def "Get Queue Name"() {
+        expect:
+        queueName == queueClient.getQueueName()
+    }
 }

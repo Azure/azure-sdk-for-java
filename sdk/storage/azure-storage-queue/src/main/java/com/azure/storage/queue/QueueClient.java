@@ -703,4 +703,17 @@ public final class QueueClient {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
+
+    /**
+     * Get the queue name of the client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueClient.getQueueName}
+     *
+     * @return The name of the queue.
+     */
+    public String getQueueName() {
+        return this.client.getQueueName();
+    }
 }
