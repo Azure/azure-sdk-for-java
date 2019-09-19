@@ -882,3 +882,54 @@ directive:
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
 ```
 
+### Add EncryptionKeySha256 to PageBlobUploadPagesFromURLHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&update&fromUrl"].put.responses["201"].headers
+  transform: >
+    if (!$["x-ms-encryption-key-sha256"]) {
+      $["x-ms-encryption-key-sha256"] = {
+        "x-ms-client-name": "EncryptionKeySha256",
+        "type": "string",
+        "description": "The SHA-256 hash of the encryption key used to encrypt the pages. This header is only returned when the pages were encrypted with a customer-provided key."
+      };
+    }
+```
+
+### Add IsServerEncrypted to AppendBlobAppendBlockFromUrlHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=appendblock&fromUrl"].put.responses["201"].headers
+  transform: >
+    if (!$["x-ms-request-server-encrypted"]) {
+      $["x-ms-request-server-encrypted"] = {
+        "x-ms-client-name": "IsServerEncrypted",
+        "type": "boolean",
+        "description": "The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm, and false otherwise."
+      };
+    }
+```
+
+### Add EncryptionKeySha256 and IsServerEncrypted to PageBlobClearPagesHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&clear"].put.responses["201"].headers
+  transform: >
+    if (!$["x-ms-request-server-encrypted"]) {
+      $["x-ms-request-server-encrypted"] = {
+        "x-ms-client-name": "IsServerEncrypted",
+        "type": "boolean",
+        "description": "The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm, and false otherwise."
+      };
+    }
+    if (!$["x-ms-encryption-key-sha256"]) {
+      $["x-ms-encryption-key-sha256"] = {
+        "x-ms-client-name": "EncryptionKeySha256",
+        "type": "string",
+        "description": "The SHA-256 hash of the encryption key used to encrypt the pages. This header is only returned when the pages were encrypted with a customer-provided key."
+      };
+    }
+```
