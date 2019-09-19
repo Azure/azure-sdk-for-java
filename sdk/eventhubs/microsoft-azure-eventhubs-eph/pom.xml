@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-eph</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
 
   <name>Microsoft Azure SDK for Event Hubs Event Processor Host(EPH)</name>
   <description>EPH is built on top of the Azure Event Hubs Client and provides a number of features not present in that lower layer</description>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
