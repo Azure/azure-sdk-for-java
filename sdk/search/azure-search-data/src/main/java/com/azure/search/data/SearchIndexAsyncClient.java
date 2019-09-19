@@ -27,36 +27,36 @@ public interface SearchIndexAsyncClient {
     /**
      * Gets Client Api Version.
      *
-     * @return the apiVersion value.
+     * @return the apiVersion value
      */
     String getApiVersion();
 
     /**
      * Gets The name of the Azure Search service.
      *
-     * @return the searchServiceName value.
+     * @return the searchServiceName value
      */
     String getSearchServiceName();
 
     /**
      * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
      *
-     * @return the searchDnsSuffix value.
+     * @return the searchDnsSuffix value
      */
     String getSearchDnsSuffix();
 
     /**
-     * Gets The name of the Azure Search index.
+     * Gets The name of the Azure Search index
      *
-     * @return the indexName value.
+     * @return the indexName value
      */
     String getIndexName();
 
     /**
      * Sets The name of the Azure Search index.
      *
-     * @param indexName the indexName value.
-     * @return the service client itself.
+     * @param indexName the indexName value
+     * @return the service client itself
      */
     SearchIndexAsyncClient setIndexName(String indexName);
 
@@ -64,11 +64,20 @@ public interface SearchIndexAsyncClient {
     // Index Operations
 
     /**
-     * Uploads a collection of documents to the target index
+     * Uploads a document to the target index.
      *
-     * @param documents collection of documents to upload to the target Index.
-     * @param <T> The type of object to serialize.
-     * @return document index result.
+     * @param document the document to upload to the target Index
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> Mono<DocumentIndexResult>  uploadDocument(T document);
+
+    /**
+     * Uploads a collection of documents to the target index.
+     *
+     * @param documents collection of documents to upload to the target Index
+     * @param <T> the type of object to serialize
+     * @return document index result
      */
     <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents);
 
@@ -82,25 +91,74 @@ public interface SearchIndexAsyncClient {
     <T> Mono<DocumentIndexResult> deleteDocuments(List<T> documents);
 
     /**
-     * Gets the number of documents
+     * Merges a document with an existing document in the target index.
      *
-     * @return the number of documents.
+     * @param document the document to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> Mono<DocumentIndexResult>  mergeDocument(T document);
+
+    /**
+     * Merges a collection of documents with existing documents in the target index.
+     *
+     * @param documents collection of documents to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> Mono<DocumentIndexResult> mergeDocuments(List<T> documents);
+
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param document the document to be merged, if exists, otherwise uploaded as a new document
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> Mono<DocumentIndexResult> mergeOrUploadDocument(T document);
+
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param documents collection of documents to be merged, if exists, otherwise uploaded as a new document
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
+    <T> Mono<DocumentIndexResult> mergeOrUploadDocuments(List<T> documents);
+
+    /**
+     * Deletes a document from the target index.
+     * Note that any field you specify in a delete operation, other than the key field, will be ignored.
+     *
+     * @param document the document to delete from the target Index
+     * @param <T> The type of object to serialize
+     * @return document index result
+     */
+    <T> Mono<DocumentIndexResult> deleteDocument(T document);
+
+    /**
+     * Gets the number of documents.
+     *
+     * @return the number of documents
      */
     Mono<Long> countDocuments();
 
     /**
-     * Searches for documents in the Azure Search index
+     * Searches for documents in the Azure Search index.
      *
-     * @return PagedFlux of the search result.
+     * @return PagedFlux of the search result
      */
     PagedFlux<SearchResult> search();
 
     /**
-     * Searches for documents in the Azure Search index
-     * @param searchText Search Test
-     * @param searchParameters Search Parameters
-     * @param  searchRequestOptions Search Request Options
-     * @return PagedFlux of the search result.
+     * Searches for documents in the Azure Search index.
+     *
+     * @param searchText search text
+     * @param searchParameters search parameters
+     * @param  searchRequestOptions search request options
+     * @return PagedFlux of the search result
      */
     PagedFlux<SearchResult> search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
 

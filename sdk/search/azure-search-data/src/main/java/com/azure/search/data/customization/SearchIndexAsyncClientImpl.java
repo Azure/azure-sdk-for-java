@@ -135,8 +135,38 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
+    public <T> Mono<DocumentIndexResult> uploadDocument(T document) {
+        return this.index(new IndexBatchBuilder().upload(document).build());
+    }
+
+    @Override
     public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder().upload(documents).build());
+    }
+
+    @Override
+    public <T> Mono<DocumentIndexResult> mergeDocument(T document) {
+        return this.index(new IndexBatchBuilder().merge(document).build());
+    }
+
+    @Override
+    public <T> Mono<DocumentIndexResult> mergeDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().merge(documents).build());
+    }
+
+    @Override
+    public <T> Mono<DocumentIndexResult> mergeOrUploadDocument(T document) {
+        return this.index(new IndexBatchBuilder().mergeOrUpload(document).build());
+    }
+
+    @Override
+    public <T> Mono<DocumentIndexResult> mergeOrUploadDocuments(List<T> documents) {
+        return this.index(new IndexBatchBuilder().mergeOrUpload(documents).build());
+    }
+
+    @Override
+    public <T> Mono<DocumentIndexResult> deleteDocument(T document) {
+        return this.index(new IndexBatchBuilder().delete(document).build());
     }
 
     @Override

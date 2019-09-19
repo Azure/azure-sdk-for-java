@@ -11,8 +11,6 @@ import com.azure.search.data.customization.Document;
 import com.azure.search.data.customization.IndexBatchBuilder;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexAction;
-import com.azure.search.data.generated.models.IndexActionType;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.IndexingResult;
 import com.azure.search.data.models.Book;
@@ -39,7 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
@@ -58,8 +55,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Long expectedHotelCount = 1L;
 
         Hotel myHotel = new Hotel().hotelId(expectedHotelId);
-        List<Hotel> toUpload = Arrays.asList(myHotel);
-        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(toUpload);
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocument(myHotel);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.results();
@@ -83,9 +79,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 hotelName("My Pascal Hotel").
                 description("A Great Pascal Description.").
                 category("Category Pascal");
-        List<Hotel> toUpload = Arrays.asList(myHotel);
 
-        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(toUpload);
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocument(myHotel);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.results();
@@ -110,64 +105,49 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexAction uploadAction = new IndexAction().actionType(IndexActionType.UPLOAD).additionalProperties(jsonApi.convertObjectToType(hotel1, Map.class));
+        IndexBatch batch = new IndexBatchBuilder()
+            .upload(hotel1)
+            .delete(randomHotel)
+            .merge(nonExistingHotel)
+            .mergeOrUpload(hotel3)
+            .upload(hotel2)
+            .build();
 
-        IndexAction deleteAction = new IndexAction()
-            .actionType(IndexActionType.DELETE)
-            .additionalProperties(jsonApi.convertObjectToType(randomHotel, Map.class));
-        IndexAction mergeNonExistingAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(nonExistingHotel, Map.class));
-        IndexAction mergeOrUploadAction = new IndexAction()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel3, Map.class));
-        IndexAction uploadAction2 = new IndexAction()
-            .actionType(IndexActionType.UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(hotel2, Map.class));
-
-        IndexBatch indexBatch = new IndexBatch().actions(Arrays.asList(
-            uploadAction,
-            deleteAction,
-            mergeNonExistingAction,
-            mergeOrUploadAction,
-            uploadAction2
-        ));
-
-        Mono<DocumentIndexResult> response = client.index(indexBatch);
+        Mono<DocumentIndexResult> response = client.index(batch);
 
         StepVerifier.create(response)
-            .expectNextMatches(documentIndexResult -> {
+            .assertNext(documentIndexResult -> {
                 List<IndexingResult> indexingResults = documentIndexResult.results();
+
+                Assert.assertEquals(batch.actions().size(), indexingResults.size());
 
                 assertSuccessfulIndexResult(indexingResults.get(0), "1", 201);
                 assertSuccessfulIndexResult(indexingResults.get(1), "randomId", 200);
                 assertFailedIndexResult(indexingResults.get(2), "nonExistingHotel", 404, "Document not found.");
                 assertSuccessfulIndexResult(indexingResults.get(3), "3", 201);
                 assertSuccessfulIndexResult(indexingResults.get(4), "2", 201);
-
-                return indexingResults.size() == indexBatch.actions().size();
             })
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
-            .expectNextMatches(result -> {
+            .assertNext(result -> {
                 Hotel actual = result.as(Hotel.class);
-                return actual.equals(hotel1);
+                Assert.assertEquals(hotel1, actual);
             })
             .expectComplete()
             .verify();
 
         StepVerifier.create(client.getDocument(hotel2.hotelId()))
-            .expectNextMatches(result -> {
+            .assertNext(result -> {
                 Hotel actual = result.as(Hotel.class);
-                return actual.equals(hotel2);
+                Assert.assertEquals(hotel2, actual);
             })
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel3.hotelId()))
-            .expectNextMatches(result -> {
+            .assertNext(result -> {
                 Hotel actual = result.as(Hotel.class);
-                return actual.equals(hotel3);
+                Assert.assertEquals(hotel3, actual);
             })
             .verifyComplete();
     }
@@ -180,18 +160,18 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexBatchBuilder batchBuilder = new IndexBatchBuilder();
-        batchBuilder.
-            upload(hotel1).
-            delete(randomHotel).
-            merge(nonExistingHotel).
-            mergeOrUpload(hotel3).
-            upload(hotel2);
+        IndexBatch batch = new IndexBatchBuilder()
+            .upload(hotel1)
+            .delete(randomHotel)
+            .merge(nonExistingHotel)
+            .mergeOrUpload(hotel3)
+            .upload(hotel2)
+            .build();
 
-        Mono<DocumentIndexResult> response = client.index(batchBuilder.build());
+        Mono<DocumentIndexResult> response = client.index(batch);
 
         StepVerifier.create(response)
-            .expectNextMatches(documentIndexResult -> {
+            .assertNext(documentIndexResult -> {
                 List<IndexingResult> results = documentIndexResult.results();
 
                 assertSuccessfulIndexResult(results.get(0), "1", 201);
@@ -200,7 +180,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertSuccessfulIndexResult(results.get(3), "3", 201);
                 assertSuccessfulIndexResult(results.get(4), "2", 201);
 
-                return results.size() == batchBuilder.size();
+                Assert.assertEquals(batch.actions().size(), results.size());
             })
             .verifyComplete();
 
@@ -220,8 +200,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void indexWithInvalidDocumentThrowsException() {
-        List<Document> toUpload = Arrays.asList(new Document());
-        Mono<DocumentIndexResult> indexResult = client.uploadDocuments(toUpload);
+        Document toUpload = new Document();
+        Mono<DocumentIndexResult> indexResult = client.uploadDocument(toUpload);
 
         StepVerifier
             .create(indexResult)
@@ -247,10 +227,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
         indexData.put("ID", "1");
 
         client.setIndexName(indexWithReservedName.name())
-            .index(new IndexBatch()
-                .actions(Collections.singletonList(new IndexAction()
-                    .actionType(IndexActionType.UPLOAD)
-                    .additionalProperties(indexData)))).block();
+            .uploadDocument(indexData)
+            .block();
 
         StepVerifier
             .create(client.getDocument("1"))
@@ -265,24 +243,16 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
-        List<IndexAction> actions = boundaryConditionDocs.stream()
-            .map(h -> new IndexAction()
-                .actionType(IndexActionType.UPLOAD)
-                .additionalProperties((Map<String, Object>) jsonApi.convertObjectToType(h, Map.class)))
-            .collect(Collectors.toList());
-        IndexBatch batch = new IndexBatch()
-            .actions(actions);
-
-        client.index(batch).block();
+        client.uploadDocuments(boundaryConditionDocs).block();
 
         // Wait 2 secs to allow index request to finish
         Thread.sleep(2000);
 
         for (Hotel expected : boundaryConditionDocs) {
             StepVerifier.create(client.getDocument(expected.hotelId()))
-                .expectNextMatches(d -> {
+                .assertNext(d -> {
                     Hotel actual = d.as(Hotel.class);
-                    return actual.equals(expected);
+                    Assert.assertEquals(expected, actual);
                 })
                 .verifyComplete();
         }
@@ -330,6 +300,24 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .create(actualBook2)
             .assertNext(res -> {
                 Assert.assertEquals(DATE_UTC, res.get(PUBLISH_DATE_FIELD));
+            })
+            .verifyComplete();
+    }
+
+    @Override
+    public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
+        Hotel hotel = new Hotel()
+            .hotelId("1")
+            .hotelName("Fancy Stay");
+
+        Mono<DocumentIndexResult> documentIndexResult = client.mergeDocument(hotel);
+
+        StepVerifier
+            .create(documentIndexResult)
+            .assertNext(result -> {
+                List<IndexingResult> indexingResults = result.results();
+                assertFailedIndexResult(indexingResults.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
+                Assert.assertEquals(1, indexingResults.size());
             })
             .verifyComplete();
     }
@@ -474,45 +462,19 @@ public class IndexingAsyncTests extends IndexingTestBase {
                     .tags(Arrays.asList("vcr/dvd",
                         "balcony"))));
 
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        jsonApi.configureTimezone();
-
-        // Upload an original doc and merge it with an updated doc
-        IndexAction uploadOriginalDocAction = new IndexAction()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .additionalProperties(jsonApi.convertObjectToType(originalDoc, Map.class));
-        IndexAction replaceWithUpdatedDocAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(updatedDoc, Map.class));
-        IndexBatch batch1 = new IndexBatch()
-            .actions(Arrays.asList(uploadOriginalDocAction));
-        IndexBatch batch2 = new IndexBatch()
-            .actions(Arrays.asList(replaceWithUpdatedDocAction));
+        client.uploadDocument(originalDoc).block();
+        client.mergeDocument(updatedDoc).block();
 
         // Verify
-        StepVerifier.create(client.index(batch1))
-            .expectNextMatches(documentIndexResult -> documentIndexResult.results().size() == batch1.actions().size())
-            .verifyComplete();
-        StepVerifier.create(client.index(batch2))
-            .expectNextMatches(documentIndexResult -> documentIndexResult.results().size() == batch2.actions().size())
-            .verifyComplete();
         StepVerifier.create(client.getDocument("1"))
-            .expectNextMatches(result -> result.as(Hotel.class).equals(expectedDoc))
+            .assertNext(result -> Assert.assertEquals(expectedDoc, result.as(Hotel.class)))
             .verifyComplete();
 
-        // Merge with the original doc
-        IndexAction replaceWithOriginalDocAction = new IndexAction()
-            .actionType(IndexActionType.MERGE)
-            .additionalProperties(jsonApi.convertObjectToType(originalDoc, Map.class));
-        IndexBatch batch3 = new IndexBatch()
-            .actions(Arrays.asList(replaceWithOriginalDocAction));
+        client.mergeDocument(originalDoc).block();
 
         // Verify
-        StepVerifier.create(client.index(batch3))
-            .expectNextMatches(documentIndexResult -> documentIndexResult.results().size() == batch3.actions().size())
-            .verifyComplete();
         StepVerifier.create(client.getDocument("1"))
-            .expectNextMatches(result -> result.as(Hotel.class).equals(originalDoc))
+            .assertNext(result -> Assert.assertEquals(originalDoc, result.as(Hotel.class)))
             .verifyComplete();
     }
 
