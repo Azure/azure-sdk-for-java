@@ -93,7 +93,7 @@ public class SendLinkHandler extends LinkHandler {
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
 
-            logger.info("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], "
+            logger.verbose("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], "
                     + "delivery.isBuffered[{}], delivery.id[{}]",
                 senderName, sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
                 delivery.getRemoteState(), delivery.isBuffered(), new String(delivery.getTag(),

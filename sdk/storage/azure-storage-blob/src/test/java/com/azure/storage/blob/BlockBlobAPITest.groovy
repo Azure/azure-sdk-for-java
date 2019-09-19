@@ -40,9 +40,11 @@ import java.security.MessageDigest
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
     BlockBlobAsyncClient bac
+    String blobName
 
     def setup() {
-        bc = cc.getBlockBlobClient(generateBlobName())
+        blobName = generateBlobName()
+        bc = cc.getBlockBlobClient(blobName)
         bc.upload(defaultInputStream.get(), defaultDataSize)
         bac = ccAsync.getBlockBlobAsyncClient(generateBlobName())
         bac.upload(defaultFlux, defaultDataSize)
@@ -1040,5 +1042,15 @@ class BlockBlobAPITest extends APISpec {
         // A second subscription to a download stream will
         def e = thrown(StorageException)
         e.getStatusCode() == 500
+    }
+
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
+    def "Get Block Blob Name"() {
+        expect:
+        blobName == bc.getBlobName()
     }
 }
