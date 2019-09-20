@@ -224,6 +224,18 @@ public final class ClientFactory {
      * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode from service bus connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
      *
      * @param amqpConnectionString the connection string
+     * @return {@link IMessageReceiver} instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException {
+        return createAutoRenewMessageReceiverFromConnectionString(amqpConnectionString, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode from service bus connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
+     *
+     * @param amqpConnectionString the connection string
      * @param receiveMode          {@link ReceiveMode} PeekLock or ReceiveAndDelete
      * @return {@link IMessageReceiver} instance
      * @throws InterruptedException if the current thread was interrupted while waiting
@@ -231,6 +243,19 @@ public final class ClientFactory {
      */
     public static IMessageReceiver createMessageReceiverFromConnectionString(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromConnectionStringAsync(amqpConnectionString, receiveMode));
+    }
+
+    /**
+     * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode from service bus connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
+     *
+     * @param amqpConnectionString the connection string
+     * @param receiveMode          {@link ReceiveMode} PeekLock or ReceiveAndDelete
+     * @return {@link IMessageReceiver} instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromConnectionString(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromConnectionStringAsync(amqpConnectionString, receiveMode));
     }
 
     /**
@@ -246,6 +271,21 @@ public final class ClientFactory {
      */
     public static IMessageReceiver createMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException {
         return createMessageReceiverFromConnectionStringBuilder(amqpConnectionStringBuilder, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode from ConnectionStringBuilder
+     * <pre>
+     *     IMessageReceiver messageReceiver = ClientFactory.createMessageReceiverFromConnectionStringBuilder(new ConnectionStringBuilder(connectionString, queueName));
+     * </pre>
+     *
+     * @param amqpConnectionStringBuilder {@link ConnectionStringBuilder}
+     * @return The {@link IMessageReceiver} instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException {
+        return createAutoRenewMessageReceiverFromConnectionStringBuilder(amqpConnectionStringBuilder, DEFAULTRECEIVEMODE);
     }
 
     /**
@@ -265,6 +305,22 @@ public final class ClientFactory {
     }
 
     /**
+     * Create {@link IMessageReceiver} from ConnectionStringBuilder
+     * <pre>
+     *     IMessageReceiver messageReceiver = ClientFactory.createMessageReceiverFromConnectionStringBuilder(new ConnectionStringBuilder(connectionString, queueName), ReceiveMode.PEEKLOCK);
+     * </pre>
+     *
+     * @param amqpConnectionStringBuilder {@link ConnectionStringBuilder}
+     * @param receiveMode                 {@link ReceiveMode} PeekLock or ReceiveAndDelete
+     * @return The {@link IMessageReceiver} instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, receiveMode));
+    }
+
+    /**
      * Creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceName namespace of entity
      * @param entityPath path of the entity
@@ -275,6 +331,19 @@ public final class ClientFactory {
      */
     public static IMessageReceiver createMessageReceiverFromEntityPath(String namespaceName, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings));
+    }
+
+     /**
+     * Creates a message receiver to the entity using the client settings in PeekLock mode
+     * @param namespaceName namespace of entity
+     * @param entityPath path of the entity
+     * @param clientSettings client settings
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(String namespaceName, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings));
     }
 
     /**
@@ -292,6 +361,20 @@ public final class ClientFactory {
     }
 
     /**
+     * Creates a message receiver to the entity using the client settings.
+     * @param namespaceName namespace of entity
+     * @param entityPath path of the entity
+     * @param clientSettings client settings
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(String namespaceName, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings, receiveMode));
+    }
+
+    /**
      * Creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceEndpointURI endpoint uri of entity namespace
      * @param entityPath path of the entity
@@ -302,6 +385,19 @@ public final class ClientFactory {
      */
     public static IMessageReceiver createMessageReceiverFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings));
+    }
+
+    /**
+     * Creates a message receiver to the entity using the client settings in PeekLock mode
+     * @param namespaceEndpointURI endpoint uri of entity namespace
+     * @param entityPath path of the entity
+     * @param clientSettings client settings
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings));
     }
 
     /**
@@ -316,6 +412,20 @@ public final class ClientFactory {
      */
     public static IMessageReceiver createMessageReceiverFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings, receiveMode));
+    }
+
+     /**
+     * Creates a message receiver to the entity using the client settings.
+     * @param namespaceEndpointURI endpoint uri of entity namespace
+     * @param entityPath path of the entity
+     * @param clientSettings client settings
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings, receiveMode));
     }
 
     /**
@@ -334,6 +444,18 @@ public final class ClientFactory {
      * Creates a message receiver to the entity.
      * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created
      * @param entityPath path of the entity
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException {
+        return createAutoRenewMessageReceiverFromEntityPath(messagingFactory, entityPath, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Creates a message receiver to the entity.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created
+     * @param entityPath path of the entity
      * @param receiveMode PeekLock or ReceiveAndDelete
      * @return IMessageReceiver instance
      * @throws InterruptedException if the current thread was interrupted while waiting
@@ -343,8 +465,25 @@ public final class ClientFactory {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
     }
 
+    /**
+     * Creates a message receiver to the entity.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created
+     * @param entityPath path of the entity
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return IMessageReceiver instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the receiver cannot be created
+     */
+    public static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
+    }
+
     static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, receiveMode));
+    }
+
+    static IMessageReceiver createAutoRenewMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createAutoRenewMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, receiveMode));
     }
 
     /**
@@ -361,12 +500,34 @@ public final class ClientFactory {
      * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
      *
      * @param amqpConnectionString the connection string
+     * @return a CompletableFuture representing the pending creating
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromConnectionStringAsync(String amqpConnectionString) {
+        return createAutoRenewMessageReceiverFromConnectionStringAsync(amqpConnectionString, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
+     *
+     * @param amqpConnectionString the connection string
      * @param receiveMode          {@link ReceiveMode} PeekLock or ReceiveAndDelete
      * @return a CompletableFuture representing the pending creating
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringAsync(String amqpConnectionString, ReceiveMode receiveMode) {
         Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
         return createMessageReceiverFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), receiveMode);
+    }
+
+     /**
+     * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
+     *
+     * @param amqpConnectionString the connection string
+     * @param receiveMode          {@link ReceiveMode} PeekLock or ReceiveAndDelete
+     * @return a CompletableFuture representing the pending creating
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromConnectionStringAsync(String amqpConnectionString, ReceiveMode receiveMode) {
+        Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
+        return createAutoRenewMessageReceiverFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), receiveMode);
     }
 
     /**
@@ -377,6 +538,16 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) {
         return createMessageReceiverFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode asynchronously from ConnectionStringBuilder
+     *
+     * @param amqpConnectionStringBuilder the connection string builder
+     * @return a CompletableFuture representing the pending creating
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) {
+        return createAutoRenewMessageReceiverFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, DEFAULTRECEIVEMODE);
     }
 
     /**
@@ -392,6 +563,18 @@ public final class ClientFactory {
     }
 
     /**
+     * Create {@link IMessageReceiver} asynchronously from ConnectionStringBuilder
+     *
+     * @param amqpConnectionStringBuilder the connection string builder
+     * @param receiveMode                 {@link ReceiveMode} PeekLock or ReceiveAndDelete
+     * @return a CompletableFuture representing the pending creating
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) {
+        Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
+        return createAutoRenewMessageReceiverFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(), Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder), receiveMode);
+    }
+
+    /**
      * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceName namespace of entity
      * @param entityPath path of entity
@@ -400,6 +583,17 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings) {
         return createMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
+     * @param namespaceName namespace of entity
+     * @param entityPath path of entity
+     * @param clientSettings client settings
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings) {
+        return createAutoRenewMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings, DEFAULTRECEIVEMODE);
     }
 
     /**
@@ -416,6 +610,19 @@ public final class ClientFactory {
     }
 
     /**
+     * Asynchronously creates a message receiver to the entity using the client settings
+     * @param namespaceName namespace of entity
+     * @param entityPath path of entity
+     * @param clientSettings client settings
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
+        Utils.assertNonNull("namespaceName", namespaceName);
+        return createAutoRenewMessageReceiverFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, clientSettings, receiveMode);
+    }
+
+    /**
      * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceEndpointURI endpoint uri of entity namespace
      * @param entityPath path of entity
@@ -424,6 +631,17 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {
         return createMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
+     * @param namespaceEndpointURI endpoint uri of entity namespace
+     * @param entityPath path of entity
+     * @param clientSettings client settings
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {
+        return createAutoRenewMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings, DEFAULTRECEIVEMODE);
     }
 
     /**
@@ -442,6 +660,21 @@ public final class ClientFactory {
     }
 
     /**
+     * Asynchronously creates a message receiver that will automatically renew message locks to the entity using the client settings
+     * @param namespaceEndpointURI endpoint uri of entity namespace
+     * @param entityPath path of entity
+     * @param clientSettings client settings
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
+        Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
+        Utils.assertNonNull("entityPath", entityPath);
+        MessageReceiver receiver = new AutoRenewMessageReceiver(namespaceEndpointURI, entityPath, null, clientSettings, receiveMode);
+        return receiver.initializeAsync().thenApply((v) -> receiver);
+    }
+
+    /**
      * Asynchronously creates a new message receiver to the entity on the messagingFactory.
      * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created.
      * @param entityPath path of entity
@@ -455,6 +688,16 @@ public final class ClientFactory {
      * Asynchronously creates a new message receiver to the entity on the messagingFactory.
      * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created.
      * @param entityPath path of entity
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) {
+        return createAutoRenewMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, DEFAULTRECEIVEMODE);
+    }
+
+    /**
+     * Asynchronously creates a new message receiver to the entity on the messagingFactory.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created.
+     * @param entityPath path of entity
      * @param receiveMode PeekLock or ReceiveAndDelete
      * @return a CompletableFuture representing the pending creation of message receiver
      */
@@ -462,9 +705,26 @@ public final class ClientFactory {
         return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, receiveMode);
     }
 
+    /**
+     * Asynchronously creates a new message receiver to the entity on the messagingFactory.
+     * @param messagingFactory messaging factory (which represents a connection) on which receiver needs to be created.
+     * @param entityPath path of entity
+     * @param receiveMode PeekLock or ReceiveAndDelete
+     * @return a CompletableFuture representing the pending creation of message receiver
+     */
+    public static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) {
+        return createAutoRenewMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, receiveMode);
+    }
+
     static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, receiveMode);
+        return receiver.initializeAsync().thenApply((v) -> receiver);
+    }
+
+    static CompletableFuture<IMessageReceiver> createAutoRenewMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
+        Utils.assertNonNull("messagingFactory", messagingFactory);
+        MessageReceiver receiver = new AutoRenewMessageReceiver(messagingFactory, entityPath, entityType, receiveMode);
         return receiver.initializeAsync().thenApply((v) -> receiver);
     }
 

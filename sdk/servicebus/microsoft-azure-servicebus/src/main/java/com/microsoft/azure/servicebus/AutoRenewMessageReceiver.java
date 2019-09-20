@@ -71,7 +71,7 @@ public class AutoRenewMessageReceiver extends MessageReceiver {
     }
 
     private IMessage scheduleLockRenewal(IMessage message) {
-        if (message != null) {
+        if (message != null && message.getLockToken() != null) {
             MessageLockAutoRenewTask task = new MessageLockAutoRenewTask(this, message);
             Long schedule = ChronoUnit.SECONDS.between(Instant.now(), message.getLockedUntilUtc()) - 20; // give us a 20 sec headroom
             ScheduledFuture<?> renewFuture = scheduler.scheduleAtFixedRate(task, schedule, schedule, TimeUnit.SECONDS);
