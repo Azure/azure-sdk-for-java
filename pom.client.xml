@@ -678,7 +678,7 @@
 
     <!-- Setup for Java 9+ -->
     <profile>
-      <id>java9plus</id>
+      <id>java-lts</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>
@@ -845,25 +845,25 @@
   </profiles>
 
   <modules>
-    <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>./sdk/core/azure-core</module>
-    <module>./sdk/core/azure-core-amqp</module>
-    <module>./sdk/core/azure-core-management</module>
-    <module>./sdk/core/azure-core-http-netty</module>
-    <module>./sdk/core/azure-core-http-okhttp</module>
-    <module>./sdk/core/azure-core-test</module>
-    <module>./sdk/eventhubs/azure-messaging-eventhubs</module>
-    <module>./sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
-    <module>./sdk/identity/azure-identity</module>
-    <module>./sdk/keyvault/azure-keyvault-certificates</module>
-    <module>./sdk/keyvault/azure-keyvault-keys</module>
-    <module>./sdk/keyvault/azure-keyvault-secrets</module>
-    <module>./sdk/storage/azure-storage-blob</module>
-    <module>./sdk/storage/azure-storage-blob-cryptography</module>
-    <module>./sdk/storage/azure-storage-common</module>
-    <module>./sdk/storage/azure-storage-file</module>
-    <module>./sdk/storage/azure-storage-queue</module>
-    <module>./sdk/storage/azure-storage-queue-cryptography</module>
-    <module>./sdk/tracing/tracing-opentelemetry</module>
+    <module>sdk/appconfiguration/azure-data-appconfiguration</module>
+    <module>sdk/core/azure-core</module>
+    <module>sdk/core/azure-core-amqp</module>
+    <module>sdk/core/azure-core-management</module>
+    <module>sdk/core/azure-core-http-netty</module>
+    <module>sdk/core/azure-core-http-okhttp</module>
+    <module>sdk/core/azure-core-test</module>
+    <module>sdk/eventhubs/azure-messaging-eventhubs</module>
+    <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
+    <module>sdk/identity/azure-identity</module>
+    <module>sdk/keyvault/azure-keyvault-certificates</module>
+    <module>sdk/keyvault/azure-keyvault-keys</module>
+    <module>sdk/keyvault/azure-keyvault-secrets</module>
+    <module>sdk/storage/azure-storage-blob</module>
+    <module>sdk/storage/azure-storage-blob-cryptography</module>
+    <module>sdk/storage/azure-storage-common</module>
+    <module>sdk/storage/azure-storage-file</module>
+    <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/azure-storage-queue-cryptography</module>
+    <module>sdk/tracing/tracing-opentelemetry</module>
   </modules>
 </project>
