@@ -184,6 +184,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException;
 
+    @Test
+    public abstract void canMergeDynamicDocuments();
+
     protected abstract void initializeClient();
 
     protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {

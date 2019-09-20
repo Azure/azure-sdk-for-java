@@ -28,9 +28,11 @@ import java.io.Reader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -676,6 +678,155 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 LoudHotel actual = result.as(LoudHotel.class);
                 return actual.equals(originalDoc);
             })
+            .verifyComplete();
+    }
+
+    @Override
+    public void canMergeDynamicDocuments() {
+        Document originalDoc = new Document() {
+            {
+                put("HotelId", "1");
+                put("HotelName", "Secret Point Motel");
+                put("Description", "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
+                put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+                put("Category", "Boutique");
+                put("Tags", Arrays.asList("pool", "air conditioning", "concierge"));
+                put("ParkingIncluded", false);
+                put("SmokingAllowed", true);
+                put("LastRenovationDate", "2010-06-27T00:00:00Z");
+                put("Rating", 4);
+                put("Location", new LinkedHashMap<String, Object>() {
+                    {
+                        put("type", "Point");
+                        put("coordinates", Arrays.asList(-73.975403, 40.760586));
+                        put("crs", new LinkedHashMap<String, Object>() {
+                            {
+                                put("type", "name");
+                                put("properties", new LinkedHashMap<String, Object>() {
+                                    {
+                                        put("name", "EPSG:4326");
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                put("Address", new Document() {
+                    {
+                        put("StreetAddress", "677 5th Ave");
+                        put("City", "New York");
+                        put("StateProvince", "NY");
+                        put("PostalCode", "10022");
+                        put("Country", "USA");
+                    }
+                });
+                put("Rooms", Arrays.asList(
+                    new Document() {
+                        {
+                            put("Description", "Budget Room, 1 Queen Bed (Cityside)");
+                            put("Description_fr", "Chambre Économique, 1 grand lit (côté ville)");
+                            put("Type", "Budget Room");
+                            put("BaseRate", 9.69);
+                            put("BedOptions", "1 Queen Bed");
+                            put("SleepsCount", 2);
+                            put("SmokingAllowed", true);
+                            put("Tags", Arrays.asList("vcr/dvd"));
+                        }
+                    },
+                    new Document() {
+                        {
+                            put("Description", "Budget Room, 1 King Bed (Mountain View)");
+                            put("Description_fr", "Chambre Économique, 1 très grand lit (Mountain View)");
+                            put("Type", "Budget Room");
+                            put("BaseRate", 8.09);
+                            put("BedOptions", "1 King Bed");
+                            put("SleepsCount", 2);
+                            put("SmokingAllowed", true);
+                            put("Tags", Arrays.asList("vcr/dvd", "jacuzzi tub"));
+                        }
+                    }));
+            }
+        };
+
+        Document updatedDoc = new Document() {
+            {
+                put("HotelId", "1");
+                put("Description", null);
+                put("Category", "Economy");
+                put("Tags", Arrays.asList("pool", "air conditioning"));
+                put("ParkingIncluded", true);
+                put("LastRenovationDate", null);
+                put("Rating", 3);
+                put("Location", null);
+                put("Address", new Document());
+                put("Rooms", Arrays.asList(new Document() {
+                    {
+                        put("Description", null);
+                        put("Type", "Budget Room");
+                        put("BaseRate", 10.5);
+                        put("BedOptions", "1 Queen Bed");
+                        put("SleepsCount", 2);
+                        put("SmokingAllowed", true);
+                        put("Tags", Arrays.asList("vcr/dvd", "balcony"));
+                    }
+                }));
+            }
+        };
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("HotelName", "Secret Point Motel");
+        expectedDoc.put("Description", null);
+        expectedDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+        expectedDoc.put("Category", "Economy");
+        expectedDoc.put("Tags", Arrays.asList("pool", "air conditioning"));
+        expectedDoc.put("ParkingIncluded", true);
+        expectedDoc.put("SmokingAllowed", true);
+        expectedDoc.put("LastRenovationDate", null);
+        expectedDoc.put("Rating", 3);
+        expectedDoc.put("Location", null);
+
+        LinkedHashMap<String, Object> expectedAddress = new LinkedHashMap<>();
+        expectedAddress.put("StreetAddress", "677 5th Ave");
+        expectedAddress.put("City", "New York");
+        expectedAddress.put("StateProvince", "NY");
+        expectedAddress.put("PostalCode", "10022");
+        expectedAddress.put("Country", "USA");
+        expectedDoc.put("Address", expectedAddress);
+
+        // This should look like the merged doc with unspecified fields as null because we don't support
+        // partial updates for complex collections.
+        LinkedHashMap<String, Object> expectedRoom = new LinkedHashMap<>();
+        expectedRoom.put("Description", null);
+        expectedRoom.put("Description_fr", null);
+        expectedRoom.put("Type", "Budget Room");
+        expectedRoom.put("BaseRate", 10.5);
+        expectedRoom.put("BedOptions", "1 Queen Bed");
+        expectedRoom.put("SleepsCount", 2);
+        expectedRoom.put("SmokingAllowed", true);
+        expectedRoom.put("Tags", Arrays.asList("vcr/dvd", "balcony"));
+
+        List<LinkedHashMap<String, Object>> expectedRooms = new ArrayList<>();
+        expectedRooms.add(expectedRoom);
+        expectedDoc.put("Rooms", expectedRooms);
+
+        client.mergeOrUploadDocument(originalDoc).block();
+        waitForIndexing();
+
+        client.mergeDocument(updatedDoc).block();
+        waitForIndexing();
+
+        Mono<Document> actualMono = client.getDocument("1");
+        StepVerifier.create(actualMono)
+            .expectNext(expectedDoc)
+            .verifyComplete();
+
+        client.mergeOrUploadDocument(originalDoc).block();
+        waitForIndexing();
+
+        actualMono = client.getDocument("1");
+        StepVerifier.create(actualMono)
+            .expectNext(originalDoc)
             .verifyComplete();
     }
 
