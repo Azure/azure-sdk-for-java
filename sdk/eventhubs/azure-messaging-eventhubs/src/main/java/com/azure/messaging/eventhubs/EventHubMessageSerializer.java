@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 /**
  * Utility class for converting {@link EventData} to {@link Message}.
  */
-class EventDataUtil implements MessageSerializer {
-    private final ClientLogger logger = new ClientLogger(EventDataUtil.class);
+class EventHubMessageSerializer implements MessageSerializer {
+    private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
 
     /**
      * Maps the set of events given to a collection of AMQP messages.
