@@ -3,9 +3,9 @@
 
 package com.azure.data.appconfiguration.models;
 
-import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;

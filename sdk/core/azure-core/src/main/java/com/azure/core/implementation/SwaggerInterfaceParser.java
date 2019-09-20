@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;

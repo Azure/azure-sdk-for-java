@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.ResumeOperation;
+import com.azure.core.annotation.ResumeOperation;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
@@ -31,7 +31,8 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedR
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.tracing.TracerProxy;
+import com.azure.core.util.Base64Url;
+import com.azure.core.util.tracing.TracerProxy;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
