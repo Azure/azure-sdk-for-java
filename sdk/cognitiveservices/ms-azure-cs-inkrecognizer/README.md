@@ -15,21 +15,23 @@ This SDK will:
 * Send a request to the Ink Recognizer API with your data.
 * Process the API response by parsing the returned JSON message.
 
-[Source code][source_code]| [Package (Maven)][maven] | [API reference documentation][ref_inkrecognizer_sdk] | [Product documentation][inkrecognizer_docs] | [Samples][samples]
+[Package (Maven)][maven] | [API reference documentation][ref_inkrecognizer_sdk] | [Product documentation][inkrecognizer_docs] | [Samples][samples]
 
 ## Getting started
 
 ### Prerequisites
 
-Android 6.0 or later
-Java Development Kit (JDK) with version 7 or above
-You must have a [Cognitive Services API account][cog_serv_acc]. If you don't have an Azure subscription, you can [create an account][create_acc] for free. You can get your subscription key from the [Azure portal][az_portal] after creating your account, or [Azure website][az_web] after activating a free trial.
+* Android 6.0 or later
+* Java Development Kit (JDK) with version 7 or above
+* You must have a [Cognitive Services API account][cog_serv_acc]. Please refer the [Ink Recognizer API][inkrecognizer_api] if you don't have it already.
 
 ## Key concepts
 
+You will need to start off by adding this sdk library as a dependency to your project.
+
 ### Implement InkStroke and InkPoint
 
-The InkStroke interface represents an ink stroke (a collection of ink points from the time a user places the writing instrument on the writing surface until the the instrument is lifted. You will be expected to implement this interface so that the InkRecognizer Client object can use it to translate the ink to JSON for delivery to the Ink Recognizer service.
+The InkStroke interface represents an ink stroke (a collection of ink points from the time a user places the writing instrument on the writing surface until the instrument is lifted). You will be expected to implement this interface so that the InkRecognizer Client object can use it to translate the ink to JSON for delivery to the Ink Recognizer service.
 
 ```Java
 public interface InkStroke {
@@ -49,7 +51,7 @@ public interface InkPoint {
 }
 ```
 
-The StrokeKind enum represents the class a stroke belongs to. You are expected to set this value when it is known with absolute certainty. The default value is "UNKNOWN".
+The StrokeKind enum represents the class a stroke belongs to. You are expected to set this value when it is known with absolute certainty. The default value is InkStrokeKind.UNKNOWN.
 
 ```Java
 public enum InkStrokeKind {
@@ -61,7 +63,7 @@ public enum InkStrokeKind {
 
 ### Create client
 
-You will need to then create an InkRecognizerClient object as follows:
+You will need to then create an InkRecognizerClient object, an example is as follows:
 
 ```Java
 InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
@@ -83,7 +85,7 @@ InkRecognizerAsyncClient inkRecognizerAsyncClient = inkRecognizerClientBuilder.c
 
 ### Send request
 
-You can then send the strokes for processing to the service through the client
+You can then send the strokes for processing to the service through the client such as:
 
 ```Java
 InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
@@ -91,7 +93,7 @@ InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
 
 ### Use the response
 
-You can call methods on the InkRecognitionRoot. For example, you can search for specific recognized words in the recognized text as follows:
+You can call methods on the InkRecognitionRoot obtained from before. For example, you can search for specific recognized words in the recognized text as follows:
 
 ```Java
 Iterable<InkWord> wordsFound = root.findWord("hello")
@@ -103,7 +105,16 @@ The [Ink Recognizer Samples][samples] cover some of the common use cases of the 
 
 ## Troubleshooting
 
+File an issue via [Github Issues][github_issues].
+
 ## Next steps
+
+You can refer the Javadocs for this project to view the different ways you can use this sdk.
+
+## Notes
+
+* You can obtain a local version of this sdk library by building this project by running 'gradlew build' at the root of the project in terminal. This will place the .aar library in the folder 'inkrecognizer/build/outputs/aar'.
+* You can obtain the javadocs for this project by running 'gradlew javadoc' at the root of the project in the terminal. This will create a javadocs folder at the root of the project.
 
 ## Contributing
 
@@ -124,8 +135,9 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [az_web]: https://azure.microsoft.com/try/cognitive-services/my-apis
 [cog_serv_acc]: https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-apis-create-account
 [create_acc]: https://azure.microsoft.com/try/cognitive-services/
+[github_issues]: https://github.com/Azure/azure-sdk-for-java/issues/new/choose
+[inkrecognizer_api]: https://docs.microsoft.com/en-us/azure/cognitive-services/ink-recognizer/overview
 [inkrecognizer_docs]: https://docs.microsoft.com/en-us/azure/cognitive-services/ink-recognizer/
+[inkrecognizer_sdk]: https://
 [maven]: https://
-[ref_inkrecognizer_sdk]: https://docs.microsoft.com/en-us/rest/api/cognitiveservices/inkrecognizer/inkrecognizer
 [samples]: https://
-[source_code]: https://
