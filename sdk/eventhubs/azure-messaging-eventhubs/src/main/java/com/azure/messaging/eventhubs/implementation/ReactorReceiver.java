@@ -18,6 +18,7 @@ import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -33,7 +34,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
-    private final ActiveClientTokenManager tokenManager;
+    private final TokenManager tokenManager;
     private final Disposable.Composite subscriptions;
     private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
     private final AtomicBoolean isDisposed;
@@ -41,8 +42,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
 
     private volatile Supplier<Integer> creditSupplier;
 
-    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-                    ActiveClientTokenManager tokenManager) {
+    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, TokenManager tokenManager) {
         super(new ClientLogger(ReactorReceiver.class));
         this.isDisposed = new AtomicBoolean();
         this.entityPath = entityPath;
@@ -134,7 +134,12 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
         }
 
         subscriptions.dispose();
-        tokenManager.close();
+
+        try {
+            tokenManager.close();
+        } catch (IOException e) {
+            logger.warning("IOException occurred trying to close tokenManager for {}.", entityPath, e);
+        }
 
         messageSink.complete();
 

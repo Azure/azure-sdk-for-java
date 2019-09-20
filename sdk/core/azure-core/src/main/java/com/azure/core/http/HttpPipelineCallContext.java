@@ -15,7 +15,6 @@ public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
     private Context data;
 
-    //<editor-fold defaultstate="collapsed" desc="Package internal methods">
     /**
      * Package private ctr.
      *
@@ -46,9 +45,6 @@ public final class HttpPipelineCallContext {
         this.httpRequest = httpRequest;
         this.data = data;
     }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Public methods">
 
     /**
      * Stores a key-value data in the context.
@@ -89,6 +85,4 @@ public final class HttpPipelineCallContext {
         this.httpRequest = request;
         return this;
     }
-
-    //</editor-fold>
 }

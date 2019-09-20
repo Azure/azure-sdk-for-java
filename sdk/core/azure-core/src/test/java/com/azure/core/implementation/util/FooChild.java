@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.implementation.annotation.JsonFlatten;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 

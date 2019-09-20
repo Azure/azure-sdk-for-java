@@ -16,8 +16,10 @@ import java.time.Duration;
  */
 public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
-    private void simpleInstantiation() {
-
+    /**
+     * Code snippet for simple http client instantiation.
+     */
+    public void simpleInstantiation() {
         // BEGIN: com.azure.core.http.okhttp.instantiation-simple
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
                 .build();
@@ -25,15 +27,14 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
     }
 
     private void proxySample() {
-
-        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setProxy
+        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#proxy
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyHost, proxyPort));
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
-                .setProxy(proxy)
+                .proxy(proxy)
                 .build();
-        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setProxy
+        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#proxy
 
     }
 
@@ -47,8 +48,8 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
         //
         Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyHost, proxyPort));
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
-                .setProxy(proxy)
-                .setProxyAuthenticator((route, response) -> {
+                .proxy(proxy)
+                .proxyAuthenticator((route, response) -> {
                     String credential = Credentials.basic(proxyUser, proxyPassword);
                     return response.request().newBuilder()
                             .header("Proxy-Authorization", credential)
@@ -61,23 +62,23 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     private void connectionTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout
         final Duration connectionTimeout = Duration.ofSeconds(250); // connection timeout of 250 seconds
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
-                .setConnectionTimeout(connectionTimeout)
+                .connectionTimeout(connectionTimeout)
                 .build();
-        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout
 
     }
 
-    private void readTimeoutTimeoutSample() {
+    private void readTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#readTimeout
         final Duration readTimeout = Duration.ofSeconds(100); // read timeout of 100 seconds
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
-                .setReadTimeout(readTimeout)
+                .readTimeout(readTimeout)
                 .build();
-        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#setConnectionTimeout
+        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#readTimeout
 
     }
 
@@ -93,7 +94,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
         // connection pool, thread pool.
         // "client" inherits connection timeout settings and add proxy.
         HttpClient client = new OkHttpAsyncHttpClientBuilder(okHttpClient)
-                .setProxy(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("<proxy-host>", 9999)))
+                .proxy(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("<proxy-host>", 9999)))
                 .build();
         // END: com.azure.core.http.okhttp.using-existing-okhttp
 

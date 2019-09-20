@@ -4,8 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.Locale;
@@ -18,6 +20,23 @@ import java.util.TreeMap;
  * RESERVED FOR INTERNAL USE ONLY
  */
 public final class URLParser {
+
+    /**
+     * URLParser parses a string URL initializing BlobURLParts' fields including any SAS-related and snapshot query
+     * parameters. Any other query parameters remain in the UnparsedParams field. This method overwrites all fields
+     * in the BlobURLParts object.
+     *
+     * @param url The string URL to be parsed.
+     * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
+     */
+    public static BlobURLParts parse(String url, ClientLogger logger) {
+        try {
+            return parse(new URL(url));
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
+                + url));
+        }
+    }
 
     /**
      * URLParser parses a URL initializing BlobURLParts' fields including any SAS-related and snapshot query parameters.

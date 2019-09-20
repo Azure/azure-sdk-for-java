@@ -61,6 +61,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.0.0-preview.5</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.5</version>
+    </dependency>
 
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
