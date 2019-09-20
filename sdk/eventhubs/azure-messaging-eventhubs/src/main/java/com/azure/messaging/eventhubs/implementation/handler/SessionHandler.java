@@ -118,10 +118,21 @@ public class SessionHandler extends Handler {
         onNext(EndpointState.CLOSED);
 
         if (condition != null) {
-            final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]",
-                    getConnectionId(), entityName),
-                getErrorContext());
+            final String id = getConnectionId();
+            final ErrorContext context = getErrorContext();
+            final Exception exception;
+            if (condition.getCondition() == null) {
+                exception = new AmqpException(false,
+                    String.format(Locale.US,
+                        "onSessionRemoteClose connectionId[%s], entityName[%s], condition[%s]", id, entityName,
+                        condition),
+                    context);
+            } else {
+                exception = ExceptionUtil.toException(condition.getCondition().toString(),
+                    String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", id,
+                        entityName),
+                    context);
+            }
 
             onNext(exception);
         }

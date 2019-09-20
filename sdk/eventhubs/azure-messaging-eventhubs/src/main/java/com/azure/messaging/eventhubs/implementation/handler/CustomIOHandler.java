@@ -32,7 +32,13 @@ public class CustomIOHandler extends IOHandler {
 
     @Override
     public void onUnhandled(Event event) {
-        // logger.verbose("Unhandled event: {}, {}", event.getEventType(), event.toString());
-        super.onUnhandled(event);
+        // logger.verbose("Unhandled event: {}, {}", event.getEventType(), event);
+
+        // There appears to be some race condition where it's possible to get a null selector key in proton-j.
+        try {
+            super.onUnhandled(event);
+        } catch (NullPointerException e) {
+            logger.error("Exception occurred when handling event in super.", e);
+        }
     }
 }
