@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link

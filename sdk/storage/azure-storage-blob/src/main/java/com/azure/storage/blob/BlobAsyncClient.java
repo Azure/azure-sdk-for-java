@@ -22,7 +22,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  * {@link ContainerAsyncClient#getBlobAsyncClient(String) getBlobClient}.
  *
  * <p>
- * For operations on a specific blob type, append, block, or page, use
+ * For operations on a specific blob type (i.e append, block, or page) use
  * {@link #asAppendBlobAsyncClient() asAppendBlobAsyncClient}, {@link #asBlockBlobAsyncClient() asBlockBlobAsyncClient},
  * or {@link #asPageBlobAsyncClient() asPageBlobAsyncClient} to construct a client that allows blob specific operations.
  *

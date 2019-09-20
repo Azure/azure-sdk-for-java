@@ -60,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.

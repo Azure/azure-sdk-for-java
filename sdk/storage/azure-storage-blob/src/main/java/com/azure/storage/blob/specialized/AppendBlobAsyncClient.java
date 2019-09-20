@@ -28,7 +28,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to an append blob. It may only be instantiated through a

@@ -47,7 +47,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
