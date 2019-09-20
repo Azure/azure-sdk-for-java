@@ -26,7 +26,8 @@ public class MessageLockAutoRenewTask implements Runnable {
             // probably not worth doing anything here
         } catch (ServiceBusException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error(String.format("Exception while attempting to renew lock for message : %s",message.getMessageId()), e);
+                TRACE_LOGGER.error(String.format("Exception while attempting to renew lock for message : %s",
+                        message.getMessageId()), e);
             }
         }
     }
