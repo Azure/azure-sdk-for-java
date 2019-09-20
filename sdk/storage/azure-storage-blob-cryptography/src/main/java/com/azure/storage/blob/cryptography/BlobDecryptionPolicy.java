@@ -71,11 +71,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // 1. Expand the range of download for decryption
         String RANGE_HEADER = "x-ms-range";
         EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-            context.getHttpRequest().getHeaders().value(RANGE_HEADER));
+            context.getHttpRequest().getHeaders().getValue(RANGE_HEADER));
 
         // Assumption: Download is the only API on an encrypted client that sets x-ms-range
         // Only set the x-ms-range header if it already exists
-        if(context.getHttpRequest().getHeaders().value(RANGE_HEADER) != null) {
+        if(context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
             context.getHttpRequest().getHeaders().put(RANGE_HEADER, encryptedRange.toBlobRange().toString());
         }
 
@@ -89,7 +89,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 not set originally with the intent of downloading the whole blob, update it here.
                  */
                 encryptedRange.withAdjustedDownloadCount(Long.valueOf(httpResponse.getHeaders()
-                    .value("Content-Length")));
+                    .getValue("Content-Length")));
                 boolean padding = encryptedRange.toBlobRange().getOffset() +
                     encryptedRange.toBlobRange().getCount() > (blobSize(httpResponse.getHeaders()) - 16);
                 Metadata metadata = extractMetadataFromResponse(httpResponse.getHeaders());
@@ -420,13 +420,13 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private Long blobSize(HttpHeaders headers) {
         // e.g. 0-5/1024
-        if (headers.value("Content-Range") != null) {
-            String range = headers.value("Content-Range");
+        if (headers.getValue("Content-Range") != null) {
+            String range = headers.getValue("Content-Range");
             return Long.valueOf(range.split("/")[1]);
         }
         else {
             // If there was no content range header, we requested a full blob, so the blobSize = contentLength
-            return Long.valueOf(headers.value("Content-Length"));
+            return Long.valueOf(headers.getValue("Content-Length"));
         }
     }
 
@@ -449,10 +449,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         private final int statusCode;
 
         DecryptedResponse(HttpResponse httpResponse, Flux<ByteBuffer> plainTextBody) {
+            super(httpResponse.getRequest());
             this.plainTextBody = plainTextBody;
             this.httpHeaders = httpResponse.getHeaders();
             this.statusCode = httpResponse.getStatusCode();
-            this.setRequest(httpResponse.getRequest());
         }
 
         @Override
@@ -462,7 +462,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
         @Override
         public String getHeaderValue(String name) {
-            return httpHeaders.value(name);
+            return httpHeaders.getValue(name);
         }
 
         @Override

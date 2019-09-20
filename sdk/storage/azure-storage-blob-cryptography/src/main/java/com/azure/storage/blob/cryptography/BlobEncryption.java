@@ -28,7 +28,7 @@ import java.util.Objects;
  * <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure Docs</a>
  * for more information.
  */
-public final class BlobEncryption {
+final class BlobEncryption {
     private final ClientLogger logger = new ClientLogger(BlobEncryption.class);
 
     /**

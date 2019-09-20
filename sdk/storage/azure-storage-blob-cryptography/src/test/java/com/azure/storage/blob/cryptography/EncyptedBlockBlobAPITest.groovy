@@ -237,7 +237,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         bac.getModifiedAccessConditions().setIfMatch(etag)
 
         then:
-        beac.uploadWithResponse(defaultFlux, defaultDataSize as int, 2, null, null, null, bac).block().getStatusCode() == 201
+        beac.uploadWithResponse(defaultFlux, defaultDataSize as int, 2, null, null, null, bac)
+            .block().getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -338,10 +339,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         when:
         Metadata metadata = new Metadata()
         ObjectMapper objectMapper = new ObjectMapper()
-        metadata.put(EncryptionConstants.ENCRYPTION_DATA_KEY, objectMapper.writeValueAsString(list.get(index).getEncryptionData()))
+        metadata.put(EncryptionConstants.ENCRYPTION_DATA_KEY, objectMapper.writeValueAsString(list.get(index).
+            getEncryptionData()))
 
         // Upload encrypted data with regular client
-        normalClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(encryptedBytes)), encryptedBytes.length, null, metadata, null, null).block()
+        normalClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(encryptedBytes)), encryptedBytes.length, null,
+            metadata, null, null).block()
 
         // Download data with encrypted client
         ByteBuffer outputByteBuffer = collectBytesInBuffer(client.download().block()).block()
@@ -357,7 +360,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI())
         String json = new String(Files.readAllBytes(path), StandardCharsets.UTF_8)
         ObjectMapper mapper = new ObjectMapper()
-        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, TestEncryptionBlob.class)
+        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class,
+            TestEncryptionBlob.class)
         List<TestEncryptionBlob> list = mapper.readValue(json, collectionType)
         return list
     }

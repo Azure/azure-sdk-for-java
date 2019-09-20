@@ -10,10 +10,8 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.blob.BlobAsyncClient
-import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.common.BaseClientBuilder
@@ -114,12 +112,12 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
-        String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (testMode != null) {
             try {
                 return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ignore) {
                 return TestMode.PLAYBACK
             }
         }
@@ -132,8 +130,8 @@ class APISpec extends Specification {
         String accountKey
 
         if (testMode == TestMode.RECORD) {
-            accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             accountName = "storageaccount"
             accountKey = "astorageaccountkey"
@@ -183,7 +181,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
-            if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
@@ -268,7 +266,7 @@ class APISpec extends Specification {
             response.getValue().getContentDisposition() == contentDisposition &&
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
-            response.getHeaders().value("Content-Type") == contentType
+            response.getHeaders().getValue("Content-Type") == contentType
 
         if (checkContentMD5) {
             return propertiesEqual && response.getValue().getContentMD5() == contentMD5
@@ -290,7 +288,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(EncryptedBlockBlobClient ebbc, String match) {
         if (match == receivedEtag) {
-            return ebbc.getPropertiesWithResponse(null, null, null).getHeaders().value("ETag")
+            return ebbc.getPropertiesWithResponse(null, null, null).getHeaders().getValue("ETag")
         } else {
             return match
         }
@@ -298,47 +296,9 @@ class APISpec extends Specification {
 
     def setupBlobMatchCondition(EncryptedBlockBlobAsyncClient ebbac, String match) {
         if (match == receivedEtag) {
-            return ebbac.getPropertiesWithResponse(null).block().getHeaders().value("ETag")
+            return ebbac.getPropertiesWithResponse(null).block().getHeaders().getValue("ETag")
         } else {
             return match
-        }
-    }
-
-    /**
-     * This helper method will acquire a lease on a blob to prepare for testing leaseAccessConditions. We want to test
-     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
-     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
-     * with other AC tests.
-     *
-     * @param ebbc
-     *      The blob on which to acquire a lease.
-     * @param leaseID
-     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
-     * @return
-     * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
-     * returned.
-     */
-    def setupBlobLeaseCondition(EncryptedBlockBlobClient ebbc, String leaseID) {
-        String responseLeaseId = null
-        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = ebbc.acquireLease(null, -1)
-        }
-        if (leaseID == receivedLeaseID) {
-            return responseLeaseId
-        } else {
-            return leaseID
-        }
-    }
-
-    def setupBlobLeaseCondition(EncryptedBlockBlobAsyncClient ebbac, String leaseID) {
-        String responseLeaseId = null
-        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = ebbac.acquireLease(null, -1).block()
-        }
-        if (leaseID == receivedLeaseID) {
-            return responseLeaseId
-        } else {
-            return leaseID
         }
     }
 }

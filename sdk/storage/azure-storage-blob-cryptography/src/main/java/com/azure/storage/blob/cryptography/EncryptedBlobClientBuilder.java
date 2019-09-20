@@ -5,7 +5,6 @@ package com.azure.storage.blob.cryptography;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobURLParts;
@@ -39,7 +38,6 @@ import java.util.Objects;
  * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient()} - {@link EncryptedBlockBlobClient}</li>
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {EncryptedBlockBlobClient.class, EncryptedBlockBlobAsyncClient.class})
 public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<EncryptedBlobClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
