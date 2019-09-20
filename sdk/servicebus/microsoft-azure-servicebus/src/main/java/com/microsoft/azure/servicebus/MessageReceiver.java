@@ -618,7 +618,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         }
     }
 
-    private CompletableFuture<Boolean> checkIfValidRequestResponseLockTokenAsync(UUID lockToken) {
+    protected CompletableFuture<Boolean> checkIfValidRequestResponseLockTokenAsync(UUID lockToken) {
         CompletableFuture<Boolean> future = new CompletableFuture<Boolean>();
         Instant lockedUntilUtc = this.requestResponseLockTokensToLockTimesMap.get(lockToken);
         if (lockedUntilUtc == null) {

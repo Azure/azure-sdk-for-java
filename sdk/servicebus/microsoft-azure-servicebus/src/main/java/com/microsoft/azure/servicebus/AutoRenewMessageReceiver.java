@@ -109,4 +109,16 @@ public class AutoRenewMessageReceiver extends MessageReceiver {
             renewLockTaskMessageIdMap.remove(lockToken);
         }
     }
+
+    @Override
+    protected CompletableFuture<Boolean> checkIfValidRequestResponseLockTokenAsync(UUID lockToken) {
+        CompletableFuture<Boolean> future = new CompletableFuture<Boolean>();
+
+        future = super.checkIfValidRequestResponseLockTokenAsync(lockToken).thenCompose((r) -> {
+            return CompletableFuture.completedFuture(r || renewLockTaskMessageIdMap.containsKey(lockToken));
+        });
+
+        return future;
+    }
+
 }
