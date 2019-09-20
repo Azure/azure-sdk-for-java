@@ -111,17 +111,6 @@ class APISpec extends Specification {
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
-
-//        primaryBlobServiceClient = setClient(primaryCredential)
-//        primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
-//        alternateBlobServiceClient = setClient(alternateCredential)
-//        blobServiceClient = setClient(blobCredential)
-//        premiumBlobServiceClient = setClient(premiumCredential)
-//
-//        def containerName = generateContainerName()
-//        cc = primaryBlobServiceClient.getContainerClient(containerName)
-//        ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
-//        cc.create()
     }
 
     static TestMode setupTestMode() {
@@ -156,10 +145,6 @@ class APISpec extends Specification {
         }
 
         return new SharedKeyCredential(accountName, accountKey)
-    }
-
-    def getEncryptedBlockBlobClient() {
-
     }
 
     /*
@@ -226,6 +211,10 @@ class APISpec extends Specification {
             builder.credential(credential)
         }
 
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
         return builder
     }
 
@@ -251,6 +240,10 @@ class APISpec extends Specification {
 
         if (credential != null) {
             builder.credential(credential)
+        }
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         return builder

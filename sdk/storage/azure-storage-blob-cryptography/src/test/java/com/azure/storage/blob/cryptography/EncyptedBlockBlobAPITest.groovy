@@ -35,7 +35,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     String keyId
     def symmetricKey
-    BlobEncryption blobEncryptionPolicy
 
     def setup() {
         keyId = "keyId"
@@ -60,23 +59,28 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .buildEncryptedBlockBlobClient()
     }
 
-    def compareDataToFile(Flux<ByteBuffer> data, File file) {
-        FileInputStream fis = new FileInputStream(file)
+    // Key or key resolver must be set
+    def "Create encryption client fails"() {
+        when:
+        beac = getEncryptedClientBuilder(null, null, primaryCredential,
+            cc.getContainerUrl().toString())
+            .blobName(generateBlobName())
+            .buildEncryptedBlockBlobAsyncClient()
 
-        for (ByteBuffer received : data.toIterable()) {
-            byte[] readBuffer = new byte[received.remaining()]
-            fis.read(readBuffer)
-            for (int i = 0; i < received.remaining(); i++) {
-                if (readBuffer[i] != received.get(i)) {
-                    return false
-                }
-            }
-        }
+        then:
+        thrown(IllegalArgumentException)
 
-        fis.close()
-        return true
+        when:
+        bec = getEncryptedClientBuilder(null, null, primaryCredential,
+            cc.getContainerUrl().toString())
+            .blobName(generateBlobName())
+            .buildEncryptedBlockBlobClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
+    // This test checks that encryption is not just a no-op
     def "Encryption not a no-op"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
@@ -93,6 +97,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         outputByteBuffer.array() != byteBuffer.array()
     }
 
+    // This test uses an encrypted client to encrypt and decrypt data
+    // Tests upload and buffered upload with different bytebuffer sizes
     @Unroll
     def "Encryption"() {
         when:
@@ -137,8 +143,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         10 * Constants.MB | 2                 // 10 Small number of large buffers.
     }
 
+    // This test checks that HTTP headers are successfully set on the encrypted client
     @Unroll
-    def "Encryption headers"() {
+    def "Encryption HTTP headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
@@ -147,8 +154,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setBlobContentMD5(contentMD5)
             .setBlobContentType(contentType)
 
-        /* TODO : Find out how exactly to fix this, this fails because the contentMd5 being sent to the service is that
-           of unencrypted data */
+        /* TODO : (gapra) Find out how exactly to fix this, this fails because the contentMd5 being sent to the service
+            is that of unencrypted data */
 //        when:
 //        beac.uploadWithResponse(defaultFlux, defaultDataSize, headers, null, null, null).block()
 //        def response = beac.getPropertiesWithResponse(null).block()
@@ -160,8 +167,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
 //            contentMD5, contentType == null ? "application/octet-stream" : contentType, contentMD5 != null)
 //        // HTTP default content type is application/octet-stream
 
-
-        // TODO : This test does not actually test anything related to encryption.
         when:
         // Buffered upload
         beac.uploadWithResponse(defaultFlux, defaultDataSize as int, 2, headers, null, null, null).block()
@@ -179,6 +184,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
+    // This test checks that metadata in encryption is successfully set
     @Unroll
     def "Encryption metadata"() {
         setup:
@@ -211,6 +217,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    // This test checks that access conditions in encryption clients is successfully set
     @Unroll
     def "Encryption AC"() {
         when:
@@ -242,6 +249,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
+    // This test checks that access conditions in encryption clients is unsuccessful with invalid data
     @Unroll
     def "Encryption AC fail"() {
         setup:
@@ -271,7 +279,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-
+    // This test checks the upload to file method on an encrypted client
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(KB)
@@ -283,6 +291,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         compareDataToFile(beac.download().block(), file)
     }
 
+    // This test checks the download to file method on an encrypted client
     def "Encrypted download file"() {
         setup:
         def path = UUID.randomUUID().toString() + ".txt"
@@ -299,8 +308,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         new File(path).delete()
     }
 
+    // This test checks that encryption is cross platform compatible
+    // Encrypted data uploaded from a previous version of the SDK can be downloaded from this SDK successfully
     @Unroll
-    def "Block block cross platform decryption tests"() {
+    def "Block blob cross platform decryption tests"() {
         setup:
         // Create an async client
         ContainerAsyncClient cac = getServiceClientBuilder(primaryCredential,
@@ -310,11 +321,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         cac.create().block()
 
-        when:
         List<TestEncryptionBlob> list = getTestData("encryptedBlob.json")
         def key = new SymmetricKey("symmKey1", Base64.getDecoder().decode(list.get(index).getKey()))
         def blobName = generateBlobName()
-        // TODO: Upload with regular client, download with encryption client
 
         BlockBlobAsyncClient normalClient = cac.getBlockBlobAsyncClient(blobName)
 
@@ -326,13 +335,15 @@ class EncyptedBlockBlobAPITest extends APISpec {
         byte[] encryptedBytes = Base64.getDecoder().decode(list.get(index).getEncryptedContent())
         byte[] decryptedBytes = Base64.getDecoder().decode(list.get(index).getDecryptedContent())
 
+        when:
         Metadata metadata = new Metadata()
-
         ObjectMapper objectMapper = new ObjectMapper()
         metadata.put(EncryptionConstants.ENCRYPTION_DATA_KEY, objectMapper.writeValueAsString(list.get(index).getEncryptionData()))
 
+        // Upload encrypted data with regular client
         normalClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(encryptedBytes)), encryptedBytes.length, null, metadata, null, null).block()
 
+        // Download data with encrypted client
         ByteBuffer outputByteBuffer = collectBytesInBuffer(client.download().block()).block()
 
         then:
@@ -362,5 +373,22 @@ class EncyptedBlockBlobAPITest extends APISpec {
             result.position(result.position() + buffer.remaining())
         }
         return result.remaining() == 0
+    }
+
+    def compareDataToFile(Flux<ByteBuffer> data, File file) {
+        FileInputStream fis = new FileInputStream(file)
+
+        for (ByteBuffer received : data.toIterable()) {
+            byte[] readBuffer = new byte[received.remaining()]
+            fis.read(readBuffer)
+            for (int i = 0; i < received.remaining(); i++) {
+                if (readBuffer[i] != received.get(i)) {
+                    return false
+                }
+            }
+        }
+
+        fis.close()
+        return true
     }
 }

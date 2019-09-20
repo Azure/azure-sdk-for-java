@@ -33,6 +33,11 @@ final class EncryptedBlobRange {
      */
     private Long adjustedDownloadCount;
 
+    /**
+     * Converts a regular blob range header to an encrypted blob range
+     * @param stringRange
+     * @return
+     */
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
         // Null case
         if (stringRange == null) {

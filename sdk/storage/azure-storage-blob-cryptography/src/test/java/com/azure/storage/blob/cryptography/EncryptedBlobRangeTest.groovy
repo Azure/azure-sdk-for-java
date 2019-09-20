@@ -6,7 +6,39 @@ import spock.lang.Unroll
 class EncryptedBlobRangeTest extends APISpec {
 
     @Unroll
-    def "Test from header string"() {
+    def "Test constructor"() {
+        setup:
+        BlobRange range
+        if (offset == null && count == null) {
+            range = new BlobRange()
+        } else if (offset == null) {
+            range = new BlobRange(offset)
+        } else {
+            range = new BlobRange(offset, count)
+        }
+
+        when:
+        EncryptedBlobRange ebr = new EncryptedBlobRange(range)
+
+        then:
+        ebr.toBlobRange().toString() == expectedString
+
+        where:
+        offset | count || expectedString
+        null   | null  || "bytes=0-"   // Both null
+        3      | null  || "bytes=0-"   // Only offset specified
+        17     | null  || "bytes=0-"
+        34     | null  || "bytes=16-"
+        47     | null  || "bytes=16-"
+        48     | null  || "bytes=32-"
+        2      | 6     || "bytes=0-15" // Two parameters specified
+        18     | 2     || "bytes=0-31"
+        38     | 17    || "bytes=16-63"
+
+    }
+
+    @Unroll
+    def "Test from blob range header"() {
         setup:
         BlobRange range
         if (offset == null && count == null) {
@@ -24,12 +56,17 @@ class EncryptedBlobRangeTest extends APISpec {
         then:
         encryptedRangeFromBlobRange.toBlobRange().toHeaderValue() == encryptedRangeFromHeader.toBlobRange().toHeaderValue()
 
-        // TODO : Add more cases here
         where:
         offset | count
-        null   | null
+        null   | null   // Both null
+        3      | null   // Only offset specified
         17     | null
-        2      | 6
+        34     | null
+        47     | null
+        48     | null
+        2      | 6     // Two parameters specified
+        18     | 2
+        38     | 17
 
     }
 }
