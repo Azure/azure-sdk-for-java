@@ -59,6 +59,30 @@ public class QueueSendReceiveTests extends SendReceiveTests {
     }
 
     @Test
+    public void transactionalSendCommitWithAutoRenewTest() throws ServiceBusException, InterruptedException, ExecutionException {
+        this.receiver = ClientFactory.createAutoRenewMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
+
+        TransactionContext transaction = this.factory.startTransactionAsync().get();
+        Assert.assertNotNull(transaction);
+
+        String messageId = UUID.randomUUID().toString();
+        Message message = new Message("AMQP message");
+        message.setMessageId(messageId);
+        if (this.isEntityPartitioned()) {
+            message.setPartitionKey(messageId);
+        }
+        this.sender.send(message, transaction);
+
+        this.factory.endTransactionAsync(transaction, true).get();
+
+        IMessage receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
+        Assert.assertNotNull("Message not received", receivedMessage);
+        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+
+        this.receiver.complete(receivedMessage.getLockToken());
+    }
+
+    @Test
     public void transactionalSendRollbackTest() throws ServiceBusException, InterruptedException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
 
