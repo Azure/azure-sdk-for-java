@@ -269,9 +269,8 @@ public class EventHubAsyncClient implements Closeable {
                 logger.verbose("Creating consumer for path: {}", entityPath);
                 final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
-                return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
-                    clonedOptions.getRetry().getTryTimeout(), retryPolicy, options.getOwnerLevel(),
-                    options.getIdentifier()).cast(AmqpReceiveLink.class);
+                return session.createConsumer(linkName, entityPath, clonedOptions.getRetry().getTryTimeout(),
+                    retryPolicy, getExpression(eventPosition), options.getOwnerLevel(), options.getIdentifier());
             });
 
         return new EventHubAsyncConsumer(receiveLinkMono, clonedOptions);

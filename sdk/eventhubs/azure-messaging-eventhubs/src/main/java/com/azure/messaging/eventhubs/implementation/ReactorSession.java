@@ -5,10 +5,10 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
+import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.implementation.RetryUtil;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
@@ -31,15 +31,11 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-class ReactorSession extends EndpointStateNotifierBase implements EventHubSession {
-    private static final Symbol EPOCH = Symbol.valueOf(AmqpConstants.VENDOR + ":epoch");
-    private static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
-
+public class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     private final ConcurrentMap<String, AmqpSendLink> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, AmqpReceiveLink> openReceiveLinks = new ConcurrentHashMap<>();
 
@@ -161,13 +157,39 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
-        return createConsumer(linkName, entityPath, "", timeout, retry, null, null);
+        return createConsumer(linkName, entityPath, timeout, retry, null, null, null)
+            .cast(AmqpLink.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, String eventPositionExpression,
-                                         Duration timeout, RetryPolicy retry, Long ownerLevel,
-                                         String consumerIdentifier) {
+    public boolean removeLink(String linkName) {
+        return (openSendLinks.remove(linkName) != null) || openReceiveLinks.remove(linkName) != null;
+    }
+
+    /**
+     * Creates an {@link AmqpReceiveLink} that has AMQP specific capabilities set.
+     *
+     * Filters can be applied to the source when receiving to inform the source to filter the items sent to the
+     * consumer. See
+     * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#doc-idp326640">Filtering
+     * Messages</a> and <a href="https://www.amqp.org/specification/1.0/filters">AMQP Filters</a> for more information.
+     *
+     * @param linkName Name of the receive link.
+     * @param entityPath Address in the message broker for the link.
+     * @param timeout Operation timeout when creating the link.
+     * @param retry Retry policy to apply when link creation times out.
+     * @param sourceFilters Add any filters to the source when creating the receive link.
+     * @param receiverProperties Any properties to associate with the receive link when attaching to message broker.
+     * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
+     * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
+     */
+    protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
+                                                   RetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
+                                                   Map<Symbol, Object> receiverProperties,
+                                                   Symbol[] receiverDesiredCapabilities) {
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
 
         return RetryUtil.withRetry(
@@ -184,20 +206,9 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 final Source source = new Source();
                 source.setAddress(entityPath);
 
-                if (!ImplUtils.isNullOrEmpty(eventPositionExpression)) {
-                    final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
-                    filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-                        eventPositionExpression));
-                    source.setFilter(filter);
+                if (sourceFilters != null && sourceFilters.size() > 0) {
+                    source.setFilter(sourceFilters);
                 }
-
-                //TODO (conniey): support creating a filter when we've already received some events. I believe this in
-                // the cause of recreating a failing link.
-                // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider
-                // .getFilter(MessageReceiver.this.lastReceivedMessage);
-                // if (filterMap != null) {
-                //    source.setFilter(filterMap);
-                // }
 
                 receiver.setSource(source);
 
@@ -208,23 +219,13 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
                 receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
 
-                Map<Symbol, Object> properties = new HashMap<>();
-                if (ownerLevel != null) {
-                    properties.put(EPOCH, ownerLevel);
-                }
-                if (!ImplUtils.isNullOrEmpty(consumerIdentifier)) {
-                    properties.put(RECEIVER_IDENTIFIER_NAME, consumerIdentifier);
-                }
-                if (!properties.isEmpty()) {
-                    receiver.setProperties(properties);
+                if (receiverProperties != null && !receiverProperties.isEmpty()) {
+                    receiver.setProperties(receiverProperties);
                 }
 
-                // TODO (conniey): After preview 1 feature to enable keeping partition information updated.
-                // static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR +
-                // ":enable-receiver-runtime-metric");
-                // if (keepPartitionInformationUpdated) {
-                //    receiver.setDesiredCapabilities(new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME});
-                // }
+                if (receiverDesiredCapabilities != null && receiverDesiredCapabilities.length > 0) {
+                    receiver.setDesiredCapabilities(receiverDesiredCapabilities);
+                }
 
                 final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
                     sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
@@ -244,13 +245,5 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                     sink.error(e);
                 }
             })));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean removeLink(String linkName) {
-        return (openSendLinks.remove(linkName) != null) || openReceiveLinks.remove(linkName) != null;
     }
 }

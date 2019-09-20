@@ -151,9 +151,22 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
-            return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-                tokenManagerProvider, connectionOptions.getRetry().getTryTimeout());
+            return createSession(sessionName, session, handler);
         }));
+    }
+
+    /**
+     * Creates a new AMQP session with the given parameters.
+     *
+     * @param sessionName Name of the AMQP session.
+     * @param session The reactor session associated with this session.
+     * @param handler Session handler for the reactor session.
+     *
+     * @return A new instance of AMQP session.
+     */
+    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
+        return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
+            tokenManagerProvider, connectionOptions.getRetry().getTryTimeout());
     }
 
     /**

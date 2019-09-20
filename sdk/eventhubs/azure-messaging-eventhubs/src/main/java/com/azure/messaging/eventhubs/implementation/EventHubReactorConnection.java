@@ -3,7 +3,11 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.RetryOptions;
+import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
 /**
@@ -15,6 +19,10 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
     private static final String MANAGEMENT_ADDRESS = "$management";
 
     private final Mono<EventHubManagementNode> managementChannelMono;
+    private final ReactorProvider reactorProvider;
+    private final ReactorHandlerProvider handlerProvider;
+    private final TokenManagerProvider tokenManagerProvider;
+    private final RetryOptions retryOptions;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -30,6 +38,10 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
                                      TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
+        this.reactorProvider = reactorProvider;
+        this.handlerProvider = handlerProvider;
+        this.tokenManagerProvider = tokenManagerProvider;
+        this.retryOptions = connectionOptions.getRetry();
 
         this.managementChannelMono = getReactorConnection().then(
             Mono.fromCallable(() -> {
@@ -44,5 +56,11 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
     @Override
     public Mono<EventHubManagementNode> getManagementNode() {
         return managementChannelMono;
+    }
+
+    @Override
+    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
+        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
+            tokenManagerProvider, retryOptions.getTryTimeout());
     }
 }
