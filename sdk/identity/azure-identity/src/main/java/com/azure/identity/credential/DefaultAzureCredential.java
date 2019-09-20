@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.util.ArrayDeque;

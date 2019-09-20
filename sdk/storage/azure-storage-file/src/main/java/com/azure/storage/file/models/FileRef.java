@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 
 /**
  * Contains file or directory reference information in the storage File service.

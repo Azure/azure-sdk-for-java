@@ -56,36 +56,36 @@
             </goals>
             <configuration>
               <sources>
-                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java</source>
-                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java</source>
-                <source>..\..\sdk\core\azure-core\src\main\java</source>
-                <source>..\..\sdk\core\azure-core\src\samples\java</source>
-                <source>..\..\sdk\core\azure-core-amqp\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-http-netty\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java</source>
-                <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-management\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-test\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\samples\java</source>
-                <source>..\..\sdk\identity\azure-identity\src\main\java</source>
-                <source>..\..\sdk\identity\azure-identity\src\samples\java</source>
-                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
-                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java</source>-->
-                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java</source>-->
-                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java</source>-->
-                <source>..\..\sdk\storage\azure-storage-common\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-blob\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-blob\src\samples\java</source>
-                <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-file\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-file\src\samples\java</source>
-                <source>..\..\sdk\storage\azure-storage-queue\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-queue\src\samples\java</source>
-                <source>..\..\sdk\storage\azure-storage-queue-cryptography\src\main\java</source>
-                <!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java</source>-->
+                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java\com</source>
+                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java\com</source>
+                <source>..\..\sdk\core\azure-core\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core\src\samples\java\com</source>
+                <source>..\..\sdk\core\azure-core-amqp\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-management\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-test\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\samples\java\com</source>
+                <source>..\..\sdk\identity\azure-identity\src\main\java\com</source>
+                <source>..\..\sdk\identity\azure-identity\src\samples\java\com</source>
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java\com</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java\com</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java\com</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java\com</source>-->
+                <source>..\..\sdk\storage\azure-storage-common\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-file\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-file\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-queue-cryptography\src\main\java\com</source>
+                <!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java\com</source>-->
               </sources>
             </configuration>
           </execution>
@@ -104,20 +104,20 @@
             </goals>
             <configuration>
               <sources>
-                <source>..\..\sdk\batch\microsoft-azure-batch\src\main\java</source>
-                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs\src\main\java</source>
-                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-eph\src\main\java</source>
-                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-extensions\src\main\java</source>
+                <source>..\..\sdk\batch\microsoft-azure-batch\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-eph\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-extensions\src\main\java\com</source>
                 <!-- Storage is excluded from Spotbugs report as it collides with the storage library
                 dependency in eventhubs code. This issue is under investigation.
                 Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
-                <!-- <source>..\..\storage\data-plane\src\main\java</source> -->
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-cryptography\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-core\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-extensions\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-webkey\src\main\java</source>
-                <source>..\..\sdk\servicebus\microsoft-azure-servicebus\src\main\java</source>
+                <!-- <source>..\..\storage\data-plane\src\main\java\com</source> -->
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-cryptography\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-core\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-extensions\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-webkey\src\main\java\com</source>
+                <source>..\..\sdk\servicebus\microsoft-azure-servicebus\src\main\java\com</source>
               </sources>
             </configuration>
           </execution>

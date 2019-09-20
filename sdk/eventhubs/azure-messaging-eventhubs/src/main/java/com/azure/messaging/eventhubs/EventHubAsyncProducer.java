@@ -3,10 +3,15 @@
 
 package com.azure.messaging.eventhubs;
 
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
@@ -17,11 +22,6 @@ import com.azure.messaging.eventhubs.implementation.EventDataUtil;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.apache.qpid.proton.message.Message;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,11 +38,10 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-
-import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.implementation.tracing.Tracer.ENTITY_PATH;
-import static com.azure.core.implementation.tracing.Tracer.HOST_NAME;
-import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
+import org.apache.qpid.proton.message.Message;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.

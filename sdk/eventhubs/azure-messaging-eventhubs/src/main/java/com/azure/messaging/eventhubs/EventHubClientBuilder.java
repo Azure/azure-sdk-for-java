@@ -6,13 +6,13 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.AzureTokenManagerProvider;
 import com.azure.messaging.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -27,10 +27,6 @@ import com.azure.messaging.eventhubs.implementation.StringUtil;
 import com.azure.messaging.eventhubs.implementation.TokenManagerProvider;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
-
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.security.InvalidKeyException;
@@ -38,6 +34,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link

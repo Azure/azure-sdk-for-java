@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingPage;
