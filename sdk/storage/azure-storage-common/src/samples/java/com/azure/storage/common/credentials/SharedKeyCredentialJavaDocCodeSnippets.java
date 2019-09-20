@@ -6,8 +6,8 @@ package com.azure.storage.common.credentials;
 /**
  * Code snippets for {@link SharedKeyCredential}.
  */
-public class SharedKeyCredentialJavaDocCodeSnippets {
-    private String connectionString = "AccountName=accountname;AccountKey=accountkey;additionalproperties";
+public final class SharedKeyCredentialJavaDocCodeSnippets {
+    private final String connectionString = "AccountName=accountname;AccountKey=accountkey;additionalproperties";
     /**
      * Code snippets for {@link SharedKeyCredential#fromConnectionString(String)}.
      */

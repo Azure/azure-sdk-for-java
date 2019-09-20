@@ -12,9 +12,9 @@ import java.util.Map;
 /**
  * Code snippets for {@link SASTokenCredential}.
  */
-public class SASTokenCredentialJavaDocCodeSnippets {
-    private String preformattedSASToken = "sasToken";
-    private URL url = new URL("https://www.example.com?queryString");
+public final class SASTokenCredentialJavaDocCodeSnippets {
+    private final String preformattedSASToken = "sasToken";
+    private final URL url = new URL("https://www.example.com?queryString");
 
     private SASTokenCredentialJavaDocCodeSnippets() throws MalformedURLException {
     }
