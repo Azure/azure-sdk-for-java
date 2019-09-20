@@ -16,11 +16,27 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventHubReactorSession extends ReactorSession implements EventHubSession {
+/**
+ * An AMQP session for Event Hubs.
+ */
+class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(AmqpConstants.VENDOR + ":epoch");
     private static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
 
-    public EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
+    /**
+     * Creates a new AMQP session using proton-j.
+     *
+     * @param session Proton-j session for this AMQP session.
+     * @param sessionHandler Handler for events that occur in the session.
+     * @param sessionName Name of the session.
+     * @param provider Provides reactor instances for messages to sent with.
+     * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param cbsNodeSupplier Mono that returns a reference to the {@link CBSNode}.
+     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing operations
+     *      on the message broker.
+     * @param openTimeout Timeout to wait for the session operation to complete.
+     */
+    EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
                                   ReactorProvider provider, ReactorHandlerProvider handlerProvider,
                                   Mono<CBSNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
                                   Duration openTimeout) {
@@ -28,6 +44,9 @@ public class EventHubReactorSession extends ReactorSession implements EventHubSe
             openTimeout);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry,
                                                 String eventPositionExpression, Long ownerLevel,

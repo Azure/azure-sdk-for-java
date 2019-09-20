@@ -35,6 +35,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * Represents an AMQP session using proton-j reactor.
+ */
 public class ReactorSession extends EndpointStateNotifierBase implements AmqpSession {
     private final ConcurrentMap<String, AmqpSendLink> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, AmqpReceiveLink> openReceiveLinks = new ConcurrentHashMap<>();
@@ -49,7 +52,20 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<CBSNode> cbsNodeSupplier;
 
-    ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
+    /**
+     * Creates a new AMQP session using proton-j.
+     *
+     * @param session Proton-j session for this AMQP session.
+     * @param sessionHandler Handler for events that occur in the session.
+     * @param sessionName Name of the session.
+     * @param provider Provides reactor instances for messages to sent with.
+     * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param cbsNodeSupplier Mono that returns a reference to the {@link CBSNode}.
+     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing operations
+     *      on the message broker.
+     * @param openTimeout Timeout to wait for the session operation to complete.
+     */
+    public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
                    ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier,
                    TokenManagerProvider tokenManagerProvider, Duration openTimeout) {
         super(new ClientLogger(ReactorSession.class));
@@ -79,6 +95,9 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
         return this.session;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() {
         openReceiveLinks.forEach((key, link) -> {
@@ -102,16 +121,25 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
         super.close();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSessionName() {
         return sessionName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Duration getOperationTimeout() {
         return openTimeout;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
@@ -155,6 +183,9 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
             })));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry) {
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null)

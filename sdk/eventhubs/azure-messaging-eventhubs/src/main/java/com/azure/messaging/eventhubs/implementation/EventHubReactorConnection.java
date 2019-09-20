@@ -29,7 +29,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
      *
      * @param connectionId Identifier for the connection.
      * @param connectionOptions A set of options used to create the AMQP connection.
-     * @param reactorProvider Provides proton-j Reactor instances.
+     * @param reactorProvider Provides proton-j reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param mapper Maps responses from {@link EventHubManagementNode}.
