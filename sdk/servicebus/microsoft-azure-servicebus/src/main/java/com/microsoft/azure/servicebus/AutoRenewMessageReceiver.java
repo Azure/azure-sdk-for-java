@@ -19,9 +19,8 @@ import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 
 public class AutoRenewMessageReceiver extends MessageReceiver {
 
-    public static final ScheduledThreadPoolExecutor DEFAULT_SCHEDULER = new ScheduledThreadPoolExecutor(10); 
-    static 
-    {
+    public static final ScheduledThreadPoolExecutor DEFAULT_SCHEDULER = new ScheduledThreadPoolExecutor(10);
+    static {
         DEFAULT_SCHEDULER.setRemoveOnCancelPolicy(true);
     }
 
@@ -29,7 +28,7 @@ public class AutoRenewMessageReceiver extends MessageReceiver {
     private final ConcurrentHashMap<UUID, ScheduledFuture<?>> renewLockTaskMessageIdMap = new ConcurrentHashMap<>();
 
     AutoRenewMessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType,
-        ReceiveMode receiveMode) {
+            ReceiveMode receiveMode) {
         this(messagingFactory, entityPath, entityType, receiveMode, DEFAULT_SCHEDULER);
     }
 
@@ -73,7 +72,8 @@ public class AutoRenewMessageReceiver extends MessageReceiver {
     private IMessage scheduleLockRenewal(IMessage message) {
         if (message != null && message.getLockToken() != null) {
             MessageLockAutoRenewTask task = new MessageLockAutoRenewTask(this, message);
-            Long schedule = ChronoUnit.SECONDS.between(Instant.now(), message.getLockedUntilUtc()) - 20; // give us a 20 sec headroom
+            Long schedule = ChronoUnit.SECONDS.between(Instant.now(), message.getLockedUntilUtc()) - 20; // give us a 20
+                                                                                                         // sec headroom
             ScheduledFuture<?> renewFuture = scheduler.scheduleAtFixedRate(task, schedule, schedule, TimeUnit.SECONDS);
             renewLockTaskMessageIdMap.put(message.getLockToken(), renewFuture);
         }
@@ -99,26 +99,15 @@ public class AutoRenewMessageReceiver extends MessageReceiver {
     }
 
     @Override
-    protected void disposeLockToken(UUID lockToken, TransactionContext transaction) {
-        super.disposeLockToken(lockToken, transaction);
-
+    protected CompletableFuture<Boolean> checkIfValidRequestResponseLockTokenAsync(UUID lockToken) {
         ScheduledFuture<?> task = renewLockTaskMessageIdMap.get(lockToken);
 
         if (task != null) {
             task.cancel(false);
             renewLockTaskMessageIdMap.remove(lockToken);
         }
+
+        return super.checkIfValidRequestResponseLockTokenAsync(lockToken);
     }
-
-    @Override
-    protected CompletableFuture<Boolean> checkIfValidRequestResponseLockTokenAsync(UUID lockToken) {
-        CompletableFuture<Boolean> future = new CompletableFuture<Boolean>();
-
-        future = super.checkIfValidRequestResponseLockTokenAsync(lockToken).thenCompose((r) -> {
-            return CompletableFuture.completedFuture(r || renewLockTaskMessageIdMap.containsKey(lockToken));
-        });
-
-        return future;
-    }
-
+ß
 }
