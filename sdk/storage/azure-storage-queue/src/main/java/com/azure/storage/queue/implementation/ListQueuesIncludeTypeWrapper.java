@@ -4,7 +4,6 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.storage.queue.models.ListQueuesIncludeType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

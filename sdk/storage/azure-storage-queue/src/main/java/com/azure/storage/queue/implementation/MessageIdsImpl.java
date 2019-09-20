@@ -19,8 +19,6 @@ import com.azure.core.implementation.annotation.ServiceInterface;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.MessageIdsDeleteResponse;
-import com.azure.storage.queue.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.StorageErrorException;
 import reactor.core.publisher.Mono;
