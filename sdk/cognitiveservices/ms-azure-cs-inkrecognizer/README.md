@@ -1,6 +1,6 @@
 # Azure Ink Recognizer client library for Java
 
-The Ink Recognizer Cognitive Service provides a cloud-based REST API to analyze and recognize digital ink content. Unlike services that use Optical Character Recognition (OCR), the API requires digital ink stroke data as input. Digital ink strokes are time-ordered series of 2D points (X,Y coordinates) that represent the motion of input tools such as digital pens or fingers. It then recognizes the shapes and handwritten content from the input and returns a JSON response containing all recognized entities.
+The Ink Recognizer Cognitive Service provides a cloud-based REST API to analyze and recognize digital ink content. Unlike services that use Optical Character Recognition (OCR), the API requires digital ink stroke data as input. Digital ink strokes are time-ordered series of 2D points (X,Y coordinates) that represent the motion of input tools such as digital pens or fingers. It then recognizes the shapes and handwritten content from the input and returns a JSON response containing all recognized entities. To know more about the service, please see [Product documentation][inkrecognizer_docs]
 
 With the Ink Recognizer SDK, you can easily connect to the Azure Ink Recognizer service and recognize handwritten content in your applications. Here are the features you can utilize:
 
@@ -15,15 +15,13 @@ This SDK will:
 * Send a request to the Ink Recognizer API with your data.
 * Process the API response by parsing the returned JSON message.
 
-[Package (Maven)][maven] | [API reference documentation][ref_inkrecognizer_sdk] | [Product documentation][inkrecognizer_docs] | [Samples][samples]
-
 ## Getting started
 
 ### Prerequisites
 
 * Android 6.0 or later
 * Java Development Kit (JDK) with version 7 or above
-* You must have a [Cognitive Services API account][cog_serv_acc]. Please refer the [Ink Recognizer API][inkrecognizer_api] if you don't have it already.
+* You must have a Cognitive Services API account. Please refer the [Ink Recognizer API][inkrecognizer_api] if you don't have one already.
 
 ## Key concepts
 
@@ -96,12 +94,22 @@ InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
 You can call methods on the InkRecognitionRoot obtained from before. For example, you can search for specific recognized words in the recognized text as follows:
 
 ```Java
-Iterable<InkWord> wordsFound = root.findWord("hello")
+Iterable<InkWord> wordsFound = root.findWord("hello");
 ```
 
 ## Examples
 
-The [Ink Recognizer Samples][samples] cover some of the common use cases of the Ink Recognizer SDK.
+Putting all of this together, here is how you can use the sdk for searching words:
+
+```Java
+InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
+InkRecognizerClient inkRecognizerClient = inkRecognizerClientBuilder.credentials(credential)
+                .endpoint(endpoint)
+                .displayMetrics(displayMetrics)
+                .buildClient();
+InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
+Iterable<InkWord> wordsFound = root.findWord("hello");
+```
 
 ## Troubleshooting
 
@@ -131,13 +139,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
-[az_portal]: https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-apis-create-account#get-the-keys-for-your-resource
-[az_web]: https://azure.microsoft.com/try/cognitive-services/my-apis
-[cog_serv_acc]: https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-apis-create-account
-[create_acc]: https://azure.microsoft.com/try/cognitive-services/
 [github_issues]: https://github.com/Azure/azure-sdk-for-java/issues/new/choose
 [inkrecognizer_api]: https://docs.microsoft.com/en-us/azure/cognitive-services/ink-recognizer/overview
 [inkrecognizer_docs]: https://docs.microsoft.com/en-us/azure/cognitive-services/ink-recognizer/
-[inkrecognizer_sdk]: https://
-[maven]: https://
-[samples]: https://
