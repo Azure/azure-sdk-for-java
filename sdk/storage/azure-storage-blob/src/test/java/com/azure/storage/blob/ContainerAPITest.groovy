@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.ContainerAccessConditions
 import com.azure.storage.blob.models.ContainerAccessPolicies
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
@@ -480,9 +479,9 @@ class ContainerAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 202
-        response.getHeaders().value("x-ms-request-id") != null
-        response.getHeaders().value("x-ms-version") != null
-        response.getHeaders().value("Date") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("Date") != null
     }
 
     def "Delete min"() {
@@ -1125,432 +1124,6 @@ class ContainerAPITest extends APISpec {
     }
 
     @Unroll
-    def "Acquire lease"() {
-        setup:
-        def leaseResponse = cc.acquireLeaseWithResponse(proposedID, leaseTime, null, null, null)
-
-        when:
-        def properties = cc.getProperties()
-
-        then:
-        leaseResponse.getValue() != null
-        validateBasicHeaders(leaseResponse.getHeaders())
-        properties.getLeaseState() == leaseState
-        properties.getLeaseDuration() == leaseDuration
-
-        where:
-        proposedID                   | leaseTime || leaseState            | leaseDuration
-        null                         | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
-        null                         | 25        || LeaseStateType.LEASED | LeaseDurationType.FIXED
-        UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
-    }
-
-    def "Acquire lease min"() {
-        expect:
-        cc.acquireLeaseWithResponse(null, -1, null, null, null).getStatusCode() == 201
-    }
-
-    @Unroll
-    def "Acquire lease AC"() {
-        setup:
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        expect:
-        cc.acquireLeaseWithResponse(null, -1, mac, null, null).getStatusCode() == 201
-
-        where:
-        modified | unmodified
-        null     | null
-        oldDate  | null
-        null     | newDate
-    }
-
-    @Unroll
-    def "Acquire lease AC fail"() {
-        setup:
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        cc.acquireLeaseWithResponse(null, -1, mac, null, null)
-
-        then:
-        thrown(StorageException)
-
-        where:
-        modified | unmodified
-        newDate  | null
-        null     | oldDate
-    }
-
-    @Unroll
-    def "Acquire lease AC illegal"() {
-        setup:
-        def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
-
-        when:
-        cc.acquireLeaseWithResponse(null, -1, mac, null, null)
-
-        then:
-        thrown(UnsupportedOperationException)
-
-        where:
-        match        | noneMatch
-        receivedEtag | null
-        null         | garbageEtag
-    }
-
-    def "Acquire lease error"() {
-        setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-
-        when:
-        cc.acquireLease(null, 50)
-
-        then:
-        thrown(StorageException)
-    }
-
-    def "Renew lease"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
-        def renewLeaseResponse = cc.renewLeaseWithResponse(leaseID, null, null, null)
-
-        expect:
-        cc.getProperties().getLeaseState() == LeaseStateType.LEASED
-        validateBasicHeaders(renewLeaseResponse.getHeaders())
-    }
-
-    def "Renew lease min"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-
-        expect:
-        cc.renewLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
-    }
-
-    @Unroll
-    def "Renew lease AC"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        expect:
-        cc.renewLeaseWithResponse(leaseID, mac, null, null).getStatusCode() == 200
-
-        where:
-        modified | unmodified
-        null     | null
-        oldDate  | null
-        null     | newDate
-    }
-
-    @Unroll
-    def "Renew lease AC fail"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        cc.renewLease(leaseID, mac, null)
-
-        then:
-        thrown(StorageException)
-
-        where:
-        modified | unmodified
-        newDate  | null
-        null     | oldDate
-    }
-
-    @Unroll
-    def "Renew lease AC illegal"() {
-        setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
-
-        when:
-        cc.renewLease(receivedLeaseID, mac, null)
-
-        then:
-        thrown(UnsupportedOperationException)
-
-        where:
-        match        | noneMatch
-        receivedEtag | null
-        null         | garbageEtag
-    }
-
-    def "Renew lease error"() {
-        setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-
-        when:
-        cc.renewLease("id")
-
-        then:
-        thrown(StorageException)
-    }
-
-    def "Release lease"() {
-        setup:
-        def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-
-        def releaseLeaseResponse = cc.releaseLeaseWithResponse(leaseID, null, null, null)
-
-        expect:
-        cc.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
-        validateBasicHeaders(releaseLeaseResponse.getHeaders())
-    }
-
-    def "Release lease min"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-
-        expect:
-        cc.releaseLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
-    }
-
-    @Unroll
-    def "Release lease AC"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        expect:
-        cc.releaseLeaseWithResponse(leaseID, mac, null, null).getStatusCode() == 200
-
-        where:
-        modified | unmodified
-        null     | null
-        oldDate  | null
-        null     | newDate
-    }
-
-    @Unroll
-    def "Release lease AC fail"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        cc.releaseLeaseWithResponse(leaseID, mac, null, null)
-
-        then:
-        thrown(StorageException)
-
-        where:
-        modified | unmodified
-        newDate  | null
-        null     | oldDate
-    }
-
-    @Unroll
-    def "Release lease AC illegal"() {
-        setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
-
-        when:
-        cc.releaseLeaseWithResponse(receivedLeaseID, mac, null, null)
-
-        then:
-        thrown(UnsupportedOperationException)
-
-        where:
-        match        | noneMatch
-        receivedEtag | null
-        null         | garbageEtag
-    }
-
-    def "Release lease error"() {
-        setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-
-        when:
-        cc.releaseLease("id")
-
-        then:
-        thrown(StorageException)
-    }
-
-    @Unroll
-    def "Break lease"() {
-        setup:
-        cc.acquireLease(getRandomUUID(), leaseTime)
-
-        def breakLeaseResponse = cc.breakLeaseWithResponse(breakPeriod, null, null, null)
-        def state = cc.getProperties().getLeaseState()
-
-        expect:
-        state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
-        breakLeaseResponse.getValue().getSeconds() <= remainingTime
-        validateBasicHeaders(breakLeaseResponse.getHeaders())
-        if (breakPeriod != null) {
-            // If running in live mode wait for the lease to break so we can delete the container after the test completes
-            sleepIfRecord(breakPeriod * 1000)
-        }
-
-        where:
-        leaseTime | breakPeriod | remainingTime
-        -1        | null        | 0
-        -1        | 20          | 25
-        20        | 15          | 16
-
-    }
-
-    def "Break lease min"() {
-        setup:
-        setupContainerLeaseCondition(cc, receivedLeaseID)
-
-        expect:
-        cc.breakLeaseWithResponse(null, null, null, null).getStatusCode() == 202
-    }
-
-    @Unroll
-    def "Break lease AC"() {
-        setup:
-        setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        expect:
-        cc.breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
-
-        where:
-        modified | unmodified
-        null     | null
-        oldDate  | null
-        null     | newDate
-    }
-
-    @Unroll
-    def "Break lease AC fail"() {
-        setup:
-        setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        cc.breakLeaseWithResponse(null, mac, null, null)
-
-        then:
-        thrown(StorageException)
-
-        where:
-        modified | unmodified
-        newDate  | null
-        null     | oldDate
-    }
-
-    @Unroll
-    def "Break lease AC illegal"() {
-        setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
-
-        when:
-        cc.breakLeaseWithResponse(null, mac, null, null)
-
-        then:
-        thrown(UnsupportedOperationException)
-
-        where:
-        match        | noneMatch
-        receivedEtag | null
-        null         | garbageEtag
-    }
-
-    def "Break lease error"() {
-        setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-
-        when:
-        cc.breakLease()
-
-        then:
-        thrown(StorageException)
-    }
-
-    def "Change lease"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        Response<String> changeLeaseResponse = cc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null)
-        leaseID = changeLeaseResponse.getValue()
-
-        expect:
-        cc.releaseLeaseWithResponse(leaseID, null, null, null).getStatusCode() == 200
-        validateBasicHeaders(changeLeaseResponse.getHeaders())
-    }
-
-    def "Change lease min"() {
-        setup:
-        def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-
-        expect:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), null, null, null).getStatusCode() == 200
-    }
-
-    @Unroll
-    def "Change lease AC"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        expect:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null).getStatusCode() == 200
-
-        where:
-        modified | unmodified
-        null     | null
-        oldDate  | null
-        null     | newDate
-    }
-
-    @Unroll
-    def "Change lease AC fail"() {
-        setup:
-        String leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
-        def mac = new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        cc.changeLeaseWithResponse(leaseID, getRandomUUID(), mac, null, null)
-
-        then:
-        thrown(StorageException)
-
-        where:
-        modified | unmodified
-        newDate  | null
-        null     | oldDate
-    }
-
-    @Unroll
-    def "Change lease AC illegal"() {
-        setup:
-        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
-
-        when:
-        cc.changeLeaseWithResponse(receivedLeaseID, garbageLeaseID, mac, null, null)
-
-        then:
-        thrown(UnsupportedOperationException)
-
-        where:
-        match        | noneMatch
-        receivedEtag | null
-        null         | garbageEtag
-    }
-
-    def "Change lease error"() {
-        setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-
-        when:
-        cc.changeLease("id", "id")
-
-        then:
-        thrown(StorageException)
-    }
-
-    @Unroll
     def "Create URL special chars"() {
         // This test checks that we encode special characters in blob names correctly.
         setup:
@@ -1623,7 +1196,7 @@ class ContainerAPITest extends APISpec {
         setup:
         cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
-        if (!cc.exists().value()) {
+        if (!cc.exists().getValue()) {
             cc.setCreate()
         }
 
@@ -1641,7 +1214,7 @@ class ContainerAPITest extends APISpec {
         then:
         createResponse.getStatusCode() == 201
         propsResponse.getStatusCode() == 200
-        propsResponse.value().getBlobType() == BlobType.APPEND_BLOB
+        propsResponse.getValue().getBlobType() == BlobType.APPEND_BLOB
     }
     */
 
@@ -1672,9 +1245,9 @@ class ContainerAPITest extends APISpec {
         def response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
-        response.getHeaders().value("Date") != null
-        response.getHeaders().value("x-ms-version") != null
-        response.getHeaders().value("x-ms-request-id") != null
+        response.getHeaders().getValue("Date") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
         response.getValue().getAccountKind() != null
         response.getValue().getSkuName() != null
     }
@@ -1692,5 +1265,13 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get Container Name"() {
+        given:
+        def containerName = generateContainerName()
+        def newcc = primaryBlobServiceClient.getContainerClient(containerName)
+        expect:
+        containerName == newcc.getContainerName()
     }
 }

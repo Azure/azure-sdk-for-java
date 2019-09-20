@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger
 
 import com.azure.storage.file.FileClientBuilder
@@ -58,7 +58,7 @@ class APISpec extends Specification {
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
         if (getTestMode() == TestMode.RECORD) {
-            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
+            connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
@@ -91,7 +91,7 @@ class APISpec extends Specification {
      * </ul>
      */
     def getTestMode() {
-        def azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+        def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (azureTestMode != null) {
             try {

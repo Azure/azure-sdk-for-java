@@ -23,9 +23,11 @@ import java.security.MessageDigest
 
 class AppendBlobAPITest extends APISpec {
     AppendBlobClient bc
+    String blobName
 
     def setup() {
-        bc = cc.getAppendBlobClient(generateBlobName())
+        blobName = generateBlobName()
+        bc = cc.getAppendBlobClient(blobName)
         bc.create()
     }
 
@@ -169,7 +171,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         downloadStream.toByteArray() == defaultData.array()
         validateBasicHeaders(appendResponse.getHeaders())
-        appendResponse.getHeaders().value("x-ms-content-crc64") != null
+        appendResponse.getHeaders().getValue("x-ms-content-crc64") != null
         appendResponse.getValue().getBlobAppendOffset() != null
         appendResponse.getValue().getBlobCommittedBlockCount() != null
 
@@ -493,5 +495,15 @@ class AppendBlobAPITest extends APISpec {
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
         null                  | null                    | null          | receivedEtag
+    }
+
+    def "Get Container Name"() {
+        expect:
+        containerName == bc.getContainerName()
+    }
+
+    def "Get Append Blob Name"() {
+        expect:
+        blobName == bc.getBlobName()
     }
 }

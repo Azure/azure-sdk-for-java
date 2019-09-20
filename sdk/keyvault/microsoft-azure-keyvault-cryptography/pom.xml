@@ -13,7 +13,7 @@
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-cryptography</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 	<packaging>jar</packaging>
 
 	<name>Microsoft Azure SDK for Key Vault Cryptography</name>
@@ -41,12 +41,12 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-webkey</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-core</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
       </dependency>
       
       <!-- Jackson dependencies -->

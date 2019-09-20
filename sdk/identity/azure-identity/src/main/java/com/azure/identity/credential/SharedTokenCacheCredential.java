@@ -5,9 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
@@ -44,14 +42,10 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     SharedTokenCacheCredential(String username, String clientID, IdentityClientOptions identityClientOptions) {
-        this.configuration = ConfigurationManager.getConfiguration().clone();
+        this.configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
-            if (configuration.contains(BaseConfigurations.AZURE_USERNAME)) {
-                this.username = configuration.get(BaseConfigurations.AZURE_USERNAME);
-            } else {
-                this.username = null;
-            }
+            this.username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         } else {
             this.username = username;
         }

@@ -25,9 +25,9 @@ public final class BufferedHttpResponse extends HttpResponse {
      * @param innerHttpResponse The HTTP response to buffer
      */
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
+        super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
         this.cachedBody = innerHttpResponse.getBodyAsByteArray().cache();
-        this.setRequest(innerHttpResponse.getRequest());
     }
 
     @Override
