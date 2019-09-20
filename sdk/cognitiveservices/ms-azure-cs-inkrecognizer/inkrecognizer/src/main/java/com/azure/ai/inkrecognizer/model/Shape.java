@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.azure.ai.inkrecognizer.model;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -134,7 +138,7 @@ public enum Shape {
 
     static {
         for (Shape shape : Shape.values()) {
-            map.put(shape.toString().toLowerCase(), shape);
+            map.put(shape.toString().toLowerCase(Locale.getDefault()), shape);
         }
     }
 
@@ -143,8 +147,8 @@ public enum Shape {
     }
 
     static Shape getShapeOrDefault(String shapeString) {
-        if (shapeString != null && map.containsKey(shapeString.toLowerCase())) {
-            return map.get(shapeString.toLowerCase());
+        if (shapeString != null && map.containsKey(shapeString.toLowerCase(Locale.getDefault()))) {
+            return map.get(shapeString.toLowerCase(Locale.getDefault()));
         } else {
             return Shape.DRAWING;
         }

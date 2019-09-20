@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.azure.ai.inkrecognizer.model;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -55,7 +59,7 @@ public enum InkRecognitionUnitKind {
 
     static {
         for (InkRecognitionUnitKind inkRecognitionUnitKind : InkRecognitionUnitKind.values()) {
-            map.put(inkRecognitionUnitKind.toString().toLowerCase(), inkRecognitionUnitKind);
+            map.put(inkRecognitionUnitKind.toString().toLowerCase(Locale.getDefault()), inkRecognitionUnitKind);
         }
     }
 
@@ -64,8 +68,8 @@ public enum InkRecognitionUnitKind {
     }
 
     static InkRecognitionUnitKind getInkRecognitionUnitKindOrDefault(String inkRecognitionKindString) {
-        if (inkRecognitionKindString != null && map.containsKey(inkRecognitionKindString.toLowerCase())) {
-            return map.get(inkRecognitionKindString.toLowerCase());
+        if (inkRecognitionKindString != null && map.containsKey(inkRecognitionKindString.toLowerCase(Locale.getDefault()))) {
+            return map.get(inkRecognitionKindString.toLowerCase(Locale.getDefault()));
         } else {
             return InkRecognitionUnitKind.UNKNOWN;
         }

@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.azure.ai.inkrecognizer;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -38,7 +42,7 @@ public enum InkPointUnit {
 
     static {
         for (InkPointUnit inkPointUnit : InkPointUnit.values()) {
-            map.put(inkPointUnit.toString().toLowerCase(), inkPointUnit);
+            map.put(inkPointUnit.toString().toLowerCase(Locale.getDefault()), inkPointUnit);
         }
     }
 
@@ -47,8 +51,8 @@ public enum InkPointUnit {
     }
 
     static InkPointUnit getInkPointUnitOrDefault(String inkPointUnitString) {
-        if (inkPointUnitString != null && map.containsKey(inkPointUnitString.toLowerCase())) {
-            return map.get(inkPointUnitString.toLowerCase());
+        if (inkPointUnitString != null && map.containsKey(inkPointUnitString.toLowerCase(Locale.getDefault()))) {
+            return map.get(inkPointUnitString.toLowerCase(Locale.getDefault()));
         } else {
             return InkPointUnit.PIXEL;
         }

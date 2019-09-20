@@ -1,8 +1,12 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.azure.ai.inkrecognizer.model;
 
+import android.annotation.SuppressLint;
 import android.util.DisplayMetrics;
 import com.azure.ai.inkrecognizer.InkPointUnit;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,6 +24,7 @@ import java.util.List;
  */
 public class InkRecognitionRoot {
 
+    @SuppressLint("all")
     private final HashMap<Long, InkRecognitionUnit> recognizedUnits = new HashMap<>();
     private final List<Long> wordList = new ArrayList<>();
     private final List<Long> recognizedDrawings = new ArrayList<>();

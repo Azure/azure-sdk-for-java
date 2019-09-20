@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.azure.ai.inkrecognizer;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public enum ServiceVersion {
@@ -18,7 +22,7 @@ public enum ServiceVersion {
 
     static {
         for (ServiceVersion serviceVersion : ServiceVersion.values()) {
-            map.put(serviceVersion.toString().toLowerCase(), serviceVersion);
+            map.put(serviceVersion.toString().toLowerCase(Locale.getDefault()), serviceVersion);
         }
     }
 
@@ -27,8 +31,8 @@ public enum ServiceVersion {
     }
 
     static ServiceVersion getServiceVersionOrDefault(String serviceVersionString) {
-        if (serviceVersionString != null && map.containsKey(serviceVersionString.toLowerCase())) {
-            return map.get(serviceVersionString.toLowerCase());
+        if (serviceVersionString != null && map.containsKey(serviceVersionString.toLowerCase(Locale.getDefault()))) {
+            return map.get(serviceVersionString.toLowerCase(Locale.getDefault()));
         } else {
             return PREVIEW_1_0_0;
         }

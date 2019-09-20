@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.azure.ai.inkrecognizer;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -36,7 +40,7 @@ public enum ApplicationKind {
 
     static {
         for (ApplicationKind applicationKind : ApplicationKind.values()) {
-            map.put(applicationKind.toString().toLowerCase(), applicationKind);
+            map.put(applicationKind.toString().toLowerCase(Locale.getDefault()), applicationKind);
         }
     }
 
@@ -45,8 +49,8 @@ public enum ApplicationKind {
     }
 
     static ApplicationKind getApplicationKindOrDefault(String applicationKindString) {
-        if (applicationKindString != null && map.containsKey(applicationKindString.toLowerCase())) {
-            return map.get(applicationKindString.toLowerCase());
+        if (applicationKindString != null && map.containsKey(applicationKindString.toLowerCase(Locale.getDefault()))) {
+            return map.get(applicationKindString.toLowerCase(Locale.getDefault()));
         } else {
             return ApplicationKind.MIXED;
         }
