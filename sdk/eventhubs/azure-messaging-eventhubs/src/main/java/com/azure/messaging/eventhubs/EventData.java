@@ -48,7 +48,7 @@ public class EventData implements Comparable<EventData> {
     /*
      * These are properties owned by the service and set when a message is received.
      */
-    public static final Set<String> RESERVED_SYSTEM_PROPERTIES;
+    static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
     private final ByteBuffer body;
@@ -122,18 +122,19 @@ public class EventData implements Comparable<EventData> {
         this(body.getBytes(UTF_8));
     }
 
-    /*
-     * Creates an event from a proton-j message
+    /**
+     * Creates an event with the given {@code body}, system properties and context.
      *
-     * @throws IllegalStateException if required the system properties, enqueued time, offset, or sequence number are
-     *     not found in the message.
-     * @throws NullPointerException if {@code message} is null.
+     * @param body The data to set for this event.
+     * @param systemProperties System properties set by message broker for this event.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
     EventData(ByteBuffer body, SystemProperties systemProperties, Context context) {
-        this.body = body;
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.context = Objects.requireNonNull(context, "'context' cannot be null.");
+        this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = new HashMap<>();
-        this.context = context;
-        this.systemProperties = systemProperties;
     }
 
     /**
