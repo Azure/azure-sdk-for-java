@@ -210,7 +210,7 @@ class BlobAPITest extends APISpec {
     def "Download md5"() {
         when:
         def response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
-        def contentMD5 = response.getHeaders().value("content-md5").getBytes()
+        def contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
 
         then:
         contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))

@@ -43,7 +43,8 @@ class BlockBlobAPITest extends APISpec {
     String blobName
 
     def setup() {
-        bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        blobName = generateBlobName()
+        bc = cc.getBlobClient(blobName).asBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
         bac = ccAsync.getBlobAsyncClient(generateBlobName()).asBlockBlobAsyncClient()
         bac.upload(defaultFlux, defaultDataSize)

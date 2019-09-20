@@ -26,7 +26,8 @@ class AppendBlobAPITest extends APISpec {
     String blobName
 
     def setup() {
-        bc = cc.getBlobClient(generateBlobName()).asAppendBlobClient()
+        blobName = generateBlobName()
+        bc = cc.getBlobClient(blobName).asAppendBlobClient()
         bc.create()
     }
 

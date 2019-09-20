@@ -226,7 +226,9 @@ public final class BlobURLParts {
      * in the BlobURLParts object.
      *
      * @param url The string URL to be parsed.
+     * @param logger Logger associated to the calling class to log a {@link MalformedURLException}.
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
+     * @throws IllegalArgumentException If the {@code url} is malformed.
      */
     public static BlobURLParts parse(String url, ClientLogger logger) {
         try {
