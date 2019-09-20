@@ -10,11 +10,11 @@ class BlobOutputStreamTest extends APISpec {
     def "BlockBlob output stream"() {
         setup:
         byte[] data = getRandomByteArray(100 * Constants.MB)
-        BlockBlobClient blockBlobClient = cu.getBlockBlobClient(generateBlobName())
+        BlockBlobClient blockBlobClient = cc.getBlockBlobClient(generateBlobName())
 
         when:
         BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream()
-        outputStream.setWrite(data)
+        outputStream.write(data)
         outputStream.close()
 
         then:
@@ -26,13 +26,13 @@ class BlobOutputStreamTest extends APISpec {
     def "PageBlob output stream"() {
         setup:
         byte[] data = getRandomByteArray(1024 * Constants.MB - 512)
-        PageBlobClient pageBlobClient = cu.getPageBlobClient(generateBlobName())
+        PageBlobClient pageBlobClient = cc.getPageBlobClient(generateBlobName())
         pageBlobClient.setCreate(data.length)
 
 
         when:
         BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(data.length)
-        outputStream.setWrite(data)
+        outputStream.write(data)
         outputStream.close()
 
         then:
@@ -43,13 +43,13 @@ class BlobOutputStreamTest extends APISpec {
     def "AppendBlob output stream"() {
         setup:
         byte[] data = getRandomByteArray(64 * FOUR_MB)
-        AppendBlobClient appendBlobClient = cu.getAppendBlobClient(generateBlobName())
-        appendBlobClient.setCreate()
+        AppendBlobClient appendBlobClient = cc.getAppendBlobClient(generateBlobName())
+        appendBlobClient.create()
 
         when:
         BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream()
         for (int i = 0; i != 64; i++) {
-            outputStream.setWrite(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
+            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
         }
         outputStream.close()
 
@@ -62,8 +62,8 @@ class BlobOutputStreamTest extends APISpec {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
-            while ((b = inputStream.setRead()) != -1) {
-                outputStream.setWrite(b)
+            while ((b = inputStream.read()) != -1) {
+                outputStream.write(b)
             }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)

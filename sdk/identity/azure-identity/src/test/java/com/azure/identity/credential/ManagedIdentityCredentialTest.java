@@ -4,9 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
@@ -33,18 +31,18 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testAppServiceMSICredentialConfigurations() {
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration();
 
         try {
             configuration
-                .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
-                .put(BaseConfigurations.MSI_SECRET, "bar");
+                .put(Configuration.PROPERTY_MSI_ENDPOINT, "http://foo")
+                .put(Configuration.PROPERTY_MSI_SECRET, "bar");
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
             Assert.assertEquals("http://foo", credential.getMsiEndpoint());
             Assert.assertEquals("bar", credential.getMsiSecret());
         } finally {
-            configuration.remove(BaseConfigurations.MSI_ENDPOINT);
-            configuration.remove(BaseConfigurations.MSI_SECRET);
+            configuration.remove(Configuration.PROPERTY_MSI_ENDPOINT);
+            configuration.remove(Configuration.PROPERTY_MSI_SECRET);
         }
     }
 
@@ -56,7 +54,7 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testMSIEndpoint() throws Exception {
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration();
 
         try {
             // setup

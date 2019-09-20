@@ -3,12 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;

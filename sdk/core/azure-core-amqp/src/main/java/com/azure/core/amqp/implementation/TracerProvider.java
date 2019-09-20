@@ -2,18 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.core.amqp.implementation;
 
+import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.implementation.tracing.ProcessKind;
-import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Signal;
-
+import com.azure.core.util.tracing.Tracer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import reactor.core.publisher.Signal;
 
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);

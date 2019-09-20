@@ -19,7 +19,7 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.ContainerItem
@@ -28,6 +28,8 @@ import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListContainersOptions
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.blob.specialized.LeaseClient
+import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SASTokenCredential
@@ -63,7 +65,7 @@ class APISpec extends Specification {
 
     public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>(){
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
         @Override
         InputStream get() {
             return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
@@ -72,7 +74,7 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
+    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
@@ -126,6 +128,7 @@ class APISpec extends Specification {
     private boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
+    def containerName
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -153,7 +156,7 @@ class APISpec extends Specification {
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
 
-        def containerName = generateContainerName()
+        containerName = generateContainerName()
         cc = primaryBlobServiceClient.getContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
         cc.create()
@@ -165,7 +168,7 @@ class APISpec extends Specification {
             ContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                containerClient.breakLeaseWithResponse(0, null, null, null)
+                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
             }
 
             containerClient.delete()
@@ -175,12 +178,12 @@ class APISpec extends Specification {
     }
 
     //TODO: Should this go in core.
-     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
-         return FluxUtil.collectBytesInByteBufferStream(content).map{bytes -> ByteBuffer.wrap(bytes)}
+    static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
+        return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
 
     static TestMode setupTestMode() {
-        String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (testMode != null) {
             try {
@@ -202,62 +205,62 @@ class APISpec extends Specification {
         String accountKey
 
         if (testMode == TestMode.RECORD) {
-            accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             accountName = "storageaccount"
             accountKey = "astorageaccountkey"
         }
 
-    if (accountName == null || accountKey == null) {
-        logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-        return null
-    }
-
-    return new SharedKeyCredential(accountName, accountKey)
-}
-
-BlobServiceClient setClient(SharedKeyCredential credential) {
-    try {
-        return getServiceClient(credential)
-    } catch (Exception ignore) {
-        return null
-    }
-}
-
-def getOAuthServiceClient() {
-    BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-        .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-        .httpClient(getHttpClient())
-        .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-
-    if (testMode == TestMode.RECORD) {
-        if (recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (accountName == null || accountKey == null) {
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+            return null
         }
 
-        // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-        return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
-    } else {
-        // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-        return builder.credential(primaryCredential).buildClient()
+        return new SharedKeyCredential(accountName, accountKey)
     }
-}
 
-BlobServiceClient getServiceClient(String endpoint) {
-    return getServiceClient(null, endpoint, null)
-}
+    BlobServiceClient setClient(SharedKeyCredential credential) {
+        try {
+            return getServiceClient(credential)
+        } catch (Exception ignore) {
+            return null
+        }
+    }
 
-BlobServiceClient getServiceClient(SharedKeyCredential credential) {
-    return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
-}
+    def getOAuthServiceClient() {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .httpClient(getHttpClient())
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+
+        if (testMode == TestMode.RECORD) {
+            if (recordLiveMode) {
+                builder.addPolicy(interceptorManager.getRecordPolicy())
+            }
+
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(primaryCredential).buildClient()
+        }
+    }
+
+    BlobServiceClient getServiceClient(String endpoint) {
+        return getServiceClient(null, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(SharedKeyCredential credential) {
+        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
         return getServiceClient(credential, endpoint, null)
     }
 
     BlobServiceClient getServiceClient(SharedKeyCredential credential, String endpoint,
-                                       HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
@@ -271,7 +274,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     }
 
     BlobServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
-                                                     HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -396,7 +399,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
-            if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
@@ -404,6 +407,28 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
         } else {
             return interceptorManager.getPlaybackClient()
         }
+    }
+
+    static LeaseClient createLeaseClient(BlobClient blobClient) {
+        return createLeaseClient(blobClient, null)
+    }
+
+    static LeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
+        return new LeaseClientBuilder()
+            .blobClient(blobClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static LeaseClient createLeaseClient(ContainerClient containerClient) {
+        return createLeaseClient(containerClient, null)
+    }
+
+    static LeaseClient createLeaseClient(ContainerClient containerClient, String leaseId) {
+        return new LeaseClientBuilder()
+            .containerClient(containerClient)
+            .leaseId(leaseId)
+            .buildClient()
     }
 
     def generateContainerName() {
@@ -491,7 +516,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     def setupBlobLeaseCondition(BlobClient bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bc.acquireLease(null, -1)
+            responseLeaseId = createLeaseClient(bc).acquireLease(-1)
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -503,7 +528,11 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     def setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bac.acquireLease(null, -1).block()
+            responseLeaseId = new LeaseClientBuilder()
+                .blobAsyncClient(bac)
+                .buildAsyncClient()
+                .acquireLease(-1)
+                .block()
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -522,7 +551,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1)
+            return createLeaseClient(cu).acquireLease(-1)
         } else {
             return leaseID
         }
@@ -541,6 +570,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
+
     def getStubResponse(int code, HttpRequest request) {
         return new HttpResponse(request) {
 
@@ -612,7 +642,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
-                               String contentLanguage, byte[] contentMD5, String contentType) {
+        String contentLanguage, byte[] contentMD5, String contentType) {
         return response.getValue().getCacheControl() == cacheControl &&
             response.getValue().getContentDisposition() == contentDisposition &&
             response.getValue().getContentEncoding() == contentEncoding &&
@@ -661,6 +691,7 @@ BlobServiceClient getServiceClient(SharedKeyCredential credential) {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
+
     class MockDownloadHttpResponse extends HttpResponse {
         private final int statusCode
         private final HttpHeaders headers

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
@@ -23,11 +24,16 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ReactorConnection extends EndpointStateNotifierBase implements EventHubConnection {
+public class ReactorConnection extends EndpointStateNotifierBase implements AmqpConnection {
+    private static final String CBS_SESSION_NAME = "cbs-session";
+    private static final String CBS_ADDRESS = "$cbs";
+    private static final String CBS_LINK_NAME = "cbs";
+
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
     private final AtomicBoolean hasConnection = new AtomicBoolean();
 
@@ -35,11 +41,10 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private final Mono<Connection> connectionMono;
     private final ConnectionHandler handler;
     private final ReactorHandlerProvider handlerProvider;
+    private final TokenManagerProvider tokenManagerProvider;
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
-    private final Mono<EventHubManagementNode> managementChannelMono;
-    private final TokenResourceProvider tokenResourceProvider;
     private final RetryPolicy retryPolicy;
 
     private ReactorExecutor executor;
@@ -56,20 +61,23 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
+     * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider, AmqpResponseMapper mapper) {
+                             ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider) {
         super(new ClientLogger(ReactorConnection.class));
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
+        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
+            "'tokenManagerProvider' cannot be null.");
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHost(),
             connectionOptions.getTransportType());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
-        this.connectionMono = Mono.fromCallable(() -> getOrCreateConnection())
+        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .doOnSubscribe(c -> hasConnection.set(true));
 
         this.subscriptions = Disposables.composite(
@@ -81,14 +89,6 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
                 this::notifyError,
                 this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
-
-        tokenResourceProvider =
-            new TokenResourceProvider(connectionOptions.getAuthorizationType(), connectionOptions.getHost());
-
-        this.managementChannelMono = connectionMono.then(
-            Mono.fromCallable(() -> (EventHubManagementNode) new ManagementChannel(this,
-                connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenResourceProvider,
-                reactorProvider, connectionOptions.getRetry(), handlerProvider, mapper))).cache();
     }
 
     /**
@@ -99,16 +99,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         final Mono<CBSNode> cbsNodeMono = RetryUtil.withRetry(
             getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
             connectionOptions.getRetry().getTryTimeout(), retryPolicy)
-            .then(Mono.fromCallable(() -> getOrCreateCBSNode()));
+            .then(Mono.fromCallable(this::getOrCreateCBSNode));
 
         return hasConnection.get()
             ? cbsNodeMono
             : connectionMono.then(cbsNodeMono);
-    }
-
-    @Override
-    public Mono<EventHubManagementNode> getManagementNode() {
-        return managementChannelMono;
     }
 
     @Override
@@ -157,7 +152,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
             BaseHandler.setHandler(session, handler);
             return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-                tokenResourceProvider, connectionOptions.getRetry().getTryTimeout());
+                tokenManagerProvider, connectionOptions.getRetry().getTryTimeout());
         }));
     }
 
@@ -189,12 +184,39 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         super.close();
     }
 
+    /**
+     * Gets the AMQP connection for this instance.
+     *
+     * @return The AMQP connection.
+     */
+    protected Mono<Connection> getReactorConnection() {
+        return connectionMono;
+    }
+
+    /**
+     * Creates a bidirectional link between the message broker and the client.
+     *
+     * @param sessionName Name of the session.
+     * @param linkName Name of the link.
+     * @param entityPath Address to the message broker.
+     * @return A new {@link RequestResponseChannel} to communicate with the message broker.
+     */
+    protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
+                                                                        String entityPath) {
+        return createSession(sessionName)
+            .cast(ReactorSession.class)
+            .map(reactorSession -> new RequestResponseChannel(getIdentifier(), getHost(), linkName, entityPath,
+                reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
+                reactorProvider));
+    }
+
     private synchronized CBSNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
 
-            cbsChannel = new CBSChannel(this, connectionOptions.getTokenCredential(),
-                connectionOptions.getAuthorizationType(), reactorProvider, handlerProvider,
+            cbsChannel = new CBSChannel(
+                createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS),
+                connectionOptions.getTokenCredential(), connectionOptions.getAuthorizationType(),
                 connectionOptions.getRetry());
         }
 
