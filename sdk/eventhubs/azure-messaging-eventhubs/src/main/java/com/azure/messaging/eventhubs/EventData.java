@@ -3,13 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.MessageConstant;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.message.Message;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -56,7 +50,6 @@ public class EventData implements Comparable<EventData> {
      */
     public static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
-    private final ClientLogger logger = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
@@ -136,51 +129,11 @@ public class EventData implements Comparable<EventData> {
      *     not found in the message.
      * @throws NullPointerException if {@code message} is null.
      */
-    EventData(Message message) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-
-        final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
-        final HashMap<String, Object> receiveProperties = new HashMap<>();
-
-        for (Map.Entry<Symbol, Object> annotation : messageAnnotations.entrySet()) {
-            receiveProperties.put(annotation.getKey().toString(), annotation.getValue());
-        }
-
-        if (message.getProperties() != null) {
-            addMapEntry(receiveProperties, MessageConstant.MESSAGE_ID, message.getMessageId());
-            addMapEntry(receiveProperties, MessageConstant.USER_ID, message.getUserId());
-            addMapEntry(receiveProperties, MessageConstant.TO, message.getAddress());
-            addMapEntry(receiveProperties, MessageConstant.SUBJECT, message.getSubject());
-            addMapEntry(receiveProperties, MessageConstant.REPLY_TO, message.getReplyTo());
-            addMapEntry(receiveProperties, MessageConstant.CORRELATION_ID, message.getCorrelationId());
-            addMapEntry(receiveProperties, MessageConstant.CONTENT_TYPE, message.getContentType());
-            addMapEntry(receiveProperties, MessageConstant.CONTENT_ENCODING, message.getContentEncoding());
-            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
-            addMapEntry(receiveProperties, MessageConstant.CREATION_TIME, message.getCreationTime());
-            addMapEntry(receiveProperties, MessageConstant.GROUP_ID, message.getGroupId());
-            addMapEntry(receiveProperties, MessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
-            addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
-        }
-
-        this.context = Context.NONE;
-        this.systemProperties = new SystemProperties(receiveProperties);
-        this.properties = message.getApplicationProperties() == null
-            ? new HashMap<>()
-            : message.getApplicationProperties().getValue();
-
-        final Section bodySection = message.getBody();
-        if (bodySection instanceof Data) {
-            Data bodyData = (Data) bodySection;
-            this.body = bodyData.getValue().asByteBuffer();
-        } else {
-            logger.warning(String.format(Locale.US,
-                "Message body type is not of type Data, but type: %s. Not setting body contents.",
-                bodySection != null ? bodySection.getType() : "null"));
-
-            this.body = null;
-        }
-
-        message.clear();
+    EventData(ByteBuffer body, SystemProperties systemProperties, Context context) {
+        this.body = body;
+        this.properties = new HashMap<>();
+        this.context = context;
+        this.systemProperties = systemProperties;
     }
 
     /**
@@ -327,14 +280,6 @@ public class EventData implements Comparable<EventData> {
         return systemProperties.getSequenceNumber();
     }
 
-    private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
-        if (content == null) {
-            return;
-        }
-
-        map.put(key.getValue(), content);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -373,7 +318,7 @@ public class EventData implements Comparable<EventData> {
     /**
      * A collection of properties populated by Azure Event Hubs service.
      */
-    private static class SystemProperties extends HashMap<String, Object> {
+    static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
         private final Long offset;
         private final String partitionKey;

@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.messaging.eventhubs.EventData;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpConstants;
+import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -13,18 +16,23 @@ import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * Utility class for converting {@link EventData} to {@link Message}.
  */
-public class EventDataUtil {
+class EventDataUtil implements MessageSerializer {
+    private final ClientLogger logger = new ClientLogger(EventDataUtil.class);
+
     /**
      * Maps the set of events given to a collection of AMQP messages.
      */
@@ -35,8 +43,8 @@ public class EventDataUtil {
     /**
      * Gets the serialized size of the AMQP message.
      */
-    static int getDataSerializedSize(Message amqpMessage) {
-
+    @Override
+    public int getSize(Message amqpMessage) {
         if (amqpMessage == null) {
             return 0;
         }
@@ -72,10 +80,96 @@ public class EventDataUtil {
     }
 
     /**
-     * Creates the AMQP message represented by this EventData.
+     * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing
+     * {@link EventData}.
      *
-     * @return A new AMQP message for this EventData.
+     * @param object Concrete object to deserialize.
+     * @param clazz Type of the {@code object}.
+     *
+     * @return A new AMQP message for this {@code object}.
+     *
+     * @throws IllegalArgumentException if {@code object} is not an instance of {@link EventData}.
      */
+    @Override
+    public <T> Message serialize(T object, Class<T> clazz) {
+        if (!(object instanceof EventData)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Cannot serialize object that is not EventData. Clazz: " + clazz));
+        }
+
+        final EventData eventData = (EventData) object;
+        final Message message = Proton.message();
+
+        if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
+            message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
+        }
+
+        setSystemProperties(eventData, message);
+
+        if (eventData.getBody() != null) {
+            message.setBody(new Data(Binary.create(eventData.getBody())));
+        }
+
+        return message;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T deserialize(Message message, Class<T> clazz) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+
+        if (clazz != EventData.class) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Deserialization only supports EventData."));
+        }
+
+        final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
+        final HashMap<String, Object> receiveProperties = new HashMap<>();
+
+        for (Map.Entry<Symbol, Object> annotation : messageAnnotations.entrySet()) {
+            receiveProperties.put(annotation.getKey().toString(), annotation.getValue());
+        }
+
+        if (message.getProperties() != null) {
+            addMapEntry(receiveProperties, MessageConstant.MESSAGE_ID, message.getMessageId());
+            addMapEntry(receiveProperties, MessageConstant.USER_ID, message.getUserId());
+            addMapEntry(receiveProperties, MessageConstant.TO, message.getAddress());
+            addMapEntry(receiveProperties, MessageConstant.SUBJECT, message.getSubject());
+            addMapEntry(receiveProperties, MessageConstant.REPLY_TO, message.getReplyTo());
+            addMapEntry(receiveProperties, MessageConstant.CORRELATION_ID, message.getCorrelationId());
+            addMapEntry(receiveProperties, MessageConstant.CONTENT_TYPE, message.getContentType());
+            addMapEntry(receiveProperties, MessageConstant.CONTENT_ENCODING, message.getContentEncoding());
+            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
+            addMapEntry(receiveProperties, MessageConstant.CREATION_TIME, message.getCreationTime());
+            addMapEntry(receiveProperties, MessageConstant.GROUP_ID, message.getGroupId());
+            addMapEntry(receiveProperties, MessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
+            addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
+        }
+
+        final Section bodySection = message.getBody();
+        ByteBuffer body;
+        if (bodySection instanceof Data) {
+            Data bodyData = (Data) bodySection;
+            body = bodyData.getValue().asByteBuffer();
+        } else {
+            logger.warning(String.format(Locale.US,
+                "Message body type is not of type Data, but type: %s. Not setting body contents.",
+                bodySection != null ? bodySection.getType() : "null"));
+
+            body = null;
+        }
+
+        final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
+        final EventData eventData = new EventData(body, systemProperties, Context.NONE);
+        final Map<String, Object> properties = message.getApplicationProperties() == null
+            ? new HashMap<>()
+            : message.getApplicationProperties().getValue();
+
+        properties.forEach((key, value) -> eventData.addProperty(key, value));
+
+        message.clear();
+        return (T) eventData;
+    }
+
     private static Message toAmqpMessage(String partitionKey, EventData eventData) {
         final Message message = Proton.message();
 
@@ -242,6 +336,11 @@ public class EventDataUtil {
             obj.getClass()));
     }
 
-    private EventDataUtil() {
+    private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
+        if (content == null) {
+            return;
+        }
+
+        map.put(key.getValue(), content);
     }
 }

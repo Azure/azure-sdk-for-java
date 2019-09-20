@@ -47,7 +47,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.messaging.eventhubs.implementation.EventDataUtil.getDataSerializedSize;
+import static com.azure.messaging.eventhubs.EventDataUtil.getDataSerializedSize;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
