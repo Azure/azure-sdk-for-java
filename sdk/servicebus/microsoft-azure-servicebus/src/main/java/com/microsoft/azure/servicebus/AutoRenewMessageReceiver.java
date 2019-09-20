@@ -109,5 +109,5 @@ public class AutoRenewMessageReceiver extends MessageReceiver {
 
         return super.checkIfValidRequestResponseLockTokenAsync(lockToken);
     }
-ß
+
 }
