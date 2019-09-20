@@ -31,6 +31,8 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters;
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -50,7 +52,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
@@ -94,132 +96,6 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the
-     * ContainerAsyncClient. To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline
-     * method passing in the desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling
-     * this object's NewBlockBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getBlobAsyncClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
-        return getBlockBlobAsyncClient(blobName, null);
-    }
-
-    /**
-     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the
-     * ContainerAsyncClient. To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline
-     * method passing in the desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling
-     * this object's NewBlockBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getBlobAsyncClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName, String snapshot) {
-        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
-        return getPageBlobAsyncClient(blobName, null);
-    }
-
-    /**
-     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String snapshot) {
-        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change
-     * the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the desired
-     * pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
-        return getAppendBlobAsyncClient(blobName, null);
-    }
-
-    /**
-     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change
-     * the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the desired
-     * pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName, String snapshot) {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
      * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
@@ -258,18 +134,6 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Initializes a {@link BlobServiceAsyncClient} object pointing to the storage account this container is in.
-     *
-     * @return A {@link BlobServiceAsyncClient} object pointing to the specified storage account
-     */
-    public BlobServiceAsyncClient getBlobServiceAsyncClient() {
-        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), cpk);
-    }
-
-    /**
      * Gets the URL of the container represented by this client.
      *
      * @return the URL.
@@ -285,12 +149,35 @@ public final class ContainerAsyncClient {
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getContainerName}
+     *
+     * @return The name of container.
+     */
+    public String getContainerName() {
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    }
+
+    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
         return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} associated with this client that will be passed to
+     * {@link BlobAsyncClient BlobAsyncClients} when {@link #getBlobAsyncClient(String) getBlobAsyncClient} is called.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCpk() {
+        return cpk;
     }
 
     /**

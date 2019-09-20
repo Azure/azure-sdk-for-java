@@ -43,6 +43,7 @@ public class EventProcessorBuilderTest {
     @Test(expected = NullPointerException.class)
     public void testEventProcessorBuilderMissingProperties() {
         EventProcessor eventProcessor = new EventProcessorBuilder()
+            .partitionManager(new InMemoryPartitionManager())
             .partitionProcessorFactory((() -> new PartitionProcessor() {
                     @Override
                     public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {

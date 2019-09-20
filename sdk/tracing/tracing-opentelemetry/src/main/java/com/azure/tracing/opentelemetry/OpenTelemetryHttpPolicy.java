@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.policy.spi.AfterRetryPolicyProvider;
+import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
@@ -42,7 +42,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
     private static final String OPENTELEMETRY_SPAN_KEY =
-        com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+        com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -87,7 +87,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request) {
-        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().value("User-Agent"));
+        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
     }

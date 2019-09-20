@@ -123,60 +123,6 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}
-     */
-    public void getAppendBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String
-        AppendBlobAsyncClient appendBlobAsyncClient = client.getAppendBlobAsyncClient(blobName);
-        // END: com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerAsyncClient#getAppendBlobAsyncClient(String, String)}
-     */
-    public void getSnapshotAppendBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String-String
-        AppendBlobAsyncClient appendBlobAsyncClient = client.getAppendBlobAsyncClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}
-     */
-    public void getBlockBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getBlockBlobAsyncClient#String
-        BlockBlobAsyncClient blockBlobAsyncClient = client.getBlockBlobAsyncClient(blobName);
-        // END: com.azure.storage.blob.ContainerAsyncClient.getBlockBlobAsyncClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerAsyncClient#getBlockBlobAsyncClient(String, String)}
-     */
-    public void getSnapshotBlockBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getBlockBlobAsyncClient#String-String
-        BlockBlobAsyncClient blockBlobAsyncClient = client.getBlockBlobAsyncClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerAsyncClient.getBlockBlobAsyncClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}
-     */
-    public void getPageBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String
-        PageBlobAsyncClient pageBlobAsyncClient = client.getPageBlobAsyncClient(blobName);
-        // END: com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerAsyncClient#getPageBlobAsyncClient(String, String)}
-     */
-    public void getSnapshotPageBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String-String
-        PageBlobAsyncClient pageBlobAsyncClient = client.getPageBlobAsyncClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String-String
-    }
-
-    /**
      * Code snippet for {@link ContainerAsyncClient#exists()}
      */
     public void exists() {
@@ -469,5 +415,15 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
                 response.getValue().getAccountKind(),
                 response.getValue().getSkuName()));
         // END: com.azure.storage.blob.ContainerAsyncClient.getAccountInfoWithResponse
+    }
+
+    /**
+     * Generates a code sample for using {@link ContainerAsyncClient#getContainerName()}
+     */
+    public void getContainerName() {
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.getContainerName
+        String containerName = client.getContainerName();
+        System.out.println("The name of the blob is " + containerName);
+        // END: com.azure.storage.blob.ContainerAsyncClient.getContainerName
     }
 }

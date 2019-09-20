@@ -19,7 +19,7 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.ContainerItem
@@ -28,6 +28,8 @@ import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListContainersOptions
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.blob.specialized.BlobAsyncClientBase
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
@@ -128,6 +130,7 @@ class APISpec extends Specification {
     private boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
+    def containerName
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -155,7 +158,7 @@ class APISpec extends Specification {
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
 
-        def containerName = generateContainerName()
+        containerName = generateContainerName()
         cc = primaryBlobServiceClient.getContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
         cc.create()
@@ -182,7 +185,7 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
-        String testMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE)
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (testMode != null) {
             try {
@@ -204,8 +207,8 @@ class APISpec extends Specification {
         String accountKey
 
         if (testMode == TestMode.RECORD) {
-            accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             accountName = "storageaccount"
             accountKey = "astorageaccountkey"
@@ -398,7 +401,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             builder.wiretap(true)
 
-            if (Boolean.parseBoolean(ConfigurationManager.getConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
                 builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
@@ -408,11 +411,11 @@ class APISpec extends Specification {
         }
     }
 
-    static LeaseClient createLeaseClient(BlobClient blobClient) {
+    static LeaseClient createLeaseClient(BlobClientBase blobClient) {
         return createLeaseClient(blobClient, null)
     }
 
-    static LeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
+    static LeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
         return new LeaseClientBuilder()
             .blobClient(blobClient)
             .leaseId(leaseId)
@@ -482,7 +485,7 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(BlobClient bc, String match) {
+    def setupBlobMatchCondition(BlobClientBase bc, String match) {
         if (match == receivedEtag) {
             return bc.getProperties().getETag()
         } else {
@@ -490,7 +493,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
+    def setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (match == receivedEtag) {
             return bac.getProperties().block().getETag()
         } else {
@@ -512,7 +515,7 @@ class APISpec extends Specification {
      * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupBlobLeaseCondition(BlobClient bc, String leaseID) {
+    def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = createLeaseClient(bc).acquireLease(-1)
@@ -524,7 +527,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
+    def setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new LeaseClientBuilder()
@@ -571,7 +574,7 @@ class APISpec extends Specification {
      */
 
     def getStubResponse(int code, HttpRequest request) {
-        return new HttpResponse() {
+        return new HttpResponse(request) {
 
             @Override
             int getStatusCode() {
@@ -607,13 +610,13 @@ class APISpec extends Specification {
             Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
             }
-        }.setRequest(request)
+        }
     }
 
     def waitForCopy(ContainerClient bu, String status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS.toString()) {
-            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().value("x-ms-copy-status")
+            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-copy-status")
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -631,13 +634,13 @@ class APISpec extends Specification {
      * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(HttpHeaders headers) {
-        return headers.value("etag") != null &&
+        return headers.getValue("etag") != null &&
             // Quotes should be scrubbed from etag header values
-            !headers.value("etag").contains("\"") &&
-            headers.value("last-modified") != null &&
-            headers.value("x-ms-request-id") != null &&
-            headers.value("x-ms-version") != null &&
-            headers.value("date") != null
+            !headers.getValue("etag").contains("\"") &&
+            headers.getValue("last-modified") != null &&
+            headers.getValue("x-ms-request-id") != null &&
+            headers.getValue("x-ms-version") != null &&
+            headers.getValue("date") != null
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
@@ -647,7 +650,7 @@ class APISpec extends Specification {
             response.getValue().getContentEncoding() == contentEncoding &&
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMD5() == contentMD5 &&
-            response.getHeaders().value("Content-Type") == contentType
+            response.getHeaders().getValue("Content-Type") == contentType
     }
 
     def enableSoftDelete() {
@@ -675,7 +678,7 @@ class APISpec extends Specification {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().flatMap { HttpResponse response ->
-                if (response.getRequest().getHeaders().value("x-ms-range") != "bytes=2-6") {
+                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
                     return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
                 } else {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
@@ -697,7 +700,7 @@ class APISpec extends Specification {
         private final Flux<ByteBuffer> body
 
         MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            this.setRequest(response.getRequest())
+            super(response.getRequest())
             this.statusCode = statusCode
             this.headers = response.getHeaders()
             this.body = body
@@ -710,7 +713,7 @@ class APISpec extends Specification {
 
         @Override
         String getHeaderValue(String s) {
-            return headers.value(s)
+            return headers.getValue(s)
         }
 
         @Override

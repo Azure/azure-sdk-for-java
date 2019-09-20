@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventProcessor;
@@ -42,9 +43,10 @@ public class BlobPartitionManager implements PartitionManager {
     private static final String OFFSET = "Offset";
     private static final String OWNER_ID = "OwnerId";
     private static final String ETAG = "eTag";
+    private static final String CLAIM_ERROR = "Couldn't claim ownership of partition {}, error {}";
 
     private static final String BLOB_PATH_SEPARATOR = "/";
-    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("" .getBytes(UTF_8));
+    private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap("".getBytes(UTF_8));
 
     private final ContainerAsyncClient containerAsyncClient;
     private final ClientLogger logger = new ClientLogger(BlobPartitionManager.class);
@@ -90,57 +92,48 @@ public class BlobPartitionManager implements PartitionManager {
     @Override
     public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
 
-        return Flux.fromArray(requestedPartitionOwnerships).flatMap(
-            partitionOwnership -> {
+        return Flux.fromArray(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
+            String partitionId = partitionOwnership.getPartitionId();
+            String blobName = getBlobName(partitionOwnership.getEventHubName(),
+                partitionOwnership.getConsumerGroupName(), partitionId);
 
-                String partitionId = partitionOwnership.getPartitionId();
-                String blobName = getBlobName(partitionOwnership.getEventHubName(),
-                    partitionOwnership.getConsumerGroupName(), partitionId);
-
-                if (!blobClients.containsKey(blobName)) {
-                    blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
-                }
-
-                BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
-
-                Metadata metadata = new Metadata();
-                metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
-                Long offset = partitionOwnership.getOffset();
-                metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
-                Long sequenceNumber = partitionOwnership.getSequenceNumber();
-                metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
-                BlobAccessConditions blobAccessConditions = new BlobAccessConditions();
-                if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
-                    // New blob should be created
-                    blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
-                        .setIfNoneMatch("*"));
-                    return blobAsyncClient.asBlockBlobAsyncClient()
-                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
-                            blobAccessConditions)
-                        .flatMapMany(response -> {
-                            partitionOwnership.setETag(response.getHeaders().get(ETAG).getValue());
-                            return Mono.just(partitionOwnership);
-                        }, error -> {
-                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                    error.getMessage());
-                                return Mono.empty();
-                            }, Mono::empty);
-                } else {
-                    // update existing blob
-                    blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
-                        .setIfMatch(partitionOwnership.getETag()));
-                    return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
-                        .flatMapMany(response -> {
-                            partitionOwnership.setETag(response.getHeaders().get(ETAG).getValue());
-                            return Mono.just(partitionOwnership);
-                        }, error -> {
-                                logger.info("Couldn't claim ownership of partition {}, error {}", partitionId,
-                                    error.getMessage());
-                                return Mono.empty();
-                            }, () -> Mono.empty());
-                }
+            if (!blobClients.containsKey(blobName)) {
+                blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
             }
-        );
+
+            BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+
+            Metadata metadata = new Metadata();
+            metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
+            Long offset = partitionOwnership.getOffset();
+            metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
+            Long sequenceNumber = partitionOwnership.getSequenceNumber();
+            metadata.put(SEQUENCE_NUMBER, sequenceNumber == null ? null : String.valueOf(sequenceNumber));
+            BlobAccessConditions blobAccessConditions = new BlobAccessConditions();
+            if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
+                // New blob should be created
+                blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions().setIfNoneMatch("*"));
+                return blobAsyncClient.asBlockBlobAsyncClient()
+                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobAccessConditions)
+                    .flatMapMany(response -> updateOwnershipEtag(response, partitionOwnership), error -> {
+                        logger.info(CLAIM_ERROR, partitionId, error.getMessage());
+                        return Mono.empty();
+                    }, Mono::empty);
+            } else {
+                // update existing blob
+                blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
+                    .setIfMatch(partitionOwnership.getETag()));
+                return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
+                    .flatMapMany(response -> updateOwnershipEtag(response, partitionOwnership), error -> {
+                        logger.info(CLAIM_ERROR, partitionId, error.getMessage());
+                        return Mono.empty();
+                    }, Mono::empty);
+            }
+        });
+    }
+
+    private Mono<PartitionOwnership> updateOwnershipEtag(Response<?> response, PartitionOwnership ownership) {
+        return Mono.just(ownership.setETag(response.getHeaders().get(ETAG).getValue()));
     }
 
     /**

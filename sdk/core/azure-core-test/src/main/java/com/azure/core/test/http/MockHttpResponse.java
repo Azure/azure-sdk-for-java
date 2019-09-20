@@ -54,6 +54,10 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), bodyBytes);
     }
 
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
+        this(request, statusCode, headers, new byte[0]);
+    }
+
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, contains the
      * {@code headers}, and response body of {@code bodyBytes}.
@@ -64,10 +68,10 @@ public class MockHttpResponse extends HttpResponse {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        super(request);
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = ImplUtils.clone(bodyBytes);
-        this.setRequest(request);
     }
 
     /**
@@ -81,6 +85,10 @@ public class MockHttpResponse extends HttpResponse {
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
         this(request, statusCode, headers, serialize(serializable));
+    }
+
+    public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
+        this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {
@@ -107,7 +115,7 @@ public class MockHttpResponse extends HttpResponse {
      */
     @Override
     public String getHeaderValue(String name) {
-        return headers.value(name);
+        return headers.getValue(name);
     }
 
     /**

@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -24,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Manages the re-authorization of the client to the token audience against the CBS node.
  */
-class ActiveClientTokenManager implements Closeable {
+public class ActiveClientTokenManager implements TokenManager {
     private final ClientLogger logger = new ClientLogger(ActiveClientTokenManager.class);
     private final AtomicBoolean hasScheduled = new AtomicBoolean();
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
@@ -37,7 +36,7 @@ class ActiveClientTokenManager implements Closeable {
     // last refresh interval in milliseconds.
     private AtomicLong lastRefreshInterval = new AtomicLong();
 
-    ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
+    public ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
         this.timer = new Timer(tokenAudience + "-tokenManager");
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;
@@ -58,7 +57,8 @@ class ActiveClientTokenManager implements Closeable {
      *
      * @return A Flux of authorization results from the CBS node.
      */
-    Flux<AmqpResponseCode> getAuthorizationResults() {
+    @Override
+    public Flux<AmqpResponseCode> getAuthorizationResults() {
         return authorizationResults;
     }
 
@@ -67,7 +67,8 @@ class ActiveClientTokenManager implements Closeable {
      *
      * @return A Mono that completes with the milliseconds corresponding to when this token should be refreshed.
      */
-    Mono<Long> authorize() {
+    @Override
+    public Mono<Long> authorize() {
         if (hasDisposed.get()) {
             return Mono.error(new AzureException(
                 "Cannot authorize with CBS node when this token manager has been disposed of."));

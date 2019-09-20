@@ -643,4 +643,26 @@ public class FileJavaDocCodeSamples {
         System.out.printf("Snapshot ID: %s%n", fileClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileClient.getShareSnapshotId
     }
+
+    /**
+     * Generates a code sample for using {@link FileClient#getShareName()}
+     */
+    public void getShareName() {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileClient.getShareName
+        String shareName = fileClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.fileClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link FileClient#getFilePath()}
+     */
+    public void getName() {
+        FileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileClient.getFilePath
+        String filePath = fileClient.getFilePath();
+        System.out.println("The name of the file is " + filePath);
+        // END: com.azure.storage.file.fileClient.getFilePath
+    }
 }

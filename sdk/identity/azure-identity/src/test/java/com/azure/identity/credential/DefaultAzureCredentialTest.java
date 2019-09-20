@@ -5,8 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
@@ -36,7 +35,7 @@ public class DefaultAzureCredentialTest {
 
     @Test
     public void testUseEnvironmentCredential() throws Exception {
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration();
 
         try {
             // setup

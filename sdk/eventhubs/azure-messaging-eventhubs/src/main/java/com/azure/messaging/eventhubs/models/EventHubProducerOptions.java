@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 

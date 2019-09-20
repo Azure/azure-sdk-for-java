@@ -6,8 +6,8 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.tracing.ProcessKind;
-import com.azure.core.implementation.tracing.Tracer;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.Tracer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
