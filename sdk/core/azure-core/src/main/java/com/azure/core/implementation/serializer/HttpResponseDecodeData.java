@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.implementation.annotation.HeaderCollection;
+import com.azure.core.annotation.HeaderCollection;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.ResponseBase;

@@ -4,7 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -21,7 +21,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;

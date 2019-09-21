@@ -4,8 +4,8 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;

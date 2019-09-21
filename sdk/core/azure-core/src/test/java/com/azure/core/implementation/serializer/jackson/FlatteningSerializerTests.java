@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.serializer.jackson;
 
-import com.azure.core.implementation.annotation.JsonFlatten;
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.util.Foo;
 import com.fasterxml.jackson.annotation.JsonProperty;

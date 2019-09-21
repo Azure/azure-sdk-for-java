@@ -4,7 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
