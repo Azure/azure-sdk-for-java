@@ -6,9 +6,10 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
+import org.junit.Test;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,58 +29,58 @@ public class SuggestAsyncTests extends SuggestTestBase {
     @Override
     public void canSuggestDynamicDocuments() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(new LinkedList<>(Arrays.asList("HotelId")));
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
         PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
-            .assertNext(result -> verifyDynamicDocumentSuggest(result))
+            .assertNext(this::verifyDynamicDocumentSuggest)
             .verifyComplete();
     }
 
     @Override
     public void searchFieldsExcludesFieldsFromSuggest() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.searchFields(new LinkedList<>(Arrays.asList("HotelName")));
+        SuggestParameters suggestParams = new SuggestParameters()
+            .searchFields(new LinkedList<>(Collections.singletonList("HotelName")));
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
-            .assertNext(result -> verifyFieldsExcludesFieldsSuggest(result))
+            .assertNext(this::verifyFieldsExcludesFieldsSuggest)
             .verifyComplete();
     }
 
     @Override
     public void canUseSuggestHitHighlighting() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.highlightPreTag("<b>");
-        suggestParams.highlightPostTag("</b>");
-        suggestParams.filter("Category eq 'Luxury'");
-        suggestParams.top(1);
+        SuggestParameters suggestParams = new SuggestParameters()
+            .highlightPreTag("<b>")
+            .highlightPostTag("</b>")
+            .filter("Category eq 'Luxury'")
+            .top(1);
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
-            .assertNext(result -> verifyHitHighlightingSuggest(result))
+            .assertNext(this::verifyHitHighlightingSuggest)
             .verifyComplete();
     }
 
     @Override
     public void canGetFuzzySuggestions() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.useFuzzyMatching(true);
+        SuggestParameters suggestParams = new SuggestParameters()
+            .useFuzzyMatching(true);
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
-            .assertNext(result -> verifyFuzzySuggest(result))
+            .assertNext(this::verifyFuzzySuggest)
             .verifyComplete();
     }
 
@@ -87,8 +88,8 @@ public class SuggestAsyncTests extends SuggestTestBase {
     public void canSuggestStaticallyTypedDocuments() {
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(new LinkedList<>(Arrays.asList("HotelId")));
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
 
         //act
         PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
@@ -100,7 +101,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+    public void canSuggestWithDateTimeInStaticModel() {
     }
 
     @Override
@@ -111,28 +112,48 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         StepVerifier
             .create(suggestResult.byPage())
-            .assertNext(result -> verifyFuzzyIsOffByDefault(result))
+            .assertNext(this::verifyFuzzyIsOffByDefault)
             .verifyComplete();
     }
 
     @Override
-    public void suggestThrowsWhenGivenBadSuggesterName() throws Exception {
+    public void suggestThrowsWhenGivenBadSuggesterName() {
         PagedFlux<SuggestResult> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
 
         StepVerifier
             .create(suggestResult.byPage())
-            .verifyErrorSatisfies(error -> verifySuggestThrowsWhenGivenBadSuggesterName(error));
+            .verifyErrorSatisfies(this::verifySuggestThrowsWhenGivenBadSuggesterName);
     }
 
     @Override
-    public void suggestThrowsWhenRequestIsMalformed() throws Exception {
+    public void suggestThrowsWhenRequestIsMalformed() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(new LinkedList<>(Arrays.asList("This is not a valid orderby.")));
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
+
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
-            .verifyErrorSatisfies(error -> verifySuggestThrowsWhenRequestIsMalformed(error));
+            .verifyErrorSatisfies(this::verifySuggestThrowsWhenRequestIsMalformed);
+    }
+
+    @Test
+    @Override
+    public void testCanSuggestWithMinimumCoverage() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        //arrange
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")))
+            .minimumCoverage(50.0);
+
+        //act
+        PagedFlux<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(this::verifyMinimumCoverage)
+            .verifyComplete();
     }
 }

@@ -4,6 +4,7 @@ package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.data.common.SuggestPagedResponse;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -99,6 +100,12 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         assertTrue(error.getMessage().contains("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'"));
     }
 
+    protected void verifyMinimumCoverage(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+
+        Assert.assertNotNull(suggestResultPagedResponse);
+        Assert.assertEquals(new Double(100), ((SuggestPagedResponse) suggestResultPagedResponse).coverage());
+    }
+
     @Test
     public abstract void canSuggestDynamicDocuments() throws Exception;
 
@@ -125,4 +132,8 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void suggestThrowsWhenRequestIsMalformed() throws Exception;
+
+    @Test
+    public abstract void testCanSuggestWithMinimumCoverage() throws Exception;
+
 }

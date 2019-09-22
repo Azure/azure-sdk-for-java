@@ -284,9 +284,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestParameters);
         Mono<PagedResponse<SuggestResult>> first = restClient.documents()
                 .suggestPostWithRestResponseAsync(suggestRequest)
-                .map(res -> {
-                    return new SuggestPagedResponse(res);
-                });
+                    .map(SuggestPagedResponse::new);
         return new PagedFlux<>(() -> first, nextLink -> Mono.empty());
 
     }
