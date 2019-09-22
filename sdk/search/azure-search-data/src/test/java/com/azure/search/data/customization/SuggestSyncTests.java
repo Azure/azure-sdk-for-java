@@ -138,8 +138,8 @@ public class SuggestSyncTests extends SuggestTestBase {
     @Override
     public void suggestThrowsWhenGivenBadSuggesterName() {
         thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("The specified suggester name 'Suggester does not exist' " +
-            "does not exist in this index definition.");
+        thrown.expectMessage("The specified suggester name 'Suggester does not exist' "
+            + "does not exist in this index definition.");
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("Hotel",
             "Suggester does not exist",
@@ -151,8 +151,8 @@ public class SuggestSyncTests extends SuggestTestBase {
     @Override
     public void suggestThrowsWhenRequestIsMalformed() {
         thrown.expect(HttpResponseException.class);
-        thrown.expectMessage("Invalid expression: " +
-            "Syntax error at position 7 in 'This is not a valid orderby.'");
+        thrown.expectMessage("Invalid expression: "
+            + "Syntax error at position 7 in 'This is not a valid orderby.'");
 
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters();
