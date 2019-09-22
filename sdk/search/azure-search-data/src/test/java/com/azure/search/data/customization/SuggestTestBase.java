@@ -136,5 +136,4 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void testCanSuggestWithMinimumCoverage() throws Exception;
 
-
 }

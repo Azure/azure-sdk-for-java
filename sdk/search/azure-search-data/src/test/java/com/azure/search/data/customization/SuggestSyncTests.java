@@ -157,7 +157,6 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator()
             .next();
 
-
         verifyMinimumCoverage(suggestResult);
 
     }
