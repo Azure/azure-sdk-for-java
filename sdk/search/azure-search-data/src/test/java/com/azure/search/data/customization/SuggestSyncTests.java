@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -168,9 +169,9 @@ public class SuggestSyncTests extends SuggestTestBase {
     public void testTopTrimsResults() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         //arrange
-        SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
-        suggestParams.top(3);
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(Collections.singletonList("HotelId"))
+            .top(3);
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("more",

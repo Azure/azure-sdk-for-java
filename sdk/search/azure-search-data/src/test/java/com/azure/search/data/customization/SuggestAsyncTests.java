@@ -6,6 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
+import org.junit.Test;
 import reactor.test.StepVerifier;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -81,13 +82,13 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .assertNext(this::verifyFuzzySuggest)
             .verifyComplete();
     }
-
+    @Test
     @Override
     public void canSuggestStaticallyTypedDocuments() {
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
+        suggestParams.orderBy(Collections.singletonList("HotelId"));
 
         //act
         PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
@@ -142,7 +143,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         //arrange
         SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
+        suggestParams.orderBy(Collections.singletonList("HotelId"));
         suggestParams.top(3);
 
         //act
