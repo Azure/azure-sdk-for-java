@@ -5,7 +5,6 @@ package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.common.SearchPipelinePolicy;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
@@ -79,7 +78,7 @@ public class SearchSuggestionExample {
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
             .apiVersion(apiVersion)
-            .addPolicy(new SearchPipelinePolicy(apiKey))
+            .credential(apiKey)
             .buildClient();
     }
 

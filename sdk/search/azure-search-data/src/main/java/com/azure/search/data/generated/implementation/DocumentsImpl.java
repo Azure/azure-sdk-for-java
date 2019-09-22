@@ -21,6 +21,7 @@ import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceInterface;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.search.data.generated.Documents;
 import com.azure.search.data.generated.models.AutocompleteMode;
 import com.azure.search.data.generated.models.AutocompleteParameters;
@@ -60,9 +61,10 @@ public final class DocumentsImpl implements Documents {
      * Initializes an instance of DocumentsImpl.
      *
      * @param client the instance of the service client containing this operation class.
+     * @param serializer the serializer to be used for service client requests.
      */
-    public DocumentsImpl(SearchIndexRestClientImpl client) {
-        this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline());
+    public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {
+        this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);
         this.client = client;
     }
 
@@ -100,7 +102,7 @@ public final class DocumentsImpl implements Documents {
 
         @Post("docs/search.index")
         @ExpectedResponses({200, 207})
-        Mono<SimpleResponse<DocumentIndexResult>> index(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexBatch batch, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId);
+        <T> Mono<SimpleResponse<DocumentIndexResult>> index(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexBatch<T> batch, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId);
 
         @Get("docs/search.autocomplete")
         @ExpectedResponses({200})
@@ -598,7 +600,7 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch batch) {
+    public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch) {
         final UUID clientRequestId = null;
         return service.index(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), batch, this.client.getApiVersion(), clientRequestId);
     }
@@ -611,7 +613,7 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentIndexResult> indexAsync(IndexBatch batch) {
+    public <T> Mono<DocumentIndexResult> indexAsync(IndexBatch<T> batch) {
         return indexWithRestResponseAsync(batch)
             .flatMap((SimpleResponse<DocumentIndexResult> res) -> Mono.just(res.value()));
     }
@@ -625,7 +627,7 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch batch, SearchRequestOptions searchRequestOptions) {
+    public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, SearchRequestOptions searchRequestOptions) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
             clientRequestId = searchRequestOptions.clientRequestId();
@@ -642,7 +644,7 @@ public final class DocumentsImpl implements Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentIndexResult> indexAsync(IndexBatch batch, SearchRequestOptions searchRequestOptions) {
+    public <T> Mono<DocumentIndexResult> indexAsync(IndexBatch<T> batch, SearchRequestOptions searchRequestOptions) {
         return indexWithRestResponseAsync(batch, searchRequestOptions)
             .flatMap((SimpleResponse<DocumentIndexResult> res) -> Mono.just(res.value()));
     }

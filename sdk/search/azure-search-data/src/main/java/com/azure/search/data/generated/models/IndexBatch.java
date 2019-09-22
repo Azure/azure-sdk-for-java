@@ -13,19 +13,19 @@ import java.util.List;
  * index.
  */
 @Fluent
-public final class IndexBatch {
+public final class IndexBatch<T> {
     /*
      * The actions in the batch.
      */
     @JsonProperty(value = "value", required = true)
-    private List<IndexAction> actions;
+    private List<IndexAction<T>> actions;
 
     /**
      * Get the actions property: The actions in the batch.
      *
      * @return the actions value.
      */
-    public List<IndexAction> actions() {
+    public List<IndexAction<T>> actions() {
         return this.actions;
     }
 
@@ -35,7 +35,7 @@ public final class IndexBatch {
      * @param actions the actions value to set.
      * @return the IndexBatch object itself.
      */
-    public IndexBatch actions(List<IndexAction> actions) {
+    public IndexBatch<T> actions(List<IndexAction<T>> actions) {
         this.actions = actions;
         return this;
     }

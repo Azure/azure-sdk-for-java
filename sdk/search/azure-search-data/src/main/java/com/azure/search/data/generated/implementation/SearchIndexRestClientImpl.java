@@ -6,6 +6,8 @@ package com.azure.search.data.generated.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.search.data.generated.Documents;
 import com.azure.search.data.generated.SearchIndexRestClient;
 
@@ -137,16 +139,17 @@ public final class SearchIndexRestClientImpl implements SearchIndexRestClient {
      * Initializes an instance of SearchIndexRestClient client.
      */
     public SearchIndexRestClientImpl() {
-        this(RestProxy.createDefaultPipeline());
+        this(RestProxy.createDefaultPipeline(), JacksonAdapter.createDefaultSerializerAdapter());
     }
 
     /**
      * Initializes an instance of SearchIndexRestClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializer the serializer to be used for service client requests.
      */
-    public SearchIndexRestClientImpl(HttpPipeline httpPipeline) {
+    public SearchIndexRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializer) {
         this.httpPipeline = httpPipeline;
-        this.documents = new DocumentsImpl(this);
+        this.documents = new DocumentsImpl(this, serializer);
     }
 }
