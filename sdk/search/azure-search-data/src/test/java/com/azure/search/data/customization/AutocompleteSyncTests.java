@@ -36,7 +36,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Test
-    public void autocompleteThrowsWhenGivenBadSuggesterName() {
+    public void canAutocompleteThrowsWhenGivenBadSuggesterName() {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
 
@@ -47,8 +47,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         results.iterableByPage().iterator().next();
     }
 
-    @Test
-    public void autocompleteDefaultsToOneTermMode() {
+    @Override
+    public void canAutocompleteDefaultsToOneTermMode() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
@@ -59,8 +59,55 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
+    @Override
+    public void canAutocompleteOneTermWithContext() {
+        List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
+        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("looking for very po", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
+    @Override
+    public void canAutocompleteOneTermWithFuzzy() {
+        List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.ONE_TERM);
+        params.useFuzzyMatching(true);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
+    @Override
+    public void canAutocompleteOneTermWithContextWithFuzzy() {
+        List<String> expectedText = Arrays.asList("very polite", "very police");
+        List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
+        params.useFuzzyMatching(true);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("very polit", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
     @Test
-    public void autocompleteExcludesFieldsNotInSuggester() throws Exception {
+    public void canAutocompleteExcludesFieldsNotInSuggester() {
         AutocompleteParameters params = new AutocompleteParameters();
         params.autocompleteMode(AutocompleteMode.ONE_TERM);
         params.searchFields(Arrays.asList("HotelName"));
@@ -75,7 +122,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Test
-    public void autocompleteFuzzyIsOffByDefault() throws Exception {
+    public void canAutocompleteFuzzyIsOffByDefault() {
         AutocompleteParameters params = new AutocompleteParameters();
         params.autocompleteMode(AutocompleteMode.ONE_TERM);
 
@@ -89,7 +136,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Test
-    public void autocompleteOneTerm() throws Exception {
+    public void canAutocompleteOneTerm() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
@@ -104,7 +151,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Test
-    public void autocompleteStaticallyTypedDocuments() throws Exception {
+    public void canAutocompleteStaticallyTypedDocuments() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
 
@@ -120,7 +167,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     }
 
     @Test
-    public void autocompleteThrowsWhenRequestIsMalformed() throws Exception {
+    public void canAutocompleteThrowsWhenRequestIsMalformed() {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions");
 
@@ -128,6 +175,36 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         results.iterableByPage().iterator().next();
     }
 
+    @Override
+    public void canAutocompleteTwoTerms() {
+        List<String> expectedText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
+        List<String> expectedQueryPlusText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.TWO_TERMS);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
+    @Override
+    public void canAutocompleteTwoTermsWithFuzzy() {
+        List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.TWO_TERMS);
+        params.useFuzzyMatching(true);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
 
     /**
      * Compare the autocomplete results with the expected strings

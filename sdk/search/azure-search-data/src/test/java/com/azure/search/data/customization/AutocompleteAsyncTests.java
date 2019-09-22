@@ -31,7 +31,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteThrowsWhenGivenBadSuggesterName() throws Exception {
+    public void canAutocompleteThrowsWhenGivenBadSuggesterName() {
         AutocompleteParameters params = new AutocompleteParameters();
         params.autocompleteMode(AutocompleteMode.ONE_TERM);
 
@@ -46,7 +46,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteDefaultsToOneTermMode() throws Exception {
+    public void canAutocompleteDefaultsToOneTermMode() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
@@ -55,7 +55,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteExcludesFieldsNotInSuggester() throws Exception {
+    public void canAutocompleteExcludesFieldsNotInSuggester() {
         AutocompleteParameters params = new AutocompleteParameters();
         params.autocompleteMode(AutocompleteMode.ONE_TERM);
         params.searchFields(Arrays.asList("HotelName"));
@@ -69,7 +69,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteFuzzyIsOffByDefault() throws Exception {
+    public void canAutocompleteFuzzyIsOffByDefault() {
         AutocompleteParameters params = new AutocompleteParameters();
         params.autocompleteMode(AutocompleteMode.ONE_TERM);
 
@@ -81,7 +81,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteOneTerm() throws Exception {
+    public void canAutocompleteOneTerm() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
@@ -93,7 +93,45 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteStaticallyTypedDocuments() throws Exception {
+    public void canAutocompleteOneTermWithContext() {
+        List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
+        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("looking for very po", "sg", null, params);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void canAutocompleteOneTermWithFuzzy() {
+        List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.ONE_TERM);
+        params.useFuzzyMatching(true);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void canAutocompleteOneTermWithContextWithFuzzy() {
+        List<String> expectedText = Arrays.asList("very polite", "very police");
+        List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
+        params.useFuzzyMatching(true);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("very polit", "sg", null, params);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void canAutocompleteStaticallyTypedDocuments() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
 
@@ -106,7 +144,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
-    public void autocompleteThrowsWhenRequestIsMalformed() throws Exception {
+    public void canAutocompleteThrowsWhenRequestIsMalformed() {
         PagedFlux<AutocompleteItem> results = client.autocomplete("very po", "");
         StepVerifier
                 .create(results)
@@ -117,6 +155,32 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
                 });
     }
 
+    @Override
+    public void canAutocompleteTwoTerms() {
+        List<String> expectedText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
+        List<String> expectedQueryPlusText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.TWO_TERMS);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void canAutocompleteTwoTermsWithFuzzy() {
+        List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters();
+        params.autocompleteMode(AutocompleteMode.TWO_TERMS);
+        params.useFuzzyMatching(true);
+
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
     /**
      * Validate the text and query plus text results
      * @param expectedText
@@ -125,7 +189,6 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
      */
     private void validateResults(List<String> expectedText, List<String> expectedQueryPlusText, PagedFlux<AutocompleteItem> results) {
         StepVerifier.create(results.byPage()).assertNext(pageResult -> {
-            Assert.assertEquals(5, pageResult.items().size());
             List<String> textResults = new ArrayList<>();
             List<String> queryPlusTextResults = new ArrayList<>();
             pageResult.items()

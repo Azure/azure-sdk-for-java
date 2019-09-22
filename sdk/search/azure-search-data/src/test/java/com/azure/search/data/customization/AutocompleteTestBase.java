@@ -17,24 +17,39 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     protected abstract void initializeClient();
 
     @Test
-    public abstract void autocompleteThrowsWhenGivenBadSuggesterName() throws Exception;
+    public abstract void canAutocompleteThrowsWhenGivenBadSuggesterName() throws Exception;
 
     @Test
-    public abstract void autocompleteDefaultsToOneTermMode() throws Exception;
+    public abstract void canAutocompleteDefaultsToOneTermMode() throws Exception;
 
     @Test
-    public abstract void autocompleteExcludesFieldsNotInSuggester() throws Exception;
+    public abstract void canAutocompleteExcludesFieldsNotInSuggester() throws Exception;
 
     @Test
-    public abstract void autocompleteFuzzyIsOffByDefault() throws Exception;
+    public abstract void canAutocompleteFuzzyIsOffByDefault() throws Exception;
 
     @Test
-    public abstract void autocompleteOneTerm() throws Exception;
+    public abstract void canAutocompleteOneTerm() throws Exception;
 
     @Test
-    public abstract void autocompleteStaticallyTypedDocuments() throws Exception;
+    public abstract void canAutocompleteOneTermWithContext() throws Exception;
 
     @Test
-    public abstract void autocompleteThrowsWhenRequestIsMalformed() throws Exception;
+    public abstract void canAutocompleteOneTermWithFuzzy() throws Exception;
+
+    @Test
+    public abstract void canAutocompleteOneTermWithContextWithFuzzy() throws Exception;
+
+    @Test
+    public abstract void canAutocompleteStaticallyTypedDocuments() throws Exception;
+
+    @Test
+    public abstract void canAutocompleteThrowsWhenRequestIsMalformed() throws Exception;
+
+    @Test
+    public abstract void canAutocompleteTwoTerms() throws Exception;
+
+    @Test
+    public abstract void canAutocompleteTwoTermsWithFuzzy() throws Exception;
 
 }
