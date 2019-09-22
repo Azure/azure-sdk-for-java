@@ -30,7 +30,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     public void canSuggestDynamicDocuments() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
+            .orderBy(Collections.singletonList("HotelId"));
         PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
 
         StepVerifier
@@ -129,7 +129,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     public void suggestThrowsWhenRequestIsMalformed() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
+            .orderBy(Collections.singletonList("This is not a valid orderby."));
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 

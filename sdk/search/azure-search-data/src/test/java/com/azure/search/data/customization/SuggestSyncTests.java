@@ -38,7 +38,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     public void canSuggestDynamicDocuments() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
+            .orderBy(Collections.singletonList("HotelId"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -51,7 +51,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     public void searchFieldsExcludesFieldsFromSuggest() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .searchFields(new LinkedList<>(Collections.singletonList("HotelName")));
+            .searchFields(Collections.singletonList("HotelName"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -94,7 +94,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
+            .orderBy(Collections.singletonList("HotelId"));
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);

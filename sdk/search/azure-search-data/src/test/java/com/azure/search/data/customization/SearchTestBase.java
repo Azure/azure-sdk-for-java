@@ -156,7 +156,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         return results;
     }
 
-    void assertContainKeys(List<Map<String, Object>> expected, List<SearchResult> actual) {
+    void assertContainHotelIds(List<Map<String, Object>> expected, List<SearchResult> actual) {
         Assert.assertNotNull(actual);
         List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
             .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());

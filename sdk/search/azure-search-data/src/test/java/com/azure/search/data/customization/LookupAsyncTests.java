@@ -10,6 +10,7 @@ import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -25,8 +26,10 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocuments(client, INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
-        Hotel actual = result.block().as(Hotel.class);
-        Assert.assertEquals(expected, actual);
+
+        StepVerifier.create(result)
+            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .verifyComplete();
     }
 
     @Override
@@ -35,8 +38,10 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocuments(client, INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
-        Hotel actual = result.block().as(Hotel.class);
-        Assert.assertEquals(expected, actual);
+
+        StepVerifier.create(result)
+            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .verifyComplete();
     }
 
     @Override
@@ -45,8 +50,10 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocuments(client, INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
-        Hotel actual = result.block().as(Hotel.class);
-        Assert.assertEquals(expected, actual);
+
+        StepVerifier.create(result)
+            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .verifyComplete();
     }
 
     @Override
@@ -55,8 +62,10 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocuments(client, MODEL_WITH_VALUE_TYPES_INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.key);
-        ModelWithPrimitiveCollections actual = result.block().as(ModelWithPrimitiveCollections.class);
-        Assert.assertEquals(expected, actual);
+
+        StepVerifier.create(result)
+            .assertNext(res -> Assert.assertEquals(expected, res.as(ModelWithPrimitiveCollections.class)))
+            .verifyComplete();
     }
 
     @Override
@@ -65,7 +74,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
         Hotel expected = new Hotel()
             .hotelName("Countryside Hotel")
-            .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.")
+            .description(
+                "Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, "
+                    + "washer & dryer, 24/7 support, bowling alley, fitness center and more.")
             .address(new HotelAddress().city("Durham"))
             .rooms(Arrays.asList(new HotelRoom().baseRate(2.44), new HotelRoom().baseRate(7.69)));
 
@@ -73,8 +84,10 @@ public class LookupAsyncTests extends LookupTestBase {
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, new SearchRequestOptions());
-        Hotel actual = result.block().as(Hotel.class);
-        Assert.assertEquals(expected, actual);
+
+        StepVerifier.create(result)
+            .assertNext(res -> Assert.assertEquals(expected, res.as(Hotel.class)))
+            .verifyComplete();
     }
 
     @Override
