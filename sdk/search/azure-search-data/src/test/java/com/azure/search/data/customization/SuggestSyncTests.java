@@ -160,4 +160,23 @@ public class SuggestSyncTests extends SuggestTestBase {
         verifyMinimumCoverage(suggestResult);
 
     }
+
+    @Override
+    public void testTopTrimsResults() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        //arrange
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(Collections.singletonList("HotelId"))
+            .top(3);
+
+        //act
+        PagedIterable<SuggestResult> suggestResult = client.suggest("more",
+            "sg",
+            suggestParams,
+            null);
+        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        //assert
+        verifyTopDocumentSuggest(iterator.next());
+    }
 }

@@ -14,6 +14,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,18 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(new Double(100), ((SuggestPagedResponse) suggestResultPagedResponse).coverage());
     }
 
+    protected void verifyTopDocumentSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+        Assert.assertNotNull(suggestResultPagedResponse);
+        Assert.assertEquals(3, suggestResultPagedResponse.value().size());
+        List<String> resultIds = suggestResultPagedResponse
+            .value()
+            .stream()
+            .map(hotel -> hotel.additionalProperties().as(Hotel.class).hotelId())
+            .collect(Collectors.toList());
+
+        Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
+    }
+
     @Test
     public abstract void canSuggestDynamicDocuments() throws Exception;
 
@@ -135,5 +148,8 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void testCanSuggestWithMinimumCoverage() throws Exception;
+
+    @Test
+    public abstract void testTopTrimsResults();
 
 }

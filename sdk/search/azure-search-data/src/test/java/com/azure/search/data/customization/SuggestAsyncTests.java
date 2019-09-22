@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
-import org.junit.Test;
+
 import reactor.test.StepVerifier;
 
 import java.util.Collections;
@@ -138,7 +138,6 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .verifyErrorSatisfies(this::verifySuggestThrowsWhenRequestIsMalformed);
     }
 
-    @Test
     @Override
     public void testCanSuggestWithMinimumCoverage() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
@@ -154,6 +153,24 @@ public class SuggestAsyncTests extends SuggestTestBase {
         StepVerifier
             .create(suggestResult.byPage())
             .assertNext(this::verifyMinimumCoverage)
+            .verifyComplete();
+    }
+
+    @Override
+    public void testTopTrimsResults() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        //arrange
+        SuggestParameters suggestParams = new SuggestParameters();
+        suggestParams.orderBy(Collections.singletonList("HotelId"));
+        suggestParams.top(3);
+
+        //act
+        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(this::verifyTopDocumentSuggest)
             .verifyComplete();
     }
 }
