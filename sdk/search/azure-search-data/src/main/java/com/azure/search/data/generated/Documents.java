@@ -288,7 +288,7 @@ public interface Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch batch);
+    <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -298,18 +298,7 @@ public interface Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DocumentIndexResult> indexAsync(IndexBatch batch);
-
-    /**
-     * Sends a batch of document write actions to the Azure Search index.
-     *
-     * @param batch The batch of index actions.
-     * @param searchRequestOptions Additional parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch batch, SearchRequestOptions searchRequestOptions);
+    <T> Mono<DocumentIndexResult> indexAsync(IndexBatch<T> batch);
 
     /**
      * Sends a batch of document write actions to the Azure Search index.
@@ -320,7 +309,18 @@ public interface Documents {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DocumentIndexResult> indexAsync(IndexBatch batch, SearchRequestOptions searchRequestOptions);
+    <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, SearchRequestOptions searchRequestOptions);
+
+    /**
+     * Sends a batch of document write actions to the Azure Search index.
+     *
+     * @param batch The batch of index actions.
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    <T> Mono<DocumentIndexResult> indexAsync(IndexBatch<T> batch, SearchRequestOptions searchRequestOptions);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.

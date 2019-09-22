@@ -208,9 +208,10 @@ public interface SearchIndexClient {
      * Sends a batch of document write actions to the Azure Search index.
      *
      * @param batch batch of documents to send to the index with the requested action
+     * @param <T> The type of document to be indexed
      * @return document index result
      */
-    DocumentIndexResult index(IndexBatch batch);
+    <T> DocumentIndexResult index(IndexBatch<T> batch);
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.

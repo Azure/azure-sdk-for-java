@@ -5,19 +5,31 @@
 package com.azure.search.data.generated.models;
 
 import com.azure.core.implementation.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import java.util.Map;
 
 /**
  * Represents an index action that operates on a document.
  */
 @Fluent
-public final class IndexAction {
+public final class IndexAction<T> {
     /*
-     * Unmatched properties from the message are deserialized this collection
+     * The document on which the action will be performed.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonUnwrapped
+    private T document;
+
+    @JsonIgnore
+    private Map<String, Object> properties;
+
+    @JsonAnyGetter
+    private Map<String, Object> getParamMap() {
+        return properties;
+    }
 
     /*
      * The operation to perform on a document in an indexing batch. Possible
@@ -27,24 +39,26 @@ public final class IndexAction {
     private IndexActionType actionType;
 
     /**
-     * Get the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
+     * Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.
      *
-     * @return the additionalProperties value.
+     * @return the document value.
      */
-    public Map<String, Object> additionalProperties() {
-        return this.additionalProperties;
-    }
+    public T getDocument() { return this.document; }
 
     /**
-     * Set the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
+     * Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.
      *
-     * @param additionalProperties the additionalProperties value to set.
+     * @param document the document value to set.
      * @return the IndexAction object itself.
      */
-    public IndexAction additionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
+    public IndexAction<T> document(T document) {
+        if (document instanceof Map) {
+            this.properties = (Map<String, Object>) document;
+            this.document = null;
+        } else {
+            this.document = document;
+            this.properties = null;
+        }
         return this;
     }
 
@@ -67,7 +81,7 @@ public final class IndexAction {
      * @param actionType the actionType value to set.
      * @return the IndexAction object itself.
      */
-    public IndexAction actionType(IndexActionType actionType) {
+    public IndexAction<T> actionType(IndexActionType actionType) {
         this.actionType = actionType;
         return this;
     }

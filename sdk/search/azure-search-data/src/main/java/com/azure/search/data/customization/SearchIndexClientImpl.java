@@ -41,42 +41,42 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
 
     @Override
     public <T> DocumentIndexResult uploadDocument(T document) {
-        return this.index(new IndexBatchBuilder().upload(document).build());
+        return this.index(new IndexBatchBuilder<T>().upload(document).build());
     }
 
     @Override
     public <T> DocumentIndexResult uploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().upload(documents).build());
+        return this.index(new IndexBatchBuilder<T>().upload(documents).build());
     }
 
     @Override
     public <T> DocumentIndexResult mergeDocument(T document) {
-        return this.index(new IndexBatchBuilder().merge(document).build());
+        return this.index(new IndexBatchBuilder<T>().merge(document).build());
     }
 
     @Override
     public <T> DocumentIndexResult mergeDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().merge(documents).build());
+        return this.index(new IndexBatchBuilder<T>().merge(documents).build());
     }
 
     @Override
     public <T> DocumentIndexResult mergeOrUploadDocument(T document) {
-        return this.index(new IndexBatchBuilder().mergeOrUpload(document).build());
+        return this.index(new IndexBatchBuilder<T>().mergeOrUpload(document).build());
     }
 
     @Override
     public <T> DocumentIndexResult mergeOrUploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().mergeOrUpload(documents).build());
+        return this.index(new IndexBatchBuilder<T>().mergeOrUpload(documents).build());
     }
 
     @Override
     public <T> DocumentIndexResult deleteDocument(T document) {
-        return this.index(new IndexBatchBuilder().delete(document).build());
+        return this.index(new IndexBatchBuilder<T>().delete(document).build());
     }
 
     @Override
     public <T> DocumentIndexResult deleteDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder().delete(documents).build());
+        return this.index(new IndexBatchBuilder<T>().delete(documents).build());
     }
 
     @Override
@@ -151,7 +151,7 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
     }
 
     @Override
-    public DocumentIndexResult index(IndexBatch batch) {
+    public <T> DocumentIndexResult index(IndexBatch<T> batch) {
         Mono<DocumentIndexResult> results = asyncClient.index(batch);
         return blockWithOptionalTimeout(results, null);
     }
