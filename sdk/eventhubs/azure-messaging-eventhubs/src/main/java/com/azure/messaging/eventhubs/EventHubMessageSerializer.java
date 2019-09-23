@@ -87,8 +87,8 @@ class EventHubMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(object, "'object' to serialize cannot be null.");
 
         if (!(object instanceof EventData)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
         }
 
         final EventData eventData = (EventData) object;
