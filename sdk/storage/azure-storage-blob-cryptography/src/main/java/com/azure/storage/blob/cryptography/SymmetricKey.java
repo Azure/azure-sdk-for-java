@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.cryptography;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.keyvault.cryptography.Algorithm;
 import com.microsoft.azure.keyvault.cryptography.AlgorithmResolver;
 import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
@@ -14,7 +15,6 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.util.UUID;
@@ -25,6 +25,8 @@ import java.util.UUID;
  */
 // TODO: Remove file in favor of actual keyvault dependency
 public class SymmetricKey implements IKey {
+
+    private final ClientLogger logger = new ClientLogger(SymmetricKey.class);
 
     private static final SecureRandom Rng = new SecureRandom();
 
@@ -51,8 +53,7 @@ public class SymmetricKey implements IKey {
     /**
      * Creates a SymmetricKey with the specified key identifier and
      * a random key with DefaultKeySize bits.
-     * @param kid
-     *      The key identifier to use.
+     * @param kid The key identifier to use.
      */
     public SymmetricKey(String kid) {
         this(kid, DefaultKeySize);
@@ -61,10 +62,8 @@ public class SymmetricKey implements IKey {
     /**
      * Creates a SymmetricKey with the specified key identifier and
      * a random key with the specified size.
-     * @param kid
-     *      The key identifier to use.
-     * @param keySizeInBytes
-     *      The key size to use in bytes.
+     * @param kid The key identifier to use.
+     * @param keySizeInBytes The key size to use in bytes.
      */
     public SymmetricKey(String kid, int keySizeInBytes) {
         this(kid, keySizeInBytes, null);
@@ -73,17 +72,18 @@ public class SymmetricKey implements IKey {
     /**
      * Creates a SymmetricKey with the specified key identifier and
      * a random key with the specified size that uses the specified provider.
-     * @param kid
-     *      The key identifier to use.
-     * @param keySizeInBytes
-     *      The key size to use in bytes.
-     * @param provider
-     *      The provider to use (optional, null for default)
+     * @param kid The key identifier to use.
+     * @param keySizeInBytes The key size to use in bytes.
+     * @param provider The provider to use (optional, null for default)
+     * @throws IllegalArgumentException for bad key
      */
     public SymmetricKey(String kid, int keySizeInBytes, Provider provider) {
 
-        if (keySizeInBytes != KeySize128 && keySizeInBytes != KeySize192 && keySizeInBytes != KeySize256 && keySizeInBytes != KeySize384 && keySizeInBytes != KeySize512) {
-            throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
+        if (keySizeInBytes != KeySize128 && keySizeInBytes != KeySize192 && keySizeInBytes
+            != KeySize256 && keySizeInBytes != KeySize384 && keySizeInBytes != KeySize512) {
+            // (gapra) temp fix until we get actual dependencies
+            throw logger.logExceptionAsError(new IllegalArgumentException("The key material "
+                + "must be 128, 192, 256, 384 or 512 bits of data"));
         }
 
         this.kid      = kid;
@@ -96,10 +96,8 @@ public class SymmetricKey implements IKey {
 
     /**
      * Creates a SymmetricKey with the specified key identifier and key material.
-     * @param kid
-     *      The key identifier to use.
-     * @param keyBytes
-     *      The key material to use.
+     * @param kid The key identifier to use.
+     * @param keyBytes The key material to use.
      */
     public SymmetricKey(String kid, byte[] keyBytes) {
         this(kid, keyBytes, null);
@@ -108,21 +106,22 @@ public class SymmetricKey implements IKey {
     /**
      * Creates a SymmetricKey with the specified key identifier and key material
      * that uses the specified Provider.
-     * @param kid
-     *      The key identifier to use.
-     * @param keyBytes
-     *      The key material to use.
-     * @param provider
-     *      The Provider to use (optional, null for default)
+     * @param kid The key identifier to use.
+     * @param keyBytes The key material to use.
+     * @param provider The Provider to use (optional, null for default)
+     * @throws IllegalArgumentException for bad key
      */
     public SymmetricKey(String kid, byte[] keyBytes, Provider provider) {
 
         if (keyBytes == null) {
-            throw new IllegalArgumentException("keyBytes");
+            throw logger.logExceptionAsError(new IllegalArgumentException("keyBytes"));
         }
 
-        if (keyBytes.length != KeySize128 && keyBytes.length != KeySize192 && keyBytes.length != KeySize256 && keyBytes.length != KeySize384 && keyBytes.length != KeySize512) {
-            throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
+        if (keyBytes.length != KeySize128 && keyBytes.length != KeySize192 && keyBytes.length
+            != KeySize256 && keyBytes.length != KeySize384 && keyBytes.length != KeySize512) {
+            // (gapra) temp fix until we get actual dependencies
+            throw logger.logExceptionAsError(new IllegalArgumentException("The key material "
+                + "must be 128, 192, 256, 384 or 512 bits of data"));
         }
 
         this.kid      = kid;
@@ -130,7 +129,7 @@ public class SymmetricKey implements IKey {
         this.provider = provider;
     }
 
-    public String getDefaultKeyWrapAlgorithm() {
+    String getDefaultKeyWrapAlgorithm() {
 
         switch (key.length) {
             case KeySize128:
@@ -157,15 +156,15 @@ public class SymmetricKey implements IKey {
 
     @Override
     public String getKid() {
-
         return kid;
     }
 
     @Override
-    public Mono<Tuple2<byte[], String>> wrapKeyAsync(final byte[] key, String algorithm) throws NoSuchAlgorithmException {
+    public Mono<Tuple2<byte[], String>> wrapKeyAsync(final byte[] key, String algorithm) throws RuntimeException {
 
         if (key == null || key.length == 0) {
-            throw new IllegalArgumentException("key");
+            // (gapra) temp fix until we get actual dependencies
+            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         if (algorithm == null || algorithm.isEmpty()) {
@@ -176,7 +175,8 @@ public class SymmetricKey implements IKey {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
 
         if (baseAlgorithm == null || !(baseAlgorithm instanceof KeyWrapAlgorithm)) {
-            throw new NoSuchAlgorithmException(algorithmName);
+            // (gapra) temp fix until we get actual dependencies
+            throw logger.logExceptionAsError(new RuntimeException("No such algorithm: " + algorithmName));
         }
 
         KeyWrapAlgorithm algo = (KeyWrapAlgorithm) baseAlgorithm;
@@ -201,17 +201,18 @@ public class SymmetricKey implements IKey {
     }
 
     @Override
-    public Mono<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException {
-
+    public Mono<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws RuntimeException {
 
         if (encryptedKey == null || encryptedKey.length == 0) {
-            throw new IllegalArgumentException("wrappedKey");
+            // (gapra) temp fix until we get actual dependencies
+            throw logger.logExceptionAsError(new IllegalArgumentException("wrappedKey"));
         }
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
         if (baseAlgorithm == null || !(baseAlgorithm instanceof KeyWrapAlgorithm)) {
-            throw new NoSuchAlgorithmException(algorithm);
+            // (gapra) temp fix until we get actual dependencies
+            throw logger.logExceptionAsError(new RuntimeException("No such algorithm: " + algorithm));
         }
 
         KeyWrapAlgorithm algo = (KeyWrapAlgorithm) baseAlgorithm;

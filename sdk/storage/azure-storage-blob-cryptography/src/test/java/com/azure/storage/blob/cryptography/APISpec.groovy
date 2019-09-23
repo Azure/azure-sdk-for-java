@@ -179,10 +179,10 @@ class APISpec extends Specification {
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (testMode == TestMode.RECORD) {
-            builder.wiretap(true)
+            builder.setWiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                builder.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             }
 
             return builder.build()
@@ -207,10 +207,6 @@ class APISpec extends Specification {
 
         if (credential != null) {
             builder.credential(credential)
-        }
-
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         return builder
@@ -238,10 +234,6 @@ class APISpec extends Specification {
 
         if (credential != null) {
             builder.credential(credential)
-        }
-
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         return builder

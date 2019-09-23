@@ -19,13 +19,13 @@ final class EncryptedBlobRange {
     /**
      * The BlobRange passed by the customer and the range we must actually return.
      */
-    private BlobRange originalRange;
+    private final BlobRange originalRange;
 
     /**
      * Amount the beginning of the range, 0-31, needs to be adjusted in order to align along an encryption block
      * boundary and include the IV.
      */
-    private int offsetAdjustment;
+    private final int offsetAdjustment;
 
     /**
      * How many bytes to download, including the adjustments for encryption block boundaries and the IV.
@@ -33,11 +33,6 @@ final class EncryptedBlobRange {
      */
     private Long adjustedDownloadCount;
 
-    /**
-     * Converts a regular blob range header to an encrypted blob range
-     * @param stringRange
-     * @return
-     */
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
         // Null case
         if (stringRange == null) {
@@ -59,44 +54,47 @@ final class EncryptedBlobRange {
     }
 
     EncryptedBlobRange(BlobRange originalRange) {
-        if(originalRange == null) {
+        if (originalRange == null) {
             this.originalRange = new BlobRange();
+            this.offsetAdjustment = 0;
             return;
         }
 
         this.originalRange = originalRange;
-        this.offsetAdjustment = 0;
+        int tempOffsetAdjustment = 0;
         this.adjustedDownloadCount = this.originalRange.getCount();
 
         // Calculate offsetAdjustment.
-        if(originalRange.getOffset() != 0) {
+        if (originalRange.getOffset() != 0) {
 
             // Align with encryption block boundary.
-            if(originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE != 0) {
+            if (originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE != 0) {
                 long diff = this.originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE;
-                this.offsetAdjustment += diff;
-                if(this.adjustedDownloadCount != null) {
+                tempOffsetAdjustment += diff;
+                if (this.adjustedDownloadCount != null) {
                     this.adjustedDownloadCount += diff;
                 }
             }
 
             // Account for IV.
-            if(this.originalRange.getOffset() >= ENCRYPTION_BLOCK_SIZE) {
-                this.offsetAdjustment += ENCRYPTION_BLOCK_SIZE;
+            if (this.originalRange.getOffset() >= ENCRYPTION_BLOCK_SIZE) {
+                tempOffsetAdjustment += ENCRYPTION_BLOCK_SIZE;
                 // Increment adjustedDownloadCount if necessary.
-                if(this.adjustedDownloadCount != null) {
+                if (this.adjustedDownloadCount != null) {
                     this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE;
                 }
             }
         }
 
+        this.offsetAdjustment = tempOffsetAdjustment;
+
         /*
         Align adjustedDownloadCount with encryption block boundary at the end of the range. Note that it is impossible
         to adjust past the end of the blob as an encrypted blob was padded to align to an encryption block boundary.
          */
-        if(this.adjustedDownloadCount != null) {
-            this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE -
-                (int)(this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
+        if (this.adjustedDownloadCount != null) {
+            this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE
+                - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
         }
 
     }
@@ -123,8 +121,7 @@ final class EncryptedBlobRange {
     }
 
     /**
-     * @param count
-     *         The adjustedDownloadCount
+     * @param count The adjustedDownloadCount
      */
     void withAdjustedDownloadCount(long count) {
         this.adjustedDownloadCount = count;
@@ -133,8 +130,7 @@ final class EncryptedBlobRange {
     /**
      * For convenient interaction with the blobURL.download() method.
      *
-     * @return
-     *        A {@link BlobRange} object which includes the necessary adjustments to offset and count to effectively
+     * @return A {@link BlobRange} object which includes the necessary adjustments to offset and count to effectively
      *        decrypt the blob.
      */
     BlobRange toBlobRange() {

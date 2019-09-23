@@ -31,20 +31,19 @@ final class WrappedKey {
     /**
      * Initializes a new instance of the {@link WrappedKey} class.
      */
-    public WrappedKey() {}
+    WrappedKey() {
+
+    }
 
     /**
      * Initializes a new instance of the {@link WrappedKey} class using the specified key id, encrypted key and
      * the algorithm.
      *
-     * @param keyId
-     *              The key identifier string.
-     * @param encryptedKey
-     *              The encrypted content encryption key.
-     * @param algorithm
-     *              The algorithm used for wrapping.
+     * @param keyId The key identifier string.
+     * @param encryptedKey The encrypted content encryption key.
+     * @param algorithm The algorithm used for wrapping.
      */
-    public WrappedKey(String keyId, byte[] encryptedKey, String algorithm) {
+    WrappedKey(String keyId, byte[] encryptedKey, String algorithm) {
         this.keyId = keyId;
         this.encryptedKey = encryptedKey;
         this.algorithm = algorithm;
@@ -56,7 +55,7 @@ final class WrappedKey {
      *
      * @return The key identifier string.
      */
-    public String keyId() {
+    String keyId() {
         return keyId;
     }
 
@@ -82,8 +81,7 @@ final class WrappedKey {
      * Sets the key identifier. This identifier is used to identify the key that is used to wrap/unwrap the content
      * encryption key.
      *
-     * @param keyId
-     *              The key identifier string.
+     * @param keyId The key identifier string.
      *
      * @return this
      */
@@ -95,8 +93,7 @@ final class WrappedKey {
     /**
      * Sets the encrypted content encryption key.
      *
-     * @param encryptedKey
-     *              The encrypted content encryption key.
+     * @param encryptedKey The encrypted content encryption key.
      *
      * @return this
      */
@@ -108,8 +105,7 @@ final class WrappedKey {
     /**
      * Sets the algorithm used for wrapping.
      *
-     * @param algorithm
-     *              The algorithm used for wrapping.
+     * @param algorithm The algorithm used for wrapping.
      *
      * @return this
      */

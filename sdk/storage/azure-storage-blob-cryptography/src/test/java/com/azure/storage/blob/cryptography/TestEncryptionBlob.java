@@ -9,7 +9,9 @@ public class TestEncryptionBlob {
     private String decryptedContent;
     private String encryptedContent;
 
-    public TestEncryptionBlob() {}
+    public TestEncryptionBlob() {
+
+    }
 
     public TestEncryptionBlob(String key, EncryptionData encryptionData, String decryptedContent, String encryptedContent) {
         this.key = key;
@@ -18,11 +20,19 @@ public class TestEncryptionBlob {
         this.encryptedContent = encryptedContent;
     }
 
-    public String getKey() { return this.key; }
+    public String getKey() {
+        return this.key;
+    }
 
-    public EncryptionData getEncryptionData() { return this.encryptionData; }
+    public EncryptionData getEncryptionData() {
+        return this.encryptionData;
+    }
 
-    public String getEncryptedContent() { return this.encryptedContent; }
+    public String getEncryptedContent() {
+        return this.encryptedContent;
+    }
 
-    public String getDecryptedContent() { return  this.decryptedContent; }
+    public String getDecryptedContent() {
+        return this.decryptedContent;
+    }
 }

@@ -145,7 +145,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
     }
 
     private void sendBuffs(List<Integer> positionArr, List<Integer> limitArr, Subscriber<? super ByteBuffer> s) {
-        for (int i=0; i<positionArr.size(); i++) {
+        for (int i = 0; i < positionArr.size(); i++) {
             ByteBuffer next = this.cipherText.duplicate();
             next.position(positionArr.get(i)).limit(limitArr.get(i));
             s.onNext(next);
@@ -156,7 +156,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
     public void subscribe(CoreSubscriber<? super ByteBuffer> s) {
         List<Integer> positionArr = null;
         List<Integer> limitArr = null;
-        switch(this.testCase) {
+        switch (this.testCase) {
             case CASE_ZERO:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_FOUR_POSITION, POSITION_FIVE,
                     POSITION_SEVEN_POSITION, POSITION_EIGHT);

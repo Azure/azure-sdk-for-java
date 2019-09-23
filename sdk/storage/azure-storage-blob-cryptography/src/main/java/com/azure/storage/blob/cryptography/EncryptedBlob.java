@@ -22,10 +22,8 @@ final class EncryptedBlob {
     /**
      * Creates a new EncryptedBlob with given EncryptedData and Flowable ByteBuffer
      *
-     * @param encryptionData
-     *          A {@link EncryptionData}
-     * @param ciphertextFlux
-     *          A Flowable ByteBuffer
+     * @param encryptionData A {@link EncryptionData}
+     * @param ciphertextFlux A Flowable ByteBuffer
      */
     EncryptedBlob(EncryptionData encryptionData, Flux<ByteBuffer> ciphertextFlux) {
         this.encryptionData = encryptionData;

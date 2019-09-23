@@ -97,6 +97,8 @@ public class BlobAsyncClient {
      * Protected constructor for use by {@link BlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
+     * @param snapshot The optional snapshot id of the snapshot blob
+     * @param cpk The optional client provided key
      */
     protected BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;

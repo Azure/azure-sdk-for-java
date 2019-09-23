@@ -27,6 +27,7 @@ public final class URLParser {
      * in the BlobURLParts object.
      *
      * @param url The string URL to be parsed.
+     * @param logger The client logger to use
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
      */
     public static BlobURLParts parse(String url, ClientLogger logger) {

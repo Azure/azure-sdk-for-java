@@ -14,15 +14,16 @@ public final class BlobRange {
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
     private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
 
-    private long offset;
-    private Long count;
+    private final long offset;
+    private final Long count;
 
     /**
      * Specifies the download operation to start from the offset position (zero-based) and download the
      * rest of the entire blob to the end. An empty BlobRange effectively specifies the whole blob.
      */
     public BlobRange() {
-
+        this.offset = 0;
+        this.count = null;
     }
 
     /**

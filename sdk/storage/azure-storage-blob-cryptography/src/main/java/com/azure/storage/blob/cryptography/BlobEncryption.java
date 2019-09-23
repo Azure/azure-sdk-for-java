@@ -58,7 +58,7 @@ final class BlobEncryption {
      *
      * @return A {@link EncryptedBlob}
      *
-     * @throws InvalidKeyException
+     * @throws InvalidKeyException If the key provided is invalid
      */
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) throws InvalidKeyException {
         Objects.requireNonNull(this.keyWrapper);
@@ -127,10 +127,9 @@ final class BlobEncryption {
                     }));
                     return new EncryptedBlob(encryptionData, encryptedTextFlux);
                 });
-        }
-        // These are hardcoded and guaranteed to work. There is no reason to propogate a checked exception.
-        catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            // These are hardcoded and guaranteed to work. There is no reason to propogate a checked exception.
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

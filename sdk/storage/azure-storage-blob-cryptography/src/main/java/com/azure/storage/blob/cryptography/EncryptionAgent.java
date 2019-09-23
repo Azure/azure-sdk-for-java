@@ -26,19 +26,17 @@ final class EncryptionAgent {
     /**
      * Initializes a new instance of the {@link EncryptionAgent} class.
      */
-    public EncryptionAgent() {
+    EncryptionAgent() {
     }
 
     /**
      * Initializes a new instance of the {@link EncryptionAgent} class using the specified protocol version and the
      * algorithm.
      *
-     * @param protocol
-     *         The encryption protocol version.
-     * @param algorithm
-     *         The encryption algorithm.
+     * @param protocol The encryption protocol version.
+     * @param algorithm The encryption algorithm.
      */
-    public EncryptionAgent(String protocol, EncryptionAlgorithm algorithm) {
+    EncryptionAgent(String protocol, EncryptionAlgorithm algorithm) {
         this.protocol = protocol;
         this.algorithm = algorithm;
     }
@@ -64,8 +62,7 @@ final class EncryptionAgent {
     /**
      * Sets the protocol version used for encryption.
      *
-     * @param protocol
-     *         The protocol version used for encryption.
+     * @param protocol The protocol version used for encryption.
      *
      * @return this
      */
@@ -77,8 +74,7 @@ final class EncryptionAgent {
     /**
      * Sets the algorithm used for encryption.
      *
-     * @param algorithm
-     *         The algorithm used for encryption.
+     * @param algorithm The algorithm used for encryption.
      *
      * @return this
      */

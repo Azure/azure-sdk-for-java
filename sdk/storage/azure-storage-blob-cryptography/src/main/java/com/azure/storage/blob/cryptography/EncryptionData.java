@@ -47,25 +47,20 @@ final class EncryptionData {
     /**
      * Initializes a new instance of the {@link EncryptionData} class.
      */
-    public EncryptionData() {
+    EncryptionData() {
     }
 
     /**
      * Initializes a new instance of the {@link EncryptionData} class using the specified wrappedContentKey,
      * encryptionAgent, contentEncryptionIV, and keyWrappingMetadata.
      *
-     * @param encryptionMode
-     *         The blob encryption mode.
-     * @param wrappedContentKey
-     *         The {@link WrappedKey}.
-     * @param encryptionAgent
-     *         The {@link EncryptionAgent}.
-     * @param contentEncryptionIV
-     *         The content encryption IV.
-     * @param keyWrappingMetadata
-     *         Metadata for encryption.
+     * @param encryptionMode The blob encryption mode.
+     * @param wrappedContentKey The {@link WrappedKey}.
+     * @param encryptionAgent The {@link EncryptionAgent}.
+     * @param contentEncryptionIV The content encryption IV.
+     * @param keyWrappingMetadata Metadata for encryption.
      */
-    public EncryptionData(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
+    EncryptionData(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
         byte[] contentEncryptionIV, Map<String, String> keyWrappingMetadata) {
         this.encryptionMode = encryptionMode;
         this.wrappedContentKey = wrappedContentKey;
@@ -107,7 +102,7 @@ final class EncryptionData {
      *
      * @return The content encryption IV.
      */
-    public byte[] contentEncryptionIV() {
+    byte[] contentEncryptionIV() {
         return this.contentEncryptionIV;
     }
 
@@ -123,8 +118,7 @@ final class EncryptionData {
     /**
      * Sets the encryption mode
      *
-     * @param encryptionMode
-     *         The encryption mode
+     * @param encryptionMode The encryption mode
      *
      * @return this
      */
@@ -136,8 +130,7 @@ final class EncryptionData {
     /**
      * Sets the wrapped key that is used to store the wrapping algorithm, key identifier and the encrypted key bytes.
      *
-     * @param wrappedContentKey
-     *         A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the
+     * @param wrappedContentKey A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the
      *         encrypted key bytes.
      *
      * @return this
@@ -150,8 +143,7 @@ final class EncryptionData {
     /**
      * Sets the encryption agent that is used to identify the encryption protocol version and encryption algorithm.
      *
-     * @param encryptionAgent
-     *         The {@link EncryptionAgent}.
+     * @param encryptionAgent The {@link EncryptionAgent}.
      *
      * @return this
      */
@@ -163,8 +155,7 @@ final class EncryptionData {
     /**
      * Sets the content encryption IV.
      *
-     * @param contentEncryptionIV
-     *         The content encryption IV.
+     * @param contentEncryptionIV The content encryption IV.
      *
      * @return this
      */
@@ -176,8 +167,7 @@ final class EncryptionData {
     /**
      * Sets the metadata for encryption.
      *
-     * @param keyWrappingMetadata
-     *         A HashMap containing the encryption metadata in a key-value format.
+     * @param keyWrappingMetadata A HashMap containing the encryption metadata in a key-value format.
      *
      * @return this
      */

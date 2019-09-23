@@ -32,7 +32,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      */
-    public EncryptedBlockBlobClient(EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient) {
+    EncryptedBlockBlobClient(EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient) {
         super(encryptedBlockBlobAsyncClient);
         this.encryptedBlockBlobAsyncClient = encryptedBlockBlobAsyncClient;
     }
@@ -132,7 +132,8 @@ public class EncryptedBlockBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata, AccessTier tier,
         BlobAccessConditions accessConditions, Duration timeout) throws IOException {
         Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(
-            filePath, EncryptedBlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, tier, accessConditions);
+            filePath, EncryptedBlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, tier,
+            accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);

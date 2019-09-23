@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.storage.blob.cryptography;
 
@@ -22,26 +24,22 @@ public interface IKey {
      * Wraps (encrypts) the specified symmetric key material using the specified
      * algorithm, or the keys DefaultKeyWrapAlgorithm if none is specified.
      *
-     * @param key
-     *            The symmetric key to wrap
-     * @param algorithm
-     *            The wrapping algorithm to use, defaults to the keys
-     *            DefaultKeyWrapAlgorithm
+     * @param key The symmetric key to wrap
+     * @param algorithm The wrapping algorithm to use, defaults to the keys
+     *                  DefaultKeyWrapAlgorithm
      * @return ListenableFuture containing the encrypted key and the algorithm
      *         that was used
      * @throws NoSuchAlgorithmException the algorithm is not valid
      */
-    Mono<Tuple2<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException;
+    Mono<Tuple2<byte[], String>> wrapKeyAsync(byte[] key, String algorithm) throws NoSuchAlgorithmException;
 
     /**
      * Unwraps (decrypts) the specified encryped key material.
      *
-     * @param encryptedKey
-     *            The encrypted key to decrypt
-     * @param algorithm
-     *            The algorithm to use, must be supplied
+     * @param encryptedKey The encrypted key to decrypt
+     * @param algorithm The algorithm to use, must be supplied
      * @return A ListenableFuture containing the unwrapped key
      * @throws NoSuchAlgorithmException the algorithm is not valid
      */
-    Mono<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException;
+    Mono<byte[]> unwrapKeyAsync(byte[] encryptedKey, String algorithm) throws NoSuchAlgorithmException;
 }

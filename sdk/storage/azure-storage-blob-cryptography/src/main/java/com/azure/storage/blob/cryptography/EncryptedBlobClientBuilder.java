@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.cryptography;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,6 +39,7 @@ import java.util.Objects;
  * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient()} - {@link EncryptedBlockBlobClient}</li>
  * </ul>
  */
+@ServiceClientBuilder(serviceClients = {EncryptedBlockBlobAsyncClient.class, EncryptedBlockBlobClient.class})
 public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<EncryptedBlobClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
@@ -46,18 +48,19 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     private String blobName;
     private String snapshot;
 
-    private BlobEncryption encryptionPolicy;
-    private BlobDecryptionPolicy decryptionPolicy;
+    private final BlobEncryption encryptionPolicy;
+    private final BlobDecryptionPolicy decryptionPolicy;
 
     /**
      * Creates a builder instance that is able to configure and construct Storage Blob clients.
      *
      * @param key An object of type {@link IKey} that is used to wrap/unwrap the content encryption key.
-     * @param keyResolver  The key resolver used to select the correct key for decrypting existing blobs.
+     * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
+     * @throws IllegalArgumentException If key and key resolver are both null
      */
     public EncryptedBlobClientBuilder(IKey key, IKeyResolver keyResolver) {
         if (key == null && keyResolver == null) {
-            throw new IllegalArgumentException("Key and KeyResolver cannot both be null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
         }
 
         this.encryptionPolicy = new BlobEncryption(key);
@@ -79,7 +82,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
             .build();
     }
 
-    // TODO : Add more information about encrypted block blobs
+    // TODO (gapra) : Add more information about encrypted block blobs
     /**
      * Creates a {@link EncryptedBlockBlobClient} based on options set in the Builder.
      *

@@ -65,7 +65,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(key, keyResolver)
             .endpoint(client.getBlobUrl().toString());
         builder.addPolicy(new BlobDecryptionPolicy(key, keyResolver));
-        for(int i = 0; i < pipeline.getPolicyCount(); i++) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             builder.addPolicy(pipeline.getPolicy(i));
         }
         return builder.buildEncryptedBlockBlobAsyncClient();
@@ -131,8 +131,8 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
     Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
         Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
         final Metadata metadataFinal = metadata == null ? new Metadata() : metadata;
-        final BlobAccessConditions accessConditionsFinal = accessConditions == null ? new BlobAccessConditions() :
-            accessConditions;
+        final BlobAccessConditions accessConditionsFinal = accessConditions == null ? new BlobAccessConditions()
+            : accessConditions;
         AccessTierOptional opTier = tier == null ? null : AccessTierOptional.fromString(tier.toString());
         Mono<Flux<ByteBuffer>> dataFinal = encryptionPolicy.prepareToSendEncryptedRequest(data, metadataFinal);
         // Readjust the length to account for padding.

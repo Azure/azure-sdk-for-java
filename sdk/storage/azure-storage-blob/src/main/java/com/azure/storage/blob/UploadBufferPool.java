@@ -81,9 +81,9 @@ public final class UploadBufferPool {
      */
 
     /**
-     * Writes ByteBuffers to a Flux<ByteBuffer>
+     * Writes ByteBuffers to a {@code Flux<ByteBuffer>}
      * @param buf The buffer to write
-     * @return The Flux<ByteBuffer>
+     * @return The {@code Flux<ByteBuffer>}
      */
     public Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
