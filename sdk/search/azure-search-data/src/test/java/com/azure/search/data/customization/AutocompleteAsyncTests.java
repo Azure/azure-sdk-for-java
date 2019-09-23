@@ -181,6 +181,23 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         validateResults(expectedText, expectedQueryPlusText, results);
     }
 
+    @Override
+    public void testAutocompleteCanUseHitHighlighting() throws Exception {
+        List<String> expectedText = Arrays.asList("pool", "popular");
+        List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .filter("HotelName eq 'EconoStay' or HotelName eq 'Fancy Stay'")
+            .highlightPreTag("<b>")
+            .highlightPostTag("</b>");
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
     /**
      * Validate the text and query plus text results
      * @param expectedText

@@ -107,7 +107,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             "Location",
             jsonApi.convertObjectToType(GeoPoint.create(40.760586, -73.975403), Map.class));
 
-        uploadDocuments(asyncClient, INDEX_NAME, expectedDoc);
+        uploadDocument(asyncClient, INDEX_NAME, expectedDoc);
 
         Mono<Document> futureDoc = asyncClient.getDocument("1");
 
@@ -136,7 +136,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         selectedFields.add("HotelId");
         selectedFields.add("ThisFieldDoesNotExist");
 
-        uploadDocuments(asyncClient, INDEX_NAME, hotelDoc);
+        uploadDocument(asyncClient, INDEX_NAME, hotelDoc);
 
         Mono futureDoc = asyncClient.getDocument("2", selectedFields, null);
 

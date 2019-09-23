@@ -85,7 +85,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         expectedDocument.put("Dates", Collections.singletonList(dateTimeString));
 
         // Index the document
-        uploadDocuments(client, INDEX_NAME, document);
+        uploadDocument(client, INDEX_NAME, document);
 
         // Get the indexed document
         getAndVerifyDoc(docKey, expectedDocument);
@@ -119,7 +119,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         expectedDocument.put("Dates", Collections.emptyList());
 
         // Index the document
-        uploadDocuments(client, INDEX_NAME, document);
+        uploadDocument(client, INDEX_NAME, document);
 
         // Get the indexed document
         getAndVerifyDoc(docKey, expectedDocument);

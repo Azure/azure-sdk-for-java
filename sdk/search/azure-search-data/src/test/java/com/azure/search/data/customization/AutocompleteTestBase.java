@@ -52,4 +52,6 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canAutocompleteTwoTermsWithFuzzy() throws Exception;
 
+    @Test
+    public abstract void testAutocompleteCanUseHitHighlighting() throws Exception;
 }

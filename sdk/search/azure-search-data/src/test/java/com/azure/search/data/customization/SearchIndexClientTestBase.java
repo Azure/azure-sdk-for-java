@@ -58,24 +58,29 @@ public class SearchIndexClientTestBase extends TestBase {
         return testName.getMethodName();
     }
 
-    protected <T> void uploadDocuments(SearchIndexClient client, String indexName, T uploadDoc) {
-        client.setIndexName(indexName);
-        if (uploadDoc instanceof List) {
-            client.uploadDocuments((List) uploadDoc);
-        }
-        else {
-            client.uploadDocument(uploadDoc);
-        }
+    protected <T> void uploadDocuments(SearchIndexClient client, String indexName, List<T> uploadDoc) {
+        client.setIndexName(indexName)
+            .uploadDocuments(uploadDoc);
         waitForIndexing();
     }
 
-    protected <T> void uploadDocuments(SearchIndexAsyncClient client, String indexName, T uploadDoc) {
-        client.setIndexName(indexName);
-        if (uploadDoc instanceof List) {
-            client.uploadDocuments((List) uploadDoc).block();
-        } else {
-            client.uploadDocument(uploadDoc).block();
-        }
+    protected <T> void uploadDocuments(SearchIndexAsyncClient client, String indexName, List<T> uploadDoc) {
+        client.setIndexName(indexName)
+            .uploadDocuments(uploadDoc)
+            .block();
+        waitForIndexing();
+    }
+
+    protected <T> void uploadDocument(SearchIndexClient client, String indexName, T uploadDoc) {
+        client.setIndexName(indexName)
+            .uploadDocument(uploadDoc);
+        waitForIndexing();
+    }
+
+    protected <T> void uploadDocument(SearchIndexAsyncClient client, String indexName, T uploadDoc) {
+        client.setIndexName(indexName)
+            .uploadDocument(uploadDoc)
+            .block();
         waitForIndexing();
     }
 

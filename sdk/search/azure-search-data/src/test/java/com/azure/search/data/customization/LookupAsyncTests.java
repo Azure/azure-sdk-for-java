@@ -23,7 +23,7 @@ public class LookupAsyncTests extends LookupTestBase {
     @Override
     public void canGetStaticallyTypedDocument() throws ParseException {
         Hotel expected = prepareExpectedHotel();
-        uploadDocuments(client, INDEX_NAME, expected);
+        uploadDocument(client, INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
 
@@ -35,7 +35,7 @@ public class LookupAsyncTests extends LookupTestBase {
     @Override
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
         Hotel expected = prepareEmptyHotel();
-        uploadDocuments(client, INDEX_NAME, expected);
+        uploadDocument(client, INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
 
@@ -47,7 +47,7 @@ public class LookupAsyncTests extends LookupTestBase {
     @Override
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
         Hotel expected = preparePascalCaseFieldsHotel();
-        uploadDocuments(client, INDEX_NAME, expected);
+        uploadDocument(client, INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
 
@@ -59,7 +59,7 @@ public class LookupAsyncTests extends LookupTestBase {
     @Override
     public void canRoundtripStaticallyTypedPrimitiveCollections() throws ParseException {
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
-        uploadDocuments(client, MODEL_WITH_VALUE_TYPES_INDEX_NAME, expected);
+        uploadDocument(client, MODEL_WITH_VALUE_TYPES_INDEX_NAME, expected);
 
         Mono<Document> result = client.getDocument(expected.key);
 
@@ -80,7 +80,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .address(new HotelAddress().city("Durham"))
             .rooms(Arrays.asList(new HotelRoom().baseRate(2.44), new HotelRoom().baseRate(7.69)));
 
-        uploadDocuments(client, INDEX_NAME, indexedDoc);
+        uploadDocument(client, INDEX_NAME, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, new SearchRequestOptions());

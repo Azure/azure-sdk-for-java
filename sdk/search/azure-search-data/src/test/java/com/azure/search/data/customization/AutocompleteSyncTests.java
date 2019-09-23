@@ -206,6 +206,24 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
+    @Override
+    public void testAutocompleteCanUseHitHighlighting() {
+        List<String> expectedText = Arrays.asList("pool", "popular");
+        List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .filter("HotelName eq 'EconoStay' or HotelName eq 'Fancy Stay'")
+            .highlightPreTag("<b>")
+            .highlightPostTag("</b>");
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
     /**
      * Compare the autocomplete results with the expected strings
      *
