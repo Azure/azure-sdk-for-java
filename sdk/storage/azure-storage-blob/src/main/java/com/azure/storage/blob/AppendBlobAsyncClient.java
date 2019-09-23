@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -224,7 +224,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
                 destAccessConditions.getLeaseAccessConditions(),
                 destAccessConditions.getAppendPositionAccessConditions(),
                 destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().getValue("x-ms-request-server-encrypted"))));
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
 }

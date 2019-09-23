@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -296,8 +296,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, cpk,
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
+            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -354,9 +353,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             pageBlobAccessConditions.getLeaseAccessConditions(), cpk,
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().getValue("x-ms-request-server-encrypted"),
-                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
+            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
