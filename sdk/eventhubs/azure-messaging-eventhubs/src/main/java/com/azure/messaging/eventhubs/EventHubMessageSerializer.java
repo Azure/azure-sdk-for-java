@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
@@ -19,6 +20,7 @@ import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.ByteBuffer;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -191,22 +193,32 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
     }
 
-    private static EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
+    private EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
         return new EventHubProperties(
             (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
-            ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
+            getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_CREATED_AT),
             (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
     }
 
-    private static PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
+    private PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
         return new PartitionProperties(
             (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
             (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
             (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
             (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
             (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-            ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+            getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
             (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
+    }
+
+    private Instant getDate(Map<?, ?> amqpBody, String key) {
+        if (!amqpBody.containsKey(key)) {
+            throw logger.logExceptionAsError(new AzureException(
+                String.format("AMQP body did not contain expected field '%s'.", key)));
+        }
+
+        final Date value = (Date) amqpBody.get(key);
+        return value.toInstant();
     }
 
     /*
