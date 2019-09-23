@@ -17,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -39,6 +40,8 @@ public class CBSChannelTest extends IntegrationTestBase {
     private CBSChannel cbsChannel;
     private ConnectionStringProperties connectionString;
     private AzureTokenManagerProvider azureTokenManagerProvider;
+    @Mock
+    private MessageSerializer messageSerializer;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -73,7 +76,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
-            azureTokenManagerProvider);
+            azureTokenManagerProvider, messageSerializer);
 
         final Mono<RequestResponseChannel> requestResponseChannel =
             connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
@@ -139,8 +142,9 @@ public class CBSChannelTest extends IntegrationTestBase {
     private static final class TestReactorConnection extends ReactorConnection {
         private TestReactorConnection(String connectionId, ConnectionOptions connectionOptions,
                               ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                              TokenManagerProvider tokenManagerProvider) {
-            super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
+                              TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+            super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
+                messageSerializer);
         }
     }
 }

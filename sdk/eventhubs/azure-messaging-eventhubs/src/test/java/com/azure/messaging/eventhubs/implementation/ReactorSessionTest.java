@@ -48,6 +48,8 @@ public class ReactorSessionTest {
     private Event event;
     @Mock
     private CBSNode cbsNode;
+    @Mock
+    private MessageSerializer serializer;
 
     @Before
     public void setup() throws IOException {
@@ -62,7 +64,7 @@ public class ReactorSessionTest {
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
-            Mono.just(cbsNode), azureTokenManagerProvider, TIMEOUT);
+            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
     }
 
     @After

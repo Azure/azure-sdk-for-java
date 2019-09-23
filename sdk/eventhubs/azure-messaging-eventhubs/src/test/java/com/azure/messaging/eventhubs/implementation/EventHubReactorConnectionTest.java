@@ -43,6 +43,8 @@ public class EventHubReactorConnectionTest {
     private Scheduler scheduler;
     @Mock
     private Connection reactorConnection;
+    @Mock
+    private MessageSerializer messageSerializer;
 
     private ReactorHandlerProvider handlerProvider;
     private ReactorProvider reactorProvider;
@@ -73,7 +75,7 @@ public class EventHubReactorConnectionTest {
     public void getsManagementChannel() {
         // Arrange
         final EventHubReactorConnection connection = new EventHubReactorConnection(CONNECTION_ID, connectionOptions,
-            reactorProvider, handlerProvider, tokenManagerProvider, mapper);
+            reactorProvider, handlerProvider, tokenManagerProvider, mapper, messageSerializer);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())

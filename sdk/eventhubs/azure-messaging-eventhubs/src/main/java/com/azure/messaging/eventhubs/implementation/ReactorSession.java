@@ -47,6 +47,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
     private final String sessionName;
     private final ReactorProvider provider;
     private final TokenManagerProvider tokenManagerProvider;
+    private final MessageSerializer messageSerializer;
     private final Duration openTimeout;
     private final Disposable.Composite subscriptions;
     private final ReactorHandlerProvider handlerProvider;
@@ -67,7 +68,8 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
      */
     public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
                    ReactorHandlerProvider handlerProvider, Mono<CBSNode> cbsNodeSupplier,
-                   TokenManagerProvider tokenManagerProvider, Duration openTimeout) {
+                   TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+                   Duration openTimeout) {
         super(new ClientLogger(ReactorSession.class));
         this.session = session;
         this.sessionHandler = sessionHandler;
@@ -76,6 +78,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
         this.provider = provider;
         this.cbsNodeSupplier = cbsNodeSupplier;
         this.tokenManagerProvider = tokenManagerProvider;
+        this.messageSerializer = messageSerializer;
         this.openTimeout = openTimeout;
 
         this.subscriptions = Disposables.composite(
@@ -172,8 +175,8 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
                     provider.getReactorDispatcher().invoke(() -> {
                         sender.open();
                         final ReactorSender reactorSender =
-                            new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager, timeout,
-                                retry, EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES);
+                            new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager,
+                                messageSerializer, timeout, retry, EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES);
                         openSendLinks.put(linkName, reactorSender);
                         sink.success(reactorSender);
                     });

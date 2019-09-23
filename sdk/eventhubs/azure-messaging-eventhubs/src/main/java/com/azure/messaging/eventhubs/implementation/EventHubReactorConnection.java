@@ -23,6 +23,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final RetryOptions retryOptions;
+    private final MessageSerializer messageSerializer;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -36,12 +37,15 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
      */
     public EventHubReactorConnection(String connectionId, ConnectionOptions connectionOptions,
                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                     TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {
-        super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
+                                     TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper,
+                                     MessageSerializer messageSerializer) {
+        super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
+            messageSerializer);
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
+        this.messageSerializer = messageSerializer;
 
         this.managementChannelMono = getReactorConnection().then(
             Mono.fromCallable(() -> {
@@ -61,6 +65,6 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-            tokenManagerProvider, retryOptions.getTryTimeout());
+            tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
     }
 }

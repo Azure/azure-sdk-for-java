@@ -10,7 +10,6 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventDataUtil;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -55,6 +54,7 @@ public class RequestResponseChannel implements Closeable {
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final String replyTo;
+    private final MessageSerializer messageSerializer;
     private final ReactorProvider provider;
     private final Duration operationTimeout;
     private final AtomicBoolean hasOpened = new AtomicBoolean();
@@ -79,12 +79,13 @@ public class RequestResponseChannel implements Closeable {
      */
     public RequestResponseChannel(String connectionId, String host, String linkName, String entityPath, Session session,
                                   RetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-                                  ReactorProvider provider) {
+                                  ReactorProvider provider, MessageSerializer messageSerializer) {
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
+        this.messageSerializer = messageSerializer;
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
         target.setAddress(entityPath);
@@ -173,7 +174,7 @@ public class RequestResponseChannel implements Closeable {
     private void send(final Message message) {
         sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
 
-        final int payloadSize = EventDataUtil.getDataSerializedSize(message)
+        final int payloadSize = messageSerializer.getSize(message)
             + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES;
         final byte[] bytes = new byte[payloadSize];
         final int encodedSize = message.encode(bytes, 0, payloadSize);

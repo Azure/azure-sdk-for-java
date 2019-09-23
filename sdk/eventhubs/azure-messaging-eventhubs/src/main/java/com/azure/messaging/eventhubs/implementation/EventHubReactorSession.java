@@ -39,9 +39,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
                                   ReactorProvider provider, ReactorHandlerProvider handlerProvider,
                                   Mono<CBSNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                                  Duration openTimeout) {
+                                  Duration openTimeout, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            openTimeout);
+            messageSerializer, openTimeout);
     }
 
     /**

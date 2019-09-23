@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -30,6 +31,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains helper methods for working with AMQP messages
  */
 public final class TestUtils {
+    private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
+
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
     static final Long OFFSET = 1534L;
@@ -115,7 +118,7 @@ public final class TestUtils {
      */
     public static EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
         final Message message = getMessage(contents, sequenceNumber, offsetNumber, enqueuedTime);
-        return new EventData(message);
+        return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 
     public static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
