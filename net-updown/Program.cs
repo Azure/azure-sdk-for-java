@@ -87,7 +87,7 @@ namespace StoragePerfNet
 
                 var elapsedSeconds = sw.Elapsed.TotalSeconds;
                 var megabytesPerSecond = (options.Size / (1024 * 1024)) / elapsedSeconds;
-                Console.WriteLine($"Uploaded {options.Size} bytes in {elapsedSeconds} seconds ({megabytesPerSecond} MB/s)");
+                Console.WriteLine($"Uploaded {options.Size} bytes in {elapsedSeconds:N2} seconds ({megabytesPerSecond:N2} MB/s)");
 
                 sw.Restart();
                 await client.DownloadAsync(Stream.Null, parallelTransferOptions: parallelTransferOptions);
@@ -95,7 +95,7 @@ namespace StoragePerfNet
 
                 elapsedSeconds = sw.Elapsed.TotalSeconds;
                 megabytesPerSecond = (options.Size / (1024 * 1024)) / elapsedSeconds;
-                Console.WriteLine($"Downloaded {options.Size} bytes in {elapsedSeconds} seconds ({megabytesPerSecond} MB/s)");
+                Console.WriteLine($"Downloaded {options.Size} bytes in {elapsedSeconds:N2} seconds ({megabytesPerSecond:N2} MB/s)");
 
                 Console.WriteLine();
             }
