@@ -8,6 +8,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
+import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -20,6 +21,7 @@ import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -168,6 +170,37 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         message.clear();
         return (T) eventData;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T deserialize(Map<?, ?> amqpBody, Class<T> deserializedType) {
+        if (deserializedType == PartitionProperties.class) {
+            return (T) toPartitionProperties(amqpBody);
+        } else if (deserializedType == EventHubProperties.class) {
+            return (T) toEventHubProperties(amqpBody);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "Class '%s' is not a supported deserializable type.", deserializedType)));
+        }
+    }
+
+    private static EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
+        return new EventHubProperties(
+            (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+            ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
+            (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
+    }
+
+    private static PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
+        return new PartitionProperties(
+            (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+            (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
+            (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+            (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+            (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+            ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+            (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
     }
 
     private static Message toAmqpMessage(String partitionKey, EventData eventData) {
@@ -336,7 +369,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             obj.getClass()));
     }
 
-    private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
+    private static void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
         if (content == null) {
             return;
         }
