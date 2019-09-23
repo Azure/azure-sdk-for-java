@@ -20,7 +20,6 @@ import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
-import com.azure.messaging.eventhubs.implementation.ManagementResponseMapper;
 import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
@@ -351,10 +350,9 @@ public class EventHubClientBuilder {
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                 connectionOptions.getAuthorizationType(), connectionOptions.getHost(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-            final ManagementResponseMapper mapper = new EventHubResponseMapper();
 
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, mapper, messageSerializer);
+                tokenManagerProvider, messageSerializer);
         });
 
         return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);

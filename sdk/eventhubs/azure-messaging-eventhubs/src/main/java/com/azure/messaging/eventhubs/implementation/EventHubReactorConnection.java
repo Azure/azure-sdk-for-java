@@ -33,12 +33,11 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
      * @param reactorProvider Provides proton-j reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
-     * @param mapper Maps responses from {@link EventHubManagementNode}.
+     * @param messageSerializer Serializes and deserializes proton-j messages.
      */
     public EventHubReactorConnection(String connectionId, ConnectionOptions connectionOptions,
                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                     TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper,
-                                     MessageSerializer messageSerializer) {
+                                     TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer);
         this.reactorProvider = reactorProvider;
@@ -51,8 +50,8 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
             Mono.fromCallable(() -> {
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
-                    mapper);
+                    connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(),
+                    this.tokenManagerProvider, this.messageSerializer);
             }))
             .cache();
     }

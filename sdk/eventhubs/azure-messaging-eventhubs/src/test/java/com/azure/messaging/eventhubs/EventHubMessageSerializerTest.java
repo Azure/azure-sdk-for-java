@@ -23,7 +23,7 @@ public class EventHubMessageSerializerTest {
 
     @Test(expected = NullPointerException.class)
     public void messageNotNull() {
-        serializer.deserialize(null, EventData.class);
+        serializer.deserialize((Message) null, EventData.class);
     }
 
     /**
