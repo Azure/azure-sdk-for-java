@@ -4,7 +4,7 @@
 resources:
   repositories:
     - repository: azure-sdk-build-tools
-      type: github
+      type: git
       name: internal/azure-sdk-build-tools
     - repository: azure-sdk-tools
       type: github
