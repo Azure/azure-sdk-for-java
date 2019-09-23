@@ -1,6 +1,6 @@
 ﻿using Azure.Core.Pipeline;
 using Azure.Storage.Blobs;
-
+using Azure.Storage.Common;
 using CommandLine;
 using System;
 using System.Diagnostics;
@@ -33,6 +33,9 @@ namespace StoragePerfNet
 
             [Option('s', "size", Default = 10 * 1024, HelpText = "Size of message (in bytes)")]
             public int Size { get; set; }
+
+            [Option('t', "maximumThreadCount", Default = -1)]
+            public int MaximumThreadCount { get; set; }
 
             [Option('u', "upload")]
             public bool Upload { get; set; }
@@ -75,6 +78,12 @@ namespace StoragePerfNet
                 await UploadAndVerifyDownload(client, options.Size);
             }
 
+            var parallelTransferOptions = new ParallelTransferOptions();
+            if (options.MaximumThreadCount != -1)
+            {
+                parallelTransferOptions.MaximumThreadCount = options.MaximumThreadCount;
+            }
+
             Console.WriteLine($"Downloading blob '{_containerName}/{_blobName}' with {options.Parallel} parallel task(s) for {options.Duration} second(s)...");
             Console.WriteLine();
 
@@ -86,7 +95,7 @@ namespace StoragePerfNet
             var sw = Stopwatch.StartNew();
             for (var i=0; i < options.Parallel; i++)
             {
-                tasks[i] = DownloadLoop(client, token);
+                tasks[i] = DownloadLoop(client, parallelTransferOptions, token);
             }
             _ = PrintStatus(token);
             await Task.WhenAll(tasks);
@@ -101,25 +110,19 @@ namespace StoragePerfNet
                         $"({downloadsPerSecond:N2} blobs/s, {megabytesPerSecond:N2} MB/s)");
         }
 
-        static async Task DownloadLoop(BlobClient client, CancellationToken token)
+        static async Task DownloadLoop(BlobClient client, ParallelTransferOptions parallelTransferOptions, CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    await Download(client, token);
+                    await client.DownloadAsync(Stream.Null, parallelTransferOptions: parallelTransferOptions, cancellationToken: token);
                     Interlocked.Increment(ref _downloads);
                 }
                 catch (OperationCanceledException)
                 {
                 }
             }
-        }
-
-        static async Task Download(BlobClient client, CancellationToken token)
-        {
-            var response = await client.DownloadAsync(token);
-            await response.Value.Content.CopyToAsync(Stream.Null);
         }
 
         static async Task PrintStatus(CancellationToken token)
