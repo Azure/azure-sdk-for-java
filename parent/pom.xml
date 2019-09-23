@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.3.0</version>
+  <version>1.4.0</version>
 
   <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -113,7 +113,7 @@
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.28</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
-    <reactor-core.version>3.2.10.RELEASE</reactor-core.version>
+    <reactor-core.version>3.2.12.RELEASE</reactor-core.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <okhttp.version>4.1.0</okhttp.version>
@@ -136,6 +136,7 @@
     <commons-collections4.version>4.2</commons-collections4.version>
     <jcommander.version>1.58</jcommander.version>
     <nanohttpd.version>2.3.1</nanohttpd.version>
+    <google-jsr305.version>3.0.2</google-jsr305.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.6.4</adal4j.version>
@@ -174,7 +175,7 @@
     <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
     <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
-    <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+    <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
     <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
