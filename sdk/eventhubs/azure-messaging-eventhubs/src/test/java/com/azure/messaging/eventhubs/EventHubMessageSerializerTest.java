@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.exception.AzureException;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -184,5 +185,52 @@ public class EventHubMessageSerializerTest {
         Assert.assertEquals(eventHubName, properties.getName());
         Assert.assertEquals(createdAt, properties.getCreatedAt());
         Assert.assertArrayEquals(partitionIds, properties.getPartitionIds());
+    }
+
+    /**
+     * Verify that it throws if the value is not what we expect. In this case, eventHubName is not a string.
+     */
+    @Test(expected = AzureException.class)
+    public void throwsWhenIncorrectTypeInResponse() {
+        // Arrange
+        final Long eventHubName = 100L;
+        final Date createdAtAsDate  = new Date(1569275540L);
+        final String[] partitionIds = new String[]{ "1", "foo", "bar", "baz" };
+
+        final Map<String, Object> values = new HashMap<>();
+        values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, partitionIds);
+
+        final AmqpValue amqpValue = new AmqpValue(values);
+
+        final Message message = Proton.message();
+        message.setBody(amqpValue);
+
+        // Act
+        serializer.deserialize(message, EventHubProperties.class);
+    }
+
+    /**
+     * Verify that it throws if the value in the map is null.
+     */
+    @Test(expected = AzureException.class)
+    public void throwsWhenNullValueInResponse() {
+        // Arrange
+        final String eventHubName = "event-hub-name-test";
+        final Date createdAtAsDate  = new Date(1569275540L);
+
+        final Map<String, Object> values = new HashMap<>();
+        values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_CREATED_AT, createdAtAsDate);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, null);
+
+        final AmqpValue amqpValue = new AmqpValue(values);
+
+        final Message message = Proton.message();
+        message.setBody(amqpValue);
+
+        // Act
+        serializer.deserialize(message, EventHubProperties.class);
     }
 }
