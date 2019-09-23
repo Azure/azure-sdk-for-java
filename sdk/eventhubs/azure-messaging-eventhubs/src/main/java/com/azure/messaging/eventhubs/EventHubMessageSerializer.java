@@ -119,9 +119,13 @@ class EventHubMessageSerializer implements MessageSerializer {
     @Override
     public <T> T deserialize(Message message, Class<T> clazz) {
         Objects.requireNonNull(message, "'message' cannot be null.");
+        Objects.requireNonNull(clazz, "'class' cannot be null.");
 
-        if (clazz != EventData.class) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Deserialization only supports EventData."));
+        if (clazz == PartitionProperties.class || clazz == EventHubProperties.class) {
+            return deserializeManagementResponse(message, clazz);
+        } else if (clazz != EventData.class) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
         }
 
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
@@ -173,8 +177,20 @@ class EventHubMessageSerializer implements MessageSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public <T> T deserialize(Map<?, ?> amqpBody, Class<T> deserializedType) {
+    private <T> T deserializeManagementResponse(Message message, Class<T> deserializedType) {
+        if (!(message.getBody() instanceof AmqpValue)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
+        }
+
+        final AmqpValue body = (AmqpValue) message.getBody();
+        if (!(body.getValue() instanceof Map)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Expected message.getBody().getValue() to be of type Map"));
+        }
+
+        final Map<?, ?> amqpBody = (Map<?, ?>) body.getValue();
+
         if (deserializedType == PartitionProperties.class) {
             return (T) toPartitionProperties(amqpBody);
         } else if (deserializedType == EventHubProperties.class) {

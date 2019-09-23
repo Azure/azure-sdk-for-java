@@ -2,8 +2,6 @@ package com.azure.messaging.eventhubs.implementation;
 
 import org.apache.qpid.proton.message.Message;
 
-import java.util.Map;
-
 /**
  * Serializer to translate objects to and from proton-j {@link Message messages}.
  */
@@ -34,18 +32,7 @@ public interface MessageSerializer {
      * @param clazz Class to deserialize object into.
      * @param <T> Type of the deserialized message.
      *
-     * @return The deserialized object from an AMQP message.
+     * @return The deserialized object from an AMQP message or {@code null} if it cannot be deserialized.
      */
     <T> T deserialize(Message message, Class<T> clazz);
-
-    /**
-     * Deserializes an AMQP response body to an object of type, {@code T}.
-     *
-     * @param amqpBody Map of keys and values read from the AMQP message body.
-     * @param deserializedType Class for the deserialized response body.
-     * @param <T> Type to create from the AMQP response body.
-     *
-     * @return The object from the AMQP response body. Otherwise, {@code null} if it could not be deserialized.
-     */
-    <T> T deserialize(Map<?, ?> amqpBody, Class<T> deserializedType);
 }
