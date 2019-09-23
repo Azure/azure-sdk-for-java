@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;

@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;

@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;

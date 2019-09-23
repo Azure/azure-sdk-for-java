@@ -4,11 +4,11 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
-import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -153,7 +153,7 @@ class EventHubMessageSerializer implements MessageSerializer {
                 "Message body type is not of type Data, but type: %s. Not setting body contents.",
                 bodySection != null ? bodySection.getType() : "null"));
 
-            body = null;
+            body = ByteBuffer.wrap(new byte[0]);
         }
 
         final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
