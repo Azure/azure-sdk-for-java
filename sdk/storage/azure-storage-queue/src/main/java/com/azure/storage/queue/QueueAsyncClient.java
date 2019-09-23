@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
