@@ -195,29 +195,44 @@ class EventHubMessageSerializer implements MessageSerializer {
 
     private EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
         return new EventHubProperties(
-            (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, String.class),
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_CREATED_AT),
-            (String[]) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS));
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IDS, String[].class));
     }
 
     private PartitionProperties toPartitionProperties(Map<?, ?> amqpBody) {
         return new PartitionProperties(
-            (String) amqpBody.get(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY),
-            (String) amqpBody.get(ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY),
-            (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-            (Long) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-            (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, String.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY, String.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER, Long.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class),
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
-            (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class));
     }
 
-    private Instant getDate(Map<?, ?> amqpBody, String key) {
+    @SuppressWarnings("unchecked")
+    private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
             throw logger.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
-        final Date value = (Date) amqpBody.get(key);
+        final Object value = amqpBody.get(key);
+        if (value == null) {
+            throw logger.logExceptionAsError(new AzureException(
+                String.format("AMQP body did not contain a value for key '%s'.", key)));
+        } else if (value.getClass() != clazz) {
+            throw logger.logExceptionAsError(new AzureException(String.format(
+                "AMQP body did not contain correct value for key '%s'. Expected class: '%s'. Actual: '%s'",
+                key, clazz, value.getClass())));
+        }
+
+        return (T) value;
+    }
+
+    private Instant getDate(Map<?, ?> amqpBody, String key) {
+        final Date value = getValue(amqpBody, key, Date.class);
         return value.toInstant();
     }
 

@@ -57,6 +57,16 @@ public class EventHubMessageSerializerTest {
     }
 
     /**
+     * Verify we can only deserialize supported classes.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void cannotDeserializeObject() {
+        final Message message = getMessage("hello-world".getBytes(UTF_8));
+
+        serializer.deserialize(message, EventHubAsyncClient.class);
+    }
+
+    /**
      * Verify that we can deserialize a proton-j message with all the correct contents to {@link EventData}.
      */
     @Test
@@ -145,6 +155,9 @@ public class EventHubMessageSerializerTest {
         Assert.assertEquals(isEmpty, partitionProperties.isEmpty());
     }
 
+    /**
+     * Verify we can deserialize a message to {@link EventHubProperties}.
+     */
     @Test
     public void deserializeEventHubProperties() {
         // Arrange
