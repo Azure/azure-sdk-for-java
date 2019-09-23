@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -65,6 +66,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = ShareClientBuilder.class, isAsync = true)
 public class ShareAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareAsyncClient.class);
 

@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.ContainerClient;

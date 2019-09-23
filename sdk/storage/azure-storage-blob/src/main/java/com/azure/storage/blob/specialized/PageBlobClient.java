@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -40,6 +41,7 @@ import java.util.Objects;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class PageBlobClient extends BlobClientBase {
     private final PageBlobAsyncClient pageBlobAsyncClient;
 
@@ -96,6 +98,10 @@ public final class PageBlobClient extends BlobClientBase {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.setCreate#long}
+     *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      * @return The information of the created page blob.
@@ -109,6 +115,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -136,6 +146,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream}
+     *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
@@ -153,6 +167,10 @@ public final class PageBlobClient extends BlobClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -181,7 +199,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
      * of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     * <p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -203,7 +224,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
      * of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     * <p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -234,6 +258,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Frees the specified pages from the page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPages#PageRange}
+     *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
@@ -246,6 +274,10 @@ public final class PageBlobClient extends BlobClientBase {
     /**
      * Frees the specified pages from the page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -267,6 +299,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange}
+     *
      * @param blobRange {@link BlobRange}
      * @return The information of the cleared pages.
      */
@@ -277,6 +313,10 @@ public final class PageBlobClient extends BlobClientBase {
     /**
      * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobAccessConditions}
@@ -295,6 +335,10 @@ public final class PageBlobClient extends BlobClientBase {
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
      * Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String}
+     *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
@@ -309,6 +353,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
      * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -329,6 +377,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Resizes the page blob to the specified size (which must be a multiple of 512). For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resize#long}
+     *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
      * @return The resized page blob.
@@ -340,6 +392,10 @@ public final class PageBlobClient extends BlobClientBase {
     /**
      * Resizes the page blob to the specified size (which must be a multiple of 512). For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobAccessConditions-Duration-Context}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -358,6 +414,10 @@ public final class PageBlobClient extends BlobClientBase {
      * Sets the page blob's sequence number. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
      * Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumber#SequenceNumberActionType-Long}
+     *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
      * use to track requests and manage concurrency issues.
@@ -371,6 +431,10 @@ public final class PageBlobClient extends BlobClientBase {
     /**
      * Sets the page blob's sequence number. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
      * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions-Duration-Context}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -395,6 +459,10 @@ public final class PageBlobClient extends BlobClientBase {
      * and
      * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#URL-String}
+     *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
      * @return The copy status.
@@ -410,6 +478,10 @@ public final class PageBlobClient extends BlobClientBase {
      * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
      * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions-Duration-Context}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.

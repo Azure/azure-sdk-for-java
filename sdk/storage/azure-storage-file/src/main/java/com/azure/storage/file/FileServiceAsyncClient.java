@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -60,6 +61,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileServiceClientBuilder.class, isAsync = true)
 public final class FileServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(FileServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
