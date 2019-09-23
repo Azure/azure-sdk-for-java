@@ -96,6 +96,8 @@ namespace StoragePerfNet
                 elapsedSeconds = sw.Elapsed.TotalSeconds;
                 megabytesPerSecond = (options.Size / (1024 * 1024)) / elapsedSeconds;
                 Console.WriteLine($"Downloaded {options.Size} bytes in {elapsedSeconds} seconds ({megabytesPerSecond} MB/s)");
+
+                Console.WriteLine();
             }
         }
     }
