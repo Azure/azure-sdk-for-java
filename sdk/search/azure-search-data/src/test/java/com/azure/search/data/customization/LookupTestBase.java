@@ -3,11 +3,11 @@
 package com.azure.search.data.customization;
 
 import com.azure.search.data.customization.models.GeoPoint;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.test.environment.models.Hotel;
-import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
+import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
             .smokingAllowed(false)
             .lastRenovationDate(DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
             .rating(5)
-            .location(GeoPoint.createWithDefaultCrs(-122.131577, 47.678581))
+            .location(GeoPoint.create(47.678581, -122.131577))
             .rooms(new ArrayList<>());
     }
 
@@ -119,8 +119,8 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
             .ints(new int[]{1, 2, 3, 4, -13, 5, 0})
             .longs(new Long[]{-9_999_999_999_999_999L, 832_372_345_832_523L})
             .points(new GeoPoint[]{
-                GeoPoint.createWithDefaultCrs(49.0, -67.0),
-                GeoPoint.createWithDefaultCrs(47.0, 21.0)})
+                GeoPoint.create(49.0, -67.0),
+                GeoPoint.create(47.0, 21.0)})
             .strings(new String[]{ "hello", "2019-04-14T14:56:00-07:00"});
     }
 

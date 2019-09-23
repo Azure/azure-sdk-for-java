@@ -20,6 +20,10 @@ public class GeoPoint {
     @JsonProperty("crs")
     private CoordinateSystem coordinateSystem;
 
+    private GeoPoint() {
+        this.coordinateSystem = CoordinateSystem.create();
+    }
+
     @JsonProperty
     public String getType(){
         return TYPE;
@@ -44,11 +48,13 @@ public class GeoPoint {
     }
 
     public static GeoPoint create(double latitude, double longitude) {
-        return new GeoPoint().coordinates(Arrays.asList(latitude, longitude));
+        return new GeoPoint()
+            .coordinates(Arrays.asList(longitude, latitude));
     }
 
-    public static GeoPoint createWithDefaultCrs(double latitude, double longitude) {
-        return create(latitude, longitude).coordinateSystem(CoordinateSystem.create());
+    public static GeoPoint create(double latitude, double longitude, CoordinateSystem coordinateSystem) {
+        return create(latitude, longitude)
+            .coordinateSystem(coordinateSystem);
     }
 
     /**
@@ -81,5 +87,4 @@ public class GeoPoint {
     public int hashCode() {
         return Objects.hash(coordinates, coordinateSystem);
     }
-
 }

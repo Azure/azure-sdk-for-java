@@ -3,7 +3,6 @@
 
 package com.azure.search.data.customization.models;
 
-import com.azure.search.data.customization.models.GeoPoint;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,19 +11,19 @@ import java.util.Collections;
 public class GeoPointUnitTests {
     @Test
     public void canCreate() {
-        GeoPoint geoPoint = GeoPoint.create(100.0, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
         Assert.assertNotNull(geoPoint);
         Assert.assertNotNull(geoPoint.coordinates());
         Assert.assertEquals(2, geoPoint.coordinates().size());
         Assert.assertEquals(100.0, geoPoint.coordinates().get(0), 0.0);
         Assert.assertEquals(1.0, geoPoint.coordinates().get(1), 0.0);
-        Assert.assertNull(geoPoint.coordinateSystem());
+        Assert.assertNotNull(geoPoint.coordinateSystem());
     }
 
     @Test
     public void canCreateWithCrs() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(100.0, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
         Assert.assertNotNull(geoPoint);
         Assert.assertNotNull(geoPoint.coordinates());
@@ -39,43 +38,43 @@ public class GeoPointUnitTests {
 
     @Test
     public void canValidateWithCrs() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(100.0, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
         Assert.assertTrue(geoPoint.validate());
     }
 
     @Test
     public void canValidateWithoutCrs() {
-        GeoPoint geoPoint = GeoPoint.create(100.0, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
         Assert.assertTrue(geoPoint.validate());
     }
 
     @Test
     public void canInvalidateWithIncorrectLatitudeHi() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(180.1, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(180.1, 1.0);
         Assert.assertFalse(geoPoint.validate());
     }
 
     @Test
     public void canInvalidateWithIncorrectLatitudeLow() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(-180.1, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(-180.1, 1.0);
         Assert.assertFalse(geoPoint.validate());
     }
 
     @Test
     public void canInvalidateWithIncorrectLongitudeHi() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(100.0, 90.1);
+        GeoPoint geoPoint = GeoPoint.create(100.0, 90.1);
         Assert.assertFalse(geoPoint.validate());
     }
 
     @Test
     public void canInvalidateWithIncorrectLongitudeLow() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(-100.0, -90.1);
+        GeoPoint geoPoint = GeoPoint.create(-100.0, -90.1);
         Assert.assertFalse(geoPoint.validate());
     }
 
     @Test
     public void canInvalidateWithIncorrectCoordinatesSize() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(100.0, 0.1);
+        GeoPoint geoPoint = GeoPoint.create(100.0, 0.1);
         geoPoint.coordinates(Collections.singletonList(100.0));
 
         Assert.assertFalse(geoPoint.validate());
@@ -83,7 +82,7 @@ public class GeoPointUnitTests {
 
     @Test
     public void canInvalidateWithNullIncorrect() {
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(100.0, 0.1);
+        GeoPoint geoPoint = GeoPoint.create(100.0, 0.1);
         geoPoint.coordinates(null);
 
         Assert.assertFalse(geoPoint.validate());

@@ -105,7 +105,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         expectedDoc.put("Rooms", rooms);
         expectedDoc.put(
             "Location",
-            jsonApi.convertObjectToType(GeoPoint.createWithDefaultCrs(40.760586, -73.975403), Map.class));
+            jsonApi.convertObjectToType(GeoPoint.create(40.760586, -73.975403), Map.class));
 
         uploadDocuments(asyncClient, INDEX_NAME, expectedDoc);
 

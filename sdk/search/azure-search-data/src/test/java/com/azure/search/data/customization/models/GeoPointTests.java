@@ -7,12 +7,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchPagedResponse;
+
 import com.azure.search.data.customization.SearchIndexClientTestBase;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
@@ -61,8 +62,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         List<Map<String, Object>> documents = new ObjectMapper().readValue(docsData, List.class);
         client.uploadDocuments(documents);
 
-        // Wait 2 secs to allow index request to finish
-        Thread.sleep(2000);
+        waitForIndexing();
 
         return documents;
     }
@@ -83,13 +83,13 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         GeoPoint geoPoint = mapper.readValue(geoPointJsonString, GeoPoint.class);
         Assert.assertNotNull(geoPoint);
 
-        GeoPoint expected = GeoPoint.createWithDefaultCrs(-122.131577, 47.678581);
+        GeoPoint expected = GeoPoint.create(47.678581, -122.131577);
         Assert.assertEquals(expected, geoPoint);
     }
 
     @Test
     public void canSerializeGeoPoint() {
-        Map<String, Object> indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(100.0, 1.0));
+        Map<String, Object> indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(1.0, 100.0));
         DocumentIndexResult indexResult = client.setIndexName(INDEX_NAME_GEO_POINTS).uploadDocument(indexObjectMap);
         Assert.assertNotNull(indexResult);
         Assert.assertTrue(indexResult.results().get(0).succeeded());

@@ -60,7 +60,7 @@ public class SearchIndexClientLookupTest extends SearchIndexClientTestBase {
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         String docKey = "1";
         String dateTimeString = "2019-08-13T14:30:00Z";
-        GeoPoint geoPoint = GeoPoint.createWithDefaultCrs(100.0, 1.0);
+        GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
         // Creating the document to be indexed
         ModelWithPrimitiveCollections document = new ModelWithPrimitiveCollections()

@@ -1,29 +1,27 @@
 {
-    "networkCallRecords": [
-        {
-            "Method": "POST",
-            "Uri": "https://azs-sdk1ac38266e123.search.windows.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06",
-            "Headers": {
-                "Content-Type": "application/json; charset=utf-8"
-            },
-            "Response": {
-                "Pragma": "no-cache",
-                "retry-after": "0",
-                "request-id": "8c9bb4c1-6806-44bd-9ebc-657659628137",
-                "StatusCode": "400",
-                "Date": "Sun, 08 Sep 2019 15:42:26 GMT",
-                "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-                "Cache-Control": "no-cache",
-                "elapsed-time": "116",
-                "OData-Version": "4.0",
-                "Expires": "-1",
-                "Content-Length": "148",
-                "Body": "{\"error\":{\"code\":\"\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\"}}",
-                "Preference-Applied": "odata.include-annotations=\"*\"",
-                "Content-Language": "en",
-                "Content-Type": "application/json; odata.metadata=minimal"
-            }
-        }
-    ],
-    "variables": []
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk08566659dc93.search.windows.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "4f22fdbc-075b-4024-a616-cb2746f02a2f",
+      "StatusCode" : "400",
+      "Date" : "Tue, 17 Sep 2019 21:24:56 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "103",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "148",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    }
+  } ],
+  "variables" : [ ]
 }

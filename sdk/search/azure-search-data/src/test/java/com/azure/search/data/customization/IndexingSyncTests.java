@@ -227,7 +227,7 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void indexWithInvalidDocumentThrowsException() throws Exception {
+    public void indexWithInvalidDocumentThrowsException() {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("The request is invalid. Details: actions : 0: Document key cannot be missing or empty.");
 
@@ -259,9 +259,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
         client.uploadDocuments(boundaryConditionDocs);
-
-        // Wait 2 secs to allow index request to finish
-        Thread.sleep(2000);
+        waitForIndexing();
 
         for (Hotel expected : boundaryConditionDocs) {
             Document doc = client.getDocument(expected.hotelId());
@@ -349,7 +347,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         String hotelName = "Secret Point Motel";
         String description = "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.";
         String descriptionFr = "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.";
-        GeoPoint location = GeoPoint.createWithDefaultCrs(40.760586, -73.975403);
+        GeoPoint location = GeoPoint.create(40.760586, -73.975403);
         HotelAddress address = new HotelAddress()
             .streetAddress("677 5th Ave")
             .city("New York")
@@ -478,7 +476,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             .SMOKINGALLOWED(false)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
             .RATING(4)
-            .LOCATION(GeoPoint.createWithDefaultCrs(-73.975403, 40.760586))     // todo: swap lat/long after merging GeoPoint fix
+            .LOCATION(GeoPoint.create(40.760586, -73.975403))
             .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")

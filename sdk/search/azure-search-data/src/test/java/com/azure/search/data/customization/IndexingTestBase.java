@@ -4,12 +4,12 @@ package com.azure.search.data.customization;
 
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.IndexingResult;
-import com.azure.search.test.environment.models.Hotel;
-import com.azure.search.test.environment.models.HotelAddress;
-import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.service.SearchServiceClient;
 import com.azure.search.service.customization.SearchCredentials;
 import com.azure.search.service.implementation.SearchServiceClientImpl;
+import com.azure.search.test.environment.models.Hotel;
+import com.azure.search.test.environment.models.HotelAddress;
+import com.azure.search.test.environment.models.HotelRoom;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -82,7 +82,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             .smokingAllowed(false)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(5)
-            .location(GeoPoint.createWithDefaultCrs(-122.131577, 47.678581))
+            .location(GeoPoint.create(47.678581, -122.131577))
             .address(
                 new HotelAddress()
                     .streetAddress("1 Microsoft Way")
@@ -161,7 +161,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     }
 
     @Test
-    public abstract void indexWithInvalidDocumentThrowsException() throws Exception;
+    public abstract void indexWithInvalidDocumentThrowsException();
 
     @Test
     public abstract void canUseIndexWithReservedName();
@@ -203,7 +203,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .hotelId("1")
                 .category("")
                 .lastRenovationDate(DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
-                .location(GeoPoint.createWithDefaultCrs(-180, -90))   // South pole, date line from the west
+                .location(GeoPoint.create(-90, -180))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
                 .tags(Arrays.asList())
@@ -217,7 +217,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
                 .lastRenovationDate(DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
-                .location(GeoPoint.createWithDefaultCrs(180, 90))     // North pole, date line from the east
+                .location(GeoPoint.create(90, 180))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)
                 .tags(Arrays.asList("test"))    // No meaningful string max; see above.
@@ -232,7 +232,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
                 .hotelId("3")
                 .category(null)
                 .lastRenovationDate(null)
-                .location(GeoPoint.createWithDefaultCrs(0, 0))     // Equator, meridian
+                .location(GeoPoint.create(0, 0))     // Equator, meridian
                 .parkingIncluded(null)
                 .rating(null)
                 .tags(Arrays.asList())

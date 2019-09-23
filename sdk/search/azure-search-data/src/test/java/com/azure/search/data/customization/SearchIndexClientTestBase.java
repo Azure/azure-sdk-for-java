@@ -59,15 +59,23 @@ public class SearchIndexClientTestBase extends TestBase {
     }
 
     protected <T> void uploadDocuments(SearchIndexClient client, String indexName, T uploadDoc) {
-        client.setIndexName(indexName)
-            .uploadDocument(uploadDoc);
+        client.setIndexName(indexName);
+        if (uploadDoc instanceof List) {
+            client.uploadDocuments((List) uploadDoc);
+        }
+        else {
+            client.uploadDocument(uploadDoc);
+        }
         waitForIndexing();
     }
 
     protected <T> void uploadDocuments(SearchIndexAsyncClient client, String indexName, T uploadDoc) {
-        client.setIndexName(indexName)
-            .uploadDocument(uploadDoc)
-            .block();
+        client.setIndexName(indexName);
+        if (uploadDoc instanceof List) {
+            client.uploadDocuments((List) uploadDoc).block();
+        } else {
+            client.uploadDocument(uploadDoc).block();
+        }
         waitForIndexing();
     }
 

@@ -8,10 +8,10 @@ import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.IndexingResult;
-import com.azure.search.test.environment.models.Book;
 import com.azure.search.test.environment.models.Hotel;
-import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
+import com.azure.search.test.environment.models.HotelAddress;
+import com.azure.search.test.environment.models.Book;
 import com.azure.search.test.environment.models.LoudHotel;
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
@@ -238,8 +238,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         client.uploadDocuments(boundaryConditionDocs).block();
 
-        // Wait 2 secs to allow index request to finish
-        Thread.sleep(2000);
+        waitForIndexing();
 
         for (Hotel expected : boundaryConditionDocs) {
             StepVerifier.create(client.getDocument(expected.hotelId()))
@@ -378,7 +377,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(4)
-            .location(GeoPoint.createWithDefaultCrs(40.760586, -73.975403))
+            .location(GeoPoint.create(40.760586, -73.975403))
             .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -443,7 +442,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(3)
-            .location(GeoPoint.createWithDefaultCrs(40.760586, -73.975403))
+            .location(GeoPoint.create(40.760586, -73.975403))
             .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -575,7 +574,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .SMOKINGALLOWED(false)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T-05:00:00Z"))
             .RATING(4)
-            .LOCATION(GeoPoint.createWithDefaultCrs(-73.975403, 40.760586))     // todo: swap lat/long after merging GeoPoint fix
+            .LOCATION(GeoPoint.create(40.760586, -73.975403))
             .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")

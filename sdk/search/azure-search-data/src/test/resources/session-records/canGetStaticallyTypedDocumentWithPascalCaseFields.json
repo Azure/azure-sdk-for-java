@@ -1,43 +1,43 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-      "Uri": "https://azs-sdk9941699077e0.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbba11406f467.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "ff0b92e4-1a9f-41c5-a2f6-6bede78ab38f",
+      "request-id" : "e1909c0f-a038-4955-be85-9f7d8509d2d6",
       "StatusCode" : "200",
-        "Date": "Thu, 05 Sep 2019 10:06:19 GMT",
+      "Date" : "Tue, 17 Sep 2019 21:18:45 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "180",
+      "elapsed-time" : "247",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "229",
-        "Body": "{\"@odata.context\":\"https://azs-sdk9941699077e0.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbba11406f467.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
   }, {
     "Method" : "GET",
-      "Uri": "https://azs-sdk9941699077e0.search.windows.net/indexes('hotels')/docs('123')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbba11406f467.search.windows.net/indexes('hotels')/docs('123')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "0f742d1b-1543-42bc-885a-564b3f75d48d",
+      "request-id" : "8110a0ae-8b8e-4613-acc6-e54deba337f2",
       "StatusCode" : "200",
-        "Date": "Thu, 05 Sep 2019 10:06:21 GMT",
+      "Date" : "Tue, 17 Sep 2019 21:18:48 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "7",
+      "elapsed-time" : "24",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "361",
-        "Body": "{\"@odata.context\":\"https://azs-sdk9941699077e0.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"123\",\"HotelName\":\"Lord of the Rings\",\"Description\":\"J.R.R\",\"Description_fr\":\"Tolkien\",\"Category\":null,\"Tags\":[],\"ParkingIncluded\":null,\"SmokingAllowed\":null,\"LastRenovationDate\":null,\"Rating\":null,\"Location\":null,\"Address\":null,\"Rooms\":[]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbba11406f467.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"123\",\"HotelName\":\"Lord of the Rings\",\"Description\":\"J.R.R\",\"Description_fr\":\"Tolkien\",\"Category\":null,\"Tags\":[],\"ParkingIncluded\":null,\"SmokingAllowed\":null,\"LastRenovationDate\":null,\"Rating\":null,\"Location\":null,\"Address\":null,\"Rooms\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     }
