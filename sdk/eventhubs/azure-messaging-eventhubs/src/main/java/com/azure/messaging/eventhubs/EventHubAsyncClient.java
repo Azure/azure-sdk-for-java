@@ -96,6 +96,15 @@ public class EventHubAsyncClient implements Closeable {
     }
 
     /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
      * @return The set of information for the Event Hub that this client is associated with.
@@ -331,9 +340,5 @@ public class EventHubAsyncClient implements Closeable {
         }
 
         throw new IllegalArgumentException("No starting position was set.");
-    }
-
-    String getEventHubName() {
-        return this.eventHubName;
     }
 }
