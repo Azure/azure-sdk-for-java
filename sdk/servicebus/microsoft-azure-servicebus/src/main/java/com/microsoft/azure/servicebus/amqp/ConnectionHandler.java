@@ -102,7 +102,7 @@ public class ConnectionHandler extends BaseHandler {
                 SSLContext strictTlsContext = new StrictTLSContext(strictTlsContextSpi, defaultContext.getProvider(), defaultContext.getProtocol());
                 domain.setSslContext(strictTlsContext);
                 domain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER_NAME);
-                SslPeerDetails peerDetails = Proton.sslPeerDetails(this.getOutboundSocketHostName(), this.getOutboundSocketPort());
+                SslPeerDetails peerDetails = Proton.sslPeerDetails(this.messagingFactory.getHostName(), this.getProtocolPort());
                 transport.ssl(domain, peerDetails);
             } catch (NoSuchAlgorithmException e) {
                 // Should never happen
