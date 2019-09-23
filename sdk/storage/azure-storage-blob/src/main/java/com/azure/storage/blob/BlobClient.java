@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -27,6 +28,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
     private final BlobAsyncClient client;
 

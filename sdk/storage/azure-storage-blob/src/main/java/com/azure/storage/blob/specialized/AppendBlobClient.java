@@ -3,10 +3,12 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
@@ -17,7 +19,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,6 +43,7 @@ import java.util.Objects;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 

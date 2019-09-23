@@ -11,7 +11,7 @@ module com.azure.core {
     requires com.fasterxml.jackson.datatype.jsr310;
 
     requires transitive reactor.core;
-    requires org.reactivestreams;
+    requires transitive org.reactivestreams;
 
     requires org.slf4j;
 

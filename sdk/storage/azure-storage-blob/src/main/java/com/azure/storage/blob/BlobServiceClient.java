@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
@@ -43,6 +44,7 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
+@ServiceClient(builder = BlobServiceClientBuilder.class)
 public final class BlobServiceClient {
     private final BlobServiceAsyncClient blobServiceAsyncClient;
 

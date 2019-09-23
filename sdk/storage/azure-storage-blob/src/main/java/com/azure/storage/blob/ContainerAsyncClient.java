@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -74,6 +75,7 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = ContainerClientBuilder.class, isAsync = true)
 public final class ContainerAsyncClient {
     public static final String ROOT_CONTAINER_NAME = "$root";
 

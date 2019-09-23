@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -59,6 +60,7 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = QueueServiceClientBuilder.class, isAsync = true)
 public final class QueueServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;

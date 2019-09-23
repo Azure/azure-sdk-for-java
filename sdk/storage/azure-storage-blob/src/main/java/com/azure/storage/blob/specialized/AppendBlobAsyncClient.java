@@ -3,11 +3,13 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -19,7 +21,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.common.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -50,6 +51,7 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.

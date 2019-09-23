@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -43,6 +44,7 @@ import java.util.Objects;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
     private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
 
@@ -171,7 +173,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, null, null, null, null, null);
+        uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null, null);
     }
 
     /**
@@ -179,9 +181,10 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
+     * @param blockSize Size of the blocks to upload
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the uploaded blob
@@ -189,10 +192,10 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata, AccessTier tier,
-        BlobAccessConditions accessConditions, Duration timeout) {
+    public void uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
+        AccessTier tier, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
-            filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, tier, accessConditions);
+            filePath, blockSize, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);

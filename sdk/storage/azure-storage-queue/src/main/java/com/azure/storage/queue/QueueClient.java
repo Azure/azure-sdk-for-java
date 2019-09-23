@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -42,6 +43,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {
     private final QueueAsyncClient client;
 
