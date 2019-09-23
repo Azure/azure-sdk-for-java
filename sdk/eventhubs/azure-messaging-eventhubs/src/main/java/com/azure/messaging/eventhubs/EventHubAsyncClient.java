@@ -194,7 +194,7 @@ public class EventHubAsyncClient implements Closeable {
                     retryPolicy).cast(AmqpSendLink.class);
             });
 
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider, messageSerializer);
     }
 
     /**
