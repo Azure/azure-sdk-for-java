@@ -111,7 +111,7 @@ class EventHubMessageSerializer implements MessageSerializer {
     @Override
     public <T> T deserialize(Message message, Class<T> clazz) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(clazz, "'class' cannot be null.");
+        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
         if (clazz == PartitionProperties.class || clazz == EventHubProperties.class) {
             return deserializeManagementResponse(message, clazz);
