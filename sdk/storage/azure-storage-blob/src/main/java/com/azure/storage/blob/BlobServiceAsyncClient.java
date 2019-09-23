@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.BatchResult;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -27,6 +28,7 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.specialized.BlobBatch;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -455,6 +457,24 @@ public final class BlobServiceAsyncClient {
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return postProcessResponse(this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context))
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
+    }
+
+    /**
+     * Submits a batch operation.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * @param batch Batch to submit.
+     * @return Results of the batch.
+     */
+    public Mono<BatchResult> submitBatch(BlobBatch batch) {
+        return withContext(context -> submitBatch(batch, context));
+    }
+
+    Mono<BatchResult> submitBatch(BlobBatch batch, Context context) {
+        return postProcessResponse(this.azureBlobStorage.services()
+            .submitBatchWithRestResponseAsync(null, 0L, null, context)
+            .flatMap(response -> Mono.empty()));
     }
 
     /**

@@ -11,7 +11,7 @@ module com.azure.core {
     requires com.fasterxml.jackson.datatype.jsr310;
 
     requires transitive reactor.core;
-    requires org.reactivestreams;
+    requires transitive org.reactivestreams;
 
     requires org.slf4j;
 
@@ -34,7 +34,7 @@ module com.azure.core {
     opens com.azure.core.implementation.entities to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
-    opens com.azure.core.implementation.serializer.jackson to com.azure.core,com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.serializer.jackson to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.util to com.fasterxml.jackson.databind;
 
     // exporting some packages for internal use only

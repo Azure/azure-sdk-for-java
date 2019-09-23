@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.BatchResult;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -18,6 +19,7 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.specialized.BlobBatch;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -359,6 +361,14 @@ public final class BlobServiceClient {
         Mono<Response<StorageAccountInfo>> response = blobServiceAsyncClient.getAccountInfoWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
+    }
+
+    public BatchResult submitBatch(BlobBatch batch) {
+        return submitBatch(batch, null, Context.NONE);
+    }
+
+    public BatchResult submitBatch(BlobBatch batch, Duration timeout, Context context) {
+        return Utility.blockWithOptionalTimeout(blobServiceAsyncClient.submitBatch(batch, context), timeout);
     }
 
     /**
