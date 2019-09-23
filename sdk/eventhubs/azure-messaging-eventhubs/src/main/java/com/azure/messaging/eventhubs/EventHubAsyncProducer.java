@@ -11,11 +11,14 @@ import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,6 +28,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -37,6 +41,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
@@ -119,6 +124,7 @@ public class EventHubAsyncProducer implements Closeable {
     private final Mono<AmqpSendLink> sendLinkMono;
     private final boolean isPartitionSender;
     private final TracerProvider tracerProvider;
+    private final MessageSerializer messageSerializer;
 
     /**
      * Creates a new instance of this {@link EventHubAsyncProducer} that sends messages to {@link
@@ -126,12 +132,13 @@ public class EventHubAsyncProducer implements Closeable {
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
     EventHubAsyncProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options,
-                          TracerProvider tracerProvider) {
+                          TracerProvider tracerProvider, MessageSerializer messageSerializer) {
         // Caching the created link so we don't invoke another link creation.
         this.sendLinkMono = amqpSendLinkMono.cache();
         this.senderOptions = options;
         this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.getPartitionId());
         this.tracerProvider = tracerProvider;
+        this.messageSerializer = messageSerializer;
     }
 
     /**
@@ -291,7 +298,20 @@ public class EventHubAsyncProducer implements Closeable {
 
         logger.info("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getSize());
 
-        final List<Message> messages = EventHubMessageSerializer.toAmqpMessage(batch.getPartitionKey(), batch.getEvents());
+        final String partitionKey = batch.getPartitionKey();
+        final List<Message> messages = batch.getEvents().stream().map(event -> {
+            final Message message = messageSerializer.serialize(event);
+
+            if (!ImplUtils.isNullOrEmpty(partitionKey)) {
+                final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
+                    ? new MessageAnnotations(new HashMap<>())
+                    : message.getMessageAnnotations();
+                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+                message.setMessageAnnotations(messageAnnotations);
+            }
+
+            return message;
+        }).collect(Collectors.toList());
 
         return sendLinkMono.flatMap(link -> messages.size() == 1
             ? link.send(messages.get(0))

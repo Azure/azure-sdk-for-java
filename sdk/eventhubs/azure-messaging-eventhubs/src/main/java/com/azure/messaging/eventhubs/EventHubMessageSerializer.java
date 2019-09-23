@@ -4,10 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import com.azure.messaging.eventhubs.implementation.MessageSerializer;
 import org.apache.qpid.proton.Proton;
@@ -23,24 +21,15 @@ import org.apache.qpid.proton.message.Message;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
     private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
-
-    /**
-     * Maps the set of events given to a collection of AMQP messages.
-     */
-    public static List<Message> toAmqpMessage(String partitionKey, List<EventData> events) {
-        return events.stream().map(event -> toAmqpMessage(partitionKey, event)).collect(Collectors.toList());
-    }
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -86,17 +75,18 @@ class EventHubMessageSerializer implements MessageSerializer {
      * {@link EventData}.
      *
      * @param object Concrete object to deserialize.
-     * @param clazz Type of the {@code object}.
      *
      * @return A new AMQP message for this {@code object}.
      *
      * @throws IllegalArgumentException if {@code object} is not an instance of {@link EventData}.
      */
     @Override
-    public <T> Message serialize(T object, Class<T> clazz) {
+    public <T> Message serialize(T object) {
+        Objects.requireNonNull(object, "'object' to serialize cannot be null.");
+
         if (!(object instanceof EventData)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Cannot serialize object that is not EventData. Clazz: " + clazz));
+                new IllegalArgumentException("Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
         }
 
         final EventData eventData = (EventData) object;
@@ -217,30 +207,6 @@ class EventHubMessageSerializer implements MessageSerializer {
             (String) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
             ((Date) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
             (Boolean) amqpBody.get(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
-    }
-
-    private static Message toAmqpMessage(String partitionKey, EventData eventData) {
-        final Message message = Proton.message();
-
-        if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
-            message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
-        }
-
-        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
-            final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                ? new MessageAnnotations(new HashMap<>())
-                : message.getMessageAnnotations();
-            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-            message.setMessageAnnotations(messageAnnotations);
-        }
-
-        setSystemProperties(eventData, message);
-
-        if (eventData.getBody() != null) {
-            message.setBody(new Data(Binary.create(eventData.getBody())));
-        }
-
-        return message;
     }
 
     /*

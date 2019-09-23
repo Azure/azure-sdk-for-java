@@ -18,12 +18,11 @@ public interface MessageSerializer {
      * Serializes the given {@code object} into an AMQP message.
      *
      * @param object Object to send to AMQP service.
-     * @param clazz Class of the {@code object} to serialize.
      * @param <T> Type of the object to serialize into an AMQP message.
      *
      * @return An AMQP message that can be sent to the service.
      */
-    <T> Message serialize(T object, Class<T> clazz);
+    <T> Message serialize(T object);
 
     /**
      * Deserializes the AMQP message to a concrete object.
