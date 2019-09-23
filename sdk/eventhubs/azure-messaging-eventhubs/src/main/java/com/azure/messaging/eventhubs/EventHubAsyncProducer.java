@@ -399,7 +399,7 @@ public class EventHubAsyncProducer implements Closeable {
                 }
             }
         }
-        return  event;
+        return event;
     }
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
