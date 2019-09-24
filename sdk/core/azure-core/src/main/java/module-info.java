@@ -11,7 +11,7 @@ module com.azure.core {
     requires com.fasterxml.jackson.datatype.jsr310;
 
     requires transitive reactor.core;
-    requires org.reactivestreams;
+    requires transitive org.reactivestreams;
 
     requires org.slf4j;
 
@@ -41,6 +41,7 @@ module com.azure.core {
     exports com.azure.core.implementation to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.test,                         // FIXME this should not be a long-term solution
+        com.azure.data.appconfiguration,        // FIXME this should not be a long-term solution
         com.azure.security.keyvault.certificates,       // FIXME this should not be a long-term solution
         com.azure.security.keyvault.keys,       // FIXME this should not be a long-term solution
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
@@ -63,6 +64,7 @@ module com.azure.core {
     exports com.azure.core.implementation.http to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.test,                         // FIXME this should not be a long-term solution
+        com.azure.data.appconfiguration,        // FIXME this should not be a long-term solution
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
         com.azure.identity,                     // FIXME this should not be a long-term solution
@@ -92,6 +94,7 @@ module com.azure.core {
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.test,                         // FIXME this should not be a long-term solution
         com.azure.amqp,                         // FIXME this should not be a long-term solution
+        com.azure.data.appconfiguration,        // FIXME this should not be a long-term solution
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.messaging.eventhubs,          // FIXME this should not be a long-term solution
         com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution

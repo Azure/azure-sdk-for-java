@@ -348,7 +348,7 @@
               *.impl*:
               *.implementation*:
               com.azure.tools.checkstyle*:
-              com.azure.core.test*
+              com.azure.core.test
             </excludePackageNames>
             <groups>
               <group>
