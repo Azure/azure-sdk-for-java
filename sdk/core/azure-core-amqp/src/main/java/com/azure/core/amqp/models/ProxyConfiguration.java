@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.models;
+package com.azure.core.amqp.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
@@ -14,8 +13,6 @@ import java.util.Objects;
 
 /**
  * Properties for configuring proxies with Event Hubs.
- *
- * @see EventHubClientBuilder#proxyConfiguration(ProxyConfiguration)
  */
 @Immutable
 public class ProxyConfiguration implements AutoCloseable {

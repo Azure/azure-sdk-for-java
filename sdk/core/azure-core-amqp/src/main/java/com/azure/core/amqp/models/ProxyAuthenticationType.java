@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.models;
+package com.azure.core.amqp.models;
 
 /**
  * Supported methods of proxy authentication

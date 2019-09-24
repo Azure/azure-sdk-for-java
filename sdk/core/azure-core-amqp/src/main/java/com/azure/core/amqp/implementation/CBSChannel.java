@@ -19,7 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
+public class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     private static final String PUT_TOKEN_TYPE = "type";
@@ -31,7 +31,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     private final CBSAuthorizationType authorizationType;
     private final RetryOptions retryOptions;
 
-    CBSChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
+    public CBSChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
                CBSAuthorizationType authorizationType, RetryOptions retryOptions) {
         super(new ClientLogger(CBSChannel.class));
 

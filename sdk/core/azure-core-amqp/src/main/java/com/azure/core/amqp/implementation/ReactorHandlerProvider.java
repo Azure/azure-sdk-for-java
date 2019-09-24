@@ -40,7 +40,7 @@ public class ReactorHandlerProvider {
      * @param transportType Transport type used for the connection.
      * @return A new {@link ConnectionHandler}.
      */
-    ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType) {
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
@@ -61,7 +61,7 @@ public class ReactorHandlerProvider {
      * @param openTimeout Duration to wait for the session to open.
      * @return A new {@link SessionHandler}.
      */
-    SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
+    public SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
         return new SessionHandler(connectionId, host, sessionName, provider.getReactorDispatcher(), openTimeout);
     }
 
@@ -73,7 +73,7 @@ public class ReactorHandlerProvider {
      * @param senderName Name of the send link.
      * @return A new {@link SendLinkHandler}.
      */
-    SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName, String entityPath) {
+    public SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName, String entityPath) {
         return new SendLinkHandler(connectionId, host, senderName, entityPath);
     }
 
@@ -85,7 +85,7 @@ public class ReactorHandlerProvider {
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName,
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName,
                                                 String entityPath) {
         return new ReceiveLinkHandler(connectionId, host, receiverName, entityPath);
     }
