@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -577,6 +577,7 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>

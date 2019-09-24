@@ -88,6 +88,11 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
         return this;
     }
 
+    @Override
+    protected Class<BlobServiceClientBuilder> getClazz() {
+        return BlobServiceClientBuilder.class;
+    }
+
     String endpoint() {
         return super.endpoint;
     }

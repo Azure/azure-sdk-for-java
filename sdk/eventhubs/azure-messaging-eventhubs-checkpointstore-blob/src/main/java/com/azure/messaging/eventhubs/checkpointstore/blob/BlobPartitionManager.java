@@ -115,7 +115,7 @@ public class BlobPartitionManager implements PartitionManager {
                 blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions().setIfNoneMatch("*"));
                 return blobAsyncClient.asBlockBlobAsyncClient()
                     .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobAccessConditions)
-                    .flatMapMany(response -> updateOwnershipEtag(response, partitionOwnership), error -> {
+                    .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();
                     }, Mono::empty);
@@ -124,7 +124,7 @@ public class BlobPartitionManager implements PartitionManager {
                 blobAccessConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
                     .setIfMatch(partitionOwnership.getETag()));
                 return blobAsyncClient.setMetadataWithResponse(metadata, blobAccessConditions)
-                    .flatMapMany(response -> updateOwnershipEtag(response, partitionOwnership), error -> {
+                    .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
                         return Mono.empty();
                     }, Mono::empty);
@@ -132,7 +132,7 @@ public class BlobPartitionManager implements PartitionManager {
         });
     }
 
-    private Mono<PartitionOwnership> updateOwnershipEtag(Response<?> response, PartitionOwnership ownership) {
+    private Mono<PartitionOwnership> updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
         return Mono.just(ownership.setETag(response.getHeaders().get(ETAG).getValue()));
     }
 

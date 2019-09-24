@@ -4,21 +4,23 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BaseBlobClientBuilder;
+import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.common.credentials.SASTokenCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of specialized Storage Blob
@@ -38,13 +40,12 @@ import java.util.List;
     BlockBlobClient.class, BlockBlobAsyncClient.class,
     PageBlobClient.class, PageBlobAsyncClient.class
 })
-public final class SpecializedBlobClientBuilder {
+public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<SpecializedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
-    private HttpPipeline pipeline;
-    private URL url;
+    private String containerName;
+    private String blobName;
     private String snapshot;
-    private CpkInfo cpk;
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -125,8 +126,8 @@ public final class SpecializedBlobClientBuilder {
 
     private AzureBlobStorageImpl constructImpl() {
         return new AzureBlobStorageBuilder()
-            .pipeline(pipeline)
-            .url(url.toString())
+            .pipeline(getPipeline())
+            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .build();
     }
 
@@ -137,8 +138,8 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder object.
      */
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
-        this.pipeline = blobClient.getHttpPipeline();
-        this.url = blobClient.getBlobUrl();
+        pipeline(blobClient.getHttpPipeline());
+        endpoint(blobClient.getBlobUrl().toString());
         this.snapshot = blobClient.getSnapshotId();
         this.cpk = blobClient.getCpk();
         return this;
@@ -151,8 +152,8 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder object.
      */
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
-        this.pipeline = blobAsyncClient.getHttpPipeline();
-        this.url = blobAsyncClient.getBlobUrl();
+        pipeline(blobAsyncClient.getHttpPipeline());
+        endpoint(blobAsyncClient.getBlobUrl().toString());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.cpk = blobAsyncClient.getCpk();
         return this;
@@ -166,8 +167,9 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder object.
      */
     public SpecializedBlobClientBuilder containerClient(ContainerClient containerClient, String blobName) {
-        this.pipeline = containerClient.getHttpPipeline();
-        this.url = addBlobToUrl(containerClient.getContainerUrl().toString(), blobName);
+        pipeline(containerClient.getHttpPipeline());
+        endpoint(containerClient.getContainerUrl().toString());
+        blobName(blobName);
         this.cpk = containerClient.getCpk();
         return this;
     }
@@ -182,39 +184,84 @@ public final class SpecializedBlobClientBuilder {
      */
     public SpecializedBlobClientBuilder containerAsyncClient(ContainerAsyncClient containerAsyncClient,
         String blobName) {
-        this.pipeline = containerAsyncClient.getHttpPipeline();
-        this.url = addBlobToUrl(containerAsyncClient.getContainerUrl().toString(), blobName);
+        pipeline(containerAsyncClient.getHttpPipeline());
+        endpoint(containerAsyncClient.getContainerUrl().toString());
+        blobName(blobName);
         this.cpk = containerAsyncClient.getCpk();
         return this;
     }
 
     /**
-     * Sets the snapshot identifier that will be used to associate the client to a specific snapshot.
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      *
-     * @param snapshot The snapshot identifier.
-     * @return the updated SpecializedBlobClientBuilder object.
+     * @param endpoint URL of the service
+     * @return the updated BlobClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
+     */
+    @Override
+    public SpecializedBlobClientBuilder endpoint(String endpoint) {
+        try {
+            URL url = new URL(endpoint);
+            BlobURLParts parts = BlobURLParts.parse(url);
+
+            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.containerName = parts.getContainerName();
+            this.blobName = parts.getBlobName();
+            this.snapshot = parts.getSnapshot();
+
+            SASTokenCredential sasTokenCredential =
+                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
+            if (sasTokenCredential != null) {
+                super.credential(sasTokenCredential);
+            }
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
+        }
+        return this;
+    }
+
+    /**
+     * Sets the name of the container this client is connecting to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
+     *
+     * @param containerName the name of the container
+     * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code containerName} is {@code null}
+     */
+    public SpecializedBlobClientBuilder containerName(String containerName) {
+        this.containerName = Objects.requireNonNull(containerName);
+        return this;
+    }
+
+    /**
+     * Sets the name of the blob this client is connecting to.
+     *
+     * @param blobName the name of the blob
+     * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code blobName} is {@code null}
+     */
+    public SpecializedBlobClientBuilder blobName(String blobName) {
+        this.blobName = Objects.requireNonNull(blobName);
+        return this;
+    }
+
+    /**
+     * Sets the snapshot of the blob this client is connecting to.
+     *
+     * @param snapshot the snapshot identifier for the blob
+     * @return the updated BlobClientBuilder object
      */
     public SpecializedBlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
 
-    /**
-     * Sets the customer provided key that will be used to encrypt the blob's content on the server.
-     *
-     * @param cpk The customer provided key.
-     * @return the updated SpecializedBlobClientBuilder object.
-     */
-    public SpecializedBlobClientBuilder cpk(CpkInfo cpk) {
-        this.cpk = cpk;
-        return this;
-    }
-
-    private URL addBlobToUrl(String url, String blobName) {
-        try {
-            return new URL(String.format("%s/%s", url, blobName));
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException(ex));
-        }
+    @Override
+    protected Class<SpecializedBlobClientBuilder> getClazz() {
+        return SpecializedBlobClientBuilder.class;
     }
 }

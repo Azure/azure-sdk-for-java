@@ -124,6 +124,11 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
         return this;
     }
 
+    @Override
+    protected Class<ContainerClientBuilder> getClazz() {
+        return ContainerClientBuilder.class;
+    }
+
     String endpoint() {
         return this.endpoint;
     }
