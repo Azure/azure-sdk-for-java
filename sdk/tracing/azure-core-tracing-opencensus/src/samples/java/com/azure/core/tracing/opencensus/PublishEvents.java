@@ -88,4 +88,3 @@ public class PublishEvents {
         Tracing.getExportComponent().shutdown();
     }
 }
-

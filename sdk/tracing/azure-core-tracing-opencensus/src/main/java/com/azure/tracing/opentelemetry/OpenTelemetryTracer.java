@@ -1,15 +1,15 @@
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.tracing.opencensus;
+package com.azure.tracing.opentelemetry;
 
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.tracing.opencensus.implementation.AmqpPropagationFormatUtil;
-import com.azure.core.tracing.opencensus.implementation.AmqpTraceUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
+import com.azure.tracing.opentelemetry.implementation.AmqpTraceUtil;
+import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Link;
 import io.opencensus.trace.Span;
@@ -25,10 +25,10 @@ import java.util.Optional;
 import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
 
 /**
- * OpenCensus span
+ * OpenTelemetry span
  */
-public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
-    // Singleton OpenCensus tracer capable of starting and exporting spans.
+public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
+    // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
 
     // standard attributes with AMQP call information

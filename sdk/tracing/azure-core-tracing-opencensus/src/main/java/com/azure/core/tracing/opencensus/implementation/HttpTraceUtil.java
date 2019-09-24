@@ -1,11 +1,8 @@
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-<<<<<<< HEAD:sdk/tracing/azure-core-tracing-opencensus/src/main/java/com/azure/core/tracing/opencensus/implementation/HttpTraceUtil.java
-package com.azure.tracing.opentelemetry.implementation;
-=======
 package com.azure.core.tracing.opencensus;
->>>>>>> Updating everything to use OpenCensus as that is what the package uses:sdk/tracing/azure-core-tracing-opencensus/src/main/java/com/azure/core/tracing/opencensus/HttpTraceUtil.java
 
 import io.opencensus.trace.Status;
 

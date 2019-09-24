@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-<<<<<<< HEAD:sdk/tracing/azure-core-tracing-opencensus/src/main/java/com/azure/core/tracing/opencensus/implementation/HttpTraceUtil.java
 package com.azure.tracing.opentelemetry.implementation;
-=======
-package com.azure.core.tracing.opencensus;
->>>>>>> Updating everything to use OpenCensus as that is what the package uses:sdk/tracing/azure-core-tracing-opencensus/src/main/java/com/azure/core/tracing/opencensus/HttpTraceUtil.java
 
 import io.opencensus.trace.Status;
 
@@ -32,18 +28,18 @@ public final class HttpTraceUtil {
     private HttpTraceUtil() { }
 
     /**
-     * Parse OpenCensus Status from HTTP response status code.
+     * Parse OpenTelemetry Status from HTTP response status code.
      *
      * <p>This method serves a default routine to map HTTP status code to Open Census Status. The
      * mapping is defined in <a
      * href="https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto">Google API
      * canonical error code</a>, and the behavior is defined in <a
-     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenCensus
+     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenTelemetry
      * Specs</a>.
      *
      * @param statusCode the HTTP response status code. {@code 0} means invalid response.
      * @param error the error occurred during response transmission (optional).
-     * @return the corresponding OpenCensus {@code Status}.
+     * @return the corresponding OpenTelemetry {@code Status}.
      */
     public static Status parseResponseStatus(int statusCode, Throwable error) {
         String message = null;

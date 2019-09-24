@@ -9,9 +9,6 @@
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
     <module>../core/azure-core</module>
-    <module>azure-core-tracing-opencensus</module>
-    <module>../storage/azure-storage-queue</module>
-    <module>../eventhubs/azure-messaging-eventhubs</module>
-    <module>../keyvault/azure-keyvault-secrets</module>
+    <module>azure-sdk-template</module>
   </modules>
 </project>

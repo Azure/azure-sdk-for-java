@@ -4,8 +4,6 @@ package com.azure.tracing.opentelemetry.implementation;
 
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
-
 import com.azure.core.util.Context;
 import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.SpanId;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.tracing.opencensus;
+package com.azure.tracing.opentelemetry;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -9,8 +9,9 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.policy.spi.AfterRetryPolicyProvider;
+import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Kind;
@@ -26,12 +27,10 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
-
 /**
- * Pipeline policy that creates an OpenCensus span which traces the service request.
+ * Pipeline policy that creates an OpenTelemetry span which traces the service request.
  */
-public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
+public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
 
     /**
      * @return a OpenTelemetry HTTP policy.
