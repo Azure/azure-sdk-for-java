@@ -6,6 +6,7 @@ module com.azure.amqp {
 
     requires reactor.core;
     requires proton.j;
+    requires qpid.proton.j.extensions;
 
     exports com.azure.core.amqp;
     exports com.azure.core.amqp.exception;
