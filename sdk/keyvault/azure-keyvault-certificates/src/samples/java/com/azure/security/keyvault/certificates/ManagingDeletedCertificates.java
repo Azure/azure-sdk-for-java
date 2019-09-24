@@ -55,7 +55,7 @@ public class ManagingDeletedCertificates {
         try {
             CertificateOperation certificateOperation = certificateClient.createCertificate("certificateName",
                 policy, tags, Duration.ofMillis(60000));
-            System.out.printf("Certificate operation status %s \n", certificateOperation.status());
+            System.out.printf("Certificate operation status %s %n", certificateOperation.status());
         } catch (IllegalStateException e) {
             // Certificate wasn't created in the specified duration.
             // Log / Handle here
@@ -63,7 +63,7 @@ public class ManagingDeletedCertificates {
 
         // The certificate is no longer needed, need to delete it from the key vault.
         DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.name(), deletedCertificate.recoveryId());
+        System.out.printf("Certificate is deleted with name %s and its recovery id is %s %n", deletedCertificate.name(), deletedCertificate.recoveryId());
 
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
@@ -79,7 +79,7 @@ public class ManagingDeletedCertificates {
 
         // The certificates are no longer needed, need to delete them from the key vault.
         deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.name(), deletedCertificate.recoveryId());
+        System.out.printf("Certificate is deleted with name %s and its recovery id is %s %n", deletedCertificate.name(), deletedCertificate.recoveryId());
 
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);

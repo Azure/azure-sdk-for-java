@@ -70,7 +70,7 @@ public class HelloWorldAsync {
                 certificate.enabled(false);
                 certificateAsyncClient.updateCertificate(certificate)
                     .subscribe(certificateResponse ->
-                        System.out.printf("Certificate's enabled status %s \n",
+                        System.out.printf("Certificate's enabled status %s %n",
                             certificateResponse.enabled().toString()));
             });
 
@@ -116,16 +116,16 @@ public class HelloWorldAsync {
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
         certificateAsyncClient.deleteCertificate("certificateName")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
 
         certificateAsyncClient.deleteCertificate("myCertificate")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
 
 
         certificateAsyncClient.deleteCertificateIssuerWithResponse("myIssuer")
             .subscribe(deletedIssuerResponse ->
-                System.out.printf("Deleted issuer with name %s \n", deletedIssuerResponse.getValue().name()));
+                System.out.printf("Deleted issuer with name %s %n", deletedIssuerResponse.getValue().name()));
 
         // To ensure certificate is deleted on server side.
         Thread.sleep(50000);
@@ -133,11 +133,11 @@ public class HelloWorldAsync {
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
         certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
-                System.out.printf("Purge Status response %n \n", purgeResponse.getStatusCode()));
+                System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
         certificateAsyncClient.purgeDeletedCertificateWithResponse("myCertificate")
             .subscribe(purgeResponse ->
-                System.out.printf("Purge Status response %n \n", purgeResponse.getStatusCode()));
+                System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
         Thread.sleep(4000);
 

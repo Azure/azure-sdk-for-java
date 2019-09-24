@@ -41,7 +41,7 @@ public class BackupAndRestoreOperationsAsync {
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
@@ -57,14 +57,14 @@ public class BackupAndRestoreOperationsAsync {
 
         // The Cloud Rsa key is no longer in use, so you delete it.
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s %n", deletedKeyResponse.getRecoveryId()));
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
-            System.out.printf("Purge Status response %n \n", purgeResponse.getStatusCode()));
+            System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
         //To ensure file is purged on server side.
         Thread.sleep(15000);
@@ -72,7 +72,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         keyAsyncClient.restoreKey(backupFromFile).subscribe(keyResponse ->
-            System.out.printf("Restored Key with name %s \n", keyResponse.name()));
+            System.out.printf("Restored Key with name %s %n", keyResponse.name()));
 
         //To ensure key is restored on server side.
         Thread.sleep(15000);

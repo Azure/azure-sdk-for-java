@@ -377,7 +377,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context
         Response<Void> purgeResponse = certificateClient.purgeDeletedCertificateWithResponse("certificateName",
             new Context(key1, value1));
-        System.out.printf("Purged Deleted certificate with status %s", purgeResponse.getStatusCode());
+        System.out.printf("Purged Deleted certificate with status %d %n", purgeResponse.getStatusCode());
         // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context
     }
 

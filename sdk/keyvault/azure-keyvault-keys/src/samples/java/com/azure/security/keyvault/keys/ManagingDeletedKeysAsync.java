@@ -39,20 +39,20 @@ public class ManagingDeletedKeysAsync {
         keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.deleteKey("CloudEcKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s %n", deletedKeyResponse.getRecoveryId()));
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);
@@ -60,33 +60,33 @@ public class ManagingDeletedKeysAsync {
         // We accidentally deleted Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyAsyncClient.recoverDeletedKey("CloudEcKey").subscribe(recoveredKeyResponse ->
-            System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.name()));
+            System.out.printf("Recovered Key with name %s %n", recoveredKeyResponse.name()));
 
         //To ensure key is recovered on server side.
         Thread.sleep(10000);
 
         // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
         keyAsyncClient.deleteKey("CloudEcKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s %n", deletedKeyResponse.getRecoveryId()));
 
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
+                System.out.printf("Deleted Key's Recovery Id %s %n", deletedKeyResponse.getRecoveryId()));
 
         // To ensure key is deleted on server side.
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
         keyAsyncClient.listDeletedKeys().subscribe(deletedKey ->
-            System.out.printf("Deleted key's recovery Id %s \n", deletedKey.getRecoveryId()));
+            System.out.printf("Deleted key's recovery Id %s %n", deletedKey.getRecoveryId()));
 
         Thread.sleep(15000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
-            System.out.printf("Storage account key purge status response %n \n", purgeResponse.getStatusCode()));
+            System.out.printf("Storage account key purge status response %d %n", purgeResponse.getStatusCode()));
 
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudEcKey").subscribe(purgeResponse ->
-            System.out.printf("Bank account key purge status response %n \n", purgeResponse.getStatusCode()));
+            System.out.printf("Bank account key purge status response %d %n", purgeResponse.getStatusCode()));
 
         // To ensure key is purged on server side.
         Thread.sleep(15000);
