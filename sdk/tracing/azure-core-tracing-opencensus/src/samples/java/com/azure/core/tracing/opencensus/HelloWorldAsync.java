@@ -55,7 +55,7 @@ public class HelloWorldAsync {
                 .subscriberContext(Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan()))
                 .subscribe(
                     response -> System.out.printf("Message successfully enqueued by queueAsyncClient. Message id: %s%n",
-                        response.messageId()),
+                        response.getMessageId()),
                     err -> System.out.printf("Error thrown when enqueue the message. Error message: %s%n",
                         err.getMessage()),
                     () -> System.out.println("The enqueue has been completed."));

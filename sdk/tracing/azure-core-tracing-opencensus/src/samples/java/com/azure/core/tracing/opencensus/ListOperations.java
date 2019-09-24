@@ -56,19 +56,17 @@ public class ListOperations {
         try {
 
             Context traceContext = new Context(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
-            // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
+            // Let's create secrets holding storage and bank accounts credentials. if the secret
             // already exists in the key vault, then a new version of the secret is created.
-            client.setSecretWithResponse(new Secret("StorageAccountPassword", "password")
-                .expires(OffsetDateTime.now().plusYears(1)), traceContext);
+            client.setSecretWithResponse(new Secret("StorageAccountPassword", "password"), traceContext);
 
-            client.setSecretWithResponse(new Secret("BankAccountPassword", "password")
-                .expires(OffsetDateTime.now().plusYears(1)), traceContext);
+            client.setSecretWithResponse(new Secret("BankAccountPassword", "password"), traceContext);
 
             // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
             // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
             for (SecretBase secret : client.listSecrets(traceContext)) {
-                Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).value();
-                System.out.printf("Received secret with name %s and value %s%n", secretWithValue.name(), secretWithValue.value());
+                Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).getValue();
+                System.out.printf("Received secret with name %s and value %s%n", secretWithValue.getName(), secretWithValue.getValue());
             }
 
             // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
@@ -77,8 +75,8 @@ public class ListOperations {
 
             // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
             for (SecretBase secret : client.listSecretVersions("BankAccountPassword", traceContext)) {
-                Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).value();
-                System.out.printf("Received secret's version with name %s and value %s%n", secretWithValue.name(), secretWithValue.value());
+                Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).getValue();
+                System.out.printf("Received secret's version with name %s and value %s%n", secretWithValue.getName(), secretWithValue.getValue());
             }
         } finally {
             scope.close();

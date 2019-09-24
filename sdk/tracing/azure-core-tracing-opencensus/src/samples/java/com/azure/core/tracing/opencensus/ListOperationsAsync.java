@@ -54,12 +54,10 @@ public class ListOperationsAsync {
         Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan();
         try {
             Context traceContext = Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
-            // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
+            // Let's create secrets holding storage and bank accounts credentials. if the secret
             // already exists in the key vault, then a new version of the secret is created.
-            client.setSecret(new Secret("StorageAccountPassword", "password")
-                .expires(OffsetDateTime.now().plusYears(1)))
-                .then(client.setSecret(new Secret("BankAccountPassword", "password")
-                    .expires(OffsetDateTime.now().plusYears(1))))
+            client.setSecret(new Secret("StorageAccountPassword", "password"))
+                .then(client.setSecret(new Secret("BankAccountPassword", "password")))
                 .subscriberContext(traceContext)
                 .block();
 
@@ -70,7 +68,7 @@ public class ListOperationsAsync {
                 .subscribe(secretBase -> client.getSecret(secretBase)
                     .subscriberContext(traceContext)
                     .subscribe(secret -> System.out.printf("Received secret with name %s and value %s%n",
-                        secret.name(), secret.value())));
+                        secret.getName(), secret.getValue())));
 
             // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
             // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
@@ -83,7 +81,7 @@ public class ListOperationsAsync {
             client.listSecretVersions("BankAccountPassword")
                 .subscriberContext(traceContext)
                 .subscribe(secretBase -> System.out.printf("Received secret's version with name %s%n",
-                    secretBase.name()));
+                    secretBase.getName()));
         } finally {
             scope.close();
         }

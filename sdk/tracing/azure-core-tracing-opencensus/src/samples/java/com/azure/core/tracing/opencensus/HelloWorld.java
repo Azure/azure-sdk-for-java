@@ -51,9 +51,9 @@ public class HelloWorld {
 
             // Create a queue, enqueue two messages.
             Context tracingContext = new Context(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
-            queueClient.createWithResponse(null, tracingContext);
-            queueClient.enqueueMessageWithResponse("This is message 1", null, null, tracingContext);
-            queueClient.enqueueMessageWithResponse("This is message 2", null, null, tracingContext);
+            queueClient.createWithResponse(null, null, tracingContext);
+            queueClient.enqueueMessageWithResponse("This is message 1", null, null, null, tracingContext);
+            queueClient.enqueueMessageWithResponse("This is message 2", null, null, null, tracingContext);
             System.out.println("Enqueuing of messages has completed!");
         } finally {
             scope.close();

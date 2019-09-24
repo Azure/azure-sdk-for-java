@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.tracing.opentelemetry.implementation;
-
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+package com.azure.core.tracing.opencensus.implementation;
 
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 

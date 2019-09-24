@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;

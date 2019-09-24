@@ -25,6 +25,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Sample demonstrates how to send a message to an Azure Event Hub with tracing support.
  */
 public class PublishEvents {
+    private static final String CONNECTION_STRING = System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING");
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub with trace spans exported to
      * zipkin.
@@ -42,7 +43,6 @@ public class PublishEvents {
         traceConfig.updateActiveTraceParams(activeTraceParams.toBuilder().setSampler(Samplers.alwaysSample()).build());
 
         Tracer tracer = Tracing.getTracer();
-        String connectionString = "Endpoint=sb://eventdatamigrationns.servicebus.windows.net/;SharedAccessKeyName=accessKeyName;SharedAccessKey=accessKey;EntityPath=path";
 
 
         Scope scope = tracer.spanBuilder("opencensus-span").startScopedSpan();
@@ -55,7 +55,7 @@ public class PublishEvents {
 
             // Instantiate a client that will be used to call the service.
             EventHubAsyncClient client = new EventHubClientBuilder()
-                .connectionString(connectionString)
+                .connectionString(CONNECTION_STRING)
                 .buildAsyncClient();
 
             Context context = new Context("opencensus-span", tracer.getCurrentSpan());

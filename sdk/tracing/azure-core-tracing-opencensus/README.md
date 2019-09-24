@@ -15,19 +15,19 @@ documentation][aztracing_docs] | [Samples][samples]
 <dependency>
     <groupId>io.opencensus</groupId>
     <artifactId>opencensus-api</artifactId>
-    <version>${opencensus.version}</version>
+    <version>0.21.0</version>
 </dependency>
 
 <dependency>
     <groupId>io.opencensus</groupId>
     <artifactId>opencensus-impl</artifactId>
-    <version>${opencensus.version}</version>
+    <version>0.21.0</version>
 </dependency>
 
 <dependency>
     <groupId>io.opencensus</groupId>
     <artifactId>opencensus-exporter-trace-zipkin</artifactId>
-    <version>${opencensus.version}</version>
+    <version>0.21.0</version>
 </dependency>
 ```
 
@@ -46,12 +46,11 @@ A trace is a tree of spans showing the path of work through a system. A trace on
 A span represents a single operation in a trace. A span could be representative of an HTTP request, a remote procedure call (RPC), a database query, or even the path that a code takes.
 
 ## Examples
-The following sections provides examples of using tracing-opencensus plugin with some of the Azure Java SDK libraries:
+The following sections provides examples of using the azure-core-tracing-opencensus plugin with some of the Azure Java SDK libraries:
 ### Using the plugin package with Http Client libraries
 - Sync create a Secret using [azure-keyvault-secrets][azure-keyvault-secrets] with tracing enabled.
     
-    Users can additionally pass the value of the current tracing span to the sdk's using key **"opencensus-span"** on the [Context][context] object as shown below:
-      and value of current tracing span.
+	Users can additionally pass the value of the current tracing span to the sdk's using key **"opencensus-span"** on the [Context][context] parameter of the calling method:
 	```java
 	try (Scope scope = tracer.spanBuilder("tracing-user-parent").startScopedSpan()) { 
 		secretClient.setSecretWithResponse(new Secret("BankAccountPassword", "f4G34fMh8v"),
@@ -74,29 +73,34 @@ The following sections provides examples of using tracing-opencensus plugin with
 Sync send single event using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing.
     
 Users can additionally pass the value of the current tracing span to the EventData object with key **"opencensus-span"** on the [Context][context] object:
-	```java
-	try (Scope scope = tracer.spanBuilder("tracing-amqp").startScopedSpan()) {
-		// Create an event to send.
-		final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
-		eventData.context(new Context("opencensus-span", tracer.getCurrentSpan()));
-		producer.send(eventData).doOnSuccess((ignored) -> System.out.println("Event sent.")).block();
-	}
-	```
+
+```java
+try (Scope scope = tracer.spanBuilder("tracing-amqp").startScopedSpan()) {
+	// Create an event to send.
+	final EventData eventData = new EventData("Hello world!".getBytes(UTF_8));
+	eventData.context(new Context("opencensus-span", tracer.getCurrentSpan()));
+	producer.send(eventData).doOnSuccess((ignored) -> System.out.println("Event sent.")).block();
+}
+```
+
 ## Troubleshooting
+### General
+
+For more information on Opencensus Java support for tracing, see [Opencensus Java Quickstart][opencensus-quickstart].
 
 ## Next steps
 Several Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Tracing:
 
 #### Hello World Samples
 * [HelloWorld.java][sample_helloWorld] - and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples with tracing enabled for following scenarios:
-    * Create a queue client using [azure-storage-queue][azure-storage-queue] Java SDK.
-    * Enqueue and dequeue messages using the created QueueClient
+    * Create a Queue Client Using [azure-storage-queue][azure-storage-queue] Java SDK.
+    * Enqueue and Dequeue Messages Using the Created Queueclient.
 #### List Operations Samples
 * [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_list_async] - Contains samples with tracing enabled for following scenarios:
-    * Create a Key
-    * List Keys
-    * Create new version of existing key.
-    * List versions of an existing key.
+    * Create a Key.
+    * List Keys.
+    * Create New Version of Existing Key.
+    * List Versions of an Existing Key.
 #### Publish multiple events Sample
 * [PublishEvents.java][sample_publish_events] - Contains samples with tracing enabled for publishing multiple events with tracing support.
 
@@ -112,10 +116,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
-[azure-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-secrets
-[azure-messaging-eventhubs]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/azure-messaging-eventhubs
-[azure-storage-queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-queue
-[context]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
+[azure-keyvault-secrets]: ../keyvault/azure-keyvault-secrets
+[azure-messaging-eventhubs]: ../eventhubs/azure-messaging-eventhubs
+[azure-storage-queue]: ../storage/azure-storage-queue
+[context]: ../core/azure-core/src/main/java/com/azure/core/util/Context.java
 [maven]: https://maven.apache.org/
 [source_code]:  src
 [aztracing_docs]: TODO
@@ -126,5 +130,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_publish_events]: ./src/samples/java/com/azure/core/tracing/PublishEvents.java
 [samples]: ./src/samples/java/com/azure/core/tracing/
 [opencensus]: https://opencensus.io/quickstart/java/tracing/
+[opencensus-quickstart]: https://opencensus.io/quickstart/java/tracing/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/tracing/README.png)
