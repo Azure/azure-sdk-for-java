@@ -62,7 +62,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
         if (pubClient == null) {
             try {
                 PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
-                pubClient = PublicClientApplication.builder(this.clientID).setTokenCacheAccessAspect(accessAspect).build();
+                pubClient = PublicClientApplication.builder(this.clientID)
+                    .setTokenCacheAccessAspect(accessAspect)
+                    .build();
             } catch (Exception e) {
                 return Mono.error(e);
             }
