@@ -22,6 +22,11 @@ public class ClientConstants {
         PRODUCT_NAME, CURRENT_JAVA_CLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
+    /**
+     * The default maximum allowable size, in bytes, for a batch to be sent.
+     */
+    static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+
     private ClientConstants() {
     }
 

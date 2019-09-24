@@ -12,7 +12,6 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -175,7 +174,7 @@ public class ReactorSession extends EndpointStateNotifierBase implements AmqpSes
                         sender.open();
                         final ReactorSender reactorSender =
                             new ReactorSender(entityPath, sender, sendLinkHandler, provider, tokenManager,
-                                messageSerializer, timeout, retry, EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES);
+                                messageSerializer, timeout, retry, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
                         openSendLinks.put(linkName, reactorSender);
                         sink.success(reactorSender);
                     });

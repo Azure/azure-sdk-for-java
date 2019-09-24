@@ -5,6 +5,9 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
@@ -12,9 +15,6 @@ import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -109,11 +109,10 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 @Immutable
 public class EventHubAsyncProducer implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
-
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
-    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+    private static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final BatchOptions DEFAULT_BATCH_OPTIONS = new BatchOptions();
