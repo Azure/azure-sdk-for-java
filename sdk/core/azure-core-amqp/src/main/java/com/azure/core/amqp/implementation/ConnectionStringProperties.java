@@ -44,7 +44,7 @@ public class ConnectionStringProperties {
 
         final String[] tokenValuePairs = connectionString.split(TOKEN_VALUE_PAIR_DELIMITER);
         URI endpoint = null;
-        String eventHubName = null;
+        String entityPath = null;
         String sharedAccessKeyName = null;
         String sharedAccessKeyValue = null;
 
@@ -81,7 +81,7 @@ public class ConnectionStringProperties {
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY)) {
                 sharedAccessKeyValue = value;
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
-                eventHubName = value;
+                entityPath = value;
             } else {
                 throw new IllegalArgumentException(
                     String.format(Locale.US, "Illegal connection string parameter name: %s", key));
@@ -93,13 +93,13 @@ public class ConnectionStringProperties {
         }
 
         this.endpoint = endpoint;
-        this.entityPath = eventHubName;
+        this.entityPath = entityPath;
         this.sharedAccessKeyName = sharedAccessKeyName;
         this.sharedAccessKey = sharedAccessKeyValue;
     }
 
     /**
-     * Gets the endpoint to be used for connecting to the Event Hubs namespace.
+     * Gets the endpoint to be used for connecting to the AMQP message broker.
      *
      * @return The endpoint address, including protocol, from the connection string.
      */

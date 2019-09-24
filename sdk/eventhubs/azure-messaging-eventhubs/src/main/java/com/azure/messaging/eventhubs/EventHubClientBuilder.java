@@ -86,7 +86,7 @@ public class EventHubClientBuilder {
     private RetryOptions retryOptions;
     private Scheduler scheduler;
     private TransportType transport;
-    private String hostname;
+    private String fullyQualifiedNamespace;
     private String eventHubName;
 
     /**
@@ -202,23 +202,26 @@ public class EventHubClientBuilder {
     /**
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
-     * @param hostname The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
-     *     <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      *
-     * @throws IllegalArgumentException if {@code hostname} or {@code eventHubName} is an empty string.
-     * @throws NullPointerException if {@code hostname}, {@code eventHubName}, {@code credentials} is null.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
      */
-    public EventHubClientBuilder credential(String hostname, String eventHubName, TokenCredential credential) {
-        this.hostname = Objects.requireNonNull(hostname, "'host' cannot be null.");
+    public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+                                            TokenCredential credential) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
-        if (ImplUtils.isNullOrEmpty(hostname)) {
+        if (ImplUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
         } else if (ImplUtils.isNullOrEmpty(eventHubName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
@@ -398,7 +401,7 @@ public class EventHubClientBuilder {
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(hostname, eventHubName, credentials, authorizationType,
+        return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyConfiguration, scheduler);
     }
 
