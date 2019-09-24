@@ -16,8 +16,8 @@ import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -164,18 +164,18 @@ public class RestProxyStressTests {
     interface IOService {
         @ExpectedResponses({201})
         @Put("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
+        Mono<Response<Void>> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
 
         @Get("/javasdktest/upload/100m-{id}.dat?{sas}")
         Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({201})
         @Put("/testcontainer{id}?restype=container&{sas}")
-        Mono<VoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<Response<Void>> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({202})
         @Delete("/testcontainer{id}?restype=container&{sas}")
-        Mono<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<Response<Void>> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
     private static Path tempFolderPath;

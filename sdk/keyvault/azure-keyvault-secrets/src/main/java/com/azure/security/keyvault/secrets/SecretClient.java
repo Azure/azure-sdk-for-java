@@ -8,7 +8,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -361,12 +360,11 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.purgeDeletedSecret#string}
      *
      * @param name The name of the secret.
-     * @return A {@link VoidResponse}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public VoidResponse purgeDeletedSecret(String name) {
-        return purgeDeletedSecret(name, Context.NONE);
+    public void purgeDeletedSecret(String name) {
+        purgeDeletedSecretWithResponse(name, Context.NONE);
     }
 
     /**
@@ -378,16 +376,16 @@ public final class SecretClient {
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Prints out the status code from the
      * server response.</p>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context}
+     * {@codesnippet com.azure.security.keyvault.secretclient.purgeDeletedSecretWithResponse#string-Context}
      *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link VoidResponse}.
+     * @return A response containing status code and HTTP headers.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public VoidResponse purgeDeletedSecret(String name, Context context) {
-        return client.purgeDeletedSecret(name, context).block();
+    public Response<Void> purgeDeletedSecretWithResponse(String name, Context context) {
+        return client.purgeDeletedSecretWithResponse(name, context).block();
     }
 
     /**
