@@ -17,17 +17,23 @@ namespace StoragePerfNet
     {
         private const string _containerName = "testcontainer";
         private const string _blobName = "testblobupdown";
-        
+
         public class Options
         {
             [Option("debug")]
             public bool Debug { get; set; }
 
+            [Option('c', "count", Default = 5)]
+            public int Count { get; set; }
+
+            [Option('l', "maximumTransferLength")]
+            public int? MaximumTransferLength { get; set; }
+
             [Option('s', "size", Default = 10 * 1024, HelpText = "Size of message (in bytes)")]
             public int Size { get; set; }
 
-            [Option('t', "maximumThreadCount", Default = -1)]
-            public int MaximumThreadCount { get; set; }
+            [Option('t', "maximumThreadCount")]
+            public int? MaximumThreadCount { get; set; }
         }
 
         static async Task Main(string[] args)
@@ -62,11 +68,11 @@ namespace StoragePerfNet
 
             var client = new BlobClient(connectionString, _containerName, _blobName, blobClientOptions);
 
-            var parallelTransferOptions = new ParallelTransferOptions();
-            if (options.MaximumThreadCount != -1)
+            var parallelTransferOptions = new ParallelTransferOptions()
             {
-                parallelTransferOptions.MaximumThreadCount = options.MaximumThreadCount;
-            }
+                MaximumThreadCount = options.MaximumThreadCount,
+                MaximumTransferLength = options.MaximumTransferLength
+            };
 
             var payload = new byte[options.Size];
             // Initialize payload with stable random data since all-zeros may be compressed or optimized
@@ -77,7 +83,7 @@ namespace StoragePerfNet
             Console.WriteLine();
 
             var sw = new Stopwatch();
-            while (true)
+            for (var i = 0; i < options.Count; i++)
             {
                 payloadStream.Seek(0, SeekOrigin.Begin);
 
