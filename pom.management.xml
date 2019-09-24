@@ -21,7 +21,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.0</version> <!-- {x-version-exempt;all of management needs to be updated in order for this to be at the latest} -->
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
