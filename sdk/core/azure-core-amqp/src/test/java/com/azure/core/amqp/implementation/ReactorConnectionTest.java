@@ -74,7 +74,6 @@ public class ReactorConnectionTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ReactorProvider reactorProvider;
-    private ReactorHandlerProvider reactorHandlerProvider;
     private ConnectionHandler connectionHandler;
 
     @Before
@@ -88,9 +87,11 @@ public class ReactorConnectionTest {
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+        when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
 
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
-        reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
+
+        final ReactorHandlerProvider reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
         final RetryOptions retryOptions = new RetryOptions().setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
