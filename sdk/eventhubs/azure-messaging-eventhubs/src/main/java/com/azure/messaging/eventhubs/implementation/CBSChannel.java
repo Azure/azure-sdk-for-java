@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -53,7 +54,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
         request.setApplicationProperties(applicationProperties);
 
-        return credential.getToken(tokenAudience).flatMap(accessToken -> {
+        return credential.getToken(new TokenRequest().addScopes(tokenAudience)).flatMap(accessToken -> {
             request.setBody(new AmqpValue(accessToken.getToken()));
 
             return cbsChannelMono.flatMap(x -> x.sendWithAck(request))
