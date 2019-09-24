@@ -20,8 +20,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Flux<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
 
-    public ReceiveLinkHandler(String connectionId, String host, String receiverName, String entityPath) {
-        super(connectionId, host, entityPath, new ClientLogger(ReceiveLinkHandler.class));
+    public ReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
+        super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
         this.deliveries = Flux.create(sink -> {
             deliverySink = sink;
         });

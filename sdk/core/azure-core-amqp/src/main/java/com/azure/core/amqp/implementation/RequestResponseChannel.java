@@ -68,7 +68,7 @@ public class RequestResponseChannel implements Closeable {
      * {@code entityPath} in the message broker.
      *
      * @param connectionId Identifier of the connection.
-     * @param host Fully qualified domain name for the the host.
+     * @param hostname Fully qualified domain name for the the host.
      * @param linkName Name of the link.
      * @param entityPath Address in the message broker to send message to.
      * @param session Reactor session associated with this link.
@@ -76,8 +76,8 @@ public class RequestResponseChannel implements Closeable {
      * @param handlerProvider Provides handlers that interact with proton-j's reactor.
      * @param provider The reactor provider that the request will be sent with.
      */
-    public RequestResponseChannel(String connectionId, String host, String linkName, String entityPath, Session session,
-                                  RetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
+    public RequestResponseChannel(String connectionId, String hostname, String linkName, String entityPath,
+                                  Session session, RetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
                                   ReactorProvider provider, MessageSerializer messageSerializer) {
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
@@ -91,7 +91,7 @@ public class RequestResponseChannel implements Closeable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName, entityPath);
+        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, hostname, linkName, entityPath);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
@@ -103,7 +103,7 @@ public class RequestResponseChannel implements Closeable {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName, entityPath);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {

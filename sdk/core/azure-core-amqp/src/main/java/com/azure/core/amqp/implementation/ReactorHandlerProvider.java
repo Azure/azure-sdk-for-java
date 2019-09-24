@@ -54,42 +54,42 @@ public class ReactorHandlerProvider {
     }
 
     /**
-     * Creates a new session handler with the given {@code connectionId}, {@code host}, and {@code sessionName}.
+     * Creates a new session handler with the given {@code connectionId}, {@code hostname}, and {@code sessionName}.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param host Host of the parent connection.
+     * @param hostname Host of the parent connection.
      * @param sessionName Name of the session.
      * @param openTimeout Duration to wait for the session to open.
      * @return A new {@link SessionHandler}.
      */
-    public SessionHandler createSessionHandler(String connectionId, String host, String sessionName,
+    public SessionHandler createSessionHandler(String connectionId, String hostname, String sessionName,
                                                Duration openTimeout) {
-        return new SessionHandler(connectionId, host, sessionName, provider.getReactorDispatcher(), openTimeout);
+        return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(), openTimeout);
     }
 
     /**
      * Creates a new link handler for sending messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param host Host of the parent connection.
+     * @param hostname Host of the parent connection.
      * @param senderName Name of the send link.
      * @return A new {@link SendLinkHandler}.
      */
-    public SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName,
+    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName,
                                                  String entityPath) {
-        return new SendLinkHandler(connectionId, host, senderName, entityPath);
+        return new SendLinkHandler(connectionId, hostname, senderName, entityPath);
     }
 
     /**
      * Creates a new link handler for receiving messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
-     * @param host Host of the parent connection.
+     * @param hostname Host of the parent connection.
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName,
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName,
                                                 String entityPath) {
-        return new ReceiveLinkHandler(connectionId, host, receiverName, entityPath);
+        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath);
     }
 }

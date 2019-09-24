@@ -27,7 +27,7 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
+    public SessionHandler createSessionHandler(String connectionId, String hostname, String sessionName, Duration openTimeout) {
         return sessionHandler;
     }
 
@@ -37,12 +37,12 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName, String entityPath) {
+    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName, String entityPath) {
         return sendLinkHandler;
     }
 
     @Override
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
         return receiveLinkHandler;
     }
 }

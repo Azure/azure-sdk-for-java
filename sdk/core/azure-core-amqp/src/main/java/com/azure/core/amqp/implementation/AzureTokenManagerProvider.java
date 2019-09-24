@@ -22,17 +22,18 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
     private final String activeDirectoryScope;
 
     /**
-     * Creates an instance that provides {@link TokenManager} for the given {@code host} with the {@code
+     * Creates an instance that provides {@link TokenManager} for the given {@code hostname} with the {@code
      * authorizationType}.
      *
      * @param authorizationType Method to authorize against Azure messaging service.
-     * @param host Fully-qualified domain name (FQDN) of the message broker.
+     * @param hostname Fully-qualified domain name (FQDN) of the message broker.
      * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
      */
-    public AzureTokenManagerProvider(CBSAuthorizationType authorizationType, String host, String activeDirectoryScope) {
+    public AzureTokenManagerProvider(CBSAuthorizationType authorizationType, String hostname,
+                                     String activeDirectoryScope) {
         this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
             "'activeDirectoryScope' cannot be null.");
-        this.host = Objects.requireNonNull(host, "'host' cannot be null.");
+        this.host = Objects.requireNonNull(hostname, "'host' cannot be null.");
         this.authorizationType = Objects.requireNonNull(authorizationType,
             "'authorizationType' cannot be null.");
     }
