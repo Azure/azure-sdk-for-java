@@ -224,6 +224,71 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         validateResults(results, expectedText, expectedQueryPlusText);
     }
 
+    @Override
+    public void testAutocompleteOneTermWithContextWithFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("very polite", "very police");
+        List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
+            .useFuzzyMatching(true);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("very polit", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
+    @Override
+    public void testAutocompleteOneTermWithFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .useFuzzyMatching(true);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
+    @Override
+    public void testAutocompleteTwoTermsWithFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.TWO_TERMS)
+            .useFuzzyMatching(true);
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
+    @Override
+    public void testAutocompleteWithFilterAndFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("modern", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .useFuzzyMatching(true)
+            .filter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
+
+        PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+        results.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(results);
+        validateResults(results, expectedText, expectedQueryPlusText);
+    }
+
     /**
      * Compare the autocomplete results with the expected strings
      *

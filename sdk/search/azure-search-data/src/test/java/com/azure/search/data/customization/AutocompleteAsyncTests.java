@@ -198,6 +198,67 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         validateResults(expectedText, expectedQueryPlusText, results);
     }
 
+    @Override
+    public void testAutocompleteOneTermWithContextWithFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("very polite", "very police");
+        List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
+            .useFuzzyMatching(true);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("very polit", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void testAutocompleteOneTermWithFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("model", "modern", "morel", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .useFuzzyMatching(true);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void testAutocompleteTwoTermsWithFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.TWO_TERMS)
+            .useFuzzyMatching(true);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
+    public void testAutocompleteWithFilterAndFuzzy() throws Exception {
+        List<String> expectedText = Arrays.asList("modern", "motel");
+        List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .useFuzzyMatching(true)
+            .filter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
     /**
      * Validate the text and query plus text results
      * @param expectedText
