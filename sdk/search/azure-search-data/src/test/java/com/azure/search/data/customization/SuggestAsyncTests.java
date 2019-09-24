@@ -178,6 +178,25 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
+    public void testCanFilter() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        SuggestParameters suggestParams = new SuggestParameters()
+            .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+            .orderBy(Arrays.asList("HotelId"));
+
+        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+
+        StepVerifier.create(suggestResult.byPage())
+            .assertNext(nextPage -> {
+                List<String> actualIds = nextPage.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+                List<String> expectedIds = Arrays.asList("1", "5");
+                Assert.assertEquals(expectedIds, actualIds);
+            })
+            .verifyComplete();
+    }
+
+    @Override
     public void testOrderByProgressivelyBreaksTies() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
 

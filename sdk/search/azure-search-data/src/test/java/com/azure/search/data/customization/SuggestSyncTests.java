@@ -183,6 +183,23 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Override
+    public void testCanFilter() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        SuggestParameters suggestParams = new SuggestParameters()
+            .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+            .orderBy(Arrays.asList("HotelId"));
+
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(result);
+        List<String> actualIds = result.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> expectedIds = Arrays.asList("1", "5");
+        Assert.assertEquals(expectedIds, actualIds);
+    }
+
+    @Override
     public void testOrderByProgressivelyBreaksTies() {
         uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
 
