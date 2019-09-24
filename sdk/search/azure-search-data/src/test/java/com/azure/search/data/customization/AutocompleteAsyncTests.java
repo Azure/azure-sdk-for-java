@@ -199,6 +199,21 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
+    public void testAutocompleteTopTrimsResults() throws Exception {
+        List<String> expectedText = Arrays.asList("point", "police");
+        List<String> expectedQueryPlusText = Arrays.asList("point", "police");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .top(2);
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
+    @Override
     public void testAutocompleteWithFilter() throws Exception {
         List<String> expectedText = Arrays.asList("polite");
         List<String> expectedQueryPlusText = Arrays.asList("polite");
@@ -213,6 +228,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         validateResults(expectedText, expectedQueryPlusText, results);
     }
 
+    @Override
     public void testAutocompleteOneTermWithContextWithFuzzy() throws Exception {
         List<String> expectedText = Arrays.asList("very polite", "very police");
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");

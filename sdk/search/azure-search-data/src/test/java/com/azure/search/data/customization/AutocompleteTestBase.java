@@ -56,6 +56,9 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     public abstract void testAutocompleteCanUseHitHighlighting() throws Exception;
 
     @Test
+    public abstract void testAutocompleteTopTrimsResults() throws Exception;
+
+    @Test
     public abstract void testAutocompleteWithFilter() throws Exception;
 
     @Test
