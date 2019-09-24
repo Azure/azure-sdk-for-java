@@ -96,7 +96,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
     ```Bash
-    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list set
+    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list create
     ```
     > --key-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, create
@@ -274,6 +274,7 @@ The following sections provide several code snippets covering some of the most c
 - [Encrypt Asynchronously](#encryp-asynchronously)
 - [Decrypt Asynchronously](#decrypt-asynchronously)
 
+> Note : You should add "System.in.read()" or "Thread.Sleep()" after every operation bacause some Async functions need more time to complete.
 
 ### Create a Key Asynchronously
 
@@ -299,6 +300,7 @@ keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
     .expires(OffsetDateTime.now().plusYears(1)))
     .subscribe(key ->
       System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
+System.in.read();
 ```
 
 ### Retrieve a Key Asynchronously
@@ -307,6 +309,7 @@ Retrieve a previously stored Key by calling `getKey`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(key ->
   System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id()));
+System.in.read();
 ```
 
 ### Update an existing Key Asynchronously
@@ -321,6 +324,7 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      keyAsyncClient.updateKey(key).subscribe(updatedKey ->
          System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString()));
    });
+System.in.read();
 ```
 
 ### Delete a Key Asynchronously
@@ -329,6 +333,7 @@ Delete an existing Key by calling `deleteKey`.
 ```java
 keyAsyncClient.deleteKey("keyName").subscribe(deletedKey ->
    System.out.printf("Deleted Key's deletion time %s \n", deletedKey.deletedDate().toString()));
+System.in.read();
 ```
 
 ### List Keys Asynchronously
@@ -339,6 +344,7 @@ List the keys in the key vault by calling `listKeys`.
 keyAsyncClient.listKeys()
   .flatMap(keyAsyncClient::getKey).subscribe(key ->
     System.out.printf("Key returned with name %s and id %s \n", key.name(), key.id()));
+System.in.read();
 ```
 
 ### Encrypt Asynchronously
@@ -358,6 +364,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptResult -> {
         System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
     });
+System.in.read();
 ```
 
 ### Decrypt Asynchronously
@@ -375,7 +382,7 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
         cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText())
             .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.plainText().length));
     });
-
+System.in.read();
 ```
 
 ## Troubleshooting
