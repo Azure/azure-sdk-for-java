@@ -161,4 +161,9 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
         this.snapshot = snapshot;
         return this;
     }
+
+    @Override
+    protected Class<BlobClientBuilder> getClazz() {
+        return BlobClientBuilder.class;
+    }
 }

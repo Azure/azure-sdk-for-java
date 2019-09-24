@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -60,9 +61,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link AppendBlobAsyncClient} associated to this blob.
      */
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
-        return new SpecializedBlobClientBuilder()
-            .blobAsyncClient(this)
-            .buildAppendBlobAsyncClient();
+        return prepareBuilder().buildAppendBlobAsyncClient();
     }
 
     /**
@@ -71,9 +70,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlockBlobAsyncClient} associated to this blob.
      */
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
-        return new SpecializedBlobClientBuilder()
-            .blobAsyncClient(this)
-            .buildBlockBlobAsyncClient();
+        return prepareBuilder().buildBlockBlobAsyncClient();
     }
 
     /**
@@ -82,8 +79,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link PageBlobAsyncClient} associated to this blob.
      */
     public PageBlobAsyncClient asPageBlobAsyncClient() {
-        return new SpecializedBlobClientBuilder()
-            .blobAsyncClient(this)
-            .buildPageBlobAsyncClient();
+        return prepareBuilder().buildPageBlobAsyncClient();
+    }
+
+    private SpecializedBlobClientBuilder prepareBuilder() {
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
+            .pipeline(getHttpPipeline())
+            .endpoint(getBlobUrl().toString())
+            .snapshot(snapshot);
+
+        CpkInfo cpk = getCpk();
+        if (cpk != null) {
+            builder.customerProvidedKey(new CustomerProvidedKey(cpk.getEncryptionKey()));
+        }
+
+        return builder;
     }
 }
