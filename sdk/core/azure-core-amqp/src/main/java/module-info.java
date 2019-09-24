@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.azure.amqp {
+module com.azure.core.amqp {
     requires com.azure.core;
-
-    requires reactor.core;
 
     exports com.azure.core.amqp;
     exports com.azure.core.amqp.exception;
