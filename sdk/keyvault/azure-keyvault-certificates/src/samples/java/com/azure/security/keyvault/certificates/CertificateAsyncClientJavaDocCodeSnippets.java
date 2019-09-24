@@ -442,7 +442,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string
         certificateAsyncClient.purgeDeletedCertificate("deletedCertificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .doOnSuccess(response -> System.out.printf("Successfully Purged certificate \n"));
+            .doOnSuccess(response -> System.out.println("Successfully Purged certificate \n"));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string
     }
 
@@ -455,7 +455,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.purgeDeletedCertificateWithResponse("deletedCertificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(purgeResponse ->
-                System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
+                System.out.printf("Purge Status response %n \n", purgeResponse.getStatusCode()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string
     }
 

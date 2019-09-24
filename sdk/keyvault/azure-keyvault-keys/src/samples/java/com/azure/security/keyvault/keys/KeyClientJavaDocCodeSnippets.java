@@ -263,7 +263,7 @@ public final class KeyClientJavaDocCodeSnippets {
         
         // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKeyWithResponse#string-Context
         Response<Void> purgedResponse = keyClient.purgeDeletedKeyWithResponse("deletedKeyName", new Context(key2, value2));
-        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgedResponse.getStatusCode());
+        System.out.printf("Purge Status Code: %n \n", purgedResponse.getStatusCode());
         // END: com.azure.keyvault.keys.keyclient.purgeDeletedKeyWithResponse#string-Context
     }
 

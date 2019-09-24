@@ -64,7 +64,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
-            System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
+            System.out.printf("Purge Status response %n \n", purgeResponse.getStatusCode()));
 
         //To ensure file is purged on server side.
         Thread.sleep(15000);

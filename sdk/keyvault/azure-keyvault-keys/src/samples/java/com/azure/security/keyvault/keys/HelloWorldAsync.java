@@ -81,7 +81,7 @@ public class HelloWorldAsync {
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
-                System.out.printf("Cloud Rsa key purge status response %d \n", purgeResponse.getStatusCode()));
+                System.out.printf("Cloud Rsa key purge status response %n \n", purgeResponse.getStatusCode()));
 
         //To ensure key is purged on server side.
         Thread.sleep(15000);
