@@ -3,11 +3,8 @@
 
 package com.azure.core.amqp.implementation;
 
-public class ClientConstants {
+public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
-    public static final int MAX_AMQP_HEADER_SIZE_BYTES = 512;
-    public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
-
     public static final String PRODUCT_NAME = "azsdk-java-eventhubs";
     public static final String CURRENT_JAVA_CLIENT_VERSION = "5.0.0-preview.4";
     public static final String PLATFORM_INFO = getOSInformation();
@@ -20,12 +17,14 @@ public class ClientConstants {
      */
     public static final String USER_AGENT = String.format("%s/%s %s;%s",
         PRODUCT_NAME, CURRENT_JAVA_CLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
-    public static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+    static final int MAX_AMQP_HEADER_SIZE_BYTES = 512;
+    static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
+    static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
     private ClientConstants() {
     }

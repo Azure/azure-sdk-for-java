@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.LinkErrorContext;
-import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -14,6 +13,8 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
+
+import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 
 abstract class LinkHandler extends Handler {
 
@@ -73,8 +74,8 @@ abstract class LinkHandler extends Handler {
 
     public ErrorContext getErrorContext(Link link) {
         final String referenceId;
-        if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(AmqpErrorCode.TRACKING_ID_PROPERTY)) {
-            referenceId = link.getRemoteProperties().get(AmqpErrorCode.TRACKING_ID_PROPERTY).toString();
+        if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
+            referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
         } else {
             referenceId = link.getName();
         }
