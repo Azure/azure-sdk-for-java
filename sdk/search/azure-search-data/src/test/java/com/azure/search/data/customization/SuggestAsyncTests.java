@@ -7,12 +7,15 @@ import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 
+import org.junit.Assert;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_INDEX_NAME;
@@ -171,6 +174,27 @@ public class SuggestAsyncTests extends SuggestTestBase {
         StepVerifier
             .create(suggestResult.byPage())
             .assertNext(this::verifyTopDocumentSuggest)
+            .verifyComplete();
+    }
+
+    @Override
+    public void testOrderByProgressivelyBreaksTies() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(Arrays.asList("Rating desc",
+                "LastRenovationDate asc",
+                "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
+
+        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(nextPage -> {
+                List<String> actualIds = nextPage.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+                List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
+                Assert.assertEquals(expectedIds, actualIds);
+            })
             .verifyComplete();
     }
 }

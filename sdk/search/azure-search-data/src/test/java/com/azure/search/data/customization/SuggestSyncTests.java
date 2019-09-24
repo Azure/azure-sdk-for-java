@@ -13,11 +13,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_INDEX_NAME;
@@ -178,5 +180,23 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         //assert
         verifyTopDocumentSuggest(iterator.next());
+    }
+
+    @Override
+    public void testOrderByProgressivelyBreaksTies() {
+        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+
+        SuggestParameters suggestParams = new SuggestParameters()
+            .orderBy(Arrays.asList("Rating desc",
+                "LastRenovationDate asc",
+                "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
+
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
+
+        Assert.assertNotNull(result);
+        List<String> actualIds = result.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
+        Assert.assertEquals(expectedIds, actualIds);
     }
 }

@@ -152,4 +152,6 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void testTopTrimsResults();
 
+    @Test
+    public abstract void testOrderByProgressivelyBreaksTies();
 }
