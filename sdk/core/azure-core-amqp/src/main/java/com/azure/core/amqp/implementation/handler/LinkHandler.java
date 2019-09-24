@@ -6,15 +6,14 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpErrorCode;
+import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
-
-import static com.azure.messaging.eventhubs.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 
 abstract class LinkHandler extends Handler {
 

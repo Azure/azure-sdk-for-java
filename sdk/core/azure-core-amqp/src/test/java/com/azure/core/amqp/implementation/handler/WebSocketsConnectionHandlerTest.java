@@ -3,7 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.core.amqp.implementation.ClientConstants;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
