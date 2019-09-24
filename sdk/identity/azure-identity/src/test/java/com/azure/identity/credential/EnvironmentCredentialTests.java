@@ -4,6 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.Configuration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class EnvironmentCredentialTests {
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        AccessToken token = credential.getToken("qux/.default")
+        AccessToken token = credential.getToken(new TokenRequest().addScopes("qux/.default"))
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
                 String message = t.getMessage();
