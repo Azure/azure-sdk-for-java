@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.azure.test {
+module com.azure.core.test {
     requires transitive com.azure.core;
     requires com.fasterxml.jackson.annotation;
     requires junit;
     requires org.slf4j;
-    requires reactor.core;
     requires reactor.test;
 
     exports com.azure.core.test;
