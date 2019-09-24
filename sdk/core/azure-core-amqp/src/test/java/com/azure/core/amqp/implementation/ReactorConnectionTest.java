@@ -72,9 +72,9 @@ public class ReactorConnectionTest {
     private TokenManagerProvider tokenManager;
     @Mock
     private MessageSerializer messageSerializer;
-
-    private MockReactorProvider reactorProvider;
-    private MockReactorHandlerProvider reactorHandlerProvider;
+    @Mock
+    private ReactorProvider reactorProvider;
+    private ReactorHandlerProvider reactorHandlerProvider;
     private ConnectionHandler connectionHandler;
 
     @Before
@@ -86,7 +86,9 @@ public class ReactorConnectionTest {
         connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
-        reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
+        when(reactorProvider.getReactor()).thenReturn(reactor);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
         reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler, sessionHandler, null, null);
 
@@ -278,6 +280,10 @@ public class ReactorConnectionTest {
     @Test
     public void createCBSNodeTimeoutException() {
         // Arrange
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
+        final ReactorHandlerProvider provider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler,
+            null, null);
+
         Duration timeout = Duration.ofSeconds(2);
         RetryOptions retryOptions = new RetryOptions()
             .setMaxRetries(2)
@@ -290,7 +296,7 @@ public class ReactorConnectionTest {
 
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            reactorHandlerProvider, tokenManager, messageSerializer)) {
+            provider, tokenManager, messageSerializer)) {
             StepVerifier.create(connectionBad.getCBSNode())
                 .verifyError(TimeoutException.class);
         }

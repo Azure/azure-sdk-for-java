@@ -50,6 +50,8 @@ public class ReactorSessionTest {
     private CBSNode cbsNode;
     @Mock
     private MessageSerializer serializer;
+    @Mock
+    private ReactorProvider reactorProvider;
 
     @Before
     public void setup() throws IOException {
@@ -59,7 +61,10 @@ public class ReactorSessionTest {
 
         ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, dispatcher, Duration.ofSeconds(60));
-        MockReactorProvider reactorProvider = new MockReactorProvider(reactor, dispatcher);
+
+        when(reactorProvider.getReactor()).thenReturn(reactor);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+
         MockReactorHandlerProvider handlerProvider = new MockReactorHandlerProvider(reactorProvider, null, handler, null, null);
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");

@@ -40,7 +40,7 @@ public class ConnectionHandlerTest {
     private ConnectionHandler handler;
 
     @Captor
-    ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
+    private ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
 
     @Before
     public void setup() {
