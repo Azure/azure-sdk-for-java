@@ -174,7 +174,7 @@ public class RequestResponseChannel implements Closeable {
         sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
 
         final int payloadSize = messageSerializer.getSize(message)
-            + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES;
+            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
         final byte[] bytes = new byte[payloadSize];
         final int encodedSize = message.encode(bytes, 0, payloadSize);
 

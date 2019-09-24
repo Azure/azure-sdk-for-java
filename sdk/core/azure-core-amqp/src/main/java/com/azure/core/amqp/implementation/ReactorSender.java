@@ -134,7 +134,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     public Mono<Void> send(Message message) {
         final int payloadSize = messageSerializer.getSize(message);
         final int allocationSize =
-            Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+            Math.min(payloadSize + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         final byte[] bytes = new byte[allocationSize];
 
         int encodedSize;
@@ -178,7 +178,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             int payloadSize = messageSerializer.getSize(amqpMessage);
             int allocationSize =
-                Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
+                Math.min(payloadSize + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
 
             byte[] messageBytes = new byte[allocationSize];
             int messageSizeBytes = amqpMessage.encode(messageBytes, 0, allocationSize);

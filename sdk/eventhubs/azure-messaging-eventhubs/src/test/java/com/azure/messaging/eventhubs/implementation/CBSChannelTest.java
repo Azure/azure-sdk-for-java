@@ -79,7 +79,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         }
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
-            connectionString.getEventHubName(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
+            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
         final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
@@ -108,7 +108,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEventHubName());
+        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience))
@@ -119,7 +119,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void unsuccessfulAuthorize() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEventHubName());
+        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
         final Duration duration = Duration.ofMinutes(10);
 
         TokenCredential tokenProvider = null;

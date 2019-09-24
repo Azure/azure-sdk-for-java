@@ -5,10 +5,10 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -43,7 +43,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
-        eventHubName = getConnectionStringProperties().getEventHubName();
+        eventHubName = getConnectionStringProperties().getEntityPath();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final TokenCredential invalidTokenCredential = new EventHubSharedAccessKeyCredential(
             original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
         final EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), original.getEventHubName(), invalidTokenCredential)
+            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
             .buildAsyncClient();
 
         // Act & Assert

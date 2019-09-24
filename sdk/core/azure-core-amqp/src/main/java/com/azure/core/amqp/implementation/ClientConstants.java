@@ -5,7 +5,7 @@ package com.azure.core.amqp.implementation;
 
 public class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
-    public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
+    public static final int MAX_AMQP_HEADER_SIZE_BYTES = 512;
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
 
     public static final String PRODUCT_NAME = "azsdk-java-eventhubs";

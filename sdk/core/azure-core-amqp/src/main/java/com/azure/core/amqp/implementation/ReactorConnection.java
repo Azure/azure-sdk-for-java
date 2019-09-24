@@ -75,7 +75,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
-        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHost(),
+        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHostname(),
             connectionOptions.getTransportType());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
@@ -247,7 +247,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
 
             reactorExceptionHandler = new ReactorExceptionHandler();
             executor = new ReactorExecutor(reactor, connectionOptions.getScheduler(), connectionId,
-                reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(), connectionOptions.getHost());
+                reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(), connectionOptions.getHostname());
 
             executor.start();
         }

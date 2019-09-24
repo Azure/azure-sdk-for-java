@@ -24,7 +24,7 @@ public class ConnectionStringProperties {
         + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}'. Actual: %s";
 
     private final URI endpoint;
-    private final String eventHubName;
+    private final String entityPath;
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;
 
@@ -93,7 +93,7 @@ public class ConnectionStringProperties {
         }
 
         this.endpoint = endpoint;
-        this.eventHubName = eventHubName;
+        this.entityPath = eventHubName;
         this.sharedAccessKeyName = sharedAccessKeyName;
         this.sharedAccessKey = sharedAccessKeyValue;
     }
@@ -108,12 +108,12 @@ public class ConnectionStringProperties {
     }
 
     /**
-     * Gets the name of the specific Event Hub under the namespace.
+     * Gets the entity path to connect to in the message broker.
      *
-     * @return The name of the specific Event Hub under the namespace.
+     * @return The entity path to connect to in the message broker.
      */
-    public String getEventHubName() {
-        return eventHubName;
+    public String getEntityPath() {
+        return entityPath;
     }
 
     /**

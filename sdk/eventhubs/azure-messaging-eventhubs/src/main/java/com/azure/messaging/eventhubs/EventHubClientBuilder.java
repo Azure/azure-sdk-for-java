@@ -131,7 +131,7 @@ public class EventHubClientBuilder {
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        return credential(properties.getEndpoint().getHost(), properties.getEventHubName(), tokenCredential);
+        return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
 
     /**
@@ -172,13 +172,13 @@ public class EventHubClientBuilder {
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        if (!ImplUtils.isNullOrEmpty(properties.getEventHubName())
-            && !eventHubName.equals(properties.getEventHubName())) {
+        if (!ImplUtils.isNullOrEmpty(properties.getEntityPath())
+            && !eventHubName.equals(properties.getEntityPath())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
                     + "'eventHubName' parameter [%s]. Please use the credentials(String connectionString) overload. "
                     + "Or supply a 'connectionString' without 'EntityPath' in it.",
-                properties.getEventHubName(), eventHubName)));
+                properties.getEntityPath(), eventHubName)));
         }
 
         return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential);
@@ -348,7 +348,7 @@ public class EventHubClientBuilder {
         final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getHost(),
+                connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,

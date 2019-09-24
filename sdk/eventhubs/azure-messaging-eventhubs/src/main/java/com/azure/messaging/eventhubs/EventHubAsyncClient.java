@@ -7,22 +7,22 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubSession;
-import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -85,7 +85,7 @@ public class EventHubAsyncClient implements Closeable {
 
         this.connectionOptions = Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
-        this.eventHubName = connectionOptions.getEventHubName();
+        this.eventHubName = connectionOptions.getEntityPath();
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionMono = Objects.requireNonNull(eventHubConnectionMono, "'eventHubConnectionMono' cannot be null.")
             .doOnSubscribe(c -> hasConnection.set(true))
@@ -303,7 +303,7 @@ public class EventHubAsyncClient implements Closeable {
             } catch (IOException exception) {
                 throw logger.logExceptionAsError(
                     new AmqpException(false, "Unable to close connection to service", exception,
-                        new ErrorContext(connectionOptions.getHost())));
+                        new ErrorContext(connectionOptions.getHostname())));
             }
         }
     }

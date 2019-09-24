@@ -56,7 +56,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
             Mono.fromCallable(() -> {
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(),
+                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
                     this.tokenManagerProvider, this.messageSerializer);
             }))
             .cache();

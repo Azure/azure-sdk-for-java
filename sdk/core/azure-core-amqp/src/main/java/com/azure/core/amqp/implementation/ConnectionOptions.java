@@ -12,7 +12,7 @@ import reactor.core.scheduler.Scheduler;
 import java.util.Objects;
 
 /**
- * A wrapper class that contains all parameters that are needed to establish a connection to an Event Hub.
+ * A wrapper class that contains all parameters that are needed to establish a connection to an AMQP message broker.
  */
 public class ConnectionOptions {
     private final TokenCredential tokenCredential;
@@ -24,32 +24,24 @@ public class ConnectionOptions {
     private final String eventHubName;
     private final CBSAuthorizationType authorizationType;
 
-    public ConnectionOptions(String host, String eventHubName, TokenCredential tokenCredential,
+    public ConnectionOptions(String hostname, String entityPath, TokenCredential tokenCredential,
                              CBSAuthorizationType authorizationType, TransportType transport, RetryOptions retryOptions,
                              ProxyConfiguration proxyConfiguration, Scheduler scheduler) {
-        Objects.requireNonNull(host);
-        Objects.requireNonNull(eventHubName);
-        Objects.requireNonNull(tokenCredential);
-        Objects.requireNonNull(transport);
-        Objects.requireNonNull(retryOptions);
-        Objects.requireNonNull(proxyConfiguration);
-        Objects.requireNonNull(scheduler);
-
-        this.host = host;
-        this.eventHubName = eventHubName;
-        this.tokenCredential = tokenCredential;
-        this.authorizationType = authorizationType;
-        this.transport = transport;
-        this.retryOptions = retryOptions;
-        this.proxyConfiguration = proxyConfiguration;
-        this.scheduler = scheduler;
+        this.host = Objects.requireNonNull(hostname, "'hostname' is required.");
+        this.eventHubName = Objects.requireNonNull(entityPath, "'entityPath' is required.");
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
+        this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' is required.");
+        this.transport = Objects.requireNonNull(transport, "'transport' is required.");
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' is required.");
+        this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' is required.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' is required.");
     }
 
-    public String getHost() {
+    public String getHostname() {
         return host;
     }
 
-    public String getEventHubName() {
+    public String getEntityPath() {
         return eventHubName;
     }
 
