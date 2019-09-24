@@ -11,6 +11,7 @@ module com.azure.identity {
     requires jna;
     requires jna.platform;
     requires nanohttpd;
+    requires org.reactivestreams;
 
     exports com.azure.identity;
     exports com.azure.identity.credential;

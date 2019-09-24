@@ -3,14 +3,15 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Deque;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -33,10 +34,17 @@ public class ChainedTokenCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
+        AtomicReference<Throwable> cause = new AtomicReference<>();
         return Flux.fromIterable(credentials)
-            .flatMap(p -> p.getToken(scopes).onErrorResume(t -> Mono.empty()))
+            .flatMap(p -> p.getToken(scopes).onErrorResume(t -> {
+                if (cause.get() != null) {
+                    t.initCause(cause.get());
+                }
+                cause.set(t);
+                return Mono.empty();
+            }))
             .next()
-            .switchIfEmpty(Mono.error(new ClientAuthenticationException(
-                "No credential can provide a token in the chain", null)));
+            .switchIfEmpty(Mono.defer(() -> Mono.error(new ClientAuthenticationException(
+                "No credential can provide a token in the chain", null, cause.get()))));
     }
 }
