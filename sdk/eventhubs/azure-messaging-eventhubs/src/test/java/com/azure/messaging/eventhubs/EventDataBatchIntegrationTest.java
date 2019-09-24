@@ -3,8 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -69,7 +70,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatch() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -86,13 +87,13 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition
+     * Test for sending a message batch that is {@link ClientConstants#MAX_MESSAGE_LENGTH_BYTES} with partition
      * key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -117,7 +118,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();

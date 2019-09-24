@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.models.ProxyConfiguration;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.TokenCredential;
 import reactor.core.scheduler.Scheduler;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 /**
  * A wrapper class that contains all parameters that are needed to establish a connection to an AMQP message broker.
  */
+@Immutable
 public class ConnectionOptions {
     private final TokenCredential tokenCredential;
     private final TransportType transport;

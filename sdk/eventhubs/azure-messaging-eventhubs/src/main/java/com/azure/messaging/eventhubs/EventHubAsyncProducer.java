@@ -47,6 +47,7 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
  * A producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped together in batches.
@@ -109,10 +110,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 @Immutable
 public class EventHubAsyncProducer implements Closeable {
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
-    /**
-     * The default maximum allowable size, in bytes, for a batch to be sent.
-     */
-    private static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final BatchOptions DEFAULT_BATCH_OPTIONS = new BatchOptions();

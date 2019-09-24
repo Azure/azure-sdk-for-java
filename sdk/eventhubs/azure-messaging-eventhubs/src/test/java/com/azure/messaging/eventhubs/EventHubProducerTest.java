@@ -7,12 +7,13 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -67,7 +68,7 @@ public class EventHubProducerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        when(sendLink.getLinkSize()).thenReturn(Mono.just(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());

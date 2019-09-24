@@ -24,7 +24,6 @@ public final class ClientConstants {
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     static final int MAX_AMQP_HEADER_SIZE_BYTES = 512;
     static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
-    static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
     private ClientConstants() {
     }

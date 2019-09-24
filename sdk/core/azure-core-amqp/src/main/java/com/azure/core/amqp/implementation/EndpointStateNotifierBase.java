@@ -16,7 +16,7 @@ import reactor.core.publisher.ReplayProcessor;
 import java.io.Closeable;
 import java.util.Objects;
 
-abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Closeable {
+public abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Closeable {
     private final ReplayProcessor<AmqpEndpointState> connectionStateProcessor =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final DirectProcessor<Throwable> errorContextProcessor = DirectProcessor.create();
@@ -26,7 +26,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     protected ClientLogger logger;
     private volatile AmqpEndpointState state;
 
-    EndpointStateNotifierBase(ClientLogger logger) {
+    public EndpointStateNotifierBase(ClientLogger logger) {
         Objects.requireNonNull(logger);
 
         this.logger = logger;
