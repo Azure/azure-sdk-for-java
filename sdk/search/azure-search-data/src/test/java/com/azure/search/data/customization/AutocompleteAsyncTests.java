@@ -199,6 +199,20 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
     }
 
     @Override
+    public void testAutocompleteWithFilter() throws Exception {
+        List<String> expectedText = Arrays.asList("polite");
+        List<String> expectedQueryPlusText = Arrays.asList("polite");
+
+        AutocompleteParameters params = new AutocompleteParameters()
+            .autocompleteMode(AutocompleteMode.ONE_TERM)
+            .filter("search.in(HotelId, '6,7')");
+
+        PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
+
+        Assert.assertNotNull(results);
+        validateResults(expectedText, expectedQueryPlusText, results);
+    }
+
     public void testAutocompleteOneTermWithContextWithFuzzy() throws Exception {
         List<String> expectedText = Arrays.asList("very polite", "very police");
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
