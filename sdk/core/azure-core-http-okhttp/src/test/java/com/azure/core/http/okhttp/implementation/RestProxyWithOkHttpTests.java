@@ -5,7 +5,7 @@ package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
-import com.azure.core.implementation.RestProxyTests;
+import com.azure.core.test.implementation.RestProxyTests;
 import org.junit.Ignore;
 import org.junit.Test;
 

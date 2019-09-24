@@ -8,10 +8,10 @@ import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
@@ -269,9 +269,8 @@ public class EventHubAsyncClient implements Closeable {
                 logger.verbose("Creating consumer for path: {}", entityPath);
                 final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
-                return session.createConsumer(linkName, entityPath, getExpression(eventPosition),
-                    clonedOptions.getRetry().getTryTimeout(), retryPolicy, options.getOwnerLevel(),
-                    options.getIdentifier()).cast(AmqpReceiveLink.class);
+                return session.createConsumer(linkName, entityPath, clonedOptions.getRetry().getTryTimeout(),
+                    retryPolicy, getExpression(eventPosition), options.getOwnerLevel(), options.getIdentifier());
             });
 
         return new EventHubAsyncConsumer(receiveLinkMono, clonedOptions);

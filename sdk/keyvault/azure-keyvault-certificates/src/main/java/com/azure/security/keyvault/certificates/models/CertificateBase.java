@@ -3,9 +3,8 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;

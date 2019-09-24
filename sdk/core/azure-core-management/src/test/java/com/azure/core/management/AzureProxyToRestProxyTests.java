@@ -4,22 +4,22 @@
 package com.azure.core.management;
 
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Head;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Headers;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Patch;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Headers;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -29,6 +29,8 @@ import com.azure.core.implementation.exception.InvalidReturnTypeException;
 import com.azure.core.implementation.http.ContentType;
 
 import com.azure.core.management.implementation.AzureProxy;
+import com.azure.core.test.HttpBinJSON;
+import com.azure.core.test.MyAzureException;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -618,7 +620,7 @@ public abstract class AzureProxyToRestProxyTests {
             service.get();
             fail("Expected exception.");
         } catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.core.management.HttpBinJSON>");
+            assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.core.test.HttpBinJSON>");
             assertContains(e.getMessage(), "AzureProxyToRestProxyTests$Service15.get()");
         }
     }

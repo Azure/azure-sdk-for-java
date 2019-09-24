@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.ListContainersOptions;
@@ -43,6 +44,7 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
+@ServiceClient(builder = BlobServiceClientBuilder.class)
 public final class BlobServiceClient {
     private final BlobServiceAsyncClient blobServiceAsyncClient;
 

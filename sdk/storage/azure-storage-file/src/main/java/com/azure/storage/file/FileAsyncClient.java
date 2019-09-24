@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -92,6 +93,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {
     private final ClientLogger logger = new ClientLogger(FileAsyncClient.class);
     private static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
@@ -1072,9 +1074,6 @@ public class FileAsyncClient {
     }
 
     PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, Duration timeout, Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
@@ -1208,6 +1207,32 @@ public class FileAsyncClient {
         fileServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_FILE_CONSTANT);
 
         return fileServiceSASSignatureValues;
+    }
+
+    /**
+     * Get the share name of file client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getShareName}
+     *
+     * @return The share name of the file.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
+     * Get file path of the client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getFilePath}
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return filePath;
     }
 
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {

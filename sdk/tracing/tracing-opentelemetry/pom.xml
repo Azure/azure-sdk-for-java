@@ -41,5 +41,11 @@
       <groupId>io.opencensus</groupId>
       <artifactId>opencensus-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.0.0-preview.5</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 </project>

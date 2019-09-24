@@ -542,4 +542,15 @@ public class ShareJavaDocCodeSamples {
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#getShareName()}
+     */
+    public void getShareName() {
+        ShareClient shareAsyncClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.getShareName
+        String shareName = shareAsyncClient.getShareName();
+        System.out.println("The name of the share is " + shareName);
+        // END: com.azure.storage.file.shareClient.getShareName
+    }
 }

@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class)
 public class DirectoryClient {
 
     private final DirectoryAsyncClient directoryAsyncClient;
@@ -432,9 +434,6 @@ public class DirectoryClient {
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, boolean recursive, Duration timeout,
         Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(directoryAsyncClient
             .forceCloseHandlesWithOptionalTimeout(handleId, recursive, timeout, context));
     }
@@ -660,5 +659,31 @@ public class DirectoryClient {
      */
     public String getShareSnapshotId() {
         return directoryAsyncClient.getShareSnapshotId();
+    }
+
+    /**
+     * Get the share name of directory client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.getShareName}
+     *
+     * @return The share name of the directory.
+     */
+    public String getShareName() {
+        return directoryAsyncClient.getShareName();
+    }
+
+    /**
+     * Get the directory path of the client.
+     *
+     * <p>Get directory path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.getDirectoryPath}
+     *
+     * @return The path of the directory.
+     */
+    public String getDirectoryPath() {
+        return directoryAsyncClient.getDirectoryPath();
     }
 }

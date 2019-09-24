@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -42,6 +43,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {
     private final QueueAsyncClient client;
 
@@ -702,5 +704,18 @@ public final class QueueClient {
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
+    }
+
+    /**
+     * Get the queue name of the client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueClient.getQueueName}
+     *
+     * @return The name of the queue.
+     */
+    public String getQueueName() {
+        return this.client.getQueueName();
     }
 }

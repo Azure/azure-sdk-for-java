@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerAccessConditions;
@@ -42,6 +43,7 @@ import java.util.List;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
  * Docs</a> for more information on containers.
  */
+@ServiceClient(builder = ContainerClientBuilder.class)
 public final class ContainerClient {
     private final ContainerAsyncClient containerAsyncClient;
 
@@ -781,5 +783,18 @@ public final class ContainerClient {
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.containerAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version,
             sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    }
+
+    /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerClient.getContainerName}
+     *
+     * @return The name of container.
+     */
+    public String getContainerName() {
+        return this.containerAsyncClient.getContainerName();
     }
 }
