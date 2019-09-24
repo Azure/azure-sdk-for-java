@@ -7,11 +7,12 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
@@ -70,6 +71,7 @@ public class EventHubAsyncClient implements Closeable {
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
+    private final MessageSerializer messageSerializer;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
     private final ConnectionOptions connectionOptions;
@@ -79,11 +81,12 @@ public class EventHubAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(ConnectionOptions connectionOptions, TracerProvider tracerProvider,
-                        Mono<EventHubConnection> eventHubConnectionMono) {
+                        MessageSerializer messageSerializer, Mono<EventHubConnection> eventHubConnectionMono) {
 
         this.connectionOptions = Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.eventHubName = connectionOptions.getEventHubName();
+        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionMono = Objects.requireNonNull(eventHubConnectionMono, "'eventHubConnectionMono' cannot be null.")
             .doOnSubscribe(c -> hasConnection.set(true))
             .cache();
@@ -93,6 +96,15 @@ public class EventHubAsyncClient implements Closeable {
         this.defaultConsumerOptions = new EventHubConsumerOptions()
             .setRetry(connectionOptions.getRetry())
             .setScheduler(connectionOptions.getScheduler());
+    }
+
+    /**
+     * Gets the Event Hub name this client interacts with.
+     *
+     * @return The Event Hub name this client interacts with.
+     */
+    public String getEventHubName() {
+        return eventHubName;
     }
 
     /**
@@ -182,7 +194,7 @@ public class EventHubAsyncClient implements Closeable {
                     retryPolicy).cast(AmqpSendLink.class);
             });
 
-        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider);
+        return new EventHubAsyncProducer(amqpLinkMono, clonedOptions, tracerProvider, messageSerializer);
     }
 
     /**
@@ -273,7 +285,7 @@ public class EventHubAsyncClient implements Closeable {
                     retryPolicy, getExpression(eventPosition), options.getOwnerLevel(), options.getIdentifier());
             });
 
-        return new EventHubAsyncConsumer(receiveLinkMono, clonedOptions);
+        return new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, clonedOptions);
     }
 
     /**
@@ -331,9 +343,5 @@ public class EventHubAsyncClient implements Closeable {
         }
 
         throw new IllegalArgumentException("No starting position was set.");
-    }
-
-    String getEventHubName() {
-        return this.eventHubName;
     }
 }

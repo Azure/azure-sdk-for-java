@@ -3,12 +3,12 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
@@ -47,7 +47,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final String eventHubName;
-    private final ManagementResponseMapper mapper;
+    private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
 
     /**
@@ -57,17 +57,17 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      * @param eventHubName The name of the Event Hub.
      * @param credential Credential to authorize user for access to the Event Hub.
      * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
-     * @param mapper Maps responses from the management channel.
+     * @param messageSerializer Maps responses from the management channel.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-                      TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {
+                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(new ClientLogger(ManagementChannel.class));
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
-        this.mapper = Objects.requireNonNull(mapper, "'mapper' cannot be null.");
+        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
 
         // Cache the first response from this mono, so we don't keep creating it.
         this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.")
@@ -111,22 +111,8 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(x -> x.sendWithAck(request)).map(message -> {
-                if (!(message.getBody() instanceof AmqpValue)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
-                }
-
-                AmqpValue body = (AmqpValue) message.getBody();
-                if (!(body.getValue() instanceof Map)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Expected message.getBody().getValue() to be of type Map"));
-                }
-
-                Map<?, ?> map = (Map<?, ?>) body.getValue();
-
-                return mapper.deserialize(map, responseType);
-            });
+            return channelMono.flatMap(x -> x.sendWithAck(request))
+                .map(message -> messageSerializer.deserialize(message, responseType));
         });
     }
 

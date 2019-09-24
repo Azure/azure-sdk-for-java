@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
@@ -42,6 +43,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
     private final ConnectionHandler handler;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
+    private final MessageSerializer messageSerializer;
     private final ConnectionOptions connectionOptions;
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
@@ -64,7 +66,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-                             ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider) {
+                             ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
+                             MessageSerializer messageSerializer) {
         super(new ClientLogger(ReactorConnection.class));
 
         this.connectionOptions = connectionOptions;
@@ -73,6 +76,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
+        this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHost(),
             connectionOptions.getTransportType());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
@@ -166,7 +170,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-            tokenManagerProvider, connectionOptions.getRetry().getTryTimeout());
+            tokenManagerProvider, messageSerializer, connectionOptions.getRetry().getTryTimeout());
     }
 
     /**
@@ -220,7 +224,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(getIdentifier(), getHost(), linkName, entityPath,
                 reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
-                reactorProvider));
+                reactorProvider, messageSerializer));
     }
 
     private synchronized CBSNode getOrCreateCBSNode() {

@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -48,6 +49,7 @@ public class EventHubConsumerTest {
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
+    private final MessageSerializer serializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -69,7 +71,7 @@ public class EventHubConsumerTest {
             .setPrefetchCount(PREFETCH)
             .setRetry(new RetryOptions())
             .setScheduler(Schedulers.elastic());
-        EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, options);
+        EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, serializer, options);
         consumer = new EventHubConsumer(asyncConsumer, options.getRetry().getTryTimeout());
     }
 

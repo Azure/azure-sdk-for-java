@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credentials.TokenCredential;
@@ -20,13 +21,16 @@ import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
-import com.azure.messaging.eventhubs.implementation.ManagementResponseMapper;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
 import com.azure.messaging.eventhubs.implementation.TokenManagerProvider;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.security.InvalidKeyException;
@@ -34,9 +38,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link
@@ -342,19 +343,19 @@ public class EventHubClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                 connectionOptions.getAuthorizationType(), connectionOptions.getHost(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-            final ManagementResponseMapper mapper = new EventHubResponseMapper();
 
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, mapper);
+                tokenManagerProvider, messageSerializer);
         });
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, connectionMono);
+        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);
     }
 
     private ConnectionOptions getConnectionOptions() {

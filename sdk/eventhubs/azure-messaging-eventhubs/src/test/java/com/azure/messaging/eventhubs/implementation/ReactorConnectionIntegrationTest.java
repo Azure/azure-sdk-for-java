@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
@@ -12,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -27,6 +29,9 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Rule
     public TestName testName = new TestName();
     private ReactorConnection connection;
+
+    @Mock
+    private MessageSerializer serializer;
 
     public ReactorConnectionIntegrationTest() {
         super(new ClientLogger(ReactorConnectionIntegrationTest.class));
@@ -60,7 +65,7 @@ public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new ReactorConnection("test-connection-id", options, reactorProvider,
-            handlerProvider, tokenManagerProvider);
+            handlerProvider, tokenManagerProvider, serializer);
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
@@ -36,13 +37,13 @@ public class EventHubReactorConnectionTest {
     @Mock
     private TokenManagerProvider tokenManagerProvider;
     @Mock
-    private ManagementResponseMapper mapper;
-    @Mock
     private TokenCredential tokenCredential;
     @Mock
     private Scheduler scheduler;
     @Mock
     private Connection reactorConnection;
+    @Mock
+    private MessageSerializer messageSerializer;
 
     private ReactorHandlerProvider handlerProvider;
     private ReactorProvider reactorProvider;
@@ -73,7 +74,7 @@ public class EventHubReactorConnectionTest {
     public void getsManagementChannel() {
         // Arrange
         final EventHubReactorConnection connection = new EventHubReactorConnection(CONNECTION_ID, connectionOptions,
-            reactorProvider, handlerProvider, tokenManagerProvider, mapper);
+            reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
