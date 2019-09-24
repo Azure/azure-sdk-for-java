@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.CBSNode;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -48,6 +49,8 @@ public class ReactorSessionTest {
     private Event event;
     @Mock
     private CBSNode cbsNode;
+    @Mock
+    private MessageSerializer serializer;
 
     @Before
     public void setup() throws IOException {
@@ -62,7 +65,7 @@ public class ReactorSessionTest {
         AzureTokenManagerProvider azureTokenManagerProvider = new AzureTokenManagerProvider(
             CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST, "a-test-scope");
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, handlerProvider,
-            Mono.just(cbsNode), azureTokenManagerProvider, TIMEOUT);
+            Mono.just(cbsNode), azureTokenManagerProvider, serializer, TIMEOUT);
     }
 
     @After

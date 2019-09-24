@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.RetryMode;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
@@ -70,6 +71,8 @@ public class ReactorConnectionTest {
     private Record record;
     @Mock
     private TokenManagerProvider tokenManager;
+    @Mock
+    private MessageSerializer messageSerializer;
 
     private MockReactorProvider reactorProvider;
     private MockReactorHandlerProvider reactorHandlerProvider;
@@ -93,18 +96,11 @@ public class ReactorConnectionTest {
             CREDENTIAL_INFO.getEventHubName(), tokenProvider, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE,
             TransportType.AMQP, retryOptions, ProxyConfiguration.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager);
+            tokenManager, messageSerializer);
     }
 
     @After
     public void teardown() {
-        reactor = null;
-        selectable = null;
-        tokenProvider = null;
-        connectionProtonJ = null;
-        session = null;
-        record = null;
-
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
@@ -295,7 +291,7 @@ public class ReactorConnectionTest {
 
         // Act and Assert
         try (ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            reactorHandlerProvider, tokenManager)) {
+            reactorHandlerProvider, tokenManager, messageSerializer)) {
             StepVerifier.create(connectionBad.getCBSNode())
                 .verifyError(TimeoutException.class);
         }

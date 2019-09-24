@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.OperationCancelledException;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
@@ -47,7 +48,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.messaging.eventhubs.implementation.EventDataUtil.getDataSerializedSize;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -70,6 +70,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         new PriorityQueue<>(1000, new DeliveryTagComparator());
 
     private final TokenManager tokenManager;
+    private final MessageSerializer messageSerializer;
     private final RetryPolicy retry;
     private final Duration timeout;
     private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
@@ -86,13 +87,15 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-                  TokenManager tokenManager, Duration timeout, RetryPolicy retry, int maxMessageSize) {
+                  TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, RetryPolicy retry,
+                  int maxMessageSize) {
         super(new ClientLogger(ReactorSender.class));
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
         this.reactorProvider = reactorProvider;
         this.tokenManager = tokenManager;
+        this.messageSerializer = messageSerializer;
         this.retry = retry;
         this.timeout = timeout;
         this.maxMessageSize = maxMessageSize;
@@ -131,7 +134,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     @Override
     public Mono<Void> send(Message message) {
-        final int payloadSize = getDataSerializedSize(message);
+        final int payloadSize = messageSerializer.getSize(message);
         final int allocationSize =
             Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         final byte[] bytes = new byte[allocationSize];
@@ -175,7 +178,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         for (final Message amqpMessage : messageBatch) {
             final Message messageWrappedByData = Proton.message();
 
-            int payloadSize = getDataSerializedSize(amqpMessage);
+            int payloadSize = messageSerializer.getSize(amqpMessage);
             int allocationSize =
                 Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
 

@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -39,9 +40,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
                                   ReactorProvider provider, ReactorHandlerProvider handlerProvider,
                                   Mono<CBSNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                                  Duration openTimeout) {
+                                  Duration openTimeout, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            openTimeout);
+            messageSerializer, openTimeout);
     }
 
     /**

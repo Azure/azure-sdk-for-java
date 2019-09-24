@@ -3,24 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
@@ -29,10 +16,6 @@ import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
@@ -47,6 +30,25 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
  * Unit tests to verify functionality of {@link EventHubProducer}.
  */
@@ -60,6 +62,7 @@ public class EventHubProducerTest {
 
     private EventHubAsyncProducer asyncProducer;
     private RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
     @Before
     public void setup() {
@@ -72,7 +75,7 @@ public class EventHubProducerTest {
 
         asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().setRetry(retryOptions), tracerProvider);
+            new EventHubProducerOptions().setRetry(retryOptions), tracerProvider, messageSerializer);
     }
 
     @After
@@ -115,7 +118,7 @@ public class EventHubProducerTest {
 
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().setRetry(retryOptions), tracerProvider);
+            new EventHubProducerOptions().setRetry(retryOptions), tracerProvider, messageSerializer);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
@@ -136,8 +139,10 @@ public class EventHubProducerTest {
         producer.send(eventData);
 
         //Assert
-        verify(tracer1, times(1)).start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
-        verify(tracer1, times(1)).start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE));
+        verify(tracer1, times(1))
+            .start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, times(1))
+            .start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
     }
 
@@ -153,7 +158,7 @@ public class EventHubProducerTest {
 
         EventHubAsyncProducer asyncProducer = new EventHubAsyncProducer(
             Mono.fromCallable(() -> sendLink),
-            new EventHubProducerOptions().setRetry(retryOptions), tracerProvider);
+            new EventHubProducerOptions().setRetry(retryOptions), tracerProvider, messageSerializer);
         final EventHubProducer producer = new EventHubProducer(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE));
 
@@ -227,7 +232,8 @@ public class EventHubProducerTest {
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setRetry(retryOptions);
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link), producerOptions, tracerProvider);
+        final EventHubAsyncProducer hubAsyncProducer = new EventHubAsyncProducer(Mono.fromCallable(() -> link),
+            producerOptions, tracerProvider, messageSerializer);
         final EventHubProducer hubProducer = new EventHubProducer(hubAsyncProducer, retryOptions.getTryTimeout());
 
         // Act
