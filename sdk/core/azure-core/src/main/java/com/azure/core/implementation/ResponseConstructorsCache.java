@@ -26,9 +26,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * A concurrent cache of {@link Response<?>} constructors.
+ * A concurrent cache of {@link Response} constructors.
  */
-class ResponseConstructorsCache {
+final class ResponseConstructorsCache {
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
     private final Map<Class<?>, Optional<ResponseConstructor>> cache = new ConcurrentHashMap<>();
 
@@ -44,98 +44,95 @@ class ResponseConstructorsCache {
      * @return optional with located constructor, empty optional if there is no match
      */
     Optional<ResponseConstructor> get(Class<? extends Response<?>> responseClass) {
+        this.cache.computeIfAbsent(responseClass, responseCls -> Arrays.stream(responseCls.getDeclaredConstructors())
+            .filter(constructor -> {
+                int paramCount = constructor.getParameterCount();
+                return paramCount >= 3 && paramCount <= 5;
+            })
+            .sorted(Comparator.comparingInt(Constructor::getParameterCount))
+            .findFirst()
+            .flatMap(constructor -> {
+                try {
+                    MethodHandles.Lookup lookup = MethodHandles.lookup();
+                    MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
+                    switch (constructor.getParameterCount()) {
+                        case 3:
+                            Object f3 = LambdaMetafactory.metafactory(lookup,
+                                    "apply",
+                                    MethodType.methodType(ResponseFunc3.class),
+                                    MethodType.methodType(Object.class,
+                                            Object.class,
+                                            int.class,
+                                            Object.class),
+                                    ctrMethodHandle,
+                                    ctrMethodHandle.type()).getTarget().invoke();
+                            return Optional.of(new ResponseConstructor(3, f3));
+                        case 4:
+                            Object f4 = LambdaMetafactory.metafactory(lookup,
+                                    "apply",
+                                    MethodType.methodType(ResponseFunc4.class),
+                                    MethodType.methodType(Object.class,
+                                            Object.class,
+                                            int.class,
+                                            Object.class,
+                                            Object.class),
+                                    ctrMethodHandle,
+                                    ctrMethodHandle.type()).getTarget().invoke();
+                            return Optional.of(new ResponseConstructor(4, f4));
+                        case 5:
+                            Object f5 = LambdaMetafactory.metafactory(lookup,
+                                    "apply",
+                                    MethodType.methodType(ResponseFunc5.class),
+                                    MethodType.methodType(Object.class,
+                                            Object.class,
+                                            int.class,
+                                            Object.class,
+                                            Object.class,
+                                            Object.class),
+                                    ctrMethodHandle,
+                                    ctrMethodHandle.type())
+                                    .getTarget().invoke();
+                            return Optional.of(new ResponseConstructor(5, f5));
+                        default:
+                            return Optional.<ResponseConstructor>empty();
+                    }
 
-        if (!this.cache.containsKey(responseClass)) {
-            this.cache.put(responseClass, Arrays.stream(responseClass.getDeclaredConstructors())
-                    .filter(constructor -> {
-                        int paramCount = constructor.getParameterCount();
-                        return paramCount >= 3 && paramCount <= 5;
-                    })
-                    .sorted(Comparator.comparingInt(Constructor::getParameterCount))
-                    .findFirst()
-                    .flatMap(constructor -> {
-                        try {
-                            MethodHandles.Lookup lookup = MethodHandles.lookup();
-                            MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
-                            switch (constructor.getParameterCount()) {
-                                case 3:
-                                    Object f3 = LambdaMetafactory.metafactory(lookup,
-                                            "apply",
-                                            MethodType.methodType(Response3.class),
-                                            MethodType.methodType(Object.class,
-                                                    Object.class,
-                                                    int.class,
-                                                    Object.class),
-                                            ctrMethodHandle,
-                                            ctrMethodHandle.type()).getTarget().invoke();
-                                    return Optional.of(new ResponseConstructor(3, f3));
-                                case 4:
-                                    Object f4 = LambdaMetafactory.metafactory(lookup,
-                                            "apply",
-                                            MethodType.methodType(Response4.class),
-                                            MethodType.methodType(Object.class,
-                                                    Object.class,
-                                                    int.class,
-                                                    Object.class,
-                                                    Object.class),
-                                            ctrMethodHandle,
-                                            ctrMethodHandle.type()).getTarget().invoke();
-                                    return Optional.of(new ResponseConstructor(4, f4));
-                                case 5:
-                                    Object f5 = LambdaMetafactory.metafactory(lookup,
-                                            "apply",
-                                            MethodType.methodType(Response5.class),
-                                            MethodType.methodType(Object.class,
-                                                    Object.class,
-                                                    int.class,
-                                                    Object.class,
-                                                    Object.class,
-                                                    Object.class),
-                                            ctrMethodHandle,
-                                            ctrMethodHandle.type())
-                                            .getTarget().invoke();
-                                    return Optional.of(new ResponseConstructor(5, f5));
-                                default:
-                                    return Optional.empty();
-                            }
-
-                        } catch (Throwable t) {
-                            throw logger.logExceptionAsError(new RuntimeException(t));
-                        }
-                    }));
-        }
+                } catch (Throwable t) {
+                    throw logger.logExceptionAsError(new RuntimeException(t));
+                }
+            }));
         return this.cache.get(responseClass);
     }
 
     /**
-     * Type that represent a {@link Response<?>} constructor and can be used to invoke
+     * Type that represent a {@link Response} constructor and can be used to invoke
      * the same constructor.
      */
-    static class ResponseConstructor {
+    static final class ResponseConstructor {
         private final int parameterCount;
-        private final Object function;
+        private final Object responseFunc;
 
         /**
          * Creates ResponseConstructor.
          *
          * @param parameterCount the constructor parameter count
-         * @param function the functional interface which delegate its abstract method
-         *                 invocation to the invocation of a {@link Response<?>} constructor
+         * @param responseFunc the functional interface which delegate its abstract method
+         *                 invocation to the invocation of a {@link Response} constructor
          */
-        private ResponseConstructor(int parameterCount, Object function) {
+        private ResponseConstructor(int parameterCount, Object responseFunc) {
             this.parameterCount = parameterCount;
-            this.function = function;
+            this.responseFunc = responseFunc;
         }
 
         /**
-         * Invoke the {@link Response<?>} constructor this type represents.
+         * Invoke the {@link Response} constructor this type represents.
          *
-         * @param decodedResponse the decoded response
-         * @param bodyAsObject the response content
-         * @return an instance of a {@link Response<?>} implementation
+         * @param decodedResponse the decoded http response
+         * @param bodyAsObject the http response content
+         * @return an instance of a {@link Response} implementation
          */
         @SuppressWarnings("unchecked")
-        Mono<Response<?>> create(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+        Mono<Response<?>> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
                                         final Object bodyAsObject) {
             final HttpResponse httpResponse = decodedResponse.getSourceResponse();
             final HttpRequest httpRequest = httpResponse.getRequest();
@@ -144,7 +141,7 @@ class ResponseConstructorsCache {
             switch (this.parameterCount) {
                 case 3:
                     try {
-                        return Mono.just((Response<?>) ((Response3) this.function).apply(httpRequest,
+                        return Mono.just((Response<?>) ((ResponseFunc3) this.responseFunc).apply(httpRequest,
                                 responseStatusCode,
                                 responseHeaders));
                     } catch (Throwable t) {
@@ -152,7 +149,7 @@ class ResponseConstructorsCache {
                     }
                 case 4:
                     try {
-                        return Mono.just((Response<?>) ((Response4) this.function).apply(httpRequest,
+                        return Mono.just((Response<?>) ((ResponseFunc4) this.responseFunc).apply(httpRequest,
                                 responseStatusCode,
                                 responseHeaders,
                                 bodyAsObject));
@@ -163,7 +160,7 @@ class ResponseConstructorsCache {
                     return decodedResponse.getDecodedHeaders()
                             .map((Function<Object, Response<?>>) decodedHeaders -> {
                                 try {
-                                    return (Response<?>) ((Response5) this.function).apply(httpRequest,
+                                    return (Response<?>) ((ResponseFunc5) this.responseFunc).apply(httpRequest,
                                             responseStatusCode,
                                             responseHeaders,
                                             bodyAsObject,
@@ -174,7 +171,7 @@ class ResponseConstructorsCache {
                             })
                             .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
                                 try {
-                                    return Mono.just((Response<?>) ((Response5) this.function).apply(httpRequest,
+                                    return Mono.just((Response<?>) ((ResponseFunc5) this.responseFunc).apply(httpRequest,
                                         responseStatusCode,
                                         responseHeaders,
                                         bodyAsObject,
@@ -191,14 +188,14 @@ class ResponseConstructorsCache {
     }
 
     @FunctionalInterface
-    private interface Response3 {
+    private interface ResponseFunc3 {
         Object apply(Object httpRequest,
                      int responseStatusCode,
                      Object responseHeaders);
     }
 
     @FunctionalInterface
-    private interface Response4 {
+    private interface ResponseFunc4 {
         Object apply(Object httpRequest,
                      int responseStatusCode,
                      Object responseHeaders,
@@ -206,7 +203,7 @@ class ResponseConstructorsCache {
     }
 
     @FunctionalInterface
-    private interface Response5 {
+    private interface ResponseFunc5 {
         Object apply(Object httpRequest,
                      int responseStatusCode,
                      Object responseHeaders,

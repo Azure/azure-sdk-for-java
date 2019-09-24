@@ -491,7 +491,7 @@ public class RestProxy implements InvocationHandler {
         }
         Optional<ResponseConstructorsCache.ResponseConstructor> ctrOpt = this.responseConstructorsCache.get(cls);
         if (ctrOpt.isPresent()) {
-            return ctrOpt.get().create(response, bodyAsObject);
+            return ctrOpt.get().invoke(response, bodyAsObject);
         } else {
             return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
