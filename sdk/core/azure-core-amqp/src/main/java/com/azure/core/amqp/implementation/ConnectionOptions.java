@@ -22,15 +22,15 @@ public class ConnectionOptions {
     private final RetryOptions retryOptions;
     private final ProxyConfiguration proxyConfiguration;
     private final Scheduler scheduler;
-    private final String host;
-    private final String eventHubName;
+    private final String hostname;
+    private final String entityPath;
     private final CBSAuthorizationType authorizationType;
 
     public ConnectionOptions(String hostname, String entityPath, TokenCredential tokenCredential,
                              CBSAuthorizationType authorizationType, TransportType transport, RetryOptions retryOptions,
                              ProxyConfiguration proxyConfiguration, Scheduler scheduler) {
-        this.host = Objects.requireNonNull(hostname, "'hostname' is required.");
-        this.eventHubName = Objects.requireNonNull(entityPath, "'entityPath' is required.");
+        this.hostname = Objects.requireNonNull(hostname, "'hostname' is required.");
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' is required.");
         this.transport = Objects.requireNonNull(transport, "'transport' is required.");
@@ -40,11 +40,11 @@ public class ConnectionOptions {
     }
 
     public String getHostname() {
-        return host;
+        return hostname;
     }
 
     public String getEntityPath() {
-        return eventHubName;
+        return entityPath;
     }
 
     public TokenCredential getTokenCredential() {
