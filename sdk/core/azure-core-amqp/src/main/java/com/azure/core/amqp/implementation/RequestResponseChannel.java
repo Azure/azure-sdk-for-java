@@ -103,7 +103,8 @@ public class RequestResponseChannel implements Closeable {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName,
+            entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
