@@ -21,13 +21,13 @@ public class ReactorProvider {
     private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
 
-    Reactor getReactor() {
+    public Reactor getReactor() {
         synchronized (lock) {
             return reactor;
         }
     }
 
-    ReactorDispatcher getReactorDispatcher() {
+    public ReactorDispatcher getReactorDispatcher() {
         synchronized (lock) {
             return reactorDispatcher;
         }
@@ -40,7 +40,7 @@ public class ReactorProvider {
      * @return The newly created reactor instance.
      * @throws IOException If the service could not create a Reactor instance.
      */
-    Reactor createReactor(String connectionId, int maxFrameSize) throws IOException {
+    public Reactor createReactor(String connectionId, int maxFrameSize) throws IOException {
         final CustomIOHandler globalHandler = new CustomIOHandler(connectionId);
         final ReactorHandler reactorHandler = new ReactorHandler(connectionId);
 

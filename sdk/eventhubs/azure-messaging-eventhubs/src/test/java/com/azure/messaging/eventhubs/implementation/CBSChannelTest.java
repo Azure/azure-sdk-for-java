@@ -88,8 +88,7 @@ public class CBSChannelTest extends IntegrationTestBase {
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer);
 
-        final Mono<RequestResponseChannel> requestResponseChannel =
-            connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
+        final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
         cbsChannel = new CBSChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
             retryOptions);
@@ -130,8 +129,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             Assert.fail("Could not create token provider: " + e.toString());
         }
 
-        final Mono<RequestResponseChannel> requestResponseChannel =
-            connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
+        final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
         final CBSNode node = new CBSChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
             new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
@@ -155,6 +153,10 @@ public class CBSChannelTest extends IntegrationTestBase {
                                       TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
                 messageSerializer);
+        }
+
+        private Mono<RequestResponseChannel> getCBSChannel() {
+            return createRequestResponseChannel("cbs-session", "cbs", "$cbs");
         }
     }
 }

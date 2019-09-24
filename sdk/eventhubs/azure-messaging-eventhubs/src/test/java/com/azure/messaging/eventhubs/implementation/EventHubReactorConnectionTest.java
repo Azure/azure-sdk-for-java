@@ -50,9 +50,10 @@ public class EventHubReactorConnectionTest {
     private Connection reactorConnection;
     @Mock
     private MessageSerializer messageSerializer;
-
-    private ReactorHandlerProvider handlerProvider;
+    @Mock
     private ReactorProvider reactorProvider;
+    @Mock
+    private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
 
     @Before
@@ -71,9 +72,11 @@ public class EventHubReactorConnectionTest {
             ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
-        reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
-        handlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler,
-            null, null, null);
+        when(reactorProvider.getReactor()).thenReturn(reactor);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP))
+            .thenReturn(connectionHandler);
     }
 
     @Test

@@ -43,7 +43,7 @@ public final class ReactorDispatcher {
     private final ConcurrentLinkedQueue<Work> workQueue;
     private final WorkScheduler workScheduler;
 
-    ReactorDispatcher(final Reactor reactor) throws IOException {
+    public ReactorDispatcher(final Reactor reactor) throws IOException {
         this.reactor = reactor;
         this.ioSignal = Pipe.open();
         this.workQueue = new ConcurrentLinkedQueue<>();
