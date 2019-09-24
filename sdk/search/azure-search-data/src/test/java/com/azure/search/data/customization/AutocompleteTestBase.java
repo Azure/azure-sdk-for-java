@@ -35,12 +35,6 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     public abstract void canAutocompleteOneTermWithContext() throws Exception;
 
     @Test
-    public abstract void canAutocompleteOneTermWithFuzzy() throws Exception;
-
-    @Test
-    public abstract void canAutocompleteOneTermWithContextWithFuzzy() throws Exception;
-
-    @Test
     public abstract void canAutocompleteStaticallyTypedDocuments() throws Exception;
 
     @Test
@@ -50,10 +44,13 @@ public abstract class AutocompleteTestBase extends SearchIndexClientTestBase {
     public abstract void canAutocompleteTwoTerms() throws Exception;
 
     @Test
-    public abstract void canAutocompleteTwoTermsWithFuzzy() throws Exception;
+    public abstract void testAutocompleteCanUseHitHighlighting() throws Exception;
 
     @Test
-    public abstract void testAutocompleteCanUseHitHighlighting() throws Exception;
+    public abstract void testAutocompleteWithMultipleSelectedFields() throws Exception;
+
+    @Test
+    public abstract void testAutocompleteWithSelectedFields() throws Exception;
 
     @Test
     public abstract void testAutocompleteTopTrimsResults() throws Exception;
