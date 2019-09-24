@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;

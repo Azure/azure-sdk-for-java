@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;

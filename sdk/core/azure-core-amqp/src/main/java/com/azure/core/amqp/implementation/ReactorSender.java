@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
@@ -9,9 +9,6 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.OperationCancelledException;
-import com.azure.core.amqp.implementation.AmqpErrorCode;
-import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;

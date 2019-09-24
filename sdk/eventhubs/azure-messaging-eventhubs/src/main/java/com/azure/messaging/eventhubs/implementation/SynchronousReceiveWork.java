@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.implementation.SynchronousEventSubscriber;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import reactor.core.publisher.FluxSink;

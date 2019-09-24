@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

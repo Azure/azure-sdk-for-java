@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.handler.CustomIOHandler;
 import com.azure.core.amqp.implementation.handler.ReactorHandler;
 import com.azure.core.util.logging.ClientLogger;

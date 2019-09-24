@@ -8,7 +8,16 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CBSChannel;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +38,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-import static com.azure.messaging.eventhubs.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
@@ -142,8 +151,8 @@ public class CBSChannelTest extends IntegrationTestBase {
 
     private static final class TestReactorConnection extends ReactorConnection {
         private TestReactorConnection(String connectionId, ConnectionOptions connectionOptions,
-                              ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                              TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+                                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
                 messageSerializer);
         }

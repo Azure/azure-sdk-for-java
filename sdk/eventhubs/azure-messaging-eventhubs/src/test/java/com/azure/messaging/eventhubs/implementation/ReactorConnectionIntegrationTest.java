@@ -4,7 +4,15 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CBSChannel;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
@@ -23,7 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import static com.azure.messaging.eventhubs.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class ReactorConnectionIntegrationTest extends IntegrationTestBase {
     @Rule

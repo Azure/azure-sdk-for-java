@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
@@ -9,8 +9,6 @@ import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
-import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;

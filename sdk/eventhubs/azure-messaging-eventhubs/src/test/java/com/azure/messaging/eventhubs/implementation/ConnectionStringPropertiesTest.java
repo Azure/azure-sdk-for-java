@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import org.junit.Assert;
 import org.junit.Test;
 

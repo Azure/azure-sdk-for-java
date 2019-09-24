@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
+import com.azure.core.amqp.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;

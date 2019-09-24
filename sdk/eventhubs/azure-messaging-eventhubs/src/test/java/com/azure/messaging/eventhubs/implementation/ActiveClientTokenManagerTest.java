@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.amqp.implementation.ActiveClientTokenManager;
 import com.azure.core.exception.AzureException;
 import org.junit.After;
 import org.junit.Before;

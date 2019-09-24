@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;

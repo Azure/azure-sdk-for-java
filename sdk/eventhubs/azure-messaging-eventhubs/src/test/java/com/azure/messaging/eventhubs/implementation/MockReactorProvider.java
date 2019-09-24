@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.implementation.ReactorDispatcher;
+import com.azure.core.amqp.implementation.ReactorProvider;
 import org.apache.qpid.proton.reactor.Reactor;
 
 class MockReactorProvider extends ReactorProvider {
