@@ -6,7 +6,6 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.SimpleResponse;
@@ -479,16 +478,38 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string}
      *
      * @param name The name of the secret.
-     * @return A {@link Mono} containing a {@link VoidResponse}.
+     * @return An empty {@link Mono}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> purgeDeletedSecret(String name) {
-        return withContext(context -> purgeDeletedSecret(name, context));
+    public Mono<Void> purgeDeletedSecret(String name) {
+        return purgeDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
-    Mono<VoidResponse> purgeDeletedSecret(String name, Context context) {
+    /**
+     * The purge deleted secret operation removes the secret permanently, without the possibility of
+     * recovery. This operation can only be enabled on a soft-delete enabled vault. This operation
+     * requires the {@code secrets/purge} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Purges the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
+     * asynchronously and prints out the status code from the server response when a response is received.</p>
+     *
+     * //Assuming secret is deleted on a soft-delete enabled vault.
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecretWithResponse#string}
+     *
+     * @param name The name of the secret.
+     * @return A {@link Mono} containing a Response containing status code and HTTP headers.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purgeDeletedSecretWithResponse(String name) {
+        return withContext(context -> purgeDeletedSecretWithResponse(name, context));
+    }
+
+    Mono<Response<Void>> purgeDeletedSecretWithResponse(String name, Context context) {
         return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Purging deleted secret - {}", name))

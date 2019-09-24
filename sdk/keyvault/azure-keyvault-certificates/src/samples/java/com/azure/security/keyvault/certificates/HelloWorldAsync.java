@@ -131,11 +131,11 @@ public class HelloWorldAsync {
         Thread.sleep(50000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
-        certificateAsyncClient.purgeDeletedCertificate("certificateName")
+        certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
 
-        certificateAsyncClient.purgeDeletedCertificate("myCertificate")
+        certificateAsyncClient.purgeDeletedCertificateWithResponse("myCertificate")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
 

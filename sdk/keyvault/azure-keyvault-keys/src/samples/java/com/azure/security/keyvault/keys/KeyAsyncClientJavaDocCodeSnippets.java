@@ -346,10 +346,22 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string
         keyAsyncClient.purgeDeletedKey("deletedKeyName")
+            .subscribe(purgeResponse ->
+                System.out.printf("Successfully Purged deleted Key\n"));
+        // END: com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyAsyncClient#purgeDeletedKeyWithResponse(String)}
+     */
+    public void purgeDeletedKeyWithResponseSnippets() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKeyWithResponse#string
+        keyAsyncClient.purgeDeletedKeyWithResponse("deletedKeyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %rsaPrivateExponent \n", purgeResponse.getStatusCode()));
-        // END: com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string
+        // END: com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKeyWithResponse#string
     }
 
     /**

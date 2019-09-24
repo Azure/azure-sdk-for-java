@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -184,15 +184,22 @@ public final class SecretClientJavaDocCodeSnippets {
      */
     public void purgeDeletedSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
-        VoidResponse purgeResponse = secretClient.purgeDeletedSecret("secretName");
-        System.out.printf("Purge Status Code: %d", purgeResponse.getStatusCode());
-        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
 
-        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context
-        VoidResponse purgedResponse = secretClient.purgeDeletedSecret("secretName", new Context(key2, value2));
-        System.out.printf("Purge Status Code: %d", purgedResponse.getStatusCode());
-        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context
+        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
+        secretClient.purgeDeletedSecret("secretName");
+        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
+    }
+
+    /**
+     * Method to insert code snippets for {@link SecretClient#purgeDeletedSecretWithResponse(String, Context)}
+     */
+    public void purgeDeletedSecretWithResponseCodeSnippets() {
+        SecretClient secretClient = getSecretClient();
+        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecretWithResponse#string-Context
+        Response<Void> purgeResponse = secretClient.purgeDeletedSecretWithResponse("secretName",
+            new Context(key1, value1));
+        System.out.printf("Purge Status Code: %d", purgeResponse.getStatusCode());
+        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecretWithResponse#string-Context
     }
 
     /**

@@ -90,7 +90,7 @@ public class ManagingDeletedCertificates {
         }
 
         // If the key vault is soft-delete enabled, then for permanent deletion deleted certificate need to be purged.
-        certificateClient.purgeDeletedCertificateWithResponse("certificateName");
+        certificateClient.purgeDeletedCertificate("certificateName");
 
         //To ensure certificate is purged on server side.
         Thread.sleep(15000);

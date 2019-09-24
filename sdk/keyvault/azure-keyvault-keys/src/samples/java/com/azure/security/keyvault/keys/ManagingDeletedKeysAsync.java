@@ -82,10 +82,10 @@ public class ManagingDeletedKeysAsync {
         Thread.sleep(15000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
-        keyAsyncClient.purgeDeletedKey("CloudRsaKey").subscribe(purgeResponse ->
+        keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
             System.out.printf("Storage account key purge status response %d \n", purgeResponse.getStatusCode()));
 
-        keyAsyncClient.purgeDeletedKey("CloudEcKey").subscribe(purgeResponse ->
+        keyAsyncClient.purgeDeletedKeyWithResponse("CloudEcKey").subscribe(purgeResponse ->
             System.out.printf("Bank account key purge status response %d \n", purgeResponse.getStatusCode()));
 
         // To ensure key is purged on server side.

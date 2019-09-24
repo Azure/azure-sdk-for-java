@@ -5,7 +5,6 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -252,14 +251,20 @@ public final class KeyClientJavaDocCodeSnippets {
     public void purgeDeletedKeySnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string
-        VoidResponse purgeResponse = keyClient.purgeDeletedKey("deletedKeyName");
-        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgeResponse.getStatusCode());
+        keyClient.purgeDeletedKey("deletedKeyName");
         // END: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string
+    }
 
-        // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context
-        VoidResponse purgedResponse = keyClient.purgeDeletedKey("deletedKeyName", new Context(key2, value2));
+    /**
+     * Generates a code sample for using {@link KeyClient#purgeDeletedKeyWithResponse(String, Context)}
+     */
+    public void purgeDeletedKeyWithResponseSnippets() {
+        KeyClient keyClient = createClient();
+        
+        // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKeyWithResponse#string-Context
+        Response<Void> purgedResponse = keyClient.purgeDeletedKeyWithResponse("deletedKeyName", new Context(key2, value2));
         System.out.printf("Purge Status Code: %rsaPrivateExponent", purgedResponse.getStatusCode());
-        // END: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context
+        // END: com.azure.keyvault.keys.keyclient.purgeDeletedKeyWithResponse#string-Context
     }
 
     /**

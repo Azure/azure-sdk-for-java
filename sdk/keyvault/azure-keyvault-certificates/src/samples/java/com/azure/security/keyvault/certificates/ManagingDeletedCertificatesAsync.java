@@ -91,7 +91,7 @@ public class ManagingDeletedCertificatesAsync {
         Thread.sleep(15000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
-        certificateAsyncClient.purgeDeletedCertificate("certificateName")
+        certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
 

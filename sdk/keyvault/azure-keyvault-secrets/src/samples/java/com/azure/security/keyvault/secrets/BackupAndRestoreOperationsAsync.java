@@ -62,7 +62,7 @@ public class BackupAndRestoreOperationsAsync {
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the secret as well for permanent deletion.
-        secretAsyncClient.purgeDeletedSecret("StorageAccountPassword").subscribe(purgeResponse ->
+        secretAsyncClient.purgeDeletedSecretWithResponse("StorageAccountPassword").subscribe(purgeResponse ->
             System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
 
         //To ensure file is purged on server side.

@@ -439,8 +439,20 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public void purgeDeletedCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string
         certificateAsyncClient.purgeDeletedCertificate("deletedCertificateName")
+            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .doOnSuccess(response -> System.out.printf("Successfully Purged certificate \n"));
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificate#string
+    }
+
+    /**
+     * Method to insert code snippets for {@link CertificateAsyncClient#purgeDeletedCertificateWithResponse(String)}
+     */
+    public void purgeDeletedCertificateWithResponseCodeSnippets() {
+        CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string
+        certificateAsyncClient.purgeDeletedCertificateWithResponse("deletedCertificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
