@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;

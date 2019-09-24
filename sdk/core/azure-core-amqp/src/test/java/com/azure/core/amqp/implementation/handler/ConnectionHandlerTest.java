@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation.handler;
+package com.azure.core.amqp.implementation.handler;
 
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -22,12 +22,12 @@ import reactor.test.StepVerifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.AMQPS_PORT;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.FRAMEWORK;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PLATFORM;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PRODUCT;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.VERSION;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.AMQPS_PORT;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.FRAMEWORK;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATFORM;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PRODUCT;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.VERSION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

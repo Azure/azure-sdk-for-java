@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation.handler;
+package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
@@ -74,8 +74,8 @@ abstract class LinkHandler extends Handler {
 
     public ErrorContext getErrorContext(Link link) {
         final String referenceId;
-        if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
-            referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
+        if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(AmqpErrorCode.TRACKING_ID_PROPERTY)) {
+            referenceId = link.getRemoteProperties().get(AmqpErrorCode.TRACKING_ID_PROPERTY).toString();
         } else {
             referenceId = link.getName();
         }

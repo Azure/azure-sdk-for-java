@@ -4,10 +4,10 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
-import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
-import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
-import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 
 import java.time.Duration;
 

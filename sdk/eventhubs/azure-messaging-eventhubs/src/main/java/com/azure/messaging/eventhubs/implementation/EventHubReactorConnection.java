@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;

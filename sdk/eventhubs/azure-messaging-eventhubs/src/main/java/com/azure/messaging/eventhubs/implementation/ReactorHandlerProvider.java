@@ -4,12 +4,12 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
-import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
-import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
-import com.azure.messaging.eventhubs.implementation.handler.WebSocketsConnectionHandler;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import java.time.Duration;

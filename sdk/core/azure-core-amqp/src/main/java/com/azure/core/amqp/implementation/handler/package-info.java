@@ -4,4 +4,4 @@
 /**
  * This package contains implementation classes for handling events from the transport library.
  */
-package com.azure.messaging.eventhubs.implementation.handler;
+package com.azure.core.amqp.implementation.handler;
