@@ -14,11 +14,10 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -31,8 +30,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     private AppendBlobClient client = new SpecializedBlobClientBuilder().buildAppendBlobClient();
     private Duration timeout = Duration.ofSeconds(30);
     private String leaseId = "leaseId";
-    private InputStream data = new ByteArrayInputStream("data".getBytes(StandardCharsets.UTF_8));
     private long length = 4L;
+    private OutputStream data = new ByteArrayOutputStream(100);
     private static final Long POSITION = null;
     private Long maxSize = length;
     private URL sourceUrl = new URL("https://example.com");
@@ -76,21 +75,21 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlock(InputStream, long)}
+     * Code snippet for {@link AppendBlobClient#appendBlock(OutputStream, long)}
      */
     public void appendBlock() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#OutputStream-long
         System.out.printf("AppendBlob has %d committed blocks%n",
             client.appendBlock(data, length).getBlobCommittedBlockCount());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#OutputStream-long
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, AppendBlobAccessConditions,
+     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(OutputStream, long, AppendBlobAccessConditions,
      * Duration, Context)}
      */
     public void appendBlock2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#OutputStream-long-AppendBlobAccessConditions-Duration-Context
         AppendBlobAccessConditions accessConditions = new AppendBlobAccessConditions()
             .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
                 .setAppendPosition(POSITION)
@@ -100,7 +99,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
         System.out.printf("AppendBlob has %d committed blocks%n",
             client.appendBlockWithResponse(data, length, accessConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#OutputStream-long-AppendBlobAccessConditions-Duration-Context
     }
 
     /**

@@ -20,13 +20,10 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -126,32 +123,26 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#OutputStream-long}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @return The information of the append blob operation.
      */
-    public AppendBlobItem appendBlock(InputStream data, long length) {
+    public AppendBlobItem appendBlock(OutputStream data, long length) {
         return appendBlockWithResponse(data, length, null, null, Context.NONE).getValue();
     }
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#OutputStream-long-AppendBlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -164,12 +155,11 @@ public final class AppendBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
+    public Response<AppendBlobItem> appendBlockWithResponse(OutputStream data, long length,
         AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
+            data, length, appendBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

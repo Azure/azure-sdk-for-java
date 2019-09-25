@@ -74,6 +74,13 @@ class APISpec extends Specification {
         }
     }
 
+    static final Supplier<OutputStream> defaultOutputStream = new Supplier<OutputStream>() {
+        @Override
+        OutputStream get() {
+            return new ByteArrayOutputStream(100)
+        }
+    }
+
     static int defaultDataSize = defaultData.remaining()
 
     static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }

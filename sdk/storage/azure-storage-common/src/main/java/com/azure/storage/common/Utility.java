@@ -20,6 +20,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -534,5 +535,23 @@ public final class Utility {
                         + e.getMessage()));
                 }
             });
+    }
+
+    /**
+     * A utility method for converting the output stream to Flux of ByteBuffer.
+     *
+     * @param data The output data which needs to convert to ByteBuffer.
+     * @param length The expected input data length.
+     * @param blockSize The size of each ByteBuffer.
+     * @return {@link ByteBuffer} which contains the input data.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(OutputStream data, long length, int blockSize) {
+        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
+            .map(i -> i * blockSize)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + blockSize > length ? length - pos : blockSize;
+                byte[] cache = new byte[(int) count];
+                return ByteBuffer.wrap(cache);
+            }));
     }
 }

@@ -17,6 +17,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -49,7 +50,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
-     * append blob specific operations such as {@link AppendBlobClient#appendBlock(InputStream, long) append block},
+     * append blob specific operations such as {@link AppendBlobClient#appendBlock(OutputStream, long) append block},
      * only use this when the blob is known to be an append blob.
      *
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
@@ -100,7 +101,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
 
     /**
      * Creates a {@link PageBlobClient} based on options set in the Builder. PageBlobClients are used to perform page
-     * blob specific operations such as {@link PageBlobClient#uploadPages(PageRange, InputStream) upload pages} and
+     * blob specific operations such as {@link PageBlobClient#uploadPages(PageRange, OutputStream) upload pages} and
      * {@link PageBlobClient#clearPages(PageRange) clear pages}, only use this when the blob is known to be a page
      * blob.
      *

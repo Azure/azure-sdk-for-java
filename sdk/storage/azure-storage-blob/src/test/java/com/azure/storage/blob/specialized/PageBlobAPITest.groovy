@@ -179,7 +179,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page"() {
         when:
         def response = bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
+            new ByteArrayOutputStream(100), null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -192,13 +192,13 @@ class PageBlobAPITest extends APISpec {
     def "Upload page min"() {
         expect:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null).getStatusCode() == 201
+            new ByteArrayOutputStream(100), null, null, null).getStatusCode() == 201
     }
 
     @Unroll
     def "Upload page IA"() {
         when:
-        def data = (dataSize == null) ? null : new ByteArrayInputStream(getRandomByteArray(dataSize))
+        def data = (dataSize == null) ? null : new ByteArrayOutputStream(100)
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1), data)
 
         then:
@@ -228,7 +228,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null).getStatusCode() == 201
+            new ByteArrayOutputStream(100), pac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -262,7 +262,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null)
+            new ByteArrayOutputStream(100), pac, null, null)
 
         then:
         thrown(StorageException)
@@ -285,7 +285,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
+            new ByteArrayOutputStream(100),
             new PageBlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("id")),
             null, null)
 
@@ -299,7 +299,7 @@ class PageBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES)
         destURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+            new ByteArrayOutputStream(100))
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
 
         when:
@@ -319,7 +319,7 @@ class PageBlobAPITest extends APISpec {
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES * 4)
         sourceURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 4 - 1),
-            new ByteArrayInputStream(data))
+            new ByteArrayOutputStream(100))
 
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES * 2)
@@ -349,7 +349,7 @@ class PageBlobAPITest extends APISpec {
         destURL.create(PageBlobClient.PAGE_BYTES)
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        bc.uploadPages(pageRange, new ByteArrayInputStream(data))
+        bc.uploadPages(pageRange, new ByteArrayOutputStream(100))
 
         when:
         destURL.uploadPagesFromURLWithResponse(pageRange, bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest(data),
@@ -365,7 +365,7 @@ class PageBlobAPITest extends APISpec {
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        bc.uploadPages(pageRange, new ByteArrayOutputStream(100))
 
         when:
         destURL.uploadPagesFromURLWithResponse(pageRange, bc.getBlobUrl(), null,
@@ -382,7 +382,7 @@ class PageBlobAPITest extends APISpec {
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        sourceURL.uploadPages(pageRange, new ByteArrayOutputStream(100))
 
         def pac = new PageBlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID)))
@@ -420,7 +420,7 @@ class PageBlobAPITest extends APISpec {
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        sourceURL.uploadPages(pageRange, new ByteArrayOutputStream(100))
 
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         def pac = new PageBlobAccessConditions()
@@ -460,7 +460,7 @@ class PageBlobAPITest extends APISpec {
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        sourceURL.uploadPages(pageRange, new ByteArrayOutputStream(100))
 
         sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
         def smac = new SourceModifiedAccessConditions()
@@ -488,7 +488,7 @@ class PageBlobAPITest extends APISpec {
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        sourceURL.uploadPages(pageRange, new ByteArrayOutputStream(100))
 
         def smac = new SourceModifiedAccessConditions()
             .setSourceIfModifiedSince(sourceIfModifiedSince)
@@ -512,7 +512,7 @@ class PageBlobAPITest extends APISpec {
     def "Clear page"() {
         setup:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
+            new ByteArrayOutputStream(100), null, null, null)
 
         when:
         def response = bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null, null, null)
@@ -533,7 +533,7 @@ class PageBlobAPITest extends APISpec {
     def "Clear pages AC"() {
         setup:
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+            new ByteArrayOutputStream(100))
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def pac = new PageBlobAccessConditions()
@@ -569,7 +569,7 @@ class PageBlobAPITest extends APISpec {
     def "Clear pages AC fail"() {
         setup:
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+            new ByteArrayOutputStream(100))
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
         setupBlobLeaseCondition(bc, leaseID)
         def pac = new PageBlobAccessConditions()
@@ -617,7 +617,7 @@ class PageBlobAPITest extends APISpec {
     def "Get page ranges"() {
         setup:
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+            new ByteArrayOutputStream(100))
 
         when:
         def response = bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), null, null, null)
@@ -709,12 +709,12 @@ class PageBlobAPITest extends APISpec {
         bc.create(PageBlobClient.PAGE_BYTES * 2)
 
         bc.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+            new ByteArrayOutputStream(100))
 
         def snapId = bc.createSnapshot().getSnapshotId()
 
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+            new ByteArrayOutputStream(100))
 
         bc.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1))
 
