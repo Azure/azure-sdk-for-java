@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -385,17 +384,17 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         }
     }
 
-    private Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
+    private Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions,
             context));
     }
 
-    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
             null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, null, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     private Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,

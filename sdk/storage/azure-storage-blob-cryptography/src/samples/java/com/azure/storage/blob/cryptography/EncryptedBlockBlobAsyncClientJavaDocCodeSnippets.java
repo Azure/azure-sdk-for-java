@@ -7,13 +7,9 @@ import com.azure.storage.blob.BlockBlobAsyncClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlockList;
-import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
@@ -22,15 +18,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Code snippet for {@link BlockBlobAsyncClient}
  */
 @SuppressWarnings({"unused"})
 public class EncryptedBlockBlobAsyncClientJavaDocCodeSnippets {
-    private EncryptedBlockBlobAsyncClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobAsyncClient
-        ("blobName", "containerName");
+    private EncryptedBlockBlobAsyncClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobAsyncClient(
+        "blobName", "containerName");
 
     private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes(StandardCharsets.UTF_8)));
     private long length = 4L;

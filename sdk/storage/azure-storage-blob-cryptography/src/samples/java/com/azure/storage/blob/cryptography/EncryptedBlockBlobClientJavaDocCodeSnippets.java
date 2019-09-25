@@ -27,8 +27,8 @@ import java.util.Collections;
  */
 @SuppressWarnings({"unused"})
 public class EncryptedBlockBlobClientJavaDocCodeSnippets {
-    private EncryptedBlockBlobClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobClient
-        ("blobName", "containerName");
+    private EncryptedBlockBlobClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobClient(
+        "blobName", "containerName");
     private InputStream data = new ByteArrayInputStream("data".getBytes(StandardCharsets.UTF_8));
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);
@@ -105,7 +105,7 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: 'com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -125,6 +125,6 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: 'com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
     }
 }

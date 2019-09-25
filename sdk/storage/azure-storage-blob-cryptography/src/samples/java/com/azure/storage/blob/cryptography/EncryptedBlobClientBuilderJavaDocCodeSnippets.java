@@ -5,7 +5,6 @@ package com.azure.storage.blob.cryptography;
 
 import com.azure.storage.blob.BlockBlobAsyncClient;
 import com.azure.storage.blob.BlockBlobClient;
-import java.security.NoSuchAlgorithmException;
 
 /**
  *
