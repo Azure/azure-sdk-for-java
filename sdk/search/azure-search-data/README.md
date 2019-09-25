@@ -32,12 +32,18 @@ The APIs documented in this section provide access to operations on search data,
 
 * You will need to provide `index name`and the `search service name` which is the URL of the Azure Search service you provisioned: https://<yourService>.search.windows.net.
 
-##This library is build using:
+## This library is build using:
 * JDK / JRE 1.8
 * Microsoft Azure - adal4j 1.3.0
 * Junit 4.12
 
-##Samples
+## Building the SDK
+1.	Clone this repo 
+2.	In Intellij, open the client pom  - [pom.client.xml](../../../pom.client.xml) it will open all the SDKs, including the search one and will make sure all dependencies are met.
+3.	Build module azure-search-data, and run the samples
+
+
+## Samples
 * [A simple search index example](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/SearchIndexClientExample.java).
 * [Handle a generic document search results](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/GenericDocumentSearchExample.java).
 * [Get a single generic document](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/GenericSingleDocumentGetExample.java).
