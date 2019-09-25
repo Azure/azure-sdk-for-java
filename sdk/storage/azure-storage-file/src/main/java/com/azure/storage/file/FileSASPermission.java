@@ -67,7 +67,7 @@ public final class FileSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean getRead() {
+    public boolean hasReadPermission() {
         return read;
     }
 
@@ -77,7 +77,7 @@ public final class FileSASPermission {
      * @param read Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setRead(boolean read) {
+    public FileSASPermission hasReadPermission(boolean read) {
         this.read = read;
         return this;
     }
@@ -85,7 +85,7 @@ public final class FileSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean getCreate() {
+    public boolean hasCreatePermission() {
         return create;
     }
 
@@ -95,7 +95,7 @@ public final class FileSASPermission {
      * @param create Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setCreate(boolean create) {
+    public FileSASPermission hasCreatePermission(boolean create) {
         this.create = create;
         return this;
     }
@@ -103,7 +103,7 @@ public final class FileSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean getWrite() {
+    public boolean hasWritePermission() {
         return write;
     }
 
@@ -113,7 +113,7 @@ public final class FileSASPermission {
      * @param write Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setWrite(boolean write) {
+    public FileSASPermission hasWritePermission(boolean write) {
         this.write = write;
         return this;
     }
@@ -121,7 +121,7 @@ public final class FileSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean getDelete() {
+    public boolean hasDeletePermission() {
         return delete;
     }
 
@@ -131,7 +131,7 @@ public final class FileSASPermission {
      * @param delete Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setDelete(boolean delete) {
+    public FileSASPermission hasDeletePermission(boolean delete) {
         this.delete = delete;
         return this;
     }

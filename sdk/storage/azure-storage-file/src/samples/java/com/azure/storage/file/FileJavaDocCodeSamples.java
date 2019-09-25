@@ -604,10 +604,10 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.FileClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         String identifier = "identifier";
         FileSASPermission permissions = new FileSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true);
+            .hasReadPermission(true)
+            .hasCreatePermission(true)
+            .hasDeletePermission(true)
+            .hasWritePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

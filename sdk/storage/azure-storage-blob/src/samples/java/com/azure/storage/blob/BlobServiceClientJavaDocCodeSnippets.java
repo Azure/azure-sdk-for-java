@@ -50,14 +50,14 @@ public class BlobServiceClientJavaDocCodeSnippets {
             .setObject(true)
             .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setCreate(true)
-            .setWrite(true)
-            .setDelete(true)
-            .setList(true)
-            .setProcessMessages(true)
-            .setUpdate(true);
+            .setReadPermission(true)
+            .hasAddPermission(true)
+            .hasCreatePermission(true)
+            .hasWritePermission(true)
+            .hasDeletePermission(true)
+            .hasListPermission(true)
+            .hasProcessMessages(true)
+            .hasUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

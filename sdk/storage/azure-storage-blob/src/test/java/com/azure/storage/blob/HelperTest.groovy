@@ -84,7 +84,7 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSASPermission().setRead(true).toString())
+            v.setPermissions(new BlobSASPermission().hasReadPermission(true).toString())
         } else {
             v.setPermissions("")
         }
@@ -160,7 +160,7 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSASPermission().setRead(true).toString())
+            v.setPermissions(new BlobSASPermission().hasReadPermission(true).toString())
         } else {
             v.setPermissions("")
         }
@@ -294,11 +294,11 @@ class HelperTest extends APISpec {
     def "BlobSASPermissions toString"() {
         setup:
         BlobSASPermission perms = new BlobSASPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setCreate(create)
-            .setAdd(add)
+            .hasReadPermission(read)
+            .hasWritePermission(write)
+            .hasDeletePermission(delete)
+            .hasCreatePermission(create)
+            .hasAddPermission(add)
 
         expect:
         perms.toString() == expectedString
@@ -319,11 +319,11 @@ class HelperTest extends APISpec {
         BlobSASPermission perms = BlobSASPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getCreate() == create
-        perms.getAdd() == add
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
+        perms.hasAddPermission() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -456,7 +456,7 @@ class HelperTest extends APISpec {
     def "accountSasSignatures string to sign"() {
         when:
         AccountSASSignatureValues v = new AccountSASSignatureValues()
-            .setPermissions(new AccountSASPermission().setRead(true).toString())
+            .setPermissions(new AccountSASPermission().setReadPermission(true).toString())
             .setServices("b")
             .setResourceTypes("o")
             .setStartTime(startTime)
@@ -512,14 +512,14 @@ class HelperTest extends APISpec {
     def "AccountSASPermissions toString"() {
         setup:
         AccountSASPermission perms = new AccountSASPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setList(list)
-            .setAdd(add)
-            .setCreate(create)
-            .setUpdate(update)
-            .setProcessMessages(process)
+            .setReadPermission(read)
+            .hasWritePermission(write)
+            .hasDeletePermission(delete)
+            .hasListPermission(list)
+            .hasAddPermission(add)
+            .hasCreatePermission(create)
+            .hasUpdatePermission(update)
+            .hasProcessMessages(process)
 
         expect:
         perms.toString() == expectedString
@@ -543,14 +543,14 @@ class HelperTest extends APISpec {
         AccountSASPermission perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.isRead() == read
-        perms.isWrite() == write
-        perms.isDelete() == delete
-        perms.isList() == list
-        perms.isAdd() == add
-        perms.isCreate() == create
-        perms.isUpdate() == update
-        perms.getProcessMessages() == process
+        perms.hasReadPermission() == read
+        perms.hadWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasListPermission() == list
+        perms.hasAddPermission() == add
+        perms.hasReadPermission() == create
+        perms.hasUpdatePermission() == update
+        perms.hasProcessMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process

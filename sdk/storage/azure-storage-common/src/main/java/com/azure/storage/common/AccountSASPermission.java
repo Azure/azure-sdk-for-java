@@ -87,7 +87,7 @@ public final class AccountSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean isRead() {
+    public boolean hasReadPermission() {
         return read;
     }
 
@@ -97,7 +97,7 @@ public final class AccountSASPermission {
      * @param read Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setRead(boolean read) {
+    public AccountSASPermission setReadPermission(boolean read) {
         this.read = read;
         return this;
     }
@@ -105,7 +105,7 @@ public final class AccountSASPermission {
     /**
      * @return the add permission status
      */
-    public boolean isAdd() {
+    public boolean hasAddPermission() {
         return add;
     }
 
@@ -115,7 +115,7 @@ public final class AccountSASPermission {
      * @param add Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setAdd(boolean add) {
+    public AccountSASPermission hasAddPermission(boolean add) {
         this.add = add;
         return this;
     }
@@ -123,7 +123,7 @@ public final class AccountSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean isCreate() {
+    public boolean hasCreatePermission() {
         return create;
     }
 
@@ -133,7 +133,7 @@ public final class AccountSASPermission {
      * @param create Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setCreate(boolean create) {
+    public AccountSASPermission hasCreatePermission(boolean create) {
         this.create = create;
         return this;
     }
@@ -141,7 +141,7 @@ public final class AccountSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean isWrite() {
+    public boolean hadWritePermission() {
         return write;
     }
 
@@ -151,7 +151,7 @@ public final class AccountSASPermission {
      * @param write Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setWrite(boolean write) {
+    public AccountSASPermission hasWritePermission(boolean write) {
         this.write = write;
         return this;
     }
@@ -159,7 +159,7 @@ public final class AccountSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean isDelete() {
+    public boolean hasDeletePermission() {
         return delete;
     }
 
@@ -169,7 +169,7 @@ public final class AccountSASPermission {
      * @param delete Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setDelete(boolean delete) {
+    public AccountSASPermission hasDeletePermission(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -177,7 +177,7 @@ public final class AccountSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean isList() {
+    public boolean hasListPermission() {
         return list;
     }
 
@@ -188,7 +188,7 @@ public final class AccountSASPermission {
      * @param list Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setList(boolean list) {
+    public AccountSASPermission hasListPermission(boolean list) {
         this.list = list;
         return this;
     }
@@ -198,7 +198,7 @@ public final class AccountSASPermission {
      *
      * @return the update permission status
      */
-    public boolean isUpdate() {
+    public boolean hasUpdatePermission() {
         return update;
     }
 
@@ -208,7 +208,7 @@ public final class AccountSASPermission {
      * @param update Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setUpdate(boolean update) {
+    public AccountSASPermission hasUpdatePermission(boolean update) {
         this.update = update;
         return this;
     }
@@ -218,7 +218,7 @@ public final class AccountSASPermission {
      *
      * @return the process messages permission status.
      */
-    public boolean getProcessMessages() {
+    public boolean hasProcessMessages() {
         return processMessages;
     }
 
@@ -228,7 +228,7 @@ public final class AccountSASPermission {
      * @param processMessages Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setProcessMessages(boolean processMessages) {
+    public AccountSASPermission hasProcessMessages(boolean processMessages) {
         this.processMessages = processMessages;
         return this;
     }

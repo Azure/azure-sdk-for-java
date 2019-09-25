@@ -6,12 +6,8 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.FileAsyncClient
-import com.azure.storage.file.FileSASPermission
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.core.publisher.Flux
@@ -393,7 +389,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setRead(true), getUTCNow().plusDays(1))
+        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().hasReadPermission(true), getUTCNow().plusDays(1))
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")

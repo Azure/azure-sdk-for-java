@@ -73,7 +73,7 @@ public final class BlobSASPermission {
     /**
      * @return the read permission status.
      */
-    public boolean getRead() {
+    public boolean hasReadPermission() {
         return read;
     }
 
@@ -83,7 +83,7 @@ public final class BlobSASPermission {
      * @param read Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission setRead(boolean read) {
+    public BlobSASPermission hasReadPermission(boolean read) {
         this.read = read;
         return this;
     }
@@ -91,7 +91,7 @@ public final class BlobSASPermission {
     /**
      * @return the add permission status.
      */
-    public boolean getAdd() {
+    public boolean hasAddPermission() {
         return add;
     }
 
@@ -101,7 +101,7 @@ public final class BlobSASPermission {
      * @param add Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission setAdd(boolean add) {
+    public BlobSASPermission hasAddPermission(boolean add) {
         this.add = add;
         return this;
     }
@@ -109,7 +109,7 @@ public final class BlobSASPermission {
     /**
      * @return the create permission status.
      */
-    public boolean getCreate() {
+    public boolean hasCreatePermission() {
         return create;
     }
 
@@ -119,7 +119,7 @@ public final class BlobSASPermission {
      * @param create Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission setCreate(boolean create) {
+    public BlobSASPermission hasCreatePermission(boolean create) {
         this.create = create;
         return this;
     }
@@ -127,7 +127,7 @@ public final class BlobSASPermission {
     /**
      * @return the write permission status.
      */
-    public boolean getWrite() {
+    public boolean hasWritePermission() {
         return write;
     }
 
@@ -137,7 +137,7 @@ public final class BlobSASPermission {
      * @param write Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission setWrite(boolean write) {
+    public BlobSASPermission hasWritePermission(boolean write) {
         this.write = write;
         return this;
     }
@@ -145,7 +145,7 @@ public final class BlobSASPermission {
     /**
      * @return the delete permission status.
      */
-    public boolean getDelete() {
+    public boolean hasDeletePermission() {
         return delete;
     }
 
@@ -155,7 +155,7 @@ public final class BlobSASPermission {
      * @param delete Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission setDelete(boolean delete) {
+    public BlobSASPermission hasDeletePermission(boolean delete) {
         this.delete = delete;
         return this;
     }
