@@ -71,7 +71,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .buildEncryptedBlockBlobAsyncClient()
 
         then:
-        thrown(NullPointerException)
+        thrown(IllegalArgumentException)
 
         when:
         bec = getEncryptedClientBuilder(null, null, primaryCredential,
@@ -80,7 +80,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .buildEncryptedBlockBlobClient()
 
         then:
-        thrown(NullPointerException)
+        thrown(IllegalArgumentException)
     }
 
     @Requires({ APISpec.liveMode() })

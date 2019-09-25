@@ -18,7 +18,6 @@ import com.azure.storage.blob.BlockBlobAsyncClient;
 import com.azure.storage.blob.UploadBufferPool;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.AccessTierOptional;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -150,14 +149,13 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         final Metadata metadataFinal = metadata == null ? new Metadata() : metadata;
         final BlobAccessConditions accessConditionsFinal = accessConditions == null ? new BlobAccessConditions()
             : accessConditions;
-        AccessTierOptional opTier = tier == null ? null : AccessTierOptional.fromString(tier.toString());
         Mono<Flux<ByteBuffer>> dataFinal = encryptionPolicy.prepareToSendEncryptedRequest(data, metadataFinal);
         // Readjust the length to account for padding.
         long lengthFinal =  length + (16 - length % 16);
 
         return dataFinal.flatMap(df ->
             postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null, null, df,
-                lengthFinal, null, metadataFinal, opTier, null, headers,
+                lengthFinal, null, metadataFinal, tier, null, headers,
                 accessConditionsFinal.getLeaseAccessConditions(), null /*cpk*/,
                 accessConditionsFinal.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders()))));
@@ -408,10 +406,9 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
-            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tierOp, null,
+            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
             headers, accessConditions.getLeaseAccessConditions(), null /*cpk*/,
             accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));

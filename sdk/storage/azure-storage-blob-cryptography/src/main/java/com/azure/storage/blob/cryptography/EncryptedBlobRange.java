@@ -40,7 +40,7 @@ final class EncryptedBlobRange {
             return new EncryptedBlobRange(null);
         }
         // Non-null case
-        String trimmed = stringRange.substring(stringRange.indexOf("=")); // Trim off the "bytes=" part
+        String trimmed = stringRange.substring(stringRange.indexOf("=") + 1); // Trim off the "bytes=" part
         String[] pieces = trimmed.split("-"); // Split on the "-"
         BlobRange range;
         long offset = Long.parseLong(pieces[0]);
