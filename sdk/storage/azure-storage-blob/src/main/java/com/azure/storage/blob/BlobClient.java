@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
@@ -374,15 +375,17 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException If stream is null
      */
     public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        Utility.assertNotNull("stream", stream);
         Mono<Response<Void>> download = blobAsyncClient
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
             .flatMapMany(res -> res.getValue()
                 .doOnNext(bf -> {
                     try {
-                        stream.write(bf.array());
+                        stream.write(FluxUtil.byteBufferToArray(bf));
                     } catch (IOException e) {
                         throw logger.logExceptionAsError(new UncheckedIOException(e));
                     }
