@@ -282,6 +282,6 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
      * @return known StorageErrorCode values.
      */
     public static Collection<StorageErrorCode> values() {
-        return values(StorageErrorCode.class);
+        return getValues(StorageErrorCode.class);
     }
 }

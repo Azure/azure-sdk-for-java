@@ -72,7 +72,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @return a collection of all known values
      */
     @SuppressWarnings("unchecked")
-    protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
+    protected static <T extends ExpandableStringEnum<T>> Collection<T> getValues(Class<T> clazz) {
         // Make a copy of all values
         Collection<? extends ExpandableStringEnum<?>> values = new ArrayList<>(VALUES_BY_NAME.values());
 
