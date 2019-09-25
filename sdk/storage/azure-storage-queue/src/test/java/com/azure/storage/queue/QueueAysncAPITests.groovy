@@ -136,7 +136,6 @@ class QueueAysncAPITests extends APISpec {
         }
         where:
         invalidKey     | statusCode | errMessage
-        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_FAILED
         "invalid-meta" | 400        | StorageErrorCode.INVALID_METADATA
         "12345"        | 400        | StorageErrorCode.INVALID_METADATA
         ""             | 400        | StorageErrorCode.EMPTY_METADATA_KEY
