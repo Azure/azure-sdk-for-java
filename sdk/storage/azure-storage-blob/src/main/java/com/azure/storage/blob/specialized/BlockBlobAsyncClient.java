@@ -6,7 +6,6 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -460,17 +459,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
+    public Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions,
             context));
     }
 
-    Mono<VoidResponse> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
             null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, cpk, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -519,14 +518,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceModifiedAccessConditions {@link SourceModifiedAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
+    public Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
         BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions) {
         return withContext(context -> stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange,
             sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions));
     }
 
-    Mono<VoidResponse> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
+    Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL,
         BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
@@ -535,7 +534,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
                 base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null, null,
                 null, cpk, leaseAccessConditions, sourceModifiedAccessConditions, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

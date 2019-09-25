@@ -111,7 +111,7 @@ public class HelloWorld {
         Thread.sleep(30000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
-        certificateClient.purgeDeletedCertificateWithResponse("certificateName");
-        certificateClient.purgeDeletedCertificateWithResponse("myCertificate");
+        certificateClient.purgeDeletedCertificate("certificateName");
+        certificateClient.purgeDeletedCertificate("myCertificate");
     }
 }

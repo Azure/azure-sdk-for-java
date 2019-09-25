@@ -6,7 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class EventDataBatchTest {
      */
     @Test
     public void withinPayloadSize() {
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
         final EventData within = new EventData(new byte[1024]);
 
         Assert.assertTrue(batch.tryAdd(within));

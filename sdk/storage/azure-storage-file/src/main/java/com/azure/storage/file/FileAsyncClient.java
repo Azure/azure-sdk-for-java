@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -292,14 +291,14 @@ public class FileAsyncClient {
      * @param copyId Specifies the copy id which has copying pending status associate with it.
      * @return A response containing the status of aborting copy the file.
      */
-    public Mono<VoidResponse> abortCopyWithResponse(String copyId) {
+    public Mono<Response<Void>> abortCopyWithResponse(String copyId) {
         return withContext(context -> abortCopyWithResponse(copyId, context));
     }
 
-    Mono<VoidResponse> abortCopyWithResponse(String copyId, Context context) {
+    Mono<Response<Void>> abortCopyWithResponse(String copyId, Context context) {
         return postProcessResponse(azureFileStorageClient.files()
             .abortCopyWithRestResponseAsync(shareName, filePath, copyId, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -481,14 +480,14 @@ public class FileAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      */
-    public Mono<VoidResponse> deleteWithResponse() {
+    public Mono<Response<Void>> deleteWithResponse() {
         return withContext(this::deleteWithResponse);
     }
 
-    Mono<VoidResponse> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(Context context) {
         return postProcessResponse(azureFileStorageClient.files()
             .deleteWithRestResponseAsync(shareName, filePath, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

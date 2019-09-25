@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobListDetails
@@ -74,6 +74,7 @@ class ContainerAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
     }
 
     @Unroll

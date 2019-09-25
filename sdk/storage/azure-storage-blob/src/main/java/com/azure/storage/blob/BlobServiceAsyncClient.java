@@ -10,7 +10,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -183,11 +182,11 @@ public final class BlobServiceAsyncClient {
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<VoidResponse> deleteContainerWithResponse(String containerName) {
+    public Mono<Response<Void>> deleteContainerWithResponse(String containerName) {
         return withContext(context -> deleteContainerWithResponse(containerName, context));
     }
 
-    Mono<VoidResponse> deleteContainerWithResponse(String containerName, Context context) {
+    Mono<Response<Void>> deleteContainerWithResponse(String containerName, Context context) {
         return getContainerAsyncClient(containerName).deleteWithResponse(null, context);
     }
 
@@ -323,14 +322,14 @@ public final class BlobServiceAsyncClient {
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
      */
-    public Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties) {
+    public Mono<Response<Void>> setPropertiesWithResponse(StorageServiceProperties properties) {
         return withContext(context -> setPropertiesWithResponse(properties, context));
     }
 
-    Mono<VoidResponse> setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
+    Mono<Response<Void>> setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
         return postProcessResponse(
             this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
