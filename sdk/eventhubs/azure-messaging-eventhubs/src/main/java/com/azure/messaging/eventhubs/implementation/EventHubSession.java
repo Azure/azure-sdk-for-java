@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
 import reactor.core.publisher.Mono;
 

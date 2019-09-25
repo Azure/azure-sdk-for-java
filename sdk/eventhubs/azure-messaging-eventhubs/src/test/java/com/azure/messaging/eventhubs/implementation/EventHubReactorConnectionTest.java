@@ -5,10 +5,16 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorDispatcher;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -44,9 +50,10 @@ public class EventHubReactorConnectionTest {
     private Connection reactorConnection;
     @Mock
     private MessageSerializer messageSerializer;
-
-    private ReactorHandlerProvider handlerProvider;
+    @Mock
     private ReactorProvider reactorProvider;
+    @Mock
+    private ReactorHandlerProvider handlerProvider;
     private ConnectionOptions connectionOptions;
 
     @Before
@@ -65,9 +72,13 @@ public class EventHubReactorConnectionTest {
             ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
-        reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
-        handlerProvider = new MockReactorHandlerProvider(reactorProvider, connectionHandler,
-            null, null, null);
+        when(reactorProvider.getReactor()).thenReturn(reactor);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+        when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
+            .thenReturn(reactor);
+
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP))
+            .thenReturn(connectionHandler);
     }
 
     @Test
