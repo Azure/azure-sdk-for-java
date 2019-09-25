@@ -99,6 +99,8 @@ az storage blob generate-sas
     --expiry 2019-06-05
     --permission rpau
     --connection-string $CONNECTION_STRING
+    --services bfqt
+    --resource-types sco
 ```
 b. Alternatively, get the Account SAS Token from the Azure Portal.
 ```
@@ -249,7 +251,7 @@ Enumerating all blobs using ContainerClient
 ```java
 containerClient.listBlobsFlat()
         .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
+            blobItem -> System.out.println("This is the blob name: " + blobItem.name())
         );
 ```
 
