@@ -25,14 +25,14 @@ public final class BlockItem {
     /**
      * @return the base64 encoded block ID.
      */
-    public String name() {
+    public String getName() {
         return this.block.getName();
     }
 
     /**
      * @return the block size in bytes.
      */
-    public int size() {
+    public int getSize() {
         return this.block.getSize();
     }
 
@@ -41,5 +41,23 @@ public final class BlockItem {
      */
     public boolean isCommitted() {
         return isCommitted;
+    }
+
+    /**
+     * Set the name of the block blob.
+     *
+     * @param name the name of the block blob.
+     */
+    public void setName(String name) {
+        this.block.setName(name);
+    }
+
+    /**
+     * Set the size of the block blob.
+     *
+     * @param size the size of the block blob.
+     */
+    public void setSize(int size) {
+        this.block.setSize(size);
     }
 }
