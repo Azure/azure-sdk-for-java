@@ -207,6 +207,8 @@ The following sections provide several code snippets covering some of the most c
 - [Delete a Secret Asynchronously](#delete-a-secret-asynchronously)
 - [List Secrets Asynchronously](#list-secrets-asynchronously)
 
+> Note : You should add "System.in.read()" or "Thread.Sleep()" after every operation bacause some Async functions need more time to complete.
+
 ### Create a Secret Asynchronously
 
 Create a Secret to be stored in the Azure Key Vault.
