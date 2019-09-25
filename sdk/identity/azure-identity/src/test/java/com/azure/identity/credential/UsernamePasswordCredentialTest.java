@@ -7,6 +7,7 @@ import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
@@ -21,6 +22,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -110,21 +112,25 @@ public class UsernamePasswordCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().username(username).password(password).build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("clientId"))
-            .verify();
-
-        credential =
-            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("password"))
-            .verify();
-
-        credential =
-            new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("username"))
-            .verify();
+        try {
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().username(username).password(password).build();
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(e.getMessage().contains("clientId"));
+        }
+        try {
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(e.getMessage().contains("password"));
+        }
+        try {
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(e.getMessage().contains("username"));
+        }
     }
 }
