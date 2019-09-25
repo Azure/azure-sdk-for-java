@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerAccessConditions;
@@ -42,6 +42,7 @@ import java.util.List;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
  * Docs</a> for more information on containers.
  */
+@ServiceClient(builder = ContainerClientBuilder.class)
 public final class ContainerClient {
     private final ContainerAsyncClient containerAsyncClient;
 
@@ -242,7 +243,7 @@ public final class ContainerClient {
      *
      * @return true if the container exists, false if it doesn't
      */
-    public Boolean exists() {
+    public boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
@@ -291,9 +292,9 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout,
+    public Response<Void> createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
+        Mono<Response<Void>> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -325,9 +326,9 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout,
+    public Response<Void> deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.deleteWithResponse(accessConditions, context);
+        Mono<Response<Void>> response = containerAsyncClient.deleteWithResponse(accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -396,9 +397,10 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setMetadataWithResponse(Metadata metadata,
+    public Response<Void> setMetadataWithResponse(Metadata metadata,
         ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
+        Mono<Response<Void>> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions,
+            context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -484,10 +486,10 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setAccessPolicyWithResponse(PublicAccessType accessType,
+    public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient
+        Mono<Response<Void>> response = containerAsyncClient
             .setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);

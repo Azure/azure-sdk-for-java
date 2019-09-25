@@ -372,17 +372,17 @@ class RequestRetryTestFactory {
 
         private OffsetDateTime calcUpperBound(OffsetDateTime start, int primaryTryNumber, boolean tryingPrimary) {
             if (tryingPrimary) {
-                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 + 500, ChronoUnit.MILLIS);
+                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 + 1000, ChronoUnit.MILLIS);
             } else {
-                return start.plus(1400, ChronoUnit.MILLIS);
+                return start.plus(1500, ChronoUnit.MILLIS);
             }
         }
 
         private OffsetDateTime calcLowerBound(OffsetDateTime start, int primaryTryNumber, boolean tryingPrimary) {
             if (tryingPrimary) {
-                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 - 500, ChronoUnit.MILLIS);
+                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 - 1000, ChronoUnit.MILLIS);
             } else {
-                return start.plus(700, ChronoUnit.MILLIS);
+                return start.plus(500, ChronoUnit.MILLIS);
             }
         }
 

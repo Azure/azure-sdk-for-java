@@ -4,6 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -46,15 +47,15 @@ public class IdentityClientTests {
         // setup
         String secret = "secret";
         String accessToken = "token";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        mockForClientSecret(secret, scopes, accessToken, expiresOn);
+        mockForClientSecret(secret, request, accessToken, expiresOn);
 
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-        AccessToken token = client.authenticateWithClientSecret(secret, scopes).block();
+        AccessToken token = client.authenticateWithClientSecret(secret, request).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
@@ -64,16 +65,16 @@ public class IdentityClientTests {
         // setup
         String secret = "secret";
         String accessToken = "token";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        mockForClientSecret(secret, scopes, accessToken, expiresOn);
+        mockForClientSecret(secret, request, accessToken, expiresOn);
 
         // test
         try {
             IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-            client.authenticateWithClientSecret("bad secret", scopes).block();
+            client.authenticateWithClientSecret("bad secret", request).block();
             fail();
         } catch (MsalServiceException e) {
             Assert.assertEquals("Invalid clientSecret", e.getMessage());
@@ -85,15 +86,15 @@ public class IdentityClientTests {
         // setup
         String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
         String accessToken = "token";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        mockForClientCertificate(scopes, accessToken, expiresOn);
+        mockForClientCertificate(request, accessToken, expiresOn);
 
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-        AccessToken token = client.authenticateWithPfxCertificate(pfxPath, "StrongPass!123", scopes).block();
+        AccessToken token = client.authenticateWithPfxCertificate(pfxPath, "StrongPass!123", request).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
@@ -103,16 +104,16 @@ public class IdentityClientTests {
         // setup
         String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
         String accessToken = "token";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        mockForClientCertificate(scopes, accessToken, expiresOn);
+        mockForClientCertificate(request, accessToken, expiresOn);
 
         // test
         try {
             IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-            client.authenticateWithPfxCertificate(pfxPath, "BadPassword", scopes).block();
+            client.authenticateWithPfxCertificate(pfxPath, "BadPassword", request).block();
             fail();
         } catch (Exception e) {
             Assert.assertTrue(e.getMessage().contains("password was incorrect"));
@@ -123,30 +124,30 @@ public class IdentityClientTests {
     public void testValidDeviceCodeFlow() throws Exception {
         // setup
         String accessToken = "token";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        mockForDeviceCodeFlow(scopes, accessToken, expiresOn);
+        mockForDeviceCodeFlow(request, accessToken, expiresOn);
 
         // test
         IdentityClient client = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).build();
-        AccessToken token = client.authenticateWithDeviceCode(scopes, deviceCodeChallenge -> { /* do nothing */ }).block();
+        AccessToken token = client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }).block();
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 
     /****** mocks ******/
 
-    private void mockForClientSecret(String secret, String[] scopes, String accessToken, OffsetDateTime expiresOn) throws Exception {
+    private void mockForClientSecret(String secret, TokenRequest request, String accessToken, OffsetDateTime expiresOn) throws Exception {
         ConfidentialClientApplication application = PowerMockito.mock(ConfidentialClientApplication.class);
         when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
             ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
-            if (argument.scopes().size() == 1 && scopes[0].equals(argument.scopes().iterator().next())) {
+            if (argument.scopes().size() == 1 && request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
                 return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
             } else {
                 return CompletableFuture.runAsync(() -> {
-                    throw new MsalServiceException("Invalid scopes", "InvalidScopes");
+                    throw new MsalServiceException("Invalid request", "InvalidScopes");
                 });
             }
         });
@@ -166,15 +167,15 @@ public class IdentityClientTests {
         });
     }
 
-    private void mockForClientCertificate(String[] scopes, String accessToken, OffsetDateTime expiresOn) throws Exception {
+    private void mockForClientCertificate(TokenRequest request, String accessToken, OffsetDateTime expiresOn) throws Exception {
         ConfidentialClientApplication application = PowerMockito.mock(ConfidentialClientApplication.class);
         when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
             ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
-            if (argument.scopes().size() == 1 && scopes[0].equals(argument.scopes().iterator().next())) {
+            if (argument.scopes().size() == 1 && request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
                 return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
             } else {
                 return CompletableFuture.runAsync(() -> {
-                    throw new MsalServiceException("Invalid scopes", "InvalidScopes");
+                    throw new MsalServiceException("Invalid request", "InvalidScopes");
                 });
             }
         });
@@ -194,14 +195,14 @@ public class IdentityClientTests {
         });
     }
 
-    private void mockForDeviceCodeFlow(String[] scopes, String accessToken, OffsetDateTime expiresOn) throws Exception {
+    private void mockForDeviceCodeFlow(TokenRequest request, String accessToken, OffsetDateTime expiresOn) throws Exception {
         PublicClientApplication application = PowerMockito.mock(PublicClientApplication.class);
         AtomicBoolean cached = new AtomicBoolean(false);
         when(application.acquireToken(any(DeviceCodeFlowParameters.class))).thenAnswer(invocation -> {
             DeviceCodeFlowParameters argument = (DeviceCodeFlowParameters) invocation.getArguments()[0];
-            if (argument.scopes().size() != 1 || !scopes[0].equals(argument.scopes().iterator().next())) {
+            if (argument.scopes().size() != 1 || !request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
                 return CompletableFuture.runAsync(() -> {
-                    throw new MsalServiceException("Invalid scopes", "InvalidScopes");
+                    throw new MsalServiceException("Invalid request", "InvalidScopes");
                 });
             }
             if (argument.deviceCodeConsumer() == null) {

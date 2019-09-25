@@ -5,7 +5,13 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryOptions;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
@@ -23,6 +29,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final RetryOptions retryOptions;
+    private final MessageSerializer messageSerializer;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -32,23 +39,25 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
      * @param reactorProvider Provides proton-j reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
-     * @param mapper Maps responses from {@link EventHubManagementNode}.
+     * @param messageSerializer Serializes and deserializes proton-j messages.
      */
     public EventHubReactorConnection(String connectionId, ConnectionOptions connectionOptions,
                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                     TokenManagerProvider tokenManagerProvider, ManagementResponseMapper mapper) {
-        super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
+                                     TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+        super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
+            messageSerializer);
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
+        this.messageSerializer = messageSerializer;
 
         this.managementChannelMono = getReactorConnection().then(
             Mono.fromCallable(() -> {
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(), tokenManagerProvider,
-                    mapper);
+                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
+                    this.tokenManagerProvider, this.messageSerializer);
             }))
             .cache();
     }
@@ -61,6 +70,6 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider, getCBSNode(),
-            tokenManagerProvider, retryOptions.getTryTimeout());
+            tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
     }
 }

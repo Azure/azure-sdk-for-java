@@ -6,7 +6,7 @@ package com.azure.storage.file;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -41,6 +41,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class)
 public class DirectoryClient {
 
     private final DirectoryAsyncClient directoryAsyncClient;
@@ -177,8 +178,8 @@ public class DirectoryClient {
      * @throws StorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = directoryAsyncClient.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = directoryAsyncClient.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -534,8 +535,8 @@ public class DirectoryClient {
      * name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteSubDirectoryWithResponse(String subDirectoryName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = directoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName, context);
+    public Response<Void> deleteSubDirectoryWithResponse(String subDirectoryName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = directoryAsyncClient.deleteSubDirectoryWithResponse(subDirectoryName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -638,8 +639,8 @@ public class DirectoryClient {
      * resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteFileWithResponse(String fileName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = directoryAsyncClient.deleteFileWithResponse(fileName, context);
+    public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = directoryAsyncClient.deleteFileWithResponse(fileName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

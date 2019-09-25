@@ -39,6 +39,7 @@
     <azure-storage-file.version>12.0.0-preview.4</azure-storage-file.version>
     <azure-storage-queue.version>12.0.0-preview.4</azure-storage-queue.version>
     <azure-storage-queue-cryptography.version>12.0.0-preview.4</azure-storage-queue-cryptography.version>
+    <project.automatic.module.name>com.azure.eng.jacoco.test.coverage</project.automatic.module.name>
   </properties>
 
   <distributionManagement>

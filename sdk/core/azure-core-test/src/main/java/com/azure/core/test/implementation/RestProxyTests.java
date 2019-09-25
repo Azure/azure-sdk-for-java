@@ -42,7 +42,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.ContentType;
@@ -764,7 +763,7 @@ public abstract class RestProxyTests {
     private interface Service10 {
         @Head("anything")
         @ExpectedResponses({200})
-        VoidResponse head();
+        Response<Void> head();
 
         @Head("anything")
         @ExpectedResponses({200})
@@ -776,7 +775,7 @@ public abstract class RestProxyTests {
 
         @Head("anything")
         @ExpectedResponses({200})
-        Mono<VoidResponse> headAsync();
+        Mono<Response<Void>> headAsync();
 
         @Head("anything")
         @ExpectedResponses({200})
@@ -1431,7 +1430,7 @@ public abstract class RestProxyTests {
         ResponseBase<Void, Void> getBytesOnlyStatus();
 
         @Get("bytes/100")
-        VoidResponse getVoidResponse();
+        Response<Void> getVoidResponse();
 
         @Put("put")
         Response<HttpBinJSON> putBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
@@ -1534,7 +1533,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20GetVoidResponse() {
-        final VoidResponse response = createService(Service20.class).getVoidResponse();
+        final Response<Void> response = createService(Service20.class).getVoidResponse();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }

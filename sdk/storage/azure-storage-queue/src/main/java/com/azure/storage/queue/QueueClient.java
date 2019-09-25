@@ -4,7 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -42,6 +42,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {
     private final QueueAsyncClient client;
 
@@ -101,8 +102,8 @@ public final class QueueClient {
      * service.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.createWithResponse(metadata, context);
+    public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.createWithResponse(metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -143,8 +144,8 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -244,8 +245,8 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.setMetadataWithResponse(metadata, context);
+    public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -309,9 +310,9 @@ public final class QueueClient {
      * or the queue will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout,
+    public Response<Void> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = client.setAccessPolicyWithResponse(permissions, context);
+        Mono<Response<Void>> response = client.setAccessPolicyWithResponse(permissions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -352,8 +353,8 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse clearMessagesWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.clearMessagesWithResponse(context);
+    public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.clearMessagesWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -652,9 +653,9 @@ public final class QueueClient {
      * @throws StorageException If the queue or messageId don't exist or the popReceipt doesn't match on the message
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
+    public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = client.deleteMessageWithResponse(messageId, popReceipt, context);
+        Mono<Response<Void>> response = client.deleteMessageWithResponse(messageId, popReceipt, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

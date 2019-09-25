@@ -524,7 +524,7 @@ public final class Utility {
             .doOnComplete(() -> {
                 try {
                     if (data.available() > 0) {
-                        Long totalLength = currentTotalLength[0] + data.available();
+                        long totalLength = currentTotalLength[0] + data.available();
                         throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                             String.format("Request body emitted %d bytes more than the expected %d bytes.",
                                 totalLength, length), totalLength, length));

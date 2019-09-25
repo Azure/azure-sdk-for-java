@@ -5,7 +5,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -49,6 +49,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
@@ -213,8 +214,8 @@ public class FileClient {
      * @return A response containing the status of aborting copy the file.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse abortCopyWithResponse(String copyId, Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
+    public Response<Void> abortCopyWithResponse(String copyId, Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -345,8 +346,8 @@ public class FileClient {
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

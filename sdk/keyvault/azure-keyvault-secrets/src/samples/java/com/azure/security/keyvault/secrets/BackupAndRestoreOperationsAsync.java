@@ -40,7 +40,7 @@ public class BackupAndRestoreOperationsAsync {
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setExpires(OffsetDateTime.now().plusYears(1)))
             .subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
+                System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
@@ -56,14 +56,14 @@ public class BackupAndRestoreOperationsAsync {
 
         // The storage account secret is no longer in use, so you delete it.
         secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the secret as well for permanent deletion.
-        secretAsyncClient.purgeDeletedSecret("StorageAccountPassword").subscribe(purgeResponse ->
-            System.out.printf("Purge Status response %d \n", purgeResponse.getStatusCode()));
+        secretAsyncClient.purgeDeletedSecretWithResponse("StorageAccountPassword").subscribe(purgeResponse ->
+            System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
         //To ensure file is purged on server side.
         Thread.sleep(15000);
@@ -71,7 +71,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the secret is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         secretAsyncClient.restoreSecret(backupFromFile).subscribe(secretResponse ->
-            System.out.printf("Restored Secret with name %s \n", secretResponse.getName()));
+            System.out.printf("Restored Secret with name %s %n", secretResponse.getName()));
 
         //To ensure secret is restored on server side.
         Thread.sleep(15000);

@@ -3,18 +3,19 @@
 
 package com.azure.messaging.eventhubs;
 
-import static org.junit.Assert.assertNotNull;
-
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.models.ProxyAuthenticationType;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
+import org.junit.Test;
+
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
-import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class EventHubClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";

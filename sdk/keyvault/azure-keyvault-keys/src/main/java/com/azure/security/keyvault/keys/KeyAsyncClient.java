@@ -8,7 +8,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -800,16 +799,37 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string}
      *
      * @param name The name of the deleted key.
-     * @return A {@link Mono} containing a {@link VoidResponse}.
+     * @return An empty {@link Mono}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> purgeDeletedKey(String name) {
-        return withContext(context -> purgeDeletedKey(name, context));
+    public Mono<Void> purgeDeletedKey(String name) {
+        return purgeDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
-    Mono<VoidResponse> purgeDeletedKey(String name, Context context) {
+    /**
+     * Permanently deletes the specified key without the possibility of recovery. The Purge Deleted Key operation is
+     * applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Purges the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
+     * prints out the status code from the server response when a response has been received.</p>
+     *
+     * //Assuming key is deleted on a soft-delete enabled vault.
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKeyWithResponse#string}
+     *
+     * @param name The name of the deleted key.
+     * @return A {@link Mono} containing a Response containing status code and HTTP headers.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
+        return withContext(context -> purgeDeletedKeyWithResponse(name, context));
+    }
+
+    Mono<Response<Void>> purgeDeletedKeyWithResponse(String name, Context context) {
         return service.purgeDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Purging deleted key - {}", name))
             .doOnSuccess(response -> logger.info("Purged deleted key - {}", name))
