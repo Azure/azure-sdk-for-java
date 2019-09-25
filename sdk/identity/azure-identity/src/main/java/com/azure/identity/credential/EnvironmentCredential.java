@@ -3,10 +3,11 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -32,7 +33,7 @@ public class EnvironmentCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Mono.fromSupplier(() -> {
             if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
                 && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_SECRET)
@@ -48,6 +49,6 @@ public class EnvironmentCredential implements TokenCredential {
             throw logger.logExceptionAsError(new ClientAuthenticationException(
                 "Cannot create any credentials with the current environment variables",
                 null));
-        }).flatMap(cred -> cred.getToken(scopes));
+        }).flatMap(cred -> cred.getToken(request));
     }
 }

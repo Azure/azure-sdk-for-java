@@ -25,14 +25,14 @@ public final class BlockItem {
     /**
      * @return the base64 encoded block ID.
      */
-    public String name() {
+    public String getName() {
         return this.block.getName();
     }
 
     /**
      * @return the block size in bytes.
      */
-    public int size() {
+    public int getSize() {
         return this.block.getSize();
     }
 

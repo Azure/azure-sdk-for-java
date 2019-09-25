@@ -3,10 +3,9 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
@@ -15,6 +14,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -40,20 +40,20 @@ public class InteractiveBrowserCredentialTest {
         // setup
         String token1 = "token1";
         String token2 = "token2";
-        String[] scopes1 = new String[] { "https://management.azure.com" };
-        String[] scopes2 = new String[] { "https://vault.azure.net" };
+        TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         int port = random.nextInt(10000) + 10000;
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithBrowserInteraction(eq(scopes1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
-                String[] argument = (String[]) invocation.getArguments()[0];
-                if (argument.length == 1 && argument[0].equals(scopes2[0])) {
+                TokenRequest argument = (TokenRequest) invocation.getArguments()[0];
+                if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                     return TestUtils.getMockMsalToken(token2, expiresOn);
-                } else if (argument.length == 1 && argument[0].equals(scopes1[0])) {
+                } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                     return Mono.error(new UnsupportedOperationException("nothing cached"));
                 } else {
                     throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
@@ -64,11 +64,13 @@ public class InteractiveBrowserCredentialTest {
         // test
         InteractiveBrowserCredential credential =
             new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
-        AccessToken token = credential.getToken(scopes1).block();
-        Assert.assertEquals(token1, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
-        token = credential.getToken(scopes2).block();
-        Assert.assertEquals(token2, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
+        StepVerifier.create(credential.getToken(request2))
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
     }
 }

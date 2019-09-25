@@ -13,19 +13,8 @@ import java.util.HashMap;
  * @see ClientCertificateCredential
  */
 public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase<ClientCertificateCredentialBuilder> {
-    private String tenantId;
     private String clientCertificate;
     private String clientCertificatePassword;
-
-    /**
-     * Sets the tenant ID of the application.
-     * @param tenantId the tenant ID of the application.
-     * @return the ClientCertificateCredentialBuilder itself
-     */
-    public ClientCertificateCredentialBuilder tenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
 
     /**
      * Sets the client certificate for authenticating to AAD.
