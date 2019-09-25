@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -37,10 +38,10 @@ public class ConfigurationSetting {
     @JsonProperty(value = "etag")
     private String etag;
 
-    @JsonProperty(value = "last_modified")
+    @JsonProperty(value = "last_modified", access = Access.READ_ONLY)
     private OffsetDateTime lastModified;
 
-    @JsonProperty(value = "locked")
+    @JsonProperty(value = "locked", access = Access.READ_ONLY)
     private boolean locked;
 
     @JsonProperty(value = "tags")
