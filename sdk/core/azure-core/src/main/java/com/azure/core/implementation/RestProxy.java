@@ -201,7 +201,6 @@ public class RestProxy implements InvocationHandler {
                 return potentialResumeMethod;
             }
         }
-
         return null;
     }
 

@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 final class ResponseConstructorsCache {
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
     private final Map<Class<?>, ResponseConstructor> cache = new ConcurrentHashMap<>();
+    private final static MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 
     /**
      * Identify the suitable constructor for the given response class.
@@ -51,7 +52,7 @@ final class ResponseConstructorsCache {
      *
      * Developer Note: This method logic can be easily replaced with Java.Stream
      * and associated operators but we're using basic sort and loop constructs
-     * here as this method is in hot path and Stream path is consuming a fair
+     * here as this method is in hot path and Stream route is consuming a fair
      * amount of resources.
      *
      * @param responseClass the response class
@@ -61,22 +62,21 @@ final class ResponseConstructorsCache {
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
         Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));
-        MethodHandles.Lookup lookup = MethodHandles.lookup();
         for (Constructor<?> constructor : constructors) {
             final int paramCount = constructor.getParameterCount();
             if (paramCount >= 3 && paramCount <= 5) {
                 try {
                     if (paramCount == 3) {
-                        MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
-                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(lookup,
+                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
+                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(LOOKUP,
                                 "apply",
                                 ResponseFunc3.METHOD_TYPE,
                                 ResponseFunc3.SIGNATURE,
                                 ctrMethodHandle,
                                 ctrMethodHandle.type()).getTarget().invoke());
                     } else if (paramCount == 4) {
-                        MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
-                        return new ResponseConstructor(4, LambdaMetafactory.metafactory(lookup,
+                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
+                        return new ResponseConstructor(4, LambdaMetafactory.metafactory(LOOKUP,
                                 "apply",
                                 ResponseFunc4.METHOD_TYPE,
                                 ResponseFunc4.SIGNATURE,
@@ -84,8 +84,8 @@ final class ResponseConstructorsCache {
                                 ctrMethodHandle.type()).getTarget().invoke());
                     } else {
                         // paramCount == 5
-                        MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
-                        return new ResponseConstructor(5, LambdaMetafactory.metafactory(lookup,
+                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
+                        return new ResponseConstructor(5, LambdaMetafactory.metafactory(LOOKUP,
                                 "apply",
                                 ResponseFunc5.METHOD_TYPE,
                                 ResponseFunc5.SIGNATURE,
