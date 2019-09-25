@@ -18,6 +18,7 @@ package com.azure.storage.blob.cryptography
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.Metadata
 import com.fasterxml.jackson.databind.ObjectMapper
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import javax.crypto.KeyGenerator
@@ -42,6 +43,7 @@ class DecryptionTests extends APISpec {
     }
 
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, symmetricKey, this)

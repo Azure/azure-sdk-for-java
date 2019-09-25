@@ -329,6 +329,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the upload to file method on an encrypted client
+    @Requires({ APISpec.liveMode() })
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(KB)

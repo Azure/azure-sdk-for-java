@@ -1,11 +1,13 @@
 package com.azure.storage.blob.cryptography
 
 import com.azure.storage.blob.models.BlobRange
+import spock.lang.Requires
 import spock.lang.Unroll
 
 class EncryptedBlobRangeTest extends APISpec {
 
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Test constructor"() {
         setup:
         BlobRange range
@@ -38,6 +40,7 @@ class EncryptedBlobRangeTest extends APISpec {
     }
 
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Test from blob range header"() {
         setup:
         BlobRange range
