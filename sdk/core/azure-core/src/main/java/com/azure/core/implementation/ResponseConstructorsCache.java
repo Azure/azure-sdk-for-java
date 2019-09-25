@@ -20,7 +20,6 @@ import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -30,7 +29,17 @@ import java.util.function.Supplier;
  */
 final class ResponseConstructorsCache {
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
-    private final Map<Class<?>, Optional<ResponseConstructor>> cache = new ConcurrentHashMap<>();
+    private final Map<Class<?>, ResponseConstructor> cache = new ConcurrentHashMap<>();
+
+    /**
+     * Identify the suitable constructor for the given response class.
+     *
+     * @param responseClass the response class
+     * @return identified constructor, null if there is no match
+     */
+    ResponseConstructor get(Class<? extends Response<?>> responseClass) {
+        return this.cache.computeIfAbsent(responseClass, this::locateResponseConstructor);
+    }
 
     /**
      * Identify the most specific constructor for the given response class.
@@ -40,68 +49,56 @@ final class ResponseConstructorsCache {
      * 2. (httpRequest, statusCode, headers, body)
      * 3. (httpRequest, statusCode, headers)
      *
+     * Developer Note: This method logic can be easily replaced with Java.Stream
+     * and associated operators but we're using basic sort and loop constructs
+     * here as this method is in hot path and Stream path is consuming a fair
+     * amount of resources.
+     *
      * @param responseClass the response class
-     * @return optional with located constructor, empty optional if there is no match
+     * @return identified constructor, null if there is no match
      */
-    Optional<ResponseConstructor> get(Class<? extends Response<?>> responseClass) {
-        this.cache.computeIfAbsent(responseClass, responseCls -> Arrays.stream(responseCls.getDeclaredConstructors())
-            .filter(constructor -> {
-                int paramCount = constructor.getParameterCount();
-                return paramCount >= 3 && paramCount <= 5;
-            })
-            .sorted(Comparator.comparingInt(Constructor::getParameterCount))
-            .findFirst()
-            .flatMap(constructor -> {
+    private ResponseConstructor locateResponseConstructor(Class<?> responseClass) {
+        Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
+        // Sort constructors in the "descending order" of parameter count.
+        Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        for (Constructor<?> constructor : constructors) {
+            final int paramCount = constructor.getParameterCount();
+            if (paramCount >= 3 && paramCount <= 5) {
                 try {
-                    MethodHandles.Lookup lookup = MethodHandles.lookup();
-                    MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
-                    switch (constructor.getParameterCount()) {
-                        case 3:
-                            Object f3 = LambdaMetafactory.metafactory(lookup,
-                                    "apply",
-                                    MethodType.methodType(ResponseFunc3.class),
-                                    MethodType.methodType(Object.class,
-                                            Object.class,
-                                            int.class,
-                                            Object.class),
-                                    ctrMethodHandle,
-                                    ctrMethodHandle.type()).getTarget().invoke();
-                            return Optional.of(new ResponseConstructor(3, f3));
-                        case 4:
-                            Object f4 = LambdaMetafactory.metafactory(lookup,
-                                    "apply",
-                                    MethodType.methodType(ResponseFunc4.class),
-                                    MethodType.methodType(Object.class,
-                                            Object.class,
-                                            int.class,
-                                            Object.class,
-                                            Object.class),
-                                    ctrMethodHandle,
-                                    ctrMethodHandle.type()).getTarget().invoke();
-                            return Optional.of(new ResponseConstructor(4, f4));
-                        case 5:
-                            Object f5 = LambdaMetafactory.metafactory(lookup,
-                                    "apply",
-                                    MethodType.methodType(ResponseFunc5.class),
-                                    MethodType.methodType(Object.class,
-                                            Object.class,
-                                            int.class,
-                                            Object.class,
-                                            Object.class,
-                                            Object.class),
-                                    ctrMethodHandle,
-                                    ctrMethodHandle.type())
-                                    .getTarget().invoke();
-                            return Optional.of(new ResponseConstructor(5, f5));
-                        default:
-                            return Optional.<ResponseConstructor>empty();
+                    if (paramCount == 3) {
+                        MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
+                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(lookup,
+                                "apply",
+                                ResponseFunc3.METHOD_TYPE,
+                                ResponseFunc3.SIGNATURE,
+                                ctrMethodHandle,
+                                ctrMethodHandle.type()).getTarget().invoke());
+                    } else if (paramCount == 4) {
+                        MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
+                        return new ResponseConstructor(4, LambdaMetafactory.metafactory(lookup,
+                                "apply",
+                                ResponseFunc4.METHOD_TYPE,
+                                ResponseFunc4.SIGNATURE,
+                                ctrMethodHandle,
+                                ctrMethodHandle.type()).getTarget().invoke());
+                    } else {
+                        // paramCount == 5
+                        MethodHandle ctrMethodHandle = lookup.unreflectConstructor(constructor);
+                        return new ResponseConstructor(5, LambdaMetafactory.metafactory(lookup,
+                                "apply",
+                                ResponseFunc5.METHOD_TYPE,
+                                ResponseFunc5.SIGNATURE,
+                                ctrMethodHandle,
+                                ctrMethodHandle.type())
+                                .getTarget().invoke());
                     }
-
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));
                 }
-            }));
-        return this.cache.get(responseClass);
+            }
+        }
+        return null;
     }
 
     /**
@@ -171,11 +168,12 @@ final class ResponseConstructorsCache {
                             })
                             .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
                                 try {
-                                    return Mono.just((Response<?>) ((ResponseFunc5) this.responseFunc).apply(httpRequest,
-                                        responseStatusCode,
-                                        responseHeaders,
-                                        bodyAsObject,
-                                        null));
+                                    return Mono.just((Response<?>) ((ResponseFunc5) this.responseFunc)
+                                            .apply(httpRequest,
+                                                responseStatusCode,
+                                                responseHeaders,
+                                                bodyAsObject,
+                                                null));
                                 } catch (Throwable t) {
                                     throw Exceptions.propagate(t);
                                 }
@@ -189,24 +187,45 @@ final class ResponseConstructorsCache {
 
     @FunctionalInterface
     private interface ResponseFunc3 {
-        Object apply(Object httpRequest,
+        MethodType SIGNATURE = MethodType.methodType(Object.class,
+                HttpRequest.class,
+                int.class,
+                HttpHeaders.class);
+        MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc3.class);
+
+        Object apply(HttpRequest httpRequest,
                      int responseStatusCode,
-                     Object responseHeaders);
+                     HttpHeaders responseHeaders);
     }
 
     @FunctionalInterface
     private interface ResponseFunc4 {
-        Object apply(Object httpRequest,
+        MethodType SIGNATURE = MethodType.methodType(Object.class,
+                HttpRequest.class,
+                int.class,
+                HttpHeaders.class,
+                Object.class);
+        MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc4.class);
+
+        Object apply(HttpRequest httpRequest,
                      int responseStatusCode,
-                     Object responseHeaders,
+                     HttpHeaders responseHeaders,
                      Object body);
     }
 
     @FunctionalInterface
     private interface ResponseFunc5 {
-        Object apply(Object httpRequest,
+        MethodType SIGNATURE = MethodType.methodType(Object.class,
+                HttpRequest.class,
+                int.class,
+                HttpHeaders.class,
+                Object.class,
+                Object.class);
+        MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc5.class);
+
+        Object apply(HttpRequest httpRequest,
                      int responseStatusCode,
-                     Object responseHeaders,
+                     HttpHeaders responseHeaders,
                      Object body,
                      Object decodedHeaders);
     }
