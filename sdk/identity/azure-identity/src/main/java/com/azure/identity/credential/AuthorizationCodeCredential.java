@@ -34,7 +34,8 @@ public class AuthorizationCodeCredential implements TokenCredential {
      * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
      * @param identityClientOptions the options for configuring the identity client
      */
-    AuthorizationCodeCredential(String clientId, String authCode, URI redirectUri, IdentityClientOptions identityClientOptions) {
+    AuthorizationCodeCredential(String clientId, String authCode, URI redirectUri,
+                                IdentityClientOptions identityClientOptions) {
         identityClient = new IdentityClientBuilder()
             .tenantId("common")
             .clientId(clientId)

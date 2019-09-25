@@ -3,6 +3,7 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.net.URI;
@@ -16,6 +17,8 @@ import java.util.UUID;
  * @see AuthorizationCodeCredential
  */
 public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase<AuthorizationCodeCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
+
     private String authCode;
     private String redirectUri;
 
@@ -58,7 +61,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         try {
             return new AuthorizationCodeCredential(clientId, authCode, new URI(redirectUri), identityClientOptions);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -70,9 +73,9 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      */
     public String buildLoginUrl(String... scopes) {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("clientId", clientId);
-            put("redirectUri", redirectUri);
-        }});
+                put("clientId", clientId);
+                put("redirectUri", redirectUri);
+            }});
         return String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
                     + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
                 identityClientOptions.getAuthorityHost(), clientId, redirectUri, UUID.randomUUID(),
