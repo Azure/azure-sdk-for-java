@@ -11,9 +11,9 @@ Licensed under the MIT License.
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
-  <groupId>com.microsoft.azure</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.3.0</version>
+  <version>4.0.0-preview.4</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
