@@ -762,20 +762,6 @@ directive:
     }
 ```
 
-### Make AccessTier Unique
-autorest.python complains that the same enum has different values
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.AccessTierRequired
-  transform: >
-    $["x-ms-enum"].name = "AccessTierRequired";
-- from: swagger-document
-  where: $.parameters.AccessTierOptional
-  transform: >
-    $["x-ms-enum"].name = "AccessTierOptional";
-```
-
 ### Extra parameters
 ``` yaml
 directive:

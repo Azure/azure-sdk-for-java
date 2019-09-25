@@ -174,7 +174,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private Mono<Void> dispatchChanges(FeedResponse<CosmosItemProperties> response) {
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.settings.getPartitionKeyRangeId(), response, this.checkpointer);
 
-        this.observer.processChanges(context, response.results());
-        return Mono.empty();
+        return this.observer.processChanges(context, response.results());
     }
 }

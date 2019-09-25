@@ -8,7 +8,17 @@ package com.azure.identity.credential;
  *
  * @see EnvironmentCredential
  */
-public class EnvironmentCredentialBuilder extends AadCredentialBuilderBase<EnvironmentCredentialBuilder> {
+public class EnvironmentCredentialBuilder extends CredentialBuilderBase<EnvironmentCredentialBuilder> {
+    /**
+     * Specifies the Azure Active Directory endpoint to acquire tokens.
+     * @param authorityHost the Azure Active Directory endpoint
+     * @return itself
+     */
+    public EnvironmentCredentialBuilder authorityHost(String authorityHost) {
+        this.identityClientOptions.setAuthorityHost(authorityHost);
+        return this;
+    }
+
     /**
      * @return a {@link EnvironmentCredential} with the current configurations.
      */
