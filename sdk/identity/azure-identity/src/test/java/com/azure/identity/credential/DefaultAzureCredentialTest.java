@@ -103,7 +103,7 @@ public class DefaultAzureCredentialTest {
             credential.getToken(scopes).block();
             fail();
         } catch (ClientAuthenticationException e) {
-            Assert.assertTrue(e.getMessage().contains("No credential can provide a token"));
+            Assert.assertTrue(e.getMessage().contains("Tried EnvironmentCredential, ManagedIdentityCredential, SharedTokenCacheCredential"));
         }
     }
 }
