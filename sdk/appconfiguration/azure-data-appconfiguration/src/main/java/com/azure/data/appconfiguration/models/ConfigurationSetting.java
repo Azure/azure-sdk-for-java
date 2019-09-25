@@ -3,12 +3,10 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel()
