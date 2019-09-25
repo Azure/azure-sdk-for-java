@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -46,6 +46,7 @@
       <artifactId>opencensus-exporter-trace-zipkin</artifactId>
       <version>0.20.0</version>
     </dependency>
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>

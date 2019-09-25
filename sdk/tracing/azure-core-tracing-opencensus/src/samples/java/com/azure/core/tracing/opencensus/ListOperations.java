@@ -17,8 +17,6 @@ import io.opencensus.trace.config.TraceConfig;
 import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
 
-import java.time.OffsetDateTime;
-
 import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
 /**
