@@ -548,7 +548,7 @@ class HelperTest extends APISpec {
         perms.getDeletePermission() == delete
         perms.getListPermission() == list
         perms.getAddPermission() == add
-        perms.getReadPermission() == create
+        perms.getCreatePermission() == create
         perms.getUpdatePermission() == update
         perms.getProcessMessages() == process
 
