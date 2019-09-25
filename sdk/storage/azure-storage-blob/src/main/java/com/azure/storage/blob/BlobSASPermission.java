@@ -16,15 +16,15 @@ import java.util.Locale;
  */
 public final class BlobSASPermission {
 
-    private boolean read;
+    private boolean readPermission;
 
-    private boolean add;
+    private boolean addPermission;
 
-    private boolean create;
+    private boolean createPermission;
 
-    private boolean write;
+    private boolean writePermission;
 
-    private boolean delete;
+    private boolean deletePermission;
 
     /**
      * Initializes a {@code BlobSASPermission} object with all fields set to false.
@@ -47,19 +47,19 @@ public final class BlobSASPermission {
             char c = permString.charAt(i);
             switch (c) {
                 case 'r':
-                    permissions.read = true;
+                    permissions.readPermission = true;
                     break;
                 case 'a':
-                    permissions.add = true;
+                    permissions.addPermission = true;
                     break;
                 case 'c':
-                    permissions.create = true;
+                    permissions.createPermission = true;
                     break;
                 case 'w':
-                    permissions.write = true;
+                    permissions.writePermission = true;
                     break;
                 case 'd':
-                    permissions.delete = true;
+                    permissions.deletePermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -73,90 +73,90 @@ public final class BlobSASPermission {
     /**
      * @return the read permission status.
      */
-    public boolean hasReadPermission() {
-        return read;
+    public boolean getReadPermission() {
+        return readPermission;
     }
 
     /**
      * Sets the read permission status.
      *
-     * @param read Permission status to set
+     * @param hasReadPermission Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission hasReadPermission(boolean read) {
-        this.read = read;
+    public BlobSASPermission setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
     /**
      * @return the add permission status.
      */
-    public boolean hasAddPermission() {
-        return add;
+    public boolean getAddPermission() {
+        return addPermission;
     }
 
     /**
      * Sets the add permission status.
      *
-     * @param add Permission status to set
+     * @param hasAddPermission Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission hasAddPermission(boolean add) {
-        this.add = add;
+    public BlobSASPermission setAddPermission(boolean hasAddPermission) {
+        this.addPermission = hasAddPermission;
         return this;
     }
 
     /**
      * @return the create permission status.
      */
-    public boolean hasCreatePermission() {
-        return create;
+    public boolean getCreatePermission() {
+        return createPermission;
     }
 
     /**
      * Sets the create permission status.
      *
-     * @param create Permission status to set
+     * @param hasCreatePermission Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission hasCreatePermission(boolean create) {
-        this.create = create;
+    public BlobSASPermission setCreatePermission(boolean hasCreatePermission) {
+        this.createPermission = hasCreatePermission;
         return this;
     }
 
     /**
      * @return the write permission status.
      */
-    public boolean hasWritePermission() {
-        return write;
+    public boolean getWritePermission() {
+        return writePermission;
     }
 
     /**
      * Sets the write permission status.
      *
-     * @param write Permission status to set
+     * @param hasWritePermission Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission hasWritePermission(boolean write) {
-        this.write = write;
+    public BlobSASPermission setWritePermission(boolean hasWritePermission) {
+        this.writePermission = hasWritePermission;
         return this;
     }
 
     /**
      * @return the delete permission status.
      */
-    public boolean hasDeletePermission() {
-        return delete;
+    public boolean getDeletePermission() {
+        return deletePermission;
     }
 
     /**
      * Sets the delete permission status.
      *
-     * @param delete Permission status to set
+     * @param hasDeletePermission Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission hasDeletePermission(boolean delete) {
-        this.delete = delete;
+    public BlobSASPermission getDeletePermission(boolean hasDeletePermission) {
+        this.deletePermission = hasDeletePermission;
         return this;
     }
 
@@ -173,23 +173,23 @@ public final class BlobSASPermission {
 
         final StringBuilder builder = new StringBuilder();
 
-        if (this.read) {
+        if (this.readPermission) {
             builder.append('r');
         }
 
-        if (this.add) {
+        if (this.addPermission) {
             builder.append('a');
         }
 
-        if (this.create) {
+        if (this.createPermission) {
             builder.append('c');
         }
 
-        if (this.write) {
+        if (this.writePermission) {
             builder.append('w');
         }
 
-        if (this.delete) {
+        if (this.deletePermission) {
             builder.append('d');
         }
 

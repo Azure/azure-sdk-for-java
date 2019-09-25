@@ -84,7 +84,7 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSASPermission().hasReadPermission(true).toString())
+            v.setPermissions(new BlobSASPermission().setReadPermission(true).toString())
         } else {
             v.setPermissions("")
         }
@@ -160,7 +160,7 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSASPermission().hasReadPermission(true).toString())
+            v.setPermissions(new BlobSASPermission().setReadPermission(true).toString())
         } else {
             v.setPermissions("")
         }
@@ -294,11 +294,11 @@ class HelperTest extends APISpec {
     def "BlobSASPermissions toString"() {
         setup:
         BlobSASPermission perms = new BlobSASPermission()
-            .hasReadPermission(read)
-            .hasWritePermission(write)
-            .hasDeletePermission(delete)
-            .hasCreatePermission(create)
-            .hasAddPermission(add)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .getDeletePermission(delete)
+            .setCreatePermission(create)
+            .setAddPermission(add)
 
         expect:
         perms.toString() == expectedString
@@ -319,11 +319,11 @@ class HelperTest extends APISpec {
         BlobSASPermission perms = BlobSASPermission.parse(permString)
 
         then:
-        perms.hasReadPermission() == read
-        perms.hasWritePermission() == write
-        perms.hasDeletePermission() == delete
-        perms.hasCreatePermission() == create
-        perms.hasAddPermission() == add
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getAddPermission() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -513,13 +513,13 @@ class HelperTest extends APISpec {
         setup:
         AccountSASPermission perms = new AccountSASPermission()
             .setReadPermission(read)
-            .hasWritePermission(write)
-            .hasDeletePermission(delete)
-            .hasListPermission(list)
-            .hasAddPermission(add)
-            .hasCreatePermission(create)
-            .hasUpdatePermission(update)
-            .hasProcessMessages(process)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setListPermission(list)
+            .setAddPermission(add)
+            .setCreatePermission(create)
+            .setUpdatePermission(update)
+            .setProcessMessages(process)
 
         expect:
         perms.toString() == expectedString
@@ -543,14 +543,14 @@ class HelperTest extends APISpec {
         AccountSASPermission perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.hasReadPermission() == read
-        perms.hadWritePermission() == write
-        perms.hasDeletePermission() == delete
-        perms.hasListPermission() == list
-        perms.hasAddPermission() == add
-        perms.hasReadPermission() == create
-        perms.hasUpdatePermission() == update
-        perms.hasProcessMessages() == process
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getListPermission() == list
+        perms.getAddPermission() == add
+        perms.getReadPermission() == create
+        perms.getUpdatePermission() == update
+        perms.getProcessMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process

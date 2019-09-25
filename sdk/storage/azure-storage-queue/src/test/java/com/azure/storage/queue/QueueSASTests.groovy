@@ -31,10 +31,10 @@ class QueueSASTests extends APISpec {
         def perms = QueueSASPermission.parse(permString)
 
         then:
-        perms.hasReadPermission() == read
-        perms.hasAddPermission() == add
-        perms.hasUpdatePermission() == update
-        perms.hasProcessPermission() == process
+        perms.getReadPermission() == read
+        perms.getAddPermission() == add
+        perms.getUpdatePermission() == update
+        perms.getProcessPermission() == process
 
         where:
         permString || read  | add   | update | process
@@ -52,10 +52,10 @@ class QueueSASTests extends APISpec {
     def "QueueSASPermission toString"() {
         setup:
         def perms = new QueueSASPermission()
-            .hasReadPermission(read)
-            .hasAddPermission(add)
-            .hasUpdatePermission(update)
-            .hasProcessPermission(process)
+            .setReadPermission(read)
+            .setAddPermission(add)
+            .setUpdatePermission(update)
+            .setProcessPermission(process)
 
         expect:
         perms.toString() == expectedString
@@ -97,9 +97,9 @@ class QueueSASTests extends APISpec {
         EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
-            .hasReadPermission(true)
-            .hasAddPermission(true)
-            .hasProcessPermission(true)
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setProcessPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
@@ -137,10 +137,10 @@ class QueueSASTests extends APISpec {
         EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
-            .hasReadPermission(true)
-            .hasAddPermission(true)
-            .hasProcessPermission(true)
-            .hasUpdatePermission(true)
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setProcessPermission(true)
+            .setUpdatePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
@@ -178,10 +178,10 @@ class QueueSASTests extends APISpec {
         queueClient.enqueueMessage("test")
 
         def permissions = new QueueSASPermission()
-            .hasReadPermission(true)
-            .hasAddPermission(true)
-            .hasUpdatePermission(true)
-            .hasProcessPermission(true)
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setUpdatePermission(true)
+            .setProcessPermission(true)
         def expiryTime = getUTCNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
         def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
@@ -219,8 +219,8 @@ class QueueSASTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSASPermission()
             .setReadPermission(true)
-            .hasCreatePermission(true)
-            .hasDeletePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -251,7 +251,7 @@ class QueueSASTests extends APISpec {
             .setService(true)
             .setObject(true)
         def permissions = new AccountSASPermission()
-            .hasListPermission(true)
+            .setListPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:

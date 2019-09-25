@@ -277,13 +277,13 @@ public class QueueServiceJavaDocCodeSamples {
             .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
             .setReadPermission(true)
-            .hasAddPermission(true)
-            .hasCreatePermission(true)
-            .hasWritePermission(true)
-            .hasDeletePermission(true)
-            .hasListPermission(true)
-            .hasProcessMessages(true)
-            .hasUpdatePermission(true);
+            .setAddPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setListPermission(true)
+            .setProcessMessages(true)
+            .setUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

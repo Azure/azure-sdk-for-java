@@ -383,7 +383,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
-        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().hasReadPermission(true))
+        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().setReadPermission(true))
 
         when:
         FileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")

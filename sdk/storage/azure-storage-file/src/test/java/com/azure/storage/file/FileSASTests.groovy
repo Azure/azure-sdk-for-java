@@ -34,10 +34,10 @@ class FileSASTests extends APISpec {
     def "FileSASPermissions toString"() {
         setup:
         def perms = new FileSASPermission()
-            .hasReadPermission(read)
-            .hasWritePermission(write)
-            .hasDeletePermission(delete)
-            .hasCreatePermission(create)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setCreatePermission(create)
 
         expect:
         perms.toString() == expectedString
@@ -57,10 +57,10 @@ class FileSASTests extends APISpec {
         def perms = FileSASPermission.parse(permString)
 
         then:
-        perms.hasReadPermission() == read
-        perms.hasWritePermission() == write
-        perms.hasDeletePermission() == delete
-        perms.hasCreatePermission() == create
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
 
         where:
         permString || read  | write | delete | create
@@ -154,10 +154,10 @@ class FileSASTests extends APISpec {
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
         def permissions = new FileSASPermission()
-            .hasReadPermission(true)
-            .hasWritePermission(true)
-            .hasCreatePermission(true)
-            .hasDeletePermission(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
@@ -201,10 +201,10 @@ class FileSASTests extends APISpec {
         primaryFileClient.create(Constants.KB)
 
         def permissions = new FileSASPermission()
-            .hasReadPermission(true)
-            .hasWritePermission(false)
-            .hasCreatePermission(true)
-            .hasDeletePermission(true)
+            .setReadPermission(true)
+            .setWritePermission(false)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
@@ -291,8 +291,8 @@ class FileSASTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSASPermission()
             .setReadPermission(true)
-            .hasCreatePermission(true)
-            .hasDeletePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:

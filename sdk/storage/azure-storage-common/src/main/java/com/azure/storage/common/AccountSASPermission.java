@@ -14,21 +14,21 @@ import java.util.Locale;
  */
 public final class AccountSASPermission {
 
-    private boolean read;
+    private boolean readPermission;
 
-    private boolean add;
+    private boolean addPermission;
 
-    private boolean create;
+    private boolean createPermission;
 
-    private boolean write;
+    private boolean writePermission;
 
-    private boolean delete;
+    private boolean deletePermission;
 
-    private boolean list;
+    private boolean listPermission;
 
-    private boolean update;
+    private boolean updatePermission;
 
-    private boolean processMessages;
+    private boolean processMessagesPermission;
 
     /**
      * Initializes an {@code AccountSASPermission} object with all fields set to false.
@@ -52,28 +52,28 @@ public final class AccountSASPermission {
             char c = permString.charAt(i);
             switch (c) {
                 case 'r':
-                    permissions.read = true;
+                    permissions.readPermission = true;
                     break;
                 case 'w':
-                    permissions.write = true;
+                    permissions.writePermission = true;
                     break;
                 case 'd':
-                    permissions.delete = true;
+                    permissions.deletePermission = true;
                     break;
                 case 'l':
-                    permissions.list = true;
+                    permissions.listPermission = true;
                     break;
                 case 'a':
-                    permissions.add = true;
+                    permissions.addPermission = true;
                     break;
                 case 'c':
-                    permissions.create = true;
+                    permissions.createPermission = true;
                     break;
                 case 'u':
-                    permissions.update = true;
+                    permissions.updatePermission = true;
                     break;
                 case 'p':
-                    permissions.processMessages = true;
+                    permissions.processMessagesPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -87,109 +87,109 @@ public final class AccountSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean hasReadPermission() {
-        return read;
+    public boolean getReadPermission() {
+        return readPermission;
     }
 
     /**
      * Sets the read permission status.
      *
-     * @param read Permission status to set
+     * @param hasReadPermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission setReadPermission(boolean read) {
-        this.read = read;
+    public AccountSASPermission setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
     /**
      * @return the add permission status
      */
-    public boolean hasAddPermission() {
-        return add;
+    public boolean getAddPermission() {
+        return addPermission;
     }
 
     /**
      * Sets the add permission status.
      *
-     * @param add Permission status to set
+     * @param hadAddPermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasAddPermission(boolean add) {
-        this.add = add;
+    public AccountSASPermission setAddPermission(boolean hadAddPermission) {
+        this.addPermission = hadAddPermission;
         return this;
     }
 
     /**
      * @return the create permission status
      */
-    public boolean hasCreatePermission() {
-        return create;
+    public boolean getCreatePermission() {
+        return createPermission;
     }
 
     /**
      * Sets the create permission status.
      *
-     * @param create Permission status to set
+     * @param hasCreatePermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasCreatePermission(boolean create) {
-        this.create = create;
+    public AccountSASPermission setCreatePermission(boolean hasCreatePermission) {
+        this.createPermission = hasCreatePermission;
         return this;
     }
 
     /**
      * @return the write permission status
      */
-    public boolean hadWritePermission() {
-        return write;
+    public boolean getWritePermission() {
+        return writePermission;
     }
 
     /**
      * Sets the write permission status.
      *
-     * @param write Permission status to set
+     * @param hasWritePermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasWritePermission(boolean write) {
-        this.write = write;
+    public AccountSASPermission setWritePermission(boolean hasWritePermission) {
+        this.writePermission = hasWritePermission;
         return this;
     }
 
     /**
      * @return the delete permission status
      */
-    public boolean hasDeletePermission() {
-        return delete;
+    public boolean getDeletePermission() {
+        return deletePermission;
     }
 
     /**
      * Sets the delete permission status.
      *
-     * @param delete Permission status to set
+     * @param hasDeletePermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasDeletePermission(boolean delete) {
-        this.delete = delete;
+    public AccountSASPermission setDeletePermission(boolean hasDeletePermission) {
+        this.deletePermission = hasDeletePermission;
         return this;
     }
 
     /**
      * @return the list permission status
      */
-    public boolean hasListPermission() {
-        return list;
+    public boolean getListPermission() {
+        return listPermission;
     }
 
     /**
      * Sets the list permission status. This permission grants the ability to list blob containers, blobs, shares,
      * directories, and files.
      *
-     * @param list Permission status to set
+     * @param hadListPermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasListPermission(boolean list) {
-        this.list = list;
+    public AccountSASPermission setListPermission(boolean hadListPermission) {
+        this.listPermission = hadListPermission;
         return this;
     }
 
@@ -198,18 +198,18 @@ public final class AccountSASPermission {
      *
      * @return the update permission status
      */
-    public boolean hasUpdatePermission() {
-        return update;
+    public boolean getUpdatePermission() {
+        return updatePermission;
     }
 
     /**
      * Sets the update permission status, it allows the update of queue messages and tables.
      *
-     * @param update Permission status to set
+     * @param hasUpdatePermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasUpdatePermission(boolean update) {
-        this.update = update;
+    public AccountSASPermission setUpdatePermission(boolean hasUpdatePermission) {
+        this.updatePermission = hasUpdatePermission;
         return this;
     }
 
@@ -218,18 +218,18 @@ public final class AccountSASPermission {
      *
      * @return the process messages permission status.
      */
-    public boolean hasProcessMessages() {
-        return processMessages;
+    public boolean getProcessMessages() {
+        return processMessagesPermission;
     }
 
     /**
      * Sets the process messages permission, this allows the retrieval and deletion of queue messages.
      *
-     * @param processMessages Permission status to set
+     * @param hasProcessMessagesPermission Permission status to set
      * @return the updated AccountSASPermission object
      */
-    public AccountSASPermission hasProcessMessages(boolean processMessages) {
-        this.processMessages = processMessages;
+    public AccountSASPermission setProcessMessages(boolean hasProcessMessagesPermission) {
+        this.processMessagesPermission = hasProcessMessagesPermission;
         return this;
     }
 
@@ -245,35 +245,35 @@ public final class AccountSASPermission {
         // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
         final StringBuilder builder = new StringBuilder();
 
-        if (this.read) {
+        if (this.readPermission) {
             builder.append('r');
         }
 
-        if (this.write) {
+        if (this.writePermission) {
             builder.append('w');
         }
 
-        if (this.delete) {
+        if (this.deletePermission) {
             builder.append('d');
         }
 
-        if (this.list) {
+        if (this.listPermission) {
             builder.append('l');
         }
 
-        if (this.add) {
+        if (this.addPermission) {
             builder.append('a');
         }
 
-        if (this.create) {
+        if (this.createPermission) {
             builder.append('c');
         }
 
-        if (this.update) {
+        if (this.updatePermission) {
             builder.append('u');
         }
 
-        if (this.processMessages) {
+        if (this.processMessagesPermission) {
             builder.append('p');
         }
 
