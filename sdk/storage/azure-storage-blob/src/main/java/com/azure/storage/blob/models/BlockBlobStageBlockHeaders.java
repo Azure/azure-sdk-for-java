@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -92,7 +92,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -105,7 +105,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders contentMD5(byte[] contentMD5) {
+    public BlockBlobStageBlockHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -117,7 +117,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -129,7 +129,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders clientRequestId(String clientRequestId) {
+    public BlockBlobStageBlockHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -140,7 +140,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -151,7 +151,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders requestId(String requestId) {
+    public BlockBlobStageBlockHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -163,7 +163,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -175,7 +175,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param version the version value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders version(String version) {
+    public BlockBlobStageBlockHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -186,11 +186,11 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -200,7 +200,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobStageBlockHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -217,7 +217,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the xMsContentCrc64 value.
      */
-    public byte[] xMsContentCrc64() {
+    public byte[] getXMsContentCrc64() {
         return ImplUtils.clone(this.xMsContentCrc64);
     }
 
@@ -230,7 +230,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+    public BlockBlobStageBlockHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -254,7 +254,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobStageBlockHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -266,7 +266,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -278,7 +278,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobStageBlockHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -288,7 +288,7 @@ public final class BlockBlobStageBlockHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -298,7 +298,7 @@ public final class BlockBlobStageBlockHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobStageBlockHeaders object itself.
      */
-    public BlockBlobStageBlockHeaders errorCode(String errorCode) {
+    public BlockBlobStageBlockHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -41,7 +41,7 @@ class KeyImportRequestParameters {
      *
      * @return the keyAttributes value
      */
-    public KeyRequestAttributes keyAttributes() {
+    public KeyRequestAttributes getKeyAttributes() {
         return this.keyAttributes;
     }
 
@@ -51,7 +51,7 @@ class KeyImportRequestParameters {
      * @param keyAttributes the keyAttributes value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyImportRequestParameters keyAttributes(KeyRequestAttributes keyAttributes) {
+    public KeyImportRequestParameters setKeyAttributes(KeyRequestAttributes keyAttributes) {
         this.keyAttributes = keyAttributes;
         return this;
     }
@@ -61,7 +61,7 @@ class KeyImportRequestParameters {
      *
      * @return the tags value
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -71,7 +71,7 @@ class KeyImportRequestParameters {
      * @param tags the tags value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyImportRequestParameters tags(Map<String, String> tags) {
+    public KeyImportRequestParameters setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -82,7 +82,7 @@ class KeyImportRequestParameters {
      * @param hsm the hsm value to set
      * @return the KeyImportParameters object itself.
      */
-    public KeyImportRequestParameters hsm(Boolean hsm) {
+    public KeyImportRequestParameters setHsm(Boolean hsm) {
         this.hsm = hsm;
         return this;
     }
@@ -92,7 +92,7 @@ class KeyImportRequestParameters {
      *
      * @return the hsm value
      */
-    public Boolean hsm() {
+    public Boolean getHsm() {
         return this.hsm;
     }
 
@@ -101,7 +101,7 @@ class KeyImportRequestParameters {
      *
      * @return the key value
      */
-    public JsonWebKey key() {
+    public JsonWebKey getKey() {
         return this.key;
     }
 
@@ -111,7 +111,7 @@ class KeyImportRequestParameters {
      * @param key the key value to set
      * @return the KeyImportParameters object itself.
      */
-    public KeyImportRequestParameters key(JsonWebKey key) {
+    public KeyImportRequestParameters setKey(JsonWebKey key) {
         this.key = key;
         return this;
     }

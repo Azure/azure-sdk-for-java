@@ -5,7 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -34,13 +34,18 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
+     * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param identityClientOptions the options for configuring the identity client
      */
-    InteractiveBrowserCredential(String clientId, int port, IdentityClientOptions identityClientOptions) {
+    InteractiveBrowserCredential(String clientId, String tenantId, int port,
+                                 IdentityClientOptions identityClientOptions) {
         this.port = port;
+        if (tenantId == null) {
+            tenantId = "common";
+        }
         identityClient = new IdentityClientBuilder()
-            .tenantId("common")
+            .tenantId(tenantId)
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();

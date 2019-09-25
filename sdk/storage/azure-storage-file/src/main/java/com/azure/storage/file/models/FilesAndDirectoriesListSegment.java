@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -35,7 +35,7 @@ public final class FilesAndDirectoriesListSegment {
      *
      * @return the directoryItems value.
      */
-    public List<DirectoryItem> directoryItems() {
+    public List<DirectoryItem> getDirectoryItems() {
         return this.directoryItems;
     }
 
@@ -45,7 +45,7 @@ public final class FilesAndDirectoriesListSegment {
      * @param directoryItems the directoryItems value to set.
      * @return the FilesAndDirectoriesListSegment object itself.
      */
-    public FilesAndDirectoriesListSegment directoryItems(List<DirectoryItem> directoryItems) {
+    public FilesAndDirectoriesListSegment setDirectoryItems(List<DirectoryItem> directoryItems) {
         this.directoryItems = directoryItems;
         return this;
     }
@@ -55,7 +55,7 @@ public final class FilesAndDirectoriesListSegment {
      *
      * @return the fileItems value.
      */
-    public List<FileItem> fileItems() {
+    public List<FileItem> getFileItems() {
         return this.fileItems;
     }
 
@@ -65,7 +65,7 @@ public final class FilesAndDirectoriesListSegment {
      * @param fileItems the fileItems value to set.
      * @return the FilesAndDirectoriesListSegment object itself.
      */
-    public FilesAndDirectoriesListSegment fileItems(List<FileItem> fileItems) {
+    public FilesAndDirectoriesListSegment setFileItems(List<FileItem> fileItems) {
         this.fileItems = fileItems;
         return this;
     }

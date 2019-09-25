@@ -4,9 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
@@ -33,30 +31,30 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testAppServiceMSICredentialConfigurations() {
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration();
 
         try {
             configuration
-                .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
-                .put(BaseConfigurations.MSI_SECRET, "bar");
+                .put(Configuration.PROPERTY_MSI_ENDPOINT, "http://foo")
+                .put(Configuration.PROPERTY_MSI_SECRET, "bar");
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
-            Assert.assertEquals("http://foo", credential.msiEndpoint());
-            Assert.assertEquals("bar", credential.msiSecret());
+            Assert.assertEquals("http://foo", credential.getMsiEndpoint());
+            Assert.assertEquals("bar", credential.getMsiSecret());
         } finally {
-            configuration.remove(BaseConfigurations.MSI_ENDPOINT);
-            configuration.remove(BaseConfigurations.MSI_SECRET);
+            configuration.remove(Configuration.PROPERTY_MSI_ENDPOINT);
+            configuration.remove(Configuration.PROPERTY_MSI_SECRET);
         }
     }
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
-        Assert.assertEquals("foo", credential.clientId());
+        Assert.assertEquals("foo", credential.getClientId());
     }
 
     @Test
     public void testMSIEndpoint() throws Exception {
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration();
 
         try {
             // setup
@@ -76,8 +74,8 @@ public class ManagedIdentityCredentialTest {
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
             AccessToken token = credential.getToken(scopes1).block();
-            Assert.assertEquals(token1, token.token());
-            Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+            Assert.assertEquals(token1, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
         } finally {
             // clean up
             configuration.remove("MSI_ENDPOINT");
@@ -100,7 +98,7 @@ public class ManagedIdentityCredentialTest {
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         AccessToken token = credential.getToken(scopes).block();
-        Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        Assert.assertEquals(token1, token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
     }
 }

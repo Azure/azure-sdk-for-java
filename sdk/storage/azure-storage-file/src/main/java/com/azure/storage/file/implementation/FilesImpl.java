@@ -5,21 +5,21 @@
 package com.azure.storage.file.implementation;
 
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Head;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.storage.file.models.FileHTTPHeaders;
@@ -193,27 +193,27 @@ public final class FilesImpl {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
-            fileContentType = fileHTTPHeaders.fileContentType();
+            fileContentType = fileHTTPHeaders.getFileContentType();
         }
         String fileContentEncoding = null;
         if (fileHTTPHeaders != null) {
-            fileContentEncoding = fileHTTPHeaders.fileContentEncoding();
+            fileContentEncoding = fileHTTPHeaders.getFileContentEncoding();
         }
         String fileContentLanguage = null;
         if (fileHTTPHeaders != null) {
-            fileContentLanguage = fileHTTPHeaders.fileContentLanguage();
+            fileContentLanguage = fileHTTPHeaders.getFileContentLanguage();
         }
         String fileCacheControl = null;
         if (fileHTTPHeaders != null) {
-            fileCacheControl = fileHTTPHeaders.fileCacheControl();
+            fileCacheControl = fileHTTPHeaders.getFileCacheControl();
         }
         byte[] fileContentMD5 = null;
         if (fileHTTPHeaders != null) {
-            fileContentMD5 = fileHTTPHeaders.fileContentMD5();
+            fileContentMD5 = fileHTTPHeaders.getFileContentMD5();
         }
         String fileContentDisposition = null;
         if (fileHTTPHeaders != null) {
-            fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
+            fileContentDisposition = fileHTTPHeaders.getFileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
         return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
@@ -365,27 +365,27 @@ public final class FilesImpl {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
-            fileContentType = fileHTTPHeaders.fileContentType();
+            fileContentType = fileHTTPHeaders.getFileContentType();
         }
         String fileContentEncoding = null;
         if (fileHTTPHeaders != null) {
-            fileContentEncoding = fileHTTPHeaders.fileContentEncoding();
+            fileContentEncoding = fileHTTPHeaders.getFileContentEncoding();
         }
         String fileContentLanguage = null;
         if (fileHTTPHeaders != null) {
-            fileContentLanguage = fileHTTPHeaders.fileContentLanguage();
+            fileContentLanguage = fileHTTPHeaders.getFileContentLanguage();
         }
         String fileCacheControl = null;
         if (fileHTTPHeaders != null) {
-            fileCacheControl = fileHTTPHeaders.fileCacheControl();
+            fileCacheControl = fileHTTPHeaders.getFileCacheControl();
         }
         byte[] fileContentMD5 = null;
         if (fileHTTPHeaders != null) {
-            fileContentMD5 = fileHTTPHeaders.fileContentMD5();
+            fileContentMD5 = fileHTTPHeaders.getFileContentMD5();
         }
         String fileContentDisposition = null;
         if (fileHTTPHeaders != null) {
-            fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
+            fileContentDisposition = fileHTTPHeaders.getFileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
         return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
@@ -514,11 +514,11 @@ public final class FilesImpl {
         final String comp = "range";
         byte[] sourceIfMatchCrc64 = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64 = sourceModifiedAccessConditions.sourceIfMatchCrc64();
+            sourceIfMatchCrc64 = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
         }
         byte[] sourceIfNoneMatchCrc64 = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64 = sourceModifiedAccessConditions.sourceIfNoneMatchCrc64();
+            sourceIfNoneMatchCrc64 = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
         }
         String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
         String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);

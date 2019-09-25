@@ -29,7 +29,7 @@ public final class ContainersListBlobHierarchySegmentResponse extends ResponseBa
      * @return the deserialized response body.
      */
     @Override
-    public ListBlobsHierarchySegmentResponse value() {
-        return super.value();
+    public ListBlobsHierarchySegmentResponse getValue() {
+        return super.getValue();
     }
 }

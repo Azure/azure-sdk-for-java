@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -80,7 +80,7 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -92,7 +92,7 @@ public final class BlobChangeLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders eTag(String eTag) {
+    public BlobChangeLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -105,11 +105,11 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -121,7 +121,7 @@ public final class BlobChangeLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders lastModified(OffsetDateTime lastModified) {
+    public BlobChangeLeaseHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -137,7 +137,7 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -149,7 +149,7 @@ public final class BlobChangeLeaseHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders clientRequestId(String clientRequestId) {
+    public BlobChangeLeaseHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -160,7 +160,7 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -171,7 +171,7 @@ public final class BlobChangeLeaseHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders requestId(String requestId) {
+    public BlobChangeLeaseHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -181,7 +181,7 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the leaseId value.
      */
-    public String leaseId() {
+    public String getLeaseId() {
         return this.leaseId;
     }
 
@@ -191,7 +191,7 @@ public final class BlobChangeLeaseHeaders {
      * @param leaseId the leaseId value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders leaseId(String leaseId) {
+    public BlobChangeLeaseHeaders setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -203,7 +203,7 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -215,7 +215,7 @@ public final class BlobChangeLeaseHeaders {
      * @param version the version value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders version(String version) {
+    public BlobChangeLeaseHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -226,11 +226,11 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -240,7 +240,7 @@ public final class BlobChangeLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobChangeLeaseHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -254,7 +254,7 @@ public final class BlobChangeLeaseHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -264,7 +264,7 @@ public final class BlobChangeLeaseHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobChangeLeaseHeaders object itself.
      */
-    public BlobChangeLeaseHeaders errorCode(String errorCode) {
+    public BlobChangeLeaseHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

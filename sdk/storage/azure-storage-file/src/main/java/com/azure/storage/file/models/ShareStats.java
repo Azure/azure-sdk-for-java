@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -29,7 +29,7 @@ public final class ShareStats {
      *
      * @return the shareUsageBytes value.
      */
-    public long shareUsageBytes() {
+    public long getShareUsageBytes() {
         return this.shareUsageBytes;
     }
 
@@ -41,7 +41,7 @@ public final class ShareStats {
      * @param shareUsageBytes the shareUsageBytes value to set.
      * @return the ShareStats object itself.
      */
-    public ShareStats shareUsageBytes(long shareUsageBytes) {
+    public ShareStats setShareUsageBytes(long shareUsageBytes) {
         this.shareUsageBytes = shareUsageBytes;
         return this;
     }

@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -81,8 +80,7 @@ public class BackupAndRestoreOperations {
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
-        VoidResponse response = certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
-        System.out.printf("Purged Deleted certificate with status %s", response.statusCode());
+        certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
 
         //To ensure certificate is purged on server side.
         Thread.sleep(15000);

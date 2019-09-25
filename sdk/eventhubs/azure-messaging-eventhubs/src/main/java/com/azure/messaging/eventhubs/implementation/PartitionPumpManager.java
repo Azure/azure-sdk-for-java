@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.implementation.tracing.ProcessKind;
@@ -28,9 +31,6 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import reactor.core.publisher.Signal;
-
-import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each
@@ -96,33 +96,33 @@ public class PartitionPumpManager {
      * @param claimedOwnership The details of partition ownership for which new partition pump is requested to start.
      */
     public void startPartitionPump(PartitionOwnership claimedOwnership) {
-        if (partitionPumps.containsKey(claimedOwnership.partitionId())) {
-            logger.info("Consumer is already running for this partition  {}", claimedOwnership.partitionId());
+        if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
+            logger.info("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
             return;
         }
 
-        PartitionContext partitionContext = new PartitionContext(claimedOwnership.partitionId(),
-            claimedOwnership.eventHubName(), claimedOwnership.consumerGroupName(),
-            claimedOwnership.ownerId(), claimedOwnership.eTag(), partitionManager);
+        PartitionContext partitionContext = new PartitionContext(claimedOwnership.getPartitionId(),
+            claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroupName(),
+            claimedOwnership.getOwnerId(), claimedOwnership.getETag(), partitionManager);
         PartitionProcessor partitionProcessor = this.partitionProcessorFactory.get();
         partitionProcessor.initialize(partitionContext);
 
         EventPosition startFromEventPosition;
-        if (claimedOwnership.offset() != null) {
-            startFromEventPosition = EventPosition.fromOffset(claimedOwnership.offset());
-        } else if (claimedOwnership.sequenceNumber() != null) {
-            startFromEventPosition = EventPosition.fromSequenceNumber(claimedOwnership.sequenceNumber());
+        if (claimedOwnership.getOffset() != null) {
+            startFromEventPosition = EventPosition.fromOffset(claimedOwnership.getOffset());
+        } else if (claimedOwnership.getSequenceNumber() != null) {
+            startFromEventPosition = EventPosition.fromSequenceNumber(claimedOwnership.getSequenceNumber());
         } else {
             startFromEventPosition = initialEventPosition;
         }
 
-        EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().ownerLevel(0L);
+        EventHubConsumerOptions eventHubConsumerOptions = new EventHubConsumerOptions().setOwnerLevel(0L);
         EventHubAsyncConsumer eventHubConsumer = eventHubAsyncClient
-            .createConsumer(claimedOwnership.consumerGroupName(), claimedOwnership.partitionId(),
+            .createConsumer(claimedOwnership.getConsumerGroupName(), claimedOwnership.getPartitionId(),
                 startFromEventPosition,
                 eventHubConsumerOptions);
 
-        partitionPumps.put(claimedOwnership.partitionId(), eventHubConsumer);
+        partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
         eventHubConsumer.receive().subscribe(eventData -> {
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
@@ -149,7 +149,7 @@ public class PartitionPumpManager {
             // also fails just log and continue
             partitionProcessor.processError(partitionContext, error);
         } catch (Exception ex) {
-            logger.warning("Failed while processing error {}", claimedOwnership.partitionId(), ex);
+            logger.warning("Failed while processing error {}", claimedOwnership.getPartitionId(), ex);
         }
     }
 
@@ -167,16 +167,17 @@ public class PartitionPumpManager {
             }
             partitionProcessor.close(partitionContext, closeReason);
         } catch (Exception ex) {
-            logger.warning("Failed while processing error on receive {}", claimedOwnership.partitionId(), ex);
+            logger.warning("Failed while processing error on receive {}", claimedOwnership.getPartitionId(), ex);
         } finally {
             try {
                 // close the consumer
                 eventHubConsumer.close();
             } catch (IOException ex) {
-                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.partitionId(), ex);
+                logger.warning("Failed to close EventHubConsumer for partition {}", claimedOwnership.getPartitionId(),
+                    ex);
             } finally {
                 // finally, remove the partition from partitionPumps map
-                partitionPumps.remove(claimedOwnership.partitionId());
+                partitionPumps.remove(claimedOwnership.getPartitionId());
             }
         }
     }
@@ -185,7 +186,7 @@ public class PartitionPumpManager {
      * Starts a new process tracing span and attached context the EventData object for users.
      */
     private Context startProcessTracingSpan(EventData eventData) {
-        Object diagnosticId = eventData.properties().get(DIAGNOSTIC_ID_KEY);
+        Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }

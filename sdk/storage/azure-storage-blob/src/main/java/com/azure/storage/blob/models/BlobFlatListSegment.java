@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public final class BlobFlatListSegment {
      *
      * @return the blobItems value.
      */
-    public List<BlobItem> blobItems() {
+    public List<BlobItem> getBlobItems() {
         return this.blobItems;
     }
 
@@ -37,7 +37,7 @@ public final class BlobFlatListSegment {
      * @param blobItems the blobItems value to set.
      * @return the BlobFlatListSegment object itself.
      */
-    public BlobFlatListSegment blobItems(List<BlobItem> blobItems) {
+    public BlobFlatListSegment setBlobItems(List<BlobItem> blobItems) {
         this.blobItems = blobItems;
         return this;
     }

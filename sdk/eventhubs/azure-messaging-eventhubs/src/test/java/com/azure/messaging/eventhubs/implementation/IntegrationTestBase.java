@@ -5,15 +5,21 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubAsyncProducer;
+import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducer;
+import com.azure.messaging.eventhubs.TestUtils;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.mockito.Mockito;
@@ -22,30 +28,26 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
-    protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().tryTimeout(TIMEOUT);
+    protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
     private ConnectionStringProperties properties;
-    private TokenCredential tokenCredential;
-    private ReactorProvider reactorProvider;
-    private ConnectionOptions connectionOptions;
-    private TransportType transportType;
     private Scheduler scheduler;
 
     protected IntegrationTestBase(ClientLogger logger) {
-        this.transportType = TransportType.AMQP;
         this.logger = logger;
     }
 
@@ -53,24 +55,12 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @Before
     public void setupTest() {
-        logger.info("[{}]: Performing integration test set-up.", testName());
+        logger.info("[{}]: Performing integration test set-up.", getTestName());
 
         skipIfNotRecordMode();
 
-        scheduler = Schedulers.newParallel("AMQPConnection");
+        scheduler = Schedulers.single();
         properties = new ConnectionStringProperties(getConnectionString());
-        reactorProvider = new ReactorProvider();
-
-        try {
-            tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
-                properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assert.fail("Could not create tokenProvider :" + e);
-        }
-
-        connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubName(),
-            tokenCredential, getAuthorizationType(), transportType, RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS,
-            scheduler);
 
         beforeTest();
     }
@@ -79,12 +69,8 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @After
     public void teardownTest() {
-        logger.info("[{}]: Performing test clean-up.", testName());
+        logger.info("[{}]: Performing test clean-up.", getTestName());
         afterTest();
-
-        if (scheduler != null) {
-            scheduler.dispose();
-        }
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -108,32 +94,64 @@ public abstract class IntegrationTestBase extends TestBase {
         return CONNECTION_STRING;
     }
 
-    protected void skipIfNotRecordMode() {
-        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
-    }
-
-    protected void setTransportType(TransportType transportType) {
-        this.transportType = transportType;
-    }
-
-    protected ConnectionOptions getConnectionOptions() {
-        return connectionOptions;
+    /**
+     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings.
+     */
+    protected EventHubClientBuilder createBuilder() {
+        return new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .proxyConfiguration(ProxyConfiguration.SYSTEM_DEFAULTS)
+            .scheduler(scheduler)
+            .retry(RETRY_OPTIONS)
+            .transportType(TransportType.AMQP);
     }
 
     protected ConnectionStringProperties getConnectionStringProperties() {
         return properties;
     }
 
-    protected TokenCredential getTokenCredential() {
-        return tokenCredential;
+    /**
+     * Pushes a set of {@link EventData} to Event Hubs.
+     */
+    protected IntegrationTestEventData setupEventTestData(EventHubAsyncClient client, int numberOfEvents,
+                                                          EventHubProducerOptions options) {
+        final String messageId = UUID.randomUUID().toString();
+
+        logger.info("Pushing events to partition. Message tracking value: {}", messageId);
+
+        final EventHubAsyncProducer producer = client.createProducer(options);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final Instant datePushed = Instant.now();
+
+        try {
+            producer.send(events).block(TIMEOUT);
+        } finally {
+            dispose(producer);
+        }
+
+        return new IntegrationTestEventData(options.getPartitionId(), messageId, datePushed, events);
     }
 
-    protected ReactorProvider getReactorProvider() {
-        return reactorProvider;
-    }
+    /**
+     * Pushes a set of {@link EventData} to Event Hubs.
+     */
+    protected IntegrationTestEventData setupEventTestData(EventHubClient client, int numberOfEvents,
+                                                          EventHubProducerOptions options) {
+        final String messageId = UUID.randomUUID().toString();
 
-    protected CBSAuthorizationType getAuthorizationType() {
-        return CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+        logger.info("Pushing events to partition. Message tracking value: {}", messageId);
+
+        final EventHubProducer producer = client.createProducer(options);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final Instant datePushed = Instant.now();
+
+        try {
+            producer.send(events);
+        } finally {
+            dispose(producer);
+        }
+
+        return new IntegrationTestEventData(options.getPartitionId(), messageId, datePushed, events);
     }
 
     /**
@@ -155,8 +173,12 @@ public abstract class IntegrationTestBase extends TestBase {
                 closeable.close();
             } catch (IOException error) {
                 logger.error(String.format("[%s]: %s didn't close properly.",
-                    testName(), closeable.getClass().getSimpleName()), error);
+                    getTestName(), closeable.getClass().getSimpleName()), error);
             }
         }
+    }
+
+    private void skipIfNotRecordMode() {
+        Assume.assumeTrue(getTestMode() == TestMode.RECORD);
     }
 }

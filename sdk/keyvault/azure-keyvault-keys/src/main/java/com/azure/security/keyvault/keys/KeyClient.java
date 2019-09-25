@@ -8,8 +8,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
@@ -70,7 +69,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key createKey(String name, KeyType keyType) {
-        return client.createKeyWithResponse(name, keyType, Context.NONE).block().value();
+        return client.createKeyWithResponse(name, keyType, Context.NONE).block().getValue();
     }
 
     /**
@@ -97,7 +96,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key createKey(KeyCreateOptions keyCreateOptions) {
-        return createKeyWithResponse(keyCreateOptions, Context.NONE).value();
+        return createKeyWithResponse(keyCreateOptions, Context.NONE).getValue();
     }
 
     /**
@@ -119,7 +118,7 @@ public final class KeyClient {
      *
      * @param keyCreateOptions The key options object containing information about the key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key created key}.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -133,7 +132,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and {@link
      * RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
@@ -153,7 +152,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return createRsaKeyWithResponse(rsaKeyCreateOptions, Context.NONE).value();
+        return createRsaKeyWithResponse(rsaKeyCreateOptions, Context.NONE).getValue();
     }
 
     /**
@@ -161,7 +160,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and {@link
      * RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
@@ -176,7 +175,7 @@ public final class KeyClient {
      *
      * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -190,7 +189,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
      * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if
@@ -211,7 +210,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return createEcKeyWithResponse(ecKeyCreateOptions, Context.NONE).value();
+        return createEcKeyWithResponse(ecKeyCreateOptions, Context.NONE).getValue();
     }
 
     /**
@@ -219,7 +218,7 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
      * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
      * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if
@@ -236,7 +235,7 @@ public final class KeyClient {
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
@@ -263,7 +262,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key importKey(String name, JsonWebKey keyMaterial) {
-        return client.importKeyWithResponse(name, keyMaterial, Context.NONE).block().value();
+        return client.importKeyWithResponse(name, keyMaterial, Context.NONE).block().getValue();
     }
 
     /**
@@ -272,10 +271,10 @@ public final class KeyClient {
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#keyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
      * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
      * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
@@ -295,7 +294,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key importKey(KeyImportOptions keyImportOptions) {
-        return importKeyWithResponse(keyImportOptions, Context.NONE).value();
+        return importKeyWithResponse(keyImportOptions, Context.NONE).getValue();
     }
 
     /**
@@ -304,10 +303,10 @@ public final class KeyClient {
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#keyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
      * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
      * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
@@ -323,7 +322,7 @@ public final class KeyClient {
      * @param keyImportOptions The key import configuration object containing information about the json web key
      *     being imported.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
      * @throws HttpRequestException if {@code name} is empty string.
      */
@@ -348,7 +347,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      */
     public Key getKey(String name, String version) {
-        return getKeyWithResponse(name, version, Context.NONE).value();
+        return getKeyWithResponse(name, version, Context.NONE).getValue();
     }
 
     /**
@@ -363,7 +362,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
      *     vault.
      * @throws HttpRequestException if {@code name} or {@code version} is empty string.
@@ -386,7 +385,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key getKey(String name) {
-        return getKeyWithResponse(name, "", Context.NONE).value();
+        return getKeyWithResponse(name, "", Context.NONE).getValue();
     }
 
     /**
@@ -406,7 +405,7 @@ public final class KeyClient {
      *     string.
      */
     public Key getKey(KeyBase keyBase) {
-        return getKeyWithResponse(keyBase, Context.NONE).value();
+        return getKeyWithResponse(keyBase, Context.NONE).getValue();
     }
 
     /**
@@ -420,7 +419,7 @@ public final class KeyClient {
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty
@@ -451,7 +450,7 @@ public final class KeyClient {
      *     string.
      */
     public Key updateKey(KeyBase key) {
-        return client.updateKeyWithResponse(key, Context.NONE).block().value();
+        return client.updateKeyWithResponse(key, Context.NONE).block().getValue();
     }
 
     /**
@@ -467,7 +466,7 @@ public final class KeyClient {
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyBase updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
      *     version} doesn't exist in the key vault.
@@ -475,7 +474,7 @@ public final class KeyClient {
      *     string.
      */
     public Key updateKey(KeyBase key, KeyOperation... keyOperations) {
-        return updateKeyWithResponse(key, Context.NONE, keyOperations).value();
+        return updateKeyWithResponse(key, Context.NONE, keyOperations).getValue();
     }
 
     /**
@@ -492,7 +491,7 @@ public final class KeyClient {
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyBase updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
      *     version} doesn't exist in the key vault.
@@ -522,7 +521,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     public DeletedKey deleteKey(String name) {
-        return deleteKeyWithResponse(name, Context.NONE).value();
+        return deleteKeyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -540,7 +539,7 @@ public final class KeyClient {
      *
      * @param name The name of the key to be deleted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
@@ -564,7 +563,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     public DeletedKey getDeletedKey(String name) {
-        return getDeletedKeyWithResponse(name, Context.NONE).value();
+        return getDeletedKeyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -579,7 +578,7 @@ public final class KeyClient {
      *
      * @param name The name of the deleted key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
@@ -598,12 +597,11 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.purgeDeletedKey#string}
      *
      * @param name The name of the deleted key.
-     * @return A {@link VoidResponse}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public VoidResponse purgeDeletedKey(String name) {
-        return purgeDeletedKey(name, Context.NONE);
+    public void purgeDeletedKey(String name) {
+        purgeDeletedKeyWithResponse(name, Context.NONE);
     }
 
     /**
@@ -614,16 +612,16 @@ public final class KeyClient {
      * <p>Purges the deleted key from the key vault enabled for soft-delete. Prints out the status code from the server
      * response.</p>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.purgeDeletedKeyWithResponse#string-Context}
      *
      * @param name The name of the deleted key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link VoidResponse}.
+     * @return A response containing status code and HTTP headers.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public VoidResponse purgeDeletedKey(String name, Context context) {
-        return client.purgeDeletedKey(name, context).block();
+    public Response<Void> purgeDeletedKeyWithResponse(String name, Context context) {
+        return client.purgeDeletedKeyWithResponse(name, context).block();
     }
 
     /**
@@ -642,7 +640,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     public Key recoverDeletedKey(String name) {
-        return recoverDeletedKeyWithResponse(name, Context.NONE).value();
+        return recoverDeletedKeyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -657,7 +655,7 @@ public final class KeyClient {
      *
      * @param name The name of the deleted key to be recovered.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key recovered key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
@@ -688,7 +686,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     public byte[] backupKey(String name) {
-        return backupKeyWithResponse(name, Context.NONE).value();
+        return backupKeyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -710,7 +708,7 @@ public final class KeyClient {
      *
      * @param name The name of the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the backed up key blob.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the backed up key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
@@ -740,7 +738,7 @@ public final class KeyClient {
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
     public Key restoreKey(byte[] backup) {
-        return restoreKeyWithResponse(backup, Context.NONE).value();
+        return restoreKeyWithResponse(backup, Context.NONE).getValue();
     }
 
     /**
@@ -762,7 +760,7 @@ public final class KeyClient {
      *
      * @param backup The backup blob associated with the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key restored key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key restored key}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
     public Response<Key> restoreKeyWithResponse(byte[] backup, Context context) {

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -99,7 +99,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -111,7 +111,7 @@ public final class BlockBlobUploadHeaders {
      * @param eTag the eTag value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders eTag(String eTag) {
+    public BlockBlobUploadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -124,11 +124,11 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -140,7 +140,7 @@ public final class BlockBlobUploadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders lastModified(OffsetDateTime lastModified) {
+    public BlockBlobUploadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -156,7 +156,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -168,7 +168,7 @@ public final class BlockBlobUploadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders contentMD5(byte[] contentMD5) {
+    public BlockBlobUploadHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -180,7 +180,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -192,7 +192,7 @@ public final class BlockBlobUploadHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders clientRequestId(String clientRequestId) {
+    public BlockBlobUploadHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -203,7 +203,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -214,7 +214,7 @@ public final class BlockBlobUploadHeaders {
      * @param requestId the requestId value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders requestId(String requestId) {
+    public BlockBlobUploadHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -226,7 +226,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -238,7 +238,7 @@ public final class BlockBlobUploadHeaders {
      * @param version the version value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders version(String version) {
+    public BlockBlobUploadHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -249,11 +249,11 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -263,7 +263,7 @@ public final class BlockBlobUploadHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobUploadHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -291,7 +291,7 @@ public final class BlockBlobUploadHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobUploadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -303,7 +303,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -315,7 +315,7 @@ public final class BlockBlobUploadHeaders {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders encryptionKeySha256(String encryptionKeySha256) {
+    public BlockBlobUploadHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -325,7 +325,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -335,7 +335,7 @@ public final class BlockBlobUploadHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlockBlobUploadHeaders object itself.
      */
-    public BlockBlobUploadHeaders errorCode(String errorCode) {
+    public BlockBlobUploadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

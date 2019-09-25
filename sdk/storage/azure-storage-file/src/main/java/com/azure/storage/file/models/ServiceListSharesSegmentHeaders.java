@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -39,7 +39,7 @@ public final class ServiceListSharesSegmentHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -50,7 +50,7 @@ public final class ServiceListSharesSegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceListSharesSegmentHeaders object itself.
      */
-    public ServiceListSharesSegmentHeaders requestId(String requestId) {
+    public ServiceListSharesSegmentHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -61,7 +61,7 @@ public final class ServiceListSharesSegmentHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -72,7 +72,7 @@ public final class ServiceListSharesSegmentHeaders {
      * @param version the version value to set.
      * @return the ServiceListSharesSegmentHeaders object itself.
      */
-    public ServiceListSharesSegmentHeaders version(String version) {
+    public ServiceListSharesSegmentHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -82,7 +82,7 @@ public final class ServiceListSharesSegmentHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -92,7 +92,7 @@ public final class ServiceListSharesSegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceListSharesSegmentHeaders object itself.
      */
-    public ServiceListSharesSegmentHeaders errorCode(String errorCode) {
+    public ServiceListSharesSegmentHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

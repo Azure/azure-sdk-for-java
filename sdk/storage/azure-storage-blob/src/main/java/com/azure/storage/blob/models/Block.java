@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -32,7 +32,7 @@ public final class Block {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -42,7 +42,7 @@ public final class Block {
      * @param name the name value to set.
      * @return the Block object itself.
      */
-    public Block name(String name) {
+    public Block setName(String name) {
         this.name = name;
         return this;
     }
@@ -52,7 +52,7 @@ public final class Block {
      *
      * @return the size value.
      */
-    public int size() {
+    public int getSize() {
         return this.size;
     }
 
@@ -62,7 +62,7 @@ public final class Block {
      * @param size the size value to set.
      * @return the Block object itself.
      */
-    public Block size(int size) {
+    public Block setSize(int size) {
         this.size = size;
         return this;
     }

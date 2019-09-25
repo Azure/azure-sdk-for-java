@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -81,7 +81,7 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the snapshot value.
      */
-    public String snapshot() {
+    public String getSnapshot() {
         return this.snapshot;
     }
 
@@ -93,7 +93,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param snapshot the snapshot value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders snapshot(String snapshot) {
+    public ShareCreateSnapshotHeaders setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -110,7 +110,7 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -127,7 +127,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders eTag(String eTag) {
+    public ShareCreateSnapshotHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -144,11 +144,11 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -164,7 +164,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareCreateSnapshotHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -179,7 +179,7 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -190,7 +190,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders requestId(String requestId) {
+    public ShareCreateSnapshotHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -201,7 +201,7 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -212,7 +212,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param version the version value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders version(String version) {
+    public ShareCreateSnapshotHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -223,11 +223,11 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -237,7 +237,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareCreateSnapshotHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -251,7 +251,7 @@ public final class ShareCreateSnapshotHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -261,7 +261,7 @@ public final class ShareCreateSnapshotHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareCreateSnapshotHeaders object itself.
      */
-    public ShareCreateSnapshotHeaders errorCode(String errorCode) {
+    public ShareCreateSnapshotHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

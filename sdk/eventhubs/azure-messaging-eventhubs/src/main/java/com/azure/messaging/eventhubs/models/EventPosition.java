@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
@@ -158,7 +158,7 @@ public final class EventPosition {
      *
      * @return The offset of the event within that partition.
      */
-    public String offset() {
+    public String getOffset() {
         return offset;
     }
 
@@ -167,7 +167,7 @@ public final class EventPosition {
      *
      * @return The sequence number of the event.
      */
-    public Long sequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
@@ -176,7 +176,7 @@ public final class EventPosition {
      *
      * @return The instant, in UTC, from which the next available event should be chosen.
      */
-    public Instant enqueuedDateTime() {
+    public Instant getEnqueuedDateTime() {
         return this.enqueuedDateTime;
     }
 

@@ -3,28 +3,26 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.IssuerBase;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.LifetimeActionType;
-
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -185,7 +183,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate getCertificate(CertificateBase certificateBase) {
-        return client.getCertificateWithResponse(certificateBase.name(), certificateBase.version(), Context.NONE).block().value();
+        return client.getCertificateWithResponse(certificateBase.name(), certificateBase.version(), Context.NONE).block().getValue();
     }
 
     /**
@@ -201,7 +199,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Certificate certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Certificate certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Certificate> getCertificateWithResponse(String name, String version, Context context) {
@@ -224,7 +222,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate getCertificate(String name, String version) {
-        return client.getCertificateWithResponse(name, version, Context.NONE).block().value();
+        return client.getCertificateWithResponse(name, version, Context.NONE).block().getValue();
     }
 
     /**
@@ -245,7 +243,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate updateCertificate(CertificateBase certificate) {
-        return client.updateCertificateWithResponse(certificate, Context.NONE).block().value();
+        return client.updateCertificateWithResponse(certificate, Context.NONE).block().getValue();
     }
 
     /**
@@ -263,7 +261,7 @@ public class CertificateClient {
      * @throws NullPointerException if {@code certificate} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateBase#name() name} and {@link CertificateBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateBase#name() name} or {@link CertificateBase#version() version} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link CertificateBase updated certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateBase updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Certificate> updateCertificateWithResponse(CertificateBase certificate, Context context) {
@@ -290,7 +288,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificate deleteCertificate(String name) {
-        return deleteCertificateWithResponse(name, Context.NONE).value();
+        return deleteCertificateWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -309,7 +307,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedCertificate deleted certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> deleteCertificateWithResponse(String name, Context context) {
@@ -334,7 +332,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificate getDeletedCertificate(String name) {
-        return getDeletedCertificateWithResponse(name, Context.NONE).value();
+        return getDeletedCertificateWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -352,7 +350,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedCertificate deleted certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String name, Context context) {
@@ -367,14 +365,14 @@ public class CertificateClient {
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string}
      *
      * @param name The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeletedCertificateWithResponse(String name) {
+    public void purgeDeletedCertificate(String name) {
         purgeDeletedCertificateWithResponse(name, Context.NONE);
     }
 
@@ -392,11 +390,11 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link VoidResponse}.
+     * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoidResponse purgeDeletedCertificateWithResponse(String name, Context context) {
-        return client.purgeDeletedCertificate(name, context).block();
+    public Response<Void> purgeDeletedCertificateWithResponse(String name, Context context) {
+        return client.purgeDeletedCertificateWithResponse(name, context).block();
     }
 
     /**
@@ -417,7 +415,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate recoverDeletedCertificate(String name) {
-        return recoverDeletedCertificateWithResponse(name, Context.NONE).value();
+        return recoverDeletedCertificateWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -435,7 +433,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the certificate vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Certificate recovered certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Certificate recovered certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Certificate> recoverDeletedCertificateWithResponse(String name, Context context) {
@@ -459,7 +457,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupCertificate(String name) {
-        return backupCertificateWithResponse(name, Context.NONE).value();
+        return backupCertificateWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -476,7 +474,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the backed up certificate blob.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the backed up certificate blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupCertificateWithResponse(String name, Context context) {
@@ -499,7 +497,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate restoreCertificate(byte[] backup) {
-        return restoreCertificateWithResponse(backup, Context.NONE).value();
+        return restoreCertificateWithResponse(backup, Context.NONE).getValue();
     }
 
     /**
@@ -515,7 +513,7 @@ public class CertificateClient {
      * @param backup The backup blob associated with the certificate.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Certificate restored certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Certificate restored certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Certificate> restoreCertificateWithResponse(byte[] backup, Context context) {
@@ -659,7 +657,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy getCertificatePolicy(String name) {
-        return getCertificatePolicyWithResponse(name, Context.NONE).value();
+        return getCertificatePolicyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -675,7 +673,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link CertificatePolicy certificate policy}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String name, Context context) {
         return client.getCertificatePolicyWithResponse(name, context).block();
@@ -700,7 +698,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
-        return updateCertificatePolicyWithResponse(certificateName, policy, Context.NONE).value();
+        return updateCertificatePolicyWithResponse(certificateName, policy, Context.NONE).getValue();
     }
 
     /**
@@ -719,7 +717,7 @@ public class CertificateClient {
      * @throws NullPointerException if {@code policy} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string or if {@code policy} is invalid.
-     * @return A {@link Response} whose {@link Response#value() value} contains the updated {@link CertificatePolicy certificate policy}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the updated {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
@@ -744,7 +742,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer createCertificateIssuer(String name, String provider) {
-        return client.createCertificateIssuerWithResponse(name, provider, Context.NONE).block().value();
+        return client.createCertificateIssuerWithResponse(name, provider, Context.NONE).block().getValue();
     }
 
     /**
@@ -764,7 +762,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer createCertificateIssuer(Issuer issuer) {
-        return createCertificateIssuerWithResponse(issuer, Context.NONE).value();
+        return createCertificateIssuerWithResponse(issuer, Context.NONE).getValue();
     }
 
     /**
@@ -781,7 +779,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the created {@link Issuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the created {@link Issuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Issuer> createCertificateIssuerWithResponse(Issuer issuer, Context context) {
@@ -801,7 +799,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Issuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Issuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Issuer> getCertificateIssuerWithResponse(String name, Context context) {
@@ -824,7 +822,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer getCertificateIssuer(String name) {
-        return getCertificateIssuerWithResponse(name, Context.NONE).value();
+        return getCertificateIssuerWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -844,7 +842,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer getCertificateIssuer(IssuerBase issuerBase) {
-        return getCertificateIssuerWithResponse(issuerBase, Context.NONE).value();
+        return getCertificateIssuerWithResponse(issuerBase, Context.NONE).getValue();
     }
 
     /**
@@ -861,7 +859,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@link IssuerBase#name() name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link IssuerBase#name() name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Issuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Issuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Issuer> getCertificateIssuerWithResponse(IssuerBase issuerBase, Context context) {
@@ -882,7 +880,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate issuer with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate issuer with {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Issuer deleted issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Issuer deleted issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Issuer> deleteCertificateIssuerWithResponse(String name, Context context) {
@@ -906,7 +904,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer deleteCertificateIssuer(String name) {
-        return deleteCertificateIssuerWithResponse(name, Context.NONE).value();
+        return deleteCertificateIssuerWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -964,7 +962,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer updateCertificateIssuer(Issuer issuer) {
-        return updateCertificateIssuerWithResponse(issuer, Context.NONE).value();
+        return updateCertificateIssuerWithResponse(issuer, Context.NONE).getValue();
     }
 
     /**
@@ -982,7 +980,7 @@ public class CertificateClient {
      * @throws NullPointerException if {@code issuer} is {@code null}.
      * @throws ResourceNotFoundException when a certificate issuer with {@link Issuer#name() name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link Issuer#name() name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link Issuer updated issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Issuer updated issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Issuer> updateCertificateIssuerWithResponse(Issuer issuer, Context context) {
@@ -1110,7 +1108,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation deleteCertificateOperation(String certificateName) {
-        return deleteCertificateOperationWithResponse(certificateName, Context.NONE).value();
+        return deleteCertificateOperationWithResponse(certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -1127,7 +1125,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link CertificateOperation deleted certificate operation}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation deleted certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
@@ -1146,11 +1144,11 @@ public class CertificateClient {
      * @param certificateName The name of the certificate which is in the process of being created.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation cancelCertificateOperation(String certificateName) {
-        return client.cancelCertificateOperationWithResponse(certificateName, Context.NONE).block().value();
+        return client.cancelCertificateOperationWithResponse(certificateName, Context.NONE).block().getValue();
     }
 
 
@@ -1167,7 +1165,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName, Context context) {
@@ -1188,7 +1186,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getPendingCertificateSigningRequest(String certificateName) {
-        return getPendingCertificateSigningRequestWithResponse(certificateName, Context.NONE).value();
+        return getPendingCertificateSigningRequestWithResponse(certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -1202,7 +1200,7 @@ public class CertificateClient {
      *
      * @param certificateName the certificate for whom certifcate signing request is needed
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the certificate signing request blob.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the certificate signing request blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> getPendingCertificateSigningRequestWithResponse(String certificateName, Context context) {
@@ -1226,7 +1224,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate mergeCertificate(String name, List<byte[]> x509Certificates) {
-        return client.mergeCertificateWithResponse(name, x509Certificates, Context.NONE).block().value();
+        return client.mergeCertificateWithResponse(name, x509Certificates, Context.NONE).block().getValue();
     }
 
     /**
@@ -1265,7 +1263,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate mergeCertificate(MergeCertificateOptions mergeCertificateConfig) {
-        return mergeCertificateWithResponse(mergeCertificateConfig, Context.NONE).value();
+        return mergeCertificateWithResponse(mergeCertificateConfig, Context.NONE).getValue();
     }
 
     /**
@@ -1281,7 +1279,7 @@ public class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws NullPointerException when {@code mergeCertificateConfig} is null.
      * @throws HttpRequestException if {@code mergeCertificateConfig} is invalid/corrupt.
-     * @return A {@link Response} whose {@link Response#value() value} contains the merged certificate.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Certificate> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig, Context context) {

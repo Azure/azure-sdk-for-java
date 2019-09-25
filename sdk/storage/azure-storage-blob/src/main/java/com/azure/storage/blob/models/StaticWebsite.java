@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -38,7 +38,7 @@ public final class StaticWebsite {
      *
      * @return the enabled value.
      */
-    public boolean enabled() {
+    public boolean isEnabled() {
         return this.enabled;
     }
 
@@ -49,7 +49,7 @@ public final class StaticWebsite {
      * @param enabled the enabled value to set.
      * @return the StaticWebsite object itself.
      */
-    public StaticWebsite enabled(boolean enabled) {
+    public StaticWebsite setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -60,7 +60,7 @@ public final class StaticWebsite {
      *
      * @return the indexDocument value.
      */
-    public String indexDocument() {
+    public String getIndexDocument() {
         return this.indexDocument;
     }
 
@@ -71,7 +71,7 @@ public final class StaticWebsite {
      * @param indexDocument the indexDocument value to set.
      * @return the StaticWebsite object itself.
      */
-    public StaticWebsite indexDocument(String indexDocument) {
+    public StaticWebsite setIndexDocument(String indexDocument) {
         this.indexDocument = indexDocument;
         return this;
     }
@@ -82,7 +82,7 @@ public final class StaticWebsite {
      *
      * @return the errorDocument404Path value.
      */
-    public String errorDocument404Path() {
+    public String getErrorDocument404Path() {
         return this.errorDocument404Path;
     }
 
@@ -93,7 +93,7 @@ public final class StaticWebsite {
      * @param errorDocument404Path the errorDocument404Path value to set.
      * @return the StaticWebsite object itself.
      */
-    public StaticWebsite errorDocument404Path(String errorDocument404Path) {
+    public StaticWebsite setErrorDocument404Path(String errorDocument404Path) {
         this.errorDocument404Path = errorDocument404Path;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -49,7 +49,7 @@ public final class ServiceSetPropertiesHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -61,7 +61,7 @@ public final class ServiceSetPropertiesHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ServiceSetPropertiesHeaders object itself.
      */
-    public ServiceSetPropertiesHeaders clientRequestId(String clientRequestId) {
+    public ServiceSetPropertiesHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -72,7 +72,7 @@ public final class ServiceSetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -83,7 +83,7 @@ public final class ServiceSetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceSetPropertiesHeaders object itself.
      */
-    public ServiceSetPropertiesHeaders requestId(String requestId) {
+    public ServiceSetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -95,7 +95,7 @@ public final class ServiceSetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceSetPropertiesHeaders {
      * @param version the version value to set.
      * @return the ServiceSetPropertiesHeaders object itself.
      */
-    public ServiceSetPropertiesHeaders version(String version) {
+    public ServiceSetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -117,7 +117,7 @@ public final class ServiceSetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -127,7 +127,7 @@ public final class ServiceSetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceSetPropertiesHeaders object itself.
      */
-    public ServiceSetPropertiesHeaders errorCode(String errorCode) {
+    public ServiceSetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

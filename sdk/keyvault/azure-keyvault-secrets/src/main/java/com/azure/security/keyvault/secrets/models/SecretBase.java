@@ -104,7 +104,7 @@ public class SecretBase {
      *
      * @return the name of the secret.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -113,7 +113,7 @@ public class SecretBase {
 
      * @return the recoveryLevel of the secret.
      */
-    public String recoveryLevel() {
+    public String getRecoveryLevel() {
         return recoveryLevel;
     }
 
@@ -122,7 +122,7 @@ public class SecretBase {
      *
      * @return the enabled value
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -132,7 +132,7 @@ public class SecretBase {
      * @param enabled The enabled value to set
      * @return the SecretBase object itself.
      */
-    public SecretBase enabled(Boolean enabled) {
+    public SecretBase setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -142,7 +142,7 @@ public class SecretBase {
      *
      * @return the notBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
@@ -152,7 +152,7 @@ public class SecretBase {
      * @param notBefore The notBefore UTC time to set
      * @return the SecretBase object itself.
      */
-    public SecretBase notBefore(OffsetDateTime notBefore) {
+    public SecretBase setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -162,7 +162,7 @@ public class SecretBase {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         if (this.expires == null) {
             return null;
         }
@@ -175,7 +175,7 @@ public class SecretBase {
      * @param expires The expiry time to set for the secret.
      * @return the SecretBase object itself.
      */
-    public SecretBase expires(OffsetDateTime expires) {
+    public SecretBase setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }
@@ -185,7 +185,7 @@ public class SecretBase {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime created() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
@@ -194,7 +194,7 @@ public class SecretBase {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime updated() {
+    public OffsetDateTime getUpdated() {
         return updated;
     }
 
@@ -203,7 +203,7 @@ public class SecretBase {
      *
      * @return the secret identifier.
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -213,7 +213,7 @@ public class SecretBase {
      * @param id The secret identifier to set
      * @return the SecretBase object itself.
      */
-    public SecretBase id(String id) {
+    public SecretBase setId(String id) {
         unpackId(id);
         return this;
     }
@@ -223,7 +223,7 @@ public class SecretBase {
      *
      * @return the content type.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -233,7 +233,7 @@ public class SecretBase {
      * @param contentType The contentType to set
      * @return the SecretBase object itself.
      */
-    public SecretBase contentType(String contentType) {
+    public SecretBase setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -243,7 +243,7 @@ public class SecretBase {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -253,7 +253,7 @@ public class SecretBase {
      * @param tags The tags to set
      * @return the SecretBase object itself.
      */
-    public SecretBase tags(Map<String, String> tags) {
+    public SecretBase setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -263,7 +263,7 @@ public class SecretBase {
      *
      * @return the keyId identifier.
      */
-    public String keyId() {
+    public String getKeyId() {
         return this.keyId;
     }
 
@@ -272,7 +272,7 @@ public class SecretBase {
      *
      * @return the managed value
      */
-    public Boolean managed() {
+    public Boolean isManaged() {
         return this.managed;
     }
 
@@ -281,7 +281,7 @@ public class SecretBase {
      *
      * @return the version of the secret.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 

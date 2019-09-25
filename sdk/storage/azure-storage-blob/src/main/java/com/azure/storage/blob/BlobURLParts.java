@@ -14,13 +14,10 @@ import java.util.Map;
 
 /**
  * A BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You may parse an
- * existing URL into its parts with the {@link URLParser} class. You may construct a URL from parts by calling toURL().
- * It is also possible to use the empty constructor to buildClient a blobURL from scratch.
- * NOTE: Changing any SAS-related field requires computing a new SAS signature.
+ * existing URL into its parts with the {@link URLParser} class. You may construct a URL from parts by calling
+ * {@link #toURL()}. It is also possible to use the empty constructor to buildClient a blobURL from scratch.
  *
- * @apiNote ## Sample Code \n
- * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=url_parts "Sample code for BlobURLParts")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * <p>NOTE: Changing any SAS-related field requires computing a new SAS signature.</p>
  */
 final class BlobURLParts {
 
@@ -50,14 +47,14 @@ final class BlobURLParts {
     /**
      * The scheme. Ex: "https://".
      */
-    public String scheme() {
+    public String getScheme() {
         return scheme;
     }
 
     /**
      * The scheme. Ex: "https://".
      */
-    public BlobURLParts scheme(String scheme) {
+    public BlobURLParts setScheme(String scheme) {
         this.scheme = scheme;
         return this;
     }
@@ -65,14 +62,14 @@ final class BlobURLParts {
     /**
      * The host. Ex: "account.blob.core.windows.net".
      */
-    public String host() {
+    public String getHost() {
         return host;
     }
 
     /**
      * The host. Ex: "account.blob.core.windows.net".
      */
-    public BlobURLParts host(String host) {
+    public BlobURLParts setHost(String host) {
         this.host = host;
         return this;
     }
@@ -80,14 +77,14 @@ final class BlobURLParts {
     /**
      * The container name or {@code null} if a {@link BlobServiceAsyncClient} was parsed.
      */
-    public String containerName() {
+    public String getContainerName() {
         return containerName;
     }
 
     /**
      * The container name or {@code null} if a {@link BlobServiceAsyncClient} was parsed.
      */
-    public BlobURLParts containerName(String containerName) {
+    public BlobURLParts setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -95,14 +92,14 @@ final class BlobURLParts {
     /**
      * The blob name or {@code null} if a {@link BlobServiceAsyncClient} or {@link ContainerAsyncClient} was parsed.
      */
-    public String blobName() {
+    public String getBlobName() {
         return blobName;
     }
 
     /**
      * The blob name or {@code null} if a {@link BlobServiceAsyncClient} or {@link ContainerAsyncClient} was parsed.
      */
-    public BlobURLParts blobName(String blobName) {
+    public BlobURLParts setBlobName(String blobName) {
         this.blobName = blobName;
         return this;
     }
@@ -110,48 +107,48 @@ final class BlobURLParts {
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
-    public String snapshot() {
+    public String getSnapshot() {
         return snapshot;
     }
 
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
-    public BlobURLParts snapshot(String snapshot) {
+    public BlobURLParts setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
 
     /**
-     * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
-     * parameters.
+     * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no
+     * such parameters.
      */
-    public BlobServiceSASQueryParameters sasQueryParameters() {
+    public BlobServiceSASQueryParameters getSasQueryParameters() {
         return blobServiceSasQueryParameters;
     }
 
     /**
-     * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
-     * parameters.
+     * A {@link BlobServiceSASQueryParameters} representing the SAS query parameters or {@code null} if there were no
+     * such parameters.
      */
-    public BlobURLParts sasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
+    public BlobURLParts setSasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
         this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
         return this;
     }
 
     /**
-     * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
-     * no such parameters.
+     * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were no
+     * such parameters.
      */
-    public Map<String, String[]> unparsedParameters() {
+    public Map<String, String[]> getUnparsedParameters() {
         return unparsedParameters;
     }
 
     /**
-     * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
-     * no such parameters.
+     * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were no
+     * such parameters.
      */
-    public BlobURLParts unparsedParameters(Map<String, String[]> unparsedParameters) {
+    public BlobURLParts setUnparsedParameters(Map<String, String[]> unparsedParameters) {
         this.unparsedParameters = unparsedParameters;
         return this;
     }
@@ -160,12 +157,11 @@ final class BlobURLParts {
      * Converts the blob URL parts to a {@link URL}.
      *
      * @return A {@code java.net.URL} to the blob resource composed of all the elements in the object.
-     *
-     * @throws MalformedURLException The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
-     *         ill-formatted.
+     * @throws MalformedURLException The fields present on the BlobURLParts object were insufficient to construct a
+     * valid URL or were ill-formatted.
      */
     public URL toURL() throws MalformedURLException {
-        UrlBuilder url = new UrlBuilder().scheme(this.scheme).host(this.host);
+        UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
         if (this.containerName != null) {
@@ -175,7 +171,7 @@ final class BlobURLParts {
                 path.append(this.blobName);
             }
         }
-        url.path(path.toString());
+        url.setPath(path.toString());
 
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
@@ -183,14 +179,14 @@ final class BlobURLParts {
         if (this.blobServiceSasQueryParameters != null) {
             String encodedSAS = this.blobServiceSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
-                url.query(encodedSAS);
+                url.setQuery(encodedSAS);
             }
         }
 
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
             // The commas are intentionally encoded.
             url.setQueryParameter(entry.getKey(),
-                    Utility.urlEncode(String.join(",", entry.getValue())));
+                Utility.urlEncode(String.join(",", entry.getValue())));
         }
 
         return url.toURL();

@@ -6,7 +6,7 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -17,22 +17,26 @@
     <azure-batch.version>5.0.1</azure-batch.version>
     <azure-eventhubs.version>2.3.1</azure-eventhubs.version>
     <azure-eventhubs-eph.version>2.5.1</azure-eventhubs-eph.version>
-    <azure-keyvault.track-one.version>1.2.0</azure-keyvault.track-one.version>
+    <azure-keyvault.track-one.version>1.2.3</azure-keyvault.track-one.version>
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
-    <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
+    <azure-storage-blob.version>11.0.2</azure-storage-blob.version>
 
     <!-- Track 2 client library versions -->
-    <azure-core.version>1.0.0-preview.4</azure-core.version>
-    <azure-data-appconfiguration.version>1.0.0-preview.3</azure-data-appconfiguration.version>
-    <azure-identity.version>1.0.0-preview.3</azure-identity.version>
-    <azure-keyvault.version>4.0.0-preview.3</azure-keyvault.version>
-    <azure-messaging-eventhubs.version>5.0.0-preview.3</azure-messaging-eventhubs.version>
-    <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.1</azure-messaging-eventhubs-checkpointstore-blob.version>
-    <azure-storage-common.version>12.0.0-preview.3</azure-storage-common.version>
-    <azure-storage-blob.version>12.0.0-preview.3</azure-storage-blob.version>
-    <azure-storage-file.version>12.0.0-preview.3</azure-storage-file.version>
-    <azure-storage-queue.version>12.0.0-preview.3</azure-storage-queue.version>
+    <azure-core.version>1.0.0-preview.5</azure-core.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.4</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.4</azure-identity.version>
+    <azure-keyvault.version>4.0.0-preview.4</azure-keyvault.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.4</azure-messaging-eventhubs.version>
+    <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.2</azure-messaging-eventhubs-checkpointstore-blob.version>
+    <azure-storage-common.version>12.0.0-preview.4</azure-storage-common.version>
+    <azure-storage-blob.version>12.0.0-preview.4</azure-storage-blob.version>
+    <azure-storage-blob-cryptography.version>12.0.0-preview.4</azure-storage-blob-cryptography.version>
+    <azure-storage-file.version>12.0.0-preview.4</azure-storage-file.version>
+    <azure-storage-queue.version>12.0.0-preview.4</azure-storage-queue.version>
+    <azure-storage-queue-cryptography.version>12.0.0-preview.4</azure-storage-queue-cryptography.version>
+    <project.automatic.module.name>com.azure.eng.spotbugs.reporting</project.automatic.module.name>
   </properties>
+
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
@@ -54,34 +58,36 @@
             </goals>
             <configuration>
               <sources>
-                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java</source>
-                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java</source>
-                <source>..\..\sdk\core\azure-core\src\main\java</source>
-                <source>..\..\sdk\core\azure-core\src\samples\java</source>
-                <source>..\..\sdk\core\azure-core-amqp\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-http-netty\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java</source>
-                <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-management\src\main\java</source>
-                <source>..\..\sdk\core\azure-core-test\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\main\java</source>
-                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\samples\java</source>
-                <source>..\..\sdk\identity\azure-identity\src\main\java</source>
-                <source>..\..\sdk\identity\azure-identity\src\samples\java</source>
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java</source>-->
-<!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java</source>-->
-                <source>..\..\sdk\storage\azure-storage-common\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-blob\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-blob\src\samples\java</source>
-                <source>..\..\sdk\storage\azure-storage-file\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-file\src\samples\java</source>
-                <source>..\..\sdk\storage\azure-storage-queue\src\main\java</source>
-                <source>..\..\sdk\storage\azure-storage-queue\src\samples\java</source>
-<!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java</source>-->
+                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\main\java\com</source>
+                <source>..\..\sdk\appconfiguration\azure-data-appconfiguration\src\samples\java\com</source>
+                <source>..\..\sdk\core\azure-core\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core\src\samples\java\com</source>
+                <source>..\..\sdk\core\azure-core-amqp\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-netty\src\samples\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-management\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-test\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\samples\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\src\samples\java\com</source>
+                <source>..\..\sdk\identity\azure-identity\src\main\java\com</source>
+                <source>..\..\sdk\identity\azure-identity\src\samples\java\com</source>
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\main\java\com</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-keys\src\samples\java\com</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java\com</source>-->
+                <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java\com</source>-->
+                <source>..\..\sdk\storage\azure-storage-common\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-file\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-file\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-queue-cryptography\src\main\java\com</source>
+                <!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java\com</source>-->
               </sources>
             </configuration>
           </execution>
@@ -100,20 +106,20 @@
             </goals>
             <configuration>
               <sources>
-                <source>..\..\sdk\batch\microsoft-azure-batch\src\main\java</source>
-                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs\src\main\java</source>
-                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-eph\src\main\java</source>
-                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-extensions\src\main\java</source>
+                <source>..\..\sdk\batch\microsoft-azure-batch\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-eph\src\main\java\com</source>
+                <source>..\..\sdk\eventhubs\microsoft-azure-eventhubs-extensions\src\main\java\com</source>
                 <!-- Storage is excluded from Spotbugs report as it collides with the storage library
                 dependency in eventhubs code. This issue is under investigation.
                 Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
-                <!-- <source>..\..\storage\data-plane\src\main\java</source> -->
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-cryptography\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-core\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-extensions\src\main\java</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-webkey\src\main\java</source>
-                <source>..\..\sdk\servicebus\microsoft-azure-servicebus\src\main\java</source>
+                <!-- <source>..\..\storage\data-plane\src\main\java\com</source> -->
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-cryptography\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-core\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-extensions\src\main\java\com</source>
+                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-webkey\src\main\java\com</source>
+                <source>..\..\sdk\servicebus\microsoft-azure-servicebus\src\main\java\com</source>
               </sources>
             </configuration>
           </execution>
@@ -214,6 +220,11 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-cryptography</artifactId>
+          <version>${azure-storage-blob-cryptography.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
           <artifactId>azure-storage-file</artifactId>
           <version>${azure-storage-file.version}</version>
         </dependency>
@@ -221,6 +232,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
           <version>${azure-storage-queue.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-queue-cryptography</artifactId>
+          <version>${azure-storage-queue-cryptography.version}</version>
         </dependency>
         <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE

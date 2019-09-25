@@ -12,12 +12,11 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -35,8 +34,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * RESERVED FOR INTERNAL USE.
- * Base class for Storage client builders. Holds common code for managing resources and pipeline settings.
+ * RESERVED FOR INTERNAL USE. Base class for Storage client builders. Holds common code for managing resources and
+ * pipeline settings.
  */
 public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
@@ -230,11 +229,13 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.%s.%s", endpointProtocol, accountName, getServiceUrlMidfix(), endpointSuffix.replaceFirst("^\\.", ""));
+            String endpoint = String.format("%s://%s.%s.%s", endpointProtocol, accountName, getServiceUrlMidfix(),
+                endpointSuffix.replaceFirst("^\\.", ""));
             endpoint(endpoint);
         }
 
@@ -253,6 +254,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     /**
      * Sets the http client used to send service requests. A default will be used if none is provided.
+     *
      * @param httpClient http client to send requests
      * @return the updated buildr
      */
@@ -264,6 +266,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     /**
      * Adds a pipeline policy to apply on each request sent
+     *
      * @param pipelinePolicy a pipeline policy
      * @return the updated builder
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
@@ -276,6 +279,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     /**
      * Sets the logging level for service requests
+     *
      * @param logLevel logging level
      * @return the updated builder
      * @throws NullPointerException If {@code logLevel} is {@code null}
@@ -287,8 +291,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
+     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client
+     * with when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
+     *
      * @param configuration configuration store
      * @return the updated buildr
      */
@@ -305,7 +310,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      */
     protected final Configuration getConfiguration() {
         if (this.configuration == null) {
-            this.configuration = ConfigurationManager.getConfiguration();
+            this.configuration = Configuration.getGlobalConfiguration();
         }
 
         return this.configuration;
@@ -313,6 +318,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     /**
      * Sets the request retry options for all the requests made through the client.
+     *
      * @param retryOptions the options to configure retry behaviors
      * @return the updated builder
      * @throws NullPointerException If {@code retryOptions} is {@code null}
@@ -326,8 +332,8 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     /**
      * Sets the HTTP pipeline to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link BaseClientBuilder#endpoint(String) endpoint} when building clients.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link BaseClientBuilder#endpoint(String)
+     * endpoint} when building clients.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated builder.

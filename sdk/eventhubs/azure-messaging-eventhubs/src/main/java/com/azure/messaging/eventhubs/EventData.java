@@ -3,13 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.MessageConstant;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.message.Message;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -38,8 +32,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  *
  * <ol>
- * <li>{@link #properties()} - AMQPMessage.ApplicationProperties section</li>
- * <li>{@link #body()} - if AMQPMessage.Body has Data section</li>
+ * <li>{@link #getProperties()} - AMQPMessage.ApplicationProperties section</li>
+ * <li>{@link #getBody()} - if AMQPMessage.Body has Data section</li>
  * </ol>
  *
  * <p>
@@ -54,9 +48,8 @@ public class EventData implements Comparable<EventData> {
     /*
      * These are properties owned by the service and set when a message is received.
      */
-    public static final Set<String> RESERVED_SYSTEM_PROPERTIES;
+    static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
-    private final ClientLogger logger = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
@@ -129,58 +122,19 @@ public class EventData implements Comparable<EventData> {
         this(body.getBytes(UTF_8));
     }
 
-    /*
-     * Creates an event from a proton-j message
+    /**
+     * Creates an event with the given {@code body}, system properties and context.
      *
-     * @throws IllegalStateException if required the system properties, enqueued time, offset, or sequence number are
-     *     not found in the message.
-     * @throws NullPointerException if {@code message} is null.
+     * @param body The data to set for this event.
+     * @param systemProperties System properties set by message broker for this event.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(Message message) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-
-        final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
-        final HashMap<String, Object> receiveProperties = new HashMap<>();
-
-        for (Map.Entry<Symbol, Object> annotation : messageAnnotations.entrySet()) {
-            receiveProperties.put(annotation.getKey().toString(), annotation.getValue());
-        }
-
-        if (message.getProperties() != null) {
-            addMapEntry(receiveProperties, MessageConstant.MESSAGE_ID, message.getMessageId());
-            addMapEntry(receiveProperties, MessageConstant.USER_ID, message.getUserId());
-            addMapEntry(receiveProperties, MessageConstant.TO, message.getAddress());
-            addMapEntry(receiveProperties, MessageConstant.SUBJECT, message.getSubject());
-            addMapEntry(receiveProperties, MessageConstant.REPLY_TO, message.getReplyTo());
-            addMapEntry(receiveProperties, MessageConstant.CORRELATION_ID, message.getCorrelationId());
-            addMapEntry(receiveProperties, MessageConstant.CONTENT_TYPE, message.getContentType());
-            addMapEntry(receiveProperties, MessageConstant.CONTENT_ENCODING, message.getContentEncoding());
-            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
-            addMapEntry(receiveProperties, MessageConstant.CREATION_TIME, message.getCreationTime());
-            addMapEntry(receiveProperties, MessageConstant.GROUP_ID, message.getGroupId());
-            addMapEntry(receiveProperties, MessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
-            addMapEntry(receiveProperties, MessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
-        }
-
-        this.context = Context.NONE;
-        this.systemProperties = new SystemProperties(receiveProperties);
-        this.properties = message.getApplicationProperties() == null
-            ? new HashMap<>()
-            : message.getApplicationProperties().getValue();
-
-        final Section bodySection = message.getBody();
-        if (bodySection instanceof Data) {
-            Data bodyData = (Data) bodySection;
-            this.body = bodyData.getValue().asByteBuffer();
-        } else {
-            logger.warning(String.format(Locale.US,
-                "Message body type is not of type Data, but type: %s. Not setting body contents.",
-                bodySection != null ? bodySection.getType() : "null"));
-
-            this.body = null;
-        }
-
-        message.clear();
+    EventData(ByteBuffer body, SystemProperties systemProperties, Context context) {
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.context = Objects.requireNonNull(context, "'context' cannot be null.");
+        this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
+        this.properties = new HashMap<>();
     }
 
     /**
@@ -188,8 +142,8 @@ public class EventData implements Comparable<EventData> {
      * the {@code key} exists in the map, its existing value is overwritten.
      *
      * <p>
-     * A common use case for {@link #properties()} is to associate serialization hints for the {@link #body()} as an aid
-     * to consumers who wish to deserialize the binary data.
+     * A common use case for {@link #getProperties()} is to associate serialization hints for the {@link #getBody()} as
+     * an aid to consumers who wish to deserialize the binary data.
      * </p>
      *
      * <p>
@@ -231,13 +185,13 @@ public class EventData implements Comparable<EventData> {
      * event body during Event Hubs operations.
      *
      * <p>
-     * A common use case for {@code properties()} is to associate serialization hints for the {@link #body()} as an aid
-     * to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
+     * A common use case for {@code properties()} is to associate serialization hints for the {@link #getBody()} as an
+     * aid to consumers who wish to deserialize the binary data. See {@link #addProperty(String, Object)} for a sample.
      * </p>
      *
      * @return Application properties associated with this {@link EventData}.
      */
-    public Map<String, Object> properties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -246,7 +200,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return the {@link Context} object set on the event
      */
-    public Context context() {
+    public Context getContext() {
         return context;
     }
 
@@ -255,9 +209,9 @@ public class EventData implements Comparable<EventData> {
      * <b>received</b> EventData.
      *
      * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData. {@code null} if
-     *     the {@link EventData} is not received and is created by the public constructors.
+     * the {@link EventData} is not received and is created by the public constructors.
      */
-    public Map<String, Object> systemProperties() {
+    public Map<String, Object> getSystemProperties() {
         return systemProperties;
     }
 
@@ -266,13 +220,13 @@ public class EventData implements Comparable<EventData> {
      *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #properties()} when creating the event, to associate serialization hints as an aid to consumers who wish
-     * to deserialize the binary data.
+     * {@link #getProperties()} when creating the event, to associate serialization hints as an aid to consumers who
+     * wish to deserialize the binary data.
      * </p>
      *
      * @return ByteBuffer representing the data.
      */
-    public ByteBuffer body() {
+    public ByteBuffer getBody() {
         return body.duplicate();
     }
 
@@ -281,7 +235,7 @@ public class EventData implements Comparable<EventData> {
      *
      * @return UTF-8 decoded string representation of the event data.
      */
-    public String bodyAsString() {
+    public String getBodyAsString() {
         return UTF_8.decode(body).toString();
     }
 
@@ -289,10 +243,10 @@ public class EventData implements Comparable<EventData> {
      * Gets the offset of the event when it was received from the associated Event Hub partition.
      *
      * @return The offset within the Event Hub partition of the received event. {@code null} if the EventData was not
-     *     received from Event Hub service.
+     * received from Event Hub service.
      */
-    public Long offset() {
-        return systemProperties.offset();
+    public Long getOffset() {
+        return systemProperties.getOffset();
     }
 
     /**
@@ -300,20 +254,20 @@ public class EventData implements Comparable<EventData> {
      * a partition to send the message to.
      *
      * @return A partition key for this Event Data. {@code null} if the EventData was not received from Event Hub
-     *     service or there was no partition key set when the event was sent to the Event Hub.
+     * service or there was no partition key set when the event was sent to the Event Hub.
      */
-    public String partitionKey() {
-        return systemProperties.partitionKey();
+    public String getPartitionKey() {
+        return systemProperties.getPartitionKey();
     }
 
     /**
      * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
      *
      * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the EventData was not
-     *     received from Event Hub service.
+     * received from Event Hub service.
      */
-    public Instant enqueuedTime() {
-        return systemProperties.enqueuedTime();
+    public Instant getEnqueuedTime() {
+        return systemProperties.getEnqueuedTime();
     }
 
     /**
@@ -321,18 +275,10 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return The sequence number for this event. {@code null} if the EventData was not received from Event Hub
-     *     service.
+     * service.
      */
-    public Long sequenceNumber() {
-        return systemProperties.sequenceNumber();
-    }
-
-    private void addMapEntry(Map<String, Object> map, MessageConstant key, Object content) {
-        if (content == null) {
-            return;
-        }
-
-        map.put(key.getValue(), content);
+    public Long getSequenceNumber() {
+        return systemProperties.getSequenceNumber();
     }
 
     /**
@@ -341,8 +287,8 @@ public class EventData implements Comparable<EventData> {
     @Override
     public int compareTo(EventData other) {
         return Long.compare(
-            this.sequenceNumber(),
-            other.sequenceNumber()
+            this.getSequenceNumber(),
+            other.getSequenceNumber()
         );
     }
 
@@ -373,7 +319,7 @@ public class EventData implements Comparable<EventData> {
     /**
      * A collection of properties populated by Azure Event Hubs service.
      */
-    private static class SystemProperties extends HashMap<String, Object> {
+    static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
         private final Long offset;
         private final String partitionKey;
@@ -419,7 +365,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The offset within the Event Hubs stream.
          */
-        private Long offset() {
+        private Long getOffset() {
             return offset;
         }
 
@@ -429,7 +375,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return A partition key for this Event Data.
          */
-        private String partitionKey() {
+        private String getPartitionKey() {
             return partitionKey;
         }
 
@@ -438,7 +384,7 @@ public class EventData implements Comparable<EventData> {
          *
          * @return The time this was enqueued in the service.
          */
-        private Instant enqueuedTime() {
+        private Instant getEnqueuedTime() {
             return enqueuedTime;
         }
 
@@ -447,10 +393,10 @@ public class EventData implements Comparable<EventData> {
          * Event Hub.
          *
          * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
-         *     retrieved event.
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
+         * event.
          */
-        private Long sequenceNumber() {
+        private Long getSequenceNumber() {
             return sequenceNumber;
         }
 

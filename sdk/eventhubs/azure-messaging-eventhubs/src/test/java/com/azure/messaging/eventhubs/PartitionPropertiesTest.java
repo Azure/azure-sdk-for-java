@@ -28,12 +28,12 @@ public class PartitionPropertiesTest {
             lastEnqueuedOffset, lastEnqueuedTime, isEmpty);
 
         // Assert
-        Assert.assertEquals(eventHub, properties.eventHubName());
-        Assert.assertEquals(id, properties.id());
-        Assert.assertEquals(beginningSequence, properties.beginningSequenceNumber());
-        Assert.assertEquals(endSequence, properties.lastEnqueuedSequenceNumber());
-        Assert.assertEquals(lastEnqueuedOffset, properties.lastEnqueuedOffset());
-        Assert.assertEquals(lastEnqueuedTime, properties.lastEnqueuedTime());
+        Assert.assertEquals(eventHub, properties.getEventHubName());
+        Assert.assertEquals(id, properties.getId());
+        Assert.assertEquals(beginningSequence, properties.getBeginningSequenceNumber());
+        Assert.assertEquals(endSequence, properties.getLastEnqueuedSequenceNumber());
+        Assert.assertEquals(lastEnqueuedOffset, properties.getLastEnqueuedOffset());
+        Assert.assertEquals(lastEnqueuedTime, properties.getLastEnqueuedTime());
         Assert.assertEquals(isEmpty, properties.isEmpty());
     }
 }

@@ -8,11 +8,11 @@ import com.azure.storage.common.SR;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a file.
- * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
- * Once all the values are set, this should be serialized with toString and set as the permissions field on a
- * {@link FileServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a file. Setting
+ * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
+ * the values are set, this should be serialized with toString and set as the permissions field on a {@link
+ * FileServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
 public final class FileSASPermission {
     private boolean read;
@@ -57,7 +57,8 @@ public final class FileSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permString, c));
             }
         }
         return permissions;
@@ -66,7 +67,7 @@ public final class FileSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -76,7 +77,7 @@ public final class FileSASPermission {
      * @param read Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission read(boolean read) {
+    public FileSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -84,7 +85,7 @@ public final class FileSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean create() {
+    public boolean getCreate() {
         return create;
     }
 
@@ -94,7 +95,7 @@ public final class FileSASPermission {
      * @param create Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission create(boolean create) {
+    public FileSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -102,7 +103,7 @@ public final class FileSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean write() {
+    public boolean getWrite() {
         return write;
     }
 
@@ -112,7 +113,7 @@ public final class FileSASPermission {
      * @param write Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission write(boolean write) {
+    public FileSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -120,7 +121,7 @@ public final class FileSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return delete;
     }
 
@@ -130,7 +131,7 @@ public final class FileSASPermission {
      * @param delete Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission delete(boolean delete) {
+    public FileSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }

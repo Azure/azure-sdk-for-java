@@ -33,7 +33,7 @@ public class ProxyAuthenticationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String auth = username + ":" + password;
         String encodedAuth = Base64Util.encodeToString(auth.getBytes(StandardCharsets.UTF_8));
-        context.httpRequest().header("Proxy-Authentication", "Basic " + encodedAuth);
+        context.getHttpRequest().setHeader("Proxy-Authentication", "Basic " + encodedAuth);
         return next.process();
     }
 }

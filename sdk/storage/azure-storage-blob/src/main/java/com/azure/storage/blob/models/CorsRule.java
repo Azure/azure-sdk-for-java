@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -67,7 +67,7 @@ public final class CorsRule {
      *
      * @return the allowedOrigins value.
      */
-    public String allowedOrigins() {
+    public String getAllowedOrigins() {
         return this.allowedOrigins;
     }
 
@@ -82,7 +82,7 @@ public final class CorsRule {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule allowedOrigins(String allowedOrigins) {
+    public CorsRule setAllowedOrigins(String allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
     }
@@ -93,7 +93,7 @@ public final class CorsRule {
      *
      * @return the allowedMethods value.
      */
-    public String allowedMethods() {
+    public String getAllowedMethods() {
         return this.allowedMethods;
     }
 
@@ -104,7 +104,7 @@ public final class CorsRule {
      * @param allowedMethods the allowedMethods value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule allowedMethods(String allowedMethods) {
+    public CorsRule setAllowedMethods(String allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
     }
@@ -115,7 +115,7 @@ public final class CorsRule {
      *
      * @return the allowedHeaders value.
      */
-    public String allowedHeaders() {
+    public String getAllowedHeaders() {
         return this.allowedHeaders;
     }
 
@@ -126,7 +126,7 @@ public final class CorsRule {
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule allowedHeaders(String allowedHeaders) {
+    public CorsRule setAllowedHeaders(String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
     }
@@ -138,7 +138,7 @@ public final class CorsRule {
      *
      * @return the exposedHeaders value.
      */
-    public String exposedHeaders() {
+    public String getExposedHeaders() {
         return this.exposedHeaders;
     }
 
@@ -150,7 +150,7 @@ public final class CorsRule {
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule exposedHeaders(String exposedHeaders) {
+    public CorsRule setExposedHeaders(String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
     }
@@ -161,7 +161,7 @@ public final class CorsRule {
      *
      * @return the maxAgeInSeconds value.
      */
-    public int maxAgeInSeconds() {
+    public int getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
 
@@ -172,7 +172,7 @@ public final class CorsRule {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule maxAgeInSeconds(int maxAgeInSeconds) {
+    public CorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }

@@ -4,10 +4,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.implementation.annotation.Immutable;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
@@ -27,17 +25,9 @@ class AppServiceMSICredential {
      * @param identityClient the identity client to acquire a token with.
      */
     AppServiceMSICredential(String clientId, IdentityClient identityClient) {
-        Configuration configuration = ConfigurationManager.getConfiguration();
-        if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
-            msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);
-        } else {
-            msiEndpoint = null;
-        }
-        if (configuration.contains(BaseConfigurations.MSI_SECRET)) {
-            msiSecret = configuration.get(BaseConfigurations.MSI_SECRET);
-        } else {
-            msiSecret = null;
-        }
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
+        this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         this.identityClient = identityClient;
         this.clientId = clientId;
     }
@@ -45,20 +35,20 @@ class AppServiceMSICredential {
     /**
      * @return the endpoint from which token needs to be retrieved.
      */
-    public String msiEndpoint() {
+    public String getMsiEndpoint() {
         return this.msiEndpoint;
     }
     /**
      * @return the secret to use to retrieve the token.
      */
-    public String msiSecret() {
+    public String getMsiSecret() {
         return this.msiSecret;
     }
 
     /**
      * @return the client id of user assigned or system assigned identity.
      */
-    public String clientId() {
+    public String getClientId() {
         return this.clientId;
     }
 

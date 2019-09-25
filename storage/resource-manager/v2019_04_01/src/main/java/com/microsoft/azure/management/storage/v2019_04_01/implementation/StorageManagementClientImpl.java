@@ -224,6 +224,32 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The FileServicesInner object to access its operations.
+     */
+    private FileServicesInner fileServices;
+
+    /**
+     * Gets the FileServicesInner object to access its operations.
+     * @return the FileServicesInner object.
+     */
+    public FileServicesInner fileServices() {
+        return this.fileServices;
+    }
+
+    /**
+     * The FileSharesInner object to access its operations.
+     */
+    private FileSharesInner fileShares;
+
+    /**
+     * Gets the FileSharesInner object to access its operations.
+     * @return the FileSharesInner object.
+     */
+    public FileSharesInner fileShares() {
+        return this.fileShares;
+    }
+
+    /**
      * Initializes an instance of StorageManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -265,6 +291,8 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.managementPolicies = new ManagementPoliciesInner(restClient().retrofit(), this);
         this.blobServices = new BlobServicesInner(restClient().retrofit(), this);
         this.blobContainers = new BlobContainersInner(restClient().retrofit(), this);
+        this.fileServices = new FileServicesInner(restClient().retrofit(), this);
+        this.fileShares = new FileSharesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

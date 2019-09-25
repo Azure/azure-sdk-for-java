@@ -55,7 +55,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.upload#Flux-long
         client.upload(data, length).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.contentMD5())));
+                Base64.getEncoder().encodeToString(response.getContentMD5())));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.upload#Flux-long
     }
 
@@ -65,19 +65,19 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void upload2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.value().contentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
@@ -88,7 +88,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.upload#Flux-int-int
         client.upload(data, blockSize, numBuffers).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.contentMD5())));
+                Base64.getEncoder().encodeToString(response.getContentMD5())));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.upload#Flux-int-int
     }
 
@@ -98,19 +98,19 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void upload4() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.uploadWithResponse(data, blockSize, numBuffers, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.value().contentMD5())));
+                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 
@@ -131,15 +131,15 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void uploadFromFile2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
         client.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE,
             headers, metadata, AccessTier.HOT, accessConditions)
@@ -165,9 +165,9 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
      */
     public void stageBlock2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         client.stageBlockWithResponse(base64BlockID, data, length, accessConditions).subscribe(response ->
-            System.out.printf("Staging block completed with status %d%n", response.statusCode()));
+            System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
     }
 
@@ -188,13 +188,13 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
      */
     public void stageBlockFromURL2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
-        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()
-            .sourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.stageBlockFromURLWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
             leaseAccessConditions, sourceModifiedAccessConditions).subscribe(response ->
-            System.out.printf("Staging block from URL completed with status %d%n", response.statusCode()));
+            System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
     }
 
@@ -205,10 +205,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.listBlocks#BlockListType
         client.listBlocks(BlockListType.ALL).subscribe(block -> {
             System.out.println("Committed Blocks:");
-            block.committedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
 
             System.out.println("Uncommitted Blocks:");
-            block.uncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         });
         // END: com.azure.storage.blob.BlockBlobAsyncClient.listBlocks#BlockListType
     }
@@ -218,15 +218,15 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
      */
     public void listBlocks2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().leaseId(leaseId);
+        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
         client.listBlocksWithResponse(BlockListType.ALL, accessConditions).subscribe(response -> {
-            BlockList block = response.value();
+            BlockList block = response.getValue();
             System.out.println("Committed Blocks:");
-            block.committedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
 
             System.out.println("Uncommitted Blocks:");
-            block.uncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.name(), b.size()));
+            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         });
         // END: com.azure.storage.blob.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions
     }
@@ -237,7 +237,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void commitBlockList() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockList#List
         client.commitBlockList(Collections.singletonList(base64BlockID)).subscribe(response ->
-            System.out.printf("Committing block list completed. Last modified: %s%n", response.lastModified()));
+            System.out.printf("Committing block list completed. Last modified: %s%n", response.getLastModified()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockList#List
     }
 
@@ -247,18 +247,18 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     public void commitBlockList2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .blobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .blobContentLanguage("en-US")
-            .blobContentType("binary");
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
 
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseId))
-            .modifiedAccessConditions(new ModifiedAccessConditions()
-                .ifUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
             AccessTier.HOT, accessConditions).subscribe(response ->
-                System.out.printf("Committing block list completed with status %d%n", response.statusCode()));
+                System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -50,7 +50,7 @@ public final class MessagesEnqueueHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class MessagesEnqueueHeaders {
      * @param requestId the requestId value to set.
      * @return the MessagesEnqueueHeaders object itself.
      */
-    public MessagesEnqueueHeaders requestId(String requestId) {
+    public MessagesEnqueueHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class MessagesEnqueueHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class MessagesEnqueueHeaders {
      * @param version the version value to set.
      * @return the MessagesEnqueueHeaders object itself.
      */
-    public MessagesEnqueueHeaders version(String version) {
+    public MessagesEnqueueHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,11 +96,11 @@ public final class MessagesEnqueueHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -110,7 +110,7 @@ public final class MessagesEnqueueHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the MessagesEnqueueHeaders object itself.
      */
-    public MessagesEnqueueHeaders dateProperty(OffsetDateTime dateProperty) {
+    public MessagesEnqueueHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class MessagesEnqueueHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class MessagesEnqueueHeaders {
      * @param errorCode the errorCode value to set.
      * @return the MessagesEnqueueHeaders object itself.
      */
-    public MessagesEnqueueHeaders errorCode(String errorCode) {
+    public MessagesEnqueueHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

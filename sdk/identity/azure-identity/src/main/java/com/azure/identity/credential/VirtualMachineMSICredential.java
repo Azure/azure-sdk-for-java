@@ -4,7 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +30,7 @@ class VirtualMachineMSICredential {
     /**
      * @return the client id of user assigned or system assigned identity.
      */
-    public String clientId() {
+    public String getClientId() {
         return this.clientId;
     }
 

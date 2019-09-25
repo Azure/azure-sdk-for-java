@@ -6,21 +6,21 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Head;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Patch;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTierOptional;
@@ -245,35 +245,35 @@ public final class BlobsImpl {
     public Mono<BlobsDownloadResponse> downloadWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, String range, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64, String requestId, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -324,35 +324,35 @@ public final class BlobsImpl {
     public Mono<BlobsGetPropertiesResponse> getPropertiesWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -401,23 +401,23 @@ public final class BlobsImpl {
     public Mono<BlobsDeleteResponse> deleteWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -468,23 +468,23 @@ public final class BlobsImpl {
         final String action = "setAccessControl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -529,23 +529,23 @@ public final class BlobsImpl {
         final String action = "getAccessControl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -611,59 +611,59 @@ public final class BlobsImpl {
     public Mono<BlobsRenameResponse> renameWithRestResponseAsync(String filesystem, String path, String renameSource, Integer timeout, String directoryProperties, String posixPermissions, String posixUmask, String sourceLeaseId, String requestId, DirectoryHttpHeaders directoryHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         String cacheControl = null;
         if (directoryHttpHeaders != null) {
-            cacheControl = directoryHttpHeaders.cacheControl();
+            cacheControl = directoryHttpHeaders.getCacheControl();
         }
         String contentType = null;
         if (directoryHttpHeaders != null) {
-            contentType = directoryHttpHeaders.contentType();
+            contentType = directoryHttpHeaders.getContentType();
         }
         String contentEncoding = null;
         if (directoryHttpHeaders != null) {
-            contentEncoding = directoryHttpHeaders.contentEncoding();
+            contentEncoding = directoryHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
         if (directoryHttpHeaders != null) {
-            contentLanguage = directoryHttpHeaders.contentLanguage();
+            contentLanguage = directoryHttpHeaders.getContentLanguage();
         }
         String contentDisposition = null;
         if (directoryHttpHeaders != null) {
-            contentDisposition = directoryHttpHeaders.contentDisposition();
+            contentDisposition = directoryHttpHeaders.getContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -753,47 +753,47 @@ public final class BlobsImpl {
         final String comp = "properties";
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
-            blobCacheControl = blobHTTPHeaders.blobCacheControl();
+            blobCacheControl = blobHTTPHeaders.getBlobCacheControl();
         }
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
-            blobContentType = blobHTTPHeaders.blobContentType();
+            blobContentType = blobHTTPHeaders.getBlobContentType();
         }
         byte[] blobContentMD5 = null;
         if (blobHTTPHeaders != null) {
-            blobContentMD5 = blobHTTPHeaders.blobContentMD5();
+            blobContentMD5 = blobHTTPHeaders.getBlobContentMD5();
         }
         String blobContentEncoding = null;
         if (blobHTTPHeaders != null) {
-            blobContentEncoding = blobHTTPHeaders.blobContentEncoding();
+            blobContentEncoding = blobHTTPHeaders.getBlobContentEncoding();
         }
         String blobContentLanguage = null;
         if (blobHTTPHeaders != null) {
-            blobContentLanguage = blobHTTPHeaders.blobContentLanguage();
+            blobContentLanguage = blobHTTPHeaders.getBlobContentLanguage();
         }
         String blobContentDisposition = null;
         if (blobHTTPHeaders != null) {
-            blobContentDisposition = blobHTTPHeaders.blobContentDisposition();
+            blobContentDisposition = blobHTTPHeaders.getBlobContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -847,35 +847,35 @@ public final class BlobsImpl {
         final String comp = "metadata";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -926,19 +926,19 @@ public final class BlobsImpl {
         final String action = "acquire";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -987,19 +987,19 @@ public final class BlobsImpl {
         final String action = "release";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1048,19 +1048,19 @@ public final class BlobsImpl {
         final String action = "renew";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1111,19 +1111,19 @@ public final class BlobsImpl {
         final String action = "change";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1172,19 +1172,19 @@ public final class BlobsImpl {
         final String action = "break";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1237,35 +1237,35 @@ public final class BlobsImpl {
         final String comp = "snapshot";
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1323,39 +1323,39 @@ public final class BlobsImpl {
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTierOptional tier, RehydratePriority rehydratePriority, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, Context context) {
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
@@ -1415,39 +1415,39 @@ public final class BlobsImpl {
         final String xMsRequiresSync = "true";
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
@@ -1495,7 +1495,7 @@ public final class BlobsImpl {
         final String copyActionAbortConstant = "abort";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.abortCopyFromURL(containerName, blob, this.client.getUrl(), copyId, timeout, this.client.getVersion(), requestId, comp, copyActionAbortConstant, leaseId, context);
     }
@@ -1539,7 +1539,7 @@ public final class BlobsImpl {
         final String comp = "tier";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.setTier(containerName, blob, this.client.getUrl(), timeout, tier, rehydratePriority, this.client.getVersion(), requestId, comp, leaseId, context);
     }

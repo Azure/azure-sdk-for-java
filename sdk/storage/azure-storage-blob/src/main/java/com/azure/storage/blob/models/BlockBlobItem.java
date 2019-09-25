@@ -15,32 +15,32 @@ public class BlockBlobItem {
     private final String encryptionKeySha256;
 
     public BlockBlobItem(BlockBlobUploadHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
     }
 
     public BlockBlobItem(BlockBlobCommitBlockListHeaders generatedHeaders) {
-        this.eTag = generatedHeaders.eTag();
-        this.lastModified = generatedHeaders.lastModified();
-        this.contentMD5 = generatedHeaders.contentMD5();
+        this.eTag = generatedHeaders.getETag();
+        this.lastModified = generatedHeaders.getLastModified();
+        this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
     }
 
     /**
      * @return the eTag of the block blob
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return the last time the block blob was modified
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
@@ -54,14 +54,14 @@ public class BlockBlobItem {
     /**
      * @return the key used to encrypt the block blob
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return encryptionKeySha256;
     }
 
     /**
      * @return the MD5 of the block blob's comment
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(contentMD5);
     }
 }

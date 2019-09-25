@@ -67,7 +67,7 @@ public class BackupAndRestoreOperationsAsync {
         certificateAsyncClient.backupCertificate("certificateName")
             .subscribe(certificateBackupResponse -> {
                 writeBackupToFile(certificateBackupResponse, backupFilePath);
-                System.out.printf("Certificate's Backup Byte array's length %s \n", certificateBackupResponse.length);
+                System.out.printf("Certificate's Backup Byte array's length %s %n", certificateBackupResponse.length);
             });
 
         Thread.sleep(7000);
@@ -75,15 +75,15 @@ public class BackupAndRestoreOperationsAsync {
         // The certificate is no longer in use, so you delete it.
         certificateAsyncClient.deleteCertificate("certificateName")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
 
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
-        certificateAsyncClient.purgeDeletedCertificate("certificateName")
+        certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
-                System.out.printf("Purge Status response %d \n", purgeResponse.statusCode()));
+                System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
         //To ensure certificate is purged on server side.
         Thread.sleep(15000);
@@ -91,7 +91,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the certificate is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         certificateAsyncClient.restoreCertificate(backupFromFile)
-            .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s \n",
+            .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.name(), certificateResponse.keyId()));
 
         //To ensure certificate is restored on server side.

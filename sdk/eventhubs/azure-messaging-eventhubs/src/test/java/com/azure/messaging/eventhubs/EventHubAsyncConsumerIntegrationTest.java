@@ -3,18 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -29,7 +23,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -42,8 +35,8 @@ import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEED
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 
 /**
- * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubAsyncConsumer} in
- * other scenarios.
+ * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubAsyncConsumer}
+ * in other scenarios.
  *
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
@@ -64,20 +57,15 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
-        final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
-            properties.eventHubName(), getTokenCredential(), getAuthorizationType(), TransportType.AMQP,
-            RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.parallel());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder()
+            .scheduler(Schedulers.single())
+            .buildAsyncClient();
     }
 
     @Override
@@ -109,17 +97,16 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
                 consumers[i] = consumer;
 
                 final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
-                    logger.info("Event[{}] received. partition: {}", event.sequenceNumber(), partitionId);
-                }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
+                    logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId);
+                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         countDownLatch.countDown();
                     });
 
                 subscriptions.add(subscription);
 
-                producers[i] = client.createProducer(new EventHubProducerOptions().partitionId(partitionId));
+                producers[i] = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
             }
 
             // Act
@@ -163,7 +150,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         EventHubAsyncConsumer exceededConsumer = null;
         try {
             for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
-                final EventHubConsumerOptions options = new EventHubConsumerOptions().identifier(prefix + ":" + i);
+                final EventHubConsumerOptions options = new EventHubConsumerOptions().setIdentifier(prefix + ":" + i);
                 final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest(), options);
                 consumers.add(consumer);
                 subscriptions.add(consumer.receive().take(TIMEOUT).subscribe(eventData -> {
@@ -199,11 +186,10 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         final String secondPartitionId = "1";
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .ownerLevel(1L);
+            .setOwnerLevel(1L);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             position, options);
-        final EventHubAsyncConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
-            position, options);
+
         final AtomicBoolean isActive = new AtomicBoolean(true);
         final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -219,7 +205,7 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
         subscriptions.add(consumer.receive()
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
-                event -> logger.info("C1:\tReceived event sequence: {}", event.sequenceNumber()),
+                event -> logger.info("C1:\tReceived event sequence: {}", event.getSequenceNumber()),
                 ex -> logger.error("C1:\tERROR", ex),
                 () -> {
                     logger.info("C1:\tCompleted.");
@@ -228,11 +214,13 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
 
         Thread.sleep(2000);
 
-        logger.info("STARTED CONSUMING FROM PARTITION 1 with a different consumer");
+        logger.info("STARTED CONSUMING FROM PARTITION 1 with C3");
+        final EventHubAsyncConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            position, options);
         subscriptions.add(consumer2.receive()
             .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
             .subscribe(
-                event -> logger.info("C3:\tReceived event sequence: {}", event.sequenceNumber()),
+                event -> logger.info("C3:\tReceived event sequence: {}", event.getSequenceNumber()),
                 ex -> logger.error("C3:\tERROR", ex),
                 () -> logger.info("C3:\tCompleted.")));
 

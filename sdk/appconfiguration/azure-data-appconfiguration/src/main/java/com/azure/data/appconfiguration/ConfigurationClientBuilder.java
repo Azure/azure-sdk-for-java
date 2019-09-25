@@ -4,13 +4,12 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -22,7 +21,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
@@ -136,7 +135,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
-            (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
         URL buildEndpoint = getBuildEndpoint(configurationCredentials);
 
@@ -203,7 +202,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder credential(ConfigurationClientCredentials credential) {
         this.credential = Objects.requireNonNull(credential);
-        this.endpoint = credential.baseUri();
+        this.endpoint = credential.getBaseUri();
         return this;
     }
 
@@ -269,7 +268,7 @@ public final class ConfigurationClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
@@ -297,7 +296,7 @@ public final class ConfigurationClientBuilder {
         if (endpoint != null) {
             return endpoint;
         } else if (buildCredentials != null) {
-            return buildCredentials.baseUri();
+            return buildCredentials.getBaseUri();
         } else {
             return null;
         }

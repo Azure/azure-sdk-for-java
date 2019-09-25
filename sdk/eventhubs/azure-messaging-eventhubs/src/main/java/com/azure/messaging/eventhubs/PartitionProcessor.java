@@ -37,7 +37,7 @@ public abstract class PartitionProcessor {
      * @return a representation of the deferred computation of this call.
      */
     public Mono<Void> initialize(PartitionContext partitionContext) {
-        logger.info("Initializing partition processor for partition {}", partitionContext.partitionId());
+        logger.info("Initializing partition processor for partition {}", partitionContext.getPartitionId());
         return Mono.empty();
     }
 
@@ -62,7 +62,7 @@ public abstract class PartitionProcessor {
      * @param throwable The {@link Throwable} that caused this method to be called.
      */
     public void processError(PartitionContext partitionContext, Throwable throwable) {
-        logger.warning("Error occurred in partition processor for partition {}", partitionContext.partitionId(),
+        logger.warning("Error occurred in partition processor for partition {}", partitionContext.getPartitionId(),
             throwable);
     }
 
@@ -77,7 +77,7 @@ public abstract class PartitionProcessor {
      */
     public Mono<Void> close(PartitionContext partitionContext, CloseReason closeReason) {
         logger.info("Closing partition processor for partition {} with close reason {}",
-            partitionContext.partitionId(), closeReason);
+            partitionContext.getPartitionId(), closeReason);
         return Mono.empty();
     }
 

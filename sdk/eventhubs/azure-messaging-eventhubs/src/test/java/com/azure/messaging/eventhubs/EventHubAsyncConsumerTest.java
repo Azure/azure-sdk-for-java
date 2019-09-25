@@ -6,8 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
@@ -69,6 +70,7 @@ public class EventHubAsyncConsumerTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
+    private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private Mono<AmqpReceiveLink> receiveLinkMono;
     private List<Message> messages = new ArrayList<>();
     private EventHubConsumerOptions options;
@@ -85,11 +87,11 @@ public class EventHubAsyncConsumerTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         options = new EventHubConsumerOptions()
-            .identifier("an-identifier")
-            .prefetchCount(PREFETCH)
-            .retry(new RetryOptions())
-            .scheduler(Schedulers.elastic());
-        consumer = new EventHubAsyncConsumer(receiveLinkMono, options);
+            .setIdentifier("an-identifier")
+            .setPrefetchCount(PREFETCH)
+            .setRetry(new RetryOptions())
+            .setScheduler(Schedulers.elastic());
+        consumer = new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, options);
     }
 
     @After
@@ -343,7 +345,7 @@ public class EventHubAsyncConsumerTest {
         final Disposable.Composite subscriptions = Disposables.composite(
             consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
-                    event -> logger.verbose("1. Received: {}", event.sequenceNumber()),
+                    event -> logger.verbose("1. Received: {}", event.getSequenceNumber()),
                     error -> Assert.fail(error.toString()),
                     () -> {
                         logger.info("1. Shutdown received");
@@ -351,7 +353,7 @@ public class EventHubAsyncConsumerTest {
                     }),
             consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
-                    event -> logger.verbose("2. Received: {}", event.sequenceNumber()),
+                    event -> logger.verbose("2. Received: {}", event.getSequenceNumber()),
                     error -> Assert.fail(error.toString()),
                     () -> {
                         logger.info("2. Shutdown received");
@@ -359,7 +361,7 @@ public class EventHubAsyncConsumerTest {
                     }),
             consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
                 .subscribe(
-                    event -> logger.verbose("3. Received: {}", event.sequenceNumber()),
+                    event -> logger.verbose("3. Received: {}", event.getSequenceNumber()),
                     error -> Assert.fail(error.toString()),
                     () -> {
                         logger.info("3. Shutdown received");

@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -68,7 +68,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -78,7 +78,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse serviceEndpoint(String serviceEndpoint) {
+    public ListBlobsHierarchySegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the containerName value.
      */
-    public String containerName() {
+    public String getContainerName() {
         return this.containerName;
     }
 
@@ -98,7 +98,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param containerName the containerName value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse containerName(String containerName) {
+    public ListBlobsHierarchySegmentResponse setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -108,7 +108,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the prefix value.
      */
-    public String prefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -118,7 +118,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse prefix(String prefix) {
+    public ListBlobsHierarchySegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -128,7 +128,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -138,7 +138,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param marker the marker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse marker(String marker) {
+    public ListBlobsHierarchySegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -148,7 +148,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the maxResults value.
      */
-    public int maxResults() {
+    public int getMaxResults() {
         return this.maxResults;
     }
 
@@ -158,7 +158,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse maxResults(int maxResults) {
+    public ListBlobsHierarchySegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -168,7 +168,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the delimiter value.
      */
-    public String delimiter() {
+    public String getDelimiter() {
         return this.delimiter;
     }
 
@@ -178,7 +178,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param delimiter the delimiter value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse delimiter(String delimiter) {
+    public ListBlobsHierarchySegmentResponse setDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -188,7 +188,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the segment value.
      */
-    public BlobHierarchyListSegment segment() {
+    public BlobHierarchyListSegment getSegment() {
         return this.segment;
     }
 
@@ -198,7 +198,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param segment the segment value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse segment(BlobHierarchyListSegment segment) {
+    public ListBlobsHierarchySegmentResponse setSegment(BlobHierarchyListSegment segment) {
         this.segment = segment;
         return this;
     }
@@ -208,7 +208,7 @@ public final class ListBlobsHierarchySegmentResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -218,7 +218,7 @@ public final class ListBlobsHierarchySegmentResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsHierarchySegmentResponse nextMarker(String nextMarker) {
+    public ListBlobsHierarchySegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

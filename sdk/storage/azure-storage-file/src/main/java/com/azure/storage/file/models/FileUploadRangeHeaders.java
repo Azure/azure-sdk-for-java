@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -82,7 +82,7 @@ public final class FileUploadRangeHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -93,7 +93,7 @@ public final class FileUploadRangeHeaders {
      * @param eTag the eTag value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders eTag(String eTag) {
+    public FileUploadRangeHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -106,11 +106,11 @@ public final class FileUploadRangeHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -122,7 +122,7 @@ public final class FileUploadRangeHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders lastModified(OffsetDateTime lastModified) {
+    public FileUploadRangeHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -139,7 +139,7 @@ public final class FileUploadRangeHeaders {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -152,7 +152,7 @@ public final class FileUploadRangeHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders contentMD5(byte[] contentMD5) {
+    public FileUploadRangeHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -163,7 +163,7 @@ public final class FileUploadRangeHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -174,7 +174,7 @@ public final class FileUploadRangeHeaders {
      * @param requestId the requestId value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders requestId(String requestId) {
+    public FileUploadRangeHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -185,7 +185,7 @@ public final class FileUploadRangeHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -196,7 +196,7 @@ public final class FileUploadRangeHeaders {
      * @param version the version value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders version(String version) {
+    public FileUploadRangeHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -207,11 +207,11 @@ public final class FileUploadRangeHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -221,7 +221,7 @@ public final class FileUploadRangeHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileUploadRangeHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -249,7 +249,7 @@ public final class FileUploadRangeHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public FileUploadRangeHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -259,7 +259,7 @@ public final class FileUploadRangeHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -269,7 +269,7 @@ public final class FileUploadRangeHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileUploadRangeHeaders object itself.
      */
-    public FileUploadRangeHeaders errorCode(String errorCode) {
+    public FileUploadRangeHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

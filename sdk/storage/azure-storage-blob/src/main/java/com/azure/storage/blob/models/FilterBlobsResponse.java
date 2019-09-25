@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -136,7 +136,7 @@ public final class FilterBlobsResponse {
      *
      * @return the segment value.
      */
-    public FilterBlobsSegment segment() {
+    public FilterBlobsSegment getSegment() {
         return this.segment;
     }
 
@@ -156,7 +156,7 @@ public final class FilterBlobsResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 

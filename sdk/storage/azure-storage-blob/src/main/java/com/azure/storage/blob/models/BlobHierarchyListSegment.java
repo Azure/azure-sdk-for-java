@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -35,7 +35,7 @@ public final class BlobHierarchyListSegment {
      *
      * @return the blobPrefixes value.
      */
-    public List<BlobPrefix> blobPrefixes() {
+    public List<BlobPrefix> getBlobPrefixes() {
         return this.blobPrefixes;
     }
 
@@ -45,7 +45,7 @@ public final class BlobHierarchyListSegment {
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment blobPrefixes(List<BlobPrefix> blobPrefixes) {
+    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefix> blobPrefixes) {
         this.blobPrefixes = blobPrefixes;
         return this;
     }
@@ -55,7 +55,7 @@ public final class BlobHierarchyListSegment {
      *
      * @return the blobItems value.
      */
-    public List<BlobItem> blobItems() {
+    public List<BlobItem> getBlobItems() {
         return this.blobItems;
     }
 
@@ -65,7 +65,7 @@ public final class BlobHierarchyListSegment {
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment blobItems(List<BlobItem> blobItems) {
+    public BlobHierarchyListSegment setBlobItems(List<BlobItem> blobItems) {
         this.blobItems = blobItems;
         return this;
     }

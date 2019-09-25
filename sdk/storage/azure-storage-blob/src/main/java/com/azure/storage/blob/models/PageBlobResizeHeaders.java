@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -81,7 +81,7 @@ public final class PageBlobResizeHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -93,7 +93,7 @@ public final class PageBlobResizeHeaders {
      * @param eTag the eTag value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders eTag(String eTag) {
+    public PageBlobResizeHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -106,11 +106,11 @@ public final class PageBlobResizeHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -122,7 +122,7 @@ public final class PageBlobResizeHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders lastModified(OffsetDateTime lastModified) {
+    public PageBlobResizeHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -137,7 +137,7 @@ public final class PageBlobResizeHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public Long blobSequenceNumber() {
+    public Long getBlobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -148,7 +148,7 @@ public final class PageBlobResizeHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders blobSequenceNumber(Long blobSequenceNumber) {
+    public PageBlobResizeHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -160,7 +160,7 @@ public final class PageBlobResizeHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -172,7 +172,7 @@ public final class PageBlobResizeHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders clientRequestId(String clientRequestId) {
+    public PageBlobResizeHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -183,7 +183,7 @@ public final class PageBlobResizeHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -194,7 +194,7 @@ public final class PageBlobResizeHeaders {
      * @param requestId the requestId value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders requestId(String requestId) {
+    public PageBlobResizeHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -206,7 +206,7 @@ public final class PageBlobResizeHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -218,7 +218,7 @@ public final class PageBlobResizeHeaders {
      * @param version the version value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders version(String version) {
+    public PageBlobResizeHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -229,11 +229,11 @@ public final class PageBlobResizeHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -243,7 +243,7 @@ public final class PageBlobResizeHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders dateProperty(OffsetDateTime dateProperty) {
+    public PageBlobResizeHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -257,7 +257,7 @@ public final class PageBlobResizeHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -267,7 +267,7 @@ public final class PageBlobResizeHeaders {
      * @param errorCode the errorCode value to set.
      * @return the PageBlobResizeHeaders object itself.
      */
-    public PageBlobResizeHeaders errorCode(String errorCode) {
+    public PageBlobResizeHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

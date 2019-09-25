@@ -3,24 +3,23 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileServiceClient FileServiceClients}
- * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildClient() buildClient}
- * constructs an instance of FileServiceClient and calling {@link FileServiceClientBuilder#buildAsyncClient() buildFileAsyncClient}
- * constructs an instance of FileServiceAsyncClient.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
+ * FileServiceClient FileServiceClients} and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link
+ * FileServiceClientBuilder#buildClient() buildClient} constructs an instance of FileServiceClient and calling {@link
+ * FileServiceClientBuilder#buildAsyncClient() buildFileAsyncClient} constructs an instance of FileServiceAsyncClient.
  *
  * <p>The client needs the endpoint of the Azure Storage File service and authorization credential.
  * {@link FileServiceClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder a
@@ -40,8 +39,8 @@ import java.util.Map;
  * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation.credential}
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
- * a connection string from the Storage File service must be used. Set the SharedKeyCredential with
- * {@link FileServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
+ * a connection string from the Storage File service must be used. Set the SharedKeyCredential with {@link
+ * FileServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous FileService Client with connection string.</strong></p>
@@ -64,11 +63,13 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
      * Creates a builder instance that is able to configure and construct {@link FileServiceClient FileServiceClients}
      * and {@link FileServiceAsyncClient FileServiceAsyncClients}.
      */
-    public FileServiceClientBuilder() { }
+    public FileServiceClientBuilder() {
+    }
 
     private AzureFileStorageImpl constructImpl() {
         if (!super.hasCredential()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials are required for authorization"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Credentials are required for authorization"));
         }
 
         HttpPipeline pipeline = super.getPipeline();
@@ -83,17 +84,18 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
     }
 
     /**
-     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time this method is
-     * called a new instance of {@link FileServiceAsyncClient} is created.
+     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time this method is called a
+     * new instance of {@link FileServiceAsyncClient} is created.
      *
      * <p>
-     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link FileServiceClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link FileServiceAsyncClient client}. All other builder settings are ignored.
+     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * FileServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link FileServiceAsyncClient client}.
+     * All other builder settings are ignored.
      * </p>
      *
      * @return A FileServiceAsyncClient with the options set from the builder.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
         return new FileServiceAsyncClient(constructImpl());
@@ -104,14 +106,15 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
      * called a new instance of {@link FileServiceClient} is created.
      *
      * <p>
-     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link FileServiceClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link FileServiceClient client}. All other builder settings are ignored.
+     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * FileServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link FileServiceClient client}. All
+     * other builder settings are ignored.
      * </p>
      *
      * @return A FileServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} is {@code null}.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * set.
      */
     public FileServiceClient buildClient() {
         return new FileServiceClient(buildAsyncClient());
@@ -120,10 +123,12 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
     /**
      * Sets the endpoint for the Azure Storage File instance that the client will interact with.
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in
+     * an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
-     * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
+     * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses
+     * from.
      * @return the updated FileServiceClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
@@ -134,12 +139,14 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
             super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
+            SASTokenCredential sasTokenCredential = SASTokenCredential
+                .fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
 
         return this;

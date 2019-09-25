@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -73,7 +73,7 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -85,7 +85,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders clientRequestId(String clientRequestId) {
+    public ServiceGetAccountInfoHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders requestId(String requestId) {
+    public ServiceGetAccountInfoHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -119,7 +119,7 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -131,7 +131,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param version the version value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders version(String version) {
+    public ServiceGetAccountInfoHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -142,11 +142,11 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -156,7 +156,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ServiceGetAccountInfoHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -172,7 +172,7 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the skuName value.
      */
-    public SkuName skuName() {
+    public SkuName getSkuName() {
         return this.skuName;
     }
 
@@ -184,7 +184,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param skuName the skuName value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders skuName(SkuName skuName) {
+    public ServiceGetAccountInfoHeaders setSkuName(SkuName skuName) {
         this.skuName = skuName;
         return this;
     }
@@ -195,7 +195,7 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the accountKind value.
      */
-    public AccountKind accountKind() {
+    public AccountKind getAccountKind() {
         return this.accountKind;
     }
 
@@ -206,7 +206,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param accountKind the accountKind value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders accountKind(AccountKind accountKind) {
+    public ServiceGetAccountInfoHeaders setAccountKind(AccountKind accountKind) {
         this.accountKind = accountKind;
         return this;
     }
@@ -216,7 +216,7 @@ public final class ServiceGetAccountInfoHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -226,7 +226,7 @@ public final class ServiceGetAccountInfoHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceGetAccountInfoHeaders object itself.
      */
-    public ServiceGetAccountInfoHeaders errorCode(String errorCode) {
+    public ServiceGetAccountInfoHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

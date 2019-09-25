@@ -33,7 +33,7 @@ public class RetryOptions implements Cloneable {
      * @param retryMode The retry approach to use for calculating delays.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions retryMode(RetryMode retryMode) {
+    public RetryOptions setRetryMode(RetryMode retryMode) {
         this.retryMode = retryMode;
         return this;
     }
@@ -44,7 +44,7 @@ public class RetryOptions implements Cloneable {
      * @param numberOfRetries The maximum number of retry attempts.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions maxRetries(int numberOfRetries) {
+    public RetryOptions setMaxRetries(int numberOfRetries) {
         this.maxRetries = numberOfRetries;
         return this;
     }
@@ -56,7 +56,7 @@ public class RetryOptions implements Cloneable {
      * @param delay The delay between retry attempts.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions delay(Duration delay) {
+    public RetryOptions setDelay(Duration delay) {
         this.delay = delay;
         return this;
     }
@@ -67,7 +67,7 @@ public class RetryOptions implements Cloneable {
      * @param maximumDelay The maximum permissible delay between retry attempts.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions maxDelay(Duration maximumDelay) {
+    public RetryOptions setMaxDelay(Duration maximumDelay) {
         this.maxDelay = maximumDelay;
         return this;
     }
@@ -78,7 +78,7 @@ public class RetryOptions implements Cloneable {
      * @param tryTimeout The maximum duration to wait for completion.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions tryTimeout(Duration tryTimeout) {
+    public RetryOptions setTryTimeout(Duration tryTimeout) {
         this.tryTimeout = tryTimeout;
         return this;
     }
@@ -88,7 +88,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The approach to use for calculating retry delays.
      */
-    public RetryMode retryMode() {
+    public RetryMode getRetryMode() {
         return retryMode;
     }
 
@@ -97,7 +97,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The maximum number of retry attempts before considering the associated operation to have failed.
      */
-    public int maxRetries() {
+    public int getMaxRetries() {
         return maxRetries;
     }
 
@@ -107,7 +107,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The delay between retry attempts.
      */
-    public Duration delay() {
+    public Duration getDelay() {
         return delay;
     }
 
@@ -116,7 +116,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The maximum permissible delay between retry attempts.
      */
-    public Duration maxDelay() {
+    public Duration getMaxDelay() {
         return maxDelay;
     }
 
@@ -125,7 +125,7 @@ public class RetryOptions implements Cloneable {
      *
      * @return The maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
      */
-    public Duration tryTimeout() {
+    public Duration getTryTimeout() {
         return tryTimeout;
     }
 
@@ -144,11 +144,11 @@ public class RetryOptions implements Cloneable {
             clone = new RetryOptions();
         }
 
-        return clone.delay(delay)
-            .maxDelay(maxDelay)
-            .maxRetries(maxRetries)
-            .tryTimeout(tryTimeout)
-            .retryMode(retryMode);
+        return clone.setDelay(delay)
+            .setMaxDelay(maxDelay)
+            .setMaxRetries(maxRetries)
+            .setTryTimeout(tryTimeout)
+            .setRetryMode(retryMode);
     }
 
     /**
@@ -166,11 +166,11 @@ public class RetryOptions implements Cloneable {
 
         final RetryOptions other = (RetryOptions) obj;
 
-        return this.maxRetries() == other.maxRetries()
-            && this.retryMode() == other.retryMode()
-            && Objects.equals(this.maxDelay(), other.maxDelay())
-            && Objects.equals(this.delay(), other.delay())
-            && Objects.equals(this.tryTimeout(), other.tryTimeout());
+        return this.getMaxRetries() == other.getMaxRetries()
+            && this.getRetryMode() == other.getRetryMode()
+            && Objects.equals(this.getMaxDelay(), other.getMaxDelay())
+            && Objects.equals(this.getDelay(), other.getDelay())
+            && Objects.equals(this.getTryTimeout(), other.getTryTimeout());
     }
 
     /**

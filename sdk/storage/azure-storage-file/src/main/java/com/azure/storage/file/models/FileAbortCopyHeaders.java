@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -48,7 +48,7 @@ public final class FileAbortCopyHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -59,7 +59,7 @@ public final class FileAbortCopyHeaders {
      * @param requestId the requestId value to set.
      * @return the FileAbortCopyHeaders object itself.
      */
-    public FileAbortCopyHeaders requestId(String requestId) {
+    public FileAbortCopyHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -70,7 +70,7 @@ public final class FileAbortCopyHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -81,7 +81,7 @@ public final class FileAbortCopyHeaders {
      * @param version the version value to set.
      * @return the FileAbortCopyHeaders object itself.
      */
-    public FileAbortCopyHeaders version(String version) {
+    public FileAbortCopyHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -92,11 +92,11 @@ public final class FileAbortCopyHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class FileAbortCopyHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileAbortCopyHeaders object itself.
      */
-    public FileAbortCopyHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileAbortCopyHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -120,7 +120,7 @@ public final class FileAbortCopyHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -130,7 +130,7 @@ public final class FileAbortCopyHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileAbortCopyHeaders object itself.
      */
-    public FileAbortCopyHeaders errorCode(String errorCode) {
+    public FileAbortCopyHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

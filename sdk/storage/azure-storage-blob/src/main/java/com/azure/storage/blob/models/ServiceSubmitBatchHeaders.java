@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -49,7 +49,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -61,7 +61,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param contentType the contentType value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders contentType(String contentType) {
+    public ServiceSubmitBatchHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -72,7 +72,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -83,7 +83,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders requestId(String requestId) {
+    public ServiceSubmitBatchHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -95,7 +95,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param version the version value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders version(String version) {
+    public ServiceSubmitBatchHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -117,7 +117,7 @@ public final class ServiceSubmitBatchHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -127,7 +127,7 @@ public final class ServiceSubmitBatchHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceSubmitBatchHeaders object itself.
      */
-    public ServiceSubmitBatchHeaders errorCode(String errorCode) {
+    public ServiceSubmitBatchHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

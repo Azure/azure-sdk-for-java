@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -58,7 +58,7 @@ public final class BlobUndeleteHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -70,7 +70,7 @@ public final class BlobUndeleteHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders clientRequestId(String clientRequestId) {
+    public BlobUndeleteHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -81,7 +81,7 @@ public final class BlobUndeleteHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -92,7 +92,7 @@ public final class BlobUndeleteHeaders {
      * @param requestId the requestId value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders requestId(String requestId) {
+    public BlobUndeleteHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -104,7 +104,7 @@ public final class BlobUndeleteHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -116,7 +116,7 @@ public final class BlobUndeleteHeaders {
      * @param version the version value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders version(String version) {
+    public BlobUndeleteHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -127,11 +127,11 @@ public final class BlobUndeleteHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -141,7 +141,7 @@ public final class BlobUndeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders dateProperty(OffsetDateTime dateProperty) {
+    public BlobUndeleteHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -155,7 +155,7 @@ public final class BlobUndeleteHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -165,7 +165,7 @@ public final class BlobUndeleteHeaders {
      * @param errorCode the errorCode value to set.
      * @return the BlobUndeleteHeaders object itself.
      */
-    public BlobUndeleteHeaders errorCode(String errorCode) {
+    public BlobUndeleteHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

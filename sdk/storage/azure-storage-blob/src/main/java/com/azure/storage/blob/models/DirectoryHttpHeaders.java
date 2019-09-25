@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -50,7 +50,7 @@ public final class DirectoryHttpHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -60,7 +60,7 @@ public final class DirectoryHttpHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the DirectoryHttpHeaders object itself.
      */
-    public DirectoryHttpHeaders cacheControl(String cacheControl) {
+    public DirectoryHttpHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -70,7 +70,7 @@ public final class DirectoryHttpHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -80,7 +80,7 @@ public final class DirectoryHttpHeaders {
      * @param contentType the contentType value to set.
      * @return the DirectoryHttpHeaders object itself.
      */
-    public DirectoryHttpHeaders contentType(String contentType) {
+    public DirectoryHttpHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -90,7 +90,7 @@ public final class DirectoryHttpHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -100,7 +100,7 @@ public final class DirectoryHttpHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the DirectoryHttpHeaders object itself.
      */
-    public DirectoryHttpHeaders contentEncoding(String contentEncoding) {
+    public DirectoryHttpHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -110,7 +110,7 @@ public final class DirectoryHttpHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -120,7 +120,7 @@ public final class DirectoryHttpHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the DirectoryHttpHeaders object itself.
      */
-    public DirectoryHttpHeaders contentLanguage(String contentLanguage) {
+    public DirectoryHttpHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -131,7 +131,7 @@ public final class DirectoryHttpHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -142,7 +142,7 @@ public final class DirectoryHttpHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the DirectoryHttpHeaders object itself.
      */
-    public DirectoryHttpHeaders contentDisposition(String contentDisposition) {
+    public DirectoryHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }

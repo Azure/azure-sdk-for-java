@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -50,7 +50,7 @@ public final class MessagesPeekHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -61,7 +61,7 @@ public final class MessagesPeekHeaders {
      * @param requestId the requestId value to set.
      * @return the MessagesPeekHeaders object itself.
      */
-    public MessagesPeekHeaders requestId(String requestId) {
+    public MessagesPeekHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class MessagesPeekHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -85,7 +85,7 @@ public final class MessagesPeekHeaders {
      * @param version the version value to set.
      * @return the MessagesPeekHeaders object itself.
      */
-    public MessagesPeekHeaders version(String version) {
+    public MessagesPeekHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -96,11 +96,11 @@ public final class MessagesPeekHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -110,7 +110,7 @@ public final class MessagesPeekHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the MessagesPeekHeaders object itself.
      */
-    public MessagesPeekHeaders dateProperty(OffsetDateTime dateProperty) {
+    public MessagesPeekHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -124,7 +124,7 @@ public final class MessagesPeekHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -134,7 +134,7 @@ public final class MessagesPeekHeaders {
      * @param errorCode the errorCode value to set.
      * @return the MessagesPeekHeaders object itself.
      */
-    public MessagesPeekHeaders errorCode(String errorCode) {
+    public MessagesPeekHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

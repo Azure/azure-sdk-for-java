@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -63,7 +63,7 @@ public final class FileSetMetadataHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -74,7 +74,7 @@ public final class FileSetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the FileSetMetadataHeaders object itself.
      */
-    public FileSetMetadataHeaders eTag(String eTag) {
+    public FileSetMetadataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -85,7 +85,7 @@ public final class FileSetMetadataHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -96,7 +96,7 @@ public final class FileSetMetadataHeaders {
      * @param requestId the requestId value to set.
      * @return the FileSetMetadataHeaders object itself.
      */
-    public FileSetMetadataHeaders requestId(String requestId) {
+    public FileSetMetadataHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -107,7 +107,7 @@ public final class FileSetMetadataHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -118,7 +118,7 @@ public final class FileSetMetadataHeaders {
      * @param version the version value to set.
      * @return the FileSetMetadataHeaders object itself.
      */
-    public FileSetMetadataHeaders version(String version) {
+    public FileSetMetadataHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -129,11 +129,11 @@ public final class FileSetMetadataHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -143,7 +143,7 @@ public final class FileSetMetadataHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileSetMetadataHeaders object itself.
      */
-    public FileSetMetadataHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileSetMetadataHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -171,7 +171,7 @@ public final class FileSetMetadataHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileSetMetadataHeaders object itself.
      */
-    public FileSetMetadataHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public FileSetMetadataHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -181,7 +181,7 @@ public final class FileSetMetadataHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -191,7 +191,7 @@ public final class FileSetMetadataHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileSetMetadataHeaders object itself.
      */
-    public FileSetMetadataHeaders errorCode(String errorCode) {
+    public FileSetMetadataHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.serializer;
 
+import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
@@ -10,10 +11,9 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.UnixTime;
-import com.azure.core.implementation.annotation.ReturnValueWireType;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.TypeUtil;
@@ -51,14 +51,14 @@ final class HttpResponseBodyDecoder {
         //
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
-                return httpResponse.bodyAsString()
+                return httpResponse.getBodyAsString()
                     .flatMap(bodyString -> {
                         try {
                             final Object decodedErrorEntity = deserializeBody(bodyString,
-                                decodeData.getUnexpectedException(httpResponse.statusCode()).exceptionBodyType(),
+                                decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                                 null,
                                 serializer,
-                                SerializerEncoding.fromHeaders(httpResponse.headers()));
+                                SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
                             return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
                         } catch (IOException | MalformedValueException ignored) {
                             // This translates in RestProxy as a RestException with no deserialized body.
@@ -66,20 +66,20 @@ final class HttpResponseBodyDecoder {
                         }
                         return Mono.empty();
                     });
-            } else if (httpResponse.request().httpMethod() == HttpMethod.HEAD) {
+            } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
                 // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
                 return Mono.empty();
             } else if (!isReturnTypeDecodable(decodeData)) {
                 return Mono.empty();
             } else {
-                return httpResponse.bodyAsString()
+                return httpResponse.getBodyAsString()
                     .flatMap(bodyString -> {
                         try {
                             final Object decodedSuccessEntity = deserializeBody(bodyString,
                                 extractEntityTypeFromReturnType(decodeData),
-                                decodeData.returnValueWireType(),
+                                decodeData.getReturnValueWireType(),
                                 serializer,
-                                SerializerEncoding.fromHeaders(httpResponse.headers()));
+                                SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
                             return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
                         } catch (MalformedValueException e) {
                             return Mono.error(new HttpResponseException("HTTP response has a malformed body.",
@@ -102,7 +102,7 @@ final class HttpResponseBodyDecoder {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
             return true;
-        } else if (httpResponse.request().httpMethod() == HttpMethod.HEAD) {
+        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return false;
         } else {
@@ -119,8 +119,8 @@ final class HttpResponseBodyDecoder {
         if (isErrorStatus(httpResponse, decodeData)) {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
-            return decodeData.getUnexpectedException(httpResponse.statusCode()).exceptionBodyType();
-        } else if (httpResponse.request().httpMethod() == HttpMethod.HEAD) {
+            return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType();
+        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
         } else if (!isReturnTypeDecodable(decodeData)) {
@@ -138,11 +138,11 @@ final class HttpResponseBodyDecoder {
      * @return true if the response status code is considered as error, false otherwise.
      */
     static boolean isErrorStatus(HttpResponse httpResponse, HttpResponseDecodeData decodeData) {
-        final int[] expectedStatuses = decodeData.expectedStatusCodes();
+        final int[] expectedStatuses = decodeData.getExpectedStatusCodes();
         if (expectedStatuses != null) {
-            return !contains(expectedStatuses, httpResponse.statusCode());
+            return !contains(expectedStatuses, httpResponse.getStatusCode());
         } else {
-            return httpResponse.statusCode() / 100 != 2;
+            return httpResponse.getStatusCode() / 100 != 2;
         }
     }
 
@@ -272,9 +272,9 @@ final class HttpResponseBodyDecoder {
                 }
             } else if (resultType == OffsetDateTime.class) {
                 if (wireType == DateTimeRfc1123.class) {
-                    result = ((DateTimeRfc1123) wireResponse).dateTime();
+                    result = ((DateTimeRfc1123) wireResponse).getDateTime();
                 } else if (wireType == UnixTime.class) {
-                    result = ((UnixTime) wireResponse).dateTime();
+                    result = ((UnixTime) wireResponse).getDateTime();
                 }
             } else {
                 if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
@@ -312,12 +312,12 @@ final class HttpResponseBodyDecoder {
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, PagedResponseBase.class)) {
                     PagedResponseBase<?, ?> restResponse = (PagedResponseBase<?, ?>) wireResponse;
                     result =
-                        new PagedResponseBase<>(restResponse.request(), restResponse.statusCode(),
-                            restResponse.headers(), restResponse.items(), restResponse.nextLink(),
-                            restResponse.deserializedHeaders());
+                        new PagedResponseBase<>(restResponse.getRequest(), restResponse.getStatusCode(),
+                            restResponse.getHeaders(), restResponse.getItems(), restResponse.getNextLink(),
+                            restResponse.getDeserializedHeaders());
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
                     ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;
-                    Object wireResponseBody = restResponseBase.value();
+                    Object wireResponseBody = restResponseBase.getValue();
 
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't
                     //  seem right
@@ -325,14 +325,14 @@ final class HttpResponseBodyDecoder {
                         convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
                         result =
-                            new ResponseBase<>(restResponseBase.request(), restResponseBase.statusCode(),
-                                restResponseBase.headers(), resultBody, restResponseBase.deserializedHeaders());
+                            new ResponseBase<>(restResponseBase.getRequest(), restResponseBase.getStatusCode(),
+                                restResponseBase.getHeaders(), resultBody, restResponseBase.getDeserializedHeaders());
                     } else {
                         result = restResponseBase;
                     }
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Response.class)) {
                     Response<?> restResponse = (Response<?>) wireResponse;
-                    Object wireResponseBody = restResponse.value();
+                    Object wireResponseBody = restResponse.getValue();
 
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't
                     //  seem right
@@ -340,8 +340,8 @@ final class HttpResponseBodyDecoder {
                         convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
                         result =
-                            new SimpleResponse<>(restResponse.request(), restResponse.statusCode(),
-                                restResponse.headers(), resultBody);
+                            new SimpleResponse<>(restResponse.getRequest(), restResponse.getStatusCode(),
+                                restResponse.getHeaders(), resultBody);
                     } else {
                         result = restResponse;
                     }
@@ -371,7 +371,7 @@ final class HttpResponseBodyDecoder {
      * @return the entity type.
      */
     private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
-        Type token = decodeData.returnType();
+        Type token = decodeData.getReturnType();
         if (token != null) {
             if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
                 token = TypeUtil.getTypeArgument(token);
@@ -412,7 +412,7 @@ final class HttpResponseBodyDecoder {
      * @return true if decodable, false otherwise.
      */
     private static boolean isReturnTypeDecodable(HttpResponseDecodeData decodeData) {
-        Type returnType = decodeData.returnType();
+        Type returnType = decodeData.getReturnType();
         if (returnType == null) {
             return false;
         }
@@ -462,8 +462,8 @@ final class HttpResponseBodyDecoder {
      * @return the validated response
      */
     private static HttpResponse ensureRequestSet(HttpResponse httpResponse) {
-        Objects.requireNonNull(httpResponse.request());
-        Objects.requireNonNull(httpResponse.request().httpMethod());
+        Objects.requireNonNull(httpResponse.getRequest());
+        Objects.requireNonNull(httpResponse.getRequest().getHttpMethod());
         return httpResponse;
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public final class FilterBlobsSegment {
      *
      * @return the blobItems value.
      */
-    public List<FilterBlobsItem> blobItems() {
+    public List<FilterBlobsItem> getBlobItems() {
         return this.blobItems;
     }
 

@@ -391,7 +391,14 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     }
 
     @Override
-    public void onError(final Exception exception) {
+    public void onError(final Exception exception, final String failingLinkName) {
+        if ((failingLinkName != null) && (this.receiveLink.getName().compareTo(failingLinkName) != 0)) {
+            if (TRACE_LOGGER.isWarnEnabled()) {
+                TRACE_LOGGER.warn(
+                    String.format(Locale.US, "Link error on unknown linkName[%s], onError: %s", failingLinkName, exception.toString()));
+            }
+            return;
+        }
         this.prefetchedMessages.clear();
 
         if (this.getIsClosingOrClosed()) {
@@ -568,9 +575,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             @Override
             public void accept(ErrorCondition t, Exception u) {
                 if (t != null) {
-                    onError((t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
+                    onError((t.getCondition() != null) ? ExceptionUtil.toException(t) : null, null);
                 } else if (u != null) {
-                    onError(u);
+                    onError(u, null);
                 }
             }
         };
@@ -603,11 +610,11 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             completionException = error;
                         }
 
-                        MessageReceiver.this.onError(completionException);
+                        MessageReceiver.this.onError(completionException, null);
                     }
                 },
             (exception) -> {
-                MessageReceiver.this.onError(exception);
+                MessageReceiver.this.onError(exception, null);
             });
     }
 
@@ -695,6 +702,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             synchronized (errorConditionLock) {
                                 link = MessageReceiver.this.receiveLink;
                             }
+                            final String originalLinkName = timeout.getContext();
+                            if ((originalLinkName != null) && (originalLinkName.compareTo(link.getName()) != 0)) {
+                                if (TRACE_LOGGER.isWarnEnabled()) {
+                                    TRACE_LOGGER.warn(
+                                        String.format(Locale.US, "Timeout for old receive link %s, current link is %s, ignoring", originalLinkName, link.getName())
+                                    );
+                                }
+                                return;
+                            }
 
                             final Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Close operation on Receive Link(%s) timed out at %s",
                                     link.getName(), ZonedDateTime.now()));
@@ -707,7 +723,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             }
 
                             ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageReceiver.this);
-                            MessageReceiver.this.onError((Exception) null);
+                            MessageReceiver.this.onError((Exception) null, link.getName());
                         }
                     }
                 }, timeout.remaining());
@@ -736,13 +752,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     }
 
     @Override
-    public void onClose(ErrorCondition condition) {
+    public void onClose(final ErrorCondition condition, final String errorContext) {
         if (this.receiveLink != null) {
             this.underlyingFactory.deregisterForConnectionError(MessageReceiver.this.receiveLink);
         }
 
         final Exception completionException = (condition != null && condition.getCondition() != null) ? ExceptionUtil.toException(condition) : null;
-        this.onError(completionException);
+        this.onError(completionException, errorContext);
     }
 
     @Override
@@ -772,7 +788,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         if (!this.getIsClosed()) {
             try {
                 this.activeClientTokenManager.cancel();
-                scheduleLinkCloseTimeout(TimeoutTracker.create(operationTimeout));
+                scheduleLinkCloseTimeout(TimeoutTracker.create(operationTimeout, this.receiveLink.getName()));
 
                 this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
                     @Override

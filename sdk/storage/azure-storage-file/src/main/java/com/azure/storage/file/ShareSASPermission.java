@@ -9,11 +9,11 @@ import com.azure.storage.common.SR;
 import java.util.Locale;
 
 /**
- * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a share.
- * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
- * Once all the values are set, this should be serialized with toString and set as the permissions field on a
- * {@link FileServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a share. Setting
+ * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
+ * the values are set, this should be serialized with toString and set as the permissions field on a {@link
+ * FileServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
 public final class ShareSASPermission {
     private boolean read;
@@ -37,7 +37,6 @@ public final class ShareSASPermission {
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code ShareSASPermission}.
-     *
      * @return A {@code ShareSASPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, d, or l.
      */
@@ -64,7 +63,8 @@ public final class ShareSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permString, c));
             }
         }
         return permissions;
@@ -73,7 +73,7 @@ public final class ShareSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -83,7 +83,7 @@ public final class ShareSASPermission {
      * @param read Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission read(boolean read) {
+    public ShareSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -91,7 +91,7 @@ public final class ShareSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean create() {
+    public boolean getCreate() {
         return create;
     }
 
@@ -101,7 +101,7 @@ public final class ShareSASPermission {
      * @param create Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission create(boolean create) {
+    public ShareSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -109,7 +109,7 @@ public final class ShareSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean write() {
+    public boolean getWrite() {
         return write;
     }
 
@@ -119,7 +119,7 @@ public final class ShareSASPermission {
      * @param write Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission write(boolean write) {
+    public ShareSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -127,7 +127,7 @@ public final class ShareSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return delete;
     }
 
@@ -137,7 +137,7 @@ public final class ShareSASPermission {
      * @param delete Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission delete(boolean delete) {
+    public ShareSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -145,7 +145,7 @@ public final class ShareSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean list() {
+    public boolean getList() {
         return list;
     }
 
@@ -155,7 +155,7 @@ public final class ShareSASPermission {
      * @param list Permission status to set
      * @return the updated ShareSASPermission object
      */
-    public ShareSASPermission list(boolean list) {
+    public ShareSASPermission setList(boolean list) {
         this.list = list;
         return this;
     }

@@ -11,9 +11,9 @@ import java.util.Locale;
 /**
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
  * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
- * Once all the values are set, this should be serialized with toString and set as the permissions field on a
- * {@link BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
- * the order of the permissions is particular and this class guarantees correctness.
+ * Once all the values are set, this should be serialized with toString and set as the permissions field on a {@link
+ * BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * order of the permissions is particular and this class guarantees correctness.
  */
 public final class ContainerSASPermission {
     private boolean read;
@@ -39,7 +39,6 @@ public final class ContainerSASPermission {
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code ContainerSASPermission}.
-     *
      * @return A {@code ContainerSASPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
      */
@@ -69,7 +68,8 @@ public final class ContainerSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permString, c));
             }
         }
         return permissions;
@@ -78,7 +78,7 @@ public final class ContainerSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean read() {
+    public boolean getRead() {
         return read;
     }
 
@@ -88,7 +88,7 @@ public final class ContainerSASPermission {
      * @param read Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission read(boolean read) {
+    public ContainerSASPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ContainerSASPermission {
     /**
      * @return the add permission status
      */
-    public boolean add() {
+    public boolean getAdd() {
         return add;
     }
 
@@ -106,7 +106,7 @@ public final class ContainerSASPermission {
      * @param add Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission add(boolean add) {
+    public ContainerSASPermission setAdd(boolean add) {
         this.add = add;
         return this;
     }
@@ -114,7 +114,7 @@ public final class ContainerSASPermission {
     /**
      * @return the create permission status
      */
-    public boolean create() {
+    public boolean getCreate() {
         return create;
     }
 
@@ -124,7 +124,7 @@ public final class ContainerSASPermission {
      * @param create Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission create(boolean create) {
+    public ContainerSASPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -132,7 +132,7 @@ public final class ContainerSASPermission {
     /**
      * @return the write permission status
      */
-    public boolean write() {
+    public boolean getWrite() {
         return write;
     }
 
@@ -142,7 +142,7 @@ public final class ContainerSASPermission {
      * @param write Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission write(boolean write) {
+    public ContainerSASPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -150,7 +150,7 @@ public final class ContainerSASPermission {
     /**
      * @return the delete permission status
      */
-    public boolean delete() {
+    public boolean getDelete() {
         return delete;
     }
 
@@ -160,7 +160,7 @@ public final class ContainerSASPermission {
      * @param delete Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission delete(boolean delete) {
+    public ContainerSASPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -168,7 +168,7 @@ public final class ContainerSASPermission {
     /**
      * @return the list permission status
      */
-    public boolean list() {
+    public boolean getList() {
         return list;
     }
 
@@ -178,7 +178,7 @@ public final class ContainerSASPermission {
      * @param list Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission list(boolean list) {
+    public ContainerSASPermission setList(boolean list) {
         this.list = list;
         return this;
     }

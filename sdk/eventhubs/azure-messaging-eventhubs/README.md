@@ -25,6 +25,8 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
+  - [Default Http Client](#default-http-client)
+  - [Configuring Http Clients](#configuring-http-clients)
   - [Methods to authorize with Event Hubs](#methods-to-authorize-with-event-hubs)
   - [Create an Event Hub client using a connection string](#create-an-event-hub-client-using-a-connection-string)
   - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
@@ -60,6 +62,41 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
     <artifactId>azure-messaging-eventhubs</artifactId>
     <version>5.0.0-preview.3</version>
 </dependency>
+```
+
+### Default HTTP Client
+All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
+
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-netty</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+
+This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
+
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
+
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-okhttp</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+
+### Configuring HTTP Clients
+When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-an-event-hub-client-using-a-connection-string), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
+
+For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+```java
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .port(8080)
+    .wiretap(true)
+    .build();
 ```
 
 ### Methods to authorize with Event Hubs
@@ -110,9 +147,11 @@ service principal and a client secret. The corresponding `clientId` and `tenantI
 obtained from the [App registration page][app_registration_page].
 
 ```java
-ClientSecretCredential credential = new ClientSecretCredential()
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<< APPLICATION (CLIENT) ID >>")
-    .tenantId("<< DIRECTORY (TENANT) ID >>");
+    .clientSecret("<< APPLICATION SECRET >>")
+    .tenantId("<< DIRECTORY (TENANT) ID >>")
+    .build();
 
 // The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
@@ -276,15 +315,19 @@ logic needed to provide value while the processor holds responsibility for manag
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the built-in
 [`InMemoryPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
-events received and errors to console.
+events received to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventHubClientBuilder()
+        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .consumerGroupName("<< CONSUMER GROUP NAME>>")
-            .partitionProcessorFactory(SimplePartitionProcessor::new)
+            .buildAsyncClient();
+
+        EventProcessor eventProcessor = new EventProcessorBuilder()
+            .consumerGroup("<< CONSUMER GROUP NAME>>")
+            .eventHubClient(eventHubAsyncClient)
+            .partitionProcessorFactory((SimplePartitionProcessor::new))
             .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
 
@@ -296,29 +339,14 @@ class Program {
     }
 }
 
-class SimplePartitionProcessor implements PartitionProcessor {
-    SimplePartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
-    }
-
+class SimplePartitionProcessor extends PartitionProcessor {
+    /**
+     * Processes the event data.
+     */
     @Override
-    Mono<Void> initialize() {
-        return Mono.empty();
-    }
-
-    @Override
-    Mono<Void> processEvent(EventData eventData) {
-        System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
-        return Mono.empty();
-    }
-
-    @Override
-    void processError(Throwable throwable) {
-        System.err.println("Error received." + throwable.toString());
-    }
-
-    @Override
-    Mono<Void> close(CloseReason closeReason) {
-        return Mono.empty();
+    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
+        System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
+        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```

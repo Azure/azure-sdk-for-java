@@ -9,9 +9,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -72,6 +72,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = ContainerClientBuilder.class, isAsync = true)
 public final class ContainerAsyncClient {
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -279,7 +280,8 @@ public final class ContainerAsyncClient {
         try {
             return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
+            throw logger.logExceptionAsError(new RuntimeException(
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
         }
     }
 
@@ -315,7 +317,7 @@ public final class ContainerAsyncClient {
      * @return true if the container exists, false if it doesn't
      */
     public Mono<Response<Boolean>> existsWithResponse() {
-        return withContext(context -> existsWithResponse(context));
+        return withContext(this::existsWithResponse);
     }
 
     /**
@@ -326,9 +328,10 @@ public final class ContainerAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
-                HttpResponse response = ((StorageException) t).response();
-                return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
+            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).getStatusCode() == 404, t -> {
+                HttpResponse response = ((StorageException) t).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), false));
             });
     }
 
@@ -361,15 +364,16 @@ public final class ContainerAsyncClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> createWithResponse(Metadata metadata, PublicAccessType accessType) {
+    public Mono<Response<Void>> createWithResponse(Metadata metadata, PublicAccessType accessType) {
         return withContext(context -> createWithResponse(metadata, accessType, context));
     }
 
-    Mono<VoidResponse> createWithResponse(Metadata metadata, PublicAccessType accessType, Context context) {
+    Mono<Response<Void>> createWithResponse(Metadata metadata, PublicAccessType accessType, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
 
         return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, context)).map(VoidResponse::new);
+            null, null, metadata, accessType, null, context))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -377,7 +381,7 @@ public final class ContainerAsyncClient {
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
-     *<p><strong>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.delete}
      *
@@ -398,25 +402,26 @@ public final class ContainerAsyncClient {
      *
      * @param accessConditions {@link ContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
-     * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
+     * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
-    public Mono<VoidResponse> deleteWithResponse(ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(ContainerAccessConditions accessConditions) {
         return withContext(context -> deleteWithResponse(accessConditions, context));
     }
 
-    Mono<VoidResponse> deleteWithResponse(ContainerAccessConditions accessConditions, Context context) {
+    Mono<Response<Void>> deleteWithResponse(ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
-        if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
+        if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException("ETag access conditions are not supported for this API."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null, null,
-            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context))
-            .map(VoidResponse::new);
+            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -427,7 +432,7 @@ public final class ContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getProperties}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} containing the
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * container properties.
      */
     public Mono<ContainerProperties> getProperties() {
@@ -450,10 +455,11 @@ public final class ContainerAsyncClient {
         return withContext(context -> getPropertiesWithResponse(leaseAccessConditions, context));
     }
 
-    Mono<Response<ContainerProperties>> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions, Context context) {
-        return postProcessResponse(this.azureBlobStorage.containers().getPropertiesWithRestResponseAsync(null, null, null,
-            leaseAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.deserializedHeaders())));
+    Mono<Response<ContainerProperties>> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions,
+        Context context) {
+        return postProcessResponse(this.azureBlobStorage.containers()
+            .getPropertiesWithRestResponseAsync(null, null, null, leaseAccessConditions, context))
+            .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.getDeserializedHeaders())));
     }
 
     /**
@@ -465,7 +471,7 @@ public final class ContainerAsyncClient {
      * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.setMetadata#Metadata}
      *
      * @param metadata {@link Metadata}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains signalling
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains signalling
      * completion.
      */
     public Mono<Void> setMetadata(Metadata metadata) {
@@ -483,18 +489,19 @@ public final class ContainerAsyncClient {
      * @param metadata {@link Metadata}
      * @param accessConditions {@link ContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has
-     * anything set other than {@link ModifiedAccessConditions#ifModifiedSince()}.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
+     * anything set other than {@link ModifiedAccessConditions#getIfModifiedSince()}.
      */
-    public Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions) {
         return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions, Context context) {
+    Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions,
+        Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
-        if (!validateNoEtag(accessConditions.modifiedAccessConditions())
-            || accessConditions.modifiedAccessConditions().ifUnmodifiedSince() != null) {
+        if (!validateNoEtag(accessConditions.getModifiedAccessConditions())
+            || accessConditions.getModifiedAccessConditions().getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(new UnsupportedOperationException(
@@ -502,8 +509,8 @@ public final class ContainerAsyncClient {
         }
 
         return postProcessResponse(this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
-            metadata, null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
-            context)).map(VoidResponse::new);
+            metadata, null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
+            context)).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -534,14 +541,17 @@ public final class ContainerAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response containing the container access policy.
      */
-    public Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions) {
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(
+        LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> getAccessPolicyWithResponse(leaseAccessConditions, context));
     }
 
-    Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions, Context context) {
+    Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
+        Context context) {
         return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null,
             null, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response,
-            new ContainerAccessPolicies(response.deserializedHeaders().blobPublicAccess(), response.value()))));
+            new ContainerAccessPolicies(response.getDeserializedHeaders().getBlobPublicAccess(),
+                response.getValue()))));
     }
 
     /**
@@ -563,7 +573,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-                                      List<SignedIdentifier> identifiers) {
+        List<SignedIdentifier> identifiers) {
         return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
     }
 
@@ -585,20 +595,23 @@ public final class ContainerAsyncClient {
      * for more information. Passing null will clear all access policies.
      * @param accessConditions {@link ContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
-     * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
+     * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
-    public Mono<VoidResponse> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
+        List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
         return withContext(context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
     }
 
-    Mono<VoidResponse> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
+    Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers,
+        ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
-        if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
+        if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException("ETag access conditions are not supported for this API."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
         /*
@@ -609,20 +622,21 @@ public final class ContainerAsyncClient {
          */
         if (identifiers != null) {
             for (SignedIdentifier identifier : identifiers) {
-                if (identifier.accessPolicy() != null && identifier.accessPolicy().start() != null) {
-                    identifier.accessPolicy().start(
-                        identifier.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStart() != null) {
+                    identifier.getAccessPolicy().setStart(
+                        identifier.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
                 }
-                if (identifier.accessPolicy() != null && identifier.accessPolicy().expiry() != null) {
-                    identifier.accessPolicy().expiry(
-                        identifier.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiry() != null) {
+                    identifier.getAccessPolicy().setExpiry(
+                        identifier.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         }
 
-        return postProcessResponse(this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(null, identifiers,
-            null, accessType, null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
-            context)).map(VoidResponse::new);
+        return postProcessResponse(this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(null,
+            identifiers, null, accessType, null, accessConditions.getLeaseAccessConditions(),
+            accessConditions.getModifiedAccessConditions(), context))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -695,22 +709,20 @@ public final class ContainerAsyncClient {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
-                    List<BlobItem> value = response.value().segment() == null
+                    List<BlobItem> value = response.getValue().getSegment() == null
                         ? new ArrayList<>(0)
-                        : response.value().segment().blobItems();
+                        : response.getValue().getSegment().getBlobItems();
 
                     return new PagedResponseBase<>(
-                        response.request(),
-                        response.statusCode(),
-                        response.headers(),
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
                         value,
-                        response.value().nextMarker(),
-                        response.deserializedHeaders());
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
                 });
 
-        return new PagedFlux<>(
-            () -> func.apply(null),
-            marker -> func.apply(marker));
+        return new PagedFlux<>(() -> func.apply(null), func);
     }
 
     /*
@@ -723,24 +735,19 @@ public final class ContainerAsyncClient {
      * @param marker
      *         Identifies the portion of the list to be returned with the next list operation.
      *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
+     *         ListBlobsFlatSegmentResponse.body().getNextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
      *
      * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerAsyncClient.listBlobsFlatSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout) {
+    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
+        Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
         return postProcessResponse(Utility.applyOptionalTimeout(
-            this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.prefix(), marker,
-                options.maxResults(), options.details().toList(), null, null, Context.NONE),
-            timeout));
+            this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
+                marker, options.getMaxResults(), options.getDetails().toList(), null, null, Context.NONE), timeout));
     }
 
     /**
@@ -775,7 +782,7 @@ public final class ContainerAsyncClient {
      * @return A reactive response emitting the prefixes and blobs.
      */
     public PagedFlux<BlobItem> listBlobsHierarchy(String directory) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory));
     }
 
     /**
@@ -824,312 +831,44 @@ public final class ContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options, Duration timeout) {
+    PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
+        Duration timeout) {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
             marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
-                .map(response ->  {
-                    List<BlobItem> value = response.value().segment() == null
+                .map(response -> {
+                    List<BlobItem> value = response.getValue().getSegment() == null
                         ? new ArrayList<>(0)
                         : Stream.concat(
-                            response.value().segment().blobItems().stream(),
-                            response.value().segment().blobPrefixes().stream()
-                                .map(blobPrefix -> new BlobItem().name(blobPrefix.name()).isPrefix(true))
-                        ).collect(Collectors.toList());
+                        response.getValue().getSegment().getBlobItems().stream(),
+                        response.getValue().getSegment().getBlobPrefixes().stream()
+                            .map(blobPrefix -> new BlobItem().setName(blobPrefix.getName()).setIsPrefix(true))
+                    ).collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
-                        response.request(),
-                        response.statusCode(),
-                        response.headers(),
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
                         value,
-                        response.value().nextMarker(),
-                        response.deserializedHeaders());
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
                 });
 
-        return new PagedFlux<>(
-            () -> func.apply(null),
-            marker -> func.apply(marker));
+        return new PagedFlux<>(() -> func.apply(null), func);
     }
 
-    /*
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
-     * @return Emits the successful response.
-     * @throws UnsupportedOperationException If {@link ListBlobsOptions#details()} has {@link BlobListDetails#snapshots()}
-     * set.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
-            ListBlobsOptions options, Duration timeout) {
+        ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
-        if (options.details().snapshots()) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
+        if (options.getDetails().getSnapshots()) {
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
         return postProcessResponse(Utility.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
-                options.prefix(), marker, options.maxResults(), options.details().toList(), null, null, Context.NONE),
+                options.getPrefix(), marker, options.getMaxResults(), options.getDetails().toList(), null, null,
+                Context.NONE),
             timeout));
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1).
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.acquireLease#String-int}
-     *
-     * @param proposedId A {@code String} in any valid GUID format. May be null.
-     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
-     * @return A reactive response containing the lease ID.
-     */
-    public Mono<String> acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1).
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions}
-     *
-     * @param proposedID A {@code String} in any valid GUID format. May be null.
-     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the lease ID.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
-     * ModifiedAccessConditions#ifNoneMatch()} is set.
-     */
-    public Mono<Response<String>> acquireLeaseWithResponse(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> acquireLeaseWithResponse(proposedID, duration, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> acquireLeaseWithResponse(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        if (!this.validateNoEtag(modifiedAccessConditions)) {
-            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API."));
-        }
-
-        return postProcessResponse(this.azureBlobStorage.containers().acquireLeaseWithRestResponseAsync(null, null, duration, proposedID,
-            null, modifiedAccessConditions, context)).map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.renewLease#String}
-     *
-     * @param leaseID The leaseId of the active lease on the blob.
-     * @return A reactive response containing the renewed lease ID.
-     */
-    public Mono<String> renewLease(String leaseID) {
-        return renewLeaseWithResponse(leaseID, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.renewLeaseWithResponse#String-ModifiedAccessConditions}
-     *
-     * @param leaseID The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the renewed lease ID.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
-     * ModifiedAccessConditions#ifNoneMatch()} is set.
-     */
-    public Mono<Response<String>> renewLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> renewLeaseWithResponse(leaseID, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> renewLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        if (!this.validateNoEtag(modifiedAccessConditions)) {
-            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API."));
-        }
-
-        return postProcessResponse(this.azureBlobStorage.containers().renewLeaseWithRestResponseAsync(null, leaseID, null, null,
-            modifiedAccessConditions, context)).map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.releaseLease#String}
-     *
-     * @param leaseID The leaseId of the active lease on the blob.
-     * @return A reactive response signalling completion.
-     */
-    public Mono<Void> releaseLease(String leaseID) {
-        return releaseLeaseWithResponse(leaseID, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.releaseLeaseWithResponse#String-ModifiedAccessConditions}
-     *
-     * @param leaseID The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
-     * ModifiedAccessConditions#ifNoneMatch()} is set.
-     */
-    public Mono<VoidResponse> releaseLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> releaseLeaseWithResponse(leaseID, modifiedAccessConditions, context));
-    }
-
-    Mono<VoidResponse> releaseLeaseWithResponse(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        if (!this.validateNoEtag(modifiedAccessConditions)) {
-            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API."));
-        }
-
-        return postProcessResponse(this.azureBlobStorage.containers().releaseLeaseWithRestResponseAsync(
-            null, leaseID, null, null, modifiedAccessConditions, context))
-            .map(VoidResponse::new);
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.breakLease}
-     *
-     * @return A reactive response containing the remaining time in the broken lease.
-     */
-    public Mono<Duration> breakLease() {
-        return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions}
-     *
-     * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
-     * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
-     * shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
-     * will not be available before the break period has expired, but the lease may be held for longer than the break
-     * period.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the remaining time in the broken lease.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
-     * ModifiedAccessConditions#ifNoneMatch()} is set.
-     */
-    public Mono<Response<Duration>> breakLeaseWithResponse(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<Duration>> breakLeaseWithResponse(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        if (!this.validateNoEtag(modifiedAccessConditions)) {
-            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API."));
-        }
-
-        return postProcessResponse(this.azureBlobStorage.containers().breakLeaseWithRestResponseAsync(null,
-            null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, Duration.ofSeconds(rb.deserializedHeaders().leaseTime())));
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.changeLease#String-String}
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param proposedID A {@code String} in any valid GUID format.
-     * @return A reactive response containing the new lease ID.
-     */
-    public Mono<String> changeLease(String leaseId, String proposedID) {
-        return changeLeaseWithResponse(leaseId, proposedID, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions}
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param proposedID A {@code String} in any valid GUID format.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the new lease ID.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
-     * ModifiedAccessConditions#ifNoneMatch()} is set.
-     */
-    public Mono<Response<String>> changeLeaseWithResponse(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> changeLeaseWithResponse(leaseId, proposedID, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> changeLeaseWithResponse(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        if (!this.validateNoEtag(modifiedAccessConditions)) {
-            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "ETag access conditions are not supported for this API."));
-        }
-
-        return postProcessResponse(this.azureBlobStorage.containers().changeLeaseWithRestResponseAsync(null,
-            leaseId, proposedID, null, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -1157,13 +896,13 @@ public final class ContainerAsyncClient {
      * @return A reactive response containing the account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
-        return withContext(context -> getAccountInfoWithResponse(context));
+        return withContext(this::getAccountInfoWithResponse);
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return postProcessResponse(
             this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context))
-            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
     }
 
 
@@ -1171,7 +910,7 @@ public final class ContainerAsyncClient {
         if (modifiedAccessConditions == null) {
             return true;
         }
-        return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
+        return modifiedAccessConditions.getIfMatch() == null && modifiedAccessConditions.getIfNoneMatch() == null;
     }
 
     /**
@@ -1218,7 +957,8 @@ public final class ContainerAsyncClient {
      * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
+     * Docs</a></p>
      *
      * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
      * @param accountName The {@code String} account name for the SAS
@@ -1239,13 +979,15 @@ public final class ContainerAsyncClient {
         ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
-        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
-            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version,
+            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
+            null /* identifier*/, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
+        BlobServiceSASSignatureValues values =
+            configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
+            values.generateSASQueryParameters(userDelegationKey);
 
         return blobServiceSasQueryParameters.encode();
     }
@@ -1321,9 +1063,9 @@ public final class ContainerAsyncClient {
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version, sasProtocol,
-            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier,
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version,
+            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
+            identifier, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
         SharedKeyCredential sharedKeyCredential =
             Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
@@ -1331,25 +1073,40 @@ public final class ContainerAsyncClient {
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
         BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
-            sharedKeyCredential.accountName());
+            sharedKeyCredential.getAccountName());
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
+            values.generateSASQueryParameters(sharedKeyCredential);
 
         return blobServiceSasQueryParameters.encode();
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getContainerName}
+     *
+     * @return The name of container.
+     */
+    public String getContainerName() {
+        return URLParser.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    }
+
+    /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    private BlobServiceSASSignatureValues configureServiceSASSignatureValues(BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
+    private BlobServiceSASSignatureValues configureServiceSASSignatureValues(
+        BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
         // Set canonical name
-        blobServiceSASSignatureValues.canonicalName(this.azureBlobStorage.getUrl(), accountName);
+        blobServiceSASSignatureValues.setCanonicalName(this.azureBlobStorage.getUrl(), accountName);
 
         // Set snapshotId to null
-        blobServiceSASSignatureValues.snapshotId(null);
+        blobServiceSASSignatureValues.setSnapshotId(null);
 
         // Set resource
-        blobServiceSASSignatureValues.resource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT);
+        blobServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT);
         return blobServiceSASSignatureValues;
     }
 }

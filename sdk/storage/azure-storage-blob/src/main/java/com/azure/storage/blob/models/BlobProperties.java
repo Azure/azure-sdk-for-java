@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -211,11 +211,11 @@ public final class BlobProperties {
      *
      * @return the creationTime value.
      */
-    public OffsetDateTime creationTime() {
+    public OffsetDateTime getCreationTime() {
         if (this.creationTime == null) {
             return null;
         }
-        return this.creationTime.dateTime();
+        return this.creationTime.getDateTime();
     }
 
     /**
@@ -224,7 +224,7 @@ public final class BlobProperties {
      * @param creationTime the creationTime value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties creationTime(OffsetDateTime creationTime) {
+    public BlobProperties setCreationTime(OffsetDateTime creationTime) {
         if (creationTime == null) {
             this.creationTime = null;
         } else {
@@ -238,11 +238,11 @@ public final class BlobProperties {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -251,7 +251,7 @@ public final class BlobProperties {
      * @param lastModified the lastModified value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties lastModified(OffsetDateTime lastModified) {
+    public BlobProperties setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -265,7 +265,7 @@ public final class BlobProperties {
      *
      * @return the etag value.
      */
-    public String etag() {
+    public String getEtag() {
         return this.etag;
     }
 
@@ -275,7 +275,7 @@ public final class BlobProperties {
      * @param etag the etag value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties etag(String etag) {
+    public BlobProperties setEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -285,7 +285,7 @@ public final class BlobProperties {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -295,7 +295,7 @@ public final class BlobProperties {
      * @param contentLength the contentLength value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties contentLength(Long contentLength) {
+    public BlobProperties setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -305,7 +305,7 @@ public final class BlobProperties {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -315,7 +315,7 @@ public final class BlobProperties {
      * @param contentType the contentType value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties contentType(String contentType) {
+    public BlobProperties setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -325,7 +325,7 @@ public final class BlobProperties {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -335,7 +335,7 @@ public final class BlobProperties {
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties contentEncoding(String contentEncoding) {
+    public BlobProperties setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -345,7 +345,7 @@ public final class BlobProperties {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -355,7 +355,7 @@ public final class BlobProperties {
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties contentLanguage(String contentLanguage) {
+    public BlobProperties setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -365,7 +365,7 @@ public final class BlobProperties {
      *
      * @return the contentMD5 value.
      */
-    public byte[] contentMD5() {
+    public byte[] getContentMD5() {
         return ImplUtils.clone(this.contentMD5);
     }
 
@@ -375,7 +375,7 @@ public final class BlobProperties {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties contentMD5(byte[] contentMD5) {
+    public BlobProperties setContentMD5(byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
@@ -385,7 +385,7 @@ public final class BlobProperties {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -395,7 +395,7 @@ public final class BlobProperties {
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties contentDisposition(String contentDisposition) {
+    public BlobProperties setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -405,7 +405,7 @@ public final class BlobProperties {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -415,7 +415,7 @@ public final class BlobProperties {
      * @param cacheControl the cacheControl value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties cacheControl(String cacheControl) {
+    public BlobProperties setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -425,7 +425,7 @@ public final class BlobProperties {
      *
      * @return the blobSequenceNumber value.
      */
-    public Long blobSequenceNumber() {
+    public Long getBlobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -435,7 +435,7 @@ public final class BlobProperties {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties blobSequenceNumber(Long blobSequenceNumber) {
+    public BlobProperties setBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -446,7 +446,7 @@ public final class BlobProperties {
      *
      * @return the blobType value.
      */
-    public BlobType blobType() {
+    public BlobType getBlobType() {
         return this.blobType;
     }
 
@@ -457,7 +457,7 @@ public final class BlobProperties {
      * @param blobType the blobType value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties blobType(BlobType blobType) {
+    public BlobProperties setBlobType(BlobType blobType) {
         this.blobType = blobType;
         return this;
     }
@@ -468,7 +468,7 @@ public final class BlobProperties {
      *
      * @return the leaseStatus value.
      */
-    public LeaseStatusType leaseStatus() {
+    public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
 
@@ -479,7 +479,7 @@ public final class BlobProperties {
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties leaseStatus(LeaseStatusType leaseStatus) {
+    public BlobProperties setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
     }
@@ -490,7 +490,7 @@ public final class BlobProperties {
      *
      * @return the leaseState value.
      */
-    public LeaseStateType leaseState() {
+    public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
 
@@ -501,7 +501,7 @@ public final class BlobProperties {
      * @param leaseState the leaseState value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties leaseState(LeaseStateType leaseState) {
+    public BlobProperties setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
     }
@@ -512,7 +512,7 @@ public final class BlobProperties {
      *
      * @return the leaseDuration value.
      */
-    public LeaseDurationType leaseDuration() {
+    public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
 
@@ -523,7 +523,7 @@ public final class BlobProperties {
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties leaseDuration(LeaseDurationType leaseDuration) {
+    public BlobProperties setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -533,7 +533,7 @@ public final class BlobProperties {
      *
      * @return the copyId value.
      */
-    public String copyId() {
+    public String getCopyId() {
         return this.copyId;
     }
 
@@ -543,7 +543,7 @@ public final class BlobProperties {
      * @param copyId the copyId value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties copyId(String copyId) {
+    public BlobProperties setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
     }
@@ -554,7 +554,7 @@ public final class BlobProperties {
      *
      * @return the copyStatus value.
      */
-    public CopyStatusType copyStatus() {
+    public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
 
@@ -565,7 +565,7 @@ public final class BlobProperties {
      * @param copyStatus the copyStatus value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties copyStatus(CopyStatusType copyStatus) {
+    public BlobProperties setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
     }
@@ -575,7 +575,7 @@ public final class BlobProperties {
      *
      * @return the copySource value.
      */
-    public String copySource() {
+    public String getCopySource() {
         return this.copySource;
     }
 
@@ -585,7 +585,7 @@ public final class BlobProperties {
      * @param copySource the copySource value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties copySource(String copySource) {
+    public BlobProperties setCopySource(String copySource) {
         this.copySource = copySource;
         return this;
     }
@@ -595,7 +595,7 @@ public final class BlobProperties {
      *
      * @return the copyProgress value.
      */
-    public String copyProgress() {
+    public String getCopyProgress() {
         return this.copyProgress;
     }
 
@@ -605,7 +605,7 @@ public final class BlobProperties {
      * @param copyProgress the copyProgress value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties copyProgress(String copyProgress) {
+    public BlobProperties setCopyProgress(String copyProgress) {
         this.copyProgress = copyProgress;
         return this;
     }
@@ -615,11 +615,11 @@ public final class BlobProperties {
      *
      * @return the copyCompletionTime value.
      */
-    public OffsetDateTime copyCompletionTime() {
+    public OffsetDateTime getCopyCompletionTime() {
         if (this.copyCompletionTime == null) {
             return null;
         }
-        return this.copyCompletionTime.dateTime();
+        return this.copyCompletionTime.getDateTime();
     }
 
     /**
@@ -628,7 +628,7 @@ public final class BlobProperties {
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties copyCompletionTime(OffsetDateTime copyCompletionTime) {
+    public BlobProperties setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
         if (copyCompletionTime == null) {
             this.copyCompletionTime = null;
         } else {
@@ -643,7 +643,7 @@ public final class BlobProperties {
      *
      * @return the copyStatusDescription value.
      */
-    public String copyStatusDescription() {
+    public String getCopyStatusDescription() {
         return this.copyStatusDescription;
     }
 
@@ -654,7 +654,7 @@ public final class BlobProperties {
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties copyStatusDescription(String copyStatusDescription) {
+    public BlobProperties setCopyStatusDescription(String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
         return this;
     }
@@ -664,7 +664,7 @@ public final class BlobProperties {
      *
      * @return the serverEncrypted value.
      */
-    public Boolean serverEncrypted() {
+    public Boolean isServerEncrypted() {
         return this.serverEncrypted;
     }
 
@@ -674,7 +674,7 @@ public final class BlobProperties {
      * @param serverEncrypted the serverEncrypted value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties serverEncrypted(Boolean serverEncrypted) {
+    public BlobProperties setServerEncrypted(Boolean serverEncrypted) {
         this.serverEncrypted = serverEncrypted;
         return this;
     }
@@ -684,7 +684,7 @@ public final class BlobProperties {
      *
      * @return the incrementalCopy value.
      */
-    public Boolean incrementalCopy() {
+    public Boolean isIncrementalCopy() {
         return this.incrementalCopy;
     }
 
@@ -694,7 +694,7 @@ public final class BlobProperties {
      * @param incrementalCopy the incrementalCopy value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties incrementalCopy(Boolean incrementalCopy) {
+    public BlobProperties setIncrementalCopy(Boolean incrementalCopy) {
         this.incrementalCopy = incrementalCopy;
         return this;
     }
@@ -704,7 +704,7 @@ public final class BlobProperties {
      *
      * @return the destinationSnapshot value.
      */
-    public String destinationSnapshot() {
+    public String getDestinationSnapshot() {
         return this.destinationSnapshot;
     }
 
@@ -714,7 +714,7 @@ public final class BlobProperties {
      * @param destinationSnapshot the destinationSnapshot value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties destinationSnapshot(String destinationSnapshot) {
+    public BlobProperties setDestinationSnapshot(String destinationSnapshot) {
         this.destinationSnapshot = destinationSnapshot;
         return this;
     }
@@ -724,11 +724,11 @@ public final class BlobProperties {
      *
      * @return the deletedTime value.
      */
-    public OffsetDateTime deletedTime() {
+    public OffsetDateTime getDeletedTime() {
         if (this.deletedTime == null) {
             return null;
         }
-        return this.deletedTime.dateTime();
+        return this.deletedTime.getDateTime();
     }
 
     /**
@@ -737,7 +737,7 @@ public final class BlobProperties {
      * @param deletedTime the deletedTime value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties deletedTime(OffsetDateTime deletedTime) {
+    public BlobProperties setDeletedTime(OffsetDateTime deletedTime) {
         if (deletedTime == null) {
             this.deletedTime = null;
         } else {
@@ -752,7 +752,7 @@ public final class BlobProperties {
      *
      * @return the remainingRetentionDays value.
      */
-    public Integer remainingRetentionDays() {
+    public Integer getRemainingRetentionDays() {
         return this.remainingRetentionDays;
     }
 
@@ -763,7 +763,7 @@ public final class BlobProperties {
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties remainingRetentionDays(Integer remainingRetentionDays) {
+    public BlobProperties setRemainingRetentionDays(Integer remainingRetentionDays) {
         this.remainingRetentionDays = remainingRetentionDays;
         return this;
     }
@@ -775,7 +775,7 @@ public final class BlobProperties {
      *
      * @return the accessTier value.
      */
-    public AccessTier accessTier() {
+    public AccessTier getAccessTier() {
         return this.accessTier;
     }
 
@@ -787,7 +787,7 @@ public final class BlobProperties {
      * @param accessTier the accessTier value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties accessTier(AccessTier accessTier) {
+    public BlobProperties setAccessTier(AccessTier accessTier) {
         this.accessTier = accessTier;
         return this;
     }
@@ -797,7 +797,7 @@ public final class BlobProperties {
      *
      * @return the accessTierInferred value.
      */
-    public Boolean accessTierInferred() {
+    public Boolean isAccessTierInferred() {
         return this.accessTierInferred;
     }
 
@@ -807,7 +807,7 @@ public final class BlobProperties {
      * @param accessTierInferred the accessTierInferred value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties accessTierInferred(Boolean accessTierInferred) {
+    public BlobProperties setAccessTierInferred(Boolean accessTierInferred) {
         this.accessTierInferred = accessTierInferred;
         return this;
     }
@@ -818,7 +818,7 @@ public final class BlobProperties {
      *
      * @return the archiveStatus value.
      */
-    public ArchiveStatus archiveStatus() {
+    public ArchiveStatus getArchiveStatus() {
         return this.archiveStatus;
     }
 
@@ -829,7 +829,7 @@ public final class BlobProperties {
      * @param archiveStatus the archiveStatus value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties archiveStatus(ArchiveStatus archiveStatus) {
+    public BlobProperties setArchiveStatus(ArchiveStatus archiveStatus) {
         this.archiveStatus = archiveStatus;
         return this;
     }
@@ -840,7 +840,7 @@ public final class BlobProperties {
      *
      * @return the customerProvidedKeySha256 value.
      */
-    public String customerProvidedKeySha256() {
+    public String getCustomerProvidedKeySha256() {
         return this.customerProvidedKeySha256;
     }
 
@@ -852,7 +852,7 @@ public final class BlobProperties {
      * set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties customerProvidedKeySha256(String customerProvidedKeySha256) {
+    public BlobProperties setCustomerProvidedKeySha256(String customerProvidedKeySha256) {
         this.customerProvidedKeySha256 = customerProvidedKeySha256;
         return this;
     }
@@ -863,11 +863,11 @@ public final class BlobProperties {
      *
      * @return the accessTierChangeTime value.
      */
-    public OffsetDateTime accessTierChangeTime() {
+    public OffsetDateTime getAccessTierChangeTime() {
         if (this.accessTierChangeTime == null) {
             return null;
         }
-        return this.accessTierChangeTime.dateTime();
+        return this.accessTierChangeTime.getDateTime();
     }
 
     /**
@@ -877,7 +877,7 @@ public final class BlobProperties {
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties accessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+    public BlobProperties setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
         if (accessTierChangeTime == null) {
             this.accessTierChangeTime = null;
         } else {

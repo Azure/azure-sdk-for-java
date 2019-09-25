@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -74,7 +74,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -84,7 +84,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse serviceEndpoint(String serviceEndpoint) {
+    public ListFilesAndDirectoriesSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -94,7 +94,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the shareName value.
      */
-    public String shareName() {
+    public String getShareName() {
         return this.shareName;
     }
 
@@ -104,7 +104,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param shareName the shareName value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse shareName(String shareName) {
+    public ListFilesAndDirectoriesSegmentResponse setShareName(String shareName) {
         this.shareName = shareName;
         return this;
     }
@@ -114,7 +114,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the shareSnapshot value.
      */
-    public String shareSnapshot() {
+    public String getShareSnapshot() {
         return this.shareSnapshot;
     }
 
@@ -124,7 +124,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param shareSnapshot the shareSnapshot value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse shareSnapshot(String shareSnapshot) {
+    public ListFilesAndDirectoriesSegmentResponse setShareSnapshot(String shareSnapshot) {
         this.shareSnapshot = shareSnapshot;
         return this;
     }
@@ -134,7 +134,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the directoryPath value.
      */
-    public String directoryPath() {
+    public String getDirectoryPath() {
         return this.directoryPath;
     }
 
@@ -144,7 +144,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param directoryPath the directoryPath value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse directoryPath(String directoryPath) {
+    public ListFilesAndDirectoriesSegmentResponse setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
         return this;
     }
@@ -154,7 +154,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the prefix value.
      */
-    public String prefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -164,7 +164,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse prefix(String prefix) {
+    public ListFilesAndDirectoriesSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -174,7 +174,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -184,7 +184,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param marker the marker value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse marker(String marker) {
+    public ListFilesAndDirectoriesSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -194,7 +194,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the maxResults value.
      */
-    public Integer maxResults() {
+    public Integer getMaxResults() {
         return this.maxResults;
     }
 
@@ -204,7 +204,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse maxResults(Integer maxResults) {
+    public ListFilesAndDirectoriesSegmentResponse setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -214,7 +214,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the segment value.
      */
-    public FilesAndDirectoriesListSegment segment() {
+    public FilesAndDirectoriesListSegment getSegment() {
         return this.segment;
     }
 
@@ -224,7 +224,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param segment the segment value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse segment(FilesAndDirectoriesListSegment segment) {
+    public ListFilesAndDirectoriesSegmentResponse setSegment(FilesAndDirectoriesListSegment segment) {
         this.segment = segment;
         return this;
     }
@@ -234,7 +234,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -244,7 +244,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse nextMarker(String nextMarker) {
+    public ListFilesAndDirectoriesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

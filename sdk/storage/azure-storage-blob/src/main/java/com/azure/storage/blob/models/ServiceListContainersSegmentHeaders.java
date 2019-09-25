@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -49,7 +49,7 @@ public final class ServiceListContainersSegmentHeaders {
      *
      * @return the clientRequestId value.
      */
-    public String clientRequestId() {
+    public String getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -61,7 +61,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders clientRequestId(String clientRequestId) {
+    public ServiceListContainersSegmentHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -72,7 +72,7 @@ public final class ServiceListContainersSegmentHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -83,7 +83,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param requestId the requestId value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders requestId(String requestId) {
+    public ServiceListContainersSegmentHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -95,7 +95,7 @@ public final class ServiceListContainersSegmentHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param version the version value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders version(String version) {
+    public ServiceListContainersSegmentHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -117,7 +117,7 @@ public final class ServiceListContainersSegmentHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -127,7 +127,7 @@ public final class ServiceListContainersSegmentHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ServiceListContainersSegmentHeaders object itself.
      */
-    public ServiceListContainersSegmentHeaders errorCode(String errorCode) {
+    public ServiceListContainersSegmentHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

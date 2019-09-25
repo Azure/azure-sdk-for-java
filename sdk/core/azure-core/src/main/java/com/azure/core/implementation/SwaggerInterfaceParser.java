@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
@@ -66,10 +66,10 @@ public class SwaggerInterfaceParser {
      * @param swaggerMethod the method to generate a parser for
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
-    public SwaggerMethodParser methodParser(Method swaggerMethod) {
+    public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
         SwaggerMethodParser result = methodParsers.get(swaggerMethod);
         if (result == null) {
-            result = new SwaggerMethodParser(swaggerMethod, host());
+            result = new SwaggerMethodParser(swaggerMethod, getHost());
             methodParsers.put(swaggerMethod, result);
         }
         return result;
@@ -80,11 +80,11 @@ public class SwaggerInterfaceParser {
      * calls. This value is retrieved from the @Host annotation placed on the Swagger interface.
      * @return The value of the @Host annotation.
      */
-    String host() {
+    String getHost() {
         return host;
     }
 
-    String serviceName() {
+    String getServiceName() {
         return serviceName;
     }
 }

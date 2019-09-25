@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -46,11 +46,11 @@ public final class ShareProperties {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -59,7 +59,7 @@ public final class ShareProperties {
      * @param lastModified the lastModified value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties lastModified(OffsetDateTime lastModified) {
+    public ShareProperties setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -73,7 +73,7 @@ public final class ShareProperties {
      *
      * @return the etag value.
      */
-    public String etag() {
+    public String getEtag() {
         return this.etag;
     }
 
@@ -83,7 +83,7 @@ public final class ShareProperties {
      * @param etag the etag value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties etag(String etag) {
+    public ShareProperties setEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -93,7 +93,7 @@ public final class ShareProperties {
      *
      * @return the quota value.
      */
-    public int quota() {
+    public int getQuota() {
         return this.quota;
     }
 
@@ -103,7 +103,7 @@ public final class ShareProperties {
      * @param quota the quota value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties quota(int quota) {
+    public ShareProperties setQuota(int quota) {
         this.quota = quota;
         return this;
     }
@@ -113,7 +113,7 @@ public final class ShareProperties {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -123,7 +123,7 @@ public final class ShareProperties {
      * @param metadata the metadata value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties metadata(Map<String, String> metadata) {
+    public ShareProperties setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

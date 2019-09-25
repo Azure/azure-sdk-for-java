@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -69,7 +69,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -79,7 +79,7 @@ public final class ListContainersSegmentResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse serviceEndpoint(String serviceEndpoint) {
+    public ListContainersSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -89,7 +89,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the prefix value.
      */
-    public String prefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -99,7 +99,7 @@ public final class ListContainersSegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse prefix(String prefix) {
+    public ListContainersSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -109,7 +109,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -119,7 +119,7 @@ public final class ListContainersSegmentResponse {
      * @param marker the marker value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse marker(String marker) {
+    public ListContainersSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -129,7 +129,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the maxResults value.
      */
-    public int maxResults() {
+    public int getMaxResults() {
         return this.maxResults;
     }
 
@@ -139,7 +139,7 @@ public final class ListContainersSegmentResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse maxResults(int maxResults) {
+    public ListContainersSegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -149,7 +149,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the containerItems value.
      */
-    public List<ContainerItem> containerItems() {
+    public List<ContainerItem> getContainerItems() {
         if (this.containerItems == null) {
             this.containerItems = new ContainersWrapper(new ArrayList<ContainerItem>());
         }
@@ -162,7 +162,7 @@ public final class ListContainersSegmentResponse {
      * @param containerItems the containerItems value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse containerItems(List<ContainerItem> containerItems) {
+    public ListContainersSegmentResponse setContainerItems(List<ContainerItem> containerItems) {
         this.containerItems = new ContainersWrapper(containerItems);
         return this;
     }
@@ -172,7 +172,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -182,7 +182,7 @@ public final class ListContainersSegmentResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse nextMarker(String nextMarker) {
+    public ListContainersSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

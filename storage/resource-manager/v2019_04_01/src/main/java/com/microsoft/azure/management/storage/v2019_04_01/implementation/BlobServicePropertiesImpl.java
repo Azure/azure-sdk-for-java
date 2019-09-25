@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.storage.v2019_04_01.CorsRules;
 import com.microsoft.azure.management.storage.v2019_04_01.DeleteRetentionPolicy;
+import com.microsoft.azure.management.storage.v2019_04_01.ChangeFeed;
 
 class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProperties, BlobServicePropertiesInner, BlobServicePropertiesImpl> implements BlobServiceProperties, BlobServiceProperties.Definition, BlobServiceProperties.Update {
     private final StorageManager manager;
@@ -75,6 +76,11 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public ChangeFeed changeFeed() {
+        return this.inner().changeFeed();
+    }
+
+    @Override
     public CorsRules cors() {
         return this.inner().cors();
     }
@@ -114,6 +120,12 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     @Override
     public BlobServicePropertiesImpl withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled) {
         this.inner().withAutomaticSnapshotPolicyEnabled(automaticSnapshotPolicyEnabled);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withChangeFeed(ChangeFeed changeFeed) {
+        this.inner().withChangeFeed(changeFeed);
         return this;
     }
 

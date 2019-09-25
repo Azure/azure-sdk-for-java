@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -48,7 +48,7 @@ public final class DirectoryDeleteHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -59,7 +59,7 @@ public final class DirectoryDeleteHeaders {
      * @param requestId the requestId value to set.
      * @return the DirectoryDeleteHeaders object itself.
      */
-    public DirectoryDeleteHeaders requestId(String requestId) {
+    public DirectoryDeleteHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -70,7 +70,7 @@ public final class DirectoryDeleteHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -81,7 +81,7 @@ public final class DirectoryDeleteHeaders {
      * @param version the version value to set.
      * @return the DirectoryDeleteHeaders object itself.
      */
-    public DirectoryDeleteHeaders version(String version) {
+    public DirectoryDeleteHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -92,11 +92,11 @@ public final class DirectoryDeleteHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class DirectoryDeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the DirectoryDeleteHeaders object itself.
      */
-    public DirectoryDeleteHeaders dateProperty(OffsetDateTime dateProperty) {
+    public DirectoryDeleteHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -120,7 +120,7 @@ public final class DirectoryDeleteHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -130,7 +130,7 @@ public final class DirectoryDeleteHeaders {
      * @param errorCode the errorCode value to set.
      * @return the DirectoryDeleteHeaders object itself.
      */
-    public DirectoryDeleteHeaders errorCode(String errorCode) {
+    public DirectoryDeleteHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

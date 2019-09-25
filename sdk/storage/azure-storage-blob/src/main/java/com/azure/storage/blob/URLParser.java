@@ -4,8 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.Locale;
@@ -18,12 +20,28 @@ import java.util.TreeMap;
 final class URLParser {
 
     /**
+     * URLParser parses a string URL initializing BlobURLParts' fields including any SAS-related and snapshot query
+     * parameters. Any other query parameters remain in the UnparsedParams field. This method overwrites all fields
+     * in the BlobURLParts object.
+     *
+     * @param url The string URL to be parsed.
+     * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
+     */
+    public static BlobURLParts parse(String url, ClientLogger logger) {
+        try {
+            return parse(new URL(url));
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
+                + url));
+        }
+    }
+
+    /**
      * URLParser parses a URL initializing BlobURLParts' fields including any SAS-related and snapshot query parameters.
      * Any other query parameters remain in the UnparsedParams field. This method overwrites all fields in the
      * BlobURLParts object.
      *
      * @param url The {@code URL} to be parsed.
-     *
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
      */
     public static BlobURLParts parse(URL url) {
@@ -61,33 +79,28 @@ final class URLParser {
             queryParamsMap.remove("snapshot");
         }
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters = new BlobServiceSASQueryParameters(queryParamsMap, true);
+        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
+            new BlobServiceSASQueryParameters(queryParamsMap, true);
 
         return new BlobURLParts()
-                .scheme(scheme)
-                .host(host)
-                .containerName(containerName)
-                .blobName(blobName)
-                .snapshot(snapshot)
-                .sasQueryParameters(blobServiceSasQueryParameters)
-                .unparsedParameters(queryParamsMap);
+            .setScheme(scheme)
+            .setHost(host)
+            .setContainerName(containerName)
+            .setBlobName(blobName)
+            .setSnapshot(snapshot)
+            .setSasQueryParameters(blobServiceSasQueryParameters)
+            .setUnparsedParameters(queryParamsMap);
     }
 
     /**
      * Parses a query string into a one to many hashmap.
      *
      * @param queryParams The string of query params to parse.
-     *
      * @return A {@code HashMap<String, String[]>} of the key values.
      */
     private static TreeMap<String, String[]> parseQueryString(String queryParams) {
 
-        final TreeMap<String, String[]> retVals = new TreeMap<String, String[]>(new Comparator<String>() {
-            @Override
-            public int compare(String s1, String s2) {
-                return s1.compareTo(s2);
-            }
-        });
+        final TreeMap<String, String[]> retVals = new TreeMap<>(Comparator.naturalOrder());
 
         if (ImplUtils.isNullOrEmpty(queryParams)) {
             return retVals;
@@ -97,11 +110,11 @@ final class URLParser {
         final String[] valuePairs = queryParams.split("&");
 
         // for each field value pair parse into appropriate map entries
-        for (int m = 0; m < valuePairs.length; m++) {
+        for (String valuePair : valuePairs) {
             // Getting key and value for a single query parameter
-            final int equalDex = valuePairs[m].indexOf("=");
-            String key = Utility.urlDecode(valuePairs[m].substring(0, equalDex)).toLowerCase(Locale.ROOT);
-            String value = Utility.urlDecode(valuePairs[m].substring(equalDex + 1));
+            final int equalDex = valuePair.indexOf("=");
+            String key = Utility.urlDecode(valuePair.substring(0, equalDex)).toLowerCase(Locale.ROOT);
+            String value = Utility.urlDecode(valuePair.substring(equalDex + 1));
 
             // add to map
             String[] keyValues = retVals.get(key);
@@ -113,9 +126,7 @@ final class URLParser {
             } else {
                 // map contains this key already so append
                 final String[] newValues = new String[keyValues.length + 1];
-                for (int j = 0; j < keyValues.length; j++) {
-                    newValues[j] = keyValues[j];
-                }
+                System.arraycopy(keyValues, 0, newValues, 0, keyValues.length);
 
                 newValues[newValues.length - 1] = value;
                 keyValues = newValues;

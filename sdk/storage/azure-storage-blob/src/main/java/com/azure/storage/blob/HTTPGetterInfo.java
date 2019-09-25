@@ -23,7 +23,7 @@ public final class HTTPGetterInfo {
     /**
      * @return the start offset used when creating the Range header. Defaults to 0.
      */
-    public long offset() {
+    public long getOffset() {
         return offset;
     }
 
@@ -33,7 +33,7 @@ public final class HTTPGetterInfo {
      * @param offset Start offset
      * @return the updated HTTPGetterInfo object
      */
-    public HTTPGetterInfo offset(long offset) {
+    public HTTPGetterInfo setOffset(long offset) {
         this.offset = offset;
         return this;
     }
@@ -42,7 +42,7 @@ public final class HTTPGetterInfo {
      * @return the count of bytes used to calculate the end offset when creating the Range header. {@code} null is the
      * default and indicates that the entire rest of the blob should be retrieved.
      */
-    public Long count() {
+    public Long getCount() {
         return count;
     }
 
@@ -53,7 +53,7 @@ public final class HTTPGetterInfo {
      * @param count Count of bytes
      * @return the updated HTTPGetterInfo object
      */
-    public HTTPGetterInfo count(Long count) {
+    public HTTPGetterInfo setCount(Long count) {
         if (count != null) {
             Utility.assertInBounds("count", count, 0, Long.MAX_VALUE);
         }
@@ -63,22 +63,22 @@ public final class HTTPGetterInfo {
 
     /**
      * @return the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
-     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context) properties}.
-     * Defaults to null.
+     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context)
+     * properties}. Defaults to null.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
-     * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
-     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context) properties}.
-     * Defaults to null.
+     * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the resource
+     * and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context)
+     * properties}. Defaults to null.
      *
      * @param eTag Resource's eTag
      * @return the updated HTTPGetterInfo object
      */
-    public HTTPGetterInfo eTag(String eTag) {
+    public HTTPGetterInfo setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -69,7 +69,7 @@ public final class ListSharesResponse {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -79,7 +79,7 @@ public final class ListSharesResponse {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListSharesResponse object itself.
      */
-    public ListSharesResponse serviceEndpoint(String serviceEndpoint) {
+    public ListSharesResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -89,7 +89,7 @@ public final class ListSharesResponse {
      *
      * @return the prefix value.
      */
-    public String prefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -99,7 +99,7 @@ public final class ListSharesResponse {
      * @param prefix the prefix value to set.
      * @return the ListSharesResponse object itself.
      */
-    public ListSharesResponse prefix(String prefix) {
+    public ListSharesResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -109,7 +109,7 @@ public final class ListSharesResponse {
      *
      * @return the marker value.
      */
-    public String marker() {
+    public String getMarker() {
         return this.marker;
     }
 
@@ -119,7 +119,7 @@ public final class ListSharesResponse {
      * @param marker the marker value to set.
      * @return the ListSharesResponse object itself.
      */
-    public ListSharesResponse marker(String marker) {
+    public ListSharesResponse setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -129,7 +129,7 @@ public final class ListSharesResponse {
      *
      * @return the maxResults value.
      */
-    public Integer maxResults() {
+    public Integer getMaxResults() {
         return this.maxResults;
     }
 
@@ -139,7 +139,7 @@ public final class ListSharesResponse {
      * @param maxResults the maxResults value to set.
      * @return the ListSharesResponse object itself.
      */
-    public ListSharesResponse maxResults(Integer maxResults) {
+    public ListSharesResponse setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -149,7 +149,7 @@ public final class ListSharesResponse {
      *
      * @return the shareItems value.
      */
-    public List<ShareItem> shareItems() {
+    public List<ShareItem> getShareItems() {
         if (this.shareItems == null) {
             this.shareItems = new SharesWrapper(new ArrayList<ShareItem>());
         }
@@ -162,7 +162,7 @@ public final class ListSharesResponse {
      * @param shareItems the shareItems value to set.
      * @return the ListSharesResponse object itself.
      */
-    public ListSharesResponse shareItems(List<ShareItem> shareItems) {
+    public ListSharesResponse setShareItems(List<ShareItem> shareItems) {
         this.shareItems = new SharesWrapper(shareItems);
         return this;
     }
@@ -172,7 +172,7 @@ public final class ListSharesResponse {
      *
      * @return the nextMarker value.
      */
-    public String nextMarker() {
+    public String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -182,7 +182,7 @@ public final class ListSharesResponse {
      * @param nextMarker the nextMarker value to set.
      * @return the ListSharesResponse object itself.
      */
-    public ListSharesResponse nextMarker(String nextMarker) {
+    public ListSharesResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

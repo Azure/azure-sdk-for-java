@@ -33,7 +33,7 @@ public final class PlaybackClient implements HttpClient {
 
     /**
      * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces {@link
-     * NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
+     * NetworkCallRecord#getResponse() response text} for any rules specified in {@code textReplacementRules}.
      *
      * @param recordedData The data to playback.
      * @param textReplacementRules A set of rules to replace text in network call responses.
@@ -54,13 +54,13 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
-        final String incomingUrl = applyReplacementRule(request.url().toString());
-        final String incomingMethod = request.httpMethod().toString();
+        final String incomingUrl = applyReplacementRule(request.getUrl().toString());
+        final String incomingMethod = request.getHttpMethod().toString();
 
         final String matchingUrl = removeHost(incomingUrl);
 
         NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record ->
-            record.method().equalsIgnoreCase(incomingMethod) && removeHost(record.uri()).equalsIgnoreCase(matchingUrl));
+            record.getMethod().equalsIgnoreCase(incomingMethod) && removeHost(record.getUri()).equalsIgnoreCase(matchingUrl));
 
         count.incrementAndGet();
 
@@ -71,23 +71,23 @@ public final class PlaybackClient implements HttpClient {
             return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
 
-        if (networkCallRecord.exception() != null) {
-            throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.exception().get()));
+        if (networkCallRecord.getException() != null) {
+            throw logger.logExceptionAsWarning(Exceptions.propagate(networkCallRecord.getException().get()));
         }
 
         // Overwrite the request header if any.
-        if (networkCallRecord.headers().containsKey(X_MS_CLIENT_REQUEST_ID)) {
-            request.header(X_MS_CLIENT_REQUEST_ID, networkCallRecord.headers().get(X_MS_CLIENT_REQUEST_ID));
+        if (networkCallRecord.getHeaders().containsKey(X_MS_CLIENT_REQUEST_ID)) {
+            request.setHeader(X_MS_CLIENT_REQUEST_ID, networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
         }
-        if (request.headers().value(X_MS_ENCRYPTION_KEY_SHA256) != null) {
-            networkCallRecord.response().put(X_MS_ENCRYPTION_KEY_SHA256,
-                request.headers().value(X_MS_ENCRYPTION_KEY_SHA256));
+        if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256) != null) {
+            networkCallRecord.getResponse().put(X_MS_ENCRYPTION_KEY_SHA256,
+                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
         }
 
-        int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
+        int recordStatusCode = Integer.parseInt(networkCallRecord.getResponse().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
-        for (Map.Entry<String, String> pair : networkCallRecord.response().entrySet()) {
+        for (Map.Entry<String, String> pair : networkCallRecord.getResponse().entrySet()) {
             if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body")) {
                 String rawHeader = pair.getValue();
                 for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
@@ -99,7 +99,7 @@ public final class PlaybackClient implements HttpClient {
             }
         }
 
-        String rawBody = networkCallRecord.response().get("Body");
+        String rawBody = networkCallRecord.getResponse().get("Body");
         byte[] bytes = null;
 
         if (rawBody != null) {
@@ -109,7 +109,7 @@ public final class PlaybackClient implements HttpClient {
                 }
             }
 
-            String contentType = networkCallRecord.response().get("Content-Type");
+            String contentType = networkCallRecord.getResponse().get("Content-Type");
 
             // octet-stream's are written to disk using Arrays.toString() which creates an output such as "[12, -1]".
             if (contentType != null && contentType.equalsIgnoreCase("application/octet-stream")) {
@@ -144,10 +144,10 @@ public final class PlaybackClient implements HttpClient {
     private static String removeHost(String url) {
         UrlBuilder urlBuilder = UrlBuilder.parse(url);
 
-        if (urlBuilder.query().containsKey("sig")) {
+        if (urlBuilder.getQuery().containsKey("sig")) {
             urlBuilder.setQueryParameter("sig", "REDACTED");
         }
 
-        return String.format("%s%s", urlBuilder.path(), urlBuilder.queryString());
+        return String.format("%s%s", urlBuilder.getPath(), urlBuilder.queryString());
     }
 }

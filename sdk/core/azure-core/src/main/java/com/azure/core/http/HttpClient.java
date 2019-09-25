@@ -3,7 +3,7 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.http.spi.HttpClientProviders;
+import com.azure.core.implementation.http.HttpClientProviders;
 import reactor.core.publisher.Mono;
 
 /**
