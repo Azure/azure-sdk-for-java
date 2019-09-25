@@ -38,6 +38,6 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
                 put("clientId", clientId);
                 put("deviceCodeChallengeConsumer", deviceCodeChallengeConsumer);
             }});
-        return new DeviceCodeCredential(clientId, deviceCodeChallengeConsumer, identityClientOptions);
+        return new DeviceCodeCredential(clientId, tenantId, deviceCodeChallengeConsumer, identityClientOptions);
     }
 }

@@ -3,7 +3,6 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -180,7 +179,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
         OffsetDateTime midnight = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        VoidResponse response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
+        Response<Void> response = fileServiceClient.deleteShareWithResponse("test", midnight.toString(),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Deleting the snapshot completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.deleteShareWithResponse#string-string-duration-context
@@ -239,7 +238,7 @@ public class FileServiceJavaDocCodeSamples {
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
 
-        VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
+        Response<Void> response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context
@@ -254,7 +253,7 @@ public class FileServiceJavaDocCodeSamples {
         FileServiceProperties properties = fileServiceClient.getProperties();
         properties.setCors(Collections.emptyList());
 
-        VoidResponse response = fileServiceClient.setPropertiesWithResponse(properties,
+        Response<Void> response = fileServiceClient.setPropertiesWithResponse(properties,
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
@@ -277,14 +276,14 @@ public class FileServiceJavaDocCodeSamples {
             .setObject(true)
             .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setCreate(true)
-            .setWrite(true)
-            .setDelete(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setListPermission(true)
             .setProcessMessages(true)
-            .setUpdate(true);
+            .setUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

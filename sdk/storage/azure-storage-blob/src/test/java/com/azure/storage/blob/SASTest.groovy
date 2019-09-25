@@ -99,11 +99,11 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .getDeletePermission(true)
+            .setAddPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
@@ -146,11 +146,11 @@ class SASTest extends APISpec {
         def snapshotBlob = cc.getBlockBlobClient(blobName, snapshotId)
 
         def permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .getDeletePermission(true)
+            .setAddPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
@@ -227,11 +227,11 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         BlobSASPermission permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .getDeletePermission(true)
+            .setAddPermission(true)
 
         OffsetDateTime startTime = getUTCNow().minusDays(1)
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
@@ -282,11 +282,11 @@ class SASTest extends APISpec {
         String snapshotId = snapshotBlob.getSnapshotId()
 
         BlobSASPermission permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .getDeletePermission(true)
+            .setAddPermission(true)
         OffsetDateTime startTime = getUTCNow().minusDays(1)
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
         IPRange ipRange = new IPRange()
@@ -342,11 +342,11 @@ class SASTest extends APISpec {
         String snapshotId = snapshotBlob.getSnapshotId()
 
         BlobSASPermission permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .getDeletePermission(true)
+            .setAddPermission(true)
 
         OffsetDateTime startTime = getUTCNow().minusDays(1)
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
@@ -434,7 +434,7 @@ class SASTest extends APISpec {
             .setService(true)
             .setObject(true)
         def permissions = new AccountSASPermission()
-            .setRead(true)
+            .setReadPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -462,7 +462,7 @@ class SASTest extends APISpec {
             .setService(true)
             .setObject(true)
         def permissions = new AccountSASPermission()
-            .setRead(true)
+            .setReadPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -484,8 +484,8 @@ class SASTest extends APISpec {
             .setService(true)
             .setObject(true)
         def permissions = new AccountSASPermission()
-            .setRead(true)
-            .setCreate(false)
+            .setReadPermission(true)
+            .setCreatePermission(false)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -507,8 +507,8 @@ class SASTest extends APISpec {
             .setService(true)
             .setObject(true)
         def permissions = new AccountSASPermission()
-            .setRead(true)
-            .setCreate(true)
+            .setReadPermission(true)
+            .setCreatePermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -532,7 +532,7 @@ class SASTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         def p = new BlobSASPermission()
-        p.setRead(true)
+        p.setReadPermission(true)
         v.setPermissions(p.toString())
 
         v.setStartTime(startTime)
@@ -585,7 +585,7 @@ class SASTest extends APISpec {
         def v = new BlobServiceSASSignatureValues()
 
         def p = new BlobSASPermission()
-        p.setRead(true)
+        p.setReadPermission(true)
         v.setPermissions(p.toString())
 
         v.setStartTime(startTime)
@@ -678,11 +678,11 @@ class SASTest extends APISpec {
     def "BlobSASPermissions toString"() {
         setup:
         def perms = new BlobSASPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setCreate(create)
-            .setAdd(add)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .getDeletePermission(delete)
+            .setCreatePermission(create)
+            .setAddPermission(add)
 
         expect:
         perms.toString() == expectedString
@@ -703,11 +703,11 @@ class SASTest extends APISpec {
         def perms = BlobSASPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getCreate() == create
-        perms.getAdd() == add
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getAddPermission() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -856,10 +856,10 @@ class SASTest extends APISpec {
         usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                   | identifier | resource | snapshotId
         false               | null                                             | null                     | null                                                      | null                                          | null       | null     | null
         false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                          | null   | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                          | null   | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().setRead(true).toString() | null   | null | null
-        false               | null                                             | null                     | null                                                      | null                                          | "0000" | "c"  | "id"
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                                       | null   | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                       | null   | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().setReadPermission(true).toString() | null   | null | null
+        false               | null                                             | null                     | null                                                      | null                                                       | "0000" | "c"  | "id"
     }
 
     // TODO : Account SAS should go into the common package
@@ -874,7 +874,7 @@ class SASTest extends APISpec {
         when:
         def v = new AccountSASSignatureValues()
         def p = new AccountSASPermission()
-            .setRead(true)
+            .setReadPermission(true)
         v.setPermissions(p.toString())
             .setServices("b")
             .setResourceTypes("o")
@@ -930,13 +930,13 @@ class SASTest extends APISpec {
     def "AccountSASPermissions toString"() {
         setup:
         def perms = new AccountSASPermission()
-        perms.setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setList(list)
-            .setAdd(add)
-            .setCreate(create)
-            .setUpdate(update)
+        perms.setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setListPermission(list)
+            .setAddPermission(add)
+            .setCreatePermission(create)
+            .setUpdatePermission(update)
             .setProcessMessages(process)
 
         expect:
@@ -961,13 +961,13 @@ class SASTest extends APISpec {
         def perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.isRead() == read
-        perms.isWrite() == write
-        perms.isDelete() == delete
-        perms.isList() == list
-        perms.isAdd() == add
-        perms.isCreate() == create
-        perms.isUpdate() == update
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getListPermission() == list
+        perms.getAddPermission() == add
+        perms.getCreatePermission() == create
+        perms.getUpdatePermission() == update
         perms.getProcessMessages() == process
 
         where:

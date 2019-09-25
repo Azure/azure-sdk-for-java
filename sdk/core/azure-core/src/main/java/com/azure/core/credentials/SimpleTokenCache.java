@@ -26,11 +26,11 @@ public class SimpleTokenCache {
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
-     * @param getNew a method to get a new token
+     * @param tokenSupplier a method to get a new token
      */
-    public SimpleTokenCache(Supplier<Mono<AccessToken>> getNew) {
+    public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
         this.wip = new AtomicBoolean(false);
-        this.getNew = getNew;
+        this.getNew = tokenSupplier;
     }
 
     /**

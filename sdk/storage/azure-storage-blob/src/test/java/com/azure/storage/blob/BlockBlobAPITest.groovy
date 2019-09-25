@@ -591,6 +591,43 @@ class BlockBlobAPITest extends APISpec {
         Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
     }
 
+    /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
+       for getBlockID that will change every time test is run
+     */
+    @Requires({ APISpec.liveMode() })
+    def "Upload from file"() {
+        given:
+        URL resource = this.getClass().getResource( '/testfiles/uploadFromFileTestData.txt')
+        String file = resource.path
+        String content = resource.text
+        def outStream = new ByteArrayOutputStream()
+
+        when:
+        bc.uploadFromFile(file)
+
+        then:
+        bc.download(outStream)
+        outStream.toByteArray() == content.getBytes(StandardCharsets.UTF_8)
+    }
+
+    @Requires({ APISpec.liveMode() })
+    def "Upload from file with metadata"() {
+        given:
+        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        URL resource = this.getClass().getResource( '/testfiles/uploadFromFileTestData.txt')
+        String file = resource.path
+        String content = resource.text
+        def outStream = new ByteArrayOutputStream()
+
+        when:
+        bc.uploadFromFile(file, null, metadata, null, null, null);
+
+        then:
+        BlobProperties properties = bc.getProperties()
+        Metadata returnedMetadata = properties.metadata;
+        metadata.equals(returnedMetadata);
+    }
+
     def "Upload min"() {
         when:
         bc.upload(defaultInputStream.get(), defaultDataSize)

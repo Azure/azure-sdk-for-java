@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -35,7 +36,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      */
     public KeyVaultCredentialPolicy(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        this.cache = new ScopeTokenCache((scopes) -> credential.getToken(scopes));
+        this.cache = new ScopeTokenCache(credential::getToken);
     }
 
     /**
@@ -53,7 +54,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
             .map(res -> res.getHeaderValue(WWW_AUTHENTICATE))
             .map(header -> extractChallenge(header, BEARER_TOKEN_PREFIX))
             .flatMap(map -> {
-                cache.scopes(map.get("resource") + "/.default");
+                cache.setRequest(new TokenRequest().addScopes(map.get("resource") + "/.default"));
                 return cache.getToken();
             })
             .flatMap(token -> {

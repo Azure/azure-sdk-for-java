@@ -5,8 +5,16 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.RetryPolicy;
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.engine.Session;
@@ -37,11 +45,11 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param openTimeout Timeout to wait for the session operation to complete.
      */
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
-                                  ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-                                  Mono<CBSNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                                  Duration openTimeout) {
+                           ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+                           Mono<CBSNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+                           Duration openTimeout, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            openTimeout);
+            messageSerializer, openTimeout);
     }
 
     /**

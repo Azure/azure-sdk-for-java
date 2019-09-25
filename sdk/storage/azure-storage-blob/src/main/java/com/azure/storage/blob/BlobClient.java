@@ -6,8 +6,8 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
@@ -174,7 +174,7 @@ public class BlobClient {
      *
      * @return true if the container exists, false if it doesn't
      */
-    public Boolean exists() {
+    public boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
@@ -282,7 +282,7 @@ public class BlobClient {
      */
     public Response<Void> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
+        Mono<Response<Void>> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -375,21 +375,23 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException If stream is null
      */
-    public VoidResponse downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
+    public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<VoidResponse> download = blobAsyncClient
+        Utility.assertNotNull("stream", stream);
+        Mono<Response<Void>> download = blobAsyncClient
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
             .flatMapMany(res -> res.getValue()
                 .doOnNext(bf -> {
                     try {
-                        stream.write(bf.array());
+                        stream.write(FluxUtil.byteBufferToArray(bf));
                     } catch (IOException e) {
                         throw logger.logExceptionAsError(new UncheckedIOException(e));
                     }
                 }).map(bf -> res))
             .last()
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
 
         return Utility.blockWithOptionalTimeout(download, timeout);
     }
@@ -486,9 +488,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient
+        Mono<Response<Void>> response = blobAsyncClient
             .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -566,9 +568,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
+    public Response<Void> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient
+        Mono<Response<Void>> response = blobAsyncClient
             .setHTTPHeadersWithResponse(headers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -608,9 +610,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+    public Response<Void> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
+        Mono<Response<Void>> response = blobAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -699,9 +701,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Response<Void> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions,
+        Mono<Response<Void>> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -735,8 +737,8 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse undeleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.undeleteWithResponse(context);
+    public Response<Void> undeleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = blobAsyncClient.undeleteWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

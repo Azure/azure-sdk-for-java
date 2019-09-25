@@ -5,7 +5,6 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.AccountSASPermission;
@@ -154,8 +153,8 @@ public final class QueueServiceClient {
      * @throws StorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteQueueWithResponse(queueName, context);
+    public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteQueueWithResponse(queueName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -347,9 +346,9 @@ public final class QueueServiceClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
+    public Response<Void> setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = client.setPropertiesWithResponse(properties, context);
+        Mono<Response<Void>> response = client.setPropertiesWithResponse(properties, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
