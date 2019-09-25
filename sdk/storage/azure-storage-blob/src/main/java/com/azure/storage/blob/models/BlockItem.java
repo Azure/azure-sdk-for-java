@@ -42,22 +42,4 @@ public final class BlockItem {
     public boolean isCommitted() {
         return isCommitted;
     }
-
-    /**
-     * Set the name of the block blob.
-     *
-     * @param name the name of the block blob.
-     */
-    public void setName(String name) {
-        this.block.setName(name);
-    }
-
-    /**
-     * Set the size of the block blob.
-     *
-     * @param size the size of the block blob.
-     */
-    public void setSize(int size) {
-        this.block.setSize(size);
-    }
 }
