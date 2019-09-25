@@ -226,7 +226,7 @@ class BlobAPITest extends APISpec {
         bc.download(null)
 
         then:
-        thrown(StorageException)
+        thrown(IllegalArgumentException)
     }
 
     def "Download snapshot"() {
@@ -1448,7 +1448,7 @@ class BlobAPITest extends APISpec {
         def bcCopy = cc.getBlockBlobClient(generateBlobName())
 
         when:
-        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))), null, tier2, null, null, null, null)
+        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))), null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2
