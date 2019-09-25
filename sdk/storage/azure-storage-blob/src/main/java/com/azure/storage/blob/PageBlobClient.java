@@ -104,13 +104,13 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.setCreate#long}
+     * {@codesnippet com.azure.storage.blob.PageBlobClient.create#long}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      * @return The information of the created page blob.
      */
-    public PageBlobItem setCreate(long size) {
+    public PageBlobItem create(long size) {
         return createWithResponse(size, null, null, null, null, null, Context.NONE).getValue();
     }
 

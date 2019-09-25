@@ -1301,7 +1301,7 @@ class BlobAPITest extends APISpec {
         ContainerClient cc = premiumBlobServiceClient.createContainer(generateContainerName())
 
         def bc = cc.getPageBlobClient(generateBlobName())
-        bc.setCreate(512)
+        bc.create(512)
 
         when:
         bc.setTier(tier)
