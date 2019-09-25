@@ -112,7 +112,7 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesFromURL(PageRange, URL, Long)}
+     * Code snippets for {@link PageBlobClient#uploadPagesFromUrl(PageRange, URL, Long)}
      */
     public void uploadPagesFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long
@@ -120,15 +120,14 @@ public class PageBlobClientJavaDocCodeSnippets {
             .setStart(0)
             .setEnd(511);
 
-        PageBlobItem pageBlob = client.uploadPagesFromURL(pageRange, url, sourceOffset);
+        PageBlobItem pageBlob = client.uploadPagesFromUrl(pageRange, url, sourceOffset);
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesFromURLWithResponse(PageRange, URL, Long, byte[],
-     * PageBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
+     * Code snippets for {@link PageBlobClient#uploadPagesFromUrlWithResponse(PageRange, URL, Long, byte[], PageBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
     public void uploadPagesFromURLWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
@@ -144,7 +143,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesFromURLWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
+            .uploadPagesFromUrlWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
                 sourceAccessConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());

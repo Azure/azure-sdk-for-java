@@ -69,7 +69,7 @@ public class BlobPartitionManagerTest {
             BlobItem>(null, 200, null,
             Arrays.asList(blobItem), null,
             null)));
-        when(containerAsyncClient.listBlobsFlat(any(ListBlobsOptions.class))).thenReturn(response);
+        when(containerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
         StepVerifier.create(blobPartitionManager.listOwnership("eh", "cg"))
             .assertNext(partitionOwnership -> {
@@ -138,7 +138,7 @@ public class BlobPartitionManagerTest {
     public void testListOwnershipError() {
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
         PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.error(new SocketTimeoutException()));
-        when(containerAsyncClient.listBlobsFlat(any(ListBlobsOptions.class))).thenReturn(response);
+        when(containerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
         StepVerifier.create(blobPartitionManager.listOwnership("eh", "cg"))
             .expectError(SocketTimeoutException.class).verify();

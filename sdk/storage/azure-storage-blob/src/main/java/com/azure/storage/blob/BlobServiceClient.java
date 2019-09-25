@@ -373,7 +373,7 @@ public final class BlobServiceClient {
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
+        return this.blobServiceAsyncClient.generateAccountSas(accountSASService, accountSASResourceType,
             accountSASPermission, expiryTime);
     }
 
@@ -400,7 +400,7 @@ public final class BlobServiceClient {
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
-        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
+        return this.blobServiceAsyncClient.generateAccountSas(accountSASService, accountSASResourceType,
             accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

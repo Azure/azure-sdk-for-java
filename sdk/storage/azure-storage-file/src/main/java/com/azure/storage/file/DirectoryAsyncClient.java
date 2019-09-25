@@ -597,7 +597,7 @@ public class DirectoryAsyncClient {
             metadata, context));
     }
 
-    Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
+    private Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient createSubClient = getSubDirectoryClient(subDirectoryName);
         return postProcessResponse(createSubClient.createWithResponse(smbProperties, filePermission, metadata, context))

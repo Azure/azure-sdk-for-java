@@ -13,7 +13,7 @@ import java.time.Duration;
  * HTTPGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
  * request.
  */
-public final class HTTPGetterInfo {
+public final class HttpGetterInfo {
     private long offset = 0;
 
     private Long count = null;
@@ -33,7 +33,7 @@ public final class HTTPGetterInfo {
      * @param offset Start offset
      * @return the updated HTTPGetterInfo object
      */
-    public HTTPGetterInfo setOffset(long offset) {
+    public HttpGetterInfo setOffset(long offset) {
         this.offset = offset;
         return this;
     }
@@ -53,7 +53,7 @@ public final class HTTPGetterInfo {
      * @param count Count of bytes
      * @return the updated HTTPGetterInfo object
      */
-    public HTTPGetterInfo setCount(Long count) {
+    public HttpGetterInfo setCount(Long count) {
         if (count != null) {
             Utility.assertInBounds("count", count, 0, Long.MAX_VALUE);
         }
@@ -78,7 +78,7 @@ public final class HTTPGetterInfo {
      * @param eTag Resource's eTag
      * @return the updated HTTPGetterInfo object
      */
-    public HTTPGetterInfo setETag(String eTag) {
+    public HttpGetterInfo setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

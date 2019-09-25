@@ -763,8 +763,8 @@ public final class QueueAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(QueueSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(QueueSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */);
     }
 
@@ -774,8 +774,8 @@ public final class QueueAsyncClient {
      * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */);
     }
 
@@ -798,7 +798,7 @@ public final class QueueAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
 
         QueueServiceSASSignatureValues queueServiceSASSignatureValues = new QueueServiceSASSignatureValues(version,

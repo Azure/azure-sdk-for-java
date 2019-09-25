@@ -159,7 +159,7 @@ public class FileSmbProperties {
     String setFileCreationTime(String defaultValue) {
         return fileCreationTime == null
             ? defaultValue
-            : parseFileSMBDate(fileCreationTime);
+            : parseFileSmbDate(fileCreationTime);
     }
 
     /**
@@ -171,7 +171,7 @@ public class FileSmbProperties {
     String setFileLastWriteTime(String defaultValue) {
         return fileLastWriteTime == null
             ? defaultValue
-            : parseFileSMBDate(fileLastWriteTime);
+            : parseFileSmbDate(fileLastWriteTime);
     }
 
     /**
@@ -181,7 +181,7 @@ public class FileSmbProperties {
      * @param time the <code>OffsetDateTime</code> to be interpreted as a {@code String}
      * @return The {@code String} representing the date
      */
-    private static String parseFileSMBDate(OffsetDateTime time) {
+    private static String parseFileSmbDate(OffsetDateTime time) {
         return time.format(DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING));
     }
 

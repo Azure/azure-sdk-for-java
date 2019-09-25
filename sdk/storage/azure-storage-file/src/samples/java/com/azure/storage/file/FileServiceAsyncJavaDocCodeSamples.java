@@ -269,8 +269,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * Generates a code sample for using {@link FileServiceAsyncClient#generateAccountSas(AccountSASService, AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
      */
     public void generateAccountSASAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
@@ -301,7 +300,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-        String sas = fileServiceAsyncClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
+        String sas = fileServiceAsyncClient.generateAccountSas(service, resourceType, permission, expiryTime, startTime,
             version, ipRange, sasProtocol);
         // END: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
     }

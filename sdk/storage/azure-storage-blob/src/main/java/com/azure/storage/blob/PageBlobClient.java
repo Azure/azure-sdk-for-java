@@ -219,8 +219,8 @@ public final class PageBlobClient extends BlobClient {
      * blob.
      * @return The information of the uploaded pages.
      */
-    public PageBlobItem uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE)
+    public PageBlobItem uploadPagesFromUrl(PageRange range, URL sourceURL, Long sourceOffset) {
+        return uploadPagesFromUrlWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE)
             .getValue();
     }
 
@@ -249,11 +249,11 @@ public final class PageBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceURL,
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceURL,
             sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

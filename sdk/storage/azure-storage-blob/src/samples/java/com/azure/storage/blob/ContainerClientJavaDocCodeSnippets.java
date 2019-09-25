@@ -39,9 +39,7 @@ public class ContainerClientJavaDocCodeSnippets {
     private Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Code snippet for {@link ContainerClient#generateUserDelegationSAS(UserDelegationKey, String,
-     * ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String,
-     * String, String)}
+     * Code snippet for {@link ContainerClient#generateUserDelegationSas(UserDelegationKey, String, ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
@@ -67,15 +65,14 @@ public class ContainerClientJavaDocCodeSnippets {
         String accountName = "accountName";
         UserDelegationKey userDelegationKey = new UserDelegationKey();
 
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
         // END: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 
     /**
-     * Code snippet for {@link ContainerClient#generateSAS(String, ContainerSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link ContainerClient#generateSas(String, ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
@@ -101,7 +98,7 @@ public class ContainerClientJavaDocCodeSnippets {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+        String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
@@ -404,17 +401,17 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsFlat()}
+     * Code snippet for {@link ContainerClient#listBlobs()}
      */
     public void listBlobsFlat() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat
-        client.listBlobsFlat().forEach(blob ->
+        client.listBlobs().forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsFlat
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsFlat(ListBlobsOptions, Duration)}
+     * Code snippet for {@link ContainerClient#listBlobs(ListBlobsOptions, Duration)}
      */
     public void listBlobsFlat2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration
@@ -424,7 +421,7 @@ public class ContainerClientJavaDocCodeSnippets {
                 .setDeletedBlobs(true)
                 .setSnapshots(true));
 
-        client.listBlobsFlat(options, timeout).forEach(blob ->
+        client.listBlobs(options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
@@ -434,17 +431,17 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsHierarchy(String)}
+     * Code snippet for {@link ContainerClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
-        client.listBlobsHierarchy("directoryName").forEach(blob ->
+        client.listBlobsByHierarchy("directoryName").forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
         // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsHierarchy(String, ListBlobsOptions, Duration)}
+     * Code snippet for {@link ContainerClient#listBlobsByHierarchy(String, ListBlobsOptions, Duration)}
      */
     public void listBlobsHierarchy2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
@@ -454,7 +451,7 @@ public class ContainerClientJavaDocCodeSnippets {
                 .setDeletedBlobs(true)
                 .setSnapshots(true));
 
-        client.listBlobsHierarchy("/", options, timeout).forEach(blob ->
+        client.listBlobsByHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),

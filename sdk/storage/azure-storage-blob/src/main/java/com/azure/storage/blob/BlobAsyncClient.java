@@ -247,8 +247,8 @@ public class BlobAsyncClient {
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<String> startCopyFromUrl(URL sourceURL) {
+        return startCopyFromUrlWithResponse(sourceURL, null, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -272,14 +272,14 @@ public class BlobAsyncClient {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+    public Mono<Response<String>> startCopyFromUrlWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions) {
-        return withContext(context -> startCopyFromURLWithResponse(sourceURL, metadata, tier, priority,
+        return withContext(context -> startCopyFromUrlWithResponse(sourceURL, metadata, tier, priority,
             sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+    Mono<Response<String>> startCopyFromUrlWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
@@ -315,8 +315,8 @@ public class BlobAsyncClient {
      * BlobStartCopyFromURLHeaders} object.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> abortCopyFromURL(String copyId) {
-        return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> abortCopyFromUrl(String copyId) {
+        return abortCopyFromUrlWithResponse(copyId, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -335,12 +335,12 @@ public class BlobAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId,
+    public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId,
                                                              LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
+        return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseAccessConditions, context));
     }
 
-    Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+    Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
         Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
             null, null, copyId, null, null, leaseAccessConditions, context))
@@ -360,8 +360,8 @@ public class BlobAsyncClient {
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<String> copyFromUrl(URL copySource) {
+        return copyFromUrlWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -384,13 +384,13 @@ public class BlobAsyncClient {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+    public Mono<Response<String>> copyFromUrlWithResponse(URL copySource, Metadata metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
-        return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
+        return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
             sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+    Mono<Response<String>> copyFromUrlWithResponse(URL copySource, Metadata metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
@@ -724,8 +724,8 @@ public class BlobAsyncClient {
      * @param headers {@link BlobHTTPHeaders}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setHTTPHeaders(BlobHTTPHeaders headers) {
-        return setHTTPHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setHttpHeaders(BlobHTTPHeaders headers) {
+        return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -743,12 +743,12 @@ public class BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHTTPHeaders headers,
+    public Mono<Response<Void>> setHttpHeadersWithResponse(BlobHTTPHeaders headers,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> setHTTPHeadersWithResponse(headers, accessConditions, context));
+        return withContext(context -> setHttpHeadersWithResponse(headers, accessConditions, context));
     }
 
-    Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
+    Mono<Response<Void>> setHttpHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
         Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -992,9 +992,9 @@ public class BlobAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null /*
+        return this.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime, null /*
         startTime */, null /* version */, null /*sasProtocol */, null /* ipRange */, null /* cacheControl */, null
             /*contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1012,10 +1012,10 @@ public class BlobAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
+        return this.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1046,7 +1046,7 @@ public class BlobAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
@@ -1055,7 +1055,7 @@ public class BlobAsyncClient {
             sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
             null /* identifier*/, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSasSignatureValues(blobServiceSASSignatureValues,
             accountName);
 
         BlobServiceSASQueryParameters blobServiceSasQueryParameters =
@@ -1071,8 +1071,8 @@ public class BlobAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(BlobSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(BlobSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1083,8 +1083,8 @@ public class BlobAsyncClient {
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1101,9 +1101,9 @@ public class BlobAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
     }
@@ -1132,7 +1132,7 @@ public class BlobAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
@@ -1145,7 +1145,7 @@ public class BlobAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSasSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
         BlobServiceSASQueryParameters blobServiceSasQueryParameters =
@@ -1157,7 +1157,7 @@ public class BlobAsyncClient {
     /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    BlobServiceSASSignatureValues configureServiceSASSignatureValues(
+    BlobServiceSASSignatureValues configureServiceSasSignatureValues(
         BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
 
         // Set canonical name

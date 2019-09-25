@@ -117,7 +117,7 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = bu.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = bu.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
 
@@ -164,7 +164,7 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = snapshotBlob.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName, snapshotId).asBlockBlobClient()
 
@@ -201,17 +201,17 @@ class SASTest extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         when:
-        String sasWithId = cc.generateSAS(identifier.getId())
+        String sasWithId = cc.generateSas(identifier.getId())
 
         ContainerClient client1 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithId), cc.getContainerUrl().toString())
 
-        client1.listBlobsFlat().iterator().hasNext()
+        client1.listBlobs().iterator().hasNext()
 
-        String sasWithPermissions = cc.generateSAS(permissions, expiryTime)
+        String sasWithPermissions = cc.generateSas(permissions, expiryTime)
 
         ContainerClient client2 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
 
-        client2.listBlobsFlat().iterator().hasNext()
+        client2.listBlobs().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -250,7 +250,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        String sas = bu.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = bu.generateUserDelegationSas(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         then:
         sas != null
@@ -300,7 +300,7 @@ class SASTest extends APISpec {
         String contentType = "type"
 
         when:
-        String sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = snapshotBlob.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         and:
         AppendBlobClient client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), containerClient.getContainerUrl().toString(), blobName).asAppendBlobClient()
@@ -365,7 +365,7 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
         when:
-        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = snapshotBlob.generateUserDelegationSas(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
         BlockBlobClient client1 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
@@ -411,10 +411,10 @@ class SASTest extends APISpec {
         UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        String sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime)
+        String sasWithPermissions = cc.generateUserDelegationSas(key, primaryCredential.getAccountName(), permissions, expiryTime)
 
         ContainerClient client = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
-        client.listBlobsFlat().iterator().hasNext()
+        client.listBlobs().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -648,7 +648,7 @@ class SASTest extends APISpec {
         def bu = cc.getBlockBlobClient(blobName)
 
         when:
-        def serviceSASSignatureValues = bu.blockBlobAsyncClient.configureServiceSASSignatureValues(new BlobServiceSASSignatureValues(), accountName)
+        def serviceSASSignatureValues = bu.blockBlobAsyncClient.configureServiceSasSignatureValues(new BlobServiceSASSignatureValues(), accountName)
 
         then:
         serviceSASSignatureValues.getCanonicalName() == "/blob/" + accountName + cc.containerUrl.path + "/" + blobName

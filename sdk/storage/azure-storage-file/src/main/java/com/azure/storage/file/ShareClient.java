@@ -794,8 +794,8 @@ public class ShareClient {
      * @param permissions The {@code ShareSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, ShareSASPermission permissions) {
-        return this.client.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, ShareSASPermission permissions) {
+        return this.client.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -804,8 +804,8 @@ public class ShareClient {
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.client.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.client.generateSas(identifier);
     }
 
     /**
@@ -820,9 +820,9 @@ public class ShareClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
     }
 
     /**
@@ -849,10 +849,10 @@ public class ShareClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 

@@ -443,9 +443,9 @@ public final class QueueServiceAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+        return this.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
             null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
     }
 
@@ -469,7 +469,7 @@ public final class QueueServiceAsyncClient {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
 

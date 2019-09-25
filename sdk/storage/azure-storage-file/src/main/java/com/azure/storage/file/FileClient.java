@@ -624,9 +624,9 @@ public class FileClient {
      * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public FileUploadRangeFromURLInfo uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
+    public FileUploadRangeFromURLInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
         URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
             .getValue();
     }
 
@@ -654,9 +654,9 @@ public class FileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Response<FileUploadRangeFromURLInfo> uploadRangeFromURLWithResponse(long length, long destinationOffset,
+    public Response<FileUploadRangeFromURLInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, URI sourceURI, Duration timeout, Context context) {
-        Mono<Response<FileUploadRangeFromURLInfo>> response = fileAsyncClient.uploadRangeFromURLWithResponse(length,
+        Mono<Response<FileUploadRangeFromURLInfo>> response = fileAsyncClient.uploadRangeFromUrlWithResponse(length,
             destinationOffset, sourceOffset, sourceURI, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -859,8 +859,8 @@ public class FileClient {
      * @param permissions The {@code FileSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, FileSASPermission permissions) {
-        return this.fileAsyncClient.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, FileSASPermission permissions) {
+        return this.fileAsyncClient.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -869,8 +869,8 @@ public class FileClient {
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.fileAsyncClient.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.fileAsyncClient.generateSas(identifier);
     }
 
     /**
@@ -885,9 +885,9 @@ public class FileClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.fileAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
 
@@ -915,10 +915,10 @@ public class FileClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.fileAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 

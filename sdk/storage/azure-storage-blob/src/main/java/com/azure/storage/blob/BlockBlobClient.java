@@ -264,8 +264,7 @@ public final class BlockBlobClient extends BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange}
-     *
-     * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     *  @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -273,8 +272,8 @@ public final class BlockBlobClient extends BlobClient {
      * authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
      */
-    public void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
+    public void stageBlockFromUrl(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
+        stageBlockFromUrlWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
@@ -302,10 +301,10 @@ public final class BlockBlobClient extends BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
+    public Response<Void> stageBlockFromUrlWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
         byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL,
+        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromUrlWithResponse(base64BlockID, sourceURL,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

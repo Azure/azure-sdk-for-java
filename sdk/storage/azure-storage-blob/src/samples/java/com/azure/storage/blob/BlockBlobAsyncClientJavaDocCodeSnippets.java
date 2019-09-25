@@ -172,11 +172,11 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURL(String, URL, BlobRange)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrl(String, URL, BlobRange)}
      */
     public void stageBlockFromURL() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURL#String-URL-BlobRange
-        client.stageBlockFromURL(base64BlockID, sourceURL, new BlobRange(offset, count))
+        client.stageBlockFromUrl(base64BlockID, sourceURL, new BlobRange(offset, count))
             .subscribe(
                 response -> System.out.println("Staging block completed"),
                 error -> System.out.printf("Error when calling stage Block: %s", error));
@@ -184,7 +184,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURLWithResponse(String, URL, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, URL, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions)}
      */
     public void stageBlockFromURL2() {
         // BEGIN: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
@@ -192,7 +192,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()
             .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.stageBlockFromURLWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
+        client.stageBlockFromUrlWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
             leaseAccessConditions, sourceModifiedAccessConditions).subscribe(response ->
             System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions

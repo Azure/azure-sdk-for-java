@@ -46,30 +46,30 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(URL)}
+     * Code snippets for {@link BlobAsyncClient#startCopyFromUrl(URL)}
      */
     public void startCopyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
-        client.startCopyFromURL(url)
+        client.startCopyFromUrl(url)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromUrl(String)}
      */
     public void abortCopyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
+        client.abortCopyFromUrl(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURL(URL)}
+     * Code snippets for {@link BlobAsyncClient#copyFromUrl(URL)}
      */
     public void copyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
-        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
+        client.copyFromUrl(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
     }
 
@@ -147,11 +147,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeaders(BlobHTTPHeaders)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeaders(BlobHTTPHeaders)}
      */
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders
-        client.setHTTPHeaders(new BlobHTTPHeaders()
+        client.setHttpHeaders(new BlobHTTPHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders
@@ -215,8 +215,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Metadata, AccessTier,
-     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#startCopyFromUrlWithResponse(URL, Metadata, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
@@ -227,27 +226,26 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
+        client.startCopyFromUrlWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
         // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromUrlWithResponse(String, LeaseAccessConditions)}
      */
     public void abortCopyFromURLWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-        client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
+        client.abortCopyFromUrlWithResponse(copyId, leaseAccessConditions)
             .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Metadata, AccessTier,
-     * ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#copyFromUrlWithResponse(URL, Metadata, AccessTier, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
@@ -258,7 +256,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
+        client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
     }
@@ -314,7 +312,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeadersWithResponse(BlobHTTPHeaders, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeadersWithResponse(BlobHTTPHeaders, BlobAccessConditions)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
 
@@ -322,7 +320,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.setHTTPHeadersWithResponse(new BlobHTTPHeaders()
+        client.setHttpHeadersWithResponse(new BlobHTTPHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"), accessConditions).subscribe(
                 response ->
@@ -394,8 +392,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
-     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSas(UserDelegationKey, String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
@@ -420,15 +417,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         String accountName = "accountName";
         UserDelegationKey userDelegationKey = new UserDelegationKey();
 
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
-     * String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link BlobAsyncClient#generateSas(String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
@@ -453,7 +449,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+        String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }

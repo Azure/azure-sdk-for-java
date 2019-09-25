@@ -208,8 +208,8 @@ public class BlobClient {
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return The copy ID for the long running operation.
      */
-    public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
+    public String startCopyFromUrl(URL sourceURL) {
+        return startCopyFromUrlWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -235,11 +235,11 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+    public Response<String> startCopyFromUrlWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
+            .startCopyFromUrlWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
                 destAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -258,8 +258,8 @@ public class BlobClient {
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
      */
-    public void abortCopyFromURL(String copyId) {
-        abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
+    public void abortCopyFromUrl(String copyId) {
+        abortCopyFromUrlWithResponse(copyId, null, null, Context.NONE);
     }
 
     /**
@@ -280,9 +280,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+    public Response<Void> abortCopyFromUrlWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
+        Mono<Response<Void>> response = blobAsyncClient.abortCopyFromUrlWithResponse(copyId, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -301,8 +301,8 @@ public class BlobClient {
      * @param copySource The source URL to copy from.
      * @return The copy ID for the long running operation.
      */
-    public String copyFromURL(URL copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
+    public String copyFromUrl(URL copySource) {
+        return copyFromUrlWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -327,11 +327,11 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+    public Response<String> copyFromUrlWithResponse(URL copySource, Metadata metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Duration timeout, Context context) {
         Mono<Response<String>> response = blobAsyncClient
-            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
+            .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -547,8 +547,8 @@ public class BlobClient {
      *
      * @param headers {@link BlobHTTPHeaders}
      */
-    public void setHTTPHeaders(BlobHTTPHeaders headers) {
-        setHTTPHeadersWithResponse(headers, null, null, Context.NONE);
+    public void setHttpHeaders(BlobHTTPHeaders headers) {
+        setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
     /**
@@ -568,10 +568,10 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
+    public Response<Void> setHttpHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = blobAsyncClient
-            .setHTTPHeadersWithResponse(headers, accessConditions, context);
+            .setHttpHeadersWithResponse(headers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -788,9 +788,9 @@ public class BlobClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime);
+        return this.blobAsyncClient.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime);
     }
 
     /**
@@ -806,10 +806,10 @@ public class BlobClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange) {
-        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        return this.blobAsyncClient.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange);
     }
 
@@ -839,11 +839,11 @@ public class BlobClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
-        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        return this.blobAsyncClient.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
     }
@@ -855,8 +855,8 @@ public class BlobClient {
      * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions) {
-        return this.blobAsyncClient.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, BlobSASPermission permissions) {
+        return this.blobAsyncClient.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -865,8 +865,8 @@ public class BlobClient {
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.blobAsyncClient.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.blobAsyncClient.generateSas(identifier);
     }
 
     /**
@@ -881,9 +881,9 @@ public class BlobClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.blobAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.blobAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
 
@@ -911,10 +911,10 @@ public class BlobClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.blobAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.blobAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 

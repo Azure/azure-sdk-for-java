@@ -106,7 +106,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromURL(PageRange, URL, Long)}
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrl(PageRange, URL, Long)}
      */
     public void uploadPagesFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long
@@ -114,15 +114,14 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .setStart(0)
             .setEnd(511);
 
-        client.uploadPagesFromURL(pageRange, url, sourceOffset)
+        client.uploadPagesFromUrl(pageRange, url, sourceOffset)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getBlobSequenceNumber()));
         // END: com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromURLWithResponse(PageRange, URL, Long, byte[],
-     * PageBlobAccessConditions, SourceModifiedAccessConditions)}
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrlWithResponse(PageRange, URL, Long, byte[], PageBlobAccessConditions, SourceModifiedAccessConditions)}
      */
     public void uploadPagesFromURLWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions
@@ -136,7 +135,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         SourceModifiedAccessConditions sourceAccessConditions = new SourceModifiedAccessConditions()
             .setSourceIfModifiedSince(OffsetDateTime.now());
 
-        client.uploadPagesFromURLWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
+        client.uploadPagesFromUrlWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
                 sourceAccessConditions)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));

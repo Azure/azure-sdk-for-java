@@ -62,7 +62,7 @@ public class Sample {
 
         // list blobs and download results
         System.out.println("Listing/downloading blobs:");
-        for (BlobItem item : containerClient.listBlobsFlat()) {
+        for (BlobItem item : containerClient.listBlobs()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             containerClient.getBlobClient(item.getName()).download(stream);
             System.out.println(item.getName() + ": " + new String(stream.toByteArray()));
@@ -130,7 +130,7 @@ public class Sample {
             .thenMany(Flux.defer(() -> {
                 System.out.println();
                 System.out.println("Listing/downloading blobs:");
-                return finalContainerClient.listBlobsFlat();
+                return finalContainerClient.listBlobs();
             }))
             // download results
             .flatMap(listItem ->

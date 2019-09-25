@@ -389,7 +389,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setReadPermission(true), getUTCNow().plusDays(1))
+        def sasToken = primaryFileAsyncClient.generateSas(new FileSASPermission().setReadPermission(true), getUTCNow().plusDays(1))
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
@@ -397,7 +397,7 @@ class FileAsyncAPITests extends APISpec {
             .buildFileAsyncClient()
 
         client.create(1024).block()
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI()).block()
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath + "?" + sasToken).toURI()).block()
 
         then:
         def result = new String(client.downloadWithProperties().block().getBody().blockLast().array())

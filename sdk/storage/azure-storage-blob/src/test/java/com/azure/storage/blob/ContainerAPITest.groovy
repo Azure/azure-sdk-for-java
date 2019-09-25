@@ -571,7 +571,7 @@ class ContainerAPITest extends APISpec {
         bu.setCreate(512)
 
         when:
-        Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()
+        Iterator<BlobItem> blobs = cc.listBlobs().iterator()
 
         //ContainerListBlobFlatSegmentHeaders headers = response.headers()
         //List<BlobItem> blobs = responseiterator()()
@@ -614,7 +614,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat min"() {
         when:
-        cc.listBlobsFlat().iterator().hasNext()
+        cc.listBlobs().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -626,7 +626,7 @@ class ContainerAPITest extends APISpec {
 
         def copyBlob = cc.getPageBlobClient(copyName)
 
-        copyBlob.startCopyFromURL(normal.getBlobUrl())
+        copyBlob.startCopyFromUrl(normal.getBlobUrl())
         def start = OffsetDateTime.now()
         def status = CopyStatusType.PENDING
         while (status != CopyStatusType.SUCCESS) {
@@ -671,7 +671,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobs(options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -695,7 +695,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobs(options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -716,7 +716,7 @@ class ContainerAPITest extends APISpec {
         String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobs(options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -735,7 +735,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsFlat(options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobs(options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -753,7 +753,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
-        Iterator<BlobItem> blobs = cc.listBlobsFlat(options, null).iterator()
+        Iterator<BlobItem> blobs = cc.listBlobs(options, null).iterator()
 
         then:
         blobs.next().getName() == name
@@ -772,7 +772,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cc.listBlobsFlat(options, null).iterator()
+        Iterator<BlobItem> blobs = cc.listBlobs(options, null).iterator()
 
         then:
         blobs.next().getName() == normalName
@@ -791,8 +791,8 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         expect: "Get first page of blob listings (sync and async)"
-        cc.listBlobsFlat(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
-        ccAsync.listBlobsFlat(options).byPage().blockFirst().getValue().size() == PAGE_SIZE
+        cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
+        ccAsync.listBlobs(options).byPage().blockFirst().getValue().size() == PAGE_SIZE
     }
 
     def "List blobs flat options fail"() {
@@ -813,7 +813,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "list blobs with sync client"
-        def pagedIterable = cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
+        def pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
         def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
         def pagedSyncResponse2 = pagedIterable.iterableByPage(pagedSyncResponse1.getNextLink()).iterator().next()
 
@@ -824,7 +824,7 @@ class ContainerAPITest extends APISpec {
 
 
         when: "list blobs with async client"
-        def pagedFlux = ccAsync.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE))
+        def pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResults(PAGE_SIZE))
         def pagedResponse1 = pagedFlux.byPage().blockFirst()
         def pagedResponse2 = pagedFlux.byPage(pagedResponse1.getNextLink()).blockFirst()
 
@@ -839,7 +839,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
 
         when:
-        cc.listBlobsFlat().iterator().hasNext()
+        cc.listBlobs().iterator().hasNext()
 
         then:
         thrown(StorageException)
@@ -858,7 +858,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        cc.listBlobs(new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -877,7 +877,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        cc.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -890,7 +890,7 @@ class ContainerAPITest extends APISpec {
         bu.setCreate(512)
 
         when:
-        Iterator<BlobItem> blobs = cc.listBlobsHierarchy(null).iterator()
+        Iterator<BlobItem> blobs = cc.listBlobsByHierarchy(null).iterator()
 
         then:
 //        response.getStatusCode() == 200
@@ -904,7 +904,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hierarchy min"() {
         when:
-        cc.listBlobsHierarchy("/").iterator().hasNext()
+        cc.listBlobsByHierarchy("/").iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -920,7 +920,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsHierarchy("", options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsByHierarchy("", options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -944,7 +944,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsHierarchy("", options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsByHierarchy("", options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -965,7 +965,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsHierarchy("", options, null).iterator())
+        List<BlobItem> blobs = blobListResponseToList(cc.listBlobsByHierarchy("", options, null).iterator())
 
         then:
         blobs.get(0).getName() == normalName
@@ -983,7 +983,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
-        def blobs = cc.listBlobsHierarchy("", options, null).iterator()
+        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
 
         then:
         blobs.next().getName() == name
@@ -1002,7 +1002,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cc.listBlobsHierarchy("", options, null).iterator()
+        Iterator<BlobItem> blobs = cc.listBlobsByHierarchy("", options, null).iterator()
 
         then:
         blobs.next().getName() == normalName
@@ -1022,7 +1022,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         // use async client, as there is no paging functionality for sync yet
-        def blobs = ccAsync.listBlobsHierarchy("", options).byPage().blockFirst()
+        def blobs = ccAsync.listBlobsByHierarchy("", options).byPage().blockFirst()
 
         then:
         blobs.getValue().size() == 1
@@ -1033,7 +1033,7 @@ class ContainerAPITest extends APISpec {
         when:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setSnapshots(snapshots))
                 .setMaxResults(maxResults)
-        cc.listBlobsHierarchy(null, options, null).iterator().hasNext()
+        cc.listBlobsByHierarchy(null, options, null).iterator().hasNext()
 
         then:
         thrown(exceptionType)
@@ -1055,7 +1055,7 @@ class ContainerAPITest extends APISpec {
         when:
         def foundBlobs = [] as Set
         def foundPrefixes = [] as Set
-        cc.listBlobsHierarchy(null).stream().collect(Collectors.toList())
+        cc.listBlobsByHierarchy(null).stream().collect(Collectors.toList())
             .forEach { blobItem ->
             if (blobItem.isPrefix()) {
                 foundPrefixes << blobItem.getName()
@@ -1083,7 +1083,7 @@ class ContainerAPITest extends APISpec {
             bc.setCreate(512)
         }
 
-        def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
+        def blobs = cc.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
 
         when:
         def firstPage = blobs.iterableByPage().iterator().next()
@@ -1110,7 +1110,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
-        cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null).stream().count() == NUM_BLOBS
+        cc.listBlobs(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null).stream().count() == NUM_BLOBS
     }
 
     def "List blobs hier error"() {
@@ -1118,7 +1118,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
 
         when:
-        cc.listBlobsHierarchy(".").iterator().hasNext()
+        cc.listBlobsByHierarchy(".").iterator().hasNext()
 
         then:
         thrown(StorageException)
@@ -1140,7 +1140,7 @@ class ContainerAPITest extends APISpec {
         bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
 
         when:
-        Iterator<BlobItem> blobs = cc.listBlobsFlat().iterator()
+        Iterator<BlobItem> blobs = cc.listBlobs().iterator()
 
         then:
         blobs.next().getName() == name

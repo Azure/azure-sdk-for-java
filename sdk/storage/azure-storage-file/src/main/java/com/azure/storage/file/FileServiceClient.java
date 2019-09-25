@@ -319,7 +319,7 @@ public final class FileServiceClient {
     public Response<ShareClient> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB, Duration timeout, Context context) {
         ShareClient shareClient = getShareClient(shareName);
-        return new SimpleResponse<>(shareClient.createWithResponse(metadata, quotaInGB, null, context), shareClient);
+        return new SimpleResponse<>(shareClient.createWithResponse(metadata, quotaInGB, timeout, context), shareClient);
     }
 
     /**
@@ -378,10 +378,10 @@ public final class FileServiceClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
         return this.fileServiceAsyncClient
-            .generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+            .generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
     }
 
     /**
@@ -404,10 +404,10 @@ public final class FileServiceClient {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
-        return this.fileServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
+        return this.fileServiceAsyncClient.generateAccountSas(accountSASService, accountSASResourceType,
             accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

@@ -32,8 +32,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     private BlobServiceAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobServiceAsyncClient();
 
     /**
-     * Generates a code sample for using {@link BlobServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * Generates a code sample for using {@link BlobServiceAsyncClient#generateAccountSas(AccountSASService, AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
      */
     public void generateAccountSAS() {
         // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
@@ -63,7 +62,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
+        String sas = client.generateAccountSas(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
         // END: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
     }

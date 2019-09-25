@@ -894,8 +894,8 @@ public class ShareAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(ShareSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(ShareSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -906,8 +906,8 @@ public class ShareAsyncClient {
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -924,9 +924,9 @@ public class ShareAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
     }
@@ -955,7 +955,7 @@ public class ShareAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 

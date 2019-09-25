@@ -235,8 +235,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * blob.
      * @return A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null)
+    public Mono<PageBlobItem> uploadPagesFromUrl(PageRange range, URL sourceURL, Long sourceOffset) {
+        return uploadPagesFromUrlWithResponse(range, sourceURL, sourceOffset, null, null, null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -264,14 +264,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL,
+    public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, URL sourceURL,
         Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
-        return withContext(context -> uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, sourceContentMD5,
+        return withContext(context -> uploadPagesFromUrlWithResponse(range, sourceURL, sourceOffset, sourceContentMD5,
             destAccessConditions, sourceAccessConditions, context));
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
+    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         if (range == null) {

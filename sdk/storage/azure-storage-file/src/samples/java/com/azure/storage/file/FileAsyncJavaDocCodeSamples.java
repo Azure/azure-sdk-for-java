@@ -299,13 +299,13 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURL(long, long, long, URI)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrl(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
-        fileAsyncClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        fileAsyncClient.uploadRangeFromUrl(6, 8, 0, new URI("filewithSAStoken")).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
@@ -314,13 +314,13 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURLWithResponse(long, long, long, URI)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
-        fileAsyncClient.uploadRangeFromURLWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        fileAsyncClient.uploadRangeFromUrlWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
@@ -642,8 +642,7 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#generateSAS(String, FileSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Generates a code sample for using {@link FileAsyncClient#generateSas(String, FileSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
@@ -666,7 +665,7 @@ public class FileAsyncJavaDocCodeSamples {
         String contentLanguage = "language";
         String contentType = "type";
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        String sas = fileAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
         // END: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }

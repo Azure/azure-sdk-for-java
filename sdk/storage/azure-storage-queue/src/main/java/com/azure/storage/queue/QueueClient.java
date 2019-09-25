@@ -666,8 +666,8 @@ public final class QueueClient {
      * @param permissions The {@code QueueSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, QueueSASPermission permissions) {
-        return this.client.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, QueueSASPermission permissions) {
+        return this.client.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -676,8 +676,8 @@ public final class QueueClient {
      * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.client.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.client.generateSas(identifier);
     }
 
     /**
@@ -699,9 +699,9 @@ public final class QueueClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
 

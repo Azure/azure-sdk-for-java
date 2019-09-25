@@ -33,16 +33,16 @@ import java.util.function.Function;
  * retry mechanism.
  */
 public final class DownloadAsyncResponse {
-    private final HTTPGetterInfo info;
+    private final HttpGetterInfo info;
 
     private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse;
 
-    private final Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter;
+    private final Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
     DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
-        HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
+        HttpGetterInfo info, Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
         Utility.assertNotNull("info.eTag", info.getETag());

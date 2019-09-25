@@ -271,8 +271,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSas(AccountSASService, AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
      */
     public void generateAccountSAS() {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
@@ -302,7 +301,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
+        String sas = client.generateAccountSas(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
         // END: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
     }

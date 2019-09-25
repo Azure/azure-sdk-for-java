@@ -663,8 +663,8 @@ public final class ContainerAsyncClient {
      *
      * @return A reactive response emitting the flattened blobs.
      */
-    public PagedFlux<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions());
+    public PagedFlux<BlobItem> listBlobs() {
+        return this.listBlobs(new ListBlobsOptions());
     }
 
     /**
@@ -692,8 +692,8 @@ public final class ContainerAsyncClient {
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    public PagedFlux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
-        return listBlobsFlatWithOptionalTimeout(options, null);
+    public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options) {
+        return listBlobsWithOptionalTimeout(options, null);
     }
 
     /*
@@ -705,9 +705,9 @@ public final class ContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, Duration timeout) {
+    PagedFlux<BlobItem> listBlobsWithOptionalTimeout(ListBlobsOptions options, Duration timeout) {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsFlatSegment(marker, options, timeout)
+            marker -> listBlobsSegment(marker, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? new ArrayList<>(0)
@@ -741,7 +741,7 @@ public final class ContainerAsyncClient {
      *
      * @return Emits the successful response.
      */
-    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
+    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsSegment(String marker, ListBlobsOptions options,
         Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
@@ -781,8 +781,8 @@ public final class ContainerAsyncClient {
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedFlux<BlobItem> listBlobsHierarchy(String directory) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory));
+    public PagedFlux<BlobItem> listBlobsByHierarchy(String directory) {
+        return this.listBlobsByHierarchy("/", new ListBlobsOptions().setPrefix(directory));
     }
 
     /**
@@ -817,8 +817,8 @@ public final class ContainerAsyncClient {
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedFlux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
-        return listBlobsHierarchyWithOptionalTimeout(delimiter, options, null);
+    public PagedFlux<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options) {
+        return listBlobsByHierarchy(delimiter, options, null);
     }
 
     /*
@@ -831,10 +831,10 @@ public final class ContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
+    PagedFlux<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options,
         Duration timeout) {
         Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
+            marker -> listBlobsByHierarchySegment(marker, delimiter, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? new ArrayList<>(0)
@@ -856,7 +856,7 @@ public final class ContainerAsyncClient {
         return new PagedFlux<>(() -> func.apply(null), func);
     }
 
-    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
+    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsByHierarchySegment(String marker, String delimiter,
         ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
         if (options.getDetails().getSnapshots()) {
@@ -922,9 +922,9 @@ public final class ContainerAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         ContainerSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null, null,
+        return this.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime, null, null,
             null, null, null, null, null, null, null);
     }
 
@@ -941,10 +941,10 @@ public final class ContainerAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
+        return this.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -975,7 +975,7 @@ public final class ContainerAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
@@ -984,7 +984,7 @@ public final class ContainerAsyncClient {
             null /* identifier*/, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
         BlobServiceSASSignatureValues values =
-            configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
+            configureServiceSasSignatureValues(blobServiceSASSignatureValues, accountName);
 
         BlobServiceSASQueryParameters blobServiceSasQueryParameters =
             values.generateSASQueryParameters(userDelegationKey);
@@ -999,8 +999,8 @@ public final class ContainerAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(ContainerSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions,  /* identifier */  expiryTime, null /* startTime */, null /* version
+    public String generateSas(ContainerSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions,  /* identifier */  expiryTime, null /* startTime */, null /* version
              */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentDisposition */,
             null /* contentEncoding */, null /* contentLanguage */, null /*contentType*/);
     }
@@ -1011,8 +1011,8 @@ public final class ContainerAsyncClient {
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null /* permissions*/, null /* expiryTime */, null /* startTime */, null
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null /* permissions*/, null /* expiryTime */, null /* startTime */, null
             /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /*contentType*/);
     }
@@ -1029,9 +1029,9 @@ public final class ContainerAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentDisposition */, null /* contentEncoding */, null /* contentLanguage */,
             null /*contentType*/);
     }
@@ -1060,7 +1060,7 @@ public final class ContainerAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version,
@@ -1072,7 +1072,7 @@ public final class ContainerAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
+        BlobServiceSASSignatureValues values = configureServiceSasSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
         BlobServiceSASQueryParameters blobServiceSasQueryParameters =
@@ -1097,7 +1097,7 @@ public final class ContainerAsyncClient {
     /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    private BlobServiceSASSignatureValues configureServiceSASSignatureValues(
+    private BlobServiceSASSignatureValues configureServiceSasSignatureValues(
         BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
         // Set canonical name
         blobServiceSASSignatureValues.setCanonicalName(this.azureBlobStorage.getUrl(), accountName);

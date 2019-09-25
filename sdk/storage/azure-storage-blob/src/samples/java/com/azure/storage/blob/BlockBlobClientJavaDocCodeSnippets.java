@@ -157,16 +157,16 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#stageBlockFromURL(String, URL, BlobRange)}
+     * Code snippet for {@link BlockBlobClient#stageBlockFromUrl(String, URL, BlobRange)}
      */
     public void stageBlockFromURL() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange
-        client.stageBlockFromURL(base64BlockID, sourceURL, new BlobRange(offset, count));
+        client.stageBlockFromUrl(base64BlockID, sourceURL, new BlobRange(offset, count));
         // END: com.azure.storage.blob.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#stageBlockFromURLWithResponse(String, URL, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#stageBlockFromUrlWithResponse(String, URL, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
     public void stageBlockFromURL2() {
         // BEGIN: com.azure.storage.blob.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
@@ -176,7 +176,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Staging block from URL completed with status %d%n",
-            client.stageBlockFromURLWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
+            client.stageBlockFromUrlWithResponse(base64BlockID, sourceURL, new BlobRange(offset, count), null,
                 leaseAccessConditions, sourceModifiedAccessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }

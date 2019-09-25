@@ -141,7 +141,7 @@ class FileSASTests extends APISpec {
         def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = primaryFileClient.fileAsyncClient.configureServiceSASSignatureValues(new FileServiceSASSignatureValues(), accountName)
+        def serviceSASSignatureValues = primaryFileClient.fileAsyncClient.configureServiceSasSignatureValues(new FileServiceSASSignatureValues(), accountName)
 
         then:
         serviceSASSignatureValues.getCanonicalName() == "/file/" + accountName  + "/" + shareName + "/" + fileName
@@ -171,7 +171,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = primaryFileClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         then:
         sas != null
@@ -218,7 +218,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = primaryFileClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl().toString())
@@ -257,7 +257,7 @@ class FileSASTests extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         when:
-        String sasWithId = primaryShareClient.generateSAS(identifier.getId())
+        String sasWithId = primaryShareClient.generateSas(identifier.getId())
 
         ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryShareClient.getShareUrl().toString())
@@ -267,7 +267,7 @@ class FileSASTests extends APISpec {
         client1.createDirectory("dir")
         client1.deleteDirectory("dir")
 
-        String sasWithPermissions = primaryShareClient.generateSAS(expiryTime, permissions)
+        String sasWithPermissions = primaryShareClient.generateSas(expiryTime, permissions)
 
         def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryFileClient.getFileUrl().toString())
@@ -296,7 +296,7 @@ class FileSASTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryFileServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryFileServiceClient.generateAccountSas(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         then:
         sas != null

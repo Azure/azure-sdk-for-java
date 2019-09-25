@@ -812,9 +812,9 @@ public class FileAsyncClient {
      * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<FileUploadRangeFromURLInfo> uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
+    public Mono<FileUploadRangeFromURLInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
         URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI)
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -838,13 +838,13 @@ public class FileAsyncClient {
      * and response status code.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length,
+    public Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromUrlWithResponse(long length,
         long destinationOffset, long sourceOffset, URI sourceURI) {
         return withContext(context ->
-            uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
+            uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
     }
 
-    Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length, long destinationOffset,
+    Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, URI sourceURI, Context context) {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
@@ -1110,8 +1110,8 @@ public class FileAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(FileSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(FileSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1122,8 +1122,8 @@ public class FileAsyncClient {
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1140,9 +1140,9 @@ public class FileAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
     }
@@ -1171,7 +1171,7 @@ public class FileAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
@@ -1184,7 +1184,7 @@ public class FileAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
+        FileServiceSASSignatureValues values = configureServiceSasSignatureValues(fileServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
         FileServiceSASQueryParameters fileServiceSasQueryParameters =
@@ -1196,7 +1196,7 @@ public class FileAsyncClient {
     /**
      * Sets fileServiceSASSignatureValues parameters dependent on the current file type
      */
-    FileServiceSASSignatureValues configureServiceSASSignatureValues(
+    FileServiceSASSignatureValues configureServiceSasSignatureValues(
         FileServiceSASSignatureValues fileServiceSASSignatureValues, String accountName) {
 
         // Set canonical name
