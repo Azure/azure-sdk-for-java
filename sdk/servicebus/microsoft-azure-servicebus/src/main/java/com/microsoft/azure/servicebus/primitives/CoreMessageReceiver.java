@@ -758,14 +758,15 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         Timer.schedule(
             () -> {
                 if (!linkOpen.getWork().isDone()) {
-                    CoreMessageReceiver.this.closeInternals(false);
-                    CoreMessageReceiver.this.setClosed();
-
                     Exception operationTimedout = new TimeoutException(
                             String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", CoreMessageReceiver.this.receiveLink.getName(), CoreMessageReceiver.this.receivePath, ZonedDateTime.now()),
                             CoreMessageReceiver.this.lastKnownLinkError);
                     TRACE_LOGGER.warn(operationTimedout.getMessage());
                     ExceptionUtil.completeExceptionally(linkOpen.getWork(), operationTimedout, CoreMessageReceiver.this, true);
+                    
+                    CoreMessageReceiver.this.setClosing();
+                    CoreMessageReceiver.this.closeInternals(false);
+                    CoreMessageReceiver.this.setClosed();
                 }
             },
             timeout.remaining(),
