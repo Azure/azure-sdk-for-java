@@ -37,6 +37,6 @@ public final class RehydratePriority extends ExpandableStringEnum<RehydratePrior
      * @return known RehydratePriority values.
      */
     public static Collection<RehydratePriority> values() {
-        return values(RehydratePriority.class);
+        return getValues(RehydratePriority.class);
     }
 }

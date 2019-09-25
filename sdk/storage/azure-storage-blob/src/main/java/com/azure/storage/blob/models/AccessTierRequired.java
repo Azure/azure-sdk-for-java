@@ -97,6 +97,6 @@ public final class AccessTierRequired extends ExpandableStringEnum<AccessTierReq
      * @return known AccessTierRequired values.
      */
     public static Collection<AccessTierRequired> values() {
-        return values(AccessTierRequired.class);
+        return getValues(AccessTierRequired.class);
     }
 }

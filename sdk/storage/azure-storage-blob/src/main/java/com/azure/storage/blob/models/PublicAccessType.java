@@ -37,6 +37,6 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
      * @return known PublicAccessType values.
      */
     public static Collection<PublicAccessType> values() {
-        return values(PublicAccessType.class);
+        return getValues(PublicAccessType.class);
     }
 }
