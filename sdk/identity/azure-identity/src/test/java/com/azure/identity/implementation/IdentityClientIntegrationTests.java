@@ -3,12 +3,12 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import org.junit.Assert;
 import org.junit.Ignore;
+import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 
@@ -23,16 +23,16 @@ public class IdentityClientIntegrationTests {
     @Ignore("Integration test")
     public void clientSecretCanGetToken() {
         IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
-        AccessToken token = client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), request).block();
-        Assert.assertNotNull(token);
-        Assert.assertNotNull(token.getToken());
-        Assert.assertNotNull(token.getExpiresOn());
-        Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), new TokenRequest().addScopes("https://vault.azure.net/.default")).block();
-        Assert.assertNotNull(token);
-        Assert.assertNotNull(token.getToken());
-        Assert.assertNotNull(token.getExpiresOn());
-        Assert.assertFalse(token.isExpired());
+        StepVerifier.create(client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), request))
+            .expectNextMatches(token -> token.getToken() != null
+                && token.getExpiresOn() != null
+                && !token.isExpired())
+            .verifyComplete();
+        StepVerifier.create(client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), new TokenRequest().addScopes("https://vault.azure.net/.default")))
+            .expectNextMatches(token -> token.getToken() != null
+                && token.getExpiresOn() != null
+                && !token.isExpired())
+            .verifyComplete();
     }
 
     @Ignore("Integration tests")

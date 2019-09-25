@@ -3,7 +3,6 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
@@ -15,6 +14,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -74,9 +74,10 @@ public class ManagedIdentityCredentialTest {
 
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
-            AccessToken token = credential.getToken(request1).block();
-            Assert.assertEquals(token1, token.getToken());
-            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresOn.getSecond() == token.getExpiresOn().getSecond())
+                .verifyComplete();
         } finally {
             // clean up
             configuration.remove("MSI_ENDPOINT");
@@ -98,8 +99,9 @@ public class ManagedIdentityCredentialTest {
 
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
-        AccessToken token = credential.getToken(request).block();
-        Assert.assertEquals(token1, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        StepVerifier.create(credential.getToken(request))
+            .expectNextMatches(token -> token1.equals(token.getToken())
+                && expiresOn.getSecond() == token.getExpiresOn().getSecond())
+            .verifyComplete();
     }
 }

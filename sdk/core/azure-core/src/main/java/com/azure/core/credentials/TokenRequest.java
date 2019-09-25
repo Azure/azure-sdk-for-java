@@ -6,6 +6,7 @@ package com.azure.core.credentials;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Contains details of a request to Azure Active Directory to get a token.
@@ -34,6 +35,7 @@ public class TokenRequest {
      * @return the TokenRequest itself
      */
     public TokenRequest setScopes(List<String> scopes) {
+        Objects.requireNonNull(scopes);
         this.scopes.clear();
         this.scopes.addAll(scopes);
         return this;

@@ -3,12 +3,10 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
@@ -17,12 +15,12 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -63,12 +61,14 @@ public class UsernamePasswordCredentialTest {
         // test
         UsernamePasswordCredential credential =
             new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
-        AccessToken token = credential.getToken(request1).block();
-        Assert.assertEquals(token1, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
-        token = credential.getToken(request2).block();
-        Assert.assertEquals(token2, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
+        StepVerifier.create(credential.getToken(request2))
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
     }
 
     @Test
@@ -86,14 +86,11 @@ public class UsernamePasswordCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        try {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (MsalServiceException e) {
-            Assert.assertEquals("bad credential", e.getMessage());
-        }
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof MsalServiceException && "bad credential".equals(t.getMessage()))
+            .verify();
     }
 
     @Test
@@ -113,28 +110,21 @@ public class UsernamePasswordCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().username(username).password(password).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("clientId"));
-        }
-        try {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("password"));
-        }
-        try {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("username"));
-        }
+        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().username(username).password(password).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("clientId"))
+            .verify();
+
+        credential =
+            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("password"))
+            .verify();
+
+        credential =
+            new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("username"))
+            .verify();
     }
 }

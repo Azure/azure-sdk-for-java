@@ -3,13 +3,11 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenRequest;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,12 +16,12 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -55,9 +53,10 @@ public class DefaultAzureCredentialTest {
 
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-            AccessToken token = credential.getToken(request1).block();
-            Assert.assertEquals(token1, token.getToken());
-            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+                .verifyComplete();
         } finally {
             // clean up
             configuration.remove("AZURE_CLIENT_ID");
@@ -80,9 +79,10 @@ public class DefaultAzureCredentialTest {
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        AccessToken token = credential.getToken(request).block();
-        Assert.assertEquals(token1, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        StepVerifier.create(credential.getToken(request))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
     }
 
     @Ignore("Wont work if cache contains user")
@@ -96,12 +96,9 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        try {
-            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-            credential.getToken(request).block();
-            fail();
-        } catch (ClientAuthenticationException e) {
-            Assert.assertTrue(e.getMessage().contains("No credential can provide a token"));
-        }
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof ClientAuthenticationException && t.getMessage().contains("No credential can provide a token"))
+            .verify();
     }
 }

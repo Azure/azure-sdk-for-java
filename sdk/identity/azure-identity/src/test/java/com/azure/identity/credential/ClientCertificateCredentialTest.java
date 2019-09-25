@@ -3,24 +3,22 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -52,14 +50,15 @@ public class ClientCertificateCredentialTest {
         // test
         ClientCertificateCredential credential =
             new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
-        AccessToken token = credential.getToken(request1).block();
-        Assert.assertEquals(token1, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
         credential =
             new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
-        token = credential.getToken(request2).block();
-        Assert.assertEquals(token2, token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresOn().getSecond());
+        StepVerifier.create(credential.getToken(request2))
+            .expectErrorMatches(e -> e instanceof MsalServiceException && "bad secret".equals(e.getMessage()))
+            .verify();
     }
 
     @Test
@@ -79,21 +78,17 @@ public class ClientCertificateCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        try {
-            ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
-            credential.getToken(request1).block();
-        } catch (MsalServiceException e) {
-            Assert.assertEquals("bad pem", e.getMessage());
-        }
-        try {
-            ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
-            credential.getToken(request2).block();
-            fail();
-        } catch (MsalServiceException e) {
-            Assert.assertEquals("bad pfx", e.getMessage());
-        }
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pem".equals(e.getMessage()))
+            .verify();
+
+        credential =
+            new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
+            .verify();
     }
 
     @Test
@@ -110,28 +105,20 @@ public class ClientCertificateCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        try {
-            ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().clientId(clientId).pemCertificate(pemPath).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("tenantId"));
-        }
-        try {
-            ClientCertificateCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).pemCertificate(pemPath).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("clientId"));
-        }
-        try {
-            ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
-            credential.getToken(request).block();
-            fail();
-        } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("clientCertificate"));
-        }
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().clientId(clientId).pemCertificate(pemPath).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("tenantId"))
+            .verify();
+
+        credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).pemCertificate(pemPath).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("clientId"))
+            .verify();
+
+        credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof IllegalArgumentException && e.getMessage().contains("clientCertificate"))
+            .verify();
     }
 }
