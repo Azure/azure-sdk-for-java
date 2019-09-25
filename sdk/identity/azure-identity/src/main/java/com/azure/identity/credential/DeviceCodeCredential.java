@@ -29,14 +29,18 @@ public class DeviceCodeCredential implements TokenCredential {
      * Creates a DeviceCodeCredential with the given identity client options.
      *
      * @param clientId the client ID of the application
+     * @param tenantId the tenant ID of the application
      * @param deviceCodeChallengeConsumer a method allowing the user to meet the device code challenge
      * @param identityClientOptions the options for configuring the identity client
      */
-    DeviceCodeCredential(String clientId, Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer,
+    DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer,
                          IdentityClientOptions identityClientOptions) {
         this.deviceCodeChallengeConsumer = deviceCodeChallengeConsumer;
+        if (tenantId == null) {
+            tenantId = "common";
+        }
         identityClient = new IdentityClientBuilder()
-            .tenantId("common")
+            .tenantId(tenantId)
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();

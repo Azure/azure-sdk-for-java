@@ -274,7 +274,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(String[] scopes, int port) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + "common";
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
                 URI redirectUri;
