@@ -233,7 +233,7 @@ jobs:
         displayName: 'Start Jetty'
         condition: ne(variables['SdkType'], 'client')
         inputs:
-          mavenPomFile: pom.client.xml
+          mavenPomFile: pom.data.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
