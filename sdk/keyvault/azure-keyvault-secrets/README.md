@@ -225,7 +225,6 @@ SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
 
 secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
   System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value()));
-System.in.read();
 ```
 
 ### Retrieve a Secret Asynchronously
@@ -235,7 +234,6 @@ Retrieve a previously stored Secret by calling `getSecret`.
 secretAsyncClient.getSecret("secretName").subscribe(secret ->
   System.out.printf("Secret with name %s , value %s \n", secret.name(),
   secret.value()));
-System.in.read();
 ```
 
 ### Update an existing Secret Asynchronously
@@ -248,7 +246,6 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      secretAsyncClient.updateSecret(secret).subscribe(updatedSecret ->
          System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString()));
    });
-System.in.read();
 ```
 
 ### Delete a Secret Asynchronously
@@ -257,7 +254,6 @@ Delete an existing Secret by calling `deleteSecret`.
 ```Java
 secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecret ->
    System.out.printf("Deleted Secret's deletion time %s \n", deletedSecret.deletedDate().toString()));
-System.in.read();
 ```
 
 ### List Secrets Asynchronously
@@ -268,7 +264,6 @@ List the secrets in the key vault by calling `listSecrets`.
 secretAsyncClient.listSecrets()
   .flatMap(secretAsyncClient::getSecret).subscribe(secret ->
     System.out.printf("Secret with name %s , value %s \n", secret.name(), secret.value()));
-System.in.read();
 ```
 
 ## Troubleshooting
