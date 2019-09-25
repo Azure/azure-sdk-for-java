@@ -168,7 +168,7 @@ public class HttpRequest implements Serializable {
     }
 
     /**
-     * Creates a clone of the request.
+     * Creates a copy of the request.
      *
      * The main purpose of this is so that this HttpRequest can be changed and the resulting
      * HttpRequest can be a backup. This means that the cloned HttpHeaders and body must
@@ -176,7 +176,7 @@ public class HttpRequest implements Serializable {
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */
-    public HttpRequest clone() {
+    public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }

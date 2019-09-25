@@ -46,6 +46,11 @@ public final class SharedKeyCredential {
 
     /**
      * Creates a SharedKey credential from the passed connection string.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.common.credentials.SharedKeyCredential.fromConnectionString#String}
+     *
      * @param connectionString Connection string used to build the SharedKey credential.
      * @return a SharedKey credential if the connection string contains AccountName and AccountKey
      * @throws IllegalArgumentException If {@code connectionString} doesn't have AccountName or AccountKey.
@@ -154,7 +159,7 @@ public final class SharedKeyCredential {
                 canonicalizedHeaders.append('\n');
             }
 
-            canonicalizedHeaders.append(key)
+            canonicalizedHeaders.append(key.toLowerCase(Locale.ROOT))
                 .append(':')
                 .append(headers.get(key));
         }

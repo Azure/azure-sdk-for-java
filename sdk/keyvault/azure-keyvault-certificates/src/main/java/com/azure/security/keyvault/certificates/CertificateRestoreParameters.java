@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.core.implementation.Base64Url;
 
 /**
  * The certificate restore parameters.

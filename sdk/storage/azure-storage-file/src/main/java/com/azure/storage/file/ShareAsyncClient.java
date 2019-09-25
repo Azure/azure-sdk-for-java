@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -65,6 +65,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = ShareClientBuilder.class, isAsync = true)
 public class ShareAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareAsyncClient.class);
 
@@ -277,14 +278,14 @@ public class ShareAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist
      */
-    public Mono<VoidResponse> deleteWithResponse() {
+    public Mono<Response<Void>> deleteWithResponse() {
         return withContext(this::deleteWithResponse);
     }
 
-    Mono<VoidResponse> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(Context context) {
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, null, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -746,13 +747,12 @@ public class ShareAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist or the directory isn't empty
      */
-    public Mono<VoidResponse> deleteDirectoryWithResponse(String directoryName) {
+    public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName) {
         return withContext(context -> deleteDirectoryWithResponse(directoryName, context));
     }
 
-    Mono<VoidResponse> deleteDirectoryWithResponse(String directoryName, Context context) {
-        return postProcessResponse(getDirectoryClient(directoryName).deleteWithResponse(context))
-            .map(VoidResponse::new);
+    Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, Context context) {
+        return postProcessResponse(getDirectoryClient(directoryName).deleteWithResponse(context));
     }
 
     /**
@@ -791,13 +791,12 @@ public class ShareAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share or the file doesn't exist.
      */
-    public Mono<VoidResponse> deleteFileWithResponse(String fileName) {
+    public Mono<Response<Void>> deleteFileWithResponse(String fileName) {
         return withContext(context -> deleteFileWithResponse(fileName, context));
     }
 
-    Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
-        return postProcessResponse(getFileClient(fileName).deleteWithResponse(context))
-            .map(VoidResponse::new);
+    Mono<Response<Void>> deleteFileWithResponse(String fileName, Context context) {
+        return postProcessResponse(getFileClient(fileName).deleteWithResponse(context));
     }
 
     /**
@@ -976,6 +975,19 @@ public class ShareAsyncClient {
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return fileServiceSasQueryParameters.encode();
+    }
+
+    /**
+     * Get share name from share client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getShareName}
+     *
+     * @return The name of the share.
+     */
+    public String getShareName() {
+        return shareName;
     }
 
     /**

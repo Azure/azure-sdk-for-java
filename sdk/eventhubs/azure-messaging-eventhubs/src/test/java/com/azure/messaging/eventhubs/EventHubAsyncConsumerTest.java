@@ -6,8 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
@@ -69,6 +70,7 @@ public class EventHubAsyncConsumerTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
+    private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private Mono<AmqpReceiveLink> receiveLinkMono;
     private List<Message> messages = new ArrayList<>();
     private EventHubConsumerOptions options;
@@ -89,7 +91,7 @@ public class EventHubAsyncConsumerTest {
             .setPrefetchCount(PREFETCH)
             .setRetry(new RetryOptions())
             .setScheduler(Schedulers.elastic());
-        consumer = new EventHubAsyncConsumer(receiveLinkMono, options);
+        consumer = new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, options);
     }
 
     @After

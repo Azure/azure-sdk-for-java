@@ -3,37 +3,35 @@
 
 package com.azure.security.keyvault.certificates;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.Contact;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.IssuerBase;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.LifetimeActionType;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -42,8 +40,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * The CertificateAsyncClient provides asynchronous methods to manage {@link Certificate certifcates} in the Azure Key Vault. The client
@@ -422,14 +420,34 @@ public class CertificateAsyncClient {
      * @param name The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link VoidResponse}.
+     * @return An empty {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> purgeDeletedCertificate(String name) {
-        return withContext(context -> purgeDeletedCertificate(name, context));
+    public Mono<Void> purgeDeletedCertificate(String name) {
+        return purgeDeletedCertificateWithResponse(name).flatMap(FluxUtil::toMono);
     }
 
-    Mono<VoidResponse> purgeDeletedCertificate(String name, Context context) {
+    /**
+     * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted Certificate operation is applicable for
+     * soft-delete enabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
+     * status code from the server response when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string}
+     *
+     * @param name The name of the deleted certificate.
+     * @throws ResourceNotFoundException when a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a certificate with {@code name} is empty string.
+     * @return A {@link Mono} containing a Void Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> purgeDeletedCertificateWithResponse(String name) {
+        return withContext(context -> purgeDeletedCertificateWithResponse(name, context));
+    }
+
+    Mono<Response<Void>> purgeDeletedCertificateWithResponse(String name, Context context) {
         return service.purgeDeletedcertificate(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Purging certificate - {}",  name))
             .doOnSuccess(response -> logger.info("Purged the certificate - {}", response.getStatusCode()))

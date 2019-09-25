@@ -5,7 +5,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -49,6 +49,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
@@ -213,8 +214,8 @@ public class FileClient {
      * @return A response containing the status of aborting copy the file.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse abortCopyWithResponse(String copyId, Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
+    public Response<Void> abortCopyWithResponse(String copyId, Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -345,8 +346,8 @@ public class FileClient {
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -832,9 +833,6 @@ public class FileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(fileAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, timeout, context));
     }
 
@@ -922,6 +920,32 @@ public class FileClient {
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    }
+
+    /**
+     * Get the share name of file client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getShareName}
+     *
+     * @return The share name of the file.
+     */
+    public String getShareName() {
+        return this.fileAsyncClient.getShareName();
+    }
+
+    /**
+     * Get file path of the client.
+     *
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getFilePath}
+     *
+     * @return The path of the file.
+     */
+    public String getFilePath() {
+        return this.fileAsyncClient.getFilePath();
     }
 }
 

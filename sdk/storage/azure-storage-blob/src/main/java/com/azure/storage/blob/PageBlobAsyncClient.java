@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -54,6 +55,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
 public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * Indicates the number of bytes in a page.
@@ -81,6 +83,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.setCreate#long}
+     *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      * @return A reactive response containing the information of the created page blob.
@@ -93,6 +99,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -143,6 +153,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPages#PageRange-Flux}
+     *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
@@ -161,6 +175,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -201,7 +219,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
      * of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     * <p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -223,7 +244,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
      * of 512. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     * <p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -272,13 +296,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, cpk,
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
+            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
      * Frees the specified pages from the page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.clearPages#PageRange}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -292,6 +319,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * Frees the specified pages from the page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -322,14 +353,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             pageBlobAccessConditions.getLeaseAccessConditions(), cpk,
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context))
-            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().getValue("x-ms-request-server-encrypted"),
-                rb.getHeaders().getValue("x-ms-encryption-key-sha256"))));
+            .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
      * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRanges#BlobRange}
      *
      * @param blobRange {@link BlobRange}
      * @return A reactive response containing the information of the cleared pages.
@@ -341,6 +374,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobAccessConditions}
@@ -367,6 +404,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
      * Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String}
+     *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
@@ -381,6 +422,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
      * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -416,6 +461,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Resizes the page blob to the specified size (which must be a multiple of 512). For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.resize#long}
+     *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
      * @return A reactive response emitting the resized page blob.
@@ -427,6 +476,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * Resizes the page blob to the specified size (which must be a multiple of 512). For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.resizeWithResponse#long-BlobAccessConditions}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -457,6 +510,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Sets the page blob's sequence number. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
      * Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.updateSequenceNumber#SequenceNumberActionType-Long}
+     *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
      * use to track requests and manage concurrency issues.
@@ -469,6 +526,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * Sets the page blob's sequence number. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
      * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -509,6 +570,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * and
      * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.copyIncremental#URL-String}
+     *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
      * @return A reactive response emitting the copy status.
@@ -524,6 +589,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
      * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.

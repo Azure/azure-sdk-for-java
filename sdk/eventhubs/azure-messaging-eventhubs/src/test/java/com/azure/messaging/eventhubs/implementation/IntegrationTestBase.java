@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -17,7 +19,6 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -58,7 +59,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         skipIfNotRecordMode();
 
-        scheduler = Schedulers.parallel();
+        scheduler = Schedulers.single();
         properties = new ConnectionStringProperties(getConnectionString());
 
         beforeTest();
