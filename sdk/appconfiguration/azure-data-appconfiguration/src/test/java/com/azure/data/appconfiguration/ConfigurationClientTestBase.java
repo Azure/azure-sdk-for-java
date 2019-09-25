@@ -5,7 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelects;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
@@ -344,7 +344,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final SettingSelector selector = new SettingSelector()
             .setLabels("*-second*")
             .setKeys(keyPrefix + "-fetch-*")
-            .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
+            .setSelects(SettingSelects.KEY, SettingSelects.ETAG, SettingSelects.CONTENT_TYPE, SettingSelects.TAGS);
 
         List<ConfigurationSetting> settings = new ArrayList<>(numberToCreate);
         for (int value = 0; value < numberToCreate; value++) {

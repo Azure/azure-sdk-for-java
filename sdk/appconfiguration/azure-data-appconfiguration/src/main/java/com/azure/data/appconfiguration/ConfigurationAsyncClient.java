@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelects;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -577,7 +577,7 @@ public final class ConfigurationAsyncClient {
                 .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
         }
 
-        String fields = ImplUtils.arrayToString(options.getFields(), SettingFields::toStringMapper);
+        String fields = ImplUtils.arrayToString(options.getSelects(), SettingSelects::toStringMapper);
         String keys = ImplUtils.arrayToString(options.getKeys(), key -> key);
         String labels = ImplUtils.arrayToString(options.getLabels(), label -> label);
 
@@ -616,7 +616,7 @@ public final class ConfigurationAsyncClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
 
         if (selector != null) {
-            String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            String fields = ImplUtils.arrayToString(selector.getSelects(), SettingSelects::toStringMapper);
             String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
             String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
             String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;

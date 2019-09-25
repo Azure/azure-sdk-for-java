@@ -12,7 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
-import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelects;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -535,7 +535,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().setKeys(keyName).setSelects(SettingSelects.KEY, SettingSelects.ETAG)))
                 .assertNext(response -> validateListRevisions(updated2, response))
                 .assertNext(response -> validateListRevisions(updated, response))
                 .assertNext(response -> validateListRevisions(original, response))

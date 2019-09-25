@@ -23,8 +23,8 @@ import java.time.format.DateTimeFormatter;
  * ConfigurationSetting} at that given {@link OffsetDateTime}.
  * </li>
  * <li>
- * Providing {@link #getFields() fields} will populate only those {@link ConfigurationSetting} fields in the response.
- * By default, all of the fields are returned.
+ * Providing {@link #getSelects() selects} will populate only those {@link ConfigurationSetting} selects in the
+ * response. By default, all of the selects are returned.
  * </li>
  * </ul>
  *
@@ -34,7 +34,7 @@ import java.time.format.DateTimeFormatter;
 public class SettingSelector {
     private String[] keys;
     private String[] labels;
-    private SettingFields[] fields;
+    private SettingSelects[] selects;
     private String acceptDatetime;
     private Range range;
 
@@ -157,25 +157,25 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the fields on {@link ConfigurationSetting} to return from the GET request. If none are set, the service
-     * returns the ConfigurationSettings with all of their fields populated.
+     * Gets the selects on {@link ConfigurationSetting} to return from the GET request. If none are set, the service
+     * returns the ConfigurationSettings with all of their selects populated.
      *
-     * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
+     * @return The set of {@link ConfigurationSetting} selects to return for a GET request.
      */
-    public SettingFields[] getFields() {
-        return fields == null ? new SettingFields[0] : ImplUtils.clone(fields);
+    public SettingSelects[] getSelects() {
+        return selects == null ? new SettingSelects[0] : ImplUtils.clone(selects);
     }
 
     /**
-     * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}. If
-     * none are set, the service returns ConfigurationSettings with all of their fields populated.
+     * Sets selects that will be returned in the response corresponding to properties in {@link ConfigurationSetting}.
+     * If none are set, the service returns ConfigurationSettings with all of their selects populated.
      *
-     * @param fields The fields to select for the query response. If none are set, the service will return the
+     * @param selects The selects to select for the query response. If none are set, the service will return the
      * ConfigurationSettings with a default set of properties.
      * @return The updated SettingSelector object.
      */
-    public SettingSelector setFields(SettingFields... fields) {
-        this.fields = fields;
+    public SettingSelector setSelects(SettingSelects... selects) {
+        this.selects = selects;
         return this;
     }
 
@@ -202,18 +202,18 @@ public class SettingSelector {
 
     @Override
     public String toString() {
-        String fields;
-        if (ImplUtils.isNullOrEmpty(this.fields)) {
-            fields = "ALL_FIELDS";
+        String selects;
+        if (ImplUtils.isNullOrEmpty(this.selects)) {
+            selects = "SELECT_ALL";
         } else {
-            fields = ImplUtils.arrayToString(this.fields, SettingFields::toStringMapper);
+            selects = ImplUtils.arrayToString(this.selects, SettingSelects::toStringMapper);
         }
 
-        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, fields=%s, range=%s)",
+        return String.format("SettingSelector(keys=%s, labels=%s, acceptDateTime=%s, selects=%s, range=%s)",
             ImplUtils.arrayToString(this.keys, key -> key),
             ImplUtils.arrayToString(this.labels, label -> label),
             this.acceptDatetime,
-            fields,
+            selects,
             this.range);
     }
 }

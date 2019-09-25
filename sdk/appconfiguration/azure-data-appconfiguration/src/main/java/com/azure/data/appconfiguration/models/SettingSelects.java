@@ -12,7 +12,7 @@ import java.util.Locale;
  * @see SettingSelector
  * @see ConfigurationAsyncClient
  */
-public enum SettingFields {
+public enum SettingSelects {
     /**
      * Populates the {@link ConfigurationSetting#getKey()} from the service.
      */
@@ -47,11 +47,11 @@ public enum SettingFields {
     TAGS;
 
     /**
-     * Converts the SettingFields to a string that is usable for HTTP requests and logging.
-     * @param field SettingFields to map.
-     * @return SettingFields as a lowercase string in the US locale.
+     * Converts the SettingSelects to a string that is usable for HTTP requests and logging.
+     * @param select SettingSelects to map.
+     * @return SettingSelects as a lowercase string in the US locale.
      */
-    public static String toStringMapper(SettingFields field) {
-        return field.toString().toLowerCase(Locale.US);
+    public static String toStringMapper(SettingSelects select) {
+        return select.toString().toLowerCase(Locale.US);
     }
 }
