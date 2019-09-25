@@ -5,6 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Flux;
@@ -32,9 +33,9 @@ public class ChainedTokenCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Flux.fromIterable(credentials)
-            .flatMap(p -> p.getToken(scopes).onErrorResume(t -> Mono.empty()))
+            .flatMap(p -> p.getToken(request).onErrorResume(t -> Mono.empty()))
             .next()
             .switchIfEmpty(Mono.error(new ClientAuthenticationException(
                 "No credential can provide a token in the chain", null)));

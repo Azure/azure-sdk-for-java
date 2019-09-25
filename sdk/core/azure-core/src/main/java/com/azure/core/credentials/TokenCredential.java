@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 public interface TokenCredential {
     /**
      * Asynchronously get a token for a given resource/audience.
-     * @param scopes the scopes the token will be used for
+     * @param request the details of the token request
      * @return a Publisher that emits a single access token
      */
-    Mono<AccessToken> getToken(String... scopes);
+    Mono<AccessToken> getToken(TokenRequest request);
 }
