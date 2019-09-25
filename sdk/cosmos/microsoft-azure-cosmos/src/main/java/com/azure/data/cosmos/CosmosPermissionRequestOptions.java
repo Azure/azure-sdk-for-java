@@ -5,7 +5,7 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.RequestOptions;
 
 /**
- * Contains the request options of CosmosPermission
+ * Contains the request options of CosmosAsyncPermission
  */
 public class CosmosPermissionRequestOptions {
     //TODO: Need to add respective options

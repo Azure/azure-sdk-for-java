@@ -1,290 +1,329 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.StoredProcedure;
-import com.azure.data.cosmos.internal.Trigger;
-import com.azure.data.cosmos.internal.UserDefinedFunction;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
+
+/**
+ * The type Cosmos sync scripts.
+ */
 public class CosmosScripts {
     private final CosmosContainer container;
-    private final CosmosDatabase database;
+    private final CosmosAsyncScripts asyncScripts;
 
-    CosmosScripts(CosmosContainer container) {
+    /**
+     * Instantiates a new Cosmos sync scripts.
+     *
+     * @param container the container
+     * @param asyncScripts the async scripts
+     */
+    CosmosScripts(CosmosContainer container, CosmosAsyncScripts asyncScripts) {
         this.container = container;
-        this.database = container.getDatabase();
+        this.asyncScripts = asyncScripts;
     }
-    /* CosmosStoredProcedure operations */
+    /* CosmosAsyncStoredProcedure operations */
 
     /**
-     * Creates a cosmos stored procedure.
+     * Create stored procedure 
      *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos stored procedure response with the
-     * created cosmos stored procedure.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param properties  the cosmos stored procedure properties.
-     * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
+     * @param properties the properties
+     * @return the cosmos sync stored procedure response
+     * @throws CosmosClientException the cosmos client exception
      */
-    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureProperties properties){
-        return this.createStoredProcedure(properties, new CosmosStoredProcedureRequestOptions());
+    public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties)
+            throws CosmosClientException {
+        return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
+                new CosmosStoredProcedureRequestOptions()));
     }
 
     /**
-     * Creates a cosmos stored procedure.
+     * Create stored procedure cosmos 
      *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos stored procedure response with the
-     * created cosmos stored procedure.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param properties  the cosmos stored procedure properties.
-     * @param options the stored procedure request options.
-     * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
+     * @param properties the properties
+     * @param options the options
+     * @return the cosmos sync stored procedure response
+     * @throws CosmosClientException the cosmos client exception
      */
-    public Mono<CosmosStoredProcedureResponse> createStoredProcedure(CosmosStoredProcedureProperties properties,
-                                                                     CosmosStoredProcedureRequestOptions options){
-        if(options == null){
-            options = new CosmosStoredProcedureRequestOptions();
-        }
-        StoredProcedure sProc = new StoredProcedure();
-        sProc.id(properties.id());
-        sProc.setBody(properties.body());
-        return database.getDocClientWrapper()
-                .createStoredProcedure(container.getLink(), sProc, options.toRequestOptions())
-                .map(response -> new CosmosStoredProcedureResponse(response, this.container))
-                .single();
+    public CosmosStoredProcedureResponse createStoredProcedure(CosmosStoredProcedureProperties properties,
+                                                               CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+        return mapStoredProcedureResponseAndBlock(asyncScripts.createStoredProcedure(properties,
+                options));
     }
 
     /**
-     * Reads all cosmos stored procedures in a container.
+     * Read all stored procedures iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the read cosmos stored procedure properties.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read cosmos stored procedures
-     * properties or an error.
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosStoredProcedureProperties>> readAllStoredProcedures(FeedOptions options){
-        return database.getDocClientWrapper()
-                .readStoredProcedures(container.getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosStoredProcedureProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> readAllStoredProcedures(FeedOptions options) {
+        return getFeedIterator(asyncScripts.readAllStoredProcedures(options));
     }
 
     /**
-     * Query for stored procedures in a container.
+     * Query stored procedures iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained stored procedures.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param query      the the query.
-     * @param options    the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained stored procedures or
-     * an error.
+     * @param query the query
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(String query,
-                                                                                   FeedOptions options){
-        return queryStoredProcedures(new SqlQuerySpec(query), options);
+    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(String query,
+                                                                                         FeedOptions options) {
+        return getFeedIterator(asyncScripts.queryStoredProcedures(query, options));
     }
 
     /**
-     * Query for stored procedures in a container.
+     * Query stored procedures iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained stored procedures.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param querySpec  the SQL query specification.
-     * @param options    the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained stored procedures or
-     * an error.
+     * @param querySpec the query spec
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(SqlQuerySpec querySpec,
-                                                                                   FeedOptions options){
-        return database.getDocClientWrapper()
-                .queryStoredProcedures(container.getLink(), querySpec,options)
-                .map(response -> BridgeInternal.createFeedResponse( CosmosStoredProcedureProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosStoredProcedureProperties>> queryStoredProcedures(SqlQuerySpec querySpec,
+                                                                                         FeedOptions options) {
+        return getFeedIterator(asyncScripts.queryStoredProcedures(querySpec, options));
+
     }
 
     /**
-     * Gets a CosmosStoredProcedure object without making a service call
-     * @param id id of the stored procedure
-     * @return a cosmos stored procedure
+     * Gets stored procedure.
+     *
+     * @param id the id
+     * @return the stored procedure
      */
-    public CosmosStoredProcedure getStoredProcedure(String id){
-        return new CosmosStoredProcedure(id, this.container);
+    public CosmosStoredProcedure getStoredProcedure(String id) {
+        return new CosmosStoredProcedure(id,
+                this.container,
+                asyncScripts.getStoredProcedure(id));
     }
 
 
     /* UDF Operations */
 
     /**
-     * Creates a cosmos user defined function.
+     * Create user defined function 
      *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single cosmos user defined function response.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param properties       the cosmos user defined function properties
-     * @return an {@link Mono} containing the single resource response with the created user defined function or an error.
+     * @param properties the properties
+     * @return the cosmos sync user defined function response
+     * @throws CosmosClientException the cosmos client exception
      */
-    public Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties){
-        UserDefinedFunction udf = new UserDefinedFunction();
-        udf.id(properties.id());
-        udf.setBody(properties.body());
-
-        return database.getDocClientWrapper()
-                .createUserDefinedFunction(container.getLink(), udf, null)
-                .map(response -> new CosmosUserDefinedFunctionResponse(response, this.container)).single();
+    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) throws CosmosClientException {
+        return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
     }
 
     /**
-     * Reads all cosmos user defined functions in the container
+     * Read all user defined functions iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the read user defined functions.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read user defined functions or an error.
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(FeedOptions options){
-        return database.getDocClientWrapper()
-                .readUserDefinedFunctions(container.getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosUserDefinedFunctionProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(FeedOptions options) {
+        return getFeedIterator(asyncScripts.readAllUserDefinedFunctions(options));
     }
 
     /**
-     * Query for user defined functions in the container.
+     * Query user defined functions iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained user defined functions.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param query          the query.
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
+     * @param query the query
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(String query,
-                                                                                           FeedOptions options){
-        return queryUserDefinedFunctions(new SqlQuerySpec(query), options);
+    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(String query,
+                                                                                                 FeedOptions options) {
+        return getFeedIterator(asyncScripts.queryUserDefinedFunctions(new SqlQuerySpec(query), options));
     }
 
     /**
-     * Query for user defined functions in the container.
+     * Query user defined functions iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained user defined functions.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
+     * @param querySpec the query spec
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(SqlQuerySpec querySpec,
-                                                                                           FeedOptions options){
-        return database.getDocClientWrapper()
-                .queryUserDefinedFunctions(container.getLink(),querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosUserDefinedFunctionProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosUserDefinedFunctionProperties>> queryUserDefinedFunctions(SqlQuerySpec querySpec,
+                                                                                                 FeedOptions options) {
+        return getFeedIterator(asyncScripts.queryUserDefinedFunctions(querySpec, options));
     }
 
     /**
-     * Gets a CosmosUserDefinedFunction object without making a service call
-     * @param id id of the user defined function
-     * @return a cosmos user defined function
+     * Gets user defined function.
+     *
+     * @param id the id
+     * @return the user defined function
      */
-    public CosmosUserDefinedFunction getUserDefinedFunction(String id){
-        return new CosmosUserDefinedFunction(id, this.container);
+    public CosmosUserDefinedFunction getUserDefinedFunction(String id) {
+        return new CosmosUserDefinedFunction(id,
+                this.container,
+                asyncScripts.getUserDefinedFunction(id));
     }
 
+    /**
+     * Create trigger 
+     *
+     * @param properties the properties
+     * @return the cosmos sync trigger response
+     * @throws CosmosClientException the cosmos client exception
+     */
     /* Trigger Operations */
-    /**
-     * Creates a Cosmos trigger.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a cosmos trigger response
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param properties the cosmos trigger properties
-     * @return an {@link Mono} containing the single resource response with the created trigger or an error.
-     */
-    public Mono<CosmosTriggerResponse> createTrigger(CosmosTriggerProperties properties){
-        Trigger trigger = new Trigger(properties.toJson());
-
-        return database.getDocClientWrapper()
-                .createTrigger(container.getLink(), trigger, null)
-                .map(response -> new CosmosTriggerResponse(response, this.container))
-                .single();
+    public CosmosTriggerResponse createTrigger(CosmosTriggerProperties properties) throws CosmosClientException {
+        return mapTriggerResponseAndBlock(asyncScripts.createTrigger(properties));
     }
 
     /**
-     * Reads all triggers in a container
+     * Read all triggers iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the read cosmos trigger properties.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the read cosmos rigger properties or an error.
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosTriggerProperties>> readAllTriggers(FeedOptions options){
-        return database.getDocClientWrapper()
-                .readTriggers(container.getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosTriggerProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosTriggerProperties>> readAllTriggers(FeedOptions options) {
+        return getFeedIterator(asyncScripts.readAllTriggers(options));
     }
 
     /**
-     * Query for triggers in the container
+     * Query triggers iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained triggers.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param query          the query.
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
+     * @param query the query
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosTriggerProperties>> queryTriggers(String query, FeedOptions options){
-        return queryTriggers(new SqlQuerySpec(query), options);
+    public Iterator<FeedResponse<CosmosTriggerProperties>> queryTriggers(String query, FeedOptions options) {
+        return getFeedIterator(asyncScripts.queryTriggers(query, options));
     }
 
     /**
-     * Query for triggers in the container
+     * Query triggers iterator.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained triggers.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
+     * @param querySpec the query spec
+     * @param options the options
+     * @return the iterator
      */
-    public Flux<FeedResponse<CosmosTriggerProperties>> queryTriggers(SqlQuerySpec querySpec,
-                                                                   FeedOptions options){
-        return database.getDocClientWrapper()
-                .queryTriggers(container.getLink(), querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosTriggerProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosTriggerProperties>> queryTriggers(SqlQuerySpec querySpec,
+                                                                         FeedOptions options) {
+        return getFeedIterator(asyncScripts.queryTriggers(querySpec, options));
     }
 
     /**
-     * Gets a CosmosTrigger object without making a service call
-     * @param id id of the cosmos trigger
-     * @return a cosmos trigger
+     * Gets trigger.
+     *
+     * @param id the id
+     * @return the trigger
      */
-    public CosmosTrigger getTrigger(String id){
-        return new CosmosTrigger(id, this.container);
+    public CosmosTrigger getTrigger(String id) {
+        return new CosmosTrigger(id,
+                this.container,
+                asyncScripts.getTrigger(id));
+    }
+
+    /**
+     * Map stored procedure response and block cosmos sync stored procedure response.
+     *
+     * @param storedProcedureResponseMono the stored procedure response mono
+     * @return the cosmos sync stored procedure response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    CosmosStoredProcedureResponse mapStoredProcedureResponseAndBlock(Mono<CosmosAsyncStoredProcedureResponse> storedProcedureResponseMono)
+            throws CosmosClientException {
+        try {
+            return storedProcedureResponseMono
+                           .map(this::convertResponse)
+                           .block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    /**
+     * Convert response cosmos sync stored procedure response.
+     *
+     * @param response the response
+     * @return the cosmos sync stored procedure response
+     */
+    CosmosStoredProcedureResponse convertResponse(CosmosAsyncStoredProcedureResponse response) {
+        return new CosmosStoredProcedureResponse(response, getStoredProcedure(response.storedProcedure().id()));
+    }
+
+    /**
+     * Map udf response and block cosmos sync user defined function response.
+     *
+     * @param responseMono the response mono
+     * @return the cosmos sync user defined function response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    CosmosUserDefinedFunctionResponse mapUDFResponseAndBlock(Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono)
+            throws CosmosClientException {
+        try {
+            return responseMono
+                           .map(this::convertResponse)
+                           .block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    /**
+     * Convert response cosmos sync user defined function response.
+     *
+     * @param response the response
+     * @return the cosmos sync user defined function response
+     */
+    CosmosUserDefinedFunctionResponse convertResponse(CosmosAsyncUserDefinedFunctionResponse response) {
+        return new CosmosUserDefinedFunctionResponse(response,
+                getUserDefinedFunction(response.userDefinedFunction().id()));
+    }
+
+    //Trigger
+
+    /**
+     * Map trigger response and block cosmos sync trigger response.
+     *
+     * @param responseMono the response mono
+     * @return the cosmos sync trigger response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    CosmosTriggerResponse mapTriggerResponseAndBlock(Mono<CosmosAsyncTriggerResponse> responseMono)
+            throws CosmosClientException {
+        try {
+            return responseMono
+                           .map(this::convertResponse)
+                           .block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    /**
+     * Convert response cosmos sync trigger response.
+     *
+     * @param response the response
+     * @return the cosmos sync trigger response
+     */
+    CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
+        return new CosmosTriggerResponse(response,
+                getTrigger(response.trigger().id()));
+    }
+
+    private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
+        return itemFlux.toIterable(1).iterator();
     }
 
 }

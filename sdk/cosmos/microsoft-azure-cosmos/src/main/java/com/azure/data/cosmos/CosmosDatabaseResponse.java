@@ -1,25 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.Database;
-import com.azure.data.cosmos.internal.ResourceResponse;
+public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
+    private final CosmosAsyncDatabaseResponse responseWrapper;
+    private final CosmosDatabase database;
 
-public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties>{
-    private CosmosDatabase database;
-
-    CosmosDatabaseResponse(ResourceResponse<Database> response, CosmosClient client) {
-        super(response);
-        if(response.getResource() == null){
-            super.resourceSettings(null);
-        }else{
-            super.resourceSettings(new CosmosDatabaseProperties(response));
-            database = new CosmosDatabase(resourceSettings().id(), client);
+    CosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
+        super(response.properties());
+        this.responseWrapper = response;
+        if (responseWrapper.database() != null) {
+            this.database = new CosmosDatabase(responseWrapper.database().id(), client, responseWrapper.database());
+        } else {
+            this.database = null;
         }
     }
 
     /**
-     * Gets the CosmosDatabase object
+     * Gets the CosmosAsyncDatabase object
      *
      * @return {@link CosmosDatabase}
      */
@@ -33,7 +32,7 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      * @return the cosmos database properties
      */
     public CosmosDatabaseProperties properties() {
-        return resourceSettings();
+        return responseWrapper.properties();
     }
 
     /**
@@ -41,8 +40,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      *
      * @return the database quota.
      */
-    public long databaseQuota(){
-        return resourceResponseWrapper.getDatabaseQuota();
+    public long databaseQuota() {
+        return responseWrapper.databaseQuota();
     }
 
     /**
@@ -50,8 +49,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      *
      * @return the current database usage.
      */
-    public long databaseUsage(){
-        return resourceResponseWrapper.getDatabaseUsage();
+    public long databaseUsage() {
+        return responseWrapper.databaseUsage();
     }
 
 }

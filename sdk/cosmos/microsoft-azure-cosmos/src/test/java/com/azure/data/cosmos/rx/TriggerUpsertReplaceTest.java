@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosTriggerProperties;
-import com.azure.data.cosmos.CosmosTriggerResponse;
-import com.azure.data.cosmos.TriggerOperation;
-import com.azure.data.cosmos.TriggerType;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import org.testng.annotations.Ignore;
@@ -23,9 +17,9 @@ import java.util.UUID;
 @Ignore
 public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
@@ -45,10 +39,10 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).read();
+        Mono<CosmosAsyncTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).read();
 
         // validate trigger creation
-        CosmosResponseValidator<CosmosTriggerResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
+        CosmosResponseValidator<CosmosAsyncTriggerResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
                 .withId(readBackTrigger.id())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
@@ -59,10 +53,10 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         //update trigger
         readBackTrigger.body("function() {var x = 11;}");
 
-        Mono<CosmosTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).replace(readBackTrigger);
+        Mono<CosmosAsyncTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).replace(readBackTrigger);
 
         // validate trigger replace
-        CosmosResponseValidator<CosmosTriggerResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
+        CosmosResponseValidator<CosmosAsyncTriggerResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
                 .withId(readBackTrigger.id())
                 .withTriggerBody("function() {var x = 11;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
@@ -73,7 +67,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }

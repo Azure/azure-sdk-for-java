@@ -2,11 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabaseProperties;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
@@ -21,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedExceptionHandlingTest(CosmosClientBuilder clientBuilder) {
@@ -43,7 +40,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                                                                     .mergeWith(Flux.error(BridgeInternal.createCosmosClientException(0)))
                                                                     .mergeWith(Flux.fromIterable(frps));
 
-        final CosmosClient mockClient = Mockito.spy(client);
+        final CosmosAsyncClient mockClient = Mockito.spy(client);
         Mockito.when(mockClient.readAllDatabases(null)).thenReturn(response);
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosDatabaseProperties>>();
         mockClient.readAllDatabases(null).subscribe(subscriber);
@@ -55,7 +52,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

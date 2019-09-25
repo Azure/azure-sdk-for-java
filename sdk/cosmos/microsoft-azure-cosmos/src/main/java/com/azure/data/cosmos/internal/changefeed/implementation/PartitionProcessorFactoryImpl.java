@@ -3,7 +3,7 @@
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
-import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.Lease;
@@ -20,13 +20,13 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
     private final ChangeFeedContextClient documentClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final LeaseCheckpointer leaseCheckpointer;
-    private final CosmosContainer collectionSelfLink;
+    private final CosmosAsyncContainer collectionSelfLink;
 
     public PartitionProcessorFactoryImpl(
             ChangeFeedContextClient documentClient,
             ChangeFeedProcessorOptions changeFeedProcessorOptions,
             LeaseCheckpointer leaseCheckpointer,
-            CosmosContainer collectionSelfLink) {
+            CosmosAsyncContainer collectionSelfLink) {
 
         if (documentClient == null) {
             throw new IllegalArgumentException("documentClient");

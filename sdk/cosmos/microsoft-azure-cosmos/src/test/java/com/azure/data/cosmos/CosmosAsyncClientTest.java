@@ -10,16 +10,16 @@ import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 
-public abstract class CosmosClientTest implements ITest {
+public abstract class CosmosAsyncClientTest implements ITest {
 
     private final CosmosClientBuilder clientBuilder;
     private String testName;
 
-    public CosmosClientTest() {
+    public CosmosAsyncClientTest() {
         this(new CosmosClientBuilder());
     }
 
-    public CosmosClientTest(CosmosClientBuilder clientBuilder) {
+    public CosmosAsyncClientTest(CosmosClientBuilder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

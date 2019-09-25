@@ -1,16 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.cosmos.sync;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosTriggerProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.TriggerOperation;
-import com.azure.data.cosmos.TriggerType;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -22,20 +14,20 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosSyncTriggerTest extends TestSuiteBase {
-    private CosmosSyncClient client;
-    private CosmosSyncContainer container;
+public class CosmosTriggerTest extends TestSuiteBase {
+    private CosmosClient client;
+    private CosmosContainer container;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosSyncTriggerTest(CosmosClientBuilder clientBuilder) {
+    public CosmosTriggerTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildSyncClient();
-        CosmosContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        this.client = clientBuilder().buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().id()).getContainer(asyncContainer.id());
     }
 
@@ -49,7 +41,7 @@ public class CosmosSyncTriggerTest extends TestSuiteBase {
     public void createTrigger() throws Exception {
         CosmosTriggerProperties trigger = getCosmosTriggerProperties();
 
-        CosmosSyncTriggerResponse triggerResponse = container.getScripts().createTrigger(trigger);
+        CosmosTriggerResponse triggerResponse = container.getScripts().createTrigger(trigger);
         validateResponse(trigger, triggerResponse);
 
     }
@@ -60,7 +52,7 @@ public class CosmosSyncTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        CosmosSyncTriggerResponse readResponse = container.getScripts().getTrigger(trigger.id()).read();
+        CosmosTriggerResponse readResponse = container.getScripts().getTrigger(trigger.id()).read();
         validateResponse(trigger, readResponse);
 
     }
@@ -74,7 +66,7 @@ public class CosmosSyncTriggerTest extends TestSuiteBase {
         CosmosTriggerProperties readTrigger = container.getScripts().getTrigger(trigger.id()).read().properties();
         readTrigger.body("function() {var x = 11;}");
 
-        CosmosSyncTriggerResponse replace = container.getScripts().getTrigger(trigger.id()).replace(readTrigger);
+        CosmosTriggerResponse replace = container.getScripts().getTrigger(trigger.id()).replace(readTrigger);
         validateResponse(trigger, replace);
     }
 
@@ -84,7 +76,7 @@ public class CosmosSyncTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        CosmosSyncResponse delete = container.getScripts().getTrigger(trigger.id()).delete();
+        container.getScripts().getTrigger(trigger.id()).delete();
     }
 
 
@@ -128,7 +120,7 @@ public class CosmosSyncTriggerTest extends TestSuiteBase {
     }
 
     private void validateResponse(CosmosTriggerProperties properties,
-                                  CosmosSyncTriggerResponse createResponse) {
+                                  CosmosTriggerResponse createResponse) {
         // Basic validation
         assertThat(createResponse.properties().id()).isNotNull();
         assertThat(createResponse.properties().id())

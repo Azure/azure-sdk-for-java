@@ -1,380 +1,223 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.AsyncDocumentClient;
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.Database;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.Permission;
-import com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdMetrics;
-import io.micrometer.core.instrument.MeterRegistry;
-import reactor.core.publisher.Flux;
+import com.azure.core.implementation.annotation.ServiceClient;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos database service.
- * This asynchronous client is used to configure and execute requests
- * against the service.
+ * SyncClient is used to perform operations in a synchronous way
  */
+@ServiceClient(builder=CosmosClientBuilder.class)
 public class CosmosClient implements AutoCloseable {
+    private final CosmosAsyncClient asyncClientWrapper;
 
-    // Async document client wrapper
-    private final Configs configs;
-    private final AsyncDocumentClient asyncDocumentClient;
-    private final String serviceEndpoint;
-    private final String keyOrResourceToken;
-    private final ConnectionPolicy connectionPolicy;
-    private final ConsistencyLevel desiredConsistencyLevel;
-    private final List<Permission> permissions;
-    private final TokenResolver tokenResolver;
-    private final CosmosKeyCredential cosmosKeyCredential;
-
-
-     CosmosClient(CosmosClientBuilder builder) {
-         this.configs = builder.configs();
-         this.serviceEndpoint = builder.endpoint();
-         this.keyOrResourceToken = builder.key();
-         this.connectionPolicy = builder.connectionPolicy();
-         this.desiredConsistencyLevel = builder.consistencyLevel();
-         this.permissions = builder.permissions();
-         this.tokenResolver = builder.tokenResolver();
-         this.cosmosKeyCredential = builder.cosmosKeyCredential();
-         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
-             .withServiceEndpoint(this.serviceEndpoint)
-             .withMasterKeyOrResourceToken(this.keyOrResourceToken)
-             .withConnectionPolicy(this.connectionPolicy)
-             .withConsistencyLevel(this.desiredConsistencyLevel)
-             .withConfigs(this.configs)
-             .withTokenResolver(this.tokenResolver)
-             .withCosmosKeyCredential(this.cosmosKeyCredential)
-             .build();
+    public CosmosClient(CosmosClientBuilder builder) {
+        this.asyncClientWrapper = builder.buildAsyncClient();
     }
-
-    AsyncDocumentClient getContextClient() {
-        return this.asyncDocumentClient;
-    }
-
+    
     /**
-     * Instantiate the cosmos client builder to build cosmos client
+     * Instantiate the cosmos client builder to buildAsyncClient cosmos client
      * @return {@link CosmosClientBuilder}
      */
     public static CosmosClientBuilder builder(){
-         return new CosmosClientBuilder();
+        return new CosmosClientBuilder();
     }
 
     /**
-     * Monitor Cosmos client performance and resource utilization using the specified meter registry
-     * @param registry  meter registry to use for performance monitoring
-     */
-    static void monitorTelemetry(MeterRegistry registry) {
-        RntbdMetrics.add(registry);
-    }
-
-    /**
-     * Get the service endpoint
-     * @return the service endpoint
-     */
-    String getServiceEndpoint() {
-        return serviceEndpoint;
-    }
-
-    /**
-     * Gets the key or resource token
-     * @return get the key or resource token
-     */
-    String getKeyOrResourceToken() {
-        return keyOrResourceToken;
-    }
-
-    /**
-     * Get the connection policy
-     * @return {@link ConnectionPolicy}
-     */
-    ConnectionPolicy getConnectionPolicy() {
-        return connectionPolicy;
-    }
-
-    /**
-     * Gets the consistency level
-     * @return the (@link ConsistencyLevel)
-     */
-    ConsistencyLevel getDesiredConsistencyLevel() {
-        return desiredConsistencyLevel;
-    }
-
-    /**
-     * Gets the permission list
-     * @return the permission list
-     */
-    List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    AsyncDocumentClient getDocClientWrapper(){
-        return asyncDocumentClient;
-    }
-
-    /**
-     * Gets the configs
-     * @return the configs
-     */
-    Configs getConfigs() {
-        return configs;
-    }
-
-    /**
-     * Gets the token resolver
-     * @return the token resolver
-     */
-    TokenResolver getTokenResolver() {
-        return tokenResolver;
-    }
-
-    /**
-     * Gets the cosmos key credential
-     * @return cosmos key credential
-     */
-    CosmosKeyCredential cosmosKeyCredential() {
-        return cosmosKeyCredential;
-    }
-
-    /**
-     * CREATE a Database if it does not already exist on the service
+     * Create a Database if it does not already exist on the service
      *
-     * The {@link Mono} upon successful completion will contain a single cosmos database response with the
-     * created or existing database.
-     * @param databaseSettings CosmosDatabaseProperties
-     * @return a {@link Mono} containing the cosmos database response with the created or existing database or
-     * an error.
+     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception.
      */
-    public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
-        return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.id()));
+    public CosmosDatabaseResponse createDatabaseIfNotExists(CosmosDatabaseProperties databaseProperties)
+            throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(databaseProperties));
     }
 
     /**
-     * CREATE a Database if it does not already exist on the service
-     * The {@link Mono} upon successful completion will contain a single cosmos database response with the
-     * created or existing database.
+     * Create a Database if it does not already exist on the service
+     *
      * @param id the id of the database
-     * @return a {@link Mono} containing the cosmos database response with the created or existing database or
-     * an error
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception.
      */
-    public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(String id) {
-        return createDatabaseIfNotExistsInternal(getDatabase(id));
+    public CosmosDatabaseResponse createDatabaseIfNotExists(String id) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabaseIfNotExists(id));
     }
 
-    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosDatabase database){
-        return database.read().onErrorResume(exception -> {
-            if (exception instanceof CosmosClientException) {
-                CosmosClientException cosmosClientException = (CosmosClientException) exception;
-                if (cosmosClientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createDatabase(new CosmosDatabaseProperties(database.id()), new CosmosDatabaseRequestOptions());
-                }
+
+    /**
+     * Creates a database.
+     *
+     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
+     * @param options the request options.
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception.
+     */
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
+                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, options));
+    }
+
+    /**
+     * Creates a database.
+     *
+     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception.
+     */
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties));
+    }
+
+    /**
+     * Creates a database.
+     *
+     * @param id the id of the database
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception.
+     */
+    public CosmosDatabaseResponse createDatabase(String id) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id));
+
+    }
+
+    /**
+     * Creates a database.
+     *
+     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
+     * @param throughput the throughput
+     * @param options {@link CosmosDatabaseRequestOptions} the request options
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
+                                                 int throughput,
+                                                 CosmosDatabaseRequestOptions options) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput, options));
+    }
+
+    /**
+     * Creates a database.
+     *
+     * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
+     * @param throughput the throughput
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
+                                                 int throughput) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(databaseProperties, throughput));
+    }
+
+
+    /**
+     * Creates a database.
+     *
+     * @param id the id of the database
+     * @param throughput the throughput
+     * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosDatabaseResponse createDatabase(String id, int throughput) throws CosmosClientException {
+        return mapDatabaseResponseAndBlock(asyncClientWrapper.createDatabase(id, throughput));
+    }
+
+    CosmosDatabaseResponse mapDatabaseResponseAndBlock(Mono<CosmosAsyncDatabaseResponse> databaseMono)
+            throws CosmosClientException {
+        try {
+            return databaseMono
+                           .map(this::convertResponse)
+                           .block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosClientException) {
+                throw (CosmosClientException) throwable;
+            } else {
+                throw ex;
             }
-            return Mono.error(exception);
-        });
-    }
-
-    /**
-     * Creates a database.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param databaseSettings {@link CosmosDatabaseProperties}
-     * @param options {@link CosmosDatabaseRequestOptions}
-     * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
-                                                       CosmosDatabaseRequestOptions options) {
-        if (options == null) {
-            options = new CosmosDatabaseRequestOptions();
         }
-        Database wrappedDatabase = new Database();
-        wrappedDatabase.id(databaseSettings.id());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
-                new CosmosDatabaseResponse(databaseResourceResponse, this)).single();
-    }
-
-    /**
-     * Creates a database.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param databaseSettings {@link CosmosDatabaseProperties}
-     * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings) {
-        return createDatabase(databaseSettings, new CosmosDatabaseRequestOptions());
-    }
-
-    /**
-     * Creates a database.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param id id of the database
-     * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    public Mono<CosmosDatabaseResponse> createDatabase(String id) {
-        return createDatabase(new CosmosDatabaseProperties(id), new CosmosDatabaseRequestOptions());
-    }
-
-    /**
-     * Creates a database.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param databaseSettings {@link CosmosDatabaseProperties}
-     * @param throughput the throughput for the database
-     * @param options {@link CosmosDatabaseRequestOptions}
-     * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
-                                                       int throughput,
-                                                       CosmosDatabaseRequestOptions options) {
-        if (options == null) {
-            options = new CosmosDatabaseRequestOptions();
-        }
-        options.offerThroughput(throughput);
-        Database wrappedDatabase = new Database();
-        wrappedDatabase.id(databaseSettings.id());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
-                new CosmosDatabaseResponse(databaseResourceResponse, this)).single();
-    }
-
-    /**
-     * Creates a database.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param databaseSettings {@link CosmosDatabaseProperties}
-     * @param throughput the throughput for the database
-     * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
-        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.offerThroughput(throughput);
-        return createDatabase(databaseSettings, options);
-    }
-
-    /**
-     * Creates a database.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the
-     *      created database.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param id id of the database
-     * @param throughput the throughput for the database
-     * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
-     */
-    public Mono<CosmosDatabaseResponse> createDatabase(String id, int throughput) {
-        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.offerThroughput(throughput);
-        return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
     /**
      * Reads all databases.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param options {@link FeedOptions}
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @param options {@link FeedOptions}the feed options.
+     * @return the iterator for feed response with the read databases.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
-        return getDocClientWrapper().readDatabases(options)
-                                    .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+    public Iterator<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
+        return asyncClientWrapper.readAllDatabases(options)
+                       .toIterable()
+                       .iterator();
     }
 
     /**
      * Reads all databases.
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @return the iterator for feed response with the read databases.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
-        return readAllDatabases(new FeedOptions());
-    }
-
-
-    /**
-     * Query for databases.
-     *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param query   the query.
-     * @param options the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
-     */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options){
-        return queryDatabases(new SqlQuerySpec(query), options);
+    public Iterator<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
+        return asyncClientWrapper.readAllDatabases()
+                       .toIterable()
+                       .iterator();
     }
 
     /**
-     * Query for databases.
+     * Query a database
      *
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param querySpec     the SQL query specification.
-     * @param options       the feed options.
-     * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
+     * @param query the query
+     * @param options {@link FeedOptions}the feed options.
+     * @return the iterator for feed response with the obtained databases.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
-        return getDocClientWrapper().queryDatabases(querySpec, options)
-                                    .map(response-> BridgeInternal.createFeedResponse(
-                        CosmosDatabaseProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
-    }
-
-    public Mono<DatabaseAccount> readDatabaseAccount() {
-        return asyncDocumentClient.getDatabaseAccount().single();
+    public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options) {
+        return asyncClientWrapper.queryDatabases(query, options)
+                       .toIterable()
+                       .iterator();
     }
 
     /**
-     * Gets a database object without making a service call.
+     * Query a database
      *
-     * @param id name of the database
-     * @return {@link CosmosDatabase}
+     * @param querySpec {@link SqlQuerySpec} the query spec
+     * @param options the query
+     * @return the iterator for feed response with the obtained databases.
+     */
+    public Iterator<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+        return asyncClientWrapper.queryDatabases(querySpec, options)
+                       .toIterable()
+                       .iterator();
+    }
+
+    /**
+     * Gets the database client
+     *
+     * @param id the id of the database
+     * @return {@link CosmosDatabase} the cosmos sync database
      */
     public CosmosDatabase getDatabase(String id) {
-        return new CosmosDatabase(id, this);
+        return new CosmosDatabase(id, this, asyncClientWrapper.getDatabase(id));
+    }
+
+    CosmosDatabaseResponse convertResponse(CosmosAsyncDatabaseResponse response) {
+        return new CosmosDatabaseResponse(response, this);
+    }
+
+    CosmosAsyncClient asyncClient() {
+        return this.asyncClientWrapper;
     }
 
     /**
-     * Close this {@link CosmosClient} instance and cleans up the resources.
+     * Close this {@link CosmosClient} instance
      */
-    @Override
     public void close() {
-        asyncDocumentClient.close();
+        asyncClientWrapper.close();
     }
+
 }

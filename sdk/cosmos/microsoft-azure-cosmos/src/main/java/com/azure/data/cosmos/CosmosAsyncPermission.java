@@ -6,30 +6,30 @@ import com.azure.data.cosmos.internal.Paths;
 import com.azure.data.cosmos.internal.RequestOptions;
 import reactor.core.publisher.Mono;
 
-public class CosmosPermission {
+public class CosmosAsyncPermission {
 
-    private final CosmosUser cosmosUser;
+    private final CosmosAsyncUser cosmosUser;
     private String id;
 
-    CosmosPermission(String id, CosmosUser user){
+    CosmosAsyncPermission(String id, CosmosAsyncUser user){
         this.id = id;
         this.cosmosUser = user; 
     }
 
     /**
-     * Get the id of the {@link CosmosPermission}
-     * @return the id of the {@link CosmosPermission}
+     * Get the id of the {@link CosmosAsyncPermission}
+     * @return the id of the {@link CosmosAsyncPermission}
      */
     public String id() {
         return id;
     }
 
     /**
-     * Set the id of the {@link CosmosPermission}
-     * @param id the id of the {@link CosmosPermission}
-     * @return the same {@link CosmosPermission} that had the id set
+     * Set the id of the {@link CosmosAsyncPermission}
+     * @param id the id of the {@link CosmosAsyncPermission}
+     * @return the same {@link CosmosAsyncPermission} that had the id set
      */
-    CosmosPermission id(String id) {
+    CosmosAsyncPermission id(String id) {
         this.id = id;
         return this;
     }
@@ -44,12 +44,12 @@ public class CosmosPermission {
      * @param options        the request options.
      * @return an {@link Mono} containing the single resource response with the read permission or an error.
      */
-    public Mono<CosmosPermissionResponse> read(RequestOptions options) {
+    public Mono<CosmosAsyncPermissionResponse> read(RequestOptions options) {
 
         return cosmosUser.getDatabase()
                 .getDocClientWrapper()
                 .readPermission(getLink(),options)
-                .map(response -> new CosmosPermissionResponse(response, cosmosUser))
+                .map(response -> new CosmosAsyncPermissionResponse(response, cosmosUser))
                 .single();
     }
 
@@ -64,12 +64,12 @@ public class CosmosPermission {
      * @param options    the request options.
      * @return an {@link Mono} containing the single resource response with the replaced permission or an error.
      */
-    public Mono<CosmosPermissionResponse> replace(CosmosPermissionProperties permissionSettings, RequestOptions options) {
+    public Mono<CosmosAsyncPermissionResponse> replace(CosmosPermissionProperties permissionSettings, RequestOptions options) {
         
         return cosmosUser.getDatabase()
                 .getDocClientWrapper()
                 .replacePermission(permissionSettings.getV2Permissions(), options)
-                .map(response -> new CosmosPermissionResponse(response, cosmosUser))
+                .map(response -> new CosmosAsyncPermissionResponse(response, cosmosUser))
                 .single();
     }
 
@@ -83,14 +83,14 @@ public class CosmosPermission {
      * @param options        the request options.
      * @return an {@link Mono} containing the single resource response for the deleted permission or an error.
      */
-    public Mono<CosmosPermissionResponse> delete(CosmosPermissionRequestOptions options) {
+    public Mono<CosmosAsyncPermissionResponse> delete(CosmosPermissionRequestOptions options) {
         if(options == null){
             options = new CosmosPermissionRequestOptions();
         }
         return cosmosUser.getDatabase()
                 .getDocClientWrapper()
                 .deletePermission(getLink(), options.toRequestOptions())
-                .map(response -> new CosmosPermissionResponse(response, cosmosUser))
+                .map(response -> new CosmosAsyncPermissionResponse(response, cosmosUser))
                 .single();
     }
 

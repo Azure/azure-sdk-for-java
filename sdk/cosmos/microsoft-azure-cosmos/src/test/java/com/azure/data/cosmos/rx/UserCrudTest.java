@@ -3,14 +3,8 @@
 package com.azure.data.cosmos.rx;
 
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosUser;
-import com.azure.data.cosmos.CosmosUserResponse;
-import com.azure.data.cosmos.CosmosUserProperties;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -24,9 +18,9 @@ public class UserCrudTest extends TestSuiteBase {
 
     public final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private CosmosDatabase createdDatabase;
+    private CosmosAsyncDatabase createdDatabase;
     
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
     public UserCrudTest(CosmosClientBuilder clientBuilder) {
@@ -39,10 +33,10 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        Mono<CosmosUserResponse> createObservable = createdDatabase.createUser(user);
+        Mono<CosmosAsyncUserResponse> createObservable = createdDatabase.createUser(user);
 
         // validate user creation
-        CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        CosmosResponseValidator<CosmosAsyncUserResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .withId(user.id())
                 .notNullEtag()
                 .build();
@@ -56,13 +50,13 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
        
-        CosmosUser readBackUser = createdDatabase.createUser(user).block().user();
+        CosmosAsyncUser readBackUser = createdDatabase.createUser(user).block().user();
 
         // read user
-        Mono<CosmosUserResponse> readObservable = readBackUser.read();
+        Mono<CosmosAsyncUserResponse> readObservable = readBackUser.read();
         
         //validate user read
-        CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        CosmosResponseValidator<CosmosAsyncUserResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .withId(readBackUser.id())
                 .notNullEtag()
                 .build();
@@ -76,19 +70,19 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        CosmosUser readBackUser = createdDatabase.createUser(user).block().user();
+        CosmosAsyncUser readBackUser = createdDatabase.createUser(user).block().user();
 
         // delete user
-        Mono<CosmosUserResponse> deleteObservable = readBackUser.delete();
+        Mono<CosmosAsyncUserResponse> deleteObservable = readBackUser.delete();
 
         // validate user delete
-        CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        CosmosResponseValidator<CosmosAsyncUserResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
 
         // attempt to read the user which was deleted
-        Mono<CosmosUserResponse> readObservable = readBackUser.read();
+        Mono<CosmosAsyncUserResponse> readObservable = readBackUser.read();
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
@@ -100,10 +94,10 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        Mono<CosmosUserResponse> upsertObservable = createdDatabase.upsertUser(user);
+        Mono<CosmosAsyncUserResponse> upsertObservable = createdDatabase.upsertUser(user);
         
         //validate user upsert
-        CosmosResponseValidator<CosmosUserResponse> validatorForUpsert = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        CosmosResponseValidator<CosmosAsyncUserResponse> validatorForUpsert = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .withId(user.id())
                 .notNullEtag()
                 .build();
@@ -121,10 +115,10 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties readBackUser = createdDatabase.createUser(user).block().properties();
         
         // read user to validate creation
-        Mono<CosmosUserResponse> readObservable = createdDatabase.getUser(user.id()).read();
+        Mono<CosmosAsyncUserResponse> readObservable = createdDatabase.getUser(user.id()).read();
         
         //validate user read
-        CosmosResponseValidator<CosmosUserResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        CosmosResponseValidator<CosmosAsyncUserResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
         .withId(readBackUser.id())
                 .notNullEtag()
                 .build();
@@ -135,10 +129,10 @@ public class UserCrudTest extends TestSuiteBase {
         String oldId = readBackUser.id();
         readBackUser.id(UUID.randomUUID().toString());
 
-        Mono<CosmosUserResponse> updateObservable = createdDatabase.getUser(oldId).replace(readBackUser);
+        Mono<CosmosAsyncUserResponse> updateObservable = createdDatabase.getUser(oldId).replace(readBackUser);
 
         // validate user replace
-        CosmosResponseValidator<CosmosUserResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosUserResponse>()
+        CosmosResponseValidator<CosmosAsyncUserResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
                 .withId(readBackUser.id())
                 .notNullEtag()
                 .build();
@@ -148,7 +142,7 @@ public class UserCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }
 

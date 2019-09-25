@@ -1,14 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.cosmos.sync;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosUserProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -22,21 +16,21 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosSyncUserTest extends TestSuiteBase {
+public class CosmosUserTest extends TestSuiteBase {
 
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private List<String> databases = new ArrayList<>();
-    private CosmosSyncClient client;
-    private CosmosSyncDatabase createdDatabase;
+    private CosmosClient client;
+    private CosmosDatabase createdDatabase;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosSyncUserTest(CosmosClientBuilder clientBuilder) {
+    public CosmosUserTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().buildSyncClient();
+        client = clientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
@@ -53,7 +47,7 @@ public class CosmosSyncUserTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         CosmosUserProperties user = getUserProperties();
-        CosmosSyncUserResponse response = createdDatabase.createUser(user);
+        CosmosUserResponse response = createdDatabase.createUser(user);
         
         validateResponse(user, response);
     }
@@ -68,20 +62,20 @@ public class CosmosSyncUserTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readUser() throws Exception {
         CosmosUserProperties userProperties = getUserProperties();
-        CosmosSyncUserResponse response = createdDatabase.createUser(userProperties);
+        CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosSyncUser user = createdDatabase.getUser(userProperties.id());
-        CosmosSyncUserResponse readResponse = user.read();
+        CosmosUser user = createdDatabase.getUser(userProperties.id());
+        CosmosUserResponse readResponse = user.read();
         validateResponse(userProperties, readResponse);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteUser() throws Exception {
         CosmosUserProperties userProperties = getUserProperties();
-        CosmosSyncUserResponse response = createdDatabase.createUser(userProperties);
+        CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosSyncUser user = createdDatabase.getUser(userProperties.id());
-        CosmosSyncUserResponse delete = user.delete();
+        CosmosUser user = createdDatabase.getUser(userProperties.id());
+        CosmosUserResponse delete = user.delete();
 
     }
 
@@ -90,7 +84,7 @@ public class CosmosSyncUserTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllUsers() throws Exception{
         CosmosUserProperties userProperties = getUserProperties();
-        CosmosSyncUserResponse response = createdDatabase.createUser(userProperties);
+        CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
         Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator = createdDatabase.readAllUsers();
         assertThat(feedResponseIterator.hasNext()).isTrue();
@@ -104,7 +98,7 @@ public class CosmosSyncUserTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryUsers() throws Exception{
         CosmosUserProperties userProperties = getUserProperties();
-        CosmosSyncUserResponse response = createdDatabase.createUser(userProperties);
+        CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", userProperties.id());
         FeedOptions feedOptions = new FeedOptions().enableCrossPartitionQuery(true);
@@ -121,7 +115,7 @@ public class CosmosSyncUserTest extends TestSuiteBase {
     }
 
     private void validateResponse(CosmosUserProperties properties,
-                                  CosmosSyncUserResponse createResponse) {
+                                  CosmosUserResponse createResponse) {
         // Basic validation
         assertThat(createResponse.properties().id()).isNotNull();
         assertThat(createResponse.properties().id())

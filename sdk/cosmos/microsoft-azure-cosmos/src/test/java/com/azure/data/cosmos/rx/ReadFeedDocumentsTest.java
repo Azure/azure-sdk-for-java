@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FailureValidator;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
@@ -29,11 +23,11 @@ import java.util.stream.Collectors;
 @Ignore
 public class ReadFeedDocumentsTest extends TestSuiteBase {
 
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
     private List<CosmosItemProperties> createdDocuments;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedDocumentsTest(CosmosClientBuilder clientBuilder) {
@@ -77,7 +71,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 

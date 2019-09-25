@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents a CosmosDatabase in the Azure Cosmos database service. A cosmos database manages users, permissions and a set of containers
+ * Represents a CosmosAsyncDatabase in the Azure Cosmos database service. A cosmos database manages users, permissions and a set of containers
  * <p>
  * Each Azure Cosmos DB Service is able to support multiple independent named databases, with the database being the
  * logical container for data. Each Database consists of one or more cosmos containers, each of which in turn contain one or

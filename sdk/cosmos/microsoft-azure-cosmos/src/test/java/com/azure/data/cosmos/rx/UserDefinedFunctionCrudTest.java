@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosResponse;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosUserDefinedFunction;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -20,8 +14,8 @@ import java.util.UUID;
 
 public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
-    private CosmosContainer createdCollection;
-    private CosmosClient client;
+    private CosmosAsyncContainer createdCollection;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public UserDefinedFunctionCrudTest(CosmosClientBuilder clientBuilder) {
@@ -35,10 +29,10 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
 
-        Mono<CosmosUserDefinedFunctionResponse> createObservable = createdCollection.getScripts().createUserDefinedFunction(udf);
+        Mono<CosmosAsyncUserDefinedFunctionResponse> createObservable = createdCollection.getScripts().createUserDefinedFunction(udf);
 
         // validate udf creation
-        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
+        CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
                 .withId(udf.id())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -52,14 +46,14 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
-        CosmosUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().userDefinedFunction();
+        CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().userDefinedFunction();
 
         // read udf
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosUserDefinedFunctionResponse> readObservable = readBackUdf.read();
+        Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable = readBackUdf.read();
 
         //validate udf read
-        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
+        CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
                 .withId(udf.id())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -73,7 +67,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
-        CosmosUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().userDefinedFunction();
+        CosmosAsyncUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().userDefinedFunction();
 
         // delete udf
         Mono<CosmosResponse> deleteObservable = readBackUdf.delete();
@@ -87,7 +81,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
     

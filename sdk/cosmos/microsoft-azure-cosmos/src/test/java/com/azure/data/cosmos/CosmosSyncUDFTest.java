@@ -1,14 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.cosmos.sync;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -22,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosSyncUDFTest extends TestSuiteBase {
 
-    private CosmosSyncClient client;
-    private CosmosSyncContainer container;
+    private CosmosClient client;
+    private CosmosContainer container;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosSyncUDFTest(CosmosClientBuilder clientBuilder) {
@@ -33,8 +27,8 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildSyncClient();
-        CosmosContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        this.client = clientBuilder().buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().id()).getContainer(asyncContainer.id());
     }
 
@@ -48,7 +42,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     public void createUDF() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
-        CosmosSyncUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
+        CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
         validateResponse(udf, createResponse);
 
     }
@@ -57,9 +51,9 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     public void readUDF() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
-        CosmosSyncUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
+        CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
 
-        CosmosSyncUserDefinedFunctionResponse read = container.getScripts().getUserDefinedFunction(udf.id()).read();
+        CosmosUserDefinedFunctionResponse read = container.getScripts().getUserDefinedFunction(udf.id()).read();
         validateResponse(udf, read);
     }
 
@@ -68,7 +62,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
-        CosmosSyncUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
+        CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
 
         CosmosUserDefinedFunctionProperties readUdf = container.getScripts()
                                                               .getUserDefinedFunction(udf.id())
@@ -76,7 +70,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
                                                               .properties();
 
         readUdf.body("function() {var x = 11;}");
-        CosmosSyncUserDefinedFunctionResponse replace = container.getScripts()
+        CosmosUserDefinedFunctionResponse replace = container.getScripts()
                                                                 .getUserDefinedFunction(udf.id())
                                                                 .replace(readUdf);
         validateResponse(udf, replace);
@@ -87,11 +81,11 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     public void deleteUDF() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
-        CosmosSyncUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
+        CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
 
-        CosmosSyncResponse delete = container.getScripts()
-                                            .getUserDefinedFunction(udf.id())
-                                            .delete();
+        container.getScripts()
+            .getUserDefinedFunction(udf.id())
+            .delete();
 
     }
 
@@ -135,7 +129,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     }
 
     private void validateResponse(CosmosUserDefinedFunctionProperties properties,
-                                  CosmosSyncUserDefinedFunctionResponse createResponse) {
+                                  CosmosUserDefinedFunctionResponse createResponse) {
         // Basic validation
         assertThat(createResponse.properties().id()).isNotNull();
         assertThat(createResponse.properties().id())

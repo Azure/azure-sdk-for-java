@@ -2,14 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.Database;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.FailureValidator;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
@@ -33,10 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
     private List<CosmosUserDefinedFunctionProperties> createdUDF = new ArrayList<>();
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     public  String getCollectionLink() {
         return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
@@ -131,14 +126,14 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public CosmosUserDefinedFunctionProperties createUserDefinedFunction(CosmosContainer cosmosContainer) {
+    public CosmosUserDefinedFunctionProperties createUserDefinedFunction(CosmosAsyncContainer cosmosContainer) {
         CosmosUserDefinedFunctionProperties storedProcedure = getUserDefinedFunctionDef();
         return cosmosContainer.getScripts().createUserDefinedFunction(storedProcedure).block().properties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 

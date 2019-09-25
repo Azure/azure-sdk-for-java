@@ -2,17 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosPermission;
-import com.azure.data.cosmos.CosmosPermissionResponse;
-import com.azure.data.cosmos.CosmosPermissionProperties;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosUser;
-import com.azure.data.cosmos.CosmosUserProperties;
-import com.azure.data.cosmos.PermissionMode;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -25,11 +16,11 @@ import java.util.UUID;
 //TODO: change to use external TestSuiteBase
 public class PermissionCrudTest extends TestSuiteBase {
 
-    private CosmosDatabase createdDatabase;
-    private CosmosUser createdUser;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncUser createdUser;
     private final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
     public PermissionCrudTest(CosmosClientBuilder clientBuilder) {
@@ -46,10 +37,10 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .permissionMode(PermissionMode.READ)
                 .resourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
 
-        Mono<CosmosPermissionResponse> createObservable = createdUser.createPermission(permissionSettings, null);
+        Mono<CosmosAsyncPermissionResponse> createObservable = createdUser.createPermission(permissionSettings, null);
 
         // validate permission creation
-        CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .withId(permissionSettings.id())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
@@ -67,14 +58,14 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .id(UUID.randomUUID().toString())
                 .permissionMode(PermissionMode.READ)
                 .resourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
-        CosmosPermissionResponse readBackPermission = createdUser.createPermission(permissionSettings, null)
+        CosmosAsyncPermissionResponse readBackPermission = createdUser.createPermission(permissionSettings, null)
                 .block();
 
         // read Permission
-        Mono<CosmosPermissionResponse> readObservable = readBackPermission.permission().read(null);
+        Mono<CosmosAsyncPermissionResponse> readObservable = readBackPermission.permission().read(null);
 
         // validate permission read
-        CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .withId(permissionSettings.id())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
@@ -93,14 +84,14 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .id(UUID.randomUUID().toString())
                 .permissionMode(PermissionMode.READ)
                 .resourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
-        CosmosPermissionResponse readBackPermission = createdUser.createPermission(permissionSettings, null)
+        CosmosAsyncPermissionResponse readBackPermission = createdUser.createPermission(permissionSettings, null)
                 .block();        
         // delete
-        Mono<CosmosPermissionResponse> deleteObservable = readBackPermission.permission()
+        Mono<CosmosAsyncPermissionResponse> deleteObservable = readBackPermission.permission()
                 .delete(null);
 
         // validate delete permission
-        CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
@@ -108,7 +99,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         // attempt to read the permission which was deleted
-        Mono<CosmosPermissionResponse> readObservable = readBackPermission.permission()
+        Mono<CosmosAsyncPermissionResponse> readObservable = readBackPermission.permission()
                 .read( null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
@@ -124,15 +115,15 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .id(UUID.randomUUID().toString())
                 .permissionMode(PermissionMode.READ)
                 .resourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
-        CosmosPermissionResponse readBackPermissionResponse = createdUser.createPermission(permissionSettings, null)
+        CosmosAsyncPermissionResponse readBackPermissionResponse = createdUser.createPermission(permissionSettings, null)
                 .block();
         CosmosPermissionProperties readBackPermission = readBackPermissionResponse.properties();
         // read Permission
-        Mono<CosmosPermissionResponse> readObservable = readBackPermissionResponse.permission()
+        Mono<CosmosAsyncPermissionResponse> readObservable = readBackPermissionResponse.permission()
                 .read( null);
         
         // validate permission creation
-        CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .withId(readBackPermission.id())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
@@ -143,10 +134,10 @@ public class PermissionCrudTest extends TestSuiteBase {
         //update permission
         readBackPermission = readBackPermission.permissionMode(PermissionMode.ALL);
 
-        Mono<CosmosPermissionResponse> updateObservable = createdUser.upsertPermission(readBackPermission, null);
+        Mono<CosmosAsyncPermissionResponse> updateObservable = createdUser.upsertPermission(readBackPermission, null);
 
         // validate permission update
-        CosmosResponseValidator<CosmosPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .withId(readBackPermission.id())
                 .withPermissionMode(PermissionMode.ALL)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
@@ -166,14 +157,14 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .id(id)
                 .permissionMode(PermissionMode.READ)
                 .resourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=");
-        CosmosPermissionResponse readBackPermissionResponse = createdUser.createPermission(permissionSettings, null)
+        CosmosAsyncPermissionResponse readBackPermissionResponse = createdUser.createPermission(permissionSettings, null)
                 .block();        
         // read Permission
-        Mono<CosmosPermissionResponse> readObservable = readBackPermissionResponse.permission()
+        Mono<CosmosAsyncPermissionResponse> readObservable = readBackPermissionResponse.permission()
                 .read(null);
 
         // validate permission creation
-        CosmosResponseValidator<CosmosPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .withId(readBackPermissionResponse.permission().id())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
@@ -185,12 +176,12 @@ public class PermissionCrudTest extends TestSuiteBase {
         CosmosPermissionProperties readBackPermission = readBackPermissionResponse.properties();
         readBackPermission = readBackPermission.permissionMode(PermissionMode.ALL);
         
-        CosmosPermission cosmosPermission = createdUser.getPermission(id);
-        Mono<CosmosPermissionResponse> updateObservable = readBackPermissionResponse.permission()
+        CosmosAsyncPermission cosmosPermission = createdUser.getPermission(id);
+        Mono<CosmosAsyncPermissionResponse> updateObservable = readBackPermissionResponse.permission()
                 .replace(readBackPermission, null);
 
         // validate permission replace
-        CosmosResponseValidator<CosmosPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosPermissionResponse>()
+        CosmosResponseValidator<CosmosAsyncPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
                 .withId(readBackPermission.id())
                 .withPermissionMode(PermissionMode.ALL)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
@@ -201,7 +192,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }
 

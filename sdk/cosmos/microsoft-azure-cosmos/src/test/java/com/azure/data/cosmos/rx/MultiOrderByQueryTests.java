@@ -3,18 +3,8 @@
 
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CompositePath;
-import com.azure.data.cosmos.CompositePathSortOrder;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FailureValidator;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,8 +40,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     private static final String LONG_STRING_FIELD = "longStringField";
     private static final String PARTITION_KEY = "pk";
     private List<CosmosItemProperties> documents = new ArrayList<CosmosItemProperties>();
-    private CosmosContainer documentCollection;
-    private CosmosClient client;
+    private CosmosAsyncContainer documentCollection;
+    private CosmosAsyncClient client;
 
     class CustomComparator implements Comparator<CosmosItemProperties> {
         String path;
@@ -120,7 +110,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 

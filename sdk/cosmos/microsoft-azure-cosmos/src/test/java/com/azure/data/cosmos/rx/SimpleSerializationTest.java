@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
+import com.azure.data.cosmos.CosmosAsyncClient;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -24,8 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleSerializationTest extends TestSuiteBase {
 
-    private CosmosContainer createdCollection;
-    private CosmosClient client;
+    private CosmosAsyncContainer createdCollection;
+    private CosmosAsyncClient client;
 
     private static class TestObject {
         public static class BadSerializer extends JsonSerializer<String> {
@@ -70,7 +70,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

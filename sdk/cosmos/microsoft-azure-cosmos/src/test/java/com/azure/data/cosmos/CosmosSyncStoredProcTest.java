@@ -1,17 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.cosmos.sync;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosStoredProcedureProperties;
-import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -29,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosSyncStoredProcTest extends TestSuiteBase {
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private List<String> databases = new ArrayList<>();
-    private CosmosSyncClient client;
-    private CosmosSyncContainer container;
+    private CosmosClient client;
+    private CosmosContainer container;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosSyncStoredProcTest(CosmosClientBuilder clientBuilder) {
@@ -41,8 +32,8 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildSyncClient();
-        CosmosContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        this.client = clientBuilder().buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().id()).getContainer(asyncContainer.id());
     }
 
@@ -57,12 +48,12 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
-        CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
 
         storedProcedureDef.id(UUID.randomUUID().toString());
         storedProcedureDef.body("function() {var x = 11;}");
-        CosmosSyncStoredProcedureResponse response1 = container.getScripts()
+        CosmosStoredProcedureResponse response1 = container.getScripts()
                                                               .createStoredProcedure(storedProcedureDef,
                                                                       new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, response1);
@@ -73,7 +64,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     public void createSproc_alreadyExists() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
-        CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
 
         // Test for conflict
@@ -89,14 +80,14 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     public void readStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
-        CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
 
-        CosmosSyncStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureDef.id());
-        CosmosSyncStoredProcedureResponse readResponse = storedProcedure.read();
+        CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureDef.id());
+        CosmosStoredProcedureResponse readResponse = storedProcedure.read();
         validateResponse(storedProcedureDef, readResponse);
 
-        CosmosSyncStoredProcedureResponse readResponse2 =
+        CosmosStoredProcedureResponse readResponse2 =
                 storedProcedure.read(new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, readResponse2);
     }
@@ -105,23 +96,23 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     public void replaceStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
-        CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
 
-        CosmosSyncStoredProcedureResponse readResponse = container.getScripts()
+        CosmosStoredProcedureResponse readResponse = container.getScripts()
                                                                  .getStoredProcedure(storedProcedureDef.id())
                                                                  .read();
         validateResponse(storedProcedureDef, readResponse);
         //replace
         storedProcedureDef = readResponse.properties();
         storedProcedureDef.body("function(){ var y = 20;}");
-        CosmosSyncStoredProcedureResponse replaceResponse = container.getScripts()
+        CosmosStoredProcedureResponse replaceResponse = container.getScripts()
                                                                     .getStoredProcedure(storedProcedureDef.id())
                                                                     .replace(storedProcedureDef);
         validateResponse(storedProcedureDef, replaceResponse);
 
         storedProcedureDef.body("function(){ var z = 2;}");
-        CosmosSyncStoredProcedureResponse replaceResponse2 = container.getScripts()
+        CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
                                                                      .getStoredProcedure(storedProcedureDef.id())
                                                                      .replace(storedProcedureDef,
                                                                              new CosmosStoredProcedureRequestOptions());
@@ -140,11 +131,11 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     public void deleteStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
-        CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
-        CosmosSyncResponse deleteResponse = container.getScripts()
-                                                    .getStoredProcedure(storedProcedureDef.id())
-                                                    .delete();
+        container.getScripts()
+            .getStoredProcedure(storedProcedureDef.id())
+            .delete();
 
     }
 
@@ -156,7 +147,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
                                                         .id(UUID.randomUUID().toString());
         sproc.body("function() {var x = 10;}");
 
-        CosmosSyncStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.partitionKey(PartitionKey.None);
         container.getScripts()
@@ -197,7 +188,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     }
 
     private void validateResponse(CosmosStoredProcedureProperties properties,
-                                  CosmosSyncStoredProcedureResponse createResponse) {
+                                  CosmosStoredProcedureResponse createResponse) {
         // Basic validation
         assertThat(createResponse.properties().id()).isNotNull();
         assertThat(createResponse.properties().id())

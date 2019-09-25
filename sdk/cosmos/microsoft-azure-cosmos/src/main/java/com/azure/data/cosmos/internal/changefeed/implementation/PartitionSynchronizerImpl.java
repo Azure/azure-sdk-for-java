@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
@@ -26,7 +26,7 @@ import static com.azure.data.cosmos.BridgeInternal.extractContainerSelfLink;
 class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final Logger logger = LoggerFactory.getLogger(PartitionSynchronizerImpl.class);
     private final ChangeFeedContextClient documentClient;
-    private final CosmosContainer collectionSelfLink;
+    private final CosmosAsyncContainer collectionSelfLink;
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
     private final int degreeOfParallelism;
@@ -34,7 +34,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     public PartitionSynchronizerImpl(
             ChangeFeedContextClient documentClient,
-            CosmosContainer collectionSelfLink,
+            CosmosAsyncContainer collectionSelfLink,
             LeaseContainer leaseContainer,
             LeaseManager leaseManager,
             int degreeOfParallelism,

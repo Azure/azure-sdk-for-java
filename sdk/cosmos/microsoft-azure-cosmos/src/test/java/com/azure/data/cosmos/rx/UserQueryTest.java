@@ -2,13 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosUserProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncDatabase;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import com.azure.data.cosmos.internal.TestUtils;
@@ -33,8 +28,8 @@ public class UserQueryTest extends TestSuiteBase {
 
     private List<CosmosUserProperties> createdUsers = new ArrayList<>();
 
-    private CosmosClient client;
-    private CosmosDatabase createdDatabase;
+    private CosmosAsyncClient client;
+    private CosmosAsyncDatabase createdDatabase;
 
     @Factory(dataProvider = "clientBuilders")
     public UserQueryTest(CosmosClientBuilder clientBuilder) {
@@ -116,7 +111,7 @@ public class UserQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
 
         createdDatabase = createDatabase(client, databaseId);
 

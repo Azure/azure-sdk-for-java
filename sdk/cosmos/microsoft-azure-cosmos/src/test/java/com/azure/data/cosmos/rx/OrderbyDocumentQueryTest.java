@@ -2,18 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosBridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
@@ -50,9 +40,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
 
-    private CosmosClient client;
-    private CosmosContainer createdCollection;
-    private CosmosDatabase createdDatabase;
+    private CosmosAsyncClient client;
+    private CosmosAsyncContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
     private List<CosmosItemProperties> createdDocuments = new ArrayList<>();
 
     private int numberOfPartitions;
@@ -382,13 +372,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
-    public CosmosItemProperties createDocument(CosmosContainer cosmosContainer, Map<String, Object> keyValueProps)
+    public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps)
             throws CosmosClientException {
         CosmosItemProperties docDefinition = getDocumentDefinition(keyValueProps);
         return cosmosContainer.createItem(docDefinition).block().properties();
     }
 
-    public List<CosmosItemProperties> bulkInsert(CosmosContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {
+    public List<CosmosItemProperties> bulkInsert(CosmosAsyncContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {
 
         ArrayList<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
 
@@ -408,7 +398,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);

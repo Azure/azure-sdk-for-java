@@ -5,22 +5,22 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.Conflict;
 import com.azure.data.cosmos.internal.ResourceResponse;
 
-public class CosmosConflictResponse extends CosmosResponse<CosmosConflictProperties> {
-    private CosmosContainer container;
-    private CosmosConflict conflictClient;
+public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictProperties> {
+    private CosmosAsyncContainer container;
+    private CosmosAsyncConflict conflictClient;
 
-    CosmosConflictResponse(ResourceResponse<Conflict> response, CosmosContainer container) {
+    CosmosAsyncConflictResponse(ResourceResponse<Conflict> response, CosmosAsyncContainer container) {
         super(response);
         this.container = container;
         if(response.getResource() == null){
-            super.resourceSettings(null);
+            super.properties(null);
         }else{
-            super.resourceSettings(new CosmosConflictProperties(response.getResource().toJson()));
-            conflictClient = new CosmosConflict(response.getResource().id(), container);
+            super.properties(new CosmosConflictProperties(response.getResource().toJson()));
+            conflictClient = new CosmosAsyncConflict(response.getResource().id(), container);
         }
     }
 
-    CosmosContainer getContainer() {
+    CosmosAsyncContainer getContainer() {
         return container;
     }
 
@@ -28,7 +28,7 @@ public class CosmosConflictResponse extends CosmosResponse<CosmosConflictPropert
      * Get conflict client
      * @return the cosmos conflict client
      */
-    public CosmosConflict conflict() {
+    public CosmosAsyncConflict conflict() {
         return conflictClient;
     }
 
@@ -37,6 +37,6 @@ public class CosmosConflictResponse extends CosmosResponse<CosmosConflictPropert
      * @return the conflict properties
      */
     public CosmosConflictProperties properties() {
-        return resourceSettings();
+        return this.properties();
     }
 }

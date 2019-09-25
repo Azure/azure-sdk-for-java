@@ -2,30 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosItem;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.DataType;
-import com.azure.data.cosmos.ExcludedPath;
-import com.azure.data.cosmos.HashIndex;
-import com.azure.data.cosmos.IncludedPath;
-import com.azure.data.cosmos.IndexingMode;
-import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.UniqueKey;
-import com.azure.data.cosmos.UniqueKeyPolicy;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.TestConfigurations;
-import com.azure.data.cosmos.internal.TestUtils;
 import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,10 +30,10 @@ public class UniqueIndexTest extends TestSuiteBase {
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
     private final String databaseId = CosmosDatabaseForTest.generateId();
-    private CosmosClient client;
-    private CosmosDatabase database;
+    private CosmosAsyncClient client;
+    private CosmosAsyncDatabase database;
 
-    private CosmosContainer collection;
+    private CosmosAsyncContainer collection;
 
     @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void insertWithUniqueIndex() throws Exception {
@@ -93,7 +73,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collection = database.createContainer(collectionDefinition).block().container();
 
-        CosmosItem item = collection.createItem(doc1).block().item();
+        CosmosAsyncItem item = collection.createItem(doc1).block().item();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(PartitionKey.None);
@@ -187,7 +167,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collectionDefinition.indexingPolicy(indexingPolicy);
 
-        CosmosContainer createdCollection = database.createContainer(collectionDefinition).block().container();
+        CosmosAsyncContainer createdCollection = database.createContainer(collectionDefinition).block().container();
 
         CosmosContainerProperties collection = createdCollection.read().block().properties();
 
@@ -210,11 +190,11 @@ public class UniqueIndexTest extends TestSuiteBase {
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client
-        client = CosmosClient.builder()
+        client = CosmosAsyncClient.builder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .connectionPolicy(ConnectionPolicy.defaultPolicy())
-                .consistencyLevel(ConsistencyLevel.SESSION).build();
+                .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

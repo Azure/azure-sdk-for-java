@@ -1,39 +1,44 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.ResourceResponse;
-import com.azure.data.cosmos.internal.Trigger;
-
+/**
+ * The type Cosmos sync trigger response.
+ */
 public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
-    private CosmosTriggerProperties cosmosTriggerProperties;
-    private CosmosTrigger cosmosTrigger;
+    private final CosmosTrigger syncTrigger;
+    private final CosmosAsyncTriggerResponse asyncResponse;
 
-    CosmosTriggerResponse(ResourceResponse<Trigger> response, CosmosContainer container) {
-        super(response);
-        if(response.getResource() != null) {
-            super.resourceSettings(new CosmosTriggerProperties(response));
-            cosmosTriggerProperties = new CosmosTriggerProperties(response);
-            cosmosTrigger = new CosmosTrigger(cosmosTriggerProperties.id(), container);
-        }
+    /**
+     * Instantiates a new Cosmos sync trigger response.
+     *
+     * @param asyncResponse the async response
+     * @param syncTrigger the sync trigger
+     */
+    CosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
+                          CosmosTrigger syncTrigger) {
+        super(asyncResponse.properties());
+        this.asyncResponse = asyncResponse;
+        this.syncTrigger = syncTrigger;
     }
 
     /**
-     * Gets the cosmos trigger properties or null
+     * Gets cosmos trigger properties.
      *
-     * @return {@link CosmosTriggerProperties}
+     * @return the cosmos trigger properties
      */
     public CosmosTriggerProperties properties() {
-        return cosmosTriggerProperties;
+        return asyncResponse.properties();
     }
 
     /**
-     * Gets the cosmos trigger object or null
+     * Gets cosmos sync trigger.
      *
-     * @return {@link CosmosTrigger}
+     * @return the cosmos sync trigger
      */
     public CosmosTrigger trigger() {
-        return cosmosTrigger;
+        return syncTrigger;
     }
 }

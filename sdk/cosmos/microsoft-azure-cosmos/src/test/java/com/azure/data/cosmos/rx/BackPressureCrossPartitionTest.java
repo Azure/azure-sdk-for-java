@@ -2,23 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.ClientUnderTestBuilder;
-import com.azure.data.cosmos.CosmosBridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.DataType;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.IncludedPath;
-import com.azure.data.cosmos.Index;
-import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
 import com.azure.data.cosmos.internal.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
@@ -48,11 +33,11 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private static final int SETUP_TIMEOUT = 60000;
 
     private int numberOfDocs = 4000;
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
     private List<CosmosItemProperties> createdDocuments;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
     private int numberOfPartitions;
 
     public String getCollectionLink() {
@@ -166,7 +151,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        client = new ClientUnderTestBuilder(clientBuilder()).build();
+        client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options, 20000);
 

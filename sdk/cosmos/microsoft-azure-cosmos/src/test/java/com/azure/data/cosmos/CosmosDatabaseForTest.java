@@ -25,9 +25,9 @@ public class CosmosDatabaseForTest {
     private static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
 
     public LocalDateTime createdTime;
-    public CosmosDatabase createdDatabase;
+    public CosmosAsyncDatabase createdDatabase;
 
-    private CosmosDatabaseForTest(CosmosDatabase db, LocalDateTime createdTime) {
+    private CosmosDatabaseForTest(CosmosAsyncDatabase db, LocalDateTime createdTime) {
         this.createdDatabase = db;
         this.createdTime = createdTime;
     }
@@ -44,7 +44,7 @@ public class CosmosDatabaseForTest {
         return SHARED_DB_ID_PREFIX + DELIMITER + TIME_FORMATTER.format(LocalDateTime.now()) + DELIMITER + RandomStringUtils.randomAlphabetic(3);
     }
 
-    private static CosmosDatabaseForTest from(CosmosDatabase db) {
+    private static CosmosDatabaseForTest from(CosmosAsyncDatabase db) {
         if (db == null || db.id() == null || db.getLink() == null) {
             return null;
         }
@@ -73,7 +73,7 @@ public class CosmosDatabaseForTest {
     public static CosmosDatabaseForTest create(DatabaseManager client) {
         CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties(generateId());
 
-        CosmosDatabase db = client.createDatabase(dbDef).block().database();
+        CosmosAsyncDatabase db = client.createDatabase(dbDef).block().database();
         CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(db);
         assertThat(dbForTest).isNotNull();
         return dbForTest;
@@ -104,7 +104,7 @@ public class CosmosDatabaseForTest {
 
     public interface DatabaseManager {
         Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec query);
-        Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
-        CosmosDatabase getDatabase(String id);
+        Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
+        CosmosAsyncDatabase getDatabase(String id);
     }
 }

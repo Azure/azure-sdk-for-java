@@ -2,16 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -33,10 +25,10 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     public final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private CosmosDatabase createdDatabase;
-    private List<CosmosContainer> createdCollections = new ArrayList<>();
+    private CosmosAsyncDatabase createdDatabase;
+    private List<CosmosAsyncContainer> createdCollections = new ArrayList<>();
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
     public ReadFeedCollectionsTest(CosmosClientBuilder clientBuilder) {
@@ -67,7 +59,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 3; i++) {
@@ -81,7 +73,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public CosmosContainer createCollections(CosmosDatabase database) {
+    public CosmosAsyncContainer createCollections(CosmosAsyncDatabase database) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");

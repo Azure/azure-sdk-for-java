@@ -2,16 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosResponse;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosTrigger;
-import com.azure.data.cosmos.CosmosTriggerProperties;
-import com.azure.data.cosmos.CosmosTriggerResponse;
-import com.azure.data.cosmos.TriggerOperation;
-import com.azure.data.cosmos.TriggerType;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import org.testng.annotations.Ignore;
@@ -22,9 +14,9 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public class TriggerCrudTest extends TestSuiteBase {
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerCrudTest(CosmosClientBuilder clientBuilder) {
@@ -41,10 +33,10 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
 
-        Mono<CosmosTriggerResponse> createObservable = createdCollection.getScripts().createTrigger(trigger);
+        Mono<CosmosAsyncTriggerResponse> createObservable = createdCollection.getScripts().createTrigger(trigger);
 
         // validate trigger creation
-        CosmosResponseValidator<CosmosTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
+        CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
                 .withId(trigger.id())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
@@ -61,14 +53,14 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().trigger();
+        CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().trigger();
 
         // read trigger
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosTriggerResponse> readObservable = readBackTrigger.read();
+        Mono<CosmosAsyncTriggerResponse> readObservable = readBackTrigger.read();
 
         // validate read trigger
-        CosmosResponseValidator<CosmosTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
+        CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
                 .withId(trigger.id())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
@@ -87,7 +79,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().trigger();
+        CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().trigger();
 
         // delete trigger
         Mono<CosmosResponse> deleteObservable = readBackTrigger.delete();
@@ -101,7 +93,7 @@ public class TriggerCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

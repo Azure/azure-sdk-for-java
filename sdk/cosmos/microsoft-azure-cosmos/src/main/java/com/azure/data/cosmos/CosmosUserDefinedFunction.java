@@ -1,108 +1,68 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.UserDefinedFunction;
-import reactor.core.publisher.Mono;
-
+/**
+ * The type Cosmos sync user defined function.
+ */
 public class CosmosUserDefinedFunction {
+    private final String id;
+    private final CosmosContainer container;
+    private final CosmosAsyncUserDefinedFunction userDefinedFunction;
 
-    private CosmosContainer container;
-    private String id;
+    /**
+     * Instantiates a new Cosmos sync user defined function.
+     *
+     * @param id the id
+     * @param container the container
+     * @param userDefinedFunction the user defined function
+     */
+    CosmosUserDefinedFunction(String id, CosmosContainer container, CosmosAsyncUserDefinedFunction userDefinedFunction) {
 
-    CosmosUserDefinedFunction(String id, CosmosContainer container) {
         this.id = id;
         this.container = container;
+        this.userDefinedFunction = userDefinedFunction;
     }
 
     /**
-     * Get the id of the {@link CosmosUserDefinedFunction}
-     * @return the id of the {@link CosmosUserDefinedFunction}
+     * Id string.
+     *
+     * @return the string
      */
     public String id() {
         return id;
     }
 
     /**
-     * Set the id of the {@link CosmosUserDefinedFunction}
-     * @param id the id of the {@link CosmosUserDefinedFunction}
-     * @return the same {@link CosmosUserDefinedFunction} that had the id set
+     * Read cosmos user defined function.
+     *
+     * @return the cosmos sync user defined function response
+     * @throws CosmosClientException the cosmos client exception
      */
-    CosmosUserDefinedFunction id(String id) {
-        this.id = id;
-        return this;
+    public CosmosUserDefinedFunctionResponse read() throws CosmosClientException {
+        return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.read());
     }
 
     /**
-     * Read a user defined function.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the read user defined
-     * function.
-     * In case of failure the {@link Mono} will error.
+     * Replace cosmos user defined function.
      *
-     * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
+     * @param udfSettings the udf settings
+     * @return the cosmos sync user defined function response
+     * @throws CosmosClientException the cosmos client exception
      */
-    public Mono<CosmosUserDefinedFunctionResponse> read() {
-        return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
-                .map(response -> new CosmosUserDefinedFunctionResponse(response, container)).single();
+    public CosmosUserDefinedFunctionResponse replace(CosmosUserDefinedFunctionProperties udfSettings)
+            throws CosmosClientException {
+        return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.replace(udfSettings));
     }
 
     /**
-     * Replaces a cosmos user defined function.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced user
-     * defined function.
-     * In case of failure the {@link Mono} will error.
+     * Delete cosmos user defined function.
      *
-     * @param udfSettings the cosmos user defined function properties.
-     * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function
-     * or an error.
+     * @return the cosmos sync response
+     * @throws CosmosClientException the cosmos client exception
      */
-    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
-        return container.getDatabase()
-                .getDocClientWrapper()
-                .replaceUserDefinedFunction(new UserDefinedFunction(udfSettings.toJson())
-                        , null)
-                .map(response -> new CosmosUserDefinedFunctionResponse(response, container))
-                .single();
-    }
-
-    /**
-     * Deletes a cosmos user defined function.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted user defined function.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @return an {@link Mono} containing the single resource response for the deleted cosmos user defined function or
-     * an error.
-     */
-    public Mono<CosmosResponse> delete() {
-        return container.getDatabase()
-                .getDocClientWrapper()
-                .deleteUserDefinedFunction(this.getLink(), null)
-                .map(response -> new CosmosResponse(response.getResource()))
-                .single();
-    }
-
-    String URIPathSegment() {
-        return Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT;
-    }
-
-    String parentLink() {
-        return container.getLink();
-    }
-
-    String getLink() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(parentLink());
-        builder.append("/");
-        builder.append(URIPathSegment());
-        builder.append("/");
-        builder.append(id());
-        return builder.toString();
+    public CosmosUserDefinedFunctionResponse delete() throws CosmosClientException {
+        return container.getScripts().mapUDFResponseAndBlock(userDefinedFunction.delete());
     }
 }

@@ -2,16 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.examples;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItem;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemResponse;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncDatabase;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -21,9 +13,9 @@ public class BasicDemo {
     private static final String DATABASE_NAME = "test_db";
     private static final String CONTAINER_NAME = "test_container";
 
-    private CosmosClient client;
-    private CosmosDatabase database;
-    private CosmosContainer container;
+    private CosmosAsyncClient client;
+    private CosmosAsyncDatabase database;
+    private CosmosAsyncContainer container;
 
     public static void main(String[] args) {
         BasicDemo demo = new BasicDemo();
@@ -32,10 +24,10 @@ public class BasicDemo {
 
     private void start(){
         // Get client
-        client = CosmosClient.builder()
+        client = CosmosAsyncClient.builder()
                 .endpoint(AccountSettings.HOST)
                 .key(AccountSettings.MASTER_KEY)
-                .build();
+                .buildAsyncClient();
 
         //CREATE a database and a container
         createDbAndContainerBlocking();
@@ -43,14 +35,14 @@ public class BasicDemo {
         //Get a proxy reference to container
         container = client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME);
 
-        CosmosContainer container = client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME);
+        CosmosAsyncContainer container = client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME);
         TestObject testObject = new TestObject("item_new_id_1", "test", "test description", "US");
         TestObject testObject2 = new TestObject("item_new_id_2", "test2", "test description2", "CA");
 
         //CREATE an Item async
-        Mono<CosmosItemResponse> itemResponseMono = container.createItem(testObject);
+        Mono<CosmosAsyncItemResponse> itemResponseMono = container.createItem(testObject);
         //CREATE another Item async
-        Mono<CosmosItemResponse> itemResponseMono1 = container.createItem(testObject2);
+        Mono<CosmosAsyncItemResponse> itemResponseMono1 = container.createItem(testObject2);
 
         //Wait for completion
         try {
@@ -77,7 +69,7 @@ public class BasicDemo {
 
     private void createAndReplaceItem() {
         TestObject replaceObject =  new TestObject("item_new_id_3", "test3", "test description3", "JP");
-        CosmosItem cosmosItem = null;
+        CosmosAsyncItem cosmosItem = null;
         //CREATE item sync
         try {
             cosmosItem = container.createItem(replaceObject)

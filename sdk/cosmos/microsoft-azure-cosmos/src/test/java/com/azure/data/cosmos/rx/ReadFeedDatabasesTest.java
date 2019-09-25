@@ -2,12 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabaseProperties;
-import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -27,7 +23,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     private List<CosmosDatabaseProperties> createdDatabases = new ArrayList<>();
     private List<CosmosDatabaseProperties> allDatabases = new ArrayList<>();
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
     public ReadFeedDatabasesTest(CosmosClientBuilder clientBuilder) {
@@ -56,7 +52,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws URISyntaxException {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         allDatabases = client.readAllDatabases(null)
                              .map(frp -> frp.results())
                              .collectList()
@@ -68,7 +64,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         allDatabases.addAll(createdDatabases);
     }
 
-    public CosmosDatabaseProperties createDatabase(CosmosClient client) {
+    public CosmosDatabaseProperties createDatabase(CosmosAsyncClient client) {
         CosmosDatabaseProperties db = new CosmosDatabaseProperties(UUID.randomUUID().toString());
         return client.createDatabase(db, new CosmosDatabaseRequestOptions()).block().properties();
     }

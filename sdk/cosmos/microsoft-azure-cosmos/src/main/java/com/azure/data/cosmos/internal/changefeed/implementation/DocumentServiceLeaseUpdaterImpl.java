@@ -2,12 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.AccessCondition;
-import com.azure.data.cosmos.AccessConditionType;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosItem;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncItem;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.ServiceItemLease;
@@ -42,7 +38,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     @Override
-    public Mono<Lease> updateLease(Lease cachedLease, CosmosItem itemLink, CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
+    public Mono<Lease> updateLease(Lease cachedLease, CosmosAsyncItem itemLink, CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
         Lease arrayLease[] = {cachedLease};
         arrayLease[0] = updateLease.apply(cachedLease);
 
@@ -96,7 +92,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             });
     }
 
-    private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosItem itemLink) throws LeaseLostException {
+    private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosAsyncItem itemLink) throws LeaseLostException {
         return this.client.replaceItem(itemLink, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> cosmosItemResponse.properties())
             .onErrorResume(re -> {

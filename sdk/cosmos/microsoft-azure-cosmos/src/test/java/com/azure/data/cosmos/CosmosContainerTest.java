@@ -4,19 +4,8 @@
  *
  */
 
-package com.azure.data.cosmos.sync;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.IndexingMode;
-import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -31,21 +20,21 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosSyncContainerTest extends TestSuiteBase {
+public class CosmosContainerTest extends TestSuiteBase {
 
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private List<String> databases = new ArrayList<>();
-    private CosmosSyncClient client;
-    private CosmosSyncDatabase createdDatabase;
+    private CosmosClient client;
+    private CosmosDatabase createdDatabase;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosSyncContainerTest(CosmosClientBuilder clientBuilder) {
+    public CosmosContainerTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().buildSyncClient();
+        client = clientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
@@ -76,7 +65,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -85,7 +74,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
 
         try {
@@ -102,7 +91,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         int throughput = 1000;
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             throughput);
         validateContainerResponse(containerProperties, containerResponse);
     }
@@ -113,7 +102,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties, options);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties, options);
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -124,7 +113,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         int throughput = 1000;
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             throughput, options);
         validateContainerResponse(containerProperties, containerResponse);
     }
@@ -134,7 +123,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         String partitionKeyPath = "/mypk";
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(collectionName, partitionKeyPath);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName, partitionKeyPath);
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
@@ -144,7 +133,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         String partitionKeyPath = "/mypk";
         int throughput = 1000;
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(collectionName,
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName,
             partitionKeyPath, throughput);
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
@@ -155,14 +144,14 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
 
-        CosmosSyncContainer syncContainer = createdDatabase.getContainer(collectionName);
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
 
-        CosmosSyncContainerResponse read = syncContainer.read();
+        CosmosContainerResponse read = syncContainer.read();
         validateContainerResponse(containerProperties, read);
 
-        CosmosSyncContainerResponse read1 = syncContainer.read(options);
+        CosmosContainerResponse read1 = syncContainer.read(options);
         validateContainerResponse(containerProperties, read1);
     }
 
@@ -171,10 +160,10 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
 
-        CosmosSyncContainer syncContainer = createdDatabase.getContainer(collectionName);
-        CosmosSyncContainerResponse deleteResponse = syncContainer.delete();
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+        CosmosContainerResponse deleteResponse = syncContainer.delete();
 
     }
 
@@ -183,10 +172,10 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
 
-        CosmosSyncContainer syncContainer = createdDatabase.getContainer(collectionName);
-        CosmosSyncContainerResponse deleteResponse = syncContainer.delete(options);
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+        CosmosContainerResponse deleteResponse = syncContainer.delete(options);
 
     }
 
@@ -197,18 +186,18 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
 
         assertThat(containerResponse.properties().indexingPolicy().indexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosSyncContainerResponse replaceResponse = containerResponse.container()
+        CosmosContainerResponse replaceResponse = containerResponse.container()
                                                           .replace(containerResponse.properties().indexingPolicy(
                                                               new IndexingPolicy().indexingMode(IndexingMode.LAZY)));
         assertThat(replaceResponse.properties().indexingPolicy().indexingMode())
             .isEqualTo(IndexingMode.LAZY);
 
-        CosmosSyncContainerResponse replaceResponse1 = containerResponse.container()
+        CosmosContainerResponse replaceResponse1 = containerResponse.container()
                                                           .replace(containerResponse.properties().indexingPolicy(
                                                               new IndexingPolicy().indexingMode(IndexingMode.CONSISTENT)),
                                                               options);
@@ -223,7 +212,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         Iterator<FeedResponse<CosmosContainerProperties>> feedResponseIterator = createdDatabase.readAllContainers();
         // Very basic validation
         assertThat(feedResponseIterator.hasNext()).isTrue();
@@ -240,7 +229,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
-        CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
         FeedOptions feedOptions = new FeedOptions();
 
@@ -264,7 +253,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
     }
 
     private void validateContainerResponse(CosmosContainerProperties containerProperties,
-                                           CosmosSyncContainerResponse createResponse) {
+                                           CosmosContainerResponse createResponse) {
         // Basic validation
         assertThat(createResponse.properties().id()).isNotNull();
         assertThat(createResponse.properties().id())

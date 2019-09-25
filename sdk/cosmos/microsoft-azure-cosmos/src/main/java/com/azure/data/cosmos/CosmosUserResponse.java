@@ -3,37 +3,45 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.ResourceResponse;
-import com.azure.data.cosmos.internal.User;
-
+/**
+ * The type Cosmos sync user response.
+ */
 public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
-    private CosmosUser user;
-    
-    CosmosUserResponse(ResourceResponse<User> response, CosmosDatabase database) {
-        super(response);
-        if(response.getResource() == null){
-            super.resourceSettings(null);
-        }else{
-            super.resourceSettings(new CosmosUserProperties(response));
-            this.user = new CosmosUser(resourceSettings().id(), database);
+    private final CosmosAsyncUserResponse asyncResponse;
+    private final CosmosUser user;
+
+    /**
+     * Instantiates a new Cosmos sync user response.
+     *
+     * @param response the response
+     * @param database the database
+     */
+    CosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
+        super(response.properties());
+        this.asyncResponse = response;
+        if (response.user() != null) {
+            this.user = new CosmosUser(response.user(), database, response.user().id());
+        } else {
+            // delete has null user client
+            this.user = null;
         }
     }
 
     /**
-     * Get cosmos user
+     * Gets cosmos sync user.
      *
-     * @return {@link CosmosUser}
+     * @return the cosmos sync user
      */
     public CosmosUser user() {
-        return user;
+        return this.user;
     }
 
     /**
-     * Gets the cosmos user properties
+     * Gets cosmos user properties.
      *
-     * @return {@link CosmosUserProperties}
+     * @return the cosmos user properties
      */
-    public CosmosUserProperties properties(){
-        return resourceSettings();
+    public CosmosUserProperties properties() {
+        return asyncResponse.properties();
     }
 }

@@ -2,16 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.CosmosStoredProcedure;
-import com.azure.data.cosmos.CosmosStoredProcedureProperties;
-import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
-import com.azure.data.cosmos.CosmosStoredProcedureResponse;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import org.testng.annotations.Ignore;
@@ -25,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
@@ -47,22 +39,22 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosStoredProcedureResponse> readObservable = createdCollection.getScripts()
+        Mono<CosmosAsyncStoredProcedureResponse> readObservable = createdCollection.getScripts()
                 .getStoredProcedure(readBackSp.id()).read(null);
 
         // validate stored procedure creation
-        CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
+        CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
                 .withId(readBackSp.id()).withStoredProcedureBody("function() {var x = 10;}").notNullEtag().build();
         validateSuccess(readObservable, validatorForRead);
 
         // update stored procedure
         readBackSp.body("function() {var x = 11;}");
 
-        Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
+        Mono<CosmosAsyncStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
                 .getStoredProcedure(readBackSp.id()).replace(readBackSp);
 
         // validate stored procedure replace
-        CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
+        CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
                 .withId(readBackSp.id()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
         validateSuccess(replaceObservable, validatorForReplace);
     }
@@ -77,7 +69,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
                         + "  'body':" + "    'function () {" + "      for (var i = 0; i < 10; i++) {"
                         + "        getContext().getResponse().appendValue(\"Body\", i);" + "      }" + "    }'" + "}");
 
-        CosmosStoredProcedure storedProcedure = null;
+        CosmosAsyncStoredProcedure storedProcedure = null;
 
         storedProcedure = createdCollection.getScripts()
                 .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block()
@@ -94,7 +86,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

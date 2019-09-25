@@ -2,15 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.CosmosItemResponse;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
@@ -34,9 +27,9 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     private final static int TIMEOUT = 60000;
     private final static int SETUP_TIMEOUT = 60000;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public VeryLargeDocumentQueryTest(CosmosClientBuilder clientBuilder) {
@@ -76,7 +69,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         int size = (int) (ONE_MB * 1.999);
         BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
-        Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
+        Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
                     .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.properties().id().equals(docDefinition.id()))
@@ -86,7 +79,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }

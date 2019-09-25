@@ -2,13 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosUserProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncDatabase;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -25,9 +20,9 @@ import java.util.stream.Collectors;
 public class ReadFeedUsersTest extends TestSuiteBase {
 
     public final String databaseId = CosmosDatabaseForTest.generateId();
-    private CosmosDatabase createdDatabase;
+    private CosmosAsyncDatabase createdDatabase;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
     private List<CosmosUserProperties> createdUsers = new ArrayList<>();
 
     @Factory(dataProvider = "clientBuilders")
@@ -57,7 +52,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 5; i++) {
@@ -73,7 +68,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public CosmosUserProperties createUsers(CosmosDatabase cosmosDatabase) {
+    public CosmosUserProperties createUsers(CosmosAsyncDatabase cosmosDatabase) {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         return cosmosDatabase.createUser(user).block().properties();

@@ -2,19 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.ClientUnderTestBuilder;
-import com.azure.data.cosmos.CosmosBridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.Offer;
-import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
 import com.azure.data.cosmos.internal.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
@@ -41,11 +31,11 @@ public class BackPressureTest extends TestSuiteBase {
     private static final int TIMEOUT = 200000;
     private static final int SETUP_TIMEOUT = 60000;
 
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
     private List<CosmosItemProperties> createdDocuments;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     public String getCollectionLink() {
         return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
@@ -148,7 +138,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        client = new ClientUnderTestBuilder(clientBuilder()).build();
+        client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = createCollection(createdDatabase, getSinglePartitionCollectionDefinition(), options, 1000);

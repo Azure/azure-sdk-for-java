@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed;
 
-import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 
 /**
  * Captures LeaseStoreManager properties.
@@ -10,7 +10,7 @@ import com.azure.data.cosmos.CosmosContainer;
 public class LeaseStoreManagerSettings {
     String containerNamePrefix;
 
-    CosmosContainer leaseCollectionLink;
+    CosmosAsyncContainer leaseCollectionLink;
 
     String hostName;
 
@@ -23,11 +23,11 @@ public class LeaseStoreManagerSettings {
         return this;
     }
 
-    public CosmosContainer getLeaseCollectionLink() {
+    public CosmosAsyncContainer getLeaseCollectionLink() {
         return this.leaseCollectionLink;
     }
 
-    public LeaseStoreManagerSettings withLeaseCollectionLink(CosmosContainer collectionLink) {
+    public LeaseStoreManagerSettings withLeaseCollectionLink(CosmosAsyncContainer collectionLink) {
         this.leaseCollectionLink = collectionLink;
         return this;
     }

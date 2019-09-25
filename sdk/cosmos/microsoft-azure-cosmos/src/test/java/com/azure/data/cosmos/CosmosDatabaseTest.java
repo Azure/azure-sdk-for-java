@@ -4,16 +4,8 @@
  *
  */
 
-package com.azure.data.cosmos.sync;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosDatabaseProperties;
-import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -27,20 +19,20 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosSyncDatabaseTest extends TestSuiteBase {
+public class CosmosDatabaseTest extends TestSuiteBase {
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private List<String> databases = new ArrayList<>();
-    private CosmosSyncClient client;
-    private CosmosSyncDatabase createdDatabase;
+    private CosmosClient client;
+    private CosmosDatabase createdDatabase;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosSyncDatabaseTest(CosmosClientBuilder clientBuilder) {
+    public CosmosDatabaseTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().buildSyncClient();
+        client = clientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
@@ -59,7 +51,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
 
-        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseDefinition,
+        CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition,
                 new CosmosDatabaseRequestOptions());
 
         validateDatabaseResponse(databaseDefinition, createResponse);
@@ -71,7 +63,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
         databases.add(databaseDefinition.id());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
 
-        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties);
+        CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
@@ -81,7 +73,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
         databases.add(databaseDefinition.id());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
 
-        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties);
+        CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         validateDatabaseResponse(databaseDefinition, createResponse);
         try {
             client.createDatabase(databaseProperties);
@@ -95,7 +87,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
 
-        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseDefinition.id());
+        CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.id());
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
@@ -106,7 +98,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
         CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
         int throughput = 400;
         try {
-            CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput, requestOptions);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput, requestOptions);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (CosmosClientException ex) {
             assertThat(ex.statusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
@@ -119,7 +111,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
         int throughput = 1000;
         try {
-            CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
             if (ex instanceof CosmosClientException) {
@@ -135,7 +127,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         int throughput = 1000;
         try {
-            CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseDefinition.id(), throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.id(), throughput);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
             if (ex instanceof CosmosClientException) {
@@ -148,14 +140,14 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
 
     @Test
     public void readDatabase() throws Exception {
-        CosmosSyncDatabase database = client.getDatabase(createdDatabase.id());
+        CosmosDatabase database = client.getDatabase(createdDatabase.id());
         CosmosDatabaseProperties properties = new CosmosDatabaseProperties(createdDatabase.id());
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
 
-        CosmosSyncDatabaseResponse read = database.read();
+        CosmosDatabaseResponse read = database.read();
         validateDatabaseResponse(properties, read);
 
-        CosmosSyncDatabaseResponse read1 = database.read(options);
+        CosmosDatabaseResponse read1 = database.read(options);
         validateDatabaseResponse(properties, read1);
     }
 
@@ -195,7 +187,7 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     public void deleteDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
-        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties);
+        CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
 
         client.getDatabase(databaseDefinition.id()).delete();
     }
@@ -204,13 +196,13 @@ public class CosmosSyncDatabaseTest extends TestSuiteBase {
     public void deleteDatabase_withOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.id());
-        CosmosSyncDatabaseResponse createResponse = client.createDatabase(databaseProperties);
+        CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
         client.getDatabase(databaseDefinition.id()).delete(options);
     }
 
 
-    private void validateDatabaseResponse(CosmosDatabaseProperties databaseDefinition, CosmosSyncDatabaseResponse createResponse) {
+    private void validateDatabaseResponse(CosmosDatabaseProperties databaseDefinition, CosmosDatabaseResponse createResponse) {
         // Basic validation
         assertThat(createResponse.properties().id()).isNotNull();
         assertThat(createResponse.properties().id())

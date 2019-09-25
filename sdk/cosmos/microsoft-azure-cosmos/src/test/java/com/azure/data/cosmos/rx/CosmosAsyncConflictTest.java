@@ -2,12 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosConflictProperties;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.HttpConstants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -20,14 +16,14 @@ import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosConflictTest extends TestSuiteBase {
+public class CosmosAsyncConflictTest extends TestSuiteBase {
 
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosConflictTest(CosmosClientBuilder clientBuilder) {
+    public CosmosAsyncConflictTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -61,7 +57,7 @@ public class CosmosConflictTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
@@ -73,6 +69,6 @@ public class CosmosConflictTest extends TestSuiteBase {
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeMethod() {
         safeClose(client);
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
     }
 }

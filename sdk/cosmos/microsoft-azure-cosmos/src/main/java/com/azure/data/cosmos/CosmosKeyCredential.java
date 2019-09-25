@@ -6,7 +6,7 @@ package com.azure.data.cosmos;
  * Cosmos Key Credential is used to store key credentials, in order to support dynamic key rotation.
  * Singleton instance should be used to support multiple keys.
  * Azure client library for Cosmos ensures to use the updated key provided in the same singleton instance
- * which was used when building {@link CosmosClient}
+ * which was used when building {@link CosmosAsyncClient}
  */
 public class CosmosKeyCredential {
 

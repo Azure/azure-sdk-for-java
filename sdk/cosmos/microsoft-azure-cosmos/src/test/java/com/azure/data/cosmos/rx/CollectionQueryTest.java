@@ -2,15 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -30,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CollectionQueryTest extends TestSuiteBase {
     private final static int TIMEOUT = 30000;
     private final String databaseId = CosmosDatabaseForTest.generateId();
-    private List<CosmosContainer> createdCollections = new ArrayList<>();
-    private CosmosClient client;
-    private CosmosDatabase createdDatabase;
+    private List<CosmosAsyncContainer> createdCollections = new ArrayList<>();
+    private CosmosAsyncClient client;
+    private CosmosAsyncDatabase createdDatabase;
 
    @Factory(dataProvider = "clientBuilders")
     public CollectionQueryTest(CosmosClientBuilder clientBuilder) {
@@ -50,7 +43,7 @@ public class CollectionQueryTest extends TestSuiteBase {
         options.maxItemCount(2);
         Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
 
-        List<CosmosContainer> expectedCollections = createdCollections.stream()
+        List<CosmosAsyncContainer> expectedCollections = createdCollections.stream()
                 .filter(c -> StringUtils.equals(filterCollectionId, c.id()) ).collect(Collectors.toList());
 
         assertThat(expectedCollections).isNotEmpty();
@@ -77,7 +70,7 @@ public class CollectionQueryTest extends TestSuiteBase {
         options.maxItemCount(2);
         Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
 
-        List<CosmosContainer> expectedCollections = createdCollections;
+        List<CosmosAsyncContainer> expectedCollections = createdCollections;
 
         assertThat(expectedCollections).isNotEmpty();
 
@@ -113,7 +106,7 @@ public class CollectionQueryTest extends TestSuiteBase {
     
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();

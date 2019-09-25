@@ -2,14 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.Document;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -46,7 +41,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         }
     }
 
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<CosmosItemProperties>();
     private ArrayList<QueryConfig> queryConfigs = new ArrayList<QueryConfig>();
 
@@ -58,7 +53,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     private int numberOfDocumentsWithNumericId;
     private int numberOfDocsWithSamePartitionKey = 400;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public AggregateQueryTests(CosmosClientBuilder clientBuilder) {
@@ -182,7 +177,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 2)
     public void beforeClass() throws Exception {
-        client = this.clientBuilder().build();
+        client = this.clientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 

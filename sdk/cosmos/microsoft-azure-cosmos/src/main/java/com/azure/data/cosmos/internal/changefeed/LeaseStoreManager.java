@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed;
 
-import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.changefeed.implementation.LeaseStoreManagerImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,7 +15,7 @@ import java.time.Duration;
 public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseStore, LeaseCheckpointer
 {
     /**
-     * Provides flexible way to build lease manager constructor parameters.
+     * Provides flexible way to buildAsyncClient lease manager constructor parameters.
      * For the actual creation of lease manager instance, delegates to lease manager factory.
      */
     interface LeaseStoreManagerBuilderDefinition {
@@ -23,7 +23,7 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
 
         LeaseStoreManagerBuilderDefinition leasePrefix(String leasePrefix);
 
-        LeaseStoreManagerBuilderDefinition leaseCollectionLink(CosmosContainer leaseCollectionLink);
+        LeaseStoreManagerBuilderDefinition leaseCollectionLink(CosmosAsyncContainer leaseCollectionLink);
 
         LeaseStoreManagerBuilderDefinition requestOptionsFactory(RequestOptionsFactory requestOptionsFactory);
 

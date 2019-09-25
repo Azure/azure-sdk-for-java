@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed;
 
-import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * Implementation for the partition processor properties.
  */
 public class ProcessorSettings {
-    private CosmosContainer collectionSelfLink;
+    private CosmosAsyncContainer collectionSelfLink;
     private String partitionKeyRangeId;
     private Integer maxItemCount;
     private Duration feedPollDelay;
@@ -19,11 +19,11 @@ public class ProcessorSettings {
     private OffsetDateTime startTime;
 //    private STRING sessionToken;
 
-    public CosmosContainer getCollectionSelfLink() {
+    public CosmosAsyncContainer getCollectionSelfLink() {
         return this.collectionSelfLink;
     }
 
-    public ProcessorSettings withCollectionLink(CosmosContainer collectionLink) {
+    public ProcessorSettings withCollectionLink(CosmosAsyncContainer collectionLink) {
         this.collectionSelfLink = collectionLink;
         return this;
     }

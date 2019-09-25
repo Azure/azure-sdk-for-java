@@ -2,18 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.examples.ChangeFeed;
 
-import com.azure.data.cosmos.ChangeFeedProcessor;
-import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.SerializationFormattingPolicy;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.Duration;
@@ -37,16 +27,16 @@ public class SampleChangeFeedProcessor {
         try {
 
             System.out.println("-->CREATE DocumentClient");
-            CosmosClient client = getCosmosClient();
+            CosmosAsyncClient client = getCosmosClient();
 
             System.out.println("-->CREATE sample's database: " + DATABASE_NAME);
-            CosmosDatabase cosmosDatabase = createNewDatabase(client, DATABASE_NAME);
+            CosmosAsyncDatabase cosmosDatabase = createNewDatabase(client, DATABASE_NAME);
 
             System.out.println("-->CREATE container for documents: " + COLLECTION_NAME);
-            CosmosContainer feedContainer = createNewCollection(client, DATABASE_NAME, COLLECTION_NAME);
+            CosmosAsyncContainer feedContainer = createNewCollection(client, DATABASE_NAME, COLLECTION_NAME);
 
             System.out.println("-->CREATE container for lease: " + COLLECTION_NAME + "-leases");
-            CosmosContainer leaseContainer = createNewLeaseCollection(client, DATABASE_NAME, COLLECTION_NAME + "-leases");
+            CosmosAsyncContainer leaseContainer = createNewLeaseCollection(client, DATABASE_NAME, COLLECTION_NAME + "-leases");
 
             changeFeedProcessorInstance = getChangeFeedProcessor("SampleHost_1", feedContainer, leaseContainer);
 
@@ -82,7 +72,7 @@ public class SampleChangeFeedProcessor {
         System.exit(0);
     }
 
-    public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosContainer feedContainer, CosmosContainer leaseContainer) {
+    public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
         return ChangeFeedProcessor.Builder()
             .hostName(hostName)
             .feedContainer(feedContainer)
@@ -99,28 +89,28 @@ public class SampleChangeFeedProcessor {
             .build();
     }
 
-    public static CosmosClient getCosmosClient() {
+    public static CosmosAsyncClient getCosmosClient() {
 
-        return CosmosClient.builder()
+        return CosmosAsyncClient.builder()
                 .endpoint(SampleConfigurations.HOST)
                 .key(SampleConfigurations.MASTER_KEY)
                 .connectionPolicy(ConnectionPolicy.defaultPolicy())
                 .consistencyLevel(ConsistencyLevel.EVENTUAL)
-                .build();
+                .buildAsyncClient();
     }
 
-    public static CosmosDatabase createNewDatabase(CosmosClient client, String databaseName) {
+    public static CosmosAsyncDatabase createNewDatabase(CosmosAsyncClient client, String databaseName) {
         return client.createDatabaseIfNotExists(databaseName).block().database();
     }
 
-    public static void deleteDatabase(CosmosDatabase cosmosDatabase) {
+    public static void deleteDatabase(CosmosAsyncDatabase cosmosDatabase) {
         cosmosDatabase.delete().block();
     }
 
-    public static CosmosContainer createNewCollection(CosmosClient client, String databaseName, String collectionName) {
-        CosmosDatabase databaseLink = client.getDatabase(databaseName);
-        CosmosContainer collectionLink = databaseLink.getContainer(collectionName);
-        CosmosContainerResponse containerResponse = null;
+    public static CosmosAsyncContainer createNewCollection(CosmosAsyncClient client, String databaseName, String collectionName) {
+        CosmosAsyncDatabase databaseLink = client.getDatabase(databaseName);
+        CosmosAsyncContainer collectionLink = databaseLink.getContainer(collectionName);
+        CosmosAsyncContainerResponse containerResponse = null;
 
         try {
             containerResponse = collectionLink.read().block();
@@ -153,10 +143,10 @@ public class SampleChangeFeedProcessor {
         return containerResponse.container();
     }
 
-    public static CosmosContainer createNewLeaseCollection(CosmosClient client, String databaseName, String leaseCollectionName) {
-        CosmosDatabase databaseLink = client.getDatabase(databaseName);
-        CosmosContainer leaseCollectionLink = databaseLink.getContainer(leaseCollectionName);
-        CosmosContainerResponse leaseContainerResponse = null;
+    public static CosmosAsyncContainer createNewLeaseCollection(CosmosAsyncClient client, String databaseName, String leaseCollectionName) {
+        CosmosAsyncDatabase databaseLink = client.getDatabase(databaseName);
+        CosmosAsyncContainer leaseCollectionLink = databaseLink.getContainer(leaseCollectionName);
+        CosmosAsyncContainerResponse leaseContainerResponse = null;
 
         try {
             leaseContainerResponse = leaseCollectionLink.read().block();
@@ -194,7 +184,7 @@ public class SampleChangeFeedProcessor {
         return leaseContainerResponse.container();
     }
 
-    public static void createNewDocuments(CosmosContainer containerClient, int count, Duration delay) {
+    public static void createNewDocuments(CosmosAsyncContainer containerClient, int count, Duration delay) {
         String suffix = RandomStringUtils.randomAlphabetic(10);
         for (int i = 0; i <= count; i++) {
             CosmosItemProperties document = new CosmosItemProperties();

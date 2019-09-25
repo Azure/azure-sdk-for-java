@@ -1,37 +1,45 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.ResourceResponse;
-import com.azure.data.cosmos.internal.UserDefinedFunction;
-
+/**
+ * The type Cosmos sync user defined function response.
+ */
 public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
-    private CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
-    private CosmosUserDefinedFunction cosmosUserDefinedFunction;
+    private final CosmosUserDefinedFunction userDefinedFunction;
+    private CosmosAsyncUserDefinedFunctionResponse asyncResponse;
 
-    CosmosUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response, CosmosContainer container) {
-        super(response);
-        if(response.getResource() != null) {
-            super.resourceSettings(new CosmosUserDefinedFunctionProperties(response));
-            cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(response);
-            cosmosUserDefinedFunction = new CosmosUserDefinedFunction(cosmosUserDefinedFunctionProperties.id(), container);
-        }
+    /**
+     * Instantiates a new Cosmos sync user defined function response.
+     *
+     * @param resourceResponse the resource response
+     * @param userDefinedFunction the user defined function
+     */
+    CosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
+                                      CosmosUserDefinedFunction userDefinedFunction) {
+        super(resourceResponse.properties());
+        this.asyncResponse = resourceResponse;
+        this.userDefinedFunction = userDefinedFunction;
     }
 
     /**
-     * Gets the cosmos user defined function properties
+     * Gets cosmos user defined function properties.
+     *
      * @return the cosmos user defined function properties
      */
     public CosmosUserDefinedFunctionProperties properties() {
-        return cosmosUserDefinedFunctionProperties;
+        return asyncResponse.properties();
     }
 
     /**
-     * Gets the cosmos user defined function object
-     * @return the cosmos user defined function object
+     * Gets cosmos sync user defined function.
+     *
+     * @return the cosmos sync user defined function
      */
     public CosmosUserDefinedFunction userDefinedFunction() {
-        return cosmosUserDefinedFunction;
+        return userDefinedFunction;
     }
+
 }

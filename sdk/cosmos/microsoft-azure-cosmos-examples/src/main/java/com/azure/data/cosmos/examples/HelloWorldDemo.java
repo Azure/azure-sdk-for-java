@@ -13,16 +13,16 @@ public class HelloWorldDemo {
     }
 
     void runDemo() {
-        // Create a new CosmosClient via the builder
+        // Create a new CosmosAsyncClient via the builder
         // It only requires endpoint and key, but other useful settings are available
-        CosmosClient client = CosmosClient.builder()
+        CosmosAsyncClient client = CosmosAsyncClient.builder()
             .endpoint("<YOUR ENDPOINT HERE>")
             .key("<YOUR KEY HERE>")
-            .build();
+            .buildAsyncClient();
 
         // Get a reference to the container
         // This will create (or read) a database and its container.
-        CosmosContainer container = client.createDatabaseIfNotExists("contoso-travel")
+        CosmosAsyncContainer container = client.createDatabaseIfNotExists("contoso-travel")
             // TIP: Our APIs are Reactor Core based, so try to chain your calls
             .flatMap(response -> response.database()
                     .createContainerIfNotExists("passengers", "/id"))

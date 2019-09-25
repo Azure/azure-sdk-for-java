@@ -2,24 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.ChangeFeedProcessor;
-import com.azure.data.cosmos.ChangeFeedProcessorOptions;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.CosmosItemResponse;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.SerializationFormattingPolicy;
-import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterList;
-import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncDatabase;
 import com.azure.data.cosmos.internal.changefeed.ServiceItemLease;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -46,9 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(ChangeFeedProcessorTest.class);
 
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdFeedCollection;
-    private CosmosContainer createdLeaseCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdFeedCollection;
+    private CosmosAsyncContainer createdLeaseCollection;
     private List<CosmosItemProperties> createdDocuments;
     private static Map<String, CosmosItemProperties> receivedDocuments;
 //    private final String databaseId = "testdb1";
@@ -57,7 +41,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     private ChangeFeedProcessor changeFeedProcessor;
 
@@ -272,7 +256,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                             options.partitionKey(new PartitionKey(doc.id()));
                             return createdLeaseCollection.getItem(doc.id(), "/id")
                                 .replace(doc, options)
-                                .map(CosmosItemResponse::properties);
+                                .map(CosmosAsyncItemResponse::properties);
                         })
                         .map(ServiceItemLease::fromDocument)
                         .map(leaseDocument -> {
@@ -337,7 +321,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
 
 //        try {
 //            client.getDatabase(databaseId).read()
@@ -377,7 +361,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 //            client.readAllDatabases()
 //                .flatMap(cosmosDatabaseSettingsFeedResponse -> reactor.core.publisher.Flux.fromIterable(cosmosDatabaseSettingsFeedResponse.results()))
 //                .flatMap(cosmosDatabaseSettings -> {
-//                    CosmosDatabase cosmosDatabase = client.getDatabase(cosmosDatabaseSettings.id());
+//                    CosmosAsyncDatabase cosmosDatabase = client.getDatabase(cosmosDatabaseSettings.id());
 //                    return cosmosDatabase.delete();
 //                }).blockLast();
 //            Thread.sleep(500);
@@ -409,12 +393,12 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         return doc;
     }
 
-    private CosmosContainer createFeedCollection() {
+    private CosmosAsyncContainer createFeedCollection() {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
         return createCollection(createdDatabase, getCollectionDefinition(), optionsFeedCollection, 10100);
     }
 
-    private CosmosContainer createLeaseCollection() {
+    private CosmosAsyncContainer createLeaseCollection() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), "/id");
         return createCollection(createdDatabase, collectionDefinition, options, 400);

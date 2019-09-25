@@ -2,30 +2,31 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Permission;
-import com.azure.data.cosmos.sync.CosmosSyncClient;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 /**
- * Helper class to build {@link CosmosClient} instances
+ * Helper class to buildAsyncClient {@link CosmosAsyncClient} instances
  * as logical representation of the Azure Cosmos database service.
  *
  * <pre>
  * {@code
  * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
  * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
- * CosmonsClient client = new CosmosClient.builder()
+ * CosmonsClient client = new CosmosAsyncClient.builder()
  *         .endpoint(serviceEndpoint)
  *         .key(key)
  *         .connectionPolicy(connectionPolicy)
  *         .consistencyLevel(ConsistencyLevel.SESSION)
- *         .build();
+ *         .buildAsyncClient();
  * }
  * </pre>
  */
+@ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
 public class CosmosClientBuilder {
 
     private Configs configs = new Configs();
@@ -195,32 +196,32 @@ public class CosmosClientBuilder {
 
     /**
      * Builds a cosmos configuration object with the provided properties
-     * @return CosmosClient
+     * @return CosmosAsyncClient
      */
-    public CosmosClient build() {
+    public CosmosAsyncClient buildAsyncClient() {
 
         validateConfig();
-        return new CosmosClient(this);
+        return new CosmosAsyncClient(this);
     }
 
     private void validateConfig() {
-        ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
+        ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
             this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
                 && this.tokenResolver == null && this.cosmosKeyCredential == null,
-            "cannot build client without any one of key, resource token, permissions, token resolver, and cosmos key credential");
+            "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.key()),
-            "cannot build client without key credential");
+            "cannot buildAsyncClient client without key credential");
     }
 
     /**
      * Builds a cosmos sync client object with the provided properties
-     * @return CosmosSyncClient
+     * @return CosmosClient
      */
-    public CosmosSyncClient buildSyncClient() {
+    public CosmosClient buildClient() {
 
         validateConfig();
-        return new CosmosSyncClient(this);
+        return new CosmosClient(this);
     }
 
     Configs configs() {

@@ -1,36 +1,39 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.Document;
-import com.azure.data.cosmos.internal.ResourceResponse;
+public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
+    private final CosmosAsyncItemResponse responseWrapper;
+    private final CosmosItem item;
 
-public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties>{
-    private CosmosItem itemClient;
 
-    CosmosItemResponse(ResourceResponse<Document> response, PartitionKey partitionKey, CosmosContainer container) {
-        super(response);
-        if(response.getResource() == null){
-            super.resourceSettings(null);
-        }else{
-            super.resourceSettings(new CosmosItemProperties(response.getResource().toJson()));
-            itemClient = new CosmosItem(response.getResource().id(),partitionKey, container);
+    CosmosItemResponse(CosmosAsyncItemResponse response, PartitionKey partitionKey, CosmosContainer container) {
+        super(response.properties());
+        this.responseWrapper = response;
+        if (responseWrapper.item() != null) {
+            this.item = new CosmosItem(responseWrapper.item().id(), partitionKey, container, responseWrapper.item());
+        } else {
+            // Delete will have null container client in response
+            this.item = null;
         }
     }
 
     /**
      * Gets the itemSettings
+     *
      * @return the itemSettings
      */
     public CosmosItemProperties properties() {
-        return resourceSettings();
+        return responseWrapper.properties();
     }
 
     /**
-     * Gets the CosmosItem
+     * Gets the CosmosAsyncItem
+     *
      * @return the cosmos item
      */
     public CosmosItem item() {
-        return itemClient;
+        return item;
     }
 }

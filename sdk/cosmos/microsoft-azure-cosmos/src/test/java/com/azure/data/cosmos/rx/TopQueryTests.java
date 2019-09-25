@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.RetryAnalyzer;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
@@ -31,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TopQueryTests extends TestSuiteBase {
-    private CosmosContainer createdCollection;
+    private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<CosmosItemProperties>();
 
     private String partitionKey = "mypk";
@@ -39,7 +33,7 @@ public class TopQueryTests extends TestSuiteBase {
     private int secondPk = 1;
     private String field = "field";
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public TopQueryTests(CosmosClientBuilder clientBuilder) {
@@ -167,7 +161,7 @@ public class TopQueryTests extends TestSuiteBase {
         return receivedDocuments;
     }
 
-    public void bulkInsert(CosmosClient client) {
+    public void bulkInsert(CosmosAsyncClient client) {
         generateTestData();
 
         for (int i = 0; i < docs.size(); i++) {
@@ -201,7 +195,7 @@ public class TopQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 

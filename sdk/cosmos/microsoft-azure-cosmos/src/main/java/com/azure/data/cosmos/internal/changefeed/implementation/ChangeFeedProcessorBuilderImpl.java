@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.ChangeFeedProcessor;
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
-import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.internal.changefeed.Bootstrapper;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Helper class to build {@link ChangeFeedProcessor} instances
+ * Helper class to buildAsyncClient {@link ChangeFeedProcessor} instances
  * as logical representation of the Azure Cosmos DB database service.
  *
  * <pre>
@@ -44,7 +44,7 @@ import java.util.function.Consumer;
  *         // Implementation for handling and processing CosmosItemProperties list goes here
  *      })
  *     .observer(SampleObserverImpl.class)
- *     .build();
+ *     .buildAsyncClient();
  * }
  * </pre>
  */
@@ -120,13 +120,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     /**
-     * Sets and existing {@link CosmosContainer} to be used to read from the monitored collection.
+     * Sets and existing {@link CosmosAsyncContainer} to be used to read from the monitored collection.
      *
-     * @param feedDocumentClient the instance of {@link CosmosContainer} to be used.
+     * @param feedDocumentClient the instance of {@link CosmosAsyncContainer} to be used.
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl feedContainer(CosmosContainer feedDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl feedContainer(CosmosAsyncContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
         }
@@ -209,13 +209,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     /**
-     * Sets an existing {@link CosmosContainer} to be used to read from the leases collection.
+     * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.
      *
-     * @param leaseDocumentClient the instance of {@link CosmosContainer} to use.
+     * @param leaseDocumentClient the instance of {@link CosmosAsyncContainer} to use.
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosContainer leaseDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseDocumentClient) {
         if (leaseDocumentClient == null) {
             throw new IllegalArgumentException("leaseContextClient");
         }

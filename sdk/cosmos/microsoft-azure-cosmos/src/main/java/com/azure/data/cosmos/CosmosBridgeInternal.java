@@ -16,27 +16,27 @@ public class CosmosBridgeInternal {
         return new DocumentCollection(cosmosContainerProperties.toJson());
     }
 
-    public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {
+    public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return client.getDocClientWrapper();
     }
 
-    public static CosmosDatabase getCosmosDatabaseWithNewClient(CosmosDatabase cosmosDatabase, CosmosClient client) {
-        return new CosmosDatabase(cosmosDatabase.id(), client);
+    public static CosmosAsyncDatabase getCosmosDatabaseWithNewClient(CosmosAsyncDatabase cosmosDatabase, CosmosAsyncClient client) {
+        return new CosmosAsyncDatabase(cosmosDatabase.id(), client);
     }
 
-    public static CosmosContainer getCosmosContainerWithNewClient(CosmosContainer cosmosContainer, CosmosDatabase cosmosDatabase, CosmosClient client) {
-        return new CosmosContainer(cosmosContainer.id(), CosmosBridgeInternal.getCosmosDatabaseWithNewClient(cosmosDatabase, client));
+    public static CosmosAsyncContainer getCosmosContainerWithNewClient(CosmosAsyncContainer cosmosContainer, CosmosAsyncDatabase cosmosDatabase, CosmosAsyncClient client) {
+        return new CosmosAsyncContainer(cosmosContainer.id(), CosmosBridgeInternal.getCosmosDatabaseWithNewClient(cosmosDatabase, client));
     }
 
-    public static Mono<DatabaseAccount> getDatabaseAccount(CosmosClient client) {
+    public static Mono<DatabaseAccount> getDatabaseAccount(CosmosAsyncClient client) {
         return client.readDatabaseAccount();
     }
 
-    public static AsyncDocumentClient getContextClient(CosmosDatabase database) {
+    public static AsyncDocumentClient getContextClient(CosmosAsyncDatabase database) {
         return database.getClient().getContextClient();
     }
 
-    public static AsyncDocumentClient getContextClient(CosmosContainer container) {
+    public static AsyncDocumentClient getContextClient(CosmosAsyncContainer container) {
         return container.getDatabase().getClient().getContextClient();
     }
 }

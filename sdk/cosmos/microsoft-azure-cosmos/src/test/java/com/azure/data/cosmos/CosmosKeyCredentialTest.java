@@ -26,9 +26,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
     private final List<String> databases = new ArrayList<>();
     private final String databaseId = CosmosDatabaseForTest.generateId();
 
-    private CosmosClient client;
-    private CosmosDatabase database;
-    private CosmosContainer container;
+    private CosmosAsyncClient client;
+    private CosmosAsyncDatabase database;
+    private CosmosAsyncContainer container;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public CosmosKeyCredentialTest(CosmosClientBuilder clientBuilder) {
@@ -76,10 +76,10 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         assertThat(client.cosmosKeyCredential().key()).isEqualTo(TestConfigurations.MASTER_KEY);
 
         cosmosKeyCredential.key(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosContainerResponse> createObservable = database
+        Mono<CosmosAsyncContainerResponse> createObservable = database
             .createContainer(collectionDefinition);
 
-        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
             .withId(collectionDefinition.id()).build();
 
         validateSuccess(createObservable, validator);
@@ -96,14 +96,14 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         // sanity check
         assertThat(client.cosmosKeyCredential().key()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosContainer collection = createObservable.block().container();
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosAsyncContainer collection = createObservable.block().container();
 
         cosmosKeyCredential.key(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosContainerResponse> readObservable = collection.read();
+        Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
 
-        CosmosResponseValidator<CosmosContainerResponse> validator =
-            new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator =
+            new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
             .withId(collection.id()).build();
         validateSuccess(readObservable, validator);
 
@@ -119,13 +119,13 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         // sanity check
         assertThat(client.cosmosKeyCredential().key()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosContainer collection = createObservable.block().container();
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosAsyncContainer collection = createObservable.block().container();
 
         cosmosKeyCredential.key(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosContainerResponse> deleteObservable = collection.delete();
+        Mono<CosmosAsyncContainerResponse> deleteObservable = collection.delete();
 
-        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
             .nullResource().build();
         validateSuccess(deleteObservable, validator);
 
@@ -137,8 +137,8 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
     public void replaceCollectionWithSecondaryKey(String collectionName) throws InterruptedException  {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosContainer collection = createObservable.block().container();
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
+        CosmosAsyncContainer collection = createObservable.block().container();
 
         // sanity check
         assertThat(client.cosmosKeyCredential().key()).isEqualTo(TestConfigurations.MASTER_KEY);
@@ -153,10 +153,10 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         IndexingPolicy indexingMode = new IndexingPolicy();
         indexingMode.indexingMode(IndexingMode.LAZY);
         collectionSettings.indexingPolicy(indexingMode);
-        Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+        Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+        CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
             .indexingMode(IndexingMode.LAZY).build();
         validateSuccess(readObservable, validator);
 
@@ -174,9 +174,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         cosmosKeyCredential.key(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties properties = getDocumentDefinition(documentId);
-        Mono<CosmosItemResponse> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
+        Mono<CosmosAsyncItemResponse> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
 
-        CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
+        CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
             .withId(properties.id())
             .build();
 
@@ -195,15 +195,15 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         cosmosKeyCredential.key(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
-        CosmosItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
+        CosmosAsyncItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(new PartitionKey(docDefinition.get("mypk")));
-        Mono<CosmosItemResponse> readObservable = document.read(options);
+        Mono<CosmosAsyncItemResponse> readObservable = document.read(options);
 
-        CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
+        CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
             .withId(document.id())
             .build();
 
@@ -223,21 +223,21 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
 
-        CosmosItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
+        CosmosAsyncItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(new PartitionKey(docDefinition.get("mypk")));
-        Mono<CosmosItemResponse> deleteObservable = document.delete(options);
+        Mono<CosmosAsyncItemResponse> deleteObservable = document.delete(options);
 
 
-        CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
+        CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
             .nullResource().build();
         validateSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
-        Mono<CosmosItemResponse> readObservable = document.read(options);
+        Mono<CosmosAsyncItemResponse> readObservable = document.read(options);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
 
@@ -255,10 +255,10 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
         // create the database
-        Mono<CosmosDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
+        Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
-        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
+        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
             .withId(databaseDefinition.id()).build();
         validateSuccess(createObservable, validator);
         //  sanity check
@@ -273,10 +273,10 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         cosmosKeyCredential.key(TestConfigurations.SECONDARY_MASTER_KEY);
 
         // read database
-        Mono<CosmosDatabaseResponse> readObservable = client.getDatabase(databaseId).read();
+        Mono<CosmosAsyncDatabaseResponse> readObservable = client.getDatabase(databaseId).read();
 
         // validate
-        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
+        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
             .withId(databaseId).build();
         validateSuccess(readObservable, validator);
         //  sanity check
@@ -294,12 +294,12 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
 
-        CosmosDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().database();
+        CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().database();
         // delete the database
-        Mono<CosmosDatabaseResponse> deleteObservable = database.delete();
+        Mono<CosmosAsyncDatabaseResponse> deleteObservable = database.delete();
 
         // validate
-        CosmosResponseValidator<CosmosDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosDatabaseResponse>()
+        CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
             .nullResource().build();
         validateSuccess(deleteObservable, validator);
         //  sanity check
@@ -328,7 +328,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
         container = getSharedMultiPartitionCosmosContainer(client);
     }

@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosItem;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterList;
-import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.LeaseStore;
@@ -27,7 +21,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * Provides flexible way to build lease manager constructor parameters.
+ * Provides flexible way to buildAsyncClient lease manager constructor parameters.
  * For the actual creation of lease manager instance, delegates to lease manager factory.
  */
 public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
@@ -70,7 +64,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     @Override
-    public LeaseStoreManagerBuilderDefinition leaseCollectionLink(CosmosContainer leaseCollectionLink) {
+    public LeaseStoreManagerBuilderDefinition leaseCollectionLink(CosmosAsyncContainer leaseCollectionLink) {
         if (leaseCollectionLink == null) {
             throw new IllegalArgumentException("leaseCollectionLink");
         }
@@ -204,7 +198,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("lease");
         }
 
-        CosmosItem itemForLease = this.createItemForLease(lease.getId());
+        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
         return this.leaseDocumentClient
             .deleteItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
@@ -254,7 +248,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("lease");
         }
 
-        CosmosItem itemForLease = this.createItemForLease(lease.getId());
+        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
         return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
             .onErrorResume( ex -> {
@@ -297,7 +291,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         // Get fresh lease. The assumption here is that check-pointing is done with higher frequency than lease renewal so almost
         // certainly the lease was updated in between.
-        CosmosItem itemForLease = this.createItemForLease(lease.getId());
+        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
         return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
             .onErrorResume( ex -> {
@@ -403,7 +397,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     private Mono<ServiceItemLease> tryGetLease(Lease lease) {
-        CosmosItem itemForLease = this.createItemForLease(lease.getId());
+        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
         return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
             .onErrorResume( ex -> {
@@ -452,7 +446,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.settings.getContainerNamePrefix() + LEASE_STORE_MANAGER_LEASE_SUFFIX;
     }
 
-    private CosmosItem createItemForLease(String leaseId) {
+    private CosmosAsyncItem createItemForLease(String leaseId) {
         return this.leaseDocumentClient.getContainerClient().getItem(leaseId, "/id");
     }
 }

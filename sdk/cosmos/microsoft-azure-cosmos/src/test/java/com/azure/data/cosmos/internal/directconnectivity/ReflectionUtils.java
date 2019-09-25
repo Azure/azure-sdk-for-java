@@ -3,8 +3,8 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
-import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.internal.RxDocumentClientImpl;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -62,11 +62,11 @@ public class ReflectionUtils {
         set(transportClient, newHttpClient, "httpClient");
     }
     
-    public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {
+    public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return get(AsyncDocumentClient.class, client, "asyncDocumentClient");
     }
     
-    public static void setAsyncDocumentClient(CosmosClient client, RxDocumentClientImpl rxClient) {
+    public static void setAsyncDocumentClient(CosmosAsyncClient client, RxDocumentClientImpl rxClient) {
         set(client, rxClient, "asyncDocumentClient");
     }
 }

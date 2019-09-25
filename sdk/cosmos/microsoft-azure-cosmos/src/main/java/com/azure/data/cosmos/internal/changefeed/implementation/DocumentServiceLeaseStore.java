@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.AccessCondition;
-import com.azure.data.cosmos.AccessConditionType;
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosItem;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.LeaseStore;
 import com.azure.data.cosmos.internal.changefeed.RequestOptionsFactory;
@@ -24,7 +18,7 @@ import java.time.Duration;
 class DocumentServiceLeaseStore implements LeaseStore {
     private ChangeFeedContextClient client;
     private String containerNamePrefix;
-    private CosmosContainer leaseCollectionLink;
+    private CosmosAsyncContainer leaseCollectionLink;
     private RequestOptionsFactory requestOptionsFactory;
     private volatile String lockETag;
 
@@ -32,7 +26,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
     public DocumentServiceLeaseStore(
             ChangeFeedContextClient client,
             String containerNamePrefix,
-            CosmosContainer leaseCollectionLink,
+            CosmosAsyncContainer leaseCollectionLink,
             RequestOptionsFactory requestOptionsFactory) {
 
         this.client = client;
@@ -51,7 +45,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
-        CosmosItem docItem = this.client.getContainerClient().getItem(markerDocId, "/id");
+        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(markerDocId, "/id");
         return this.client.readItem(docItem, requestOptions)
             .flatMap(documentResourceResponse -> Mono.just(documentResourceResponse.item() != null))
             .onErrorResume(throwable -> {
@@ -129,7 +123,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         accessCondition.condition(this.lockETag);
         requestOptions.accessCondition(accessCondition);
 
-        CosmosItem docItem = this.client.getContainerClient().getItem(lockId, "/id");
+        CosmosAsyncItem docItem = this.client.getContainerClient().getItem(lockId, "/id");
         return this.client.deleteItem(docItem, requestOptions)
             .map(documentResourceResponse -> {
                 if (documentResourceResponse.item() != null) {

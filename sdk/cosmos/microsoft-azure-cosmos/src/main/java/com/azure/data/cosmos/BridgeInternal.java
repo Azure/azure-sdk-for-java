@@ -53,7 +53,7 @@ public class BridgeInternal {
     }
 
     public static void monitorTelemetry(MeterRegistry registry) {
-        CosmosClient.monitorTelemetry(registry);
+        CosmosAsyncClient.monitorTelemetry(registry);
     }
 
     public static <T extends Resource> ResourceResponse<T> toResourceResponse(RxDocumentServiceResponse response,
@@ -371,7 +371,7 @@ public class BridgeInternal {
         return cosmosClientBuilder.configs(configs);
     }
 
-    public static String extractContainerSelfLink(CosmosContainer container) {
+    public static String extractContainerSelfLink(CosmosAsyncContainer container) {
         return container.getLink();
     }
 

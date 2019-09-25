@@ -5,16 +5,16 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.Permission;
 import com.azure.data.cosmos.internal.ResourceResponse;
 
-public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
-    CosmosPermission permissionClient; 
+public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
+    CosmosAsyncPermission permissionClient;
     
-    CosmosPermissionResponse(ResourceResponse<Permission> response, CosmosUser cosmosUser) {
+    CosmosAsyncPermissionResponse(ResourceResponse<Permission> response, CosmosAsyncUser cosmosUser) {
         super(response);
         if(response.getResource() == null){
-            super.resourceSettings(null);
+            super.properties(null);
         }else{
-            super.resourceSettings(new CosmosPermissionProperties(response.getResource().toJson()));
-            permissionClient = new CosmosPermission(response.getResource().id(), cosmosUser);
+            super.properties(new CosmosPermissionProperties(response.getResource().toJson()));
+            permissionClient = new CosmosAsyncPermission(response.getResource().id(), cosmosUser);
         }
     }
 
@@ -24,15 +24,15 @@ public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionPro
      * @return the permission properties
      */
     public CosmosPermissionProperties properties() {
-        return super.resourceSettings();
+        return super.properties();
     }
 
     /**
-     * Gets the CosmosPermission
+     * Gets the CosmosAsyncPermission
      *
      * @return the cosmos permission
      */
-    public CosmosPermission permission() {
+    public CosmosAsyncPermission permission() {
         return permissionClient;
     }
 }

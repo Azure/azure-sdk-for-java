@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  *     .handleChanges(docs -> {
  *         // Implementation for handling and processing CosmosItemProperties list goes here
  *      })
- *     .build();
+ *     .buildAsyncClient();
  * }
  */
 public interface ChangeFeedProcessor {
@@ -52,7 +52,7 @@ public interface ChangeFeedProcessor {
     Mono<Void> stop();
 
     /**
-     * Helper static method to build {@link ChangeFeedProcessor} instances
+     * Helper static method to buildAsyncClient {@link ChangeFeedProcessor} instances
      * as logical representation of the Azure Cosmos DB database service.
      * <p>
      * {@code
@@ -64,7 +64,7 @@ public interface ChangeFeedProcessor {
      *       .handleChanges(docs -> {
      *           // Implementation for handling and processing CosmosItemProperties list goes here
      *        })
-     *       .build();
+     *       .buildAsyncClient();
      * }
      *
      * @return a builder definition instance.
@@ -86,12 +86,12 @@ public interface ChangeFeedProcessor {
         BuilderDefinition hostName(String hostName);
 
         /**
-         * Sets and existing {@link CosmosContainer} to be used to read from the monitored collection.
+         * Sets and existing {@link CosmosAsyncContainer} to be used to read from the monitored collection.
          *
-         * @param feedContainer the instance of {@link CosmosContainer} to be used.
+         * @param feedContainer the instance of {@link CosmosAsyncContainer} to be used.
          * @return current Builder.
          */
-        BuilderDefinition feedContainer(CosmosContainer feedContainer);
+        BuilderDefinition feedContainer(CosmosAsyncContainer feedContainer);
 
         /**
          * Sets the {@link ChangeFeedProcessorOptions} to be used.
@@ -118,12 +118,12 @@ public interface ChangeFeedProcessor {
         BuilderDefinition handleChanges(Consumer<List<CosmosItemProperties>> consumer);
 
         /**
-         * Sets an existing {@link CosmosContainer} to be used to read from the leases collection.
+         * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.
          *
-         * @param leaseContainer the instance of {@link CosmosContainer} to use.
+         * @param leaseContainer the instance of {@link CosmosAsyncContainer} to use.
          * @return current Builder.
          */
-        BuilderDefinition leaseContainer(CosmosContainer leaseContainer);
+        BuilderDefinition leaseContainer(CosmosAsyncContainer leaseContainer);
 
         /**
          * Builds a new instance of the {@link ChangeFeedProcessor} with the specified configuration asynchronously.

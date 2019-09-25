@@ -2,14 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.*;
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
-import com.azure.data.cosmos.CosmosBridgeInternal;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.CosmosAsyncDatabase;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import org.testng.annotations.AfterClass;
@@ -21,8 +16,8 @@ import reactor.core.publisher.Flux;
 
 public class ReadFeedPkrTests extends TestSuiteBase {
 
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
 
     private AsyncDocumentClient client;
     
@@ -48,8 +43,8 @@ public class ReadFeedPkrTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = CosmosBridgeInternal.getAsyncDocumentClient(clientBuilder().build());
-        createdDatabase = getSharedCosmosDatabase(clientBuilder().build());
+        client = CosmosBridgeInternal.getAsyncDocumentClient(clientBuilder().buildAsyncClient());
+        createdDatabase = getSharedCosmosDatabase(clientBuilder().buildAsyncClient());
         createdCollection = createCollection(createdDatabase,
                                              getCollectionDefinition(),
                                              new CosmosContainerRequestOptions());

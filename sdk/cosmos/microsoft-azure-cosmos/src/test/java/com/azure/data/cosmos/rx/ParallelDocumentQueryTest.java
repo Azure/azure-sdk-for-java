@@ -2,18 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosBridgeInternal;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.*;
-import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
 import com.azure.data.cosmos.internal.routing.Range;
@@ -39,11 +30,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 //FIXME beforeClass times out inconsistently
 @Ignore
 public class ParallelDocumentQueryTest extends TestSuiteBase {
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
     private List<CosmosItemProperties> createdDocuments;
 
-    private CosmosClient client;
+    private CosmosAsyncClient client;
 
     public String getCollectionLink() {
         return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
@@ -253,7 +244,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     	}
     }
 
-    //  TODO: This test has been timing out on build, related work item - https://msdata.visualstudio.com/CosmosDB/_workitems/edit/402438/
+    //  TODO: This test has been timing out on buildAsyncClient, related work item - https://msdata.visualstudio.com/CosmosDB/_workitems/edit/402438/
     @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
@@ -267,7 +258,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
@@ -315,7 +306,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 		validateQueryFailure(queryObservable, validator);
 	}
 
-	public CosmosItemProperties createDocument(CosmosContainer cosmosContainer, int cnt) throws CosmosClientException {
+	public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) throws CosmosClientException {
 
 	    CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
 

@@ -10,9 +10,9 @@ import static com.azure.data.cosmos.internal.Paths.CONFLICTS_PATH_SEGMENT;
 /**
  * Read and delete conflicts
  */
-public class CosmosConflict {
+public class CosmosAsyncConflict {
 
-    private CosmosContainer container;
+    private CosmosAsyncContainer container;
     private String id;
 
     /**
@@ -21,27 +21,27 @@ public class CosmosConflict {
      * @param id        the conflict id
      * @param container the container
      */
-    CosmosConflict(String id, CosmosContainer container) {
+    CosmosAsyncConflict(String id, CosmosAsyncContainer container) {
         this.id = id;
         this.container = container;
     }
 
     /**
-     * Get the id of the {@link CosmosConflict}
+     * Get the id of the {@link CosmosAsyncConflict}
      * 
-     * @return the id of the {@link CosmosConflict}
+     * @return the id of the {@link CosmosAsyncConflict}
      */
     public String id() {
         return id;
     }
 
     /**
-     * Set the id of the {@link CosmosConflict}
+     * Set the id of the {@link CosmosAsyncConflict}
      * 
-     * @param id the id of the {@link CosmosConflict}
-     * @return the same {@link CosmosConflict} that had the id set
+     * @param id the id of the {@link CosmosAsyncConflict}
+     * @return the same {@link CosmosAsyncConflict} that had the id set
      */
-    CosmosConflict id(String id) {
+    CosmosAsyncConflict id(String id) {
         this.id = id;
         return this;
     }
@@ -57,13 +57,13 @@ public class CosmosConflict {
      * @return a {@link Mono} containing the single resource response with the read
      *         conflict or an error.
      */
-    public Mono<CosmosConflictResponse> read(CosmosConflictRequestOptions options) {
+    public Mono<CosmosAsyncConflictResponse> read(CosmosConflictRequestOptions options) {
         if (options == null) {
             options = new CosmosConflictRequestOptions();
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), requestOptions)
-                .map(response -> new CosmosConflictResponse(response, container)).single();
+                .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
 
     }
 
@@ -78,13 +78,13 @@ public class CosmosConflict {
      * @return a {@link Mono} containing one or several feed response pages of the
      *         read conflicts or an error.
      */
-    public Mono<CosmosConflictResponse> delete(CosmosConflictRequestOptions options) {
+    public Mono<CosmosAsyncConflictResponse> delete(CosmosConflictRequestOptions options) {
         if (options == null) {
             options = new CosmosConflictRequestOptions();
         }
         RequestOptions requestOptions = options.toRequestOptions();
         return this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), requestOptions)
-                .map(response -> new CosmosConflictResponse(response, container)).single();
+                .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
     }
 
     String URIPathSegment() {

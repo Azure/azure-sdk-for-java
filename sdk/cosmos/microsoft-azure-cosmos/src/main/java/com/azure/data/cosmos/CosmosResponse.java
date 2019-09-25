@@ -9,27 +9,27 @@ import java.time.Duration;
 import java.util.Map;
 
 public class CosmosResponse<T extends Resource> {
-    private T resourceSettings;
+    private T properties;
     ResourceResponse resourceResponseWrapper;
 
     CosmosResponse(ResourceResponse resourceResponse){
         this.resourceResponseWrapper = resourceResponse;
     }
   
-    CosmosResponse(T resourceSettings){
-        this.resourceSettings = resourceSettings;
+    CosmosResponse(T properties){
+        this.properties = properties;
     }
 
-    // Only used in CosmosStoredProcedureResponse compatibility with StoredProcedureResponse
+    // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
     CosmosResponse(StoredProcedureResponse response) {
     }
 
-    T resourceSettings() {
-        return resourceSettings;
+    public T properties() {
+        return properties;
     }
     
-    CosmosResponse<T> resourceSettings(T resourceSettings){
-        this.resourceSettings = resourceSettings;
+    CosmosResponse<T> properties(T resourceSettings){
+        this.properties = resourceSettings;
         return this;
     }
 

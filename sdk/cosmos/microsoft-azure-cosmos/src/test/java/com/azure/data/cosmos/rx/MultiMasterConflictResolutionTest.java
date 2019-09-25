@@ -2,21 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.BridgeUtils;
-import com.azure.data.cosmos.ConflictResolutionMode;
-import com.azure.data.cosmos.ConflictResolutionPolicy;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
 import com.azure.data.cosmos.internal.FailureValidator;
-import com.azure.data.cosmos.internal.TestUtils;
 import com.azure.data.cosmos.internal.Utils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -37,8 +25,8 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     private final String databaseId = CosmosDatabaseForTest.generateId();
 
     private PartitionKeyDefinition partitionKeyDef;
-    private CosmosClient client;
-    private CosmosDatabase database;
+    private CosmosAsyncClient client;
+    private CosmosAsyncDatabase database;
 
     @Factory(dataProvider = "clientBuilders")
     public MultiMasterConflictResolutionTest(CosmosClientBuilder clientBuilder) {
@@ -50,7 +38,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
         // default last writer wins, path _ts
         CosmosContainerProperties collectionSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        CosmosContainer collection = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().container();
+        CosmosAsyncContainer collection = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().container();
         collectionSettings = collection.read().block().properties();
 
         assertThat(collectionSettings.conflictResolutionPolicy().mode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
@@ -142,7 +130,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         BridgeUtils.setStoredProc(policy,"randomSprocName");
         collection.conflictResolutionPolicy(policy);
 
-        Mono<CosmosContainerResponse> createObservable = database.createContainer(
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
                 collection,
                 new CosmosContainerRequestOptions());
 
@@ -164,7 +152,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         BridgeUtils.setPath(policy,"/mypath");
         collection.conflictResolutionPolicy(policy);
 
-        Mono<CosmosContainerResponse> createObservable = database.createContainer(
+        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
                 collection,
                 new CosmosContainerRequestOptions());
 
@@ -180,7 +168,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     public void beforeClass() {
         // set up the client
 
-        client = clientBuilder().build();
+        client = clientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
         partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

@@ -20,7 +20,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
     }
 
     @Override
-    public CosmosClient build() {
+    public CosmosAsyncClient buildAsyncClient() {
         RxDocumentClientUnderTest rxClient;
         try {
             rxClient = new RxDocumentClientUnderTest(
@@ -33,8 +33,8 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        CosmosClient cosmosClient = super.build();
-        ReflectionUtils.setAsyncDocumentClient(cosmosClient, rxClient);
-        return cosmosClient;
+        CosmosAsyncClient cosmosAsyncClient = super.buildAsyncClient();
+        ReflectionUtils.setAsyncDocumentClient(cosmosAsyncClient, rxClient);
+        return cosmosAsyncClient;
     }
 }

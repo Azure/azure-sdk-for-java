@@ -2,11 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosDatabase;
-import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.google.common.base.Strings;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -23,8 +20,8 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
     private static final int TIMEOUT = 2400000;
     private static final int MAX_NUMBER = 1000;
 
-    private CosmosDatabase createdDatabase;
-    private CosmosContainer createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public DocumentClientResourceLeakTest(CosmosClientBuilder clientBuilder) {
@@ -40,7 +37,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
 
         for (int i = 0; i < MAX_NUMBER; i++) {
             logger.info("CLIENT {}", i);
-            CosmosClient client = this.clientBuilder().build();
+            CosmosAsyncClient client = this.clientBuilder().buildAsyncClient();
             try {
                 logger.info("creating document");
                 createDocument(client.getDatabase(createdDatabase.id()).getContainer(createdCollection.id()),
@@ -66,7 +63,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        CosmosClient client = this.clientBuilder().build();
+        CosmosAsyncClient client = this.clientBuilder().buildAsyncClient();
         try {
             createdDatabase = getSharedCosmosDatabase(client);
             createdCollection = getSharedMultiPartitionCosmosContainer(client);
