@@ -31,6 +31,9 @@ for i in range(args.count):
     megabytesPerSecond = (args.size / (1024 * 1024)) / elapsedSeconds
     print(f"Uploaded {args.size} bytes in {elapsedSeconds:.2f} seconds ({megabytesPerSecond:.2f} MB/s)")
 
-    # start = time.time()
-    # client.download_blob().content_as_bytes(max_connections=args.maximumThreadCount)
-    # end = time.time()
+    start = time.time()
+    client.download_blob().content_as_bytes(max_connections=args.maximumThreadCount)
+    end = time.time()
+    elapsedSeconds = end - start
+    megabytesPerSecond = (args.size / (1024 * 1024)) / elapsedSeconds
+    print(f"Downloaded {args.size} bytes in {elapsedSeconds:.2f} seconds ({megabytesPerSecond:.2f} MB/s)")
