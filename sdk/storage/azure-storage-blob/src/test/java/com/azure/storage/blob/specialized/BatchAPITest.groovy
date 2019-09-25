@@ -21,17 +21,9 @@ class BatchAPITest extends APISpec {
     }
 
     def "Empty batch"() {
-        when:
-
-        then:
-        thrown(StorageException)
     }
 
     def "Mixed batch"() {
-        when:
-
-        then:
-        thrown(StorageException)
     }
 
     def "Incorrect content length"() {

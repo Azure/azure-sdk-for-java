@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 
 public class BlobBatchOperation<T> implements BatchOperation<T> {
     private final Mono<? extends Response> response;
+    private int contentId;
 
     BlobBatchOperation(Mono<? extends Response> response) {
         this.response = response;
@@ -20,5 +21,13 @@ public class BlobBatchOperation<T> implements BatchOperation<T> {
     @Override
     public Response<T> getRawResponse(BatchResult response) {
         return response.getRawResponse(this);
+    }
+
+    Mono<? extends Response> getResponse() {
+        return response;
+    }
+
+    void setContentId(int contentId) {
+        this.contentId = contentId;
     }
 }

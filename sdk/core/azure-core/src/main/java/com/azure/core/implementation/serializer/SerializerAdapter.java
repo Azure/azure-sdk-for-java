@@ -43,7 +43,7 @@ public interface SerializerAdapter {
     String serializeList(List<?> list, CollectionFormat format);
 
     /**
-     * Deserializes a string into a {@link U} object.
+     * Deserializes a string into a {@code U} object.
      *
      * @param value the string value to deserialize
      * @param <U> the type of the deserialized object

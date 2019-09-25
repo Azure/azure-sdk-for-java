@@ -20,7 +20,6 @@ final class BatchClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         sendCallback.accept(request);
-
         return Mono.empty();
     }
 }

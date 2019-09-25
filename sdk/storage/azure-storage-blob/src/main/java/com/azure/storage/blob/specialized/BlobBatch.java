@@ -8,9 +8,10 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.BatchOperation;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -25,8 +26,10 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class BlobBatch {
@@ -36,11 +39,12 @@ public final class BlobBatch {
     private static final String CONTENT_ID_TEMPLATE = "Content-ID: %d";
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String OPERATION_TEMPLATE = "%s %s %s";
+    private static final String HEADER_TEMPLATE = "%s: %s";
 
     private final URL accountUrl;
     private final HttpPipeline batchPipeline;
 
-    private final List<Mono<? extends Response>> batchRequestQueue;
+    private final Deque<BlobBatchOperation> batchOperationQueue;
     private final List<ByteBuffer> batchRequest;
 
     private final AtomicInteger contentId;
@@ -60,48 +64,75 @@ public final class BlobBatch {
 
         this.accountUrl = accountUrl;
 
-        HttpPipelinePolicy[] policies = new HttpLoggingPolicy[pipeline.getPolicyCount()];
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            policies[i] = pipeline.getPolicy(i);
+            HttpPipelinePolicy policy = pipeline.getPolicy(i);
+
+            if (policy instanceof HttpLoggingPolicy || policy instanceof RetryPolicy) {
+                continue;
+            }
+
+            policies.add(pipeline.getPolicy(i));
         }
 
         this.batchPipeline = new HttpPipelineBuilder()
-            .policies(policies)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(new BatchClient(this::sendCallback))
             .build();
 
-        this.batchRequestQueue = new ArrayList<>();
+        this.batchOperationQueue = new ConcurrentLinkedDeque<>();
         this.batchRequest = new ArrayList<>();
     }
 
     private void sendCallback(HttpRequest request) {
         StringBuilder batchRequestBuilder = new StringBuilder();
-        batchRequestBuilder
-            .append("--")
-            .append(batchBoundary)
-            .append(CONTENT_TYPE)
-            .append(CONTENT_TRANSFER_ENCODING)
-            .append(String.format(CONTENT_ID_TEMPLATE, contentId.getAndIncrement()))
-            .append('\n');
+        appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
+        appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
+        appendWithNewline(batchRequestBuilder, CONTENT_TRANSFER_ENCODING);
+        appendWithNewline(batchRequestBuilder, String.format(CONTENT_ID_TEMPLATE, contentId.getAndIncrement()));
+        batchRequestBuilder.append("\n");
 
         String method = request.getHttpMethod().toString();
         String urlPath = request.getUrl().getPath();
-        batchRequestBuilder.append(String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
+        appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
-        request.getHeaders().stream().forEach(header -> batchRequestBuilder
-            .append(String.format("%s: %s", header.getName(), header.getValue())));
+        request.getHeaders().stream()
+            .filter(header -> !"x-ms-version".equalsIgnoreCase(header.getName()) &&
+                !ImplUtils.isNullOrEmpty(header.getValue()))
+            .forEach(header -> appendWithNewline(batchRequestBuilder,
+                String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
         batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
     }
 
-    Flux<ByteBuffer> generateRequestBody() {
-        List<ByteBuffer> requestBody = new ArrayList<>();
+    private void appendWithNewline(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(value).append("\n");
+    }
 
-        for (Mono<? extends Response> batchRequest : batchRequestQueue) {
-            batchRequest.block();
+    public Flux<ByteBuffer> getBody() {
+        while (!batchOperationQueue.isEmpty()) {
+            BlobBatchOperation batchOperation = batchOperationQueue.pop();
+            batchOperation.setContentId(contentId.get());
+            batchOperation.getResponse().block();
         }
 
+        this.batchRequest.add(ByteBuffer.wrap(String.format("--%s--", batchBoundary).getBytes(StandardCharsets.UTF_8)));
+
         return Flux.fromIterable(this.batchRequest);
+    }
+
+    public long getContentLength() {
+        long contentLength = 0;
+
+        for (ByteBuffer request : batchRequest) {
+            contentLength += request.remaining();
+        }
+
+        return contentLength;
+    }
+
+    public String getContentType() {
+        return String.format("multipart/mixed; boundary=%s", batchBoundary);
     }
 
     /**
@@ -135,9 +166,7 @@ public final class BlobBatch {
 
     private BatchOperation<Void> deleteHelper(BlobAsyncClientBase client, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
-        Mono<VoidResponse> deleteResponse = client.deleteWithResponse(deleteOptions, blobAccessConditions);
-        this.batchRequestQueue.add(deleteResponse);
-        return new BlobBatchOperation<>(deleteResponse);
+        return createAndReturnBatchOperation(client.deleteWithResponse(deleteOptions, blobAccessConditions));
     }
 
     /**
@@ -171,9 +200,13 @@ public final class BlobBatch {
 
     private BatchOperation<Void> setTierHelper(BlobAsyncClientBase client, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        Mono<VoidResponse> setTierResponse = client.setTierWithResponse(accessTier, null, leaseAccessConditions);
-        this.batchRequestQueue.add(setTierResponse);
-        return new BlobBatchOperation<>(setTierResponse);
+        return createAndReturnBatchOperation(client.setTierWithResponse(accessTier, null, leaseAccessConditions));
+    }
+
+    private <T> BatchOperation<T> createAndReturnBatchOperation(Mono<Response<T>> response) {
+        BlobBatchOperation<T> batchOperation = new BlobBatchOperation<>(response);
+        this.batchOperationQueue.push(batchOperation);
+        return batchOperation;
     }
 
     private BlobAsyncClientBase buildClient(String containerName, String blobName) {

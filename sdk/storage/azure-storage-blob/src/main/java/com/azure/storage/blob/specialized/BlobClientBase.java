@@ -488,9 +488,9 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client
+        Mono<Response<Void>> response = client
             .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -701,9 +701,9 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Response<Void> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.setTierWithResponse(tier, priority, leaseAccessConditions,
+        Mono<Response<Void>> response = client.setTierWithResponse(tier, priority, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);

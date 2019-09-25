@@ -5,7 +5,7 @@ package com.azure.core.http.rest;
 
 import java.util.stream.Stream;
 
-public abstract class BatchResult {
+public abstract class BatchResult implements Iterable<Response<?>> {
     public abstract Stream<Response<?>> getRawOperationResponses();
 
     public <T> T getValue(BatchOperation<T> operation) {

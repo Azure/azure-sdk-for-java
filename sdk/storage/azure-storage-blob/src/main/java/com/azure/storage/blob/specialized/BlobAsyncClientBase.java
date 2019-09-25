@@ -640,12 +640,12 @@ public class BlobAsyncClientBase {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions) {
         return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context));
     }
 
-    Mono<VoidResponse> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -881,12 +881,12 @@ public class BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         Utility.assertNotNull("tier", tier);
         AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());

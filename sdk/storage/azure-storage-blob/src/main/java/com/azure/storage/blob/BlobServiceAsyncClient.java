@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobBatch;
+import com.azure.storage.blob.specialized.BlobBatchResult;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -475,8 +476,8 @@ public final class BlobServiceAsyncClient {
 
     Mono<BatchResult> submitBatch(BlobBatch batch, Context context) {
         return postProcessResponse(this.azureBlobStorage.services()
-            .submitBatchWithRestResponseAsync(null, 0L, null, context)
-            .flatMap(response -> Mono.empty()));
+            .submitBatchWithRestResponseAsync(batch.getBody(), batch.getContentLength(), batch.getContentType(), context)
+            .map(BlobBatchResult::new));
     }
 
     /**
