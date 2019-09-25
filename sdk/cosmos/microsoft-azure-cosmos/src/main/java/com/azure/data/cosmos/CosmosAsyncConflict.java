@@ -31,7 +31,7 @@ public class CosmosAsyncConflict {
      * 
      * @return the id of the {@link CosmosAsyncConflict}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -41,7 +41,7 @@ public class CosmosAsyncConflict {
      * @param id the id of the {@link CosmosAsyncConflict}
      * @return the same {@link CosmosAsyncConflict} that had the id set
      */
-    CosmosAsyncConflict id(String id) {
+    CosmosAsyncConflict setId(String id) {
         this.id = id;
         return this;
     }
@@ -101,7 +101,7 @@ public class CosmosAsyncConflict {
         builder.append("/");
         builder.append(URIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 }

@@ -43,7 +43,7 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -78,7 +78,7 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
         multiPartitionRequestOptions.setOfferThroughput(initialThroughput);
 
         // CREATE the collection
-        DocumentCollection createdCollection = client.createCollection("dbs/" + createdDatabase.id(),
+        DocumentCollection createdCollection = client.createCollection("dbs/" + createdDatabase.getId(),
                                                                             getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions).single().block()
                                                      .getResource();
 
@@ -86,16 +86,16 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
 
         // Find offer associated with this collection
         client.queryOffers(
-                String.format("SELECT * FROM r where r.offerResourceId = '%s'", createdCollection.resourceId()),
+                String.format("SELECT * FROM r where r.offerResourceId = '%s'", createdCollection.getResourceId()),
                 null).flatMap(offerFeedResponse -> {
-            List<Offer> offerList = offerFeedResponse.results();
+            List<Offer> offerList = offerFeedResponse.getResults();
             // NUMBER of offers returned should be 1
             assertThat(offerList.size(), equalTo(1));
 
             // This offer must correspond to the collection we created
             Offer offer = offerList.get(0);
             int currentThroughput = offer.getThroughput();
-            assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.resourceId()));
+            assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
             assertThat(currentThroughput, equalTo(initialThroughput));
             System.out.println("initial throughput: " + currentThroughput);
 
@@ -108,15 +108,15 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
             Offer offer = offerResourceResponse.getResource();
             int currentThroughput = offer.getThroughput();
 
-            // The current throughput of the offer must be equal to the new throughput value
-            assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.resourceId()));
+            // The current throughput of the offer must be equal to the new throughput getValue
+            assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
             assertThat(currentThroughput, equalTo(newThroughput));
 
             System.out.println("updated throughput: " + currentThroughput);
             successfulCompletionLatch.countDown();
         }, error -> {
             System.err
-                    .println("an error occurred while updating the offer: actual cause: " + error.getMessage());
+                    .println("an getError occurred while updating the offer: actual cause: " + error.getMessage());
         });
 
         successfulCompletionLatch.await();
@@ -124,21 +124,21 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
 
     private DocumentCollection getMultiPartitionCollectionDefinition() {
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
 
         // Set the partitionKeyDefinition for a partitioned collection
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         List<String> paths = new ArrayList<>();
         paths.add("/city");
-        partitionKeyDefinition.paths(paths);
+        partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
 
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "precision", -1);
@@ -147,7 +147,7 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
         Index numberIndex = Index.Range(DataType.NUMBER);
         BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
         collectionDefinition.setIndexingPolicy(indexingPolicy);

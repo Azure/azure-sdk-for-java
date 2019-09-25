@@ -63,17 +63,17 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         String startContinuation = lease.getContinuationToken();
 
         if (startContinuation == null || startContinuation.isEmpty()) {
-            startContinuation = this.changeFeedProcessorOptions.startContinuation();
+            startContinuation = this.changeFeedProcessorOptions.getStartContinuation();
         }
 
         ProcessorSettings settings = new ProcessorSettings()
             .withCollectionLink(this.collectionSelfLink)
             .withStartContinuation(startContinuation)
             .withPartitionKeyRangeId(lease.getLeaseToken())
-            .withFeedPollDelay(this.changeFeedProcessorOptions.feedPollDelay())
-            .withMaxItemCount(this.changeFeedProcessorOptions.maxItemCount())
-            .withStartFromBeginning(this.changeFeedProcessorOptions.startFromBeginning())
-            .withStartTime(this.changeFeedProcessorOptions.startTime());  // .sessionToken(this.changeFeedProcessorOptions.sessionToken());
+            .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
+            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount())
+            .withStartFromBeginning(this.changeFeedProcessorOptions.getStartFromBeginning())
+            .withStartTime(this.changeFeedProcessorOptions.getStartTime());  // .getSessionToken(this.changeFeedProcessorOptions.getSessionToken());
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
         return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer);

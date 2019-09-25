@@ -44,9 +44,9 @@ public class ConflictTests {
     public void getResource() {
         Conflict conf = new Conflict(conflictAsString);
         Document doc = conf.getResource(Document.class);
-        assertThat(doc.id()).isEqualTo("0007312a-a1c5-4b54-9e39-35de2367fa33");
+        assertThat(doc.getId()).isEqualTo("0007312a-a1c5-4b54-9e39-35de2367fa33");
         assertThat(doc.getInt("regionId")).isEqualTo(2);
-        assertThat(doc.resourceId()).isEqualTo("k6d9ALgBmD+ChB4AAAAAAA==");
-        assertThat(doc.etag()).isEqualTo("\"00000200-0000-0000-0000-5b6e214b0000\"");
+        assertThat(doc.getResourceId()).isEqualTo("k6d9ALgBmD+ChB4AAAAAAA==");
+        assertThat(doc.getETag()).isEqualTo("\"00000200-0000-0000-0000-5b6e214b0000\"");
     }
 }

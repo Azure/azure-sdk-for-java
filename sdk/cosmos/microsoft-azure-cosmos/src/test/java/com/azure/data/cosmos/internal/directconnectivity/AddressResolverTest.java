@@ -74,21 +74,21 @@ public class AddressResolverTest {
         this.addressResolver.initializeCaches(this.collectionCache, this.collectionRoutingMapCache, this.fabricAddressCache);
 
         this.collection1 = new DocumentCollection();
-        this.collection1.id("coll");
-        this.collection1.resourceId("rid1");
+        this.collection1.setId("coll");
+        this.collection1.setResourceId("rid1");
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        partitionKeyDef.paths(ImmutableList.of("/field1"));
+        partitionKeyDef.setPaths(ImmutableList.of("/field1"));
         this.collection1.setPartitionKey(partitionKeyDef);
 
         this.collection2 = new DocumentCollection();
-        this.collection2.id("coll");
-        this.collection2.resourceId("rid2");
+        this.collection2.setId("coll");
+        this.collection2.setResourceId("rid2");
         new PartitionKeyDefinition();
-        partitionKeyDef.paths(ImmutableList.of("/field1"));
+        partitionKeyDef.setPaths(ImmutableList.of("/field1"));
         this.collection2.setPartitionKey(partitionKeyDef);
 
         Function<List<ImmutablePair<PartitionKeyRange, IServerIdentity>>, Void> addPartitionKeyRangeFunc = listArg -> {
-            listArg.forEach(tuple -> ((ServiceIdentity) tuple.right).partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collection1.resourceId(), tuple.left.id())));
+            listArg.forEach(tuple -> ((ServiceIdentity) tuple.right).partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collection1.getResourceId(), tuple.left.getId())));
             return null;
         };
 
@@ -106,7 +106,7 @@ public class AddressResolverTest {
         this.routingMapCollection1BeforeSplit =
             InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
                 rangesBeforeSplit1,
-                collection1.resourceId());
+                collection1.getResourceId());
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesAfterSplit1 =
             new ArrayList<>();
@@ -125,7 +125,7 @@ public class AddressResolverTest {
 
         addPartitionKeyRangeFunc.apply(rangesAfterSplit1);
 
-        this.routingMapCollection1AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit1, collection1.resourceId());
+        this.routingMapCollection1AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit1, collection1.getResourceId());
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesBeforeSplit2 =
             new ArrayList<>();
@@ -139,7 +139,7 @@ public class AddressResolverTest {
         addPartitionKeyRangeFunc.apply(rangesBeforeSplit2);
 
 
-        this.routingMapCollection2BeforeSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesBeforeSplit2, collection2.resourceId());
+        this.routingMapCollection2BeforeSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesBeforeSplit2, collection2.getResourceId());
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesAfterSplit2 =
             new ArrayList<>();
@@ -160,7 +160,7 @@ public class AddressResolverTest {
         addPartitionKeyRangeFunc.apply(rangesAfterSplit2);
 
 
-        this.routingMapCollection2AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit2, collection2.resourceId());
+        this.routingMapCollection2AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit2, collection2.getResourceId());
     }
 
     private void TestCacheRefreshWhileRouteByPartitionKey(
@@ -182,7 +182,7 @@ public class AddressResolverTest {
         boolean nameBased) throws Exception {
 
         if (targetServiceIdentity != null && targetPartitionKeyRange != null) {
-            targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.resourceId() : collectionBeforeRefresh.resourceId(), targetPartitionKeyRange.id()));
+            targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.getResourceId() : collectionBeforeRefresh.getResourceId(), targetPartitionKeyRange.getId()));
         }
 
         this.initializeMocks(
@@ -227,7 +227,7 @@ public class AddressResolverTest {
 
         assertThat(targetAddresses[0].getPhysicalUri()).isEqualTo(resolvedAddresses[0].getPhysicalUri());
         //       Assert.AreEqual(targetServiceIdentity, request.requestContext.TargetIdentity);
-        assertThat(targetPartitionKeyRange.id()).isEqualTo(request.requestContext.resolvedPartitionKeyRange.id());
+        assertThat(targetPartitionKeyRange.getId()).isEqualTo(request.requestContext.resolvedPartitionKeyRange.getId());
     }
 
     private void TestCacheRefreshWhileRouteByPartitionKeyRangeId(
@@ -250,7 +250,7 @@ public class AddressResolverTest {
         boolean nameBased) throws Exception {
 
         if (targetServiceIdentity != null && targetPartitionKeyRange != null) {
-            targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.resourceId() : collectionBeforeRefresh.resourceId(), targetPartitionKeyRange.id()));
+            targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.getResourceId() : collectionBeforeRefresh.getResourceId(), targetPartitionKeyRange.getId()));
         }
 
         this.initializeMocks(
@@ -296,7 +296,7 @@ public class AddressResolverTest {
 
         assertThat(targetAddresses[0].getPhysicalUri()).isEqualTo(resolvedAddresses[0].getPhysicalUri());
         //       Assert.AreEqual(targetServiceIdentity, request.requestContext.TargetIdentity);
-        assertThat(targetPartitionKeyRange.id()).isEqualTo(request.requestContext.resolvedPartitionKeyRange.id());
+        assertThat(targetPartitionKeyRange.getId()).isEqualTo(request.requestContext.resolvedPartitionKeyRange.getId());
     }
 
     private void initializeMocks(
@@ -459,7 +459,7 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
             null,
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
             null,
@@ -478,7 +478,7 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
             null,
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
             null,
@@ -497,7 +497,7 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
             null,
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses2),
@@ -516,7 +516,7 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
             null,
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses2),
@@ -535,8 +535,8 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1AfterSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
             ImmutableMap.of(
                 getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses2,
@@ -557,8 +557,8 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1AfterSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
             ImmutableMap.of(
                 getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses2,
@@ -579,7 +579,7 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection2,
-            ImmutableMap.of(this.collection2.resourceId(), this.routingMapCollection2BeforeSplit),
+            ImmutableMap.of(this.collection2.getResourceId(), this.routingMapCollection2BeforeSplit),
             null,
             ImmutableMap.of(
                 getServiceIdentityAt(this.routingMapCollection2BeforeSplit, 0), this.addresses1),
@@ -599,7 +599,7 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection2,
-            ImmutableMap.of(this.collection2.resourceId(), this.routingMapCollection2BeforeSplit),
+            ImmutableMap.of(this.collection2.getResourceId(), this.routingMapCollection2BeforeSplit),
             null,
             ImmutableMap.of(
                 getServiceIdentityAt(this.routingMapCollection2BeforeSplit, 0), this.addresses1),
@@ -619,8 +619,8 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1AfterSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
             null,
             this.addresses1,
@@ -639,9 +639,9 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKey(
             this.collection1,
             this.collection2,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit,
-                this.collection2.resourceId(), this.routingMapCollection2BeforeSplit),
-            ImmutableMap.of(this.collection2.resourceId(), this.routingMapCollection2AfterSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit,
+                this.collection2.getResourceId(), this.routingMapCollection2BeforeSplit),
+            ImmutableMap.of(this.collection2.getResourceId(), this.routingMapCollection2AfterSplit),
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection2AfterSplit, 0), this.addresses1),
             null,
             this.addresses1,
@@ -660,7 +660,7 @@ public class AddressResolverTest {
             this.TestCacheRefreshWhileRouteByPartitionKey(
                 this.collection1,
                 null,
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
                 ImmutableMap.of(),
                 ImmutableMap.of(),
                 null,
@@ -709,7 +709,7 @@ public class AddressResolverTest {
     }
 
     private static ServiceIdentity getServiceIdentityAt(CollectionRoutingMap routingMap, int index) {
-        return (ServiceIdentity) routingMap.tryGetInfoByPartitionKeyRangeId(routingMap.getOrderedPartitionKeyRanges().get(index).id());
+        return (ServiceIdentity) routingMap.tryGetInfoByPartitionKeyRangeId(routingMap.getOrderedPartitionKeyRanges().get(index).getId());
     }
 
     @Test(groups = "unit")
@@ -718,11 +718,11 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
             null,
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
             null,
-            new PartitionKeyRangeIdentity(this.collection1.resourceId(), "0"),
+            new PartitionKeyRangeIdentity(this.collection1.getResourceId(), "0"),
             this.addresses1,
             getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0),
             getRangeAt(this.routingMapCollection1BeforeSplit, 0),
@@ -739,11 +739,11 @@ public class AddressResolverTest {
             this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
                 this.collection1,
                 this.collection1,
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
                 null,
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
                 null,
-                new PartitionKeyRangeIdentity(this.collection1.resourceId(), "1"),
+                new PartitionKeyRangeIdentity(this.collection1.getResourceId(), "1"),
                 this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0),
                 getRangeAt(this.routingMapCollection1BeforeSplit, 0),
@@ -764,7 +764,7 @@ public class AddressResolverTest {
             this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
                 this.collection1,
                 this.collection1,
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
                 null,
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0), this.addresses1),
                 null,
@@ -789,11 +789,11 @@ public class AddressResolverTest {
             this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
                 this.collection1,
                 this.collection1,
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1AfterSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
                 null,
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
                 null,
-                new PartitionKeyRangeIdentity(collection1.resourceId(), "0"),
+                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
                 this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1BeforeSplit, 0),
                 getRangeAt(this.routingMapCollection1BeforeSplit, 0),
@@ -814,11 +814,11 @@ public class AddressResolverTest {
             this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
                 this.collection1,
                 this.collection1,
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1AfterSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
                 null,
-                new PartitionKeyRangeIdentity(collection1.resourceId(), "0"),
+                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
                 this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
                 getRangeAt(this.routingMapCollection1AfterSplit, 0),
@@ -838,11 +838,11 @@ public class AddressResolverTest {
         this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
             this.collection1,
             this.collection1,
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
-            ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1AfterSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
             ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
             null,
-            new PartitionKeyRangeIdentity(collection1.resourceId(), "1"),
+            new PartitionKeyRangeIdentity(collection1.getResourceId(), "1"),
             this.addresses1,
             getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
             getRangeAt(this.routingMapCollection1AfterSplit, 0),
@@ -863,7 +863,7 @@ public class AddressResolverTest {
                 ImmutableMap.of(),
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
                 null,
-                new PartitionKeyRangeIdentity(collection1.resourceId(), "0"),
+                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
                 this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
                 getRangeAt(this.routingMapCollection1AfterSplit, 0),
@@ -913,7 +913,7 @@ public class AddressResolverTest {
                 ImmutableMap.of(),
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
                 null,
-                new PartitionKeyRangeIdentity(collection1.resourceId(), "0"),
+                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
                 this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
                 getRangeAt(this.routingMapCollection1AfterSplit, 0),
@@ -934,11 +934,11 @@ public class AddressResolverTest {
             this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
                 this.collection1,
                 this.collection2,
-                ImmutableMap.of(this.collection1.resourceId(), this.routingMapCollection1BeforeSplit),
-                ImmutableMap.of(this.collection2.resourceId(), this.routingMapCollection2BeforeSplit),
+                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+                ImmutableMap.of(this.collection2.getResourceId(), this.routingMapCollection2BeforeSplit),
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
                 ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection2AfterSplit, 0), this.addresses2),
-                new PartitionKeyRangeIdentity(collection1.resourceId(), "0"),
+                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
                 this.addresses1,
                 getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
                 getRangeAt(this.routingMapCollection1AfterSplit, 0),

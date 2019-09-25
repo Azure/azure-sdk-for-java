@@ -34,11 +34,11 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     private SpyClientUnderTestFactory.ClientUnderTest client;
 
     public String getSinglePartitionCollectionLink() {
-        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdSinglePartitionCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdSinglePartitionCollection.getId());
     }
 
     public String getMultiPartitionCollectionLink() {
-        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdMultiPartitionCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdMultiPartitionCollection.getId());
     }
 
     @Factory(dataProvider = "clientBuilders")
@@ -51,21 +51,21 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         FeedOptions options1 = new FeedOptions();
         options1.maxItemCount(1);
-        options1.responseContinuationTokenLimitInKb(5);
+        options1.getResponseContinuationTokenLimitInKb(5);
         options1.partitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
         FeedOptions options2 = new FeedOptions();
         options2.maxItemCount(1);
-        options2.responseContinuationTokenLimitInKb(5);
+        options2.getResponseContinuationTokenLimitInKb(5);
         options2.partitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
         FeedOptions options3 = new FeedOptions();
         options3.maxItemCount(1);
-        options3.responseContinuationTokenLimitInKb(5);
+        options3.getResponseContinuationTokenLimitInKb(5);
         options3.partitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";
         boolean multiPartitionCollection3 = false;
@@ -97,7 +97,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         Flux<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(collectionLink, query, options);
 
-        List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.results()))
+        List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
             .collectList().block();
 
         assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
@@ -105,7 +105,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         List<HttpRequest> requests = client.getCapturedRequests();
 
         for(HttpRequest req: requests) {
-            validateRequestHasContinuationTokenLimit(req, options.responseContinuationTokenLimitInKb());
+            validateRequestHasContinuationTokenLimit(req, options.setResponseContinuationTokenLimitInKb());
         }
     }
 
@@ -158,7 +158,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         TimeUnit.SECONDS.sleep(1);
 
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)

@@ -22,7 +22,7 @@ public class CosmosAsyncItem {
      * Get the id of the {@link CosmosAsyncItem}
      * @return the id of the {@link CosmosAsyncItem}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class CosmosAsyncItem {
      * @param id the id of the {@link CosmosAsyncItem}
      * @return the same {@link CosmosAsyncItem} that had the id set
      */
-    CosmosAsyncItem id(String id) {
+    CosmosAsyncItem setId(String id) {
         this.id = id;
         return this;
     }
@@ -160,7 +160,7 @@ public class CosmosAsyncItem {
         builder.append("/");
         builder.append(URIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 }

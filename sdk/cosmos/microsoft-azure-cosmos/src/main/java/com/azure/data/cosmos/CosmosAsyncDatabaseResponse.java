@@ -11,10 +11,10 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
     CosmosAsyncDatabaseResponse(ResourceResponse<Database> response, CosmosAsyncClient client) {
         super(response);
         if(response.getResource() == null){
-            super.properties(null);
+            super.setProperties(null);
         }else{
-            super.properties(new CosmosDatabaseProperties(response));
-            database = new CosmosAsyncDatabase(this.properties().id(), client);
+            super.setProperties(new CosmosDatabaseProperties(response));
+            database = new CosmosAsyncDatabase(this.getProperties().getId(), client);
         }
     }
 
@@ -23,7 +23,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
      *
      * @return {@link CosmosAsyncDatabase}
      */
-    public CosmosAsyncDatabase database() {
+    public CosmosAsyncDatabase getDatabase() {
         return database;
     }
 
@@ -32,25 +32,25 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
      *
      * @return the cosmos database properties
      */
-    public CosmosDatabaseProperties properties() {
-        return this.properties();
+    public CosmosDatabaseProperties getProperties() {
+        return this.getProperties();
     }
 
     /**
      * Gets the Max Quota.
      *
-     * @return the database quota.
+     * @return the getDatabase quota.
      */
-    public long databaseQuota(){
+    public long getDatabaseQuota(){
         return resourceResponseWrapper.getDatabaseQuota();
     }
 
     /**
      * Gets the current Usage.
      *
-     * @return the current database usage.
+     * @return the current getDatabase usage.
      */
-    public long databaseUsage(){
+    public long getDatabaseUsage(){
         return resourceResponseWrapper.getDatabaseUsage();
     }
 

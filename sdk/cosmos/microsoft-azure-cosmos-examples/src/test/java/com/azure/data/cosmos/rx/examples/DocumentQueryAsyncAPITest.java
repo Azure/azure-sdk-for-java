@@ -77,7 +77,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -88,11 +88,11 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // CREATE database
@@ -101,7 +101,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
 
         // CREATE collection
         createdCollection = client
-                .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
+                .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .single().block().getResource();
 
         numberOfDocuments = 20;
@@ -128,7 +128,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -145,7 +145,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             }
 
             for (@SuppressWarnings("unused")
-                    Document d : page.results()) {
+                    Document d : page.getResults()) {
                 resultsCountDown.countDown();
             }
         });
@@ -174,7 +174,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -195,7 +195,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
                 } catch (InterruptedException e) {
                 }
 
-                for (Document d : t.results()) {
+                for (Document d : t.getResults()) {
                     resultsCountDown.countDown();
                 }
             }
@@ -223,11 +223,11 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
-                .map(FeedResponse::requestCharge) // Map the page to its request charge
+                .map(FeedResponse::getRequestCharge) // Map the page to its request charge
                 .reduce(Double::sum).flux(); // Sum up all the request charges
 
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
@@ -248,7 +248,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -285,7 +285,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
@@ -305,10 +305,10 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         List<Document> resultList = Collections.synchronizedList(new ArrayList<Document>());
 
         client.queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
-              .map(FeedResponse::results) // Map the page to the list of documents
+              .map(FeedResponse::getResults) // Map the page to the list of documents
               .concatMap(Flux::fromIterable) // Flatten the Flux<list<document>> to Flux<document>
               .filter(isPrimeNumber) // Filter documents using isPrimeNumber predicate
-              .subscribe(doc -> resultList.add(doc)); // Collect the results
+              .subscribe(doc -> resultList.add(doc)); // Collect the getResults
 
         Thread.sleep(4000);
 
@@ -345,7 +345,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -360,13 +360,13 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             FeedResponse<Document> page = it.next();
             pageCounter++;
 
-            String pageSizeAsString = page.responseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
-            assertThat("header item count must be present", pageSizeAsString, notNullValue());
+            String pageSizeAsString = page.getResponseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
+            assertThat("header getItem count must be present", pageSizeAsString, notNullValue());
             int pageSize = Integer.valueOf(pageSizeAsString);
-            assertThat("Result size must match header item count", page.results(), hasSize(pageSize));
+            assertThat("Result size must match header getItem count", page.getResults(), hasSize(pageSize));
             numberOfResults += pageSize;
         }
-        assertThat("number of total results", numberOfResults, equalTo(numberOfDocuments));
+        assertThat("number of total getResults", numberOfResults, equalTo(numberOfDocuments));
         assertThat("number of result pages", pageCounter,
                    equalTo((numberOfDocuments + requestPageSize - 1) / requestPageSize));
     }
@@ -378,7 +378,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void qrderBy_Async() throws Exception {
         // CREATE a partitioned collection
         String collectionId = UUID.randomUUID().toString();
-        DocumentCollection multiPartitionCollection = createMultiPartitionCollection("dbs/" + createdDatabase.id(),
+        DocumentCollection multiPartitionCollection = createMultiPartitionCollection("dbs/" + createdDatabase.getId(),
                                                                                      collectionId, "/key");
 
         // Insert documents
@@ -387,30 +387,30 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
 
             Document doc = new Document(String.format("{\"id\":\"documentId%d\",\"key\":\"%s\",\"prop\":%d}", i,
                                                       RandomStringUtils.randomAlphabetic(2), i));
-            client.createDocument("dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(),
+            client.createDocument("dbs/" + createdDatabase.getId() + "/colls/" + multiPartitionCollection.getId(),
                                        doc, null, true).single().block();
         }
 
         // Query for the documents order by the prop field
         SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(5);
 
         // Max degree of parallelism determines the number of partitions that
         // the SDK establishes simultaneous connections to.
-        options.maxDegreeOfParallelism(2);
+        options.setMaxDegreeOfParallelism(2);
 
-        // Get the observable order by query documents
+        // Get the observable getOrder by query documents
         Flux<FeedResponse<Document>> documentQueryObservable = client.queryDocuments(
-                "dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(), query, options);
+                "dbs/" + createdDatabase.getId() + "/colls/" + multiPartitionCollection.getId(), query, options);
 
         List<String> resultList = Collections.synchronizedList(new ArrayList<>());
 
-        documentQueryObservable.map(FeedResponse::results)
+        documentQueryObservable.map(FeedResponse::getResults)
                 // Map the logical page to the list of documents in the page
                 .concatMap(Flux::fromIterable) // Flatten the list of documents
-                .map(Resource::id) // Map to the document Id
+                .map(Resource::getId) // Map to the document Id
                 .subscribe(resultList::add); // Add each document Id to the resultList
 
         Thread.sleep(4000);
@@ -432,7 +432,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -447,13 +447,13 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
 
         int totalNumberOfRetrievedDocuments = 0;
         for (FeedResponse<Document> page : pageList) {
-            totalNumberOfRetrievedDocuments += page.results().size();
+            totalNumberOfRetrievedDocuments += page.getResults().size();
         }
         assertThat(numberOfDocuments, equalTo(totalNumberOfRetrievedDocuments));
     }
 
     private String getCollectionLink() {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 
     private DocumentCollection createMultiPartitionCollection(String databaseLink, String collectionId,
@@ -461,12 +461,12 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add(partitionKeyPath);
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10100);
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(collectionId);
+        collectionDefinition.setId(collectionId);
         collectionDefinition.setPartitionKey(partitionKeyDef);
         DocumentCollection createdCollection = client.createCollection(databaseLink, collectionDefinition, options)
                                                      .single().block().getResource();

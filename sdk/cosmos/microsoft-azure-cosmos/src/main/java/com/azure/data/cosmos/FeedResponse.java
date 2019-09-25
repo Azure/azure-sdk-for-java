@@ -62,7 +62,7 @@ public class FeedResponse<T> {
      * 
      * @return the list of results.
      */
-    public List<T> results() {
+    public List<T> getResults() {
         return results;
     }
 
@@ -71,7 +71,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum quota for the account.
      */
-    public long databaseQuota() {
+    public long getDatabaseQuota() {
         return this.maxQuotaHeader(Constants.Quota.DATABASE);
     }
 
@@ -80,7 +80,7 @@ public class FeedResponse<T> {
      *
      * @return The current number of databases.
      */
-    public long databaseUsage() {
+    public long getDatabaseUsage() {
         return this.currentQuotaHeader(Constants.Quota.DATABASE);
     }
 
@@ -89,7 +89,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum quota for the account.
      */
-    public long collectionQuota() {
+    public long getCollectionQuota() {
         return this.maxQuotaHeader(Constants.Quota.COLLECTION);
     }
 
@@ -98,7 +98,7 @@ public class FeedResponse<T> {
      *
      * @return The current number of collections.
      */
-    public long collectionUsage() {
+    public long getCollectionUsage() {
         return this.currentQuotaHeader(Constants.Quota.COLLECTION);
     }
 
@@ -107,7 +107,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum quota for the account.
      */
-    public long userQuota() {
+    public long getUserQuota() {
         return this.maxQuotaHeader(Constants.Quota.USER);
     }
 
@@ -116,7 +116,7 @@ public class FeedResponse<T> {
      *
      * @return The current number of users.
      */
-    public long userUsage() {
+    public long getUserUsage() {
         return this.currentQuotaHeader(Constants.Quota.USER);
     }
 
@@ -125,7 +125,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum quota for the account.
      */
-    public long permissionQuota() {
+    public long getPermissionQuota() {
         return this.maxQuotaHeader(Constants.Quota.PERMISSION);
     }
 
@@ -134,7 +134,7 @@ public class FeedResponse<T> {
      *
      * @return The current number of permissions.
      */
-    public long permissionUsage() {
+    public long getPermissionUsage() {
         return this.currentQuotaHeader(Constants.Quota.PERMISSION);
     }
 
@@ -143,7 +143,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum quota in kilobytes.
      */
-    public long collectionSizeQuota() {
+    public long getCollectionSizeQuota() {
         return this.maxQuotaHeader(Constants.Quota.COLLECTION_SIZE);
     }
 
@@ -152,7 +152,7 @@ public class FeedResponse<T> {
      *
      * @return The current size of a collection in kilobytes.
      */
-    public long collectionSizeUsage() {
+    public long getCollectionSizeUsage() {
         return this.currentQuotaHeader(Constants.Quota.COLLECTION_SIZE);
     }
 
@@ -161,7 +161,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum stored procedure quota.
      */
-    public long storedProceduresQuota() {
+    public long getStoredProceduresQuota() {
         return this.maxQuotaHeader(Constants.Quota.STORED_PROCEDURE);
     }
 
@@ -170,7 +170,7 @@ public class FeedResponse<T> {
      *
      * @return The current number of stored procedures.
      */
-    public long storedProceduresUsage() {
+    public long getStoredProceduresUsage() {
         return this.currentQuotaHeader(Constants.Quota.STORED_PROCEDURE);
     }
 
@@ -179,7 +179,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum triggers quota.
      */
-    public long triggersQuota() {
+    public long getTriggersQuota() {
         return this.maxQuotaHeader(Constants.Quota.TRIGGER);
     }
 
@@ -188,7 +188,7 @@ public class FeedResponse<T> {
      *
      * @return The current number of triggers.
      */
-    public long triggersUsage() {
+    public long getTriggersUsage() {
         return this.currentQuotaHeader(Constants.Quota.TRIGGER);
     }
 
@@ -197,7 +197,7 @@ public class FeedResponse<T> {
      *
      * @return The maximum user defined functions quota.
      */
-    public long userDefinedFunctionsQuota() {
+    public long getUserDefinedFunctionsQuota() {
         return this.maxQuotaHeader(Constants.Quota.USER_DEFINED_FUNCTION);
     }
 
@@ -206,7 +206,7 @@ public class FeedResponse<T> {
      *
      * @return the current number of user defined functions.
      */
-    public long userDefinedFunctionsUsage() {
+    public long getUserDefinedFunctionsUsage() {
         return this.currentQuotaHeader(Constants.Quota.USER_DEFINED_FUNCTION);
     }
 
@@ -216,7 +216,7 @@ public class FeedResponse<T> {
      * @return the maximum size limit for this entity.
      * Measured in kilobytes for document resources and in counts for other resources.
      */
-    public String maxResourceQuota() {
+    public String getMaxResourceQuota() {
         return getValueOrNull(header,
                 HttpConstants.HttpHeaders.MAX_RESOURCE_QUOTA);
     }
@@ -227,7 +227,7 @@ public class FeedResponse<T> {
      * @return the current size for this entity. Measured in kilobytes for document resources
      * and in counts for other resources.
      */
-    public String currentResourceQuotaUsage() {
+    public String getCurrentResourceQuotaUsage() {
         return getValueOrNull(header,
                 HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
     }
@@ -237,7 +237,7 @@ public class FeedResponse<T> {
      *
      * @return the request charge.
      */
-    public double requestCharge() {
+    public double getRequestCharge() {
         String value = getValueOrNull(header,
                 HttpConstants.HttpHeaders.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {
@@ -251,7 +251,7 @@ public class FeedResponse<T> {
      *
      * @return the activity id.
      */
-    public String activityId() {
+    public String getActivityId() {
         return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
     }
 
@@ -260,7 +260,7 @@ public class FeedResponse<T> {
      *
      * @return the response continuation.
      */
-    public String continuationToken() {
+    public String getContinuationToken() {
         String headerName = useEtagAsContinuation
                 ? HttpConstants.HttpHeaders.E_TAG
                         : HttpConstants.HttpHeaders.CONTINUATION;
@@ -272,7 +272,7 @@ public class FeedResponse<T> {
      *
      * @return the session token.
      */
-    public String sessionToken() {
+    public String getSessionToken() {
         return getValueOrNull(header, HttpConstants.HttpHeaders.SESSION_TOKEN);
     }
 
@@ -281,12 +281,12 @@ public class FeedResponse<T> {
      *
      * @return the response headers.
      */
-    public Map<String, String> responseHeaders() {
+    public Map<String, String> getResponseHeaders() {
         return header;
     }
 
-    private String queryMetricsString(){
-        return getValueOrNull(responseHeaders(),
+    private String getQueryMetricsString(){
+        return getValueOrNull(getResponseHeaders(),
                 HttpConstants.HttpHeaders.QUERY_METRICS);
     }
 
@@ -294,7 +294,7 @@ public class FeedResponse<T> {
      * Gets the feed response diagnostics
      * @return Feed response diagnostics
      */
-    public FeedResponseDiagnostics feedResponseDiagnostics() {
+    public FeedResponseDiagnostics getFeedResponseDiagnostics() {
         return this.feedResponseDiagnostics;
     }
 
@@ -304,9 +304,9 @@ public class FeedResponse<T> {
         }
 
         //We parse query metrics for un-partitioned collection here
-        if (!StringUtils.isEmpty(queryMetricsString())) {
-            String qm = queryMetricsString();
-            qm += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, requestCharge());
+        if (!StringUtils.isEmpty(getQueryMetricsString())) {
+            String qm = getQueryMetricsString();
+            qm += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, getRequestCharge());
             queryMetricsMap.put(DefaultPartition, QueryMetrics.createFromDelimitedString(qm));
         }
         return queryMetricsMap;
@@ -317,9 +317,9 @@ public class FeedResponse<T> {
     }
 
     private long currentQuotaHeader(String headerName) {
-        if (this.usageHeaders.size() == 0 && !StringUtils.isEmpty(this.maxResourceQuota()) &&
-                !StringUtils.isEmpty(this.currentResourceQuotaUsage())) {
-            this.populateQuotaHeader(this.maxResourceQuota(), this.currentResourceQuotaUsage());
+        if (this.usageHeaders.size() == 0 && !StringUtils.isEmpty(this.getMaxResourceQuota()) &&
+                !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
+            this.populateQuotaHeader(this.getMaxResourceQuota(), this.getCurrentResourceQuotaUsage());
         }
 
         if (this.usageHeaders.containsKey(headerName)) {
@@ -331,9 +331,9 @@ public class FeedResponse<T> {
 
     private long maxQuotaHeader(String headerName) {
         if (this.quotaHeaders.size() == 0 &&
-                !StringUtils.isEmpty(this.maxResourceQuota()) &&
-                !StringUtils.isEmpty(this.currentResourceQuotaUsage())) {
-            this.populateQuotaHeader(this.maxResourceQuota(), this.currentResourceQuotaUsage());
+                !StringUtils.isEmpty(this.getMaxResourceQuota()) &&
+                !StringUtils.isEmpty(this.getCurrentResourceQuotaUsage())) {
+            this.populateQuotaHeader(this.getMaxResourceQuota(), this.getCurrentResourceQuotaUsage());
         }
 
         if (this.quotaHeaders.containsKey(headerName)) {

@@ -41,7 +41,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      */
     @Override
     public Mono<Void> checkpoint() {
-        this.responseContinuation = this.feedResponse.continuationToken();
+        this.responseContinuation = this.feedResponse.getContinuationToken();
 
         return this.checkpointer.checkpointPartition(this.responseContinuation);
     }

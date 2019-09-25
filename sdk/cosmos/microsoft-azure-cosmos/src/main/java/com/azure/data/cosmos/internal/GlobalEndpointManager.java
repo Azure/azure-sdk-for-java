@@ -49,12 +49,12 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
         try {
             this.locationCache = new LocationCache(
-                    new ArrayList<>(connectionPolicy.preferredLocations() != null ?
-                            connectionPolicy.preferredLocations():
+                    new ArrayList<>(connectionPolicy.getPreferredLocations() != null ?
+                            connectionPolicy.getPreferredLocations():
                             Collections.emptyList()
                     ),
                     owner.getServiceEndpoint().toURL(),
-                    connectionPolicy.enableEndpointDiscovery(),
+                    connectionPolicy.getEnableEndpointDiscovery(),
                     BridgeInternal.getUseMultipleWriteLocations(connectionPolicy),
                     configs);
 
@@ -159,7 +159,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
-                            new ArrayList<>(this.connectionPolicy.preferredLocations()),
+                            new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
@@ -211,7 +211,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.preferredLocations()),
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {

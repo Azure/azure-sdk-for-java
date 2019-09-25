@@ -30,7 +30,7 @@ public class CosmosStoredProcedure {
      *
      * @return the string
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 

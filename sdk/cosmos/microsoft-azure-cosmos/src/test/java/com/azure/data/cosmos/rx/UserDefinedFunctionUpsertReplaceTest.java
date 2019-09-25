@@ -31,33 +31,33 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
         // create a udf
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.id(UUID.randomUUID().toString());
-        udf.body("function() {var x = 10;}");
+        udf.setId(UUID.randomUUID().toString());
+        udf.setBody("function() {var x = 10;}");
 
         CosmosUserDefinedFunctionProperties readBackUdf = null;
 
-            readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().properties();
+            readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().getProperties();
 
         // read udf to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).read();
+        Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).read();
 
         // validate udf creation
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(readBackUdf.id())
+                .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validatorForRead);
         
         //update udf
-        readBackUdf.body("function() {var x = 11;}");
+        readBackUdf.setBody("function() {var x = 11;}");
 
-        Mono<CosmosAsyncUserDefinedFunctionResponse> replaceObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).replace(readBackUdf);
+        Mono<CosmosAsyncUserDefinedFunctionResponse> replaceObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).replace(readBackUdf);
 
         //validate udf replace
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(readBackUdf.id())
+                .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
                 .build();

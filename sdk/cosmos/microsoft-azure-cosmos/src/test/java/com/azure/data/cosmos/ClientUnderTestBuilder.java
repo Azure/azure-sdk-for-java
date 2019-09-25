@@ -12,11 +12,11 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     public ClientUnderTestBuilder(CosmosClientBuilder builder) {
         this.configs(builder.configs());
-        this.connectionPolicy(builder.connectionPolicy());
-        this.consistencyLevel(builder.consistencyLevel());
-        this.key(builder.key());
-        this.endpoint(builder.endpoint());
-        this.cosmosKeyCredential(builder.cosmosKeyCredential());
+        this.setConnectionPolicy(builder.getConnectionPolicy());
+        this.setConsistencyLevel(builder.getConsistencyLevel());
+        this.setKey(builder.getKey());
+        this.setEndpoint(builder.getEndpoint());
+        this.setCosmosKeyCredential(builder.getCosmosKeyCredential());
     }
 
     @Override
@@ -24,12 +24,12 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         RxDocumentClientUnderTest rxClient;
         try {
             rxClient = new RxDocumentClientUnderTest(
-                new URI(this.endpoint()),
-                this.key(),
-                this.connectionPolicy(),
-                this.consistencyLevel(),
+                new URI(this.getEndpoint()),
+                this.getKey(),
+                this.getConnectionPolicy(),
+                this.getConsistencyLevel(),
                 this.configs(),
-                this.cosmosKeyCredential());
+                this.getCosmosKeyCredential());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

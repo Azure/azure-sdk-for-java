@@ -76,8 +76,8 @@ class OrderByUtils {
                         queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key));
                     }
                 }
-                List<T> results = documentProducerFeedResponse.pageResult.results();
-                OrderByContinuationToken orderByContinuationToken = targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourcePartitionKeyRange.id());
+                List<T> results = documentProducerFeedResponse.pageResult.getResults();
+                OrderByContinuationToken orderByContinuationToken = targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourcePartitionKeyRange.getId());
                 if (orderByContinuationToken != null) {
                     Pair<Boolean, ResourceId> booleanResourceIdPair = ResourceId.tryParse(orderByContinuationToken.getRid());
                     if (!booleanResourceIdPair.getLeft()) {
@@ -117,7 +117,7 @@ class OrderByUtils {
                                     // If there is a tie in the sort order the documents should be in _rid order in the same direction as the first order by field.
                                     // So if it's ORDER BY c.age ASC, c.name DESC the _rids are ASC
                                     // If ti's ORDER BY c.age DESC, c.name DESC the _rids are DESC
-                                    cmp = (continuationTokenRid.getDocument() - ResourceId.tryParse(tOrderByRowResult.resourceId()).getRight().getDocument());
+                                    cmp = (continuationTokenRid.getDocument() - ResourceId.tryParse(tOrderByRowResult.getResourceId()).getRight().getDocument());
 
                                     if (sortOrders.iterator().next().equals(SortOrder.Descending)) {
                                         cmp = -cmp;
@@ -131,14 +131,14 @@ class OrderByUtils {
 
                 }
 
-                tracker.addCharge(documentProducerFeedResponse.pageResult.requestCharge());
+                tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                 Flux<T> x = Flux.fromIterable(results);
 
                 return x.map(r -> new OrderByRowResult<T>(
                         klass,
                         r.toJson(),
                         documentProducerFeedResponse.sourcePartitionKeyRange,
-                        documentProducerFeedResponse.pageResult.continuationToken()));
+                        documentProducerFeedResponse.pageResult.getContinuationToken()));
             }, 1);
         }
     }

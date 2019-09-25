@@ -63,19 +63,19 @@ class DocumentProducer<T extends Resource> {
         }
 
         void populatePartitionedQueryMetrics() {
-            String queryMetricsDelimitedString = pageResult.responseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS);
+            String queryMetricsDelimitedString = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS);
             if (!StringUtils.isEmpty(queryMetricsDelimitedString)) {
-                queryMetricsDelimitedString += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, pageResult.requestCharge());
+                queryMetricsDelimitedString += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, pageResult.getRequestCharge());
                 ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                        new ImmutablePair<>(targetRange.id(), fetchSchedulingMetrics.getElapsedTime());
+                        new ImmutablePair<>(targetRange.getId(), fetchSchedulingMetrics.getElapsedTime());
 
                 QueryMetrics qm =BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
                         new ClientSideMetrics(retries,
-                                pageResult.requestCharge(),
+                                pageResult.getRequestCharge(),
                                 fetchExecutionRangeAccumulator.getExecutionRanges(),
                                 Arrays.asList(schedulingTimeSpanMap)
-                        ), pageResult.activityId());
-                BridgeInternal.putQueryMetricsIntoMap(pageResult, targetRange.id(), qm);
+                        ), pageResult.getActivityId());
+                BridgeInternal.putQueryMetricsIntoMap(pageResult, targetRange.getId(), qm);
             }
         }
     }
@@ -119,7 +119,7 @@ class DocumentProducer<T extends Resource> {
 
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
-        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(targetRange.id());
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(targetRange.getId());
 
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
@@ -166,9 +166,9 @@ class DocumentProducer<T extends Resource> {
                         top, 
                         pageSize)
                 .map(rsp -> {
-                    lastResponseContinuationToken = rsp.continuationToken();
-                    this.fetchExecutionRangeAccumulator.endFetchRange(rsp.activityId(),
-                            rsp.results().size(),
+                    lastResponseContinuationToken = rsp.getContinuationToken();
+                    this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
+                            rsp.getResults().size(),
                             this.retries);
                     this.fetchSchedulingMetrics.stop();
                     return rsp;});

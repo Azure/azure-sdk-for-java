@@ -63,7 +63,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosClientException) {
                             CosmosClientException ex = (CosmosClientException) throwable;
-                            if (ex.statusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
+                            if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
                                 throw new LeaseLostException(arrayLease[0]);
                             }
@@ -71,7 +71,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
-                        CosmosItemProperties document = cosmosItemResponse.properties();
+                        CosmosItemProperties document = cosmosItemResponse.getProperties();
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by host '{}' with token '{}'.",
@@ -94,11 +94,11 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosAsyncItem itemLink) throws LeaseLostException {
         return this.client.replaceItem(itemLink, lease, this.getCreateIfMatchOptions(lease))
-            .map(cosmosItemResponse -> cosmosItemResponse.properties())
+            .map(cosmosItemResponse -> cosmosItemResponse.getProperties())
             .onErrorResume(re -> {
                 if (re instanceof CosmosClientException) {
                     CosmosClientException ex = (CosmosClientException) re;
-                    switch (ex.statusCode()) {
+                    switch (ex.getStatusCode()) {
                         case HTTP_STATUS_CODE_PRECONDITION_FAILED: {
                             return Mono.empty();
                         }
@@ -119,11 +119,11 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
     private CosmosItemRequestOptions getCreateIfMatchOptions(Lease lease) {
         AccessCondition ifMatchCondition = new AccessCondition();
-        ifMatchCondition.type(AccessConditionType.IF_MATCH);
-        ifMatchCondition.condition(lease.getConcurrencyToken());
+        ifMatchCondition.setType(AccessConditionType.IF_MATCH);
+        ifMatchCondition.setCondition(lease.getConcurrencyToken());
 
         CosmosItemRequestOptions createIfMatchOptions = new CosmosItemRequestOptions();
-        createIfMatchOptions.accessCondition(ifMatchCondition);
+        createIfMatchOptions.setAccessCondition(ifMatchCondition);
 
         return createIfMatchOptions;
     }

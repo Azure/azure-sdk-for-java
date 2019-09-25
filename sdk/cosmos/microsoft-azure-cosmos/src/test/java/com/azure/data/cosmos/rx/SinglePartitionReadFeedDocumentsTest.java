@@ -32,7 +32,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         final FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(2);
         final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
         final int expectedPageSize = (createdDocuments.size() + options.maxItemCount() - 1) / options.maxItemCount();
@@ -40,7 +40,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPages(expectedPageSize)
-                .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();

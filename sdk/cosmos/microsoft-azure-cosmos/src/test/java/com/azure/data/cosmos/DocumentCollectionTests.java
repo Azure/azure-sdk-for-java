@@ -18,7 +18,7 @@ public class DocumentCollectionTests {
     public void getPartitionKey()  {
         DocumentCollection collection = new DocumentCollection();
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.paths(ImmutableList.of("/mypk"));
+        partitionKeyDefinition.setPaths(ImmutableList.of("/mypk"));
         collection.setPartitionKey(partitionKeyDefinition);
         assertThat(collection.getPartitionKey()).isEqualTo(partitionKeyDefinition);
     }
@@ -27,14 +27,14 @@ public class DocumentCollectionTests {
     public void getPartitionKey_serializeAndDeserialize()  {
         DocumentCollection collection = new DocumentCollection();
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.paths(ImmutableList.of("/mypk"));
-        partitionKeyDefinition.version(PartitionKeyDefinitionVersion.V2);
+        partitionKeyDefinition.setPaths(ImmutableList.of("/mypk"));
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         collection.setPartitionKey(partitionKeyDefinition);
 
         DocumentCollection parsedColl = new DocumentCollection(collection.toJson());
-        assertThat(parsedColl.getPartitionKey().kind().toString()).isEqualTo(partitionKeyDefinition.kind().toString());
-        assertThat(parsedColl.getPartitionKey().paths()).isEqualTo(partitionKeyDefinition.paths());
-        assertThat(parsedColl.getPartitionKey().version()).isEqualTo(partitionKeyDefinition.version());
+        assertThat(parsedColl.getPartitionKey().getKind().toString()).isEqualTo(partitionKeyDefinition.getKind().toString());
+        assertThat(parsedColl.getPartitionKey().getPaths()).isEqualTo(partitionKeyDefinition.getPaths());
+        assertThat(parsedColl.getPartitionKey().getVersion()).isEqualTo(partitionKeyDefinition.getVersion());
     }
 
     @Test(groups = { "unit"})
@@ -43,7 +43,7 @@ public class DocumentCollectionTests {
         List<SpatialSpec> spatialSpecList = new ArrayList<>();
         spatialSpecList.add(spatialSpec);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        indexingPolicy.spatialIndexes(spatialSpecList);
+        indexingPolicy.setSpatialIndexes(spatialSpecList);
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setIndexingPolicy(indexingPolicy);
         String json = documentCollection.toJson();
@@ -51,7 +51,7 @@ public class DocumentCollectionTests {
         DocumentCollection documentCollectionPostSerialization = new DocumentCollection(json);
         IndexingPolicy indexingPolicyPostSerialization = documentCollectionPostSerialization.getIndexingPolicy();
         assertThat(indexingPolicyPostSerialization).isNotNull();
-        List<SpatialSpec> spatialSpecListPostSerialization = indexingPolicyPostSerialization.spatialIndexes();
+        List<SpatialSpec> spatialSpecListPostSerialization = indexingPolicyPostSerialization.getSpatialIndexes();
         assertThat(spatialSpecListPostSerialization).isNotNull();
     }
 }

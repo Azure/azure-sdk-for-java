@@ -21,17 +21,17 @@ class ExceptionClassifier {
 
 
     public static StatusCodeErrorType classifyClientException(CosmosClientException clientException) {
-        Integer subStatusCode = clientException.subStatusCode();
+        Integer subStatusCode = clientException.getSubStatusCode();
 
-        if (clientException.statusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND && subStatusCode != SubStatusCode_ReadSessionNotAvailable) {
+        if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND && subStatusCode != SubStatusCode_ReadSessionNotAvailable) {
             return StatusCodeErrorType.PARTITION_NOT_FOUND;
         }
 
-        if (clientException.statusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_GONE && (subStatusCode == SubStatusCode_PartitionKeyRangeGone || subStatusCode == SubStatusCode_Splitting)) {
+        if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_GONE && (subStatusCode == SubStatusCode_PartitionKeyRangeGone || subStatusCode == SubStatusCode_Splitting)) {
             return StatusCodeErrorType.PARTITION_SPLIT;
         }
 
-        if (clientException.statusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_TOO_MANY_REQUESTS || clientException.statusCode() >= ChangeFeedHelper.HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR) {
+        if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_TOO_MANY_REQUESTS || clientException.getStatusCode() >= ChangeFeedHelper.HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR) {
             return StatusCodeErrorType.TRANSIENT_ERROR;
         }
 

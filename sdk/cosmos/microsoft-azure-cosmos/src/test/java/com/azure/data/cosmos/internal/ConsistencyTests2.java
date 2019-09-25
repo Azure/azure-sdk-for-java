@@ -29,7 +29,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateReadSessionOnAsyncReplication() throws InterruptedException {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -40,7 +40,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION).build();
 
-        Document document = this.initClient.createDocument(createdCollection.selfLink(), getDocumentDefinition(),
+        Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).blockFirst().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateReadSession(document);
@@ -50,7 +50,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateWriteSessionOnAsyncReplication() throws InterruptedException {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -61,7 +61,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION).build();
 
-        Document document = this.initClient.createDocument(createdCollection.selfLink(), getDocumentDefinition(),
+        Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).blockFirst().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateWriteSession(document);
@@ -157,7 +157,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     public void validateNoChargeOnFailedSessionRead() throws Exception {
         // DIRECT clients for read and write operations
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -171,22 +171,22 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .build();
         try {
             // CREATE collection
-            DocumentCollection parentResource = writeClient.createCollection(createdDatabase.selfLink(),
+            DocumentCollection parentResource = writeClient.createCollection(createdDatabase.getSelfLink(),
                                                                              getCollectionDefinition(), null).blockFirst().getResource();
 
             // Document to lock pause/resume clients
             Document documentDefinition = getDocumentDefinition();
-            documentDefinition.id("test" + documentDefinition.id());
-            ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.selfLink(), documentDefinition, null, true).blockFirst();
-            logger.info("Created {} child resource", childResource.getResource().resourceId());
+            documentDefinition.setId("test" + documentDefinition.getId());
+            ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.getSelfLink(), documentDefinition, null, true).blockFirst();
+            logger.info("Created {} child resource", childResource.getResource().getResourceId());
 
             String token = childResource.getSessionToken().split(":")[0] + ":" + this.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
 
             FeedOptions feedOptions = new FeedOptions();
             feedOptions.partitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
-            feedOptions.sessionToken(token);
+            feedOptions.setSessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
-            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.selfLink(), feedOptions);
+            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), feedOptions);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -217,7 +217,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         RxDocumentClientImpl client = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -225,38 +225,38 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .build();
 
         try {
-            Document lastDocument = client.createDocument(createdCollection.selfLink(), getDocumentDefinition(),
+            Document lastDocument = client.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                           null, true)
                     .blockFirst()
                     .getResource();
 
-            Mono<Void> task1 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> client.createDocument(createdCollection.selfLink(), documents.get(index % documents.size()),
+            Mono<Void> task1 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> client.createDocument(createdCollection.getSelfLink(), documents.get(index % documents.size()),
                                   null, true)
                     .blockFirst());
 
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
                     FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.enableCrossPartitionQuery(true);
-                    FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.selfLink(),
+                    feedOptions.setEnableCrossPartitionQuery(true);
+                    FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
                                                                                          "'foo'", feedOptions)
                             .blockFirst();
-                    String lsnHeaderValue = queryResponse.responseHeaders().get(WFConstants.BackendHeaders.LSN);
+                    String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
                     long lsn = Long.valueOf(lsnHeaderValue);
-                    String sessionTokenHeaderValue = queryResponse.responseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                    String sessionTokenHeaderValue = queryResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                     ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
                     logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                     assertThat(lsn).isEqualTo(sessionToken.getLSN());
                 } catch (Exception ex) {
                     CosmosClientException clientException = (CosmosClientException) ex.getCause();
-                    if (clientException.statusCode() != 0) {
-                        if (clientException.statusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
+                    if (clientException.getStatusCode() != 0) {
+                        if (clientException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
                             // ignore
-                        } else if (clientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                            String lsnHeaderValue = clientException.responseHeaders().get(WFConstants.BackendHeaders.LSN);
+                        } else if (clientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                            String lsnHeaderValue = clientException.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
                             long lsn = Long.valueOf(lsnHeaderValue);
-                            String sessionTokenHeaderValue = clientException.responseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                            String sessionTokenHeaderValue = clientException.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
                             ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
 
                             logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);

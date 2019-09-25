@@ -87,10 +87,10 @@ public class JsonSerializableTests {
 
         // JsonSerializable
         Document innerDocument = new Document();
-        innerDocument.id("innerDocument");
+        innerDocument.setId("innerDocument");
         setProperty(document, "innerDocument", innerDocument);
         Document readInnerDocument = document.getObject("innerDocument", Document.class);
-        assertThat(readInnerDocument.id()).isEqualTo(innerDocument.id());
+        assertThat(readInnerDocument.getId()).isEqualTo(innerDocument.getId());
     }
 
     @Test(groups = { "unit" })

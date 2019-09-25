@@ -36,7 +36,7 @@ public class SessionTokenHelper {
 
     public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) throws CosmosClientException {
         String originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.id();
+        String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
 
 
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {

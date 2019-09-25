@@ -310,7 +310,7 @@ public class ConsistencyReader {
                             && responses.get(0).sessionToken != null
                             && !entity.requestContext.sessionToken.isValid(responses.get(0).sessionToken)) {
                             logger.warn("Convert to session read exception, request {} SESSION Lsn {}, responseLSN {}", entity.getResourceAddress(), entity.requestContext.sessionToken.convertToString(), responses.get(0).lsn);
-                            notFoundException.responseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
+                            notFoundException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
                         }
                         return Mono.error(notFoundException);
                     } catch (CosmosClientException e) {

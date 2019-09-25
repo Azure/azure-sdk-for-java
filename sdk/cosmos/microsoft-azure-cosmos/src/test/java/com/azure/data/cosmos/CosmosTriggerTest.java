@@ -28,7 +28,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = clientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        container = client.getDatabase(asyncContainer.getDatabase().id()).getContainer(asyncContainer.id());
+        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -52,7 +52,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        CosmosTriggerResponse readResponse = container.getScripts().getTrigger(trigger.id()).read();
+        CosmosTriggerResponse readResponse = container.getScripts().getTrigger(trigger.getId()).read();
         validateResponse(trigger, readResponse);
 
     }
@@ -63,10 +63,10 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        CosmosTriggerProperties readTrigger = container.getScripts().getTrigger(trigger.id()).read().properties();
-        readTrigger.body("function() {var x = 11;}");
+        CosmosTriggerProperties readTrigger = container.getScripts().getTrigger(trigger.getId()).read().getProperties();
+        readTrigger.setBody("function() {var x = 11;}");
 
-        CosmosTriggerResponse replace = container.getScripts().getTrigger(trigger.id()).replace(readTrigger);
+        CosmosTriggerResponse replace = container.getScripts().getTrigger(trigger.getId()).replace(readTrigger);
         validateResponse(trigger, replace);
     }
 
@@ -76,7 +76,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        container.getScripts().getTrigger(trigger.id()).delete();
+        container.getScripts().getTrigger(trigger.getId()).delete();
     }
 
 
@@ -87,7 +87,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         container.getScripts().createTrigger(trigger);
 
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.enableCrossPartitionQuery(true);
+        feedOptions.setEnableCrossPartitionQuery(true);
         Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator3 =
                 container.getScripts().readAllTriggers(feedOptions);
         assertThat(feedResponseIterator3.hasNext()).isTrue();
@@ -95,10 +95,10 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
     private CosmosTriggerProperties getCosmosTriggerProperties() {
         CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.id(UUID.randomUUID().toString());
-        trigger.body("function() {var x = 10;}");
-        trigger.triggerOperation(TriggerOperation.CREATE);
-        trigger.triggerType(TriggerType.PRE);
+        trigger.setId(UUID.randomUUID().toString());
+        trigger.setBody("function() {var x = 10;}");
+        trigger.setTriggerOperation(TriggerOperation.CREATE);
+        trigger.setTriggerType(TriggerType.PRE);
         return trigger;
     }
 
@@ -106,8 +106,8 @@ public class CosmosTriggerTest extends TestSuiteBase {
     public void queryTriggers() throws Exception {
         CosmosTriggerProperties properties = getCosmosTriggerProperties();
         container.getScripts().createTrigger(properties);
-        String query = String.format("SELECT * from c where c.id = '%s'", properties.id());
-        FeedOptions feedOptions = new FeedOptions().enableCrossPartitionQuery(true);
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
 
         Iterator<FeedResponse<CosmosTriggerProperties>> feedResponseIterator1 =
                 container.getScripts().queryTriggers(query, feedOptions);
@@ -122,10 +122,10 @@ public class CosmosTriggerTest extends TestSuiteBase {
     private void validateResponse(CosmosTriggerProperties properties,
                                   CosmosTriggerResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.properties().id()).isNotNull();
-        assertThat(createResponse.properties().id())
+        assertThat(createResponse.getProperties().getId()).isNotNull();
+        assertThat(createResponse.getProperties().getId())
                 .as("check Resource Id")
-                .isEqualTo(properties.id());
+                .isEqualTo(properties.getId());
 
     }
 

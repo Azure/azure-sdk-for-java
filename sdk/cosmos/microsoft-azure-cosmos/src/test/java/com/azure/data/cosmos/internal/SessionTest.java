@@ -61,16 +61,16 @@ public class SessionTest extends TestSuiteBase {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         DocumentCollection collection = new DocumentCollection();
-        collection.id(collectionId);
+        collection.setId(collectionId);
         collection.setPartitionKey(partitionKeyDef);
 
-        createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.id(),
+        createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.getId(),
                 collection, null);
         houseKeepingClient = clientBuilder().build();
-        connectionMode = houseKeepingClient.getConnectionPolicy().connectionMode();
+        connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
 
         if (connectionMode == ConnectionMode.DIRECT) {
             spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
@@ -132,7 +132,7 @@ public class SessionTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
-        document.id(UUID.randomUUID().toString());
+        document.setId(UUID.randomUUID().toString());
         BridgeInternal.setProperty(document, "pk", "pk");
         document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
                 .blockFirst()
@@ -183,12 +183,12 @@ public class SessionTest extends TestSuiteBase {
     }
 
     private String getCollectionLink(boolean isNameBased) {
-        return isNameBased ? "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id():
-            createdCollection.selfLink();
+        return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId():
+            createdCollection.getSelfLink();
     }
     
     private String getDocumentLink(Document doc, boolean isNameBased) {
-        return isNameBased ? "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id() + "/docs/" + doc.id() :
-            "dbs/" + createdDatabase.resourceId() + "/colls/" + createdCollection.resourceId() + "/docs/" + doc.resourceId() + "/";
+        return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + doc.getId() :
+            "dbs/" + createdDatabase.getResourceId() + "/colls/" + createdCollection.getResourceId() + "/docs/" + doc.getResourceId() + "/";
     }
 }

@@ -185,12 +185,12 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse,
                 double charge) {
             FeedResponse<T> page = documentProducerFeedResponse.pageResult;
-            Map<String, String> headers = new HashMap<>(page.responseHeaders());
-            double pageCharge = page.requestCharge();
+            Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
+            double pageCharge = page.getRequestCharge();
             pageCharge += charge;
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
                     String.valueOf(pageCharge));
-            FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.results(),
+            FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                     headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page));
             documentProducerFeedResponse.pageResult = newPage;
@@ -201,10 +201,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse,
                 String compositeContinuationToken) {
             FeedResponse<T> page = documentProducerFeedResponse.pageResult;
-            Map<String, String> headers = new HashMap<>(page.responseHeaders());
+            Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
             headers.put(HttpConstants.HttpHeaders.CONTINUATION,
                     compositeContinuationToken);
-            FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.results(),
+            FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                     headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page));
             documentProducerFeedResponse.pageResult = newPage;
@@ -222,9 +222,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // Emit an empty page so the downstream observables know when there are no more
             // results.
             return source.filter(documentProducerFeedResponse -> {
-                if (documentProducerFeedResponse.pageResult.results().isEmpty()) {
+                if (documentProducerFeedResponse.pageResult.getResults().isEmpty()) {
                     // filter empty pages and accumulate charge
-                    tracker.addCharge(documentProducerFeedResponse.pageResult.requestCharge());
+                    tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     return false;
                 }
                 return true;
@@ -253,7 +253,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 DocumentProducer<T>.DocumentProducerFeedResponse next = currentNext.right;
 
                 String compositeContinuationToken;
-                String backendContinuationToken = current.pageResult.continuationToken();
+                String backendContinuationToken = current.pageResult.getContinuationToken();
                 if (backendContinuationToken == null) {
                     // We just finished reading the last document from a partition
                     if (next == null) {

@@ -39,7 +39,7 @@ public class IncludedPath extends JsonSerializable {
      *
      * @return the path.
      */
-    public String path() {
+    public String getPath() {
         return super.getString(Constants.Properties.PATH);
     }
 
@@ -49,7 +49,7 @@ public class IncludedPath extends JsonSerializable {
      * @param path the path.
      * @return the Included Path.
      */
-    public IncludedPath path(String path) {
+    public IncludedPath setPath(String path) {
         super.set(Constants.Properties.PATH, path);
         return this;
     }
@@ -59,9 +59,9 @@ public class IncludedPath extends JsonSerializable {
      *
      * @return the included paths.
      */
-    public Collection<Index> indexes() {
+    public Collection<Index> getIndexes() {
         if (this.indexes == null) {
-            this.indexes = this.indexCollection();
+            this.indexes = this.getIndexCollection();
 
             if (this.indexes == null) {
                 this.indexes = new ArrayList<Index>();
@@ -71,12 +71,12 @@ public class IncludedPath extends JsonSerializable {
         return this.indexes;
     }
 
-    public IncludedPath indexes(Collection<Index> indexes) {
+    public IncludedPath setIndexes(Collection<Index> indexes) {
         this.indexes = indexes;
         return this;
     }
 
-    private Collection<Index> indexCollection() {
+    private Collection<Index> getIndexCollection() {
         if (this.propertyBag != null && this.propertyBag.has(Constants.Properties.INDEXES)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(Constants.Properties.INDEXES);
             Collection<Index> result = new ArrayList<Index>();

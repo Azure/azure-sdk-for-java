@@ -14,8 +14,8 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
     CosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response, CosmosAsyncContainer cosmosContainer) {
         super(response);
         if(response.getResource() != null){
-            super.properties(new CosmosStoredProcedureProperties(response));
-            storedProcedure = new CosmosAsyncStoredProcedure(this.properties().id(), cosmosContainer);
+            super.setProperties(new CosmosStoredProcedureProperties(response));
+            storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
         }
     }
 
@@ -28,15 +28,15 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      * Gets the stored procedure properties
      * @return the stored procedure properties or null
      */
-    public CosmosStoredProcedureProperties properties() {
-        return super.properties();
+    public CosmosStoredProcedureProperties getProperties() {
+        return super.getProperties();
     }
 
     /**
      * Gets the stored procedure object
      * @return the stored procedure object or null
      */
-    public CosmosAsyncStoredProcedure storedProcedure() {
+    public CosmosAsyncStoredProcedure getStoredProcedure() {
         return this.storedProcedure;
     }
 
@@ -46,11 +46,11 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      * @return the activity id.
      */
     @Override
-    public String activityId() {
+    public String getActivityId() {
         if(storedProcedureResponse != null){
             return this.storedProcedureResponse.getActivityId();
         }
-        return super.activityId();
+        return super.getActivityId();
     }
 
     /**
@@ -59,11 +59,11 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      * @return the session token.
      */
     @Override
-    public String sessionToken() {
+    public String getSessionToken() {
         if(storedProcedureResponse != null){
             return this.storedProcedureResponse.getSessionToken();
         }
-        return super.sessionToken();
+        return super.getSessionToken();
     }
 
     /**
@@ -72,11 +72,11 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      * @return the status code.
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         if(storedProcedureResponse != null){
             return this.storedProcedureResponse.getStatusCode();
         }
-        return super.statusCode();
+        return super.getStatusCode();
     }
 
     /**
@@ -85,11 +85,11 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      * @return the request charge.
      */
     @Override
-    public double requestCharge() {
+    public double getRequestCharge() {
         if(storedProcedureResponse != null){
             return storedProcedureResponse.getRequestCharge();
         }
-        return super.requestCharge();
+        return super.getRequestCharge();
     }
 
     /**
@@ -97,7 +97,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      *
      * @return the response as a string.
      */
-    public String responseAsString() {
+    public String getResponseAsString() {
         return this.storedProcedureResponse.getResponseAsString();
     }
 
@@ -106,7 +106,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
      *
      * @return the output string from the stored procedure console.log() statements.
      */
-    public String scriptLog() {
+    public String getScriptLog() {
         return this.storedProcedureResponse.getScriptLog();
     }
 }

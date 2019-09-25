@@ -35,7 +35,7 @@ public class UniqueKey extends JsonSerializable {
      *
      * @return the unique paths.
      */
-    public Collection<String> paths() {
+    public Collection<String> getPaths() {
         if (this.paths == null) {
             this.paths = super.getList(Constants.Properties.PATHS, String.class);
 
@@ -57,7 +57,7 @@ public class UniqueKey extends JsonSerializable {
      * @param paths the unique paths.
      * @return the Unique Key.
      */
-    public UniqueKey paths(List<String> paths) {
+    public UniqueKey setPaths(List<String> paths) {
         this.paths = paths;
         return this;
     }

@@ -19,6 +19,6 @@ public class DocumentTests {
         Document d = new Document();
         OffsetDateTime time = OffsetDateTime.of(2019, 8, 6, 12, 53, 29, 0, ZoneOffset.UTC);
         setTimestamp(d, time);
-        assertThat(d.timestamp()).isEqualTo(time);
+        assertThat(d.getTimestamp()).isEqualTo(time);
     }
 }

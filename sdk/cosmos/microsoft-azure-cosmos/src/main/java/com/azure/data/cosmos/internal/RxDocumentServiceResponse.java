@@ -101,7 +101,7 @@ public class RxDocumentServiceResponse {
             throw new IllegalStateException("Failed to instantiate class object.", e);
         }
         if(PathsHelper.isPublicResource(resource)) {
-            BridgeInternal.setAltLink(resource, PathsHelper.generatePathForNameBased(resource, this.getOwnerFullName(),resource.id()));
+            BridgeInternal.setAltLink(resource, PathsHelper.generatePathForNameBased(resource, this.getOwnerFullName(),resource.getId()));
         }
 
         return resource;

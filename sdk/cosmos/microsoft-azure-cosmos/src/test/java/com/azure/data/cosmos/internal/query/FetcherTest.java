@@ -87,7 +87,7 @@ public class FetcherTest {
 
         Function<RxDocumentServiceRequest, Flux<FeedResponse<Document>>> executeFunc = request ->  {
                 FeedResponse<Document> rsp = feedResponseList.get(executeIndex.getAndIncrement());
-                totalResultsReceived.addAndGet(rsp.results().size());
+                totalResultsReceived.addAndGet(rsp.getResults().size());
                 return Flux.just(rsp);
         };
 
@@ -108,7 +108,7 @@ public class FetcherTest {
         int index = 0;
         while(index < feedResponseList.size()) {
             assertThat(fetcher.shouldFetchMore()).describedAs("should fetch more pages").isTrue();
-            totalNumberOfDocs += validate(fetcher.nextPage()).results().size();
+            totalNumberOfDocs += validate(fetcher.nextPage()).getResults().size();
 
             if ((top != -1) && (totalNumberOfDocs >= top)) {
                 break;
@@ -122,7 +122,7 @@ public class FetcherTest {
     public void changeFeed() {
 
         ChangeFeedOptions options = new ChangeFeedOptions();
-        options.maxItemCount(100);
+        options.setMaxItemCount(100);
 
         boolean isChangeFeed = true;
         int top = -1;
@@ -142,9 +142,9 @@ public class FetcherTest {
         AtomicInteger requestIndex = new AtomicInteger(0);
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (token, maxItemCount) -> {
-            assertThat(maxItemCount).describedAs("max item count").isEqualTo(options.maxItemCount());
+            assertThat(maxItemCount).describedAs("max getItem count").isEqualTo(options.getMaxItemCount());
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.requestContinuation(), feedResponseList, requestIndex.getAndIncrement()));
+                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.getAndIncrement()));
 
             return mock(RxDocumentServiceRequest.class);
         };
@@ -156,8 +156,8 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.requestContinuation(), isChangeFeed, top,
-                        options.maxItemCount());
+                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), isChangeFeed, top,
+                        options.getMaxItemCount());
 
         validateFetcher(fetcher, options, feedResponseList);
     }
@@ -192,7 +192,7 @@ public class FetcherTest {
             return continuationToken;
         }
 
-        return feedResponseList.get(requestIndex - 1).continuationToken();
+        return feedResponseList.get(requestIndex - 1).getContinuationToken();
     }
 
     private int getExpectedMaxItemCountInRequest(FeedOptions options,
@@ -204,7 +204,7 @@ public class FetcherTest {
         }
 
         int numberOfReceivedItemsSoFar  =
-                feedResponseList.subList(0, requestIndex).stream().mapToInt(rsp -> rsp.results().size()).sum();
+                feedResponseList.subList(0, requestIndex).stream().mapToInt(rsp -> rsp.getResults().size()).sum();
 
         return Math.min(top - numberOfReceivedItemsSoFar, options.maxItemCount());
     }

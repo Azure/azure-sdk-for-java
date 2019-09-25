@@ -171,7 +171,7 @@ public class ConsistencyWriter {
                                                        } catch (CosmosClientException e) {
                                                            logger.error("Error occurred while recording response", e);
                                                        }
-                                                       String value = ex.responseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
+                                                       String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
                                                        if (!Strings.isNullOrWhiteSpace(value)) {
                                                            Integer result = Integers.tryParse(value);
                                                            if (result != null && result == 1) {

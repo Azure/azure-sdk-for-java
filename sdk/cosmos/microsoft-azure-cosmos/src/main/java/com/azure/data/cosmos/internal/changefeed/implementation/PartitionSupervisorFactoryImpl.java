@@ -14,8 +14,6 @@ import com.azure.data.cosmos.internal.changefeed.PartitionSupervisor;
 import com.azure.data.cosmos.internal.changefeed.PartitionSupervisorFactory;
 import reactor.core.scheduler.Scheduler;
 
-import java.util.concurrent.ExecutorService;
-
 /**
  * Implementation for the partition supervisor factory.
  */
@@ -65,7 +63,7 @@ class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
 
         ChangeFeedObserver changeFeedObserver = this.observerFactory.createObserver();
         PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver);
-        LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.leaseRenewInterval());
+        LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval());
 
         return new PartitionSupervisorImpl(lease, changeFeedObserver, processor, renewer, this.scheduler);
     }

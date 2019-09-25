@@ -14,7 +14,6 @@ import com.azure.data.cosmos.PartitionIsMigratingException;
 import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.directconnectivity.GoneAndRetryWithRetryPolicy;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -102,7 +101,7 @@ public class GoneAndRetryWithRetryPolicyTest {
         shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
         CosmosClientException clientException = (CosmosClientException) shouldRetryResult.exception;
-        assertThat(clientException.statusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+        assertThat(clientException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
 
     }
 

@@ -47,7 +47,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .totalSize(createdCollections.size())
-                .exactlyContainsInAnyOrder(createdCollections.stream().map(d -> d.read().block().properties().resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdCollections.stream().map(d -> d.read().block().getProperties().getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -77,8 +77,8 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        return database.createContainer(collection, new CosmosContainerRequestOptions()).block().container();
+        return database.createContainer(collection, new CosmosContainerRequestOptions()).block().getContainer();
     }
 }

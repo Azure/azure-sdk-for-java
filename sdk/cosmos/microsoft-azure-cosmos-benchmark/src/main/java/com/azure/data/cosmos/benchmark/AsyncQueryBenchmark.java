@@ -42,8 +42,8 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
         if (configuration.getOperationType() == Configuration.Operation.QueryCross) {
 
             int index = r.nextInt(1000);
-            options.enableCrossPartitionQuery(true);
-            String sqlQuery = "Select * from c where c._rid = \"" + docsToRead.get(index).resourceId() + "\"";
+            options.setEnableCrossPartitionQuery(true);
+            String sqlQuery = "Select * from c where c._rid = \"" + docsToRead.get(index).getResourceId() + "\"";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
         } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
 
@@ -55,29 +55,29 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
         } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
 
             options.maxItemCount(10);
-            options.enableCrossPartitionQuery(true);
+            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
 
             options.maxItemCount(10);
-            options.enableCrossPartitionQuery(true);
+            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
 
             options.maxItemCount(10);
-            options.enableCrossPartitionQuery(true);
+            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select value max(c._ts) from c";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
 
-            options.enableCrossPartitionQuery(true);
+            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1 value count(c) from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
 
-            options.enableCrossPartitionQuery(true);
+            options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1000 * from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
         } else {

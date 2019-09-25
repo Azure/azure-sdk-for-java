@@ -158,7 +158,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         String idString = Utils.randomUUID().toString();
         String randomVal = Utils.randomUUID().toString();
         Document document = new Document();
-        document.id(idString);
+        document.setId(idString);
         BridgeInternal.setProperty(document, partitionKey, idString);
         BridgeInternal.setProperty(document, QUERY_FIELD_NAME, randomVal);
         BridgeInternal.setProperty(document, "dataField1", randomVal);
@@ -217,11 +217,11 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      */
     private Flux<Document> xPartitionQuery(SqlQuerySpec query) {
         FeedOptions options = new FeedOptions();
-        options.maxDegreeOfParallelism(-1);
-        options.enableCrossPartitionQuery(true);
+        options.setMaxDegreeOfParallelism(-1);
+        options.setEnableCrossPartitionQuery(true);
 
         return client.queryDocuments(getCollectionLink(), query, options)
-                .flatMap(p -> Flux.fromIterable(p.results()));
+                .flatMap(p -> Flux.fromIterable(p.getResults()));
     }
 
     /**
@@ -239,7 +239,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                                                                    QUERY_FIELD_NAME,
                                                                    d.getString(QUERY_FIELD_NAME)));
         return client.queryDocuments(getCollectionLink(), sqlQuerySpec, options)
-                .flatMap(p -> Flux.fromIterable(p.results()));
+                .flatMap(p -> Flux.fromIterable(p.getResults()));
     }
 
     /**
@@ -348,7 +348,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append(fieldName);
                     stringBuilder.append(" IN (");
-                    List<String> params = parameters.stream().map(SqlParameter::name).collect(Collectors.toList());
+                    List<String> params = parameters.stream().map(SqlParameter::getName).collect(Collectors.toList());
                     stringBuilder.append(String.join(", ", params));
                     stringBuilder.append(")");
 

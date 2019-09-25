@@ -9,10 +9,10 @@ public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
 
 
     CosmosItemResponse(CosmosAsyncItemResponse response, PartitionKey partitionKey, CosmosContainer container) {
-        super(response.properties());
+        super(response.getProperties());
         this.responseWrapper = response;
-        if (responseWrapper.item() != null) {
-            this.item = new CosmosItem(responseWrapper.item().id(), partitionKey, container, responseWrapper.item());
+        if (responseWrapper.getItem() != null) {
+            this.item = new CosmosItem(responseWrapper.getItem().getId(), partitionKey, container, responseWrapper.getItem());
         } else {
             // Delete will have null container client in response
             this.item = null;
@@ -24,8 +24,8 @@ public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
      *
      * @return the itemSettings
      */
-    public CosmosItemProperties properties() {
-        return responseWrapper.properties();
+    public CosmosItemProperties getProperties() {
+        return responseWrapper.getProperties();
     }
 
     /**
@@ -33,7 +33,7 @@ public class CosmosItemResponse extends CosmosResponse<CosmosItemProperties> {
      *
      * @return the cosmos item
      */
-    public CosmosItem item() {
+    public CosmosItem getItem() {
         return item;
     }
 }

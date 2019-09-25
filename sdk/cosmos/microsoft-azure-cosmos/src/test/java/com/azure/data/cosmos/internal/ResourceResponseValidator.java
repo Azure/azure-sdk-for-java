@@ -53,7 +53,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().id()).as("check Resource Id").isEqualTo(resourceId);
+                    assertThat(resourceResponse.getResource().getId()).as("check Resource Id").isEqualTo(resourceId);
                 }
             });
             return this;
@@ -103,8 +103,8 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().timestamp()).isNotNull();
-                    OffsetDateTime d = resourceResponse.getResource().timestamp();
+                    assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
+                    OffsetDateTime d = resourceResponse.getResource().getTimestamp();
                     System.out.println(d.toString());
                     assertThat(d.toInstant()).isAfterOrEqualTo(time);
                 }
@@ -118,8 +118,8 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().timestamp()).isNotNull();
-                    OffsetDateTime d = resourceResponse.getResource().timestamp();
+                    assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
+                    OffsetDateTime d = resourceResponse.getResource().getTimestamp();
                     assertThat(d.toInstant()).isBeforeOrEqualTo(time);
                 }
             });
@@ -155,7 +155,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<DocumentCollection> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().getIndexingPolicy()).isNotNull();
-                    assertThat(resourceResponse.getResource().getIndexingPolicy().indexingMode()).isEqualTo(mode);
+                    assertThat(resourceResponse.getResource().getIndexingPolicy().getIndexingMode()).isEqualTo(mode);
                 }
             });
             return this;
@@ -201,7 +201,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().etag()).isNotNull();
+                    assertThat(resourceResponse.getResource().getETag()).isNotNull();
                 }
             });
             return this;
@@ -213,7 +213,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().selfLink()).isNotEmpty();
+                    assertThat(resourceResponse.getResource().getSelfLink()).isNotEmpty();
                 }
             });
             return this;
@@ -262,7 +262,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<DocumentCollection> resourceResponse) {
                     Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.getResource()
-                            .getIndexingPolicy().compositeIndexes().iterator();
+                            .getIndexingPolicy().getCompositeIndexes().iterator();
                     Iterator<ArrayList<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
                     
                     ArrayList<String> readIndexesStrings = new ArrayList<String>();
@@ -279,8 +279,8 @@ public interface ResourceResponseValidator<T extends Resource> {
                             CompositePath compositePathRead = compositeIndexReadIterator.next();
                             CompositePath compositePathWritten = compositeIndexWrittenIterator.next();
                             
-                            readIndexesString.append(compositePathRead.path() + ":" + compositePathRead.order() + ";");
-                            writtenIndexesString.append(compositePathWritten.path() + ":" + compositePathRead.order() + ";");
+                            readIndexesString.append(compositePathRead.getPath() + ":" + compositePathRead.getOrder() + ";");
+                            writtenIndexesString.append(compositePathWritten.getPath() + ":" + compositePathRead.getOrder() + ";");
                         }
                         
                         readIndexesStrings.add(readIndexesString.toString());
@@ -299,7 +299,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<DocumentCollection> resourceResponse) {
                     Iterator<SpatialSpec> spatialIndexesReadIterator = resourceResponse.getResource()
-                            .getIndexingPolicy().spatialIndexes().iterator();
+                            .getIndexingPolicy().getSpatialIndexes().iterator();
                     Iterator<SpatialSpec> spatialIndexesWrittenIterator = spatialIndexes.iterator();
 
                     HashMap<String, ArrayList<SpatialType>> readIndexMap = new HashMap<String, ArrayList<SpatialType>>();
@@ -309,14 +309,14 @@ public interface ResourceResponseValidator<T extends Resource> {
                         SpatialSpec spatialSpecRead = spatialIndexesReadIterator.next();
                         SpatialSpec spatialSpecWritten = spatialIndexesWrittenIterator.next();
 
-                        String readPath = spatialSpecRead.path() + ":";
-                        String writtenPath = spatialSpecWritten.path() + ":";
+                        String readPath = spatialSpecRead.getPath() + ":";
+                        String writtenPath = spatialSpecWritten.getPath() + ":";
 
                         ArrayList<SpatialType> readSpatialTypes = new ArrayList<SpatialType>();
                         ArrayList<SpatialType> writtenSpatialTypes = new ArrayList<SpatialType>();
                         
-                        Iterator<SpatialType> spatialTypesReadIterator = spatialSpecRead.spatialTypes().iterator();
-                        Iterator<SpatialType> spatialTypesWrittenIterator = spatialSpecWritten.spatialTypes().iterator();
+                        Iterator<SpatialType> spatialTypesReadIterator = spatialSpecRead.getSpatialTypes().iterator();
+                        Iterator<SpatialType> spatialTypesWrittenIterator = spatialSpecWritten.getSpatialTypes().iterator();
 
                         while (spatialTypesReadIterator.hasNext() && spatialTypesWrittenIterator.hasNext()) {
                             readSpatialTypes.add(spatialTypesReadIterator.next());

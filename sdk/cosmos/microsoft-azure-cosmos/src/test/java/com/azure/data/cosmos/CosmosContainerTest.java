@@ -51,7 +51,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
             collectionName,
@@ -81,7 +81,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             createdDatabase.createContainer(containerProperties);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).statusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
@@ -189,19 +189,19 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
 
-        assertThat(containerResponse.properties().indexingPolicy().indexingMode()).isEqualTo(IndexingMode.CONSISTENT);
+        assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosContainerResponse replaceResponse = containerResponse.container()
-                                                          .replace(containerResponse.properties().indexingPolicy(
-                                                              new IndexingPolicy().indexingMode(IndexingMode.LAZY)));
-        assertThat(replaceResponse.properties().indexingPolicy().indexingMode())
+        CosmosContainerResponse replaceResponse = containerResponse.getContainer()
+                                                          .replace(containerResponse.getProperties().setIndexingPolicy(
+                                                              new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
+        assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.LAZY);
 
-        CosmosContainerResponse replaceResponse1 = containerResponse.container()
-                                                          .replace(containerResponse.properties().indexingPolicy(
-                                                              new IndexingPolicy().indexingMode(IndexingMode.CONSISTENT)),
+        CosmosContainerResponse replaceResponse1 = containerResponse.getContainer()
+                                                          .replace(containerResponse.getProperties().setIndexingPolicy(
+                                                              new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)),
                                                               options);
-        assertThat(replaceResponse1.properties().indexingPolicy().indexingMode())
+        assertThat(replaceResponse1.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.CONSISTENT);
 
     }
@@ -255,10 +255,10 @@ public class CosmosContainerTest extends TestSuiteBase {
     private void validateContainerResponse(CosmosContainerProperties containerProperties,
                                            CosmosContainerResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.properties().id()).isNotNull();
-        assertThat(createResponse.properties().id())
+        assertThat(createResponse.getProperties().getId()).isNotNull();
+        assertThat(createResponse.getProperties().getId())
             .as("check Resource Id")
-            .isEqualTo(containerProperties.id());
+            .isEqualTo(containerProperties.getId());
 
     }
 }

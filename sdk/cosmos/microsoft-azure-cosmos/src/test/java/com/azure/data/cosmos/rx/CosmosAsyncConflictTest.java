@@ -43,12 +43,12 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
         int numberOfResults = 0;
         while (it.hasNext()) {
             FeedResponse<CosmosConflictProperties> page = it.next();
-            String pageSizeAsString = page.responseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
+            String pageSizeAsString = page.getResponseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
             assertThat(pageSizeAsString).isNotNull();
             // assertThat("header item count must be present", pageSizeAsString, notNullValue());
             int pageSize = Integer.valueOf(pageSizeAsString);
-            // Assert that Result size must match header item count
-            assertThat(page.results().size()).isEqualTo(pageSize);
+            // Assert that Result size must match header getItem count
+            assertThat(page.getResults().size()).isEqualTo(pageSize);
             numberOfResults += pageSize;
         }
         assertThat(numberOfResults).isEqualTo(expectedNumberOfConflicts);

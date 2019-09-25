@@ -291,7 +291,7 @@ public class PartitionKeyInternalTest {
                 .isEqualTo(PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.paths(Lists.newArrayList("/A", "/B", "/C", "/E", "/F", "/G"));
+        partitionKeyDefinition.setPaths(Lists.newArrayList("/A", "/B", "/C", "/E", "/F", "/G"));
 
         PartitionKeyInternal partitionKey = PartitionKeyInternal.fromObjectArray(
                 new Object[]{2, true, false, null, Undefined.Value(), "Привет!"}, true);
@@ -334,7 +334,7 @@ public class PartitionKeyInternalTest {
                 PartitionKeyInternal.fromJsonString("[\"по-русски\",null,true,false,{},5.5]");
 
         PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
-        pkDefinition.paths(ImmutableList.of("/field1", "/field2", "/field3", "/field4", "/field5", "/field6"));
+        pkDefinition.setPaths(ImmutableList.of("/field1", "/field2", "/field3", "/field4", "/field5", "/field6"));
 
         String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, pkDefinition);
         assertThat("05C1D39FA55F0408D1C0D1BF2ED281D284D282D282D1BBD1B9000103020005C016").isEqualTo(effectivePartitionKey);
@@ -419,7 +419,7 @@ public class PartitionKeyInternalTest {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyRangeJson);
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.kind(PartitionKind.HASH);
+        partitionKeyDefinition.setKind(PartitionKind.HASH);
         CommonsBridgeInternal.setV2(partitionKeyDefinition);
         ArrayList<String> paths = new ArrayList<String>();
         for (int i = 0; i < partitionKey.getComponents().size(); i++) {
@@ -427,7 +427,7 @@ public class PartitionKeyInternalTest {
         }
 
         if (paths.size() > 0) {
-            partitionKeyDefinition.paths(paths);
+            partitionKeyDefinition.setPaths(paths);
         }
 
         String hexEncodedEffectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
@@ -441,7 +441,7 @@ public class PartitionKeyInternalTest {
 
     private static void verifyEffectivePartitionKeyEncoding(String buffer, int length, String expectedValue, boolean v2) {
         PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
-        pkDefinition.paths(ImmutableList.of("/field1"));
+        pkDefinition.setPaths(ImmutableList.of("/field1"));
         if (v2) {
             CommonsBridgeInternal.setV2(pkDefinition);
         }

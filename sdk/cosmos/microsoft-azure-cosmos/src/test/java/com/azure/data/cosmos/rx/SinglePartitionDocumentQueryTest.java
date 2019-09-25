@@ -35,7 +35,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     private CosmosAsyncClient client;
 
     public String getCollectionLink() {
-        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -52,7 +52,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.populateQueryMetrics(queryMetricsEnabled);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
@@ -63,7 +63,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -81,7 +81,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(sqs, options);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (3 == d.getInt("prop") || 4 == d.getInt("prop"))).collect(Collectors.toList());
@@ -91,7 +91,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -108,7 +108,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(sqs, options);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 3 == d.getInt("prop")).collect(Collectors.toList());
@@ -118,7 +118,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -132,7 +132,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
@@ -150,7 +150,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
@@ -160,7 +160,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
             .Builder<CosmosItemProperties>()
             .exactlyContainsInAnyOrder(createdDocuments
                 .stream()
-                .map(d -> d.resourceId())
+                .map(d -> d.getResourceId())
                 .collect(Collectors.toList()))
             .numberOfPages(expectedPageSize)
             .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
@@ -175,7 +175,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(3);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
@@ -185,7 +185,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(createdDocuments.stream()
                         .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
-                        .map(d -> d.resourceId()).collect(Collectors.toList()))
+                        .map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -198,7 +198,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void continuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(3);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
         
@@ -210,12 +210,12 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         subscriber.assertNoErrors();
         assertThat(subscriber.valueCount()).isEqualTo(1);
         FeedResponse<CosmosItemProperties> page = ((FeedResponse<CosmosItemProperties>) subscriber.getEvents().get(0).get(0));
-        assertThat(page.results()).hasSize(3);
+        assertThat(page.getResults()).hasSize(3);
         
-        assertThat(page.continuationToken()).isNotEmpty();
+        assertThat(page.getContinuationToken()).isNotEmpty();
         
         
-        options.requestContinuation(page.continuationToken());
+        options.requestContinuation(page.getContinuationToken());
         queryObservable = createdCollection.queryItems(query, options);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
@@ -226,7 +226,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(expectedDocs.stream()
                         .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
-                        .map(d -> d.resourceId()).collect(Collectors.toList()))
+                        .map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -238,7 +238,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
@@ -251,7 +251,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
         CosmosItemProperties docDefinition = getDocumentDefinition(cnt);
-        return cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block().properties();
+        return cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block().getProperties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

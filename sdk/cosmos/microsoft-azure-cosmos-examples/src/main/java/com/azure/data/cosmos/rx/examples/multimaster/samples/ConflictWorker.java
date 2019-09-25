@@ -83,7 +83,7 @@ public class ConflictWorker {
 
     private DocumentCollection getCollectionDefForManual(String id) {
         DocumentCollection collection = new DocumentCollection();
-        collection.id(id);
+        collection.setId(id);
         ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy();
         collection.setConflictResolutionPolicy(policy);
         return collection;
@@ -91,7 +91,7 @@ public class ConflictWorker {
 
     private DocumentCollection getCollectionDefForLastWinWrites(String id, String conflictResolutionPath) {
         DocumentCollection collection = new DocumentCollection();
-        collection.id(id);
+        collection.setId(id);
         ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy(conflictResolutionPath);
         collection.setConflictResolutionPolicy(policy);
         return collection;
@@ -99,7 +99,7 @@ public class ConflictWorker {
 
     private DocumentCollection getCollectionDefForCustom(String id, String storedProc) {
         DocumentCollection collection = new DocumentCollection();
-        collection.id(id);
+        collection.setId(id);
         ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy(storedProc);
         collection.setConflictResolutionPolicy(policy);
         return collection;
@@ -123,7 +123,7 @@ public class ConflictWorker {
                         String.format("dbs/%s/colls/%s/sprocs/%s", this.databaseName, this.udpCollectionName, "resolver")));
 
         StoredProcedure lwwSproc = new StoredProcedure();
-        lwwSproc.id("resolver");
+        lwwSproc.setId("resolver");
         lwwSproc.setBody(IOUtils.toString(
                 getClass().getClassLoader().getResourceAsStream("resolver-storedproc.txt"), "UTF-8"));
 
@@ -177,7 +177,7 @@ public class ConflictWorker {
             ArrayList<Flux<Document>> insertTask = new ArrayList<>();
 
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -202,7 +202,7 @@ public class ConflictWorker {
     public void runUpdateConflictOnManual() throws Exception {
         do {
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.manualCollectionUri, conflictDocument, 0)
@@ -238,7 +238,7 @@ public class ConflictWorker {
     public void runDeleteConflictOnManual() throws Exception {
         do {
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.manualCollectionUri, conflictDocument, 0)
                     .singleOrEmpty().block();
@@ -279,7 +279,7 @@ public class ConflictWorker {
             ArrayList<Flux<Document>> insertTask = new ArrayList<>();
 
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -304,7 +304,7 @@ public class ConflictWorker {
     public void runUpdateConflictOnLWW() throws Exception {
         do {
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.lwwCollectionUri, conflictDocument, 0)
                     .singleOrEmpty().block();
@@ -339,7 +339,7 @@ public class ConflictWorker {
     public void runDeleteConflictOnLWW() throws Exception {
         do {
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.lwwCollectionUri, conflictDocument, 0)
                     .singleOrEmpty().block();
@@ -382,7 +382,7 @@ public class ConflictWorker {
             ArrayList<Flux<Document>> insertTask = new ArrayList<>();
 
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             int index = 0;
             for (AsyncDocumentClient client : this.clients) {
@@ -407,7 +407,7 @@ public class ConflictWorker {
     public void runUpdateConflictOnUdp() throws Exception {
         do {
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.udpCollectionUri, conflictDocument, 0)
                     .singleOrEmpty().block();
@@ -441,7 +441,7 @@ public class ConflictWorker {
     public void runDeleteConflictOnUdp() throws Exception {
         do {
             Document conflictDocument = new Document();
-            conflictDocument.id(UUID.randomUUID().toString());
+            conflictDocument.setId(UUID.randomUUID().toString());
 
             conflictDocument = this.tryInsertDocument(clients.get(0), this.udpCollectionUri, conflictDocument, 0)
                     .singleOrEmpty().block();
@@ -494,7 +494,7 @@ public class ConflictWorker {
     private boolean hasDocumentClientException(Throwable e, int statusCode) {
         if (e instanceof CosmosClientException) {
             CosmosClientException dce = (CosmosClientException) e;
-            return dce.statusCode() == statusCode;
+            return dce.getStatusCode() == statusCode;
         }
 
         return false;
@@ -515,7 +515,7 @@ public class ConflictWorker {
         while (e != null) {
             if (e instanceof CosmosClientException) {
                 CosmosClientException dce = (CosmosClientException) e;
-                return dce.statusCode() == statusCode;
+                return dce.getStatusCode() == statusCode;
             }
 
             e = e.getCause();
@@ -530,11 +530,11 @@ public class ConflictWorker {
 
         RequestOptions options = new RequestOptions();
         options.setAccessCondition(new AccessCondition());
-        options.getAccessCondition().type(AccessConditionType.IF_MATCH);
-        options.getAccessCondition().condition(document.etag());
+        options.getAccessCondition().setType(AccessConditionType.IF_MATCH);
+        options.getAccessCondition().setCondition(document.getETag());
 
 
-        return client.replaceDocument(document.selfLink(), document, null).onErrorResume(e -> {
+        return client.replaceDocument(document.getSelfLink(), document, null).onErrorResume(e -> {
 
             // pre condition failed
             if (hasDocumentClientException(e, 412)) {
@@ -552,11 +552,11 @@ public class ConflictWorker {
 
         RequestOptions options = new RequestOptions();
         options.setAccessCondition(new AccessCondition());
-        options.getAccessCondition().type(AccessConditionType.IF_MATCH);
-        options.getAccessCondition().condition(document.etag());
+        options.getAccessCondition().setType(AccessConditionType.IF_MATCH);
+        options.getAccessCondition().setCondition(document.getETag());
 
 
-        return client.deleteDocument(document.selfLink(), options).onErrorResume(e -> {
+        return client.deleteDocument(document.getSelfLink(), options).onErrorResume(e -> {
 
             // pre condition failed
             if (hasDocumentClientException(e, 412)) {
@@ -593,21 +593,21 @@ public class ConflictWorker {
             FeedResponse<Conflict> response = client.readConflicts(this.manualCollectionUri, null)
                     .take(1).single().block();
 
-            for (Conflict conflict : response.results()) {
+            for (Conflict conflict : response.getResults()) {
                 if (!isDelete(conflict)) {
                     Document conflictDocumentContent = conflict.getResource(Document.class);
-                    if (equals(conflictDocument.id(), conflictDocumentContent.id())) {
-                        if (equals(conflictDocument.resourceId(), conflictDocumentContent.resourceId()) &&
-                                equals(conflictDocument.etag(), conflictDocumentContent.etag())) {
-                            logger.info("Document from Region {} lost conflict @ {}",
-                                    conflictDocument.id(),
+                    if (equals(conflictDocument.getId(), conflictDocumentContent.getId())) {
+                        if (equals(conflictDocument.getResourceId(), conflictDocumentContent.getResourceId()) &&
+                                equals(conflictDocument.getETag(), conflictDocumentContent.getETag())) {
+                            logger.info("Document from Region {} lost getConflict @ {}",
+                                    conflictDocument.getId(),
                                     conflictDocument.getInt("regionId"),
                                     client.getReadEndpoint());
                             return true;
                         } else {
                             try {
                                 //Checking whether this is the winner.
-                                Document winnerDocument = client.readDocument(conflictDocument.selfLink(), null)
+                                Document winnerDocument = client.readDocument(conflictDocument.getSelfLink(), null)
                                         .single().block().getResource();
                                 logger.info("Document from region {} won the conflict @ {}",
                                         conflictDocument.getInt("regionId"),
@@ -627,16 +627,16 @@ public class ConflictWorker {
                         }
                     }
                 } else {
-                    if (equals(conflict.getSourceResourceId(), conflictDocument.resourceId())) {
-                        logger.info("DELETE conflict found @ {}",
+                    if (equals(conflict.getSourceResourceId(), conflictDocument.getResourceId())) {
+                        logger.info("DELETE getConflict found @ {}",
                                 client.getReadEndpoint());
                         return false;
                     }
                 }
             }
 
-            logger.error("Document {} is not found in conflict feed @ {}, retrying",
-                    conflictDocument.id(),
+            logger.error("Document {} is not found in getConflict feed @ {}, retrying",
+                    conflictDocument.getId(),
                     client.getReadEndpoint());
 
             TimeUnit.MILLISECONDS.sleep(500);
@@ -648,23 +648,23 @@ public class ConflictWorker {
 
         FeedResponse<Conflict> conflicts = delClient.readConflicts(this.manualCollectionUri, null).take(1).single().block();
 
-        for (Conflict conflict : conflicts.results()) {
+        for (Conflict conflict : conflicts.getResults()) {
             if (!isDelete(conflict)) {
                 Document conflictContent = conflict.getResource(Document.class);
-                if (equals(conflictContent.resourceId(), conflictDocument.resourceId())
-                        && equals(conflictContent.etag(), conflictDocument.etag())) {
-                    logger.info("Deleting manual conflict {} from region {}",
+                if (equals(conflictContent.getResourceId(), conflictDocument.getResourceId())
+                        && equals(conflictContent.getETag(), conflictDocument.getETag())) {
+                    logger.info("Deleting manual getConflict {} from region {}",
                             conflict.getSourceResourceId(),
                             conflictContent.getInt("regionId"));
-                    delClient.deleteConflict(conflict.selfLink(), null)
+                    delClient.deleteConflict(conflict.getSelfLink(), null)
                             .single().block();
 
                 }
-            } else if (equals(conflict.getSourceResourceId(), conflictDocument.resourceId())) {
-                logger.info("Deleting manual conflict {} from region {}",
+            } else if (equals(conflict.getSourceResourceId(), conflictDocument.getResourceId())) {
+                logger.info("Deleting manual getConflict {} from region {}",
                         conflict.getSourceResourceId(),
                         conflictDocument.getInt("regionId"));
-                delClient.deleteConflict(conflict.selfLink(), null)
+                delClient.deleteConflict(conflict.getSelfLink(), null)
                         .single().block();
             }
         }
@@ -685,18 +685,18 @@ public class ConflictWorker {
         FeedResponse<Conflict> response = client.readConflicts(this.lwwCollectionUri, null)
                 .take(1).single().block();
 
-        if (response.results().size() != 0) {
-            logger.error("Found {} conflicts in the lww collection", response.results().size());
+        if (response.getResults().size() != 0) {
+            logger.error("Found {} conflicts in the lww collection", response.getResults().size());
             return;
         }
 
         if (hasDeleteConflict) {
             do {
                 try {
-                    client.readDocument(conflictDocument.get(0).selfLink(), null).single().block();
+                    client.readDocument(conflictDocument.get(0).getSelfLink(), null).single().block();
 
-                    logger.error("DELETE conflict for document {} didnt win @ {}",
-                            conflictDocument.get(0).id(),
+                    logger.error("DELETE getConflict for document {} didnt win @ {}",
+                            conflictDocument.get(0).getId(),
                             client.getReadEndpoint());
 
                     TimeUnit.MILLISECONDS.sleep(500);
@@ -708,11 +708,11 @@ public class ConflictWorker {
                     // NotFound
                     if (hasDocumentClientExceptionCause(exception, 404)) {
 
-                        logger.info("DELETE conflict won @ {}", client.getReadEndpoint());
+                        logger.info("DELETE getConflict won @ {}", client.getReadEndpoint());
                         return;
                     } else {
-                        logger.error("DELETE conflict for document {} didnt win @ {}",
-                                conflictDocument.get(0).id(),
+                        logger.error("DELETE getConflict for document {} didnt win @ {}",
+                                conflictDocument.get(0).getId(),
                                 client.getReadEndpoint());
 
                         TimeUnit.MILLISECONDS.sleep(500);
@@ -735,7 +735,7 @@ public class ConflictWorker {
 
         while (true) {
             try {
-                Document existingDocument = client.readDocument(winnerDocument.selfLink(), null)
+                Document existingDocument = client.readDocument(winnerDocument.getSelfLink(), null)
                         .single().block().getResource();
 
                 if (existingDocument.getInt("regionId") == winnerDocument.getInt("regionId")) {
@@ -775,8 +775,8 @@ public class ConflictWorker {
     private void validateUDPAsync(AsyncDocumentClient client, List<Document> conflictDocument, boolean hasDeleteConflict) throws Exception {
         FeedResponse<Conflict> response = client.readConflicts(this.udpCollectionUri, null).take(1).single().block();
 
-        if (response.results().size() != 0) {
-            logger.error("Found {} conflicts in the udp collection", response.results().size());
+        if (response.getResults().size() != 0) {
+            logger.error("Found {} conflicts in the udp collection", response.getResults().size());
             return;
         }
 
@@ -784,22 +784,22 @@ public class ConflictWorker {
             do {
                 try {
                     client.readDocument(
-                            documentNameLink(udpCollectionName, conflictDocument.get(0).id()), null)
+                            documentNameLink(udpCollectionName, conflictDocument.get(0).getId()), null)
                             .single().block();
 
-                    logger.error("DELETE conflict for document {} didnt win @ {}",
-                            conflictDocument.get(0).id(),
+                    logger.error("DELETE getConflict for document {} didnt win @ {}",
+                            conflictDocument.get(0).getId(),
                             client.getReadEndpoint());
 
                     TimeUnit.MILLISECONDS.sleep(500);
 
                 } catch (Exception exception) {
                     if (hasDocumentClientExceptionCause(exception, 404)) {
-                        logger.info("DELETE conflict won @ {}", client.getReadEndpoint());
+                        logger.info("DELETE getConflict won @ {}", client.getReadEndpoint());
                         return;
                     } else {
-                        logger.error("DELETE conflict for document {} didnt win @ {}",
-                                conflictDocument.get(0).id(),
+                        logger.error("DELETE getConflict for document {} didnt win @ {}",
+                                conflictDocument.get(0).getId(),
                                 client.getReadEndpoint());
 
                         TimeUnit.MILLISECONDS.sleep(500);
@@ -824,7 +824,7 @@ public class ConflictWorker {
             try {
 
                 Document existingDocument = client.readDocument(
-                        documentNameLink(udpCollectionName, winnerDocument.id()), null)
+                        documentNameLink(udpCollectionName, winnerDocument.getId()), null)
                         .single().block().getResource();
 
                 if (existingDocument.getInt("regionId") == winnerDocument.getInt(

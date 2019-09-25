@@ -12,10 +12,10 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
     CosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response, CosmosAsyncDatabase database) {
         super(response);
         if(response.getResource() == null){
-            super.properties(null);
+            super.setProperties(null);
         }else{
-            super.properties(new CosmosContainerProperties(response));
-            container = new CosmosAsyncContainer(this.properties().id(), database);
+            super.setProperties(new CosmosContainerProperties(response));
+            container = new CosmosAsyncContainer(this.getProperties().getId(), database);
         }
     }
 
@@ -24,7 +24,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
      *
      * @return the progress of an index transformation.
      */
-    public long indexTransformationProgress() {
+    public long getIndexTransformationProgress() {
         return resourceResponseWrapper.getIndexTransformationProgress();
     }
 
@@ -33,7 +33,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
      *
      * @return the progress of lazy indexing.
      */
-    long lazyIndexingProgress() {
+    long getLazyIndexingProgress() {
         return resourceResponseWrapper.getLazyIndexingProgress();
     }
 
@@ -41,15 +41,15 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
      * Gets the container properties
      * @return the cosmos container properties
      */
-    public CosmosContainerProperties properties() {
-        return this.properties();
+    public CosmosContainerProperties getProperties() {
+        return this.getProperties();
     }
 
     /**
      * Gets the Container object
      * @return the Cosmos container object
      */
-    public CosmosAsyncContainer container() {
+    public CosmosAsyncContainer getContainer() {
         return container;
     }
 }

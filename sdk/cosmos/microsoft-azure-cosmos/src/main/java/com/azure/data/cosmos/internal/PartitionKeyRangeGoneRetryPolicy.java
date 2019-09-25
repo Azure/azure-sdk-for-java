@@ -68,12 +68,12 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
 
             return collectionObs.flatMap(collection -> {
 
-                Mono<CollectionRoutingMap> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collection.resourceId(), null, request.properties);
+                Mono<CollectionRoutingMap> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collection.getResourceId(), null, request.properties);
 
                 Mono<CollectionRoutingMap> refreshedRoutingMapObs = routingMapObs.flatMap(routingMap -> {
                     // Force refresh.
                     return this.partitionKeyRangeCache.tryLookupAsync(
-                            collection.resourceId(),
+                            collection.getResourceId(),
                             routingMap,
                             request.properties);
                 }).switchIfEmpty(Mono.defer(Mono::empty));

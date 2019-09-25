@@ -51,7 +51,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
                 collectionName,
@@ -68,7 +68,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .createContainer(collectionDefinition);
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(collectionDefinition.id()).build();
+                .withId(collectionDefinition.getId()).build();
 
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(database);
@@ -79,7 +79,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         CosmosContainerProperties collection = new CosmosContainerProperties(
                 UUID.randomUUID().toString(),
@@ -87,21 +87,21 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         CompositePath compositePath1 = new CompositePath();
-        compositePath1.path("/path1");
-        compositePath1.order(CompositePathSortOrder.ASCENDING);
+        compositePath1.setPath("/path1");
+        compositePath1.setOrder(CompositePathSortOrder.ASCENDING);
         CompositePath compositePath2 = new CompositePath();
-        compositePath2.path("/path2");
-        compositePath2.order(CompositePathSortOrder.DESCENDING);
+        compositePath2.setPath("/path2");
+        compositePath2.setOrder(CompositePathSortOrder.DESCENDING);
         CompositePath compositePath3 = new CompositePath();
-        compositePath3.path("/path3");
+        compositePath3.setPath("/path3");
         CompositePath compositePath4 = new CompositePath();
-        compositePath4.path("/path4");
-        compositePath4.order(CompositePathSortOrder.ASCENDING);
+        compositePath4.setPath("/path4");
+        compositePath4.setOrder(CompositePathSortOrder.ASCENDING);
         CompositePath compositePath5 = new CompositePath();
-        compositePath5.path("/path5");
-        compositePath5.order(CompositePathSortOrder.DESCENDING);
+        compositePath5.setPath("/path5");
+        compositePath5.setOrder(CompositePathSortOrder.DESCENDING);
         CompositePath compositePath6 = new CompositePath();
-        compositePath6.path("/path6");
+        compositePath6.setPath("/path6");
 
         ArrayList<CompositePath> compositeIndex1 = new ArrayList<CompositePath>();
         compositeIndex1.add(compositePath1);
@@ -116,7 +116,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         List<List<CompositePath>> compositeIndexes = new ArrayList<>();
         compositeIndexes.add(compositeIndex1);
         compositeIndexes.add(compositeIndex2);
-        indexingPolicy.compositeIndexes(compositeIndexes);
+        indexingPolicy.setCompositeIndexes(compositeIndexes);
 
         SpatialType[] spatialTypes = new SpatialType[] {
                 SpatialType.POINT,
@@ -129,24 +129,24 @@ public class CollectionCrudTest extends TestSuiteBase {
             List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
 
             SpatialSpec spec = new SpatialSpec();
-            spec.path("/path" + index + "/*");
+            spec.setPath("/path" + index + "/*");
 
             for (int i = index; i < index + 3; i++) {
                 collectionOfSpatialTypes.add(spatialTypes[i]);
             }
-            spec.spatialTypes(collectionOfSpatialTypes);
+            spec.setSpatialTypes(collectionOfSpatialTypes);
             spatialIndexes.add(spec);
         }
 
-        indexingPolicy.spatialIndexes(spatialIndexes);
+        indexingPolicy.setSpatialIndexes(spatialIndexes);
 
-        collection.indexingPolicy(indexingPolicy);
+        collection.setIndexingPolicy(indexingPolicy);
         
         Mono<CosmosAsyncContainerResponse> createObservable = database
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(collection.id())
+                .withId(collection.getId())
                 .withCompositeIndexes(compositeIndexes)
                 .withSpatialIndexes(spatialIndexes)
                 .build();
@@ -160,12 +160,12 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().container();
+        CosmosAsyncContainer collection = createObservable.block().getContainer();
 
         Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(collection.id()).build();
+                .withId(collection.getId()).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
     }
@@ -185,7 +185,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().container();
+        CosmosAsyncContainer collection = createObservable.block().getContainer();
 
         Mono<CosmosAsyncContainerResponse> deleteObservable = collection.delete();
 
@@ -199,15 +199,15 @@ public class CollectionCrudTest extends TestSuiteBase {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
-        CosmosAsyncContainer collection = createObservable.block().container();
-        CosmosContainerProperties collectionSettings = collection.read().block().properties();
+        CosmosAsyncContainer collection = createObservable.block().getContainer();
+        CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
-        assertThat(collectionSettings.indexingPolicy().indexingMode()).isEqualTo(IndexingMode.CONSISTENT);
+        assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
         
-        // replace indexing mode
+        // replace indexing getMode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.indexingMode(IndexingMode.LAZY);
-        collectionSettings.indexingPolicy(indexingMode);
+        indexingMode.setIndexingMode(IndexingMode.LAZY);
+        collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosAsyncContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
         
         // validate
@@ -227,32 +227,32 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosAsyncDatabase db = null;
         try {
             Database databaseDefinition = new Database();
-            databaseDefinition.id(dbId);
+            databaseDefinition.setId(dbId);
             db = createDatabase(client1, dbId);
 
             PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
             ArrayList<String> paths = new ArrayList<String>();
             paths.add("/mypk");
-            partitionKeyDef.paths(paths);
+            partitionKeyDef.setPaths(paths);
 
             CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
             CosmosAsyncContainer collection = createCollection(db, collectionDefinition, new CosmosContainerRequestOptions());
 
             CosmosItemProperties document = new CosmosItemProperties();
-            document.id("doc");
+            document.setId("doc");
             BridgeInternal.setProperty(document, "name", "New Document");
             BridgeInternal.setProperty(document, "mypk", "mypkValue");
             CosmosAsyncItem item = createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            options.partitionKey(new PartitionKey("mypkValue"));
+            options.setPartitionKey(new PartitionKey("mypkValue"));
             CosmosAsyncItemResponse readDocumentResponse = item.read(options).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.cosmosResponseDiagnosticsString());
-            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.requestLatency());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnosticsString());
+            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosAsyncItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.cosmosResponseDiagnosticsString());
-            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.requestLatency());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getCosmosResponseDiagnosticsString());
+            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
             //  DELETE the existing collection
             deleteCollection(client2, dbId, collectionId);
@@ -260,18 +260,18 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosAsyncContainer collection2 = createCollection(client2, dbId, collectionDefinition);
 
             CosmosItemProperties newDocument = new CosmosItemProperties();
-            newDocument.id("doc");
+            newDocument.setId("doc");
             BridgeInternal.setProperty(newDocument, "name", "New Created Document");
             BridgeInternal.setProperty(newDocument, "mypk", "mypk");
             createDocument(collection2, newDocument);
 
-            readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.id(), newDocument.get("mypk")).read().block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.cosmosResponseDiagnosticsString());
-            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.requestLatency());
+            readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.getId(), newDocument.get("mypk")).read().block();
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnosticsString());
+            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
-            CosmosItemProperties readDocument = readDocumentResponse.properties();
+            CosmosItemProperties readDocument = readDocumentResponse.getProperties();
 
-            assertThat(readDocument.id().equals(newDocument.id())).isTrue();
+            assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
         } finally {
             safeDeleteDatabase(db);

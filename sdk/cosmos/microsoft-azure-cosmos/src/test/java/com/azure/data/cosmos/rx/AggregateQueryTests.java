@@ -64,9 +64,9 @@ public class AggregateQueryTests extends TestSuiteBase {
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.populateQueryMetrics(qmEnabled);
-        options.maxDegreeOfParallelism(2);
+        options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {
 
@@ -92,7 +92,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         Object[] values = new Object[]{null, false, true, "abc", "cdfg", "opqrs", "ttttttt", "xyz", "oo", "ppp"};
         for (int i = 0; i < values.length; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
-            d.id(UUID.randomUUID().toString());
+            d.setId(UUID.randomUUID().toString());
             BridgeInternal.setProperty(d, partitionKey, values[i]);
             docs.add(d);
         }
@@ -100,9 +100,9 @@ public class AggregateQueryTests extends TestSuiteBase {
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
             BridgeInternal.setProperty(d, partitionKey, uniquePartitionKey);
-            BridgeInternal.setProperty(d, "resourceId", Integer.toString(i));
+            BridgeInternal.setProperty(d, "getResourceId", Integer.toString(i));
             BridgeInternal.setProperty(d, field, i + 1);
-            d.id(UUID.randomUUID().toString());
+            d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }
 
@@ -110,7 +110,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
             BridgeInternal.setProperty(d, partitionKey, i + 1);
-            d.id(UUID.randomUUID().toString());
+            d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }
 

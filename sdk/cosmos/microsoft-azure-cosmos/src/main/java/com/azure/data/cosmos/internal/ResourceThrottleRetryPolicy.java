@@ -89,7 +89,7 @@ public class ResourceThrottleRetryPolicy implements IDocumentClientRetryPolicy{
         if (dce != null){
 
             if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS))  {
-                retryDelay = Duration.ofMillis(dce.retryAfterInMilliseconds());
+                retryDelay = Duration.ofMillis(dce.getRetryAfterInMilliseconds());
                 if (this.backoffDelayFactor > 1) {
                     retryDelay = Duration.ofNanos(retryDelay.toNanos() * this.backoffDelayFactor);
                 }

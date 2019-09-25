@@ -8,10 +8,10 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
     private final CosmosDatabase database;
 
     CosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
-        super(response.properties());
+        super(response.getProperties());
         this.responseWrapper = response;
-        if (responseWrapper.database() != null) {
-            this.database = new CosmosDatabase(responseWrapper.database().id(), client, responseWrapper.database());
+        if (responseWrapper.getDatabase() != null) {
+            this.database = new CosmosDatabase(responseWrapper.getDatabase().getId(), client, responseWrapper.getDatabase());
         } else {
             this.database = null;
         }
@@ -22,7 +22,7 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      *
      * @return {@link CosmosDatabase}
      */
-    public CosmosDatabase database() {
+    public CosmosDatabase getDatabase() {
         return database;
     }
 
@@ -31,8 +31,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      *
      * @return the cosmos database properties
      */
-    public CosmosDatabaseProperties properties() {
-        return responseWrapper.properties();
+    public CosmosDatabaseProperties getProperties() {
+        return responseWrapper.getProperties();
     }
 
     /**
@@ -40,8 +40,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      *
      * @return the database quota.
      */
-    public long databaseQuota() {
-        return responseWrapper.databaseQuota();
+    public long getDatabaseQuota() {
+        return responseWrapper.getDatabaseQuota();
     }
 
     /**
@@ -49,8 +49,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
      *
      * @return the current database usage.
      */
-    public long databaseUsage() {
-        return responseWrapper.databaseUsage();
+    public long getDatabaseUsage() {
+        return responseWrapper.getDatabaseUsage();
     }
 
 }

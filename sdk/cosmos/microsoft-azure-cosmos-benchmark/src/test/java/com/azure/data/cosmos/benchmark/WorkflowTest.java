@@ -44,8 +44,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id());
+                                   database.getId(),
+                                   collection.getId());
         Main.main(StringUtils.split(cmd));
     }
 
@@ -60,8 +60,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id(),
+                                   database.getId(),
+                                   collection.getId(),
                                    numberOfOperations)
                 + (useNameLink ? " -useNameLink" : "");
 
@@ -100,8 +100,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id());
+                                   database.getId(),
+                                   collection.getId());
         Main.main(StringUtils.split(cmd));
     }
 
@@ -116,8 +116,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id(),
+                                   database.getId(),
+                                   collection.getId(),
                                    numberOfOperations)
                 + (useNameLink ? " -useNameLink" : "");
 
@@ -157,8 +157,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id(),
+                                   database.getId(),
+                                   collection.getId(),
                                    numberOfOperations)
                 + (useNameLink ? " -useNameLink" : "");
 
@@ -198,8 +198,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id(),
+                                   database.getId(),
+                                   collection.getId(),
                                    numberOfOperations)
                 + (useNameLink ? " -useNameLink" : "");
 
@@ -239,8 +239,8 @@ public class WorkflowTest {
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
                                    TestConfigurations.MASTER_KEY,
-                                   database.id(),
-                                   collection.id(),
+                                   database.getId(),
+                                   collection.getId(),
                                    numberOfOperations)
                 + (useNameLink ? " -useNameLink" : "");
 
@@ -275,7 +275,7 @@ public class WorkflowTest {
         options.setOfferThroughput(10000);
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
         database = Utils.createDatabaseForTest(housekeepingClient);
-        collection = housekeepingClient.createCollection("dbs/"+ database.id(),
+        collection = housekeepingClient.createCollection("dbs/"+ database.getId(),
                                                          getCollectionDefinitionWithRangeRangeIndex(),
                                                          options)
                 .single().block().getResource();
@@ -303,11 +303,11 @@ public class WorkflowTest {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "precision", -1);
@@ -316,13 +316,13 @@ public class WorkflowTest {
         Index numberIndex = Index.Range(DataType.NUMBER);
         BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         return collectionDefinition;

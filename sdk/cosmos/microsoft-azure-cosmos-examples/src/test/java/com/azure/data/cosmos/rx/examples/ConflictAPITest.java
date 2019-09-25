@@ -53,7 +53,7 @@ public class ConflictAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -64,11 +64,11 @@ public class ConflictAPITest extends DocumentClientTest {
         this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // CREATE database
@@ -76,7 +76,7 @@ public class ConflictAPITest extends DocumentClientTest {
 
         // CREATE collection
         createdCollection = client
-                .createCollection("/dbs/" + createdDatabase.id(), collectionDefinition, null)
+                .createCollection("/dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .single().block().getResource();
 
         int numberOfDocuments = 20;
@@ -116,11 +116,11 @@ public class ConflictAPITest extends DocumentClientTest {
         int numberOfResults = 0;
         while (it.hasNext()) {
             FeedResponse<Conflict> page = it.next();
-            System.out.println("items: " + page.results());
-            String pageSizeAsString = page.responseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
-            assertThat("header item count must be present", pageSizeAsString, notNullValue());
+            System.out.println("items: " + page.getResults());
+            String pageSizeAsString = page.getResponseHeaders().get(HttpConstants.HttpHeaders.ITEM_COUNT);
+            assertThat("header getItem count must be present", pageSizeAsString, notNullValue());
             int pageSize = Integer.valueOf(pageSizeAsString);
-            assertThat("Result size must match header item count", page.results(), hasSize(pageSize));
+            assertThat("Result size must match header getItem count", page.getResults(), hasSize(pageSize));
             numberOfResults += pageSize;
         }
         assertThat("number of total results", numberOfResults, equalTo(expectedNumberOfConflicts));
@@ -148,13 +148,13 @@ public class ConflictAPITest extends DocumentClientTest {
 
         int totalNumberOfRetrievedConflicts = 0;
         for (FeedResponse<Conflict> page : pageList) {
-            totalNumberOfRetrievedConflicts += page.results().size();
+            totalNumberOfRetrievedConflicts += page.getResults().size();
         }
         assertThat(0, equalTo(totalNumberOfRetrievedConflicts));
     }
 
     private String getCollectionLink() {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 }
 

@@ -463,7 +463,7 @@ public class GatewayAddressCache implements IAddressCache {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 OperationType.Read,
                 //    collection.AltLink,
-                collection.resourceId(),
+                collection.getResourceId(),
                 ResourceType.DocumentCollection,
                 //       AuthorizationTokenType.PrimaryMasterKey
                 Collections.emptyMap());
@@ -475,7 +475,7 @@ public class GatewayAddressCache implements IAddressCache {
 
             tasks.add(this.getServerAddressesViaGatewayAsync(
                     request,
-                    collection.resourceId(),
+                    collection.getResourceId(),
 
                     partitionKeyRangeIdentities.subList(i, endIndex).
                             stream().map(PartitionKeyRangeIdentity::getPartitionKeyRangeId).collect(Collectors.toList()),
@@ -487,12 +487,12 @@ public class GatewayAddressCache implements IAddressCache {
                     List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos = list.stream()
                             .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
                             .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
-                            .values().stream().map(addresses -> toPartitionAddressAndRange(collection.resourceId(), addresses))
+                            .values().stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
                             .collect(Collectors.toList());
 
                     for (Pair<PartitionKeyRangeIdentity, AddressInformation[]> addressInfo : addressInfos) {
                         this.serverPartitionAddressCache.set(
-                                new PartitionKeyRangeIdentity(collection.resourceId(), addressInfo.getLeft().getPartitionKeyRangeId()),
+                                new PartitionKeyRangeIdentity(collection.getResourceId(), addressInfo.getLeft().getPartitionKeyRangeId()),
                                 addressInfo.getRight());
                     }
                 }).then();

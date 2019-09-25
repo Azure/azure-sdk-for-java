@@ -38,15 +38,15 @@ public abstract class CosmosAsyncClientTest implements ITest {
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
-        if (this.clientBuilder.connectionPolicy() != null && this.clientBuilder.configs() != null) {
-            String connectionMode = this.clientBuilder.connectionPolicy().connectionMode() == ConnectionMode.DIRECT
+        if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.configs() != null) {
+            String connectionMode = this.clientBuilder.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT
                     ? "Direct " + this.clientBuilder.configs().getProtocol()
                     : "Gateway";
 
             this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
                     testClassAndMethodName,
                     connectionMode,
-                    clientBuilder.consistencyLevel());
+                    clientBuilder.getConsistencyLevel());
         } else {
             this.testName = testClassAndMethodName;
         }

@@ -79,7 +79,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             @Override
             public boolean test(FeedResponse<T> frp) {
 
-                fetchedItems += frp.results().size();
+                fetchedItems += frp.getResults().size();
 
                 // take until we have at least top many elements fetched
                 return fetchedItems >= top;
@@ -92,13 +92,13 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             @Override
             public FeedResponse<T> apply(FeedResponse<T> t) {
 
-                if (collectedItems + t.results().size() <= top) {
-                    collectedItems += t.results().size();
+                if (collectedItems + t.getResults().size() <= top) {
+                    collectedItems += t.getResults().size();
 
-                    Map<String, String> headers = new HashMap<>(t.responseHeaders());
+                    Map<String, String> headers = new HashMap<>(t.getResponseHeaders());
                     if (top != collectedItems) {
                         // Add Take Continuation Token
-                        String sourceContinuationToken = t.continuationToken();
+                        String sourceContinuationToken = t.getContinuationToken();
                         TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
                                 sourceContinuationToken);
                         headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
@@ -107,7 +107,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                         headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
                     }
 
-                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.results(), headers,
+                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(), headers,
                             BridgeInternal.queryMetricsFromFeedResponse(t));
                 } else {
                     assert lastPage == false;
@@ -116,10 +116,10 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     collectedItems += lastPageSize;
 
                     // Null out the continuation token
-                    Map<String, String> headers = new HashMap<>(t.responseHeaders());
+                    Map<String, String> headers = new HashMap<>(t.getResponseHeaders());
                     headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
 
-                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.results().subList(0, lastPageSize),
+                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
                             headers, BridgeInternal.queryMetricsFromFeedResponse(t));
                 }
             }

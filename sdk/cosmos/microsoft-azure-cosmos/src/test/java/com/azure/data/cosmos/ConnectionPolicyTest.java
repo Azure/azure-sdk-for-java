@@ -22,9 +22,9 @@ public class ConnectionPolicyTest {
     @Test(groups = { "unit" }, dataProvider = "connectionModeArgProvider")
     public void connectionMode(ConnectionMode connectionMode) {
         ConnectionPolicy policy = new ConnectionPolicy();
-        policy.connectionMode(connectionMode);
+        policy.setConnectionMode(connectionMode);
 
-        assertThat(policy.connectionMode()).isEqualTo(connectionMode);
+        assertThat(policy.getConnectionMode()).isEqualTo(connectionMode);
     }
 
     @DataProvider(name = "connectionProtocolModeArgProvider")

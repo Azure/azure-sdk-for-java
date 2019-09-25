@@ -26,7 +26,7 @@ public class Paginator {
             ChangeFeedOptions feedOptions, BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
-        return getPaginatedQueryResultAsObservable(feedOptions.requestContinuation(), createRequestFunc, executeFunc, resourceType,
+        return getPaginatedQueryResultAsObservable(feedOptions.getRequestContinuation(), createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize, true);
     }
 

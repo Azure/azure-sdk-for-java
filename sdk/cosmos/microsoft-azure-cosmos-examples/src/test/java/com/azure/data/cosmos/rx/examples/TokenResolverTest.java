@@ -59,7 +59,7 @@ public class TokenResolverTest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -70,60 +70,60 @@ public class TokenResolverTest extends DocumentClientTest {
         this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
-        // CREATE database
+        // CREATE getDatabase
         createdDatabase = Utils.createDatabaseForTest(client);
 
         // CREATE collection
         createdCollection = client
-                .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
+                .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .single().block().getResource();
 
         for (int i = 0; i < 10; i++) {
             // CREATE a document
             Document documentDefinition = new Document();
-            documentDefinition.id(UUID.randomUUID().toString());
-            Document createdDocument = client.createDocument(createdCollection.selfLink(), documentDefinition, null, true).blockFirst().getResource();
+            documentDefinition.setId(UUID.randomUUID().toString());
+            Document createdDocument = client.createDocument(createdCollection.getSelfLink(), documentDefinition, null, true).blockFirst().getResource();
 
             // CREATE a User who is meant to only read this document
             User readUserDefinition = new User();
-            readUserDefinition.id(UUID.randomUUID().toString());
-            User createdReadUser = client.createUser(createdDatabase.selfLink(), readUserDefinition, null).blockFirst().getResource();
+            readUserDefinition.setId(UUID.randomUUID().toString());
+            User createdReadUser = client.createUser(createdDatabase.getSelfLink(), readUserDefinition, null).blockFirst().getResource();
 
-            // CREATE a read only permission for  the above document
+            // CREATE a read only getPermission for  the above document
             Permission readOnlyPermissionDefinition = new Permission();
-            readOnlyPermissionDefinition.id(UUID.randomUUID().toString());
-            readOnlyPermissionDefinition.setResourceLink(createdDocument.selfLink());
+            readOnlyPermissionDefinition.setId(UUID.randomUUID().toString());
+            readOnlyPermissionDefinition.setResourceLink(createdDocument.getSelfLink());
             readOnlyPermissionDefinition.setPermissionMode(PermissionMode.READ);
 
-            // Assign the permission to the above user
-            Permission readOnlyCreatedPermission = client.createPermission(createdReadUser.selfLink(), readOnlyPermissionDefinition, null).blockFirst().getResource();
-            userToReadOnlyResourceTokenMap.put(createdReadUser.id(), readOnlyCreatedPermission.getToken());
+            // Assign the getPermission to the above getUser
+            Permission readOnlyCreatedPermission = client.createPermission(createdReadUser.getSelfLink(), readOnlyPermissionDefinition, null).blockFirst().getResource();
+            userToReadOnlyResourceTokenMap.put(createdReadUser.getId(), readOnlyCreatedPermission.getToken());
 
-            documentToReadUserMap.put(createdDocument.selfLink(), createdReadUser.id());
+            documentToReadUserMap.put(createdDocument.getSelfLink(), createdReadUser.getId());
 
             // CREATE a User who can both read and write this document
             User readWriteUserDefinition = new User();
-            readWriteUserDefinition.id(UUID.randomUUID().toString());
-            User createdReadWriteUser = client.createUser(createdDatabase.selfLink(), readWriteUserDefinition, null).blockFirst().getResource();
+            readWriteUserDefinition.setId(UUID.randomUUID().toString());
+            User createdReadWriteUser = client.createUser(createdDatabase.getSelfLink(), readWriteUserDefinition, null).blockFirst().getResource();
 
             // CREATE a read/write permission for the above document
             Permission readWritePermissionDefinition = new Permission();
-            readWritePermissionDefinition.id(UUID.randomUUID().toString());
-            readWritePermissionDefinition.setResourceLink(createdDocument.selfLink());
+            readWritePermissionDefinition.setId(UUID.randomUUID().toString());
+            readWritePermissionDefinition.setResourceLink(createdDocument.getSelfLink());
             readWritePermissionDefinition.setPermissionMode(PermissionMode.ALL);
 
-            // Assign the permission to the above user
-            Permission readWriteCreatedPermission = client.createPermission(createdReadWriteUser.selfLink(), readWritePermissionDefinition, null).blockFirst().getResource();
-            userToReadWriteResourceTokenMap.put(createdReadWriteUser.id(), readWriteCreatedPermission.getToken());
+            // Assign the getPermission to the above getUser
+            Permission readWriteCreatedPermission = client.createPermission(createdReadWriteUser.getSelfLink(), readWritePermissionDefinition, null).blockFirst().getResource();
+            userToReadWriteResourceTokenMap.put(createdReadWriteUser.getId(), readWriteCreatedPermission.getToken());
 
-            documentToReadWriteUserMap.put(createdDocument.selfLink(), createdReadWriteUser.id());
+            documentToReadWriteUserMap.put(createdDocument.getSelfLink(), createdReadWriteUser.getId());
         }
     }
 
@@ -135,7 +135,7 @@ public class TokenResolverTest extends DocumentClientTest {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -173,7 +173,7 @@ public class TokenResolverTest extends DocumentClientTest {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -215,7 +215,7 @@ public class TokenResolverTest extends DocumentClientTest {
 
         try {
             ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
@@ -231,7 +231,7 @@ public class TokenResolverTest extends DocumentClientTest {
                     .build();
 
             options.setProperties(properties);
-            Flux<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.selfLink(), options);
+            Flux<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
             List<Throwable> capturedErrors = Collections
                     .synchronizedList(new ArrayList<>());
             readObservable.subscribe(response -> {}, throwable -> capturedErrors.add(throwable));
@@ -248,13 +248,13 @@ public class TokenResolverTest extends DocumentClientTest {
                     .put(USER_ID, validUserId)
                     .build();
             options.setProperties(properties);
-            readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.selfLink(), options);
+            readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
             List<DocumentCollection> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
             readObservable.subscribe(resourceResponse -> capturedResponse.add(resourceResponse.getResource()), error -> error.printStackTrace());
             Thread.sleep(4000);
             assertThat(capturedErrors, hasSize(1));
-            assertThat(capturedResponse.get(0).id(), equalTo(createdCollection.id()));
+            assertThat(capturedResponse.get(0).getId(), equalTo(createdCollection.getId()));
         } finally {
             Utils.safeClose(asyncClientWithTokenResolver);
         }

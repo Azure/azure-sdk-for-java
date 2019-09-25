@@ -38,7 +38,7 @@ public class CosmosContainer {
      *
      * @return the string
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 

@@ -25,7 +25,7 @@ public class RetryOptions {
      *
      * @return the maximum number of retries.
      */
-    public int maxRetryAttemptsOnThrottledRequests() {
+    public int getMaxRetryAttemptsOnThrottledRequests() {
         return this.maxRetryAttemptsOnThrottledRequests;
     }
 
@@ -47,7 +47,7 @@ public class RetryOptions {
      *                                            throttle error.
      * @return the RetryOptions.
      */
-    public RetryOptions maxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
+    public RetryOptions setMaxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
         if (maxRetryAttemptsOnThrottledRequests < 0) {
             throw new IllegalArgumentException("maxRetryAttemptsOnThrottledRequests value must be a positive integer.");
         }
@@ -61,7 +61,7 @@ public class RetryOptions {
      *
      * @return the maximum retry time in seconds.
      */
-    public int maxRetryWaitTimeInSeconds() {
+    public int getMaxRetryWaitTimeInSeconds() {
         return this.maxRetryWaitTimeInSeconds;
     }
 
@@ -80,7 +80,7 @@ public class RetryOptions {
      * @param maxRetryWaitTimeInSeconds the maximum number of seconds a request will be retried.
      * @return the RetryOptions.
      */
-    public RetryOptions maxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
+    public RetryOptions setMaxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
         if (maxRetryWaitTimeInSeconds < 0 || maxRetryWaitTimeInSeconds > Integer.MAX_VALUE / 1000) {
             throw new IllegalArgumentException(
                     "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000);

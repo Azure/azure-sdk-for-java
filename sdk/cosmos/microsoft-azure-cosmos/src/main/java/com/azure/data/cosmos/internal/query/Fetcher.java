@@ -59,9 +59,9 @@ class Fetcher<T extends Resource> {
     }
 
     private void updateState(FeedResponse<T> response) {
-        continuationToken = response.continuationToken();
+        continuationToken = response.getContinuationToken();
         if (top != -1) {
-            top -= response.results().size();
+            top -= response.getResults().size();
             if (top < 0) {
                 // this shouldn't happen
                 // this means backend retrieved more items than requested

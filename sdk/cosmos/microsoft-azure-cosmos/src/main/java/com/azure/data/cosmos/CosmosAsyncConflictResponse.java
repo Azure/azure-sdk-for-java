@@ -13,10 +13,10 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
         super(response);
         this.container = container;
         if(response.getResource() == null){
-            super.properties(null);
+            super.setProperties(null);
         }else{
-            super.properties(new CosmosConflictProperties(response.getResource().toJson()));
-            conflictClient = new CosmosAsyncConflict(response.getResource().id(), container);
+            super.setProperties(new CosmosConflictProperties(response.getResource().toJson()));
+            conflictClient = new CosmosAsyncConflict(response.getResource().getId(), container);
         }
     }
 
@@ -28,7 +28,7 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
      * Get conflict client
      * @return the cosmos conflict client
      */
-    public CosmosAsyncConflict conflict() {
+    public CosmosAsyncConflict getConflict() {
         return conflictClient;
     }
 
@@ -36,7 +36,7 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
      * Get conflict properties object representing the resource on the server
      * @return the conflict properties
      */
-    public CosmosConflictProperties properties() {
-        return this.properties();
+    public CosmosConflictProperties getProperties() {
+        return this.getProperties();
     }
 }

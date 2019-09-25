@@ -29,7 +29,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      */
     public SqlQuerySpec(String queryText) {
         super();
-        this.queryText(queryText);
+        this.setQueryText(queryText);
     }
 
     /**
@@ -41,7 +41,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      */
     public SqlQuerySpec(String queryText, SqlParameterList parameters) {
         super();
-        this.queryText(queryText);
+        this.setQueryText(queryText);
         this.parameters = parameters;
     }
 
@@ -50,7 +50,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * 
      * @return the query text.
      */
-    public String queryText() {
+    public String getQueryText() {
         return super.getString("query");
     }
 
@@ -61,7 +61,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      *            the query text.
      * @return the SqlQuerySpec.
      */
-    public SqlQuerySpec queryText(String queryText) {
+    public SqlQuerySpec setQueryText(String queryText) {
         super.set("query", queryText);
         return this;
     }
@@ -71,7 +71,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * 
      * @return the query parameters.
      */
-    public SqlParameterList parameters() {
+    public SqlParameterList getParameters() {
         if (this.parameters == null) {
             Collection<SqlParameter> sqlParameters = super.getCollection("parameters", SqlParameter.class);
             if (sqlParameters == null) {
@@ -91,7 +91,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      *            the query parameters.
      * @return the SqlQuerySpec.
      */
-    public SqlQuerySpec parameters(SqlParameterList parameters) {
+    public SqlQuerySpec setParameters(SqlParameterList parameters) {
         this.parameters = parameters;
         return this;
     }

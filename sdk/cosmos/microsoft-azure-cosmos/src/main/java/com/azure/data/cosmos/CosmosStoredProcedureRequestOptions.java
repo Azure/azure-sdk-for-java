@@ -18,7 +18,7 @@ public class CosmosStoredProcedureRequestOptions {
      *
      * @return the access condition.
      */
-    public AccessCondition accessCondition() {
+    public AccessCondition getAccessCondition() {
         return accessCondition;
     }
 
@@ -28,7 +28,7 @@ public class CosmosStoredProcedureRequestOptions {
      * @param accessCondition the access condition.
      * @return the current request options
      */
-    public CosmosStoredProcedureRequestOptions accessCondition(AccessCondition accessCondition) {
+    public CosmosStoredProcedureRequestOptions setAccessCondition(AccessCondition accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }
@@ -37,7 +37,7 @@ public class CosmosStoredProcedureRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel consistencyLevel() {
+    public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -47,7 +47,7 @@ public class CosmosStoredProcedureRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the CosmosStoredProcedureRequestOptions.
      */
-    public CosmosStoredProcedureRequestOptions consistencyLevel(ConsistencyLevel consistencyLevel) {
+    public CosmosStoredProcedureRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -57,7 +57,7 @@ public class CosmosStoredProcedureRequestOptions {
      *
      * @return the partition key value.
      */
-    public PartitionKey partitionKey() {
+    public PartitionKey getPartitionKey() {
         return partitionKey;
     }
 
@@ -67,7 +67,7 @@ public class CosmosStoredProcedureRequestOptions {
      * @param partitionKey the partition key value.
      * @return the CosmosStoredProcedureRequestOptions.
      */
-    public CosmosStoredProcedureRequestOptions partitionKey(PartitionKey partitionKey) {
+    public CosmosStoredProcedureRequestOptions setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -77,7 +77,7 @@ public class CosmosStoredProcedureRequestOptions {
      *
      * @return the session token.
      */
-    public String sessionToken() {
+    public String getSessionToken() {
         return sessionToken;
     }
 
@@ -87,7 +87,7 @@ public class CosmosStoredProcedureRequestOptions {
      * @param sessionToken the session token.
      * @return the CosmosStoredProcedureRequestOptions.
      */
-    public CosmosStoredProcedureRequestOptions sessionToken(String sessionToken) {
+    public CosmosStoredProcedureRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;
     }
@@ -95,7 +95,7 @@ public class CosmosStoredProcedureRequestOptions {
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setAccessCondition(accessCondition);
-        requestOptions.setConsistencyLevel(consistencyLevel());
+        requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setSessionToken(sessionToken);
         return requestOptions;

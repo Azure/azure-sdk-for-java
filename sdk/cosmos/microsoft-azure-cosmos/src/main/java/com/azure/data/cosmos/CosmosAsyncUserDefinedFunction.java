@@ -20,7 +20,7 @@ public class CosmosAsyncUserDefinedFunction {
      * Get the id of the {@link CosmosAsyncUserDefinedFunction}
      * @return the id of the {@link CosmosAsyncUserDefinedFunction}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class CosmosAsyncUserDefinedFunction {
      * @param id the id of the {@link CosmosAsyncUserDefinedFunction}
      * @return the same {@link CosmosAsyncUserDefinedFunction} that had the id set
      */
-    CosmosAsyncUserDefinedFunction id(String id) {
+    CosmosAsyncUserDefinedFunction setId(String id) {
         this.id = id;
         return this;
     }
@@ -102,7 +102,7 @@ public class CosmosAsyncUserDefinedFunction {
         builder.append("/");
         builder.append(URIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 }

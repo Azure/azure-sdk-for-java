@@ -24,8 +24,8 @@ public final class SqlParameter extends JsonSerializable {
      */
     public SqlParameter(String name, Object value) {
         super();
-        this.name(name);
-        this.value(value);
+        this.setName(name);
+        this.setValue(value);
     }
 
     /**
@@ -33,7 +33,7 @@ public final class SqlParameter extends JsonSerializable {
      *
      * @return the name of the parameter.
      */
-    public String name() {
+    public String getName() {
         return super.getString("name");
     }
 
@@ -43,7 +43,7 @@ public final class SqlParameter extends JsonSerializable {
      * @param name the name of the parameter.
      * @return the SqlParameter.
      */
-    public SqlParameter name(String name) {
+    public SqlParameter setName(String name) {
         super.set("name", name);
         return this;
     }
@@ -55,7 +55,7 @@ public final class SqlParameter extends JsonSerializable {
      * @param <T>  the type of the parameter
      * @return     the value of the parameter.
      */
-    public <T> Object value(Class<T> c) {
+    public <T> Object getValue(Class<T> c) {
         return super.getObject("value", c);
     }
 
@@ -65,7 +65,7 @@ public final class SqlParameter extends JsonSerializable {
      * @param value the value of the parameter.
      * @return the SqlParameter.
      */
-    public SqlParameter value(Object value) {
+    public SqlParameter setValue(Object value) {
         super.set("value", value);
         return this;
     }

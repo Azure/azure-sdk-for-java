@@ -51,12 +51,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.checkpointer = checkpointer;
 
         this.options = new ChangeFeedOptions();
-        this.options.maxItemCount(settings.getMaxItemCount());
+        this.options.setMaxItemCount(settings.getMaxItemCount());
         partitionKeyRangeIdInternal(this.options, settings.getPartitionKeyRangeId());
-        // this.options.sessionToken(properties.sessionToken());
-        this.options.startFromBeginning(settings.isStartFromBeginning());
-        this.options.requestContinuation(settings.getStartContinuation());
-        this.options.startDateTime(settings.getStartTime());
+        // this.setOptions.getSessionToken(getProperties.getSessionToken());
+        this.options.setStartFromBeginning(settings.isStartFromBeginning());
+        this.options.setRequestContinuation(settings.getStartContinuation());
+        this.options.setStartDateTime(settings.getStartTime());
     }
 
     @Override
@@ -64,7 +64,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.lastContinuation = this.settings.getStartContinuation();
         this.isFirstQueryForChangeFeeds = true;
 
-        this.options.requestContinuation(this.lastContinuation);
+        this.options.setRequestContinuation(this.lastContinuation);
 
         return Flux.just(this)
             .flatMap( value -> {
@@ -92,16 +92,16 @@ class PartitionProcessorImpl implements PartitionProcessor {
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
-                this.lastContinuation = documentFeedResponse.continuationToken();
-                if (documentFeedResponse.results() != null && documentFeedResponse.results().size() > 0) {
+                this.lastContinuation = documentFeedResponse.getContinuationToken();
+                if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     return this.dispatchChanges(documentFeedResponse)
                         .doFinally( (Void) -> {
-                            this.options.requestContinuation(this.lastContinuation);
+                            this.options.setRequestContinuation(this.lastContinuation);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         }).flux();
                 }
-                this.options.requestContinuation(this.lastContinuation);
+                this.options.setRequestContinuation(this.lastContinuation);
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());
@@ -110,15 +110,15 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 return Flux.empty();
             })
             .doOnComplete(() -> {
-                if (this.options.maxItemCount().compareTo(this.settings.getMaxItemCount()) != 0) {
-                    this.options.maxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
+                if (this.options.getMaxItemCount().compareTo(this.settings.getMaxItemCount()) != 0) {
+                    this.options.setMaxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
                 }
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosClientException) {
 
                     CosmosClientException clientException = (CosmosClientException) throwable;
-                    this.logger.warn("Exception: partition {}", this.options.partitionKey().getInternalPartitionKey(), clientException);
+                    this.logger.warn("Exception: partition {}", this.options.getPartitionKey().getInternalPartitionKey(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -132,19 +132,19 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             this.resultException = new RuntimeException(clientException);
                         }
                         case MAX_ITEM_COUNT_TOO_LARGE: {
-                            if (this.options.maxItemCount() == null) {
-                                this.options.maxItemCount(DefaultMaxItemCount);
-                            } else if (this.options.maxItemCount() <= 1) {
-                                this.logger.error("Cannot reduce maxItemCount further as it's already at {}", this.options.maxItemCount(), clientException);
+                            if (this.options.getMaxItemCount() == null) {
+                                this.options.setMaxItemCount(DefaultMaxItemCount);
+                            } else if (this.options.getMaxItemCount() <= 1) {
+                                this.logger.error("Cannot reduce getMaxItemCount further as it's already at {}", this.options.getMaxItemCount(), clientException);
                                 this.resultException = new RuntimeException(clientException);
                             }
 
-                            this.options.maxItemCount(this.options.maxItemCount() / 2);
-                            this.logger.warn("Reducing maxItemCount, new value: {}", this.options.maxItemCount());
+                            this.options.setMaxItemCount(this.options.getMaxItemCount() / 2);
+                            this.logger.warn("Reducing getMaxItemCount, new getValue: {}", this.options.getMaxItemCount());
                             return Flux.empty();
                         }
                         default: {
-                            this.logger.error("Unrecognized DocDbError enum value {}", docDbError, clientException);
+                            this.logger.error("Unrecognized DocDbError enum getValue {}", docDbError, clientException);
                             this.resultException = new RuntimeException(clientException);
                         }
                     }
@@ -174,6 +174,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private Mono<Void> dispatchChanges(FeedResponse<CosmosItemProperties> response) {
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.settings.getPartitionKeyRangeId(), response, this.checkpointer);
 
-        return this.observer.processChanges(context, response.results());
+        return this.observer.processChanges(context, response.getResults());
     }
 }

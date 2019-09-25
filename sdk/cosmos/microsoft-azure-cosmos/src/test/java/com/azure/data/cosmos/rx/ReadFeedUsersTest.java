@@ -42,7 +42,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(createdUsers.size())
-                .exactlyContainsInAnyOrder(createdUsers.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -70,7 +70,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
 
     public CosmosUserProperties createUsers(CosmosAsyncDatabase cosmosDatabase) {
         CosmosUserProperties user = new CosmosUserProperties();
-        user.id(UUID.randomUUID().toString());
-        return cosmosDatabase.createUser(user).block().properties();
+        user.setId(UUID.randomUUID().toString());
+        return cosmosDatabase.createUser(user).block().getProperties();
     }
 }

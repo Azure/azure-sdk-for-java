@@ -22,8 +22,8 @@ public class CosmosUserProperties extends Resource {
      * Gets the id
      * @return the id of the user
      */
-    public String id() {
-        return super.id();
+    public String getId() {
+        return super.getId();
     }
 
     /**
@@ -31,8 +31,8 @@ public class CosmosUserProperties extends Resource {
      * @param id the name of the resource.
      * @return the current instance of cosmos user properties
      */
-    public CosmosUserProperties id(String id) {
-        return (CosmosUserProperties) super.id(id);
+    public CosmosUserProperties setId(String id) {
+        return (CosmosUserProperties) super.setId(id);
     }
 
     /**
@@ -59,7 +59,7 @@ public class CosmosUserProperties extends Resource {
      * @return the permissions link.
      */
     String getPermissionsLink() {
-        String selfLink = this.selfLink();
+        String selfLink = this.getSelfLink();
         if (selfLink.endsWith("/")) {
             return selfLink + super.getString(Constants.Properties.PERMISSIONS_LINK);
         } else {

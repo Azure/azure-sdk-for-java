@@ -114,12 +114,12 @@ public class StoreClient implements IStoreClient {
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosClientException exception) {
-        this.updateResponseHeader(request, exception.responseHeaders());
+        this.updateResponseHeader(request, exception.getResponseHeaders());
         if ((!ReplicatedResourceClient.isMasterResource(request.getResourceType())) &&
                 (Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.PRECONDITION_FAILED) || Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.CONFLICT) ||
                         (Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.NOTFOUND) &&
                                 !Exceptions.isSubStatusCode(exception, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
-            this.captureSessionToken(request, exception.responseHeaders());
+            this.captureSessionToken(request, exception.getResponseHeaders());
         }
     }
 

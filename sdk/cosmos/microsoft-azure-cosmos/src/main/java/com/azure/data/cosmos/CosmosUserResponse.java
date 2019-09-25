@@ -17,10 +17,10 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
      * @param database the database
      */
     CosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
-        super(response.properties());
+        super(response.getProperties());
         this.asyncResponse = response;
-        if (response.user() != null) {
-            this.user = new CosmosUser(response.user(), database, response.user().id());
+        if (response.getUser() != null) {
+            this.user = new CosmosUser(response.getUser(), database, response.getUser().getId());
         } else {
             // delete has null user client
             this.user = null;
@@ -32,7 +32,7 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
      *
      * @return the cosmos sync user
      */
-    public CosmosUser user() {
+    public CosmosUser getUser() {
         return this.user;
     }
 
@@ -41,7 +41,7 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
      *
      * @return the cosmos user properties
      */
-    public CosmosUserProperties properties() {
-        return asyncResponse.properties();
+    public CosmosUserProperties getProperties() {
+        return asyncResponse.getProperties();
     }
 }

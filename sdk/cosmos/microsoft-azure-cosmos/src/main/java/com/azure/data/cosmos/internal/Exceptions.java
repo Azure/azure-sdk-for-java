@@ -11,11 +11,11 @@ import com.azure.data.cosmos.CosmosClientException;
 public class Exceptions {
 
     public static boolean isStatusCode(CosmosClientException e, int status) {
-        return status == e.statusCode();
+        return status == e.getStatusCode();
     }
 
     public static boolean isSubStatusCode(CosmosClientException e, int subStatus) {
-        return subStatus == e.subStatusCode();
+        return subStatus == e.getSubStatusCode();
     }
 
     public static boolean isPartitionSplit(CosmosClientException e) {

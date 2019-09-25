@@ -69,7 +69,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     static Builder createDCBuilder(Protocol protocol) {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
 
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
@@ -90,14 +90,14 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void executeStoredProc() {
         StoredProcedure storedProcedure = new StoredProcedure();
-        storedProcedure.id(UUID.randomUUID().toString());
+        storedProcedure.setId(UUID.randomUUID().toString());
         storedProcedure.setBody("function() {var x = 10;}");
 
         Flux<ResourceResponse<StoredProcedure>> createObservable = client
                 .createStoredProcedure(getCollectionLink(), storedProcedure, null);
 
         ResourceResponseValidator<StoredProcedure> validator = new ResourceResponseValidator.Builder<StoredProcedure>()
-                .withId(storedProcedure.id())
+                .withId(storedProcedure.getId())
                 .build();
 
         validateSuccess(createObservable, validator, TIMEOUT);
@@ -107,7 +107,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         client.getCapturedRequests().clear();
 
         // execute the created storedProc and ensure it goes through direct connectivity stack
-        String storedProcLink = "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id() + "/sprocs/" + storedProcedure.id();
+        String storedProcLink = "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/sprocs/" + storedProcedure.getId();
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey("dummy"));
@@ -131,7 +131,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
             this.getCollectionLink(), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-            .withId(docDefinition.id())
+            .withId(docDefinition.getId())
             .build();
 
         validateSuccess(createObservable, validator, TIMEOUT);
@@ -156,10 +156,10 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey(pkValue));
 
         String docLink =
-                String.format("dbs/%s/colls/%s/docs/%s", createdDatabase.id(), createdCollection.id(), document.id());
+                String.format("dbs/%s/colls/%s/docs/%s", createdDatabase.getId(), createdCollection.getId(), document.getId());
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                .withId(docDefinition.id())
+                .withId(docDefinition.getId())
                 .build();
 
         validateSuccess(client.readDocument(docLink, options), validator, TIMEOUT);
@@ -222,14 +222,14 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
-        options.maxDegreeOfParallelism(-1);
+        options.setEnableCrossPartitionQuery(true);
+        options.setMaxDegreeOfParallelism(-1);
         options.maxItemCount(100);
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(documentList.size())
-                .exactlyContainsInAnyOrder(documentList.stream().map(Document::resourceId).collect(Collectors.toList())).build();
+                .exactlyContainsInAnyOrder(documentList.stream().map(Document::getResourceId).collect(Collectors.toList())).build();
 
         validateQuerySuccess(results, validator, QUERY_TIMEOUT);
         validateNoDocumentQueryOperationThroughGateway();
@@ -292,7 +292,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10100);
         createdDatabase = SHARED_DATABASE;
-        createdCollection = createCollection(createdDatabase.id(), getCollectionDefinition(), options);
+        createdCollection = createCollection(createdDatabase.getId(), getCollectionDefinition(), options);
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
 
         assertThat(client.getCapturedRequests()).isNotEmpty();
@@ -309,12 +309,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     private String getCollectionLink() {
-        return String.format("/dbs/%s/colls/%s", createdDatabase.id(), createdCollection.id());
+        return String.format("/dbs/%s/colls/%s", createdDatabase.getId(), createdCollection.getId());
     }
 
     private Document getDocumentDefinition() {
         Document doc = new Document();
-        doc.id(UUID.randomUUID().toString());
+        doc.setId(UUID.randomUUID().toString());
         BridgeInternal.setProperty(doc, PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
         BridgeInternal.setProperty(doc, "name", "Hafez");
         return doc;

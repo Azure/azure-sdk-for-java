@@ -166,7 +166,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 Set<String> goneRanges = new HashSet<>(ranges.stream().flatMap(range -> CollectionUtils.emptyIfNull(range.getParents()).stream()).collect(Collectors.toSet()));
 
                 routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
-                    rangesTuples.stream().filter(tuple -> !goneRanges.contains(tuple.left.id())).collect(Collectors.toList()),
+                    rangesTuples.stream().filter(tuple -> !goneRanges.contains(tuple.left.getId())).collect(Collectors.toList()),
                     collectionRid);
             }
             else
@@ -201,9 +201,9 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             if (properties != null) {
                 feedOptions.properties(properties);
             }
-            return client.readPartitionKeyRanges(coll.selfLink(), feedOptions)
-                    // maxConcurrent = 1 to makes it in the right order
-                    .flatMap(p -> Flux.fromIterable(p.results()), 1).collectList();
+            return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
+                    // maxConcurrent = 1 to makes it in the right getOrder
+                    .flatMap(p -> Flux.fromIterable(p.getResults()), 1).collectList();
         });
     }
 }

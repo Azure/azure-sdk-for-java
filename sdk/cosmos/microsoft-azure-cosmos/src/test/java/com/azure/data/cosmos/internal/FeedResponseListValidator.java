@@ -42,7 +42,7 @@ public interface FeedResponseListValidator<T extends Resource> {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
-                    int resultCount = feedList.stream().mapToInt(f -> f.results().size()).sum();
+                    int resultCount = feedList.stream().mapToInt(f -> f.getResults().size()).sum();
                     assertThat(resultCount)
                     .describedAs("total number of results").isEqualTo(expectedCount);
                 }
@@ -56,8 +56,8 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     List<String> actualIds = feedList
                             .stream()
-                            .flatMap(f -> f.results().stream())
-                            .map(r -> r.resourceId())
+                            .flatMap(f -> f.getResults().stream())
+                            .map(r -> r.getResourceId())
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")
@@ -73,8 +73,8 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     List<String> actualIds = feedList
                             .stream()
-                            .flatMap(f -> f.results().stream())
-                            .map(r -> r.id())
+                            .flatMap(f -> f.getResults().stream())
+                            .map(r -> r.getId())
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("IDs of results")
@@ -90,11 +90,11 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     List<T> resources = feedList
                             .stream()
-                            .flatMap(f -> f.results().stream())
+                            .flatMap(f -> f.getResults().stream())
                             .collect(Collectors.toList());
 
                     for(T r: resources) {
-                        ResourceValidator<T> validator = resourceIDToValidator.get(r.resourceId());
+                        ResourceValidator<T> validator = resourceIDToValidator.get(r.getResourceId());
                         assertThat(validator).isNotNull();
                         validator.validate(r);
                     }
@@ -109,8 +109,8 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     List<String> actualIds = feedList
                             .stream()
-                            .flatMap(f -> f.results().stream())
-                            .map(Resource::resourceId)
+                            .flatMap(f -> f.getResults().stream())
+                            .map(Resource::getResourceId)
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")
@@ -148,7 +148,7 @@ public interface FeedResponseListValidator<T extends Resource> {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
-                    assertThat(feedList.stream().mapToDouble(p -> p.requestCharge()).sum())
+                    assertThat(feedList.stream().mapToDouble(p -> p.getRequestCharge()).sum())
                     .describedAs("total request charge")
                     .isGreaterThanOrEqualTo(minimumCharge);
                 }
@@ -184,7 +184,7 @@ public interface FeedResponseListValidator<T extends Resource> {
             validators.add(new FeedResponseListValidator<CosmosItemProperties>() {
                 @Override
                 public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {
-                    List<CosmosItemProperties> list = feedList.get(0).results();
+                    List<CosmosItemProperties> list = feedList.get(0).getResults();
                     CosmosItemProperties result = list.size() > 0 ? list.get(0) : null;
 
                     if (result != null) {
@@ -225,14 +225,14 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {
 
                     List<CosmosItemProperties> resultOrderedList = feedList.stream()
-                            .flatMap(f -> f.results().stream())
+                            .flatMap(f -> f.getResults().stream())
                             .collect(Collectors.toList());
                     assertThat(expectedOrderedList.size()).isEqualTo(resultOrderedList.size());
 
                     ArrayList<String> paths = new ArrayList<String>();
                     Iterator<CompositePath> compositeIndexIterator = compositeIndex.iterator();
                     while (compositeIndexIterator.hasNext()) {
-                        paths.add(compositeIndexIterator.next().path().replace("/", ""));
+                        paths.add(compositeIndexIterator.next().getPath().replace("/", ""));
                     }
                     for (int i = 0; i < resultOrderedList.size(); i ++) {
                         ArrayNode resultValues = (ArrayNode) resultOrderedList.get(i).get("$1");
@@ -262,7 +262,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     assertThat(feedList).hasSize(pageLengths.length);
                     for (int i = 0; i < pageLengths.length; i++)
-                        assertThat(feedList.get(i).results().size()).isEqualTo(pageLengths[i]);
+                        assertThat(feedList.get(i).getResults().size()).isEqualTo(pageLengths[i]);
                 }
             });
             return this;

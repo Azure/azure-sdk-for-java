@@ -117,7 +117,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             throw new IllegalArgumentException("headers");
         }
 
-        if (StringUtils.isEmpty(this.cosmosKeyCredential.key())) {
+        if (StringUtils.isEmpty(this.cosmosKeyCredential.getKey())) {
             throw new IllegalArgumentException("key credentials cannot be empty");
         }
 
@@ -243,11 +243,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.cosmosKeyCredential.keyHashCode();
+        int masterKeyLatestHashCode = this.cosmosKeyCredential.getKeyHashCode();
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.cosmosKeyCredential.key().getBytes();
+            byte[] masterKeyBytes = this.cosmosKeyCredential.getKey().getBytes();
             byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
             SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
             try {

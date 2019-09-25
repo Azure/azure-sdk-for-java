@@ -36,9 +36,9 @@ public class RetryThrottleTest extends TestSuiteBase {
     public void retryCreateDocumentsOnSpike() throws Exception {
         ConnectionPolicy policy = new ConnectionPolicy();
         RetryOptions retryOptions = new RetryOptions();
-        retryOptions.maxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
-        retryOptions.maxRetryWaitTimeInSeconds(LARGE_TIMEOUT);
-        policy.retryOptions(retryOptions);
+        retryOptions.setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
+        retryOptions.setMaxRetryWaitTimeInSeconds(LARGE_TIMEOUT);
+        policy.setRetryOptions(retryOptions);
 
         AsyncDocumentClient.Builder builder = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
@@ -87,7 +87,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition();
 
         Flux<ResourceResponse<Document>> createObservable = client
-                .createDocument(collection.selfLink(), docDefinition, null, false);
+                .createDocument(collection.getSelfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
 
         doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
@@ -105,7 +105,7 @@ public class RetryThrottleTest extends TestSuiteBase {
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                .withId(docDefinition.id()).build();
+                .withId(docDefinition.getId()).build();
         validateSuccess(createObservable, validator, TIMEOUT);
     }
 

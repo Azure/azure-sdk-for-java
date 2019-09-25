@@ -336,7 +336,7 @@ public final class ResourceResponse<T extends Resource> {
             return Duration.ZERO;
         }
 
-        return cosmosResponseDiagnostics.requestLatency();
+        return cosmosResponseDiagnostics.getRequestLatency();
     }
 
     /**

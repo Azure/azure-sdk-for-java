@@ -20,7 +20,7 @@ public class CosmosAsyncTrigger {
      * Get the id of the {@link CosmosAsyncTrigger}
      * @return the id of the {@link CosmosAsyncTrigger}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class CosmosAsyncTrigger {
      * @param id the id of the {@link CosmosAsyncTrigger}
      * @return the same {@link CosmosAsyncTrigger} that had the id set
      */
-    CosmosAsyncTrigger id(String id) {
+    CosmosAsyncTrigger setId(String id) {
         this.id = id;
         return this;
     }
@@ -101,7 +101,7 @@ public class CosmosAsyncTrigger {
         builder.append("/");
         builder.append(URIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 

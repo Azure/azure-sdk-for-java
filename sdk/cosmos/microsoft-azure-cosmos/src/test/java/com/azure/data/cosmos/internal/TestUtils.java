@@ -10,9 +10,9 @@ public class TestUtils {
 
     public static String getDatabaseLink(Database database, boolean isNameBased) {
         if (isNameBased) {
-            return getDatabaseNameLink(database.id());
+            return getDatabaseNameLink(database.getId());
         } else {
-            return database.selfLink();
+            return database.getSelfLink();
         }
     }
 

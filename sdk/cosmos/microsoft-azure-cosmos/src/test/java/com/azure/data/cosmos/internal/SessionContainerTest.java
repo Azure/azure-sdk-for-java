@@ -59,12 +59,12 @@ public class SessionContainerTest {
 
         DocumentServiceRequestContext dsrContext = new DocumentServiceRequestContext();
         PartitionKeyRange resolvedPKRange = new PartitionKeyRange();
-        resolvedPKRange.id("range_" + (numPartitionKeyRangeIds + 10));
+        resolvedPKRange.setId("range_" + (numPartitionKeyRangeIds + 10));
         GatewayTestUtils.setParent(resolvedPKRange, ImmutableList.of("range_2", "range_x"));
         dsrContext.resolvedPartitionKeyRange = resolvedPKRange;
         request.requestContext = dsrContext;
 
-        sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, resolvedPKRange.id());
+        sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, resolvedPKRange.getId());
         assertThat(sessionToken.getLSN()).isEqualTo(2);
     }
 
@@ -307,7 +307,7 @@ public class SessionContainerTest {
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
                 ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#100#1=20#2=5#3=30"));
 
-        //  Test resourceId based
+        //  Test getResourceId based
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 documentCollectionId, ResourceType.Document, new HashMap<>());
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");

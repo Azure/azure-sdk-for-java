@@ -52,8 +52,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     public Mono<Void> createMissingLeases() {
         return this.enumPartitionKeyRanges()
             .map(partitionKeyRange -> {
-                // TODO: log the partition key ID found.
-                return partitionKeyRange.id();
+                // TODO: log the partition getKey ID found.
+                return partitionKeyRange.getId();
             })
             .collectList()
             .flatMap( partitionKeyRangeIds -> {
@@ -80,7 +80,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         // After a split, the children are either all or none available
         return this.enumPartitionKeyRanges()
             .filter(range -> range != null && range.getParents() != null && range.getParents().contains(leaseToken))
-            .map(PartitionKeyRange::id)
+            .map(PartitionKeyRange::getId)
             .collectList()
             .flatMapMany(addedLeaseTokens -> {
                 if (addedLeaseTokens.size() == 0) {
@@ -106,7 +106,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         feedOptions.requestContinuation(null);
 
         return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, feedOptions)
-            .map(partitionKeyRangeFeedResponse -> partitionKeyRangeFeedResponse.results())
+            .map(partitionKeyRangeFeedResponse -> partitionKeyRangeFeedResponse.getResults())
             .flatMap(partitionKeyRangeList -> Flux.fromIterable(partitionKeyRangeList))
             .onErrorResume(throwable -> {
                 // TODO: Log the exception.

@@ -411,7 +411,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Query:
                 return this.query(request);
             default:
-                throw new IllegalStateException("Unknown operation type " + request.getOperationType());
+                throw new IllegalStateException("Unknown operation setType " + request.getOperationType());
         }
     }
 
@@ -436,13 +436,13 @@ class RxGatewayStoreModel implements RxStoreModel {
                     }
 
                     if ((!ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) &&
-                            (dce.statusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED ||
-                                    dce.statusCode() == HttpConstants.StatusCodes.CONFLICT ||
+                            (dce.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED ||
+                                    dce.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
                                     (
-                                            dce.statusCode() == HttpConstants.StatusCodes.NOTFOUND &&
+                                            dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
                                                     !Exceptions.isSubStatusCode(dce,
                                                             HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
-                        this.captureSessionToken(request, dce.responseHeaders());
+                        this.captureSessionToken(request, dce.getResponseHeaders());
                     }
 
                     return Flux.error(dce);

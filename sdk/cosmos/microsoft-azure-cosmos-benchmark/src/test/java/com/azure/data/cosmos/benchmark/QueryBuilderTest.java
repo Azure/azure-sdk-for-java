@@ -14,7 +14,7 @@ public class QueryBuilderTest {
     @Test(groups = {"unit"})
     public void basic() {
         ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
-        assertThat(queryBuilder.toSqlQuerySpec().queryText())
+        assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT * FROM root");
     }
 
@@ -22,7 +22,7 @@ public class QueryBuilderTest {
     public void top() {
         ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
         queryBuilder.top(50);
-        assertThat(queryBuilder.toSqlQuerySpec().queryText())
+        assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT TOP 50 * FROM root");
     }
 
@@ -30,7 +30,7 @@ public class QueryBuilderTest {
     public void orderBy() {
         ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
         queryBuilder.orderBy("prop");
-        assertThat(queryBuilder.toSqlQuerySpec().queryText())
+        assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT * FROM root ORDER BY root.prop");
     }
 
@@ -42,9 +42,9 @@ public class QueryBuilderTest {
                                                                   new SqlParameter("@param2", 2));
         queryBuilder.whereClause(new ReadMyWriteWorkflow.QueryBuilder.WhereClause.InWhereClause("colName",
                                                                parameters));
-        assertThat(queryBuilder.toSqlQuerySpec().queryText())
+        assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT * FROM root WHERE root.colName IN (@param1, @param2)");
-        assertThat(queryBuilder.toSqlQuerySpec().parameters()).containsExactlyElementsOf(parameters);
+        assertThat(queryBuilder.toSqlQuerySpec().getParameters()).containsExactlyElementsOf(parameters);
     }
 
     @Test(groups = {"unit"})
@@ -57,8 +57,8 @@ public class QueryBuilderTest {
                                                                   new SqlParameter("@param2", 2));
         queryBuilder.whereClause(new ReadMyWriteWorkflow.QueryBuilder.WhereClause.InWhereClause("colName",
                                                                parameters));
-        assertThat(queryBuilder.toSqlQuerySpec().queryText())
+        assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT TOP 5 * FROM root WHERE root.colName IN (@param1, @param2) ORDER BY root.prop");
-        assertThat(queryBuilder.toSqlQuerySpec().parameters()).containsExactlyElementsOf(parameters);
+        assertThat(queryBuilder.toSqlQuerySpec().getParameters()).containsExactlyElementsOf(parameters);
     }
 }

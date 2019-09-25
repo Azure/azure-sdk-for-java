@@ -34,7 +34,7 @@ public class NetworkFailureTest extends TestSuiteBase {
             Database database = SHARED_DATABASE;
 
             Flux<ResourceResponse<DocumentCollection>> createObservable = client
-                    .createCollection(database.selfLink(), collectionDefinition, null);
+                    .createCollection(database.getSelfLink(), collectionDefinition, null);
 
 
             final RxGatewayStoreModel origGatewayStoreModel = client.getOrigGatewayStoreModel();

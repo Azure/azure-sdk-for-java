@@ -139,7 +139,7 @@ public interface AsyncDocumentClient {
         }
 
         public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
-            if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.key())) {
+            if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
             }
             this.cosmosKeyCredential = cosmosKeyCredential;
@@ -171,7 +171,7 @@ public interface AsyncDocumentClient {
                         && this.tokenResolver == null && this.cosmosKeyCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
                         "resource token, permissionFeed, tokenResolver and cosmos key credential");
-            ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.key()),
+            ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,

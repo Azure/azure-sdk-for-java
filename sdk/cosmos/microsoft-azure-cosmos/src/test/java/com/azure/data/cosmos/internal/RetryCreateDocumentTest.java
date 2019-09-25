@@ -39,12 +39,12 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false).single().block();
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).single().block();
 
         Document docDefinition = getDocumentDefinition();
 
         Flux<ResourceResponse<Document>> createObservable = client
-                .createDocument(collection.selfLink(), docDefinition, null, false);
+                .createDocument(collection.getSelfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
 
         doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
@@ -67,7 +67,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                .withId(docDefinition.id()).build();
+                .withId(docDefinition.getId()).build();
         validateSuccess(createObservable, validator);
     }
 
@@ -95,14 +95,14 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
         // create a document to ensure collection is cached
-        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false)
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false)
                 .single()
                 .block();
 
         Document docDefinition = getDocumentDefinition();
 
         Flux<ResourceResponse<Document>> createObservable = client
-                .createDocument(collection.selfLink(), docDefinition, null, false);
+                .createDocument(collection.getSelfLink(), docDefinition, null, false);
 
         // validate
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
@@ -112,7 +112,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_failImmediatelyOnNonRetriable() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false).single().block();
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).single().block();
         AtomicInteger count = new AtomicInteger();
 
         doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
@@ -135,7 +135,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition();
 
         Flux<ResourceResponse<Document>> createObservable = client
-                .createDocument(collection.selfLink(), docDefinition, null, false);
+                .createDocument(collection.getSelfLink(), docDefinition, null, false);
         // validate
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();

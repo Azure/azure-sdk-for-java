@@ -220,8 +220,8 @@ class Configuration {
 
     ConnectionPolicy getConnectionPolicy() {
         ConnectionPolicy policy = new ConnectionPolicy();
-        policy.connectionMode(connectionMode);
-        policy.maxPoolSize(maxConnectionPoolSize);
+        policy.setConnectionMode(connectionMode);
+        policy.setMaxPoolSize(maxConnectionPoolSize);
         return policy;
     }
 

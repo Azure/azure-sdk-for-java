@@ -19,9 +19,9 @@ public class Utils {
     public static AsyncDocumentClient housekeepingClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         RetryOptions options = new RetryOptions();
-        options.maxRetryAttemptsOnThrottledRequests(100);
-        options.maxRetryWaitTimeInSeconds(60);
-        connectionPolicy.retryOptions(options);
+        options.setMaxRetryAttemptsOnThrottledRequests(100);
+        options.setMaxRetryWaitTimeInSeconds(60);
+        connectionPolicy.setRetryOptions(options);
         return new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -29,7 +29,7 @@ public class Utils {
     }
 
     public static String getCollectionLink(Database db, DocumentCollection collection) {
-        return "dbs/" + db.id() + "/colls/" + collection;
+        return "dbs/" + db.getId() + "/colls/" + collection;
     }
 
     public static Database createDatabaseForTest(AsyncDocumentClient client) {
@@ -44,7 +44,7 @@ public class Utils {
 
     public static void safeClean(AsyncDocumentClient client, Database database) {
         if (database != null) {
-            safeClean(client, database.id());
+            safeClean(client, database.getId());
         }
     }
 

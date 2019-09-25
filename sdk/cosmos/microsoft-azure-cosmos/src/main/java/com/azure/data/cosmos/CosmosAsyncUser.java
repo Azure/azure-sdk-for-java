@@ -21,7 +21,7 @@ public class CosmosAsyncUser {
      * Get the id of the {@link CosmosAsyncUser}
      * @return the id of the {@link CosmosAsyncUser}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -30,7 +30,7 @@ public class CosmosAsyncUser {
      * @param id the id of the {@link CosmosAsyncUser}
      * @return the same {@link CosmosAsyncUser} that had the id set
      */
-    CosmosAsyncUser id(String id) {
+    CosmosAsyncUser setId(String id) {
         this.id = id;
         return this;
     }
@@ -126,8 +126,8 @@ public class CosmosAsyncUser {
     public Flux<FeedResponse<CosmosPermissionProperties>> readAllPermissions(FeedOptions options) {
         return getDatabase().getDocClientWrapper()
                         .readPermissions(getLink(), options)
-                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.results()),
-                                response.responseHeaders()));
+                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.getResults()),
+                                response.getResponseHeaders()));
     }
 
     /**
@@ -158,8 +158,8 @@ public class CosmosAsyncUser {
     public Flux<FeedResponse<CosmosPermissionProperties>> queryPermissions(String query, FeedOptions options) {
         return getDatabase().getDocClientWrapper()
                         .queryPermissions(getLink(), query, options)
-                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.results()),
-                                response.responseHeaders()));
+                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.getResults()),
+                                response.getResponseHeaders()));
     }
 
     /**
@@ -185,7 +185,7 @@ public class CosmosAsyncUser {
         builder.append("/");
         builder.append(URIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 

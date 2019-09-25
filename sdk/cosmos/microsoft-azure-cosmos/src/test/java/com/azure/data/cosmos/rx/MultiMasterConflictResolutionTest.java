@@ -38,17 +38,17 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
         // default last writer wins, path _ts
         CosmosContainerProperties collectionSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        CosmosAsyncContainer collection = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().container();
-        collectionSettings = collection.read().block().properties();
+        CosmosAsyncContainer collection = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getContainer();
+        collectionSettings = collection.read().block().getProperties();
 
-        assertThat(collectionSettings.conflictResolutionPolicy().mode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
+        assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
 
-        // LWW without path specified, should default to _ts
-        collectionSettings.conflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy());
-        collectionSettings = collection.replace(collectionSettings, null).block().properties();
+        // LWW without getPath specified, should default to _ts
+        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy());
+        collectionSettings = collection.replace(collectionSettings, null).block().getProperties();
 
-        assertThat(collectionSettings.conflictResolutionPolicy().mode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
-        assertThat(collectionSettings.conflictResolutionPolicy().conflictResolutionPath()).isEqualTo("/_ts");
+        assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
+        assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo("/_ts");
 
         // Tests the following scenarios
         // 1. LWW with valid path
@@ -57,34 +57,34 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         testConflictResolutionPolicyRequiringPath(ConflictResolutionMode.LAST_WRITER_WINS,
                 new String[] { "/a", null, "" }, new String[] { "/a", "/_ts", "/_ts" });
 
-        // LWW invalid path
-        collectionSettings.conflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/a/b"));
+        // LWW invalid getPath
+        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/a/b"));
 
         try {
-            collectionSettings = collection.replace(collectionSettings, null).block().properties();
-            fail("Expected exception on invalid path.");
+            collectionSettings = collection.replace(collectionSettings, null).block().getProperties();
+            fail("Expected exception on invalid getPath.");
         } catch (Exception e) {
 
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
-            if (dce != null && dce.statusCode() == 400) {
+            if (dce != null && dce.getStatusCode() == 400) {
                 assertThat(dce.getMessage()).contains("Invalid path '\\/a\\/b' for last writer wins conflict resolution");
             } else {
                 throw e;
             }
         }
 
-        // LWW invalid path
+        // LWW invalid getPath
 
-        collectionSettings.conflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("someText"));
+        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("someText"));
 
         try {
-            collectionSettings = collection.replace(collectionSettings, null).block().properties();
+            collectionSettings = collection.replace(collectionSettings, null).block().getProperties();
             fail("Expected exception on invalid path.");
         } catch (Exception e) {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosClientException dce = Utils.as(e.getCause(), CosmosClientException.class);
-            if (dce != null && dce.statusCode() == 400) {
+            if (dce != null && dce.getStatusCode() == 400) {
                 assertThat(dce.getMessage()).contains("Invalid path 'someText' for last writer wins conflict resolution");
             } else {
                 throw e;
@@ -105,17 +105,17 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             CosmosContainerProperties collectionSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
             
             if (conflictResolutionMode == ConflictResolutionMode.LAST_WRITER_WINS) {
-                collectionSettings.conflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy(paths[i]));
+                collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy(paths[i]));
             } else {
-                collectionSettings.conflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy(paths[i]));
+                collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy(paths[i]));
             }
-            collectionSettings = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().properties();
-            assertThat(collectionSettings.conflictResolutionPolicy().mode()).isEqualTo(conflictResolutionMode);
+            collectionSettings = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getProperties();
+            assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(conflictResolutionMode);
             
             if (conflictResolutionMode == ConflictResolutionMode.LAST_WRITER_WINS) {
-                assertThat(collectionSettings.conflictResolutionPolicy().conflictResolutionPath()).isEqualTo(expectedPaths[i]);
+                assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo(expectedPaths[i]);
             } else {
-                assertThat(collectionSettings.conflictResolutionPolicy().conflictResolutionProcedure()).isEqualTo(expectedPaths[i]);
+                assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionProcedure()).isEqualTo(expectedPaths[i]);
             }
         }
     }
@@ -128,7 +128,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         ConflictResolutionPolicy policy = BridgeUtils.createConflictResolutionPolicy();
         BridgeUtils.setMode(policy, ConflictResolutionMode.LAST_WRITER_WINS);
         BridgeUtils.setStoredProc(policy,"randomSprocName");
-        collection.conflictResolutionPolicy(policy);
+        collection.setConflictResolutionPolicy(policy);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
                 collection,
@@ -146,11 +146,11 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     public void invalidConflictResolutionPolicy_CustomWithPath() throws Exception {
         CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
 
-        // LWW without path specified, should default to _ts
+        // LWW without getPath specified, should default to _ts
         ConflictResolutionPolicy policy = BridgeUtils.createConflictResolutionPolicy();
         BridgeUtils.setMode(policy, ConflictResolutionMode.CUSTOM);
         BridgeUtils.setPath(policy,"/mypath");
-        collection.conflictResolutionPolicy(policy);
+        collection.setConflictResolutionPolicy(policy);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
                 collection,
@@ -173,7 +173,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
     }
 
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -27,8 +27,8 @@ public final class IndexingPolicy extends JsonSerializable {
      * Constructor.
      */
     public IndexingPolicy() {
-        this.automatic(true);
-        this.indexingMode(IndexingMode.CONSISTENT);
+        this.setAutomatic(true);
+        this.setIndexingMode(IndexingMode.CONSISTENT);
     }
 
     /**
@@ -65,9 +65,9 @@ public final class IndexingPolicy extends JsonSerializable {
         }
 
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path(IndexingPolicy.DEFAULT_PATH);
-        includedPath.indexes(new ArrayList<Index>(Arrays.asList(defaultIndexOverrides)));
-        this.includedPaths().add(includedPath);
+        includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+        includedPath.setIndexes(new ArrayList<Index>(Arrays.asList(defaultIndexOverrides)));
+        this.getIncludedPaths().add(includedPath);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the automatic
      */
-    public Boolean automatic() {
+    public Boolean getAutomatic() {
         return super.getBoolean(Constants.Properties.AUTOMATIC);
     }
 
@@ -100,7 +100,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @param automatic the automatic
      * @return the Indexing Policy.
      */
-    public IndexingPolicy automatic(boolean automatic) {
+    public IndexingPolicy setAutomatic(boolean automatic) {
         super.set(Constants.Properties.AUTOMATIC, automatic);
         return this;
     }
@@ -110,7 +110,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the indexing mode.
      */
-    public IndexingMode indexingMode() {
+    public IndexingMode getIndexingMode() {
         IndexingMode result = IndexingMode.LAZY;
         try {
             result = IndexingMode.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEXING_MODE)));
@@ -126,7 +126,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @param indexingMode the indexing mode.
      * @return the Indexing Policy.
      */
-    public IndexingPolicy indexingMode(IndexingMode indexingMode) {
+    public IndexingPolicy setIndexingMode(IndexingMode indexingMode) {
         super.set(Constants.Properties.INDEXING_MODE, indexingMode.toString());
         return this;
     }
@@ -136,7 +136,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the included paths.
      */
-    public List<IncludedPath> includedPaths() {
+    public List<IncludedPath> getIncludedPaths() {
         if (this.includedPaths == null) {
             this.includedPaths = super.getList(Constants.Properties.INCLUDED_PATHS, IncludedPath.class);
 
@@ -157,7 +157,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the excluded paths.
      */
-    public List<ExcludedPath> excludedPaths() {
+    public List<ExcludedPath> getExcludedPaths() {
         if (this.excludedPaths == null) {
             this.excludedPaths = super.getList(Constants.Properties.EXCLUDED_PATHS, ExcludedPath.class);
 
@@ -169,7 +169,7 @@ public final class IndexingPolicy extends JsonSerializable {
         return this.excludedPaths;
     }
 
-    public IndexingPolicy excludedPaths(List<ExcludedPath> excludedPaths) {
+    public IndexingPolicy setExcludedPaths(List<ExcludedPath> excludedPaths) {
         this.excludedPaths = excludedPaths;
         return this;
     }
@@ -179,7 +179,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the composite indexes.
      */
-    public List<List<CompositePath>> compositeIndexes() {
+    public List<List<CompositePath>> getCompositeIndexes() {
         if (this.compositeIndexes == null) {
             this.compositeIndexes = new ArrayList<>();
             ArrayNode compositeIndexes = (ArrayNode) super.get(Constants.Properties.COMPOSITE_INDEXES);
@@ -203,7 +203,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @param compositeIndexes the composite indexes.
      * @return the Indexing Policy.
      */
-    public IndexingPolicy compositeIndexes(List<List<CompositePath>> compositeIndexes) {
+    public IndexingPolicy setCompositeIndexes(List<List<CompositePath>> compositeIndexes) {
         this.compositeIndexes = compositeIndexes;
         super.set(Constants.Properties.COMPOSITE_INDEXES, this.compositeIndexes);
         return this;
@@ -214,7 +214,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the spatial indexes.
      */
-    public List<SpatialSpec> spatialIndexes() {
+    public List<SpatialSpec> getSpatialIndexes() {
         if (this.spatialIndexes == null) {
             this.spatialIndexes = super.getList(Constants.Properties.SPATIAL_INDEXES, SpatialSpec.class);
 
@@ -232,7 +232,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @param spatialIndexes the spatial indexes.
      * @return the Indexing Policy.
      */
-    public IndexingPolicy spatialIndexes(List<SpatialSpec> spatialIndexes) {
+    public IndexingPolicy setSpatialIndexes(List<SpatialSpec> spatialIndexes) {
         this.spatialIndexes = spatialIndexes;
         super.set(Constants.Properties.SPATIAL_INDEXES, this.spatialIndexes);
         return this;
@@ -241,11 +241,11 @@ public final class IndexingPolicy extends JsonSerializable {
     @Override
     void populatePropertyBag() {
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
-        if (this.indexingMode() != IndexingMode.NONE && this.includedPaths().size() == 0 &&
-                this.excludedPaths().size() == 0) {
+        if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0 &&
+                this.getExcludedPaths().size() == 0) {
             IncludedPath includedPath = new IncludedPath();
-            includedPath.path(IndexingPolicy.DEFAULT_PATH);
-            this.includedPaths().add(includedPath);
+            includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+            this.getIncludedPaths().add(includedPath);
         }
 
         if (this.includedPaths != null) {

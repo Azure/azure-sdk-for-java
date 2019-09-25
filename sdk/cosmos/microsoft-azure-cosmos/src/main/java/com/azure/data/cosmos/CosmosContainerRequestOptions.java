@@ -19,7 +19,7 @@ public class CosmosContainerRequestOptions {
      *
      * @return the throughput value.
      */
-    Integer offerThroughput() {
+    Integer getOfferThroughput() {
         return offerThroughput;
     }
 
@@ -29,7 +29,7 @@ public class CosmosContainerRequestOptions {
      * @param offerThroughput the throughput value.
      * @return the current request options
      */
-    CosmosContainerRequestOptions offerThroughput(Integer offerThroughput) {
+    CosmosContainerRequestOptions setOfferThroughput(Integer offerThroughput) {
         this.offerThroughput = offerThroughput;
         return this;
     }
@@ -41,7 +41,7 @@ public class CosmosContainerRequestOptions {
      *
      * @return true if PopulateQuotaInfo is enabled
      */
-    public boolean populateQuotaInfo() {
+    public boolean getPopulateQuotaInfo() {
         return populateQuotaInfo;
     }
 
@@ -53,7 +53,7 @@ public class CosmosContainerRequestOptions {
      * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
      * @return the current request options
      */
-    public CosmosContainerRequestOptions populateQuotaInfo(boolean populateQuotaInfo) {
+    public CosmosContainerRequestOptions setPopulateQuotaInfo(boolean populateQuotaInfo) {
         this.populateQuotaInfo = populateQuotaInfo;
         return this;
     }
@@ -63,7 +63,7 @@ public class CosmosContainerRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel consistencyLevel() {
+    public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -73,7 +73,7 @@ public class CosmosContainerRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions consistencyLevel(ConsistencyLevel consistencyLevel) {
+    public CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -83,7 +83,7 @@ public class CosmosContainerRequestOptions {
      *
      * @return the session token.
      */
-    public String sessionToken() {
+    public String getSessionToken() {
         return sessionToken;
     }
 
@@ -93,7 +93,7 @@ public class CosmosContainerRequestOptions {
      * @param sessionToken the session token.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions sessionToken(String sessionToken) {
+    public CosmosContainerRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;
     }
@@ -103,7 +103,7 @@ public class CosmosContainerRequestOptions {
      *
      * @return the access condition.
      */
-    public AccessCondition accessCondition() {
+    public AccessCondition getAccessCondition() {
         return accessCondition;
     }
 
@@ -113,7 +113,7 @@ public class CosmosContainerRequestOptions {
      * @param accessCondition the access condition.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions accessCondition(AccessCondition accessCondition) {
+    public CosmosContainerRequestOptions setAccessCondition(AccessCondition accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

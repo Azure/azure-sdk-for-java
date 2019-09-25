@@ -101,7 +101,7 @@ public class GatewayServiceConfigurationReader {
         httpHeaders.set(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
 
         UserAgentContainer userAgentContainer = new UserAgentContainer();
-        String userAgentSuffix = this.connectionPolicy.userAgentSuffix();
+        String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
         if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
             userAgentContainer.setSuffix(userAgentSuffix);
         }
@@ -133,7 +133,7 @@ public class GatewayServiceConfigurationReader {
         try {
             return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint.toURL(),
 
-                    new ArrayList<>(this.connectionPolicy.preferredLocations()), url -> {
+                    new ArrayList<>(this.connectionPolicy.getPreferredLocations()), url -> {
                         try {
                             return getDatabaseAccountAsync(url.toURI());
                         } catch (URISyntaxException e) {
@@ -143,7 +143,7 @@ public class GatewayServiceConfigurationReader {
                         userReplicationPolicy = BridgeInternal.getReplicationPolicy(databaseAccount);
                         systemReplicationPolicy = BridgeInternal.getSystemReplicationPolicy(databaseAccount);
                         queryEngineConfiguration = BridgeInternal.getQueryEngineConfiuration(databaseAccount);
-                        consistencyLevel = BridgeInternal.getConsistencyPolicy(databaseAccount).defaultConsistencyLevel();
+                        consistencyLevel = BridgeInternal.getConsistencyPolicy(databaseAccount).getDefaultConsistencyLevel();
                         initialized = true;
                     });
         } catch (MalformedURLException e) {

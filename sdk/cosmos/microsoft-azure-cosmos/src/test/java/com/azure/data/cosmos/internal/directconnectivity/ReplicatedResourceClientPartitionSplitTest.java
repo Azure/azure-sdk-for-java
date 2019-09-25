@@ -187,7 +187,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
 
     private PartitionKeyRange partitionKeyRangeWithId(String id) {
         PartitionKeyRange partitionKeyRange = Mockito.mock(PartitionKeyRange.class);
-        Mockito.doReturn(id).when(partitionKeyRange).id();
+        Mockito.doReturn(id).when(partitionKeyRange).getId();
         return partitionKeyRange;
     }
 }

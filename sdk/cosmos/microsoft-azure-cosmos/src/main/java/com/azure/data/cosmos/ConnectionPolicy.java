@@ -53,7 +53,7 @@ public final class ConnectionPolicy {
      *
      * @return the default connection policy.
      */
-    public static ConnectionPolicy defaultPolicy() {
+    public static ConnectionPolicy getDefaultPolicy() {
         if (ConnectionPolicy.default_policy == null) {
             ConnectionPolicy.default_policy = new ConnectionPolicy();
         }
@@ -66,7 +66,7 @@ public final class ConnectionPolicy {
      *
      * @return the request timeout in milliseconds.
      */
-    public int requestTimeoutInMillis() {
+    public int getRequestTimeoutInMillis() {
         return this.requestTimeoutInMillis;
     }
 
@@ -77,7 +77,7 @@ public final class ConnectionPolicy {
      * @param requestTimeoutInMillis the request timeout in milliseconds.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy requestTimeoutInMillis(int requestTimeoutInMillis) {
+    public ConnectionPolicy setRequestTimeoutInMillis(int requestTimeoutInMillis) {
         this.requestTimeoutInMillis = requestTimeoutInMillis;
         return this;
     }
@@ -87,7 +87,7 @@ public final class ConnectionPolicy {
      *
      * @return the connection mode.
      */
-    public ConnectionMode connectionMode() {
+    public ConnectionMode getConnectionMode() {
         return this.connectionMode;
     }
 
@@ -97,7 +97,7 @@ public final class ConnectionPolicy {
      * @param connectionMode the connection mode.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy connectionMode(ConnectionMode connectionMode) {
+    public ConnectionPolicy setConnectionMode(ConnectionMode connectionMode) {
         this.connectionMode = connectionMode;
         return this;
     }
@@ -107,7 +107,7 @@ public final class ConnectionPolicy {
      *
      * @return connection pool size.
      */
-    public int maxPoolSize() {
+    public int getMaxPoolSize() {
         return this.maxPoolSize;
     }
 
@@ -118,7 +118,7 @@ public final class ConnectionPolicy {
      * @param maxPoolSize The value of the connection pool size.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy maxPoolSize(int maxPoolSize) {
+    public ConnectionPolicy setMaxPoolSize(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
         return this;
     }
@@ -129,7 +129,7 @@ public final class ConnectionPolicy {
      *
      * @return Idle connection timeout.
      */
-    public int idleConnectionTimeoutInMillis() {
+    public int getIdleConnectionTimeoutInMillis() {
         return this.idleConnectionTimeoutInMillis;
     }
 
@@ -140,7 +140,7 @@ public final class ConnectionPolicy {
      * @param idleConnectionTimeoutInMillis the timeout for an idle connection in seconds.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy idleConnectionTimeoutInMillis(int idleConnectionTimeoutInMillis) {
+    public ConnectionPolicy setIdleConnectionTimeoutInMillis(int idleConnectionTimeoutInMillis) {
         this.idleConnectionTimeoutInMillis = idleConnectionTimeoutInMillis;
         return this;
     }
@@ -150,7 +150,7 @@ public final class ConnectionPolicy {
      *
      * @return the value of user-agent suffix.
      */
-    public String userAgentSuffix() {
+    public String getUserAgentSuffix() {
         return this.userAgentSuffix;
     }
 
@@ -161,7 +161,7 @@ public final class ConnectionPolicy {
      *                        used for monitoring purposes.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy userAgentSuffix(String userAgentSuffix) {
+    public ConnectionPolicy setUserAgentSuffix(String userAgentSuffix) {
         this.userAgentSuffix = userAgentSuffix;
         return this;
     }
@@ -171,7 +171,7 @@ public final class ConnectionPolicy {
      *
      * @return the RetryOptions instance.
      */
-    public RetryOptions retryOptions() {
+    public RetryOptions getRetryOptions() {
         return this.retryOptions;
     }
 
@@ -186,7 +186,7 @@ public final class ConnectionPolicy {
      * @param retryOptions the RetryOptions instance.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy retryOptions(RetryOptions retryOptions) {
+    public ConnectionPolicy setRetryOptions(RetryOptions retryOptions) {
         if (retryOptions == null) {
             throw new IllegalArgumentException("retryOptions value must not be null.");
         }
@@ -200,7 +200,7 @@ public final class ConnectionPolicy {
      *
      * @return whether endpoint discovery is enabled.
      */
-    public boolean enableEndpointDiscovery() {
+    public boolean getEnableEndpointDiscovery() {
         return this.enableEndpointDiscovery;
     }
 
@@ -216,7 +216,7 @@ public final class ConnectionPolicy {
      * @param enableEndpointDiscovery true if EndpointDiscovery is enabled.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy enableEndpointDiscovery(boolean enableEndpointDiscovery) {
+    public ConnectionPolicy setEnableEndpointDiscovery(boolean enableEndpointDiscovery) {
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         return this;
     }
@@ -235,7 +235,7 @@ public final class ConnectionPolicy {
      *
      * @return flag to enable writes on any locations (regions) for geo-replicated database accounts.
      */
-    public boolean usingMultipleWriteLocations() {
+    public boolean getUsingMultipleWriteLocations() {
         return this.usingMultipleWriteLocations;
     }
 
@@ -251,7 +251,7 @@ public final class ConnectionPolicy {
      *
      * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      */
-    public Boolean enableReadRequestsFallback() {
+    public Boolean getEnableReadRequestsFallback() {
         return this.enableReadRequestsFallback;
     }
 
@@ -270,7 +270,7 @@ public final class ConnectionPolicy {
      * @param usingMultipleWriteLocations flag to enable writes on any locations (regions) for geo-replicated database accounts.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy usingMultipleWriteLocations(boolean usingMultipleWriteLocations) {
+    public ConnectionPolicy setUsingMultipleWriteLocations(boolean usingMultipleWriteLocations) {
         this.usingMultipleWriteLocations = usingMultipleWriteLocations;
         return this;
     }
@@ -288,7 +288,7 @@ public final class ConnectionPolicy {
      * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy enableReadRequestsFallback(Boolean enableReadRequestsFallback) {
+    public ConnectionPolicy setEnableReadRequestsFallback(Boolean enableReadRequestsFallback) {
         this.enableReadRequestsFallback = enableReadRequestsFallback;
         return this;
     }
@@ -298,7 +298,7 @@ public final class ConnectionPolicy {
      *
      * @return the list of preferred location.
      */
-    public List<String> preferredLocations() {
+    public List<String> getPreferredLocations() {
         return this.preferredLocations != null ? preferredLocations : Collections.emptyList();
     }
 
@@ -315,7 +315,7 @@ public final class ConnectionPolicy {
      * @param preferredLocations the list of preferred locations.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy preferredLocations(List<String> preferredLocations) {
+    public ConnectionPolicy setPreferredLocations(List<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
         return this;
     }
@@ -325,7 +325,7 @@ public final class ConnectionPolicy {
      *
      * @return the value of proxyHost.
      */
-    public InetSocketAddress proxy() {
+    public InetSocketAddress getProxy() {
         return this.inetSocketProxyAddress;
     }
 
@@ -336,7 +336,7 @@ public final class ConnectionPolicy {
      * @param proxyPort The proxy server port.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy proxy(String proxyHost, int proxyPort) {
+    public ConnectionPolicy setProxy(String proxyHost, int proxyPort) {
         this.inetSocketProxyAddress = new InetSocketAddress(proxyHost, proxyPort);
         return this;
     }

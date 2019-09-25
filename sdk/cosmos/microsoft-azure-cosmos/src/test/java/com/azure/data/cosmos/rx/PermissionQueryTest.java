@@ -46,7 +46,7 @@ public class PermissionQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
-        String filterId = createdPermissions.get(0).id();
+        String filterId = createdPermissions.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
@@ -54,14 +54,14 @@ public class PermissionQueryTest extends TestSuiteBase {
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
-        List<Permission> expectedDocs = createdPermissions.stream().filter(sp -> filterId.equals(sp.id()) ).collect(Collectors.toList());
+        List<Permission> expectedDocs = createdPermissions.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<Permission>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -74,7 +74,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
@@ -93,7 +93,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
@@ -103,7 +103,7 @@ public class PermissionQueryTest extends TestSuiteBase {
                 .Builder<Permission>()
                 .exactlyContainsInAnyOrder(createdPermissions
                         .stream()
-                        .map(d -> d.resourceId())
+                        .map(d -> d.getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<Permission>()
@@ -116,7 +116,7 @@ public class PermissionQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
@@ -132,9 +132,9 @@ public class PermissionQueryTest extends TestSuiteBase {
     public void beforeClass() {
         client = clientBuilder().build();
         Database d = new Database();
-        d.id(databaseId);
+        d.setId(databaseId);
         createdDatabase = createDatabase(client, d);
-        createdUser = safeCreateUser(client, createdDatabase.id(), getUserDefinition());
+        createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
 
         for(int i = 0; i < 5; i++) {
             createdPermissions.add(createPermissions(client, i));
@@ -151,16 +151,16 @@ public class PermissionQueryTest extends TestSuiteBase {
 
     private static User getUserDefinition() {
         User user = new User();
-        user.id(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID().toString());
         return user;
     }
 
     public Permission createPermissions(AsyncDocumentClient client, int index) {
         DocumentCollection collection = new DocumentCollection();
-        collection.id(UUID.randomUUID().toString());
+        collection.setId(UUID.randomUUID().toString());
         
         Permission permission = new Permission();
-        permission.id(UUID.randomUUID().toString());
+        permission.setId(UUID.randomUUID().toString());
         permission.setPermissionMode(PermissionMode.READ);
         permission.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + Integer.toString(index) + "=");
         
@@ -172,10 +172,10 @@ public class PermissionQueryTest extends TestSuiteBase {
     }
 
     private String getDatabaseId() {
-        return createdDatabase.id();
+        return createdDatabase.getId();
     }
 
     private String getUserId() {
-        return createdUser.id();
+        return createdUser.getId();
     }
 }

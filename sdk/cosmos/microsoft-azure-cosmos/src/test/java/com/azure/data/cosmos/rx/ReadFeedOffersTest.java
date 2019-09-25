@@ -53,7 +53,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(allOffers.size())
-                .exactlyContainsInAnyOrder(allOffers.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(allOffers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<Offer>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -71,7 +71,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         }
 
         allOffers = client.readOffers(null)
-                          .map(FeedResponse::results)
+                          .map(FeedResponse::getResults)
                           .collectList()
                           .map(list -> list.stream().flatMap(Collection::stream).collect(Collectors.toList()))
                           .single()
@@ -86,18 +86,18 @@ public class ReadFeedOffersTest extends TestSuiteBase {
 
     public DocumentCollection createCollections(AsyncDocumentClient client) {
         DocumentCollection collection = new DocumentCollection();
-        collection.id(UUID.randomUUID().toString());
+        collection.setId(UUID.randomUUID().toString());
         
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collection.setPartitionKey(partitionKeyDef);
 
         return client.createCollection(getDatabaseLink(), collection, null).single().block().getResource();
     }
 
     private String getDatabaseLink() {
-        return "dbs/" + createdDatabase.id();
+        return "dbs/" + createdDatabase.getId();
     }
 }

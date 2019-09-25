@@ -18,9 +18,9 @@ public class RetryPolicy implements IRetryPolicyFactory {
     private final RetryOptions retryOptions;
     
     public RetryPolicy(GlobalEndpointManager globalEndpointManager, ConnectionPolicy connectionPolicy) {
-        this.enableEndpointDiscovery = connectionPolicy.enableEndpointDiscovery();
+        this.enableEndpointDiscovery = connectionPolicy.getEnableEndpointDiscovery();
         this.globalEndpointManager = globalEndpointManager;
-        this.retryOptions = connectionPolicy.retryOptions();
+        this.retryOptions = connectionPolicy.getRetryOptions();
     }
 
     @Override

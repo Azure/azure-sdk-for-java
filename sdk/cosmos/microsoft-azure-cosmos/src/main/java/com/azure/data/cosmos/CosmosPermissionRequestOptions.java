@@ -16,7 +16,7 @@ public class CosmosPermissionRequestOptions {
      *
      * @return the access condition.
      */
-    public AccessCondition accessCondition() {
+    public AccessCondition getAccessCondition() {
         return accessCondition;
     }
 
@@ -26,7 +26,7 @@ public class CosmosPermissionRequestOptions {
      * @param accessCondition the access condition.
      * @return the current request options
      */
-    public CosmosPermissionRequestOptions accessCondition(AccessCondition accessCondition) {
+    public CosmosPermissionRequestOptions setAccessCondition(AccessCondition accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

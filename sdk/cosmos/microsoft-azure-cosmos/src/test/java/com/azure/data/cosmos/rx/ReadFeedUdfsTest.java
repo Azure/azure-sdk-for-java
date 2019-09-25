@@ -49,7 +49,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(createdUserDefinedFunctions.size())
                 .exactlyContainsInAnyOrder(
-                        createdUserDefinedFunctions.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                        createdUserDefinedFunctions.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -77,10 +77,10 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     public CosmosUserDefinedFunctionProperties createUserDefinedFunctions(CosmosAsyncContainer cosmosContainer) {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.id(UUID.randomUUID().toString());
-        udf.body("function() {var x = 10;}");
+        udf.setId(UUID.randomUUID().toString());
+        udf.setBody("function() {var x = 10;}");
         return cosmosContainer.getScripts().createUserDefinedFunction(udf).block()
-                .properties();
+                .getProperties();
     }
 
     private String getCollectionLink() {
@@ -88,10 +88,10 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     }
 
     private String getCollectionId() {
-        return createdCollection.id();
+        return createdCollection.getId();
     }
 
     private String getDatabaseId() {
-        return createdDatabase.id();
+        return createdDatabase.getId();
     }
 }

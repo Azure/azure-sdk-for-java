@@ -19,13 +19,13 @@ public class Resource extends JsonSerializable {
     private String altLink;
 
     static void validateResource(Resource resource) {
-        if (!StringUtils.isEmpty(resource.id())) {
-            if (resource.id().indexOf('/') != -1 || resource.id().indexOf('\\') != -1 ||
-                    resource.id().indexOf('?') != -1 || resource.id().indexOf('#') != -1) {
+        if (!StringUtils.isEmpty(resource.getId())) {
+            if (resource.getId().indexOf('/') != -1 || resource.getId().indexOf('\\') != -1 ||
+                    resource.getId().indexOf('?') != -1 || resource.getId().indexOf('#') != -1) {
                 throw new IllegalArgumentException("Id contains illegal chars.");
             }
 
-            if (resource.id().endsWith(" ")) {
+            if (resource.getId().endsWith(" ")) {
                 throw new IllegalArgumentException("Id ends with a space.");
             }
         }
@@ -37,12 +37,12 @@ public class Resource extends JsonSerializable {
      * @param resource resource to by copied.
      */
     protected Resource(Resource resource) {
-        this.id(resource.id());
-        this.resourceId(resource.resourceId());
-        this.selfLink(resource.selfLink());
-        this.altLink(resource.altLink());
-        this.timestamp(resource.timestamp());
-        this.etag(resource.etag());
+        this.setId(resource.getId());
+        this.setResourceId(resource.getResourceId());
+        this.setSelfLink(resource.getSelfLink());
+        this.setAltLink(resource.getAltLink());
+        this.setTimestamp(resource.getTimestamp());
+        this.setETag(resource.getETag());
     }
 
     /**
@@ -87,7 +87,7 @@ public class Resource extends JsonSerializable {
      *
      * @return the name of the resource.
      */
-    public String id() {
+    public String getId() {
         return super.getString(Constants.Properties.ID);
     }
 
@@ -97,7 +97,7 @@ public class Resource extends JsonSerializable {
      * @param id the name of the resource.
      * @return the resource.
      */
-    public Resource id(String id) {
+    public Resource setId(String id) {
         super.set(Constants.Properties.ID, id);
         return this;
     }
@@ -107,7 +107,7 @@ public class Resource extends JsonSerializable {
      *
      * @return the ID associated with the resource.
      */
-    public String resourceId() {
+    public String getResourceId() {
         return super.getString(Constants.Properties.R_ID);
     }
 
@@ -118,7 +118,7 @@ public class Resource extends JsonSerializable {
      * @param resourceId the ID associated with the resource.
      * @return the resource.
      */
-    public Resource resourceId(String resourceId) {
+    public Resource setResourceId(String resourceId) {
         super.set(Constants.Properties.R_ID, resourceId);
         return this;
     }
@@ -128,7 +128,7 @@ public class Resource extends JsonSerializable {
      *
      * @return the self link.
      */
-    public String selfLink() {
+    public String getSelfLink() {
         return super.getString(Constants.Properties.SELF_LINK);
     }
 
@@ -137,7 +137,7 @@ public class Resource extends JsonSerializable {
      *
      * @param selfLink the self link.
      */
-    Resource selfLink(String selfLink) {
+    Resource setSelfLink(String selfLink) {
         super.set(Constants.Properties.SELF_LINK, selfLink);
         return this;
     }
@@ -147,7 +147,7 @@ public class Resource extends JsonSerializable {
      *
      * @return the timestamp.
      */
-    public OffsetDateTime timestamp() {
+    public OffsetDateTime getTimestamp() {
         Long seconds = super.getLong(Constants.Properties.LAST_MODIFIED);
         if (seconds == null)
             return null;
@@ -159,7 +159,7 @@ public class Resource extends JsonSerializable {
      *
      * @param timestamp the timestamp.
      */
-    Resource timestamp(OffsetDateTime timestamp) {
+    Resource setTimestamp(OffsetDateTime timestamp) {
         long seconds = timestamp.toEpochSecond();
         super.set(Constants.Properties.LAST_MODIFIED, seconds);
         return this;
@@ -170,7 +170,7 @@ public class Resource extends JsonSerializable {
      *
      * @return the e tag.
      */
-    public String etag() {
+    public String getETag() {
         return super.getString(Constants.Properties.E_TAG);
     }
 
@@ -179,7 +179,7 @@ public class Resource extends JsonSerializable {
      *
      * @param eTag the e tag.
      */
-    Resource etag(String eTag) {
+    Resource setETag(String eTag) {
         super.set(Constants.Properties.E_TAG, eTag);
         return this;
     }
@@ -190,7 +190,7 @@ public class Resource extends JsonSerializable {
      * 
      * @param altLink
      */
-    Resource altLink(String altLink) {
+    Resource setAltLink(String altLink) {
         this.altLink = altLink;
         return this;
     }
@@ -199,7 +199,7 @@ public class Resource extends JsonSerializable {
      * Gets the alt-link associated with the resource from the Azure Cosmos DB
      * service.
      */
-    String altLink() {
+    String getAltLink() {
         return this.altLink;
     }
 }

@@ -38,14 +38,14 @@ public class BackPressureTest extends TestSuiteBase {
     private CosmosAsyncClient client;
 
     public String getCollectionLink() {
-        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
     private static CosmosContainerProperties getSinglePartitionCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         return collectionDefinition;
@@ -60,7 +60,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeed() throws Exception {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
@@ -99,7 +99,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void query() throws Exception {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems("SELECT * from r", options);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
@@ -149,8 +149,8 @@ public class BackPressureTest extends TestSuiteBase {
         // for bulk insert and later queries.
         Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
-                        createdCollection.read().block().properties().resourceId())
-                        , null).take(1).map(FeedResponse::results).single().block().get(0);
+                        createdCollection.read().block().getProperties().getResourceId())
+                        , null).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
         offer = rxClient.replaceOffer(offer).single().block().getResource();
         assertThat(offer.getThroughput()).isEqualTo(6000);
@@ -169,7 +169,7 @@ public class BackPressureTest extends TestSuiteBase {
     private void warmUp() {
         // ensure collection is cached
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         createdCollection.queryItems("SELECT * from r", options).blockFirst();
     }
 

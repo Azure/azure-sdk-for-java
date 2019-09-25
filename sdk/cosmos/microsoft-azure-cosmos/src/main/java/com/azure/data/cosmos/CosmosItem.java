@@ -32,16 +32,16 @@ public class CosmosItem {
      *
      * @return the string
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
     /**
-     * Partition key object.
+     * Partition getKey object.
      *
      * @return the object
      */
-    public Object partitionKey() {
+    public Object getPartitionKey() {
         return partitionKey;
     }
 

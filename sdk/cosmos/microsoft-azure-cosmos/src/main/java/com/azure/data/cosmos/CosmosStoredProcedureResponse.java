@@ -19,7 +19,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      */
     CosmosStoredProcedureResponse(CosmosAsyncStoredProcedureResponse resourceResponse,
                                   CosmosStoredProcedure storedProcedure) {
-        super(resourceResponse.properties());
+        super(resourceResponse.getProperties());
         this.asyncResponse = resourceResponse;
         this.cosmosStoredProcedure = storedProcedure;
     }
@@ -29,8 +29,8 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      *
      * @return the cosmos stored procedure properties
      */
-    public CosmosStoredProcedureProperties properties() {
-        return asyncResponse.properties();
+    public CosmosStoredProcedureProperties getProperties() {
+        return asyncResponse.getProperties();
     }
 
     /**
@@ -38,28 +38,28 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      *
      * @return the cosmos sync stored procedure
      */
-    public CosmosStoredProcedure storedProcedure() {
+    public CosmosStoredProcedure getStoredProcedure() {
         return cosmosStoredProcedure;
     }
 
     @Override
-    public String activityId() {
-        return asyncResponse.activityId();
+    public String getActivityId() {
+        return asyncResponse.getActivityId();
     }
 
     @Override
-    public String sessionToken() {
-        return asyncResponse.sessionToken();
+    public String getSessionToken() {
+        return asyncResponse.getSessionToken();
     }
 
     @Override
-    public int statusCode() {
-        return asyncResponse.statusCode();
+    public int getStatusCode() {
+        return asyncResponse.getStatusCode();
     }
 
     @Override
-    public double requestCharge() {
-        return asyncResponse.requestCharge();
+    public double getRequestCharge() {
+        return asyncResponse.getRequestCharge();
     }
 
     /**
@@ -68,7 +68,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      * @return the string
      */
     public String responseAsString() {
-        return asyncResponse.responseAsString();
+        return asyncResponse.getResponseAsString();
     }
 
     /**
@@ -77,7 +77,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      * @return the string
      */
     public String scriptLog() {
-        return asyncResponse.scriptLog();
+        return asyncResponse.getScriptLog();
     }
 
 

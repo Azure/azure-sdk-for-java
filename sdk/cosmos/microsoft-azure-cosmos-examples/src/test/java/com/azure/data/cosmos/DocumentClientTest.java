@@ -36,7 +36,7 @@ public abstract class DocumentClientTest implements ITest {
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method) {
 
-        String connectionMode = this.clientBuilder.getConnectionPolicy().connectionMode() == ConnectionMode.DIRECT
+        String connectionMode = this.clientBuilder.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT
             ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
             : "Gateway";
 

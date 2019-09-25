@@ -194,7 +194,7 @@ public class AddressSelectorWrapper {
                 VerifierBuilder resolveAllUriAsync_IncludePrimary(boolean primaryIncluded) {
                     methodName(resolveAllUriAsync);
 
-                    Condition alwaysTrue = new Condition(Predicates.alwaysTrue(), "no condition");
+                    Condition alwaysTrue = new Condition(Predicates.alwaysTrue(), "no getCondition");
                     Condition primaryIncludedCond = new Condition(Predicates.equalTo(primaryIncluded), String.format("%b (primaryIncluded)", primaryIncluded));
 
                     resolveAllUriAsync(alwaysTrue, primaryIncludedCond, alwaysTrue);

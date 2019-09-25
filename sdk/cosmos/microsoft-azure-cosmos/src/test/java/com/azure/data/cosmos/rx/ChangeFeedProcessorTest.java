@@ -55,26 +55,26 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         setupReadFeedDocuments();
 
         changeFeedProcessor = ChangeFeedProcessor.Builder()
-            .hostName(hostName)
-            .handleChanges(docs -> {
+            .setHostName(hostName)
+            .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
                 for (CosmosItemProperties item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
             })
-            .feedContainer(createdFeedCollection)
-            .leaseContainer(createdLeaseCollection)
-            .options(new ChangeFeedProcessorOptions()
-                .leaseRenewInterval(Duration.ofSeconds(20))
-                .leaseAcquireInterval(Duration.ofSeconds(10))
-                .leaseExpirationInterval(Duration.ofSeconds(30))
-                .feedPollDelay(Duration.ofSeconds(2))
-                .leasePrefix("TEST")
-                .maxItemCount(10)
-                .startFromBeginning(true)
-                .maxScaleCount(0) // unlimited
-                .discardExistingLeases(true)
+            .setFeedContainer(createdFeedCollection)
+            .setLeaseContainer(createdLeaseCollection)
+            .setOptions(new ChangeFeedProcessorOptions()
+                .setLeaseRenewInterval(Duration.ofSeconds(20))
+                .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                .setFeedPollDelay(Duration.ofSeconds(2))
+                .setLeasePrefix("TEST")
+                .setMaxItemCount(10)
+                .setStartFromBeginning(true)
+                .setMaxScaleCount(0) // unlimited
+                .setDiscardExistingLeases(true)
             )
             .build();
 
@@ -96,7 +96,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
         for (CosmosItemProperties item : createdDocuments) {
-            assertThat(receivedDocuments.containsKey(item.id())).as("Document with id: " + item.id()).isTrue();
+            assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
         }
 
         // Wait for the feed processor to shutdown.
@@ -111,27 +111,27 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() {
         ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
-            .hostName(hostName)
-            .handleChanges(docs -> {
+            .setHostName(hostName)
+            .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
                 for (CosmosItemProperties item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
             })
-            .feedContainer(createdFeedCollection)
-            .leaseContainer(createdLeaseCollection)
-            .options(new ChangeFeedProcessorOptions()
-                .leaseRenewInterval(Duration.ofSeconds(20))
-                .leaseAcquireInterval(Duration.ofSeconds(10))
-                .leaseExpirationInterval(Duration.ofSeconds(30))
-                .feedPollDelay(Duration.ofSeconds(1))
-                .leasePrefix("TEST")
-                .maxItemCount(10)
-                .startTime(OffsetDateTime.now().minusDays(1))
-                .minScaleCount(1)
-                .maxScaleCount(3)
-                .discardExistingLeases(true)
+            .setFeedContainer(createdFeedCollection)
+            .setLeaseContainer(createdLeaseCollection)
+            .setOptions(new ChangeFeedProcessorOptions()
+                .setLeaseRenewInterval(Duration.ofSeconds(20))
+                .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                .setFeedPollDelay(Duration.ofSeconds(1))
+                .setLeasePrefix("TEST")
+                .setMaxItemCount(10)
+                .setStartTime(OffsetDateTime.now().minusDays(1))
+                .setMinScaleCount(1)
+                .setMaxScaleCount(3)
+                .setDiscardExistingLeases(true)
             )
             .build();
 
@@ -161,7 +161,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
         for (CosmosItemProperties item : createdDocuments) {
-            assertThat(receivedDocuments.containsKey(item.id())).as("Document with id: " + item.id()).isTrue();
+            assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
         }
 
         // Wait for the feed processor to shutdown.
@@ -180,38 +180,38 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         final String leasePrefix = "TEST";
 
         ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.Builder()
-            .hostName(ownerFirst)
-            .handleChanges(docs -> {
+            .setHostName(ownerFirst)
+            .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                 ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
             })
-            .feedContainer(createdFeedCollection)
-            .leaseContainer(createdLeaseCollection)
-            .options(new ChangeFeedProcessorOptions()
-                .leasePrefix(leasePrefix)
+            .setFeedContainer(createdFeedCollection)
+            .setLeaseContainer(createdLeaseCollection)
+            .setOptions(new ChangeFeedProcessorOptions()
+                .setLeasePrefix(leasePrefix)
             )
             .build();
 
         ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.Builder()
-            .hostName(ownerSecond)
-            .handleChanges(docs -> {
+            .setHostName(ownerSecond)
+            .setHandleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                 for (CosmosItemProperties item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
             })
-            .feedContainer(createdFeedCollection)
-            .leaseContainer(createdLeaseCollection)
-            .options(new ChangeFeedProcessorOptions()
-                    .leaseRenewInterval(Duration.ofSeconds(10))
-                    .leaseAcquireInterval(Duration.ofSeconds(5))
-                    .leaseExpirationInterval(Duration.ofSeconds(20))
-                    .feedPollDelay(Duration.ofSeconds(2))
-                    .leasePrefix(leasePrefix)
-                    .maxItemCount(10)
-                    .startFromBeginning(true)
-                    .maxScaleCount(0) // unlimited
+            .setFeedContainer(createdFeedCollection)
+            .setLeaseContainer(createdLeaseCollection)
+            .setOptions(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(10))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(5))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(20))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setLeasePrefix(leasePrefix)
+                    .setMaxItemCount(10)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
             )
             .build();
 
@@ -238,25 +238,25 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     ChangeFeedProcessorTest.log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
 
                     SqlParameter param = new SqlParameter();
-                    param.name("@PartitionLeasePrefix");
-                    param.value(leasePrefix);
+                    param.setName("@PartitionLeasePrefix");
+                    param.setValue(leasePrefix);
                     SqlQuerySpec querySpec = new SqlQuerySpec(
                         "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
                         new SqlParameterList(param));
 
                     FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.enableCrossPartitionQuery(true);
+                    feedOptions.setEnableCrossPartitionQuery(true);
 
                     createdLeaseCollection.queryItems(querySpec, feedOptions)
                         .delayElements(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))
-                        .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.results()))
+                        .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                         .flatMap(doc -> {
                             BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
                             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-                            options.partitionKey(new PartitionKey(doc.id()));
-                            return createdLeaseCollection.getItem(doc.id(), "/id")
+                            options.setPartitionKey(new PartitionKey(doc.getId()));
+                            return createdLeaseCollection.getItem(doc.getId(), "/id")
                                 .replace(doc, options)
-                                .map(CosmosAsyncItemResponse::properties);
+                                .map(CosmosAsyncItemResponse::getProperties);
                         })
                         .map(ServiceItemLease::fromDocument)
                         .map(leaseDocument -> {
@@ -406,6 +406,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     private static synchronized void processItem(CosmosItemProperties item) {
         ChangeFeedProcessorTest.log.info("RECEIVED {}", item.toJson(SerializationFormattingPolicy.INDENTED));
-        receivedDocuments.put(item.id(), item);
+        receivedDocuments.put(item.getId(), item);
     }
 }

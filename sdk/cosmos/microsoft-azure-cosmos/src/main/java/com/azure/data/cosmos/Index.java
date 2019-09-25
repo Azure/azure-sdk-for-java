@@ -18,7 +18,7 @@ public abstract class Index extends JsonSerializable {
      */
     Index(IndexKind indexKind) {
         super();
-        this.kind(indexKind);
+        this.setKind(indexKind);
     }
 
     /**
@@ -29,7 +29,7 @@ public abstract class Index extends JsonSerializable {
      */
     Index(String jsonString, IndexKind indexKind) {
         super(jsonString);
-        this.kind(indexKind);
+        this.setKind(indexKind);
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class Index extends JsonSerializable {
      *
      * @return the index kind.
      */
-    public IndexKind kind() {
+    public IndexKind getKind() {
         IndexKind result = null;
         try {
             result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));
@@ -139,7 +139,7 @@ public abstract class Index extends JsonSerializable {
      *
      * @param indexKind the index kind.
      */
-    private Index kind(IndexKind indexKind) {
+    private Index setKind(IndexKind indexKind) {
         super.set(Constants.Properties.INDEX_KIND, indexKind.toString());
         return this;
     }

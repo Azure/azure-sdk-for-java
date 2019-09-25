@@ -60,7 +60,7 @@ public class InvalidPartitionException extends CosmosClientException {
     }
 
     private void setSubStatus() {
-        this.responseHeaders().put(
+        this.getResponseHeaders().put(
                 WFConstants.BackendHeaders.SUB_STATUS,
                 Integer.toString(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE));
     }

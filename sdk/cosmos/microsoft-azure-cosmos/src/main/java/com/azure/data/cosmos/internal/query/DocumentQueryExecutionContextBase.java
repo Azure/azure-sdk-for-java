@@ -123,7 +123,7 @@ implements IDocumentQueryExecutionContext<T> {
 
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
         ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
-        if (!Strings.isNullOrEmpty(feedOptions.sessionToken())
+        if (!Strings.isNullOrEmpty(feedOptions.getSessionToken())
                 && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
             if (defaultConsistencyLevel == ConsistencyLevel.SESSION
                     || (desiredConsistencyLevel == ConsistencyLevel.SESSION)) {
@@ -141,7 +141,7 @@ implements IDocumentQueryExecutionContext<T> {
                 // irrespective of the chosen replica.
                 // For server resources, which don't span partitions, specify the session token
                 // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.sessionToken());
+                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.getSessionToken());
             }
         }
 
@@ -153,24 +153,24 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.maxItemCount()));
         }
 
-        if (feedOptions.enableCrossPartitionQuery() != null) {
+        if (feedOptions.getEnableCrossPartitionQuery() != null) {
 
             requestHeaders.put(HttpConstants.HttpHeaders.ENABLE_CROSS_PARTITION_QUERY,
-                    Strings.toString(feedOptions.enableCrossPartitionQuery()));
+                    Strings.toString(feedOptions.getEnableCrossPartitionQuery()));
         }
 
-        if (feedOptions.maxDegreeOfParallelism() != 0) {
+        if (feedOptions.getMaxDegreeOfParallelism() != 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
         }
 
-        if (this.feedOptions.enableCrossPartitionQuery() != null) {
+        if (this.feedOptions.getEnableCrossPartitionQuery() != null) {
             requestHeaders.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY,
-                    Strings.toString(this.feedOptions.enableCrossPartitionQuery()));
+                    Strings.toString(this.feedOptions.getEnableCrossPartitionQuery()));
         }
 
-        if (this.feedOptions.responseContinuationTokenLimitInKb() > 0) {
+        if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(feedOptions.responseContinuationTokenLimitInKb()));
+                    Strings.toString(feedOptions.setResponseContinuationTokenLimitInKb()));
         }
 
         if (desiredConsistencyLevel != null) {
@@ -207,7 +207,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (this.resourceTypeEnum.isPartitioned()) {
-            request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.id()));
+            request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
         }
     }
 
@@ -218,7 +218,7 @@ implements IDocumentQueryExecutionContext<T> {
         String queryText;
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
-            SqlParameterList params = querySpec.parameters();
+            SqlParameterList params = querySpec.getParameters();
             Utils.checkStateOrThrow(params != null && params.size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
@@ -229,7 +229,7 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
-            queryText = querySpec.queryText();
+            queryText = querySpec.getQueryText();
             break;
 
         case Default:

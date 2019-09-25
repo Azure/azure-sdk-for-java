@@ -40,7 +40,7 @@ public abstract class DocumentClientTest implements ITest {
                 method.getName());
 
         if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.getConfigs() != null) {
-            String connectionMode = this.clientBuilder.getConnectionPolicy().connectionMode() == ConnectionMode.DIRECT
+            String connectionMode = this.clientBuilder.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT
                     ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
                     : "Gateway";
 

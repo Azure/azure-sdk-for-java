@@ -24,8 +24,8 @@ public class CosmosStoredProcedureProperties extends Resource {
      * @param id the name of the resource.
      * @return return the Cosmos stored procedure properties with id set
      */
-    public CosmosStoredProcedureProperties id(String id){
-        super.id(id);
+    public CosmosStoredProcedureProperties setId(String id){
+        super.setId(id);
         return this;
     }
 
@@ -46,8 +46,8 @@ public class CosmosStoredProcedureProperties extends Resource {
      */
     public CosmosStoredProcedureProperties(String id, String body) {
         super();
-        super.id(id);
-        this.body(body);
+        super.setId(id);
+        this.setBody(body);
     }
 
     CosmosStoredProcedureProperties(ResourceResponse<StoredProcedure> response) {
@@ -59,7 +59,7 @@ public class CosmosStoredProcedureProperties extends Resource {
      *
      * @return the body of the stored procedure.
      */
-    public String body() {
+    public String getBody() {
         return super.getString(Constants.Properties.BODY);
     }
 
@@ -68,7 +68,7 @@ public class CosmosStoredProcedureProperties extends Resource {
      *
      * @param body the body of the stored procedure.
      */
-    public void body(String body) {
+    public void setBody(String body) {
         super.set(Constants.Properties.BODY, body);
     }
 

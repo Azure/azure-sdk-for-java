@@ -28,7 +28,7 @@ public class IncludedPathTest {
                 "  ]" +
                 "}";
         IncludedPath path = new IncludedPath(json);
-        Collection<Index> indexes = path.indexes();
+        Collection<Index> indexes = path.getIndexes();
         assertThat(indexes).hasSize(2);
         assertThat(indexes).usingFieldByFieldElementComparator().contains(Index.Range(DataType.STRING, -1));
         assertThat(indexes).usingFieldByFieldElementComparator().contains(Index.Range(DataType.NUMBER, -1));

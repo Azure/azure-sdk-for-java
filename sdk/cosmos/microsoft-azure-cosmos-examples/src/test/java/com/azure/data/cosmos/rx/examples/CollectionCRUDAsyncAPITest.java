@@ -73,7 +73,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -89,11 +89,11 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeMethod(groups = "samples", timeOut = TIMEOUT)
     public void before() {
         collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
     }
 
@@ -232,7 +232,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
                     .block(); // Blocks
             assertThat("Should not reach here", false);
         } catch (Exception e) {
-            assertThat("Collection already exists.", ((CosmosClientException) e.getCause()).statusCode(),
+            assertThat("Collection already exists.", ((CosmosClientException) e.getCause()).getStatusCode(),
                        equalTo(409));
         }
     }
@@ -324,7 +324,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
         // Query the created collection using async api
         Flux<FeedResponse<DocumentCollection>> queryCollectionObservable = client.queryCollections(
-                getDatabaseLink(), String.format("SELECT * FROM r where r.id = '%s'", collection.id()),
+                getDatabaseLink(), String.format("SELECT * FROM r where r.id = '%s'", collection.getId()),
                 null);
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -335,13 +335,13 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
             // First element of the list should have only 1 result
             FeedResponse<DocumentCollection> collectionFeedResponse = collectionFeedResponseList.get(0);
-            assertThat(collectionFeedResponse.results().size(), equalTo(1));
+            assertThat(collectionFeedResponse.getResults().size(), equalTo(1));
 
-            // This collection should have the same id as the one we created
-            DocumentCollection foundCollection = collectionFeedResponse.results().get(0);
-            assertThat(foundCollection.id(), equalTo(collection.id()));
+            // This collection should have the same getId as the one we created
+            DocumentCollection foundCollection = collectionFeedResponse.getResults().get(0);
+            assertThat(foundCollection.getId(), equalTo(collection.getId()));
 
-            System.out.println(collectionFeedResponse.activityId());
+            System.out.println(collectionFeedResponse.getActivityId());
             countDownLatch.countDown();
         }, error -> {
             System.err.println("an error occurred while querying the collection: actual cause: " + error.getMessage());
@@ -353,39 +353,39 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
     }
 
     private String getDatabaseLink() {
-        return "dbs/" + createdDatabase.id();
+        return "dbs/" + createdDatabase.getId();
     }
 
     private String getCollectionLink(DocumentCollection collection) {
-        return "dbs/" + createdDatabase.id() + "/colls/" + collection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + collection.getId();
     }
 
     private DocumentCollection getMultiPartitionCollectionDefinition() {
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
 
         // Set the partitionKeyDefinition for a partitioned collection.
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         List<String> paths = new ArrayList<>();
         paths.add("/city");
-        partitionKeyDefinition.paths(paths);
+        partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
 
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "precision", -1);
+        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.Range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
+        BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
         collectionDefinition.setIndexingPolicy(indexingPolicy);

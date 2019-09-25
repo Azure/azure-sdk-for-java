@@ -58,7 +58,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         SpyClientUnderTestFactory.ClientUnderTest clientUnderTest = SpyClientUnderTestFactory.createClientUnderTest(this.clientBuilder());
         HttpClient httpClient = clientUnderTest.getSpyHttpClient();
         baseAuthorizationTokenProvider = new BaseAuthorizationTokenProvider(new CosmosKeyCredential(TestConfigurations.MASTER_KEY));
-        connectionPolicy = ConnectionPolicy.defaultPolicy();
+        connectionPolicy = ConnectionPolicy.getDefaultPolicy();
         mockHttpClient = Mockito.mock(HttpClient.class);
         mockGatewayServiceConfigurationReader = new GatewayServiceConfigurationReader(new URI(TestConfigurations.HOST),
                 false, TestConfigurations.MASTER_KEY, connectionPolicy, baseAuthorizationTokenProvider, mockHttpClient);
@@ -128,11 +128,11 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
         DatabaseAccount databaseAccount = testSubscriber.values().get(0);
-        assertThat(databaseAccount.id()).isEqualTo(expectedDatabaseAccount.id());
+        assertThat(databaseAccount.getId()).isEqualTo(expectedDatabaseAccount.getId());
         assertThat(BridgeInternal.getAddressesLink(databaseAccount))
                 .isEqualTo(BridgeInternal.getAddressesLink(expectedDatabaseAccount));
-        assertThat(databaseAccount.writableLocations().iterator().next().endpoint())
-                .isEqualTo(expectedDatabaseAccount.writableLocations().iterator().next().endpoint());
+        assertThat(databaseAccount.getWritableLocations().iterator().next().getEndpoint())
+                .isEqualTo(expectedDatabaseAccount.getWritableLocations().iterator().next().getEndpoint());
         assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount).getMaxReplicaSetSize())
                 .isEqualTo(BridgeInternal.getSystemReplicationPolicy(expectedDatabaseAccount).getMaxReplicaSetSize());
         assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount).getMaxReplicaSetSize())

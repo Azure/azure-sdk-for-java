@@ -28,8 +28,8 @@ public final class Database extends Resource {
      * @param id the name of the resource.
      * @return the current instance of Database
      */
-    public Database id(String id){
-        super.id(id);
+    public Database setId(String id){
+        super.setId(id);
         return this;
     }
 
@@ -49,7 +49,7 @@ public final class Database extends Resource {
      */
     public String getCollectionsLink() {
         return String.format("%s/%s",
-                StringUtils.stripEnd(super.selfLink(), "/"),
+                StringUtils.stripEnd(super.getSelfLink(), "/"),
                 super.getString(Constants.Properties.COLLECTIONS_LINK));
     }
 
@@ -60,7 +60,7 @@ public final class Database extends Resource {
      */
     public String getUsersLink() {
         return String.format("%s/%s",
-                StringUtils.stripEnd(super.selfLink(), "/"),
+                StringUtils.stripEnd(super.getSelfLink(), "/"),
                 super.getString(Constants.Properties.USERS_LINK));
     }
 }

@@ -31,31 +31,31 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         // create a stored procedure
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.id(UUID.randomUUID().toString());
-        storedProcedureDef.body("function() {var x = 10;}");
+        storedProcedureDef.setId(UUID.randomUUID().toString());
+        storedProcedureDef.setBody("function() {var x = 10;}");
         CosmosStoredProcedureProperties readBackSp = createdCollection.getScripts()
                 .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block()
-                .properties();
+                .getProperties();
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = createdCollection.getScripts()
-                .getStoredProcedure(readBackSp.id()).read(null);
+                .getStoredProcedure(readBackSp.getId()).read(null);
 
         // validate stored procedure creation
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
-                .withId(readBackSp.id()).withStoredProcedureBody("function() {var x = 10;}").notNullEtag().build();
+                .withId(readBackSp.getId()).withStoredProcedureBody("function() {var x = 10;}").notNullEtag().build();
         validateSuccess(readObservable, validatorForRead);
 
         // update stored procedure
-        readBackSp.body("function() {var x = 11;}");
+        readBackSp.setBody("function() {var x = 11;}");
 
         Mono<CosmosAsyncStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
-                .getStoredProcedure(readBackSp.id()).replace(readBackSp);
+                .getStoredProcedure(readBackSp.getId()).replace(readBackSp);
 
         // validate stored procedure replace
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
-                .withId(readBackSp.id()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
+                .withId(readBackSp.getId()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
@@ -73,13 +73,13 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         storedProcedure = createdCollection.getScripts()
                 .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block()
-                .storedProcedure();
+                .getStoredProcedure();
 
         String result = null;
 
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
-        options.partitionKey(PartitionKey.None);
-        result = storedProcedure.execute(null, options).block().responseAsString();
+        options.setPartitionKey(PartitionKey.None);
+        result = storedProcedure.execute(null, options).block().getResponseAsString();
 
         assertThat(result).isEqualTo("\"0123456789\"");
     }

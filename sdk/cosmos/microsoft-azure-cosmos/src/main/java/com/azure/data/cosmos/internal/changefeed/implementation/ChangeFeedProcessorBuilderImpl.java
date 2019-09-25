@@ -37,10 +37,10 @@ import java.util.function.Consumer;
  * <pre>
  * {@code
  *  ChangeFeedProcessor.Builder()
- *     .hostName(hostName)
- *     .feedContainer(feedContainer)
- *     .leaseContainer(leaseContainer)
- *     .handleChanges(docs -> {
+ *     .setHostName(setHostName)
+ *     .setFeedContainer(setFeedContainer)
+ *     .setLeaseContainer(setLeaseContainer)
+ *     .setHandleChanges(docs -> {
  *         // Implementation for handling and processing CosmosItemProperties list goes here
  *      })
  *     .observer(SampleObserverImpl.class)
@@ -114,7 +114,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl hostName(String hostName) {
+    public ChangeFeedProcessorBuilderImpl setHostName(String hostName) {
         this.hostName = hostName;
         return this;
     }
@@ -126,7 +126,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl feedContainer(CosmosAsyncContainer feedDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl setFeedContainer(CosmosAsyncContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
         }
@@ -142,7 +142,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl options(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
+    public ChangeFeedProcessorBuilderImpl setOptions(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         if (changeFeedProcessorOptions == null) {
             throw new IllegalArgumentException("changeFeedProcessorOptions");
         }
@@ -183,7 +183,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     @Override
-    public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<CosmosItemProperties>> consumer) {
+    public ChangeFeedProcessorBuilderImpl setHandleChanges(Consumer<List<CosmosItemProperties>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
 
@@ -215,7 +215,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl setLeaseContainer(CosmosAsyncContainer leaseDocumentClient) {
         if (leaseDocumentClient == null) {
             throw new IllegalArgumentException("leaseContextClient");
         }
@@ -323,13 +323,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.database().id();
+                this.databaseResourceId = databaseResourceResponse.getDatabase().getId();
                 return this.databaseResourceId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.container().id();
+                    this.collectionResourceId = documentCollectionResourceResponse.getContainer().getId();
                     return this;
                 }));
     }
@@ -340,10 +340,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             return this.leaseContextClient.readContainerSettings(this.leaseContextClient.getContainerClient(), null)
                 .flatMap( collectionSettings -> {
                     boolean isPartitioned =
-                        collectionSettings.partitionKeyDefinition() != null &&
-                            collectionSettings.partitionKeyDefinition().paths() != null &&
-                            collectionSettings.partitionKeyDefinition().paths().size() > 0;
-                    if (!isPartitioned || (collectionSettings.partitionKeyDefinition().paths().size() != 1 || !collectionSettings.partitionKeyDefinition().paths().get(0).equals("/id"))) {
+                        collectionSettings.getPartitionKeyDefinition() != null &&
+                            collectionSettings.getPartitionKeyDefinition().getPaths() != null &&
+                            collectionSettings.getPartitionKeyDefinition().getPaths().size() > 0;
+                    if (!isPartitioned || (collectionSettings.getPartitionKeyDefinition().getPaths().size() != 1 || !collectionSettings.getPartitionKeyDefinition().getPaths().get(0).equals("/id"))) {
 //                        throw new IllegalArgumentException("The lease collection, if partitioned, must have partition key equal to id.");
                         return Mono.error(new IllegalArgumentException("The lease collection must have partition key equal to id."));
                     }
@@ -370,7 +370,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     private String getLeasePrefix() {
-        String optionsPrefix = this.changeFeedProcessorOptions.leasePrefix();
+        String optionsPrefix = this.changeFeedProcessorOptions.getLeasePrefix();
 
         if (optionsPrefix == null) {
             optionsPrefix = "";
@@ -414,9 +414,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         if (this.loadBalancingStrategy == null) {
             this.loadBalancingStrategy = new EqualPartitionsBalancingStrategy(
                 this.hostName,
-                this.changeFeedProcessorOptions.minScaleCount(),
-                this.changeFeedProcessorOptions.maxScaleCount(),
-                this.changeFeedProcessorOptions.leaseExpirationInterval());
+                this.changeFeedProcessorOptions.getMinScaleCount(),
+                this.changeFeedProcessorOptions.getMaxScaleCount(),
+                this.changeFeedProcessorOptions.getLeaseExpirationInterval());
         }
 
         PartitionController partitionController = new PartitionControllerImpl(leaseStoreManager, leaseStoreManager, partitionSupervisorFactory, synchronizer, scheduler);
@@ -431,7 +431,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             partitionController2,
             leaseStoreManager,
             this.loadBalancingStrategy,
-            this.changeFeedProcessorOptions.leaseAcquireInterval(),
+            this.changeFeedProcessorOptions.getLeaseAcquireInterval(),
             this.scheduler
         );
 

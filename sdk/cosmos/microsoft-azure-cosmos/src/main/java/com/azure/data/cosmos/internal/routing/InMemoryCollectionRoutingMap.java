@@ -57,7 +57,7 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
             new HashMap<>();
 
         for (ImmutablePair<PartitionKeyRange, IServerIdentity> range: ranges) {
-            rangeById.put(range.left.id(), range);
+            rangeById.put(range.left.getId(), range);
         }
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> sortedRanges = new ArrayList<>(rangeById.values());
@@ -215,11 +215,11 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
         newGoneRanges.addAll(this.goneRanges);
 
         Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> newRangeById =
-            this.rangeById.values().stream().filter(tuple -> !newGoneRanges.contains(tuple.left.id())).collect(Collectors.
-                toMap(tuple -> tuple.left.id(), tuple -> tuple));
+            this.rangeById.values().stream().filter(tuple -> !newGoneRanges.contains(tuple.left.getId())).collect(Collectors.
+                toMap(tuple -> tuple.left.getId(), tuple -> tuple));
 
-        for (ImmutablePair<PartitionKeyRange, IServerIdentity> tuple : ranges.stream().filter(tuple -> !newGoneRanges.contains(tuple.getLeft().id())).collect(Collectors.toList())) {
-            newRangeById.put(tuple.getLeft().id(), tuple);
+        for (ImmutablePair<PartitionKeyRange, IServerIdentity> tuple : ranges.stream().filter(tuple -> !newGoneRanges.contains(tuple.getLeft().getId())).collect(Collectors.toList())) {
+            newRangeById.put(tuple.getLeft().getId(), tuple);
         }
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> sortedRanges = newRangeById.values().stream().collect(Collectors.toList());

@@ -19,7 +19,7 @@ public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerPropertie
      */
     CosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
                           CosmosTrigger syncTrigger) {
-        super(asyncResponse.properties());
+        super(asyncResponse.getProperties());
         this.asyncResponse = asyncResponse;
         this.syncTrigger = syncTrigger;
     }
@@ -29,8 +29,8 @@ public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerPropertie
      *
      * @return the cosmos trigger properties
      */
-    public CosmosTriggerProperties properties() {
-        return asyncResponse.properties();
+    public CosmosTriggerProperties getProperties() {
+        return asyncResponse.getProperties();
     }
 
     /**
@@ -38,7 +38,7 @@ public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerPropertie
      *
      * @return the cosmos sync trigger
      */
-    public CosmosTrigger trigger() {
+    public CosmosTrigger getTrigger() {
         return syncTrigger;
     }
 }

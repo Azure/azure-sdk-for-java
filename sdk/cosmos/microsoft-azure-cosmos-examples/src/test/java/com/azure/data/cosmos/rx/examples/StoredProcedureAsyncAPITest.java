@@ -49,7 +49,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -62,7 +62,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         createdDatabase = Utils.createDatabaseForTest(client);
 
         createdCollection = client
-                .createCollection("dbs/" + createdDatabase.id(), getMultiPartitionCollectionDefinition(), null)
+                .createCollection("dbs/" + createdDatabase.getId(), getMultiPartitionCollectionDefinition(), null)
                 .single().block().getResource();
     }
 
@@ -213,21 +213,21 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
 
     private static DocumentCollection getMultiPartitionCollectionDefinition() {
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
 
         // Set the partitionKeyDefinition for a partitioned collection
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         List<String> paths = new ArrayList<String>();
         paths.add("/city");
-        partitionKeyDefinition.paths(paths);
+        partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
 
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<IncludedPath>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         List<Index> indexes = new ArrayList<Index>();
         Index stringIndex = Index.Range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "precision", -1);
@@ -236,7 +236,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         Index numberIndex = Index.Range(DataType.NUMBER);
         BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
         collectionDefinition.setIndexingPolicy(indexingPolicy);
@@ -245,10 +245,10 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
     }
 
     private String getCollectionLink() {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 
     private String getSprocLink(StoredProcedure sproc) {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id() + "/sprocs/" + sproc.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/sprocs/" + sproc.getId();
     }
 }

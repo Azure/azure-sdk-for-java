@@ -37,14 +37,14 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(2);
 
         Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
-                .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0)
                                          .pageSizeIsLessThanOrEqualTo(options.maxItemCount())
@@ -106,10 +106,10 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     }
 
     private String getCollectionId() {
-        return createdCollection.id();
+        return createdCollection.getId();
     }
 
     private String getDatabaseId() {
-        return createdDatabase.id();
+        return createdDatabase.getId();
     }
 }

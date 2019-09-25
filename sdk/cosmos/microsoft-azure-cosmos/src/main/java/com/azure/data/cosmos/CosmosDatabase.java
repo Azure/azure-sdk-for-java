@@ -37,7 +37,7 @@ public class CosmosDatabase {
      *
      * @return the id of the database
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 

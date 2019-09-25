@@ -24,11 +24,11 @@ public class CosmosResponse<T extends Resource> {
     CosmosResponse(StoredProcedureResponse response) {
     }
 
-    public T properties() {
+    public T getProperties() {
         return properties;
     }
     
-    CosmosResponse<T> properties(T resourceSettings){
+    CosmosResponse<T> setProperties(T resourceSettings){
         this.properties = resourceSettings;
         return this;
     }
@@ -39,7 +39,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the max resource quota.
      */
-    public String maxResourceQuota() {
+    public String getMaxResourceQuota() {
         return resourceResponseWrapper.getMaxResourceQuota();
     }
 
@@ -48,16 +48,16 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the current resource quota usage.
      */
-    public String currentResourceQuotaUsage() {
+    public String getCurrentResourceQuotaUsage() {
         return resourceResponseWrapper.getCurrentResourceQuotaUsage();
     }
 
     /**
      * Gets the Activity ID for the request.
      *
-     * @return the activity id.
+     * @return the activity getId.
      */
-    public String activityId() {
+    public String getActivityId() {
         return resourceResponseWrapper.getActivityId();
     }
 
@@ -66,7 +66,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the request charge.
      */
-    public double requestCharge() {
+    public double getRequestCharge() {
         return resourceResponseWrapper.getRequestCharge();
     }
 
@@ -75,7 +75,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the status code.
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return resourceResponseWrapper.getStatusCode();
     }
 
@@ -84,7 +84,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the session token.
      */
-    public String sessionToken(){
+    public String getSessionToken(){
         return resourceResponseWrapper.getSessionToken();
     }
 
@@ -93,7 +93,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return the response headers.
      */
-    public Map<String, String> responseHeaders() {
+    public Map<String, String> getResponseHeaders() {
         return resourceResponseWrapper.getResponseHeaders();
     }
     
@@ -102,7 +102,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics cosmosResponseDiagnosticsString() {
+    public CosmosResponseDiagnostics getCosmosResponseDiagnosticsString() {
         return resourceResponseWrapper.getCosmosResponseDiagnostics();
     }
 
@@ -111,7 +111,7 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration requestLatency() {
+    public Duration getRequestLatency() {
         return resourceResponseWrapper.getRequestLatency();
     }    
 }

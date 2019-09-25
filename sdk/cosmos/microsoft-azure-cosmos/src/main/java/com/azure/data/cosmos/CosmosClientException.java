@@ -132,7 +132,7 @@ public class CosmosClientException extends Exception {
      *
      * @return the activity ID.
      */
-    public String message() {
+    public String getActivityId() {
         if (this.responseHeaders != null) {
             return this.responseHeaders.get(HttpConstants.HttpHeaders.ACTIVITY_ID);
         }
@@ -145,7 +145,7 @@ public class CosmosClientException extends Exception {
      *
      * @return the status code.
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return this.statusCode;
     }
 
@@ -154,7 +154,7 @@ public class CosmosClientException extends Exception {
      *
      * @return the status code.
      */
-    public int subStatusCode() {
+    public int getSubStatusCode() {
         int code = HttpConstants.SubStatusCodes.UNKNOWN;
         if (this.responseHeaders != null) {
             String subStatusString = this.responseHeaders.get(HttpConstants.HttpHeaders.SUB_STATUS);
@@ -175,11 +175,11 @@ public class CosmosClientException extends Exception {
      *
      * @return the error.
      */
-    public CosmosError error() {
+    public CosmosError getError() {
         return this.cosmosError;
     }
 
-    void error(CosmosError cosmosError) {
+    void setError(CosmosError cosmosError) {
         this.cosmosError = cosmosError;
     }
 
@@ -190,7 +190,7 @@ public class CosmosClientException extends Exception {
      * @return the recommended time interval after which the client can retry failed
      *         requests.
      */
-    public long retryAfterInMilliseconds() {
+    public long getRetryAfterInMilliseconds() {
         long retryIntervalInMilliseconds = 0;
 
         if (this.responseHeaders != null) {
@@ -216,7 +216,7 @@ public class CosmosClientException extends Exception {
      *
      * @return the response headers
      */
-    public Map<String, String> responseHeaders() {
+    public Map<String, String> getResponseHeaders() {
         return this.responseHeaders;
     }
 
@@ -234,11 +234,11 @@ public class CosmosClientException extends Exception {
      *
      * @return Cosmos Response Diagnostic Statistics associated with this exception.
      */
-    public CosmosResponseDiagnostics cosmosResponseDiagnostics() {
+    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
         return cosmosResponseDiagnostics;
     }
 
-    CosmosClientException cosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+    CosmosClientException setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
         return this;
     }

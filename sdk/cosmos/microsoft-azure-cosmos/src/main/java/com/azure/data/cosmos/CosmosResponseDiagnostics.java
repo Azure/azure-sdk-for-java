@@ -37,7 +37,7 @@ public class CosmosResponseDiagnostics {
      * Retrieves latency related to the completion of the request
      * @return request completion latency
      */
-    public Duration requestLatency() {
+    public Duration getRequestLatency() {
         return this.clientSideRequestStatistics.getRequestLatency();
     }
 }

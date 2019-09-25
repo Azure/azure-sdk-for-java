@@ -28,21 +28,21 @@ public class DatabaseCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.id());
+        databases.add(databaseDefinition.getId());
 
         // create the database
         Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
-                .withId(databaseDefinition.id()).build();
+                .withId(databaseDefinition.getId()).build();
         validateSuccess(createObservable, validator);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase_AlreadyExists() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.id());
+        databases.add(databaseDefinition.getId());
 
         client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
 
@@ -80,8 +80,8 @@ public class DatabaseCrudTest extends TestSuiteBase {
     public void deleteDatabase() throws Exception {
         // create the database
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.id());
-        CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().database();
+        databases.add(databaseDefinition.getId());
+        CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
 
         // delete the database
         Mono<CosmosAsyncDatabaseResponse> deleteObservable = database.delete();

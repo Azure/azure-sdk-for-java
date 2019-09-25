@@ -142,9 +142,9 @@ public class TestSuiteBase extends DocumentClientTest {
             SHARED_DATABASE = dbForTest.createdDatabase;
             RequestOptions options = new RequestOptions();
             options.setOfferThroughput(10100);
-            SHARED_MULTI_PARTITION_COLLECTION = createCollection(houseKeepingClient, SHARED_DATABASE.id(), getCollectionDefinitionWithRangeRangeIndex(), options);
-            SHARED_SINGLE_PARTITION_COLLECTION = createCollection(houseKeepingClient, SHARED_DATABASE.id(), getCollectionDefinition(), null);
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(houseKeepingClient, SHARED_DATABASE.id(), getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
+            SHARED_MULTI_PARTITION_COLLECTION = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinitionWithRangeRangeIndex(), options);
+            SHARED_SINGLE_PARTITION_COLLECTION = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinition(), null);
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
         } finally {
             houseKeepingClient.close();
         }
@@ -163,21 +163,21 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     protected static void truncateCollection(DocumentCollection collection) {
-        logger.info("Truncating collection {} ...", collection.id());
+        logger.info("Truncating collection {} ...", collection.getId());
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
-            List<String> paths = collection.getPartitionKey().paths();
+            List<String> paths = collection.getPartitionKey().getPaths();
 
             FeedOptions options = new FeedOptions();
-            options.maxDegreeOfParallelism(-1);
-            options.enableCrossPartitionQuery(true);
+            options.setMaxDegreeOfParallelism(-1);
+            options.setEnableCrossPartitionQuery(true);
             options.maxItemCount(100);
 
-            logger.info("Truncating collection {} documents ...", collection.id());
+            logger.info("Truncating collection {} documents ...", collection.getId());
 
-            houseKeepingClient.queryDocuments(collection.selfLink(), "SELECT * FROM root", options)
+            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.results()))
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(doc -> {
                         RequestOptions requestOptions = new RequestOptions();
 
@@ -191,14 +191,14 @@ public class TestSuiteBase extends DocumentClientTest {
                             requestOptions.setPartitionKey(new PartitionKey(propertyValue));
                         }
 
-                        return houseKeepingClient.deleteDocument(doc.selfLink(), requestOptions);
+                        return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
                     }).then().block();
 
-            logger.info("Truncating collection {} triggers ...", collection.id());
+            logger.info("Truncating collection {} triggers ...", collection.getId());
 
-            houseKeepingClient.queryTriggers(collection.selfLink(), "SELECT * FROM root", options)
+            houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.results()))
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(trigger -> {
                         RequestOptions requestOptions = new RequestOptions();
 
@@ -207,14 +207,14 @@ public class TestSuiteBase extends DocumentClientTest {
 //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                        return houseKeepingClient.deleteTrigger(trigger.selfLink(), requestOptions);
+                        return houseKeepingClient.deleteTrigger(trigger.getSelfLink(), requestOptions);
                     }).then().block();
 
-            logger.info("Truncating collection {} storedProcedures ...", collection.id());
+            logger.info("Truncating collection {} storedProcedures ...", collection.getId());
 
-            houseKeepingClient.queryStoredProcedures(collection.selfLink(), "SELECT * FROM root", options)
+            houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.results()))
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(storedProcedure -> {
                         RequestOptions requestOptions = new RequestOptions();
 
@@ -223,14 +223,14 @@ public class TestSuiteBase extends DocumentClientTest {
 //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                        return houseKeepingClient.deleteStoredProcedure(storedProcedure.selfLink(), requestOptions);
+                        return houseKeepingClient.deleteStoredProcedure(storedProcedure.getSelfLink(), requestOptions);
                     }).then().block();
 
-            logger.info("Truncating collection {} udfs ...", collection.id());
+            logger.info("Truncating collection {} udfs ...", collection.getId());
 
-            houseKeepingClient.queryUserDefinedFunctions(collection.selfLink(), "SELECT * FROM root", options)
+            houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.results()))
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(udf -> {
                         RequestOptions requestOptions = new RequestOptions();
 
@@ -239,14 +239,14 @@ public class TestSuiteBase extends DocumentClientTest {
 //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                        return houseKeepingClient.deleteUserDefinedFunction(udf.selfLink(), requestOptions);
+                        return houseKeepingClient.deleteUserDefinedFunction(udf.getSelfLink(), requestOptions);
                     }).then().block();
 
         } finally {
             houseKeepingClient.close();
         }
 
-        logger.info("Finished truncating collection {}.", collection.id());
+        logger.info("Finished truncating collection {}.", collection.getId());
     }
 
     protected static void waitIfNeededForReplicasToCatchUp(Builder clientBuilder) {
@@ -312,12 +312,12 @@ public class TestSuiteBase extends DocumentClientTest {
         //Simple
         ArrayList<CompositePath> compositeIndexSimple = new ArrayList<CompositePath>();
         CompositePath compositePath1 = new CompositePath();
-        compositePath1.path("/" + NUMBER_FIELD);
-        compositePath1.order(CompositePathSortOrder.ASCENDING);
+        compositePath1.setPath("/" + NUMBER_FIELD);
+        compositePath1.setOrder(CompositePathSortOrder.ASCENDING);
 
         CompositePath compositePath2 = new CompositePath();
-        compositePath2.path("/" + STRING_FIELD);
-        compositePath2.order(CompositePathSortOrder.DESCENDING);
+        compositePath2.setPath("/" + STRING_FIELD);
+        compositePath2.setOrder(CompositePathSortOrder.DESCENDING);
 
         compositeIndexSimple.add(compositePath1);
         compositeIndexSimple.add(compositePath2);
@@ -325,20 +325,20 @@ public class TestSuiteBase extends DocumentClientTest {
         //Max Columns
         ArrayList<CompositePath> compositeIndexMaxColumns = new ArrayList<CompositePath>();
         CompositePath compositePath3 = new CompositePath();
-        compositePath3.path("/" + NUMBER_FIELD);
-        compositePath3.order(CompositePathSortOrder.DESCENDING);
+        compositePath3.setPath("/" + NUMBER_FIELD);
+        compositePath3.setOrder(CompositePathSortOrder.DESCENDING);
 
         CompositePath compositePath4 = new CompositePath();
-        compositePath4.path("/" + STRING_FIELD);
-        compositePath4.order(CompositePathSortOrder.ASCENDING);
+        compositePath4.setPath("/" + STRING_FIELD);
+        compositePath4.setOrder(CompositePathSortOrder.ASCENDING);
 
         CompositePath compositePath5 = new CompositePath();
-        compositePath5.path("/" + NUMBER_FIELD_2);
-        compositePath5.order(CompositePathSortOrder.DESCENDING);
+        compositePath5.setPath("/" + NUMBER_FIELD_2);
+        compositePath5.setOrder(CompositePathSortOrder.DESCENDING);
 
         CompositePath compositePath6 = new CompositePath();
-        compositePath6.path("/" + STRING_FIELD_2);
-        compositePath6.order(CompositePathSortOrder.ASCENDING);
+        compositePath6.setPath("/" + STRING_FIELD_2);
+        compositePath6.setOrder(CompositePathSortOrder.ASCENDING);
 
         compositeIndexMaxColumns.add(compositePath3);
         compositeIndexMaxColumns.add(compositePath4);
@@ -348,20 +348,20 @@ public class TestSuiteBase extends DocumentClientTest {
         //Primitive Values
         ArrayList<CompositePath> compositeIndexPrimitiveValues = new ArrayList<CompositePath>();
         CompositePath compositePath7 = new CompositePath();
-        compositePath7.path("/" + NUMBER_FIELD);
-        compositePath7.order(CompositePathSortOrder.DESCENDING);
+        compositePath7.setPath("/" + NUMBER_FIELD);
+        compositePath7.setOrder(CompositePathSortOrder.DESCENDING);
 
         CompositePath compositePath8 = new CompositePath();
-        compositePath8.path("/" + STRING_FIELD);
-        compositePath8.order(CompositePathSortOrder.ASCENDING);
+        compositePath8.setPath("/" + STRING_FIELD);
+        compositePath8.setOrder(CompositePathSortOrder.ASCENDING);
 
         CompositePath compositePath9 = new CompositePath();
-        compositePath9.path("/" + BOOL_FIELD);
-        compositePath9.order(CompositePathSortOrder.DESCENDING);
+        compositePath9.setPath("/" + BOOL_FIELD);
+        compositePath9.setOrder(CompositePathSortOrder.DESCENDING);
 
         CompositePath compositePath10 = new CompositePath();
-        compositePath10.path("/" + NULL_FIELD);
-        compositePath10.order(CompositePathSortOrder.ASCENDING);
+        compositePath10.setPath("/" + NULL_FIELD);
+        compositePath10.setOrder(CompositePathSortOrder.ASCENDING);
 
         compositeIndexPrimitiveValues.add(compositePath7);
         compositeIndexPrimitiveValues.add(compositePath8);
@@ -371,16 +371,16 @@ public class TestSuiteBase extends DocumentClientTest {
         //Long Strings
         ArrayList<CompositePath> compositeIndexLongStrings = new ArrayList<CompositePath>();
         CompositePath compositePath11 = new CompositePath();
-        compositePath11.path("/" + STRING_FIELD);
+        compositePath11.setPath("/" + STRING_FIELD);
 
         CompositePath compositePath12 = new CompositePath();
-        compositePath12.path("/" + SHORT_STRING_FIELD);
+        compositePath12.setPath("/" + SHORT_STRING_FIELD);
 
         CompositePath compositePath13 = new CompositePath();
-        compositePath13.path("/" + MEDIUM_STRING_FIELD);
+        compositePath13.setPath("/" + MEDIUM_STRING_FIELD);
 
         CompositePath compositePath14 = new CompositePath();
-        compositePath14.path("/" + LONG_STRING_FIELD);
+        compositePath14.setPath("/" + LONG_STRING_FIELD);
 
         compositeIndexLongStrings.add(compositePath11);
         compositeIndexLongStrings.add(compositePath12);
@@ -392,16 +392,16 @@ public class TestSuiteBase extends DocumentClientTest {
         compositeIndexes.add(compositeIndexPrimitiveValues);
         compositeIndexes.add(compositeIndexLongStrings);
 
-        indexingPolicy.compositeIndexes(compositeIndexes);
+        indexingPolicy.setCompositeIndexes(compositeIndexes);
         documentCollection.setIndexingPolicy(indexingPolicy);
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         ArrayList<String> partitionKeyPaths = new ArrayList<String>();
         partitionKeyPaths.add("/" + PARTITION_KEY);
-        partitionKeyDefinition.paths(partitionKeyPaths);
+        partitionKeyDefinition.setPaths(partitionKeyPaths);
         documentCollection.setPartitionKey(partitionKeyDefinition);
 
-        documentCollection.id(UUID.randomUUID().toString());
+        documentCollection.setId(UUID.randomUUID().toString());
 
         return documentCollection;
     }
@@ -433,7 +433,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static ConsistencyLevel getAccountDefaultConsistencyLevel(AsyncDocumentClient client) {
-        return BridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).defaultConsistencyLevel();
+        return BridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).getDefaultConsistencyLevel();
     }
 
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
@@ -441,27 +441,27 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static User safeCreateUser(AsyncDocumentClient client, String databaseId, User user) {
-        deleteUserIfExists(client, databaseId, user.id());
+        deleteUserIfExists(client, databaseId, user.getId());
         return createUser(client, databaseId, user);
     }
 
     private static DocumentCollection safeCreateCollection(AsyncDocumentClient client, String databaseId, DocumentCollection collection, RequestOptions options) {
-        deleteCollectionIfExists(client, databaseId, collection.id());
+        deleteCollectionIfExists(client, databaseId, collection.getId());
         return createCollection(client, databaseId, collection, options);
     }
 
     public static String getCollectionLink(DocumentCollection collection) {
-        return collection.selfLink();
+        return collection.getSelfLink();
     }
 
     static protected DocumentCollection getCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         return collectionDefinition;
@@ -471,11 +471,11 @@ public class TestSuiteBase extends DocumentClientTest {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "precision", -1);
@@ -484,13 +484,13 @@ public class TestSuiteBase extends DocumentClientTest {
         Index numberIndex = Index.Range(DataType.NUMBER);
         BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         return collectionDefinition;
@@ -499,7 +499,7 @@ public class TestSuiteBase extends DocumentClientTest {
     public static void deleteCollectionIfExists(AsyncDocumentClient client, String databaseId, String collectionId) {
         List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
                                                                String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null).single().block()
-                .results();
+                .getResults();
         if (!res.isEmpty()) {
             deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
@@ -514,7 +514,7 @@ public class TestSuiteBase extends DocumentClientTest {
         options.partitionKey(new PartitionKey(docId));
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
-                .single().block().results();
+                .single().block().getResults();
         if (!res.isEmpty()) {
             deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId));
         }
@@ -526,7 +526,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 client.deleteDocument(documentLink, options).single().block();
             } catch (Exception e) {
                 CosmosClientException dce = Utils.as(e, CosmosClientException.class);
-                if (dce == null || dce.statusCode() != 404) {
+                if (dce == null || dce.getStatusCode() != 404) {
                     throw e;
                 }
             }
@@ -540,7 +540,7 @@ public class TestSuiteBase extends DocumentClientTest {
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {
         List<User> res = client
                 .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
-                .single().block().results();
+                .single().block().getResults();
         if (!res.isEmpty()) {
             deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
         }
@@ -551,11 +551,11 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static String getDatabaseLink(Database database) {
-        return database.selfLink();
+        return database.getSelfLink();
     }
 
     static private Database safeCreateDatabase(AsyncDocumentClient client, Database database) {
-        safeDeleteDatabase(client, database.id());
+        safeDeleteDatabase(client, database.getId());
         return createDatabase(client, database);
     }
 
@@ -566,16 +566,16 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected Database createDatabase(AsyncDocumentClient client, String databaseId) {
         Database databaseDefinition = new Database();
-        databaseDefinition.id(databaseId);
+        databaseDefinition.setId(databaseId);
         return createDatabase(client, databaseDefinition);
     }
 
     static protected Database createDatabaseIfNotExists(AsyncDocumentClient client, String databaseId) {
-        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null).flatMap(p -> Flux.fromIterable(p.results())).switchIfEmpty(
+        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
                 Flux.defer(() -> {
 
                     Database databaseDefinition = new Database();
-                    databaseDefinition.id(databaseId);
+                    databaseDefinition.setId(databaseId);
 
                     return client.createDatabase(databaseDefinition, null).map(ResourceResponse::getResource);
                 })
@@ -584,7 +584,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
         if (database != null) {
-            safeDeleteDatabase(client, database.id());
+            safeDeleteDatabase(client, database.getId());
         }
     }
 
@@ -599,14 +599,14 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected void safeDeleteAllCollections(AsyncDocumentClient client, Database database) {
         if (database != null) {
-            List<DocumentCollection> collections = client.readCollections(database.selfLink(), null)
-                    .flatMap(p -> Flux.fromIterable(p.results()))
+            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), null)
+                    .flatMap(p -> Flux.fromIterable(p.getResults()))
                     .collectList()
                     .single()
                     .block();
 
             for (DocumentCollection collection : collections) {
-                client.deleteCollection(collection.selfLink(), null).single().block().getResource();
+                client.deleteCollection(collection.getSelfLink(), null).single().block().getResource();
             }
         }
     }
@@ -614,7 +614,7 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected void safeDeleteCollection(AsyncDocumentClient client, DocumentCollection collection) {
         if (client != null && collection != null) {
             try {
-                client.deleteCollection(collection.selfLink(), null).single().block();
+                client.deleteCollection(collection.getSelfLink(), null).single().block();
             } catch (Exception e) {
             }
         }
@@ -805,7 +805,7 @@ public class TestSuiteBase extends DocumentClientTest {
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-                                          b.getConnectionPolicy().connectionMode(),
+                                          b.getConnectionPolicy().getConnectionMode(),
                                           b.getDesiredConsistencyLevel(),
                                           b.getConfigs().getProtocol()
         ));
@@ -894,7 +894,7 @@ public class TestSuiteBase extends DocumentClientTest {
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-                                          b.getConnectionPolicy().connectionMode(),
+                                          b.getConnectionPolicy().getConnectionMode(),
                                           b.getDesiredConsistencyLevel(),
                                           b.getConfigs().getProtocol()
         ));
@@ -904,10 +904,10 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected Builder createGatewayHouseKeepingDocumentClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         RetryOptions options = new RetryOptions();
-        options.maxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
-        connectionPolicy.retryOptions(options);
+        options.setMaxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
+        connectionPolicy.setRetryOptions(options);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -916,9 +916,9 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
-        connectionPolicy.usingMultipleWriteLocations(multiMasterEnabled);
-        connectionPolicy.preferredLocations(preferredLocations);
+        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setUsingMultipleWriteLocations(multiMasterEnabled);
+        connectionPolicy.setPreferredLocations(preferredLocations);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -934,14 +934,14 @@ public class TestSuiteBase extends DocumentClientTest {
                                                                               boolean multiMasterEnabled,
                                                                               List<String> preferredLocations) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
 
         if (preferredLocations != null) {
-            connectionPolicy.preferredLocations(preferredLocations);
+            connectionPolicy.setPreferredLocations(preferredLocations);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            connectionPolicy.usingMultipleWriteLocations(true);
+            connectionPolicy.setUsingMultipleWriteLocations(true);
         }
 
         Configs configs = spy(new Configs());

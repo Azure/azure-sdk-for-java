@@ -39,13 +39,13 @@ public class CosmosAsyncClient implements AutoCloseable {
 
      CosmosAsyncClient(CosmosClientBuilder builder) {
          this.configs = builder.configs();
-         this.serviceEndpoint = builder.endpoint();
-         this.keyOrResourceToken = builder.key();
-         this.connectionPolicy = builder.connectionPolicy();
-         this.desiredConsistencyLevel = builder.consistencyLevel();
-         this.permissions = builder.permissions();
-         this.tokenResolver = builder.tokenResolver();
-         this.cosmosKeyCredential = builder.cosmosKeyCredential();
+         this.serviceEndpoint = builder.getEndpoint();
+         this.keyOrResourceToken = builder.getKey();
+         this.connectionPolicy = builder.getConnectionPolicy();
+         this.desiredConsistencyLevel = builder.getConsistencyLevel();
+         this.permissions = builder.getPermissions();
+         this.tokenResolver = builder.getTokenResolver();
+         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
          this.asyncDocumentClient = new AsyncDocumentClient.Builder()
              .withServiceEndpoint(this.serviceEndpoint)
              .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -73,7 +73,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Monitor Cosmos client performance and resource utilization using the specified meter registry
      * @param registry  meter registry to use for performance monitoring
      */
-    static void monitorTelemetry(MeterRegistry registry) {
+    static void setMonitorTelemetry(MeterRegistry registry) {
         RntbdMetrics.add(registry);
     }
 
@@ -155,7 +155,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      * an error.
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
-        return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.id()));
+        return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.getId()));
     }
 
     /**
@@ -174,8 +174,8 @@ public class CosmosAsyncClient implements AutoCloseable {
         return database.read().onErrorResume(exception -> {
             if (exception instanceof CosmosClientException) {
                 CosmosClientException cosmosClientException = (CosmosClientException) exception;
-                if (cosmosClientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createDatabase(new CosmosDatabaseProperties(database.id()), new CosmosDatabaseRequestOptions());
+                if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                    return createDatabase(new CosmosDatabaseProperties(database.getId()), new CosmosDatabaseRequestOptions());
                 }
             }
             return Mono.error(exception);
@@ -200,7 +200,7 @@ public class CosmosAsyncClient implements AutoCloseable {
             options = new CosmosDatabaseRequestOptions();
         }
         Database wrappedDatabase = new Database();
-        wrappedDatabase.id(databaseSettings.id());
+        wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
                 new CosmosAsyncDatabaseResponse(databaseResourceResponse, this)).single();
     }
@@ -254,9 +254,9 @@ public class CosmosAsyncClient implements AutoCloseable {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        options.offerThroughput(throughput);
+        options.setOfferThroughput(throughput);
         Database wrappedDatabase = new Database();
-        wrappedDatabase.id(databaseSettings.id());
+        wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
                 new CosmosAsyncDatabaseResponse(databaseResourceResponse, this)).single();
     }
@@ -275,7 +275,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.offerThroughput(throughput);
+        options.setOfferThroughput(throughput);
         return createDatabase(databaseSettings, options);
     }
 
@@ -293,7 +293,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.offerThroughput(throughput);
+        options.setOfferThroughput(throughput);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
@@ -309,8 +309,8 @@ public class CosmosAsyncClient implements AutoCloseable {
      */
     public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
         return getDocClientWrapper().readDatabases(options)
-                                    .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                                    .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -356,8 +356,8 @@ public class CosmosAsyncClient implements AutoCloseable {
     public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
         return getDocClientWrapper().queryDatabases(querySpec, options)
                                     .map(response-> BridgeInternal.createFeedResponse(
-                        CosmosDatabaseProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                        CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     public Mono<DatabaseAccount> readDatabaseAccount() {

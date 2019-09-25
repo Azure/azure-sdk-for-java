@@ -25,11 +25,11 @@ public class CosmosTrigger {
     }
 
     /**
-     * Gets id.
+     * Gets getId.
      *
      * @return the string
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 

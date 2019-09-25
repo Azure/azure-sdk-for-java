@@ -50,7 +50,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
                 .totalSize(createdPermissions.size())
                 .numberOfPages(expectedPageSize)
-                .exactlyContainsInAnyOrder(createdPermissions.stream().map(Resource::resourceId).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdPermissions.stream().map(Resource::getResourceId).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<Permission>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
@@ -61,9 +61,9 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     public void beforeClass() {
         client = clientBuilder().build();
         Database d = new Database();
-        d.id(databaseId);
+        d.setId(databaseId);
         createdDatabase = createDatabase(client, d);
-        createdUser = safeCreateUser(client, createdDatabase.id(), getUserDefinition());
+        createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
 
         for(int i = 0; i < 5; i++) {
             createdPermissions.add(createPermissions(client, i));
@@ -80,13 +80,13 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
 
     private static User getUserDefinition() {
         User user = new User();
-        user.id(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID().toString());
         return user;
     }
 
     public Permission createPermissions(AsyncDocumentClient client, int index) {
         Permission permission = new Permission();
-        permission.id(UUID.randomUUID().toString());
+        permission.setId(UUID.randomUUID().toString());
         permission.setPermissionMode(PermissionMode.READ);
         permission.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + Integer.toString(index) + "=");
         return client.createPermission(getUserLink(), permission, null).single().block().getResource();
@@ -97,10 +97,10 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     }
 
     private String getDatabaseId() {
-        return createdDatabase.id();
+        return createdDatabase.getId();
     }
 
     private String getUserId() {
-        return createdUser.id();
+        return createdUser.getId();
     }
 }

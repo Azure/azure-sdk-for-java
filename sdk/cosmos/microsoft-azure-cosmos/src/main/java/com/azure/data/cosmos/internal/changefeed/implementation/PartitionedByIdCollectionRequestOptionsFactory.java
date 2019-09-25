@@ -9,13 +9,13 @@ import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.RequestOptionsFactory;
 
 /**
- * Used to create request options for partitioned lease collections, when partition key is defined as /id.
+ * Used to create request setOptions for partitioned lease collections, when partition getKey is defined as /getId.
  */
 class PartitionedByIdCollectionRequestOptionsFactory implements RequestOptionsFactory {
     @Override
     public CosmosItemRequestOptions createRequestOptions(Lease lease) {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.partitionKey(new PartitionKey(lease.getId()));
+        requestOptions.setPartitionKey(new PartitionKey(lease.getId()));
 
         return requestOptions;
     }
@@ -23,7 +23,7 @@ class PartitionedByIdCollectionRequestOptionsFactory implements RequestOptionsFa
     @Override
     public FeedOptions createFeedOptions() {
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.enableCrossPartitionQuery(true);
+        feedOptions.setEnableCrossPartitionQuery(true);
 
         return feedOptions;
     }

@@ -20,7 +20,7 @@ public class BaseDatabaseAccountConfigurationProvider implements DatabaseAccount
     }
 
     public ConsistencyLevel getStoreConsistencyPolicy() {
-        ConsistencyLevel databaseAccountConsistency =  BridgeInternal.getConsistencyPolicy(this.databaseAccount).defaultConsistencyLevel();
+        ConsistencyLevel databaseAccountConsistency =  BridgeInternal.getConsistencyPolicy(this.databaseAccount).getDefaultConsistencyLevel();
         if (this.desiredConsistencyLevel == null) {
             return databaseAccountConsistency;
         } else if (!Utils.isValidConsistency(databaseAccountConsistency, this.desiredConsistencyLevel)) {

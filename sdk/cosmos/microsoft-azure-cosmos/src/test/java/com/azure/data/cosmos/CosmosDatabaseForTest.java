@@ -45,11 +45,11 @@ public class CosmosDatabaseForTest {
     }
 
     private static CosmosDatabaseForTest from(CosmosAsyncDatabase db) {
-        if (db == null || db.id() == null || db.getLink() == null) {
+        if (db == null || db.getId() == null || db.getLink() == null) {
             return null;
         }
 
-        String id = db.id();
+        String id = db.getId();
         if (id == null) {
             return null;
         }
@@ -73,7 +73,7 @@ public class CosmosDatabaseForTest {
     public static CosmosDatabaseForTest create(DatabaseManager client) {
         CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties(generateId());
 
-        CosmosAsyncDatabase db = client.createDatabase(dbDef).block().database();
+        CosmosAsyncDatabase db = client.createDatabase(dbDef).block().getDatabase();
         CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(db);
         assertThat(dbForTest).isNotNull();
         return dbForTest;
@@ -84,16 +84,16 @@ public class CosmosDatabaseForTest {
         List<CosmosDatabaseProperties> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
                                  new SqlParameterList(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
-                                                   .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
+                                                   .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
 
         for (CosmosDatabaseProperties db : dbs) {
-            assertThat(db.id()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
+            assertThat(db.getId()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
 
-            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(client.getDatabase(db.id()));
+            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(client.getDatabase(db.getId()));
 
             if (db != null && dbForTest.isStale()) {
-                logger.info("Deleting database {}", db.id());
-                dbForTest.deleteDatabase(db.id());
+                logger.info("Deleting database {}", db.getId());
+                dbForTest.deleteDatabase(db.getId());
             }
         }
     }

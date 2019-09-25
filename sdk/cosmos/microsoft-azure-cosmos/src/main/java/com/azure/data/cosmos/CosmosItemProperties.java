@@ -26,8 +26,8 @@ public class CosmosItemProperties extends Resource {
      * @param id the name of the resource.
      * @return the cosmos item properties with id set
      */
-    public CosmosItemProperties id(String id) {
-        super.id(id);
+    public CosmosItemProperties setId(String id) {
+        super.setId(id);
         return this;
     }
 

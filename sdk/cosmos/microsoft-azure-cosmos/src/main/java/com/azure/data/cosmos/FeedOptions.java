@@ -47,7 +47,7 @@ public final class FeedOptions {
      *
      * @return the partitionKeyRangeId.
      */
-    String partitionKeyRangeIdInternal() {
+    String getPartitionKeyRangeIdInternal() {
         return this.partitionKeyRangeId;
     }
 
@@ -57,7 +57,7 @@ public final class FeedOptions {
      * @param partitionKeyRangeId the partitionKeyRangeId.
      * @return the FeedOptions.
      */
-    FeedOptions partitionKeyRangeIdInternal(String partitionKeyRangeId) {
+    FeedOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
         return this;
     }
@@ -67,7 +67,7 @@ public final class FeedOptions {
      *
      * @return the session token.
      */
-    public String sessionToken() {
+    public String getSessionToken() {
         return this.sessionToken;
     }
 
@@ -77,7 +77,7 @@ public final class FeedOptions {
      * @param sessionToken the session token.
      * @return the FeedOptions.
      */
-    public FeedOptions sessionToken(String sessionToken) {
+    public FeedOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;
     }
@@ -88,7 +88,7 @@ public final class FeedOptions {
      *
      * @return the option of enable scan in query.
      */
-    public Boolean enableScanInQuery() {
+    public Boolean getEnableScanInQuery() {
         return this.enableScanInQuery;
     }
 
@@ -99,7 +99,7 @@ public final class FeedOptions {
      * @param enableScanInQuery the option of enable scan in query.
      * @return the FeedOptions.
      */
-    public FeedOptions enableScanInQuery(Boolean enableScanInQuery) {
+    public FeedOptions setEnableScanInQuery(Boolean enableScanInQuery) {
         this.enableScanInQuery = enableScanInQuery;
         return this;
     }
@@ -110,7 +110,7 @@ public final class FeedOptions {
      *
      * @return the emit verbose traces in query.
      */
-    public Boolean emitVerboseTracesInQuery() {
+    public Boolean getEmitVerboseTracesInQuery() {
         return this.emitVerboseTracesInQuery;
     }
 
@@ -121,7 +121,7 @@ public final class FeedOptions {
      * @param emitVerboseTracesInQuery the emit verbose traces in query.
      * @return the FeedOptions.
      */
-    public FeedOptions emitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
+    public FeedOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
         this.emitVerboseTracesInQuery = emitVerboseTracesInQuery;
         return this;
     }
@@ -133,7 +133,7 @@ public final class FeedOptions {
      * @return whether to allow queries to run across all partitions of the
      *         collection.
      */
-    public Boolean enableCrossPartitionQuery() {
+    public Boolean getEnableCrossPartitionQuery() {
         return this.enableCrossPartitionQuery;
     }
 
@@ -145,7 +145,7 @@ public final class FeedOptions {
      *                                  partitions of the collection.
      * @return the FeedOptions.
      */
-    public FeedOptions enableCrossPartitionQuery(Boolean enableCrossPartitionQuery) {
+    public FeedOptions setEnableCrossPartitionQuery(Boolean enableCrossPartitionQuery) {
         this.enableCrossPartitionQuery = enableCrossPartitionQuery;
         return this;
     }
@@ -157,7 +157,7 @@ public final class FeedOptions {
      * @return number of concurrent operations run client side during parallel query
      *         execution.
      */
-    public int maxDegreeOfParallelism() {
+    public int getMaxDegreeOfParallelism() {
         return maxDegreeOfParallelism;
     }
 
@@ -168,7 +168,7 @@ public final class FeedOptions {
      * @param maxDegreeOfParallelism number of concurrent operations.
      * @return the FeedOptions.
      */
-    public FeedOptions maxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public FeedOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
@@ -180,7 +180,7 @@ public final class FeedOptions {
      * @return maximum number of items that can be buffered client side during
      *         parallel query execution.
      */
-    public int maxBufferedItemCount() {
+    public int getMaxBufferedItemCount() {
         return maxBufferedItemCount;
     }
 
@@ -191,7 +191,7 @@ public final class FeedOptions {
      * @param maxBufferedItemCount maximum number of items.
      * @return the FeedOptions.
      */
-    public FeedOptions maxBufferedItemCount(int maxBufferedItemCount) {
+    public FeedOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
         return this;
     }
@@ -216,7 +216,7 @@ public final class FeedOptions {
      * @param limitInKb continuation token size limit.
      * @return the FeedOptions.
      */
-    public FeedOptions responseContinuationTokenLimitInKb(int limitInKb) {
+    public FeedOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;
         return this;
     }
@@ -230,7 +230,7 @@ public final class FeedOptions {
      *
      * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
      */
-    public int responseContinuationTokenLimitInKb() {
+    public int setResponseContinuationTokenLimitInKb() {
         return responseContinuationTokenLimitInKb;
     }
 

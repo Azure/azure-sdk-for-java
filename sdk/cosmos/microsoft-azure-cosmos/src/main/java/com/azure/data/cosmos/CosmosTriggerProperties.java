@@ -38,8 +38,8 @@ public class CosmosTriggerProperties extends Resource {
      * @param id the name of the resource.
      * @return the current cosmos trigger properties instance
      */
-    public CosmosTriggerProperties id(String id) {
-        super.id(id);
+    public CosmosTriggerProperties setId(String id) {
+        super.setId(id);
         return this;
     }
 
@@ -48,7 +48,7 @@ public class CosmosTriggerProperties extends Resource {
      *
      * @return the body of the trigger.
      */
-    public String body() {
+    public String getBody() {
         return super.getString(Constants.Properties.BODY);
     }
 
@@ -58,7 +58,7 @@ public class CosmosTriggerProperties extends Resource {
      * @param body the body of the trigger.
      * @return the CosmosTriggerProperties.
      */
-    public CosmosTriggerProperties body(String body) {
+    public CosmosTriggerProperties setBody(String body) {
         super.set(Constants.Properties.BODY, body);
         return this;
     }
@@ -68,7 +68,7 @@ public class CosmosTriggerProperties extends Resource {
      *
      * @return the trigger type.
      */
-    public TriggerType triggerType() {
+    public TriggerType getTriggerType() {
         TriggerType result = TriggerType.PRE;
         try {
             result = TriggerType.valueOf(
@@ -86,7 +86,7 @@ public class CosmosTriggerProperties extends Resource {
      * @param triggerType the trigger type.
      * @return the CosmosTriggerProperties.
      */
-    public CosmosTriggerProperties triggerType(TriggerType triggerType) {
+    public CosmosTriggerProperties setTriggerType(TriggerType triggerType) {
         super.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString());
         return this;
     }
@@ -96,7 +96,7 @@ public class CosmosTriggerProperties extends Resource {
      *
      * @return the trigger operation.
      */
-    public TriggerOperation triggerOperation() {
+    public TriggerOperation getTriggerOperation() {
         TriggerOperation result = TriggerOperation.CREATE;
         try {
             result = TriggerOperation.valueOf(
@@ -114,7 +114,7 @@ public class CosmosTriggerProperties extends Resource {
      * @param triggerOperation the trigger operation.
      * @return the CosmosTriggerProperties.
      */
-    public CosmosTriggerProperties triggerOperation(TriggerOperation triggerOperation) {
+    public CosmosTriggerProperties setTriggerOperation(TriggerOperation triggerOperation) {
         super.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
         return this;
     }

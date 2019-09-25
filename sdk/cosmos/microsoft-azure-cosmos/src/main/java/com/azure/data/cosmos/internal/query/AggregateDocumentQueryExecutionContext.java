@@ -76,14 +76,14 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     
                     for(FeedResponse<T> page : superList) {
                         
-                        if (page.results().size() == 0) {
+                        if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                             return (FeedResponse<T>) frp;
                         }
                         
-                        Document doc = ((Document)page.results().get(0));
-                        requestCharge += page.requestCharge();
+                        Document doc = ((Document)page.getResults().get(0));
+                        requestCharge += page.getRequestCharge();
                         QueryItem values = new QueryItem(doc.toJson());
                         this.aggregator.aggregate(values.getItem());
                         for(String key : BridgeInternal.queryMetricsFromFeedResponse(page).keySet()) {

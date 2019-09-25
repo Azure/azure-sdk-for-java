@@ -187,8 +187,8 @@ public class HttpTransportClient extends TransportClient {
                                     exception,
                                     null,
                                     physicalAddress.toString());
-                            serviceUnavailableException.responseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
-                            serviceUnavailableException.responseHeaders().put(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
+                            serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
+                            serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
                             return Mono.error(serviceUnavailableException);
                         }})
                     .doOnSuccess(httpClientResponse -> {
@@ -669,9 +669,9 @@ public class HttpTransportClient extends TransportClient {
                                     RMResources.InvalidBackendResponse),
                             null,
                             physicalAddress);
-            exception.responseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
+            exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
                     activityId);
-            exception.responseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
+            exception.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
 
             return Mono.error(exception);
         }
@@ -755,7 +755,7 @@ public class HttpTransportClient extends TransportClient {
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         request.uri().toString());
-                                exception.responseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
                                         activityId);
 
                                 break;
@@ -849,7 +849,7 @@ public class HttpTransportClient extends TransportClient {
                                         response.headers(),
                                         request.uri());
 
-                                exception.responseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
                                         activityId);
                                 break;
                             }
@@ -937,7 +937,7 @@ public class HttpTransportClient extends TransportClient {
                             if (values == null || values.isEmpty()) {
                                 logger.warn("RequestRateTooLargeException being thrown without RetryAfter.");
                             } else {
-                                exception.responseHeaders().put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, values.get(0));
+                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, values.get(0));
                             }
 
                             break;

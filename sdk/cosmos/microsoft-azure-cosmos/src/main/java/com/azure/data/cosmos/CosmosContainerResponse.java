@@ -12,10 +12,10 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
     private final CosmosContainer container;
 
     CosmosContainerResponse(CosmosAsyncContainerResponse response, CosmosDatabase database, CosmosClient client) {
-        super(response.properties());
+        super(response.getProperties());
         this.responseWrapper = response;
-        if (responseWrapper.container() != null) {
-            this.container = new CosmosContainer(responseWrapper.container().id(), database, responseWrapper.container());
+        if (responseWrapper.getContainer() != null) {
+            this.container = new CosmosContainer(responseWrapper.getContainer().getId(), database, responseWrapper.getContainer());
         } else {
             // Delete will have null container client in response
             this.container = null;
@@ -27,8 +27,8 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      *
      * @return the progress of an index transformation.
      */
-    public long indexTransformationProgress() {
-        return responseWrapper.indexTransformationProgress();
+    public long getIndexTransformationProgress() {
+        return responseWrapper.getIndexTransformationProgress();
     }
 
     /**
@@ -36,8 +36,8 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      *
      * @return the cosmos container properties
      */
-    public CosmosContainerProperties properties() {
-        return responseWrapper.properties();
+    public CosmosContainerProperties getProperties() {
+        return responseWrapper.getProperties();
     }
 
     /**
@@ -45,7 +45,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      *
      * @return the Cosmos container object
      */
-    public CosmosContainer container() {
+    public CosmosContainer getContainer() {
         return container;
     }
 }

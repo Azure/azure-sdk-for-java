@@ -46,7 +46,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         }
 
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
             options);
@@ -54,7 +54,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         AtomicInteger totalCount = new AtomicInteger();
         StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))
                     .thenConsumeWhile(feedResponse -> {
-                        int size = feedResponse.results().size();
+                        int size = feedResponse.getResults().size();
                         totalCount.addAndGet(size);
                         return true;
                     })
@@ -72,7 +72,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
-                    .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.properties().id().equals(docDefinition.id()))
+                    .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.getProperties().getId().equals(docDefinition.getId()))
                     .expectComplete()
                     .verify(Duration.ofMillis(subscriberValidationTimeout));
     }

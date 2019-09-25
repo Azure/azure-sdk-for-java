@@ -125,29 +125,29 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
             for (int j = 0; j < numberOfDuplicates; j++) {
                 // Add the document itself for exact duplicates
                 CosmosItemProperties initialDocument = new CosmosItemProperties(multiOrderByDocumentString);
-                initialDocument.id(UUID.randomUUID().toString());
+                initialDocument.setId(UUID.randomUUID().toString());
                 this.documents.add(initialDocument);
 
                 // Permute all the fields so that there are duplicates with tie breaks
                 CosmosItemProperties numberClone = new CosmosItemProperties(multiOrderByDocumentString);
                 BridgeInternal.setProperty(numberClone, NUMBER_FIELD, random.nextInt(5));
-                numberClone.id(UUID.randomUUID().toString());
+                numberClone.setId(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
                 CosmosItemProperties stringClone = new CosmosItemProperties(multiOrderByDocumentString);
                 BridgeInternal.setProperty(stringClone, STRING_FIELD, Integer.toString(random.nextInt(5)));
-                stringClone.id(UUID.randomUUID().toString());
+                stringClone.setId(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
                 CosmosItemProperties boolClone = new CosmosItemProperties(multiOrderByDocumentString);
                 BridgeInternal.setProperty(boolClone, BOOL_FIELD, random.nextInt(2) % 2 == 0);
-                boolClone.id(UUID.randomUUID().toString());
+                boolClone.setId(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
                 CosmosItemProperties partitionClone = new CosmosItemProperties(multiOrderByDocumentString);
                 BridgeInternal.setProperty(partitionClone, PARTITION_KEY, random.nextInt(5));
-                partitionClone.id(UUID.randomUUID().toString());
+                partitionClone.setId(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
             }
         }
@@ -160,7 +160,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     private CosmosItemProperties generateMultiOrderByDocument() {
         Random random = new Random();
         CosmosItemProperties document = new CosmosItemProperties();
-        document.id(UUID.randomUUID().toString());
+        document.setId(UUID.randomUUID().toString());
         BridgeInternal.setProperty(document, NUMBER_FIELD, random.nextInt(5));
         BridgeInternal.setProperty(document, NUMBER_FIELD_2, random.nextInt(5));
         BridgeInternal.setProperty(document, BOOL_FIELD, (random.nextInt() % 2) == 0);
@@ -179,11 +179,11 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocumentsWithMultiOrder() throws CosmosClientException, InterruptedException {
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.enableCrossPartitionQuery(true);
+        feedOptions.setEnableCrossPartitionQuery(true);
 
         boolean[] booleanValues = new boolean[] {true, false};
-        CosmosContainerProperties containerSettings = documentCollection.read().block().properties();
-        Iterator<List<CompositePath>> compositeIndexesIterator = containerSettings.indexingPolicy().compositeIndexes().iterator();
+        CosmosContainerProperties containerSettings = documentCollection.read().block().getProperties();
+        Iterator<List<CompositePath>> compositeIndexesIterator = containerSettings.getIndexingPolicy().getCompositeIndexes().iterator();
         while (compositeIndexesIterator.hasNext()) {
         List<CompositePath> compositeIndex = compositeIndexesIterator.next();
             // for every order
@@ -200,13 +200,13 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                         Iterator<CompositePath> compositeIndexiterator = compositeIndex.iterator();
                         while (compositeIndexiterator.hasNext()) {
                             CompositePath compositePath = compositeIndexiterator.next();
-                            isDesc = compositePath.order() == CompositePathSortOrder.DESCENDING ? true : false;
+                            isDesc = compositePath.getOrder() == CompositePathSortOrder.DESCENDING ? true : false;
                             if (invert) {
                                 isDesc = !isDesc;
                             }
 
                             String isDescString = isDesc ? "DESC" : "ASC";
-                            String compositePathName = compositePath.path().replaceAll("/", "");
+                            String compositePathName = compositePath.getPath().replaceAll("/", "");
                             String orderByItemsString = "root." + compositePathName + " " + isDescString;
                             String selectItemsString = "root." + compositePathName;
                             orderByItems.add(orderByItemsString);
@@ -283,7 +283,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Iterator<CompositePath> compositeIndexIterator = compositeIndex.iterator();
         while (compositeIndexIterator.hasNext()) {
             CompositePath compositePath = compositeIndexIterator.next();
-            CompositePathSortOrder order = compositePath.order();
+            CompositePathSortOrder order = compositePath.getOrder();
             if (invert) {
                 if (order == CompositePathSortOrder.DESCENDING) {
                     order = CompositePathSortOrder.ASCENDING;
@@ -291,7 +291,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                     order = CompositePathSortOrder.DESCENDING;
                 }
             }
-            String path = compositePath.path().replace("/", "");
+            String path = compositePath.getPath().replace("/", "");
             comparators.add(new CustomComparator(path, order));
         }
         Collections.sort(arrayList, ComparatorUtils.chainedComparator(comparators));

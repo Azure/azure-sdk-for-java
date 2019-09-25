@@ -12,7 +12,7 @@ public class CosmosConflictRequestOptions {
      *
      * @return the access condition.
      */
-    public AccessCondition accessCondition() {
+    public AccessCondition getAccessCondition() {
         return accessCondition;
     }
 
@@ -22,7 +22,7 @@ public class CosmosConflictRequestOptions {
      * @param accessCondition the access condition.
      * @return the current request options
      */
-    public CosmosConflictRequestOptions accessCondition(AccessCondition accessCondition) {
+    public CosmosConflictRequestOptions setAccessCondition(AccessCondition accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

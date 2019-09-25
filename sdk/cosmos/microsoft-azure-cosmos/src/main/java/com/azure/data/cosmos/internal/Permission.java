@@ -35,8 +35,8 @@ public class Permission extends Resource {
      * @param id the name of the resource.
      * @return the current instance of permission
      */
-    public Permission id(String id){
-        super.id(id);
+    public Permission setId(String id){
+        super.setId(id);
         return this;
     }
 

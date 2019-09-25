@@ -43,16 +43,16 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void uniqueIndex() {
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.paths(ImmutableList.of("/name", "/field"));
+        uniqueKey.setPaths(ImmutableList.of("/name", "/field"));
         uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         DocumentCollection collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).single().block().getResource();
@@ -77,13 +77,13 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         assertThat(subscriber.errorCount(), Matchers.equalTo(1));
 
         // error code for failure is conflict
-        assertThat(((CosmosClientException) subscriber.getEvents().get(1).get(0)).statusCode(), equalTo(409));
+        assertThat(((CosmosClientException) subscriber.getEvents().get(1).get(0)).getStatusCode(), equalTo(409));
     }
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -94,9 +94,9 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
 
-        // CREATE database
+        // CREATE getDatabase
         createdDatabase = Utils.createDatabaseForTest(client);
     }
 
@@ -107,10 +107,10 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
     }
 
     private String getCollectionLink(DocumentCollection collection) {
-        return "dbs/" + createdDatabase.id() + "/colls/" + collection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + collection.getId();
     }
 
     private String getDatabaseLink() {
-        return "dbs/" + createdDatabase.id();
+        return "dbs/" + createdDatabase.getId();
     }
 }

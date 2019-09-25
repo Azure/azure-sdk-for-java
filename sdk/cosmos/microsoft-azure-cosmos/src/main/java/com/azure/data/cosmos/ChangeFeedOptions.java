@@ -46,7 +46,7 @@ public final class ChangeFeedOptions {
      * @return a string indicating the partition key range ID
      * @see PartitionKeyRange
      */
-    String partitionKeyRangeId() {
+    String getPartitionKeyRangeId() {
         return partitionKeyRangeId;
     }
 
@@ -62,7 +62,7 @@ public final class ChangeFeedOptions {
      * @see PartitionKeyRange
      * @return the ChangeFeedOptions.
      */
-    ChangeFeedOptions partitionKeyRangeId(String partitionKeyRangeId) {
+    ChangeFeedOptions setPartitionKeyRangeId(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
         return this;
     }
@@ -74,7 +74,7 @@ public final class ChangeFeedOptions {
      * @return a boolean value indicating change feed should start from beginning or
      *         not
      */
-    public boolean startFromBeginning() {
+    public boolean getStartFromBeginning() {
         return startFromBeginning;
     }
 
@@ -86,7 +86,7 @@ public final class ChangeFeedOptions {
      *                           from beginning or not
      * @return the ChangeFeedOptions.
      */
-    public ChangeFeedOptions startFromBeginning(boolean startFromBeginning) {
+    public ChangeFeedOptions setStartFromBeginning(boolean startFromBeginning) {
         this.startFromBeginning = startFromBeginning;
         return this;
     }
@@ -97,7 +97,7 @@ public final class ChangeFeedOptions {
      * @return a zoned date time to start looking for changes after, if set or null
      *         otherwise
      */
-    public OffsetDateTime startDateTime() {
+    public OffsetDateTime getStartDateTime() {
         return startDateTime;
     }
 
@@ -108,7 +108,7 @@ public final class ChangeFeedOptions {
      * @param startDateTime a zoned date time to start looking for changes after.
      * @return the ChangeFeedOptions.
      */
-    public ChangeFeedOptions startDateTime(OffsetDateTime startDateTime) {
+    public ChangeFeedOptions setStartDateTime(OffsetDateTime startDateTime) {
         this.startDateTime = startDateTime;
         return this;
     }
@@ -119,7 +119,7 @@ public final class ChangeFeedOptions {
      *
      * @return the max number of items.
      */
-    public Integer maxItemCount() {
+    public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -130,7 +130,7 @@ public final class ChangeFeedOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    public ChangeFeedOptions maxItemCount(Integer maxItemCount) {
+    public ChangeFeedOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -140,7 +140,7 @@ public final class ChangeFeedOptions {
      *
      * @return the request continuation.
      */
-    public String requestContinuation() {
+    public String getRequestContinuation() {
         return this.requestContinuation;
     }
 
@@ -151,7 +151,7 @@ public final class ChangeFeedOptions {
      *            the request continuation.
      * @return the FeedOptionsBase.
      */
-    public ChangeFeedOptions requestContinuation(String requestContinuation) {
+    public ChangeFeedOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -162,7 +162,7 @@ public final class ChangeFeedOptions {
      *
      * @return the partition key.
      */
-    public PartitionKey partitionKey() {
+    public PartitionKey getPartitionKey() {
         return this.partitionkey;
     }
 
@@ -174,7 +174,7 @@ public final class ChangeFeedOptions {
      *            the partition key value.
      * @return the FeedOptionsBase.
      */
-    public ChangeFeedOptions partitionKey(PartitionKey partitionkey) {
+    public ChangeFeedOptions setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
         return this;
     }
@@ -184,7 +184,7 @@ public final class ChangeFeedOptions {
      *
      * @return Map of request options properties
      */
-    public Map<String, Object> properties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -194,7 +194,7 @@ public final class ChangeFeedOptions {
      * @param properties the properties.
      * @return the FeedOptionsBase.
      */
-    public ChangeFeedOptions properties(Map<String, Object> properties) {
+    public ChangeFeedOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }

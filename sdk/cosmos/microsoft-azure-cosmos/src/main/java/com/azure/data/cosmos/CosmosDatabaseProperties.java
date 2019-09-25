@@ -23,7 +23,7 @@ public class CosmosDatabaseProperties extends Resource {
      * @param id id of the database
      */
     public CosmosDatabaseProperties(String id) {
-        super.id(id);
+        super.setId(id);
     }
 
     CosmosDatabaseProperties(ResourceResponse<Database> response) {

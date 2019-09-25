@@ -60,7 +60,7 @@ public class PartitionIsMigratingException extends CosmosClientException {
     }
 
     private void setSubStatus() {
-        this.responseHeaders().put(
+        this.getResponseHeaders().put(
                 WFConstants.BackendHeaders.SUB_STATUS,
                 Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
     }

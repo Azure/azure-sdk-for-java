@@ -42,7 +42,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
         Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
 
         List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream()
-                                                                           .filter(d -> StringUtils.equals(databaseId1, d.id()) ).map(d -> d.read().block().properties()).collect(Collectors.toList());
+                                                                           .filter(d -> StringUtils.equals(databaseId1, d.getId()) ).map(d -> d.read().block().getProperties()).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
@@ -50,7 +50,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(expectedDatabases.size())
-                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -70,7 +70,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
         options.maxItemCount(2);
         Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
 
-        List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream().map(d -> d.read().block().properties()).collect(Collectors.toList());
+        List<CosmosDatabaseProperties> expectedDatabases = createdDatabases.stream().map(d -> d.read().block().getProperties()).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
@@ -78,7 +78,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(expectedDatabases.size())
-                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -92,7 +92,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosDatabaseProperties>> queryObservable = client.queryDatabases(query, options);
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()

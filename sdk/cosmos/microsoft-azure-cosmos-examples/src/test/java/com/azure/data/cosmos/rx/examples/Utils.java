@@ -22,9 +22,9 @@ public class Utils {
     @AfterSuite(groups = "samples")
     public void cleanupStaleDatabase() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         RetryOptions options = new RetryOptions();
-        connectionPolicy.retryOptions(options);
+        connectionPolicy.setRetryOptions(options);
         AsyncDocumentClient client = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -34,7 +34,7 @@ public class Utils {
     }
 
     public static String getCollectionLink(Database db, DocumentCollection collection) {
-        return "dbs/" + db.id() + "/colls/" + collection;
+        return "dbs/" + db.getId() + "/colls/" + collection;
     }
 
     public static Database createDatabaseForTest(AsyncDocumentClient client) {
@@ -49,7 +49,7 @@ public class Utils {
 
     public static void safeClean(AsyncDocumentClient client, Database database) {
         if (database != null) {
-            safeClean(client, database.id());
+            safeClean(client, database.getId());
         }
     }
 

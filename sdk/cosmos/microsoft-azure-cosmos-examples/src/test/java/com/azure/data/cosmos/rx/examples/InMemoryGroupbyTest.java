@@ -40,7 +40,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = 2 * TIMEOUT)
     public void setUp() throws Exception {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -54,16 +54,16 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         createdDatabase = Utils.createDatabaseForTest(client);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         // CREATE collection
         createdCollection = client
-                .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
+                .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .single().block().getResource();
 
         int numberOfPayers = 10;
@@ -106,14 +106,14 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
                 .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
-                .flatMap(page -> Flux.fromIterable(page.results()));
+                .flatMap(page -> Flux.fromIterable(page.getResults()));
 
         final LocalDateTime now = LocalDateTime.now();
 
@@ -138,14 +138,14 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
 
         Flux<Document> documentsObservable = client
                 .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
-                .flatMap(page -> Flux.fromIterable(page.results()));
+                .flatMap(page -> Flux.fromIterable(page.getResults()));
 
         final LocalDateTime now = LocalDateTime.now();
 
@@ -166,6 +166,6 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     }
 
     private String getCollectionLink() {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 }

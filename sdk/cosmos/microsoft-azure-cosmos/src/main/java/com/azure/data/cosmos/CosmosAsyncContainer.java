@@ -31,7 +31,7 @@ public class CosmosAsyncContainer {
      * 
      * @return the id of the {@link CosmosAsyncContainer}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -41,7 +41,7 @@ public class CosmosAsyncContainer {
      * @param id the id of the {@link CosmosAsyncContainer}
      * @return the same {@link CosmosAsyncContainer} that had the id set
      */
-    CosmosAsyncContainer id(String id) {
+    CosmosAsyncContainer setId(String id) {
         this.id = id;
         return this;
     }
@@ -256,8 +256,8 @@ public class CosmosAsyncContainer {
      */
     public Flux<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
         return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -321,7 +321,7 @@ public class CosmosAsyncContainer {
     public Flux<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec, FeedOptions options) {
         return getDatabase().getDocClientWrapper().queryDocuments(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                        CosmosItemProperties.getFromV2Results(response.results()), response.responseHeaders(),
+                        CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
                         response.queryMetrics()));
     }
 
@@ -339,7 +339,7 @@ public class CosmosAsyncContainer {
     public Flux<FeedResponse<CosmosItemProperties>> queryChangeFeedItems(ChangeFeedOptions changeFeedOptions) {
         return getDatabase().getDocClientWrapper().queryDocumentChangeFeed(getLink(), changeFeedOptions)
                 .map(response -> new FeedResponse<CosmosItemProperties>(
-                        CosmosItemProperties.getFromV2Results(response.results()), response.responseHeaders(), false));
+                        CosmosItemProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(), false));
     }
 
     /**
@@ -370,7 +370,7 @@ public class CosmosAsyncContainer {
     public Flux<FeedResponse<CosmosConflictProperties>> readAllConflicts(FeedOptions options) {
         return database.getDocClientWrapper().readConflicts(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
-                        CosmosConflictProperties.getFromV2Results(response.results()), response.responseHeaders()));
+                        CosmosConflictProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
@@ -395,7 +395,7 @@ public class CosmosAsyncContainer {
     public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query, FeedOptions options) {
         return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
                 .map(response -> BridgeInternal.createFeedResponse(
-                        CosmosConflictProperties.getFromV2Results(response.results()), response.responseHeaders()));
+                        CosmosConflictProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
     }
 
     /**
@@ -416,13 +416,13 @@ public class CosmosAsyncContainer {
     public Mono<Integer> readProvisionedThroughput() {
         return this.read().flatMap(cosmosContainerResponse -> database.getDocClientWrapper()
                 .queryOffers("select * from c where c.offerResourceId = '"
-                        + cosmosContainerResponse.properties().resourceId() + "'", new FeedOptions())
+                        + cosmosContainerResponse.getProperties().getResourceId() + "'", new FeedOptions())
                 .single()).flatMap(offerFeedResponse -> {
-                    if (offerFeedResponse.results().isEmpty()) {
+                    if (offerFeedResponse.getResults().isEmpty()) {
                         return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                                 "No offers found for the resource"));
                     }
-                    return database.getDocClientWrapper().readOffer(offerFeedResponse.results().get(0).selfLink())
+                    return database.getDocClientWrapper().readOffer(offerFeedResponse.getResults().get(0).getSelfLink())
                             .single();
                 }).map(cosmosOfferResponse -> cosmosOfferResponse.getResource().getThroughput());
     }
@@ -438,13 +438,13 @@ public class CosmosAsyncContainer {
     public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
         return this.read().flatMap(cosmosContainerResponse -> database.getDocClientWrapper()
                 .queryOffers("select * from c where c.offerResourceId = '"
-                        + cosmosContainerResponse.properties().resourceId() + "'", new FeedOptions())
+                        + cosmosContainerResponse.getProperties().getResourceId() + "'", new FeedOptions())
                 .single()).flatMap(offerFeedResponse -> {
-                    if (offerFeedResponse.results().isEmpty()) {
+                    if (offerFeedResponse.getResults().isEmpty()) {
                         return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                                 "No offers found for the resource"));
                     }
-                    Offer offer = offerFeedResponse.results().get(0);
+                    Offer offer = offerFeedResponse.getResults().get(0);
                     offer.setThroughput(requestUnitsPerSecond);
                     return database.getDocClientWrapper().replaceOffer(offer).single();
                 }).map(offerResourceResponse -> offerResourceResponse.getResource().getThroughput());
@@ -473,7 +473,7 @@ public class CosmosAsyncContainer {
         builder.append("/");
         builder.append(URIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 

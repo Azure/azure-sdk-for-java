@@ -214,7 +214,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the list of writable locations.
      */
-    public Iterable<DatabaseAccountLocation> writableLocations() {
+    public Iterable<DatabaseAccountLocation> getWritableLocations() {
         return super.getCollection(Constants.Properties.WRITABLE_LOCATIONS, DatabaseAccountLocation.class);
     }
 
@@ -234,7 +234,7 @@ public class DatabaseAccount extends Resource {
      *
      * @return the list of readable locations.
      */
-    public Iterable<DatabaseAccountLocation> readableLocations() {
+    public Iterable<DatabaseAccountLocation> getReadableLocations() {
         return super.getCollection(Constants.Properties.READABLE_LOCATIONS, DatabaseAccountLocation.class);
     }
 
@@ -249,7 +249,7 @@ public class DatabaseAccount extends Resource {
         setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
-    public boolean enableMultipleWriteLocations() {
+    public boolean getEnableMultipleWriteLocations() {
         return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS), false);
     }
 

@@ -25,8 +25,8 @@ public class BasicDemo {
     private void start(){
         // Get client
         client = CosmosAsyncClient.builder()
-                .endpoint(AccountSettings.HOST)
-                .key(AccountSettings.MASTER_KEY)
+                .setEndpoint(AccountSettings.HOST)
+                .setKey(AccountSettings.MASTER_KEY)
                 .buildAsyncClient();
 
         //CREATE a database and a container
@@ -76,7 +76,7 @@ public class BasicDemo {
                     .doOnError(throwable -> log("CREATE 3", throwable))
                     .publishOn(Schedulers.elastic())
                     .block()
-                    .item();
+                    .getItem();
         }catch (RuntimeException e){
             log("Couldn't create items due to above exceptions");
         }
@@ -90,9 +90,9 @@ public class BasicDemo {
 
     private void createDbAndContainerBlocking() {
         client.createDatabaseIfNotExists(DATABASE_NAME)
-                .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.database().id()))
-                .flatMap(dbResponse -> dbResponse.database().createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country")))
-                .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.container().id()))
+                .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.getDatabase().getId()))
+                .flatMap(dbResponse -> dbResponse.getDatabase().createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country")))
+                .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.getContainer().getId()))
                 .doOnError(throwable -> log(throwable.getMessage()))
                 .publishOn(Schedulers.elastic())
                 .block();
@@ -103,8 +103,8 @@ public class BasicDemo {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
-        options.maxDegreeOfParallelism(2);
+        options.setEnableCrossPartitionQuery(true);
+        options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
 
         queryFlux.publishOn(Schedulers.elastic()).subscribe(cosmosItemFeedResponse -> {},
@@ -115,7 +115,7 @@ public class BasicDemo {
                 .toIterable()
                 .forEach(cosmosItemFeedResponse -> 
                          {
-                             log(cosmosItemFeedResponse.results());
+                             log(cosmosItemFeedResponse.getResults());
                          });
 
     }
@@ -124,7 +124,7 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.populateQueryMetrics(true);
         options.maxItemCount(1);
         String continuation = null;
@@ -133,8 +133,8 @@ public class BasicDemo {
             Flux<FeedResponse<CosmosItemProperties>> queryFlux = container.queryItems(query, options);
             FeedResponse<CosmosItemProperties> page = queryFlux.blockFirst();
             assert page != null;
-            log(page.results());
-            continuation = page.continuationToken();
+            log(page.getResults());
+            continuation = page.getContinuationToken();
         }while(continuation!= null);
 
     }
@@ -144,7 +144,7 @@ public class BasicDemo {
     }
     
     private void log(String msg, Throwable throwable){
-            log(msg + ": " + ((CosmosClientException)throwable).statusCode());
+            log(msg + ": " + ((CosmosClientException)throwable).getStatusCode());
     }
 
     class TestObject {

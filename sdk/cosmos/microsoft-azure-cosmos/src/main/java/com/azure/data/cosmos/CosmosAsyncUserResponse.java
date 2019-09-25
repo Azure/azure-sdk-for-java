@@ -12,10 +12,10 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
     CosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         super(response);
         if(response.getResource() == null){
-            super.properties(null);
+            super.setProperties(null);
         }else{
-            super.properties(new CosmosUserProperties(response));
-            this.user = new CosmosAsyncUser(this.properties().id(), database);
+            super.setProperties(new CosmosUserProperties(response));
+            this.user = new CosmosAsyncUser(this.getProperties().getId(), database);
         }
     }
 
@@ -24,7 +24,7 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
      *
      * @return {@link CosmosAsyncUser}
      */
-    public CosmosAsyncUser user() {
+    public CosmosAsyncUser getUser() {
         return user;
     }
 
@@ -33,7 +33,7 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
      *
      * @return {@link CosmosUserProperties}
      */
-    public CosmosUserProperties properties(){
-        return this.properties();
+    public CosmosUserProperties getProperties(){
+        return this.getProperties();
     }
 }

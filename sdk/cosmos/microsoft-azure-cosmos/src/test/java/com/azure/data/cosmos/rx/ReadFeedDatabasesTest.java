@@ -41,7 +41,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         int expectedPageSize = (allDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(allDatabases.size())
-                .exactlyContainsInAnyOrder(allDatabases.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(allDatabases.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -54,7 +54,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     public void beforeClass() throws URISyntaxException {
         client = clientBuilder().buildAsyncClient();
         allDatabases = client.readAllDatabases(null)
-                             .map(frp -> frp.results())
+                             .map(frp -> frp.getResults())
                              .collectList()
                              .map(list -> list.stream().flatMap(x -> x.stream()).collect(Collectors.toList()))
                              .block();
@@ -66,13 +66,13 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
 
     public CosmosDatabaseProperties createDatabase(CosmosAsyncClient client) {
         CosmosDatabaseProperties db = new CosmosDatabaseProperties(UUID.randomUUID().toString());
-        return client.createDatabase(db, new CosmosDatabaseRequestOptions()).block().properties();
+        return client.createDatabase(db, new CosmosDatabaseRequestOptions()).block().getProperties();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         for (int i = 0; i < 5; i ++) {
-            safeDeleteDatabase(client.getDatabase(createdDatabases.get(i).id()));
+            safeDeleteDatabase(client.getDatabase(createdDatabases.get(i).getId()));
         }
         safeClose(client);
     }

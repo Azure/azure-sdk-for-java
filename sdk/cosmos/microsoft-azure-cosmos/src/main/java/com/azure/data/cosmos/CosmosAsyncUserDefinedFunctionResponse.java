@@ -13,17 +13,17 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
     CosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response, CosmosAsyncContainer container) {
         super(response);
         if(response.getResource() != null) {
-            super.properties(new CosmosUserDefinedFunctionProperties(response));
+            super.setProperties(new CosmosUserDefinedFunctionProperties(response));
             cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(response);
-            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.id(), container);
+            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
         }
     }
 
     /**
-     * Gets the cosmos user defined function properties
-     * @return the cosmos user defined function properties
+     * Gets the cosmos getUser defined function getProperties
+     * @return the cosmos getUser defined function getProperties
      */
-    public CosmosUserDefinedFunctionProperties properties() {
+    public CosmosUserDefinedFunctionProperties getProperties() {
         return cosmosUserDefinedFunctionProperties;
     }
 
@@ -31,7 +31,7 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
      * Gets the cosmos user defined function object
      * @return the cosmos user defined function object
      */
-    public CosmosAsyncUserDefinedFunction userDefinedFunction() {
+    public CosmosAsyncUserDefinedFunction getUserDefinedFunction() {
         return cosmosUserDefinedFunction;
     }
 }

@@ -171,7 +171,7 @@ public class SpyClientUnderTestFactory {
 
         DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), cosmosKeyCredential);
-            assert connectionPolicy.connectionMode() == ConnectionMode.DIRECT;
+            assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init();
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);

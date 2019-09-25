@@ -11,10 +11,10 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
     CosmosAsyncPermissionResponse(ResourceResponse<Permission> response, CosmosAsyncUser cosmosUser) {
         super(response);
         if(response.getResource() == null){
-            super.properties(null);
+            super.setProperties(null);
         }else{
-            super.properties(new CosmosPermissionProperties(response.getResource().toJson()));
-            permissionClient = new CosmosAsyncPermission(response.getResource().id(), cosmosUser);
+            super.setProperties(new CosmosPermissionProperties(response.getResource().toJson()));
+            permissionClient = new CosmosAsyncPermission(response.getResource().getId(), cosmosUser);
         }
     }
 
@@ -23,8 +23,8 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
      *
      * @return the permission properties
      */
-    public CosmosPermissionProperties properties() {
-        return super.properties();
+    public CosmosPermissionProperties getProperties() {
+        return super.getProperties();
     }
 
     /**
@@ -32,7 +32,7 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
      *
      * @return the cosmos permission
      */
-    public CosmosAsyncPermission permission() {
+    public CosmosAsyncPermission getPermission() {
         return permissionClient;
     }
 }

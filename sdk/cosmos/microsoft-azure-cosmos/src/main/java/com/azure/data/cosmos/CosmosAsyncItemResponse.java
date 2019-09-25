@@ -11,10 +11,10 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
     CosmosAsyncItemResponse(ResourceResponse<Document> response, PartitionKey partitionKey, CosmosAsyncContainer container) {
         super(response);
         if(response.getResource() == null){
-            super.properties(null);
+            super.setProperties(null);
         }else{
-            super.properties(new CosmosItemProperties(response.getResource().toJson()));
-            itemClient = new CosmosAsyncItem(response.getResource().id(),partitionKey, container);
+            super.setProperties(new CosmosItemProperties(response.getResource().toJson()));
+            itemClient = new CosmosAsyncItem(response.getResource().getId(),partitionKey, container);
         }
     }
 
@@ -22,15 +22,15 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
      * Gets the itemSettings
      * @return the itemSettings
      */
-    public CosmosItemProperties properties() {
-        return this.properties();
+    public CosmosItemProperties getProperties() {
+        return this.getProperties();
     }
 
     /**
      * Gets the CosmosAsyncItem
      * @return the cosmos item
      */
-    public CosmosAsyncItem item() {
+    public CosmosAsyncItem getItem() {
         return itemClient;
     }
 }

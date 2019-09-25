@@ -28,11 +28,11 @@ public class Helpers {
                         e -> {
                             if (e instanceof CosmosClientException) {
                                 CosmosClientException dce = (CosmosClientException) e;
-                                if (dce.statusCode() ==  404) {
+                                if (dce.getStatusCode() ==  404) {
                                     // if doesn't exist create it
 
                                     Database d = new Database();
-                                    d.id(databaseName);
+                                    d.setId(databaseName);
 
                                     return client.createDatabase(d, null);
                                 }
@@ -49,11 +49,11 @@ public class Helpers {
                         e -> {
                             if (e instanceof CosmosClientException) {
                                 CosmosClientException dce = (CosmosClientException) e;
-                                if (dce.statusCode() ==  404) {
+                                if (dce.getStatusCode() ==  404) {
                                     // if doesn't exist create it
 
                                     DocumentCollection collection = new DocumentCollection();
-                                    collection.id(collectionName);
+                                    collection.setId(collectionName);
 
                                     return client.createCollection(createDatabaseUri(databaseName), collection, null);
                                 }
@@ -65,12 +65,12 @@ public class Helpers {
     }
 
     static public Mono<DocumentCollection> createCollectionIfNotExists(AsyncDocumentClient client, String databaseName, DocumentCollection collection) {
-        return client.readCollection(createDocumentCollectionUri(databaseName, collection.id()), null)
+        return client.readCollection(createDocumentCollectionUri(databaseName, collection.getId()), null)
                 .onErrorResume(
                         e -> {
                             if (e instanceof CosmosClientException) {
                                 CosmosClientException dce = (CosmosClientException) e;
-                                if (dce.statusCode() ==  404) {
+                                if (dce.getStatusCode() ==  404) {
                                     // if doesn't exist create it
 
                                     return client.createCollection(createDatabaseUri(databaseName), collection, null);

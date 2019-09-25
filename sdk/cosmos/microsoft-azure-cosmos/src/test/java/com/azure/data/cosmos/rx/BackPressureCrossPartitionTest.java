@@ -41,35 +41,35 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private int numberOfPartitions;
 
     public String getCollectionLink() {
-        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
     static protected CosmosContainerProperties getCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "precision", -1);
+        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.Range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
+        BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
                 UUID.randomUUID().toString(),
                 partitionKeyDef);
-        collectionDefinition.indexingPolicy(indexingPolicy);
+        collectionDefinition.setIndexingPolicy(indexingPolicy);
 
         return collectionDefinition;
     }
@@ -81,7 +81,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     private void warmUp() {
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         // ensure collection is cached
         createdCollection.queryItems("SELECT * FROM r", options).blockFirst();
     }
@@ -105,9 +105,9 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(maxItemCount);
-        options.maxDegreeOfParallelism(2);
+        options.setMaxDegreeOfParallelism(2);
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
@@ -145,7 +145,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
         subscriber.assertNoErrors();
         subscriber.assertComplete();
-        assertThat(subscriber.values().stream().mapToInt(p -> p.results().size()).sum()).isEqualTo(expectedNumberOfResults);
+        assertThat(subscriber.values().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
@@ -165,7 +165,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
                 docDefList);
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
-                .flatMap(p -> Flux.fromIterable(p.results())).collectList().single().block().size();
+                .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         warmUp();

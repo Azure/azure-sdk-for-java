@@ -36,8 +36,8 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
      * @param id the name of the resource.
      * @return the current instance of cosmos user defined function properties
      */
-    public CosmosUserDefinedFunctionProperties id(String id) {
-        super.id(id);
+    public CosmosUserDefinedFunctionProperties setId(String id) {
+        super.setId(id);
         return this;
     }
 
@@ -46,7 +46,7 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
      *
      * @return the body.
      */
-    public String body() {
+    public String getBody() {
         return super.getString(Constants.Properties.BODY);
     }
 
@@ -56,7 +56,7 @@ public class CosmosUserDefinedFunctionProperties extends Resource {
      * @param body the body.
      * @return the CosmosUserDefinedFunctionProperties.
      */
-    public CosmosUserDefinedFunctionProperties body(String body) {
+    public CosmosUserDefinedFunctionProperties setBody(String body) {
         super.set(Constants.Properties.BODY, body);
         return this;
     }

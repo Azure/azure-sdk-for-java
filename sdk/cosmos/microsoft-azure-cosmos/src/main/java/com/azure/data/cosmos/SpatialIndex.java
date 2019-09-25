@@ -27,7 +27,7 @@ final class SpatialIndex extends Index {
      */
     SpatialIndex(DataType dataType) {
         super(IndexKind.SPATIAL);
-        this.dataType(dataType);
+        this.setDataType(dataType);
     }
 
     /**
@@ -37,7 +37,7 @@ final class SpatialIndex extends Index {
      */
     SpatialIndex(String jsonString) {
         super(jsonString, IndexKind.SPATIAL);
-        if (this.dataType() == null) {
+        if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
         }
     }
@@ -47,7 +47,7 @@ final class SpatialIndex extends Index {
      *
      * @return the data type.
      */
-    public DataType dataType() {
+    public DataType getDataType() {
         DataType result = null;
         try {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
@@ -63,7 +63,7 @@ final class SpatialIndex extends Index {
      * @param dataType the data type.
      * @return the SpatialIndex.
      */
-    public SpatialIndex dataType(DataType dataType) {
+    public SpatialIndex setDataType(DataType dataType) {
         super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }

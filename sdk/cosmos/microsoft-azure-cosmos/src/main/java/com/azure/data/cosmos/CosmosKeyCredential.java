@@ -24,7 +24,7 @@ public class CosmosKeyCredential {
      * Returns the key stored in Cosmos Key Credential
      * @return key
      */
-    public String key() {
+    public String getKey() {
         return key;
     }
 
@@ -33,7 +33,7 @@ public class CosmosKeyCredential {
      * @param key key to be used in CosmosKeyCredential
      * @return current CosmosKeyCredential
      */
-    public CosmosKeyCredential key(String key) {
+    public CosmosKeyCredential setKey(String key) {
         this.key = key;
         this.keyHashCode = key.hashCode();
         return this;
@@ -43,7 +43,7 @@ public class CosmosKeyCredential {
      * CosmosKeyCredential stores the computed hashcode of the key for performance improvements.
      * @return hashcode of the key
      */
-    public int keyHashCode() {
+    public int getKeyHashCode() {
         return this.keyHashCode;
     }
 }

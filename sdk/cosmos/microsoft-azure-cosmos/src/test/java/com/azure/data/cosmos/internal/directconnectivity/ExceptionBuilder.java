@@ -47,21 +47,21 @@ public class ExceptionBuilder<T extends CosmosClientException> {
     public GoneException asGoneException() {
         assert status == null;
         GoneException dce = new GoneException();
-        dce.responseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
+        dce.getResponseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
         return dce;
     }
 
     public InvalidPartitionException asInvalidPartitionException() {
         assert status == null;
         InvalidPartitionException dce = new InvalidPartitionException();
-        dce.responseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
+        dce.getResponseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
         return dce;
     }
 
     public PartitionKeyRangeGoneException asPartitionKeyRangeGoneException() {
         assert status == null;
         PartitionKeyRangeGoneException dce = new PartitionKeyRangeGoneException();
-        dce.responseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
+        dce.getResponseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
         return dce;
     }
 
@@ -69,14 +69,14 @@ public class ExceptionBuilder<T extends CosmosClientException> {
     public PartitionKeyRangeIsSplittingException asPartitionKeyRangeIsSplittingException() {
         assert status == null;
         PartitionKeyRangeIsSplittingException dce = new PartitionKeyRangeIsSplittingException();
-        dce.responseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
+        dce.getResponseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
         return dce;
     }
 
     public PartitionIsMigratingException asPartitionIsMigratingException() {
         assert status == null;
         PartitionIsMigratingException dce = new PartitionIsMigratingException();
-        dce.responseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
+        dce.getResponseHeaders().putAll(headerEntries.stream().collect(Collectors.toMap(i -> i.getKey(), i -> i.getValue())));
         return dce;
     }
 }

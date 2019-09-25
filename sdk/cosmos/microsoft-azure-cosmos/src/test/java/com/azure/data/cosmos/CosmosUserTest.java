@@ -54,7 +54,7 @@ public class CosmosUserTest extends TestSuiteBase {
 
     private CosmosUserProperties getUserProperties() {
         CosmosUserProperties user = new CosmosUserProperties();
-        user.id(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID().toString());
         return user;
     }
 
@@ -64,7 +64,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosUser user = createdDatabase.getUser(userProperties.id());
+        CosmosUser user = createdDatabase.getUser(userProperties.getId());
         CosmosUserResponse readResponse = user.read();
         validateResponse(userProperties, readResponse);
     }
@@ -74,7 +74,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosUser user = createdDatabase.getUser(userProperties.id());
+        CosmosUser user = createdDatabase.getUser(userProperties.getId());
         CosmosUserResponse delete = user.delete();
 
     }
@@ -100,8 +100,8 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", userProperties.id());
-        FeedOptions feedOptions = new FeedOptions().enableCrossPartitionQuery(true);
+        String query = String.format("SELECT * from c where c.id = '%s'", userProperties.getId());
+        FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
 
         Iterator<FeedResponse<CosmosUserProperties>> feedResponseIterator1 =
                 createdDatabase.queryUsers(query, feedOptions);
@@ -117,10 +117,10 @@ public class CosmosUserTest extends TestSuiteBase {
     private void validateResponse(CosmosUserProperties properties,
                                   CosmosUserResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.properties().id()).isNotNull();
-        assertThat(createResponse.properties().id())
+        assertThat(createResponse.getProperties().getId()).isNotNull();
+        assertThat(createResponse.getProperties().getId())
                 .as("check Resource Id")
-                .isEqualTo(properties.id());
+                .isEqualTo(properties.getId());
 
     }
 }

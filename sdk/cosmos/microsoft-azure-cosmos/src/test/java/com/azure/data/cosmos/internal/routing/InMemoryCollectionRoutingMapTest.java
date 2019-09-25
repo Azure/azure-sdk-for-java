@@ -43,20 +43,20 @@ public class InMemoryCollectionRoutingMapTest {
                                             ServerIdentityImp.of(3))),
                         StringUtils.EMPTY);
 
-        assertThat("0").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(0).id());
-        assertThat("1").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(1).id());
-        assertThat("2").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(2).id());
-        assertThat("3").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(3).id());
+        assertThat("0").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(0).getId());
+        assertThat("1").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(1).getId());
+        assertThat("2").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(2).getId());
+        assertThat("3").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(3).getId());
 
 
-        assertThat("0").isEqualTo(routingMap.getRangeByEffectivePartitionKey("").id());
-        assertThat("0").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000000").id());
-        assertThat("1").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000030").id());
-        assertThat("1").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000031").id());
-        assertThat("3").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000071").id());
+        assertThat("0").isEqualTo(routingMap.getRangeByEffectivePartitionKey("").getId());
+        assertThat("0").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000000").getId());
+        assertThat("1").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000030").getId());
+        assertThat("1").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000031").getId());
+        assertThat("3").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000071").getId());
 
-        assertThat("0").isEqualTo(routingMap.getRangeByPartitionKeyRangeId("0").id());
-        assertThat("1").isEqualTo(routingMap.getRangeByPartitionKeyRangeId("1").id());
+        assertThat("0").isEqualTo(routingMap.getRangeByPartitionKeyRangeId("0").getId());
+        assertThat("1").isEqualTo(routingMap.getRangeByPartitionKeyRangeId("1").getId());
 
         assertThat(4).isEqualTo(
                 routingMap
@@ -74,7 +74,7 @@ public class InMemoryCollectionRoutingMapTest {
 
         assertThat(1).isEqualTo(partitionKeyRanges.size());
         Iterator<PartitionKeyRange> iterator = partitionKeyRanges.iterator();
-        assertThat("1").isEqualTo(iterator.next().id());
+        assertThat("1").isEqualTo(iterator.next().getId());
 
         Collection<PartitionKeyRange> partitionKeyRanges1 = routingMap
                 .getOverlappingRanges(Arrays.asList(new Range<String>("0000000040", "0000000045", true, true),
@@ -83,8 +83,8 @@ public class InMemoryCollectionRoutingMapTest {
 
         assertThat(2).isEqualTo(partitionKeyRanges1.size());
         Iterator<PartitionKeyRange> iterator1 = partitionKeyRanges1.iterator();
-        assertThat("1").isEqualTo(iterator1.next().id());
-        assertThat("2").isEqualTo(iterator1.next().id());
+        assertThat("1").isEqualTo(iterator1.next().getId());
+        assertThat("2").isEqualTo(iterator1.next().getId());
     }
 
     @Test(groups = { "unit" }, expectedExceptions = IllegalStateException.class)

@@ -16,7 +16,7 @@ public class CosmosDatabaseRequestOptions{
      *
      * @return the access condition.
      */
-    public AccessCondition accessCondition() {
+    public AccessCondition getAccessCondition() {
         return accessCondition;
     }
 
@@ -26,7 +26,7 @@ public class CosmosDatabaseRequestOptions{
      * @param accessCondition the access condition.
      * @return the current request options
      */
-    public CosmosDatabaseRequestOptions accessCondition(AccessCondition accessCondition) {
+    public CosmosDatabaseRequestOptions setAccessCondition(AccessCondition accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }
@@ -36,7 +36,7 @@ public class CosmosDatabaseRequestOptions{
      *
      * @return the throughput value.
      */
-    Integer offerThroughput() {
+    Integer getOfferThroughput() {
         return offerThroughput;
     }
 
@@ -46,7 +46,7 @@ public class CosmosDatabaseRequestOptions{
      * @param offerThroughput the throughput value.
      * @return the current request options
      */
-    CosmosDatabaseRequestOptions offerThroughput(Integer offerThroughput) {
+    CosmosDatabaseRequestOptions setOfferThroughput(Integer offerThroughput) {
         this.offerThroughput = offerThroughput;
         return this;
     }

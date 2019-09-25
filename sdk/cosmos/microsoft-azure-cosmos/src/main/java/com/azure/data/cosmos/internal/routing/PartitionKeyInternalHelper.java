@@ -132,15 +132,15 @@ public class PartitionKeyInternalHelper {
             return MaximumExclusiveEffectivePartitionKey;
         }
 
-        if (partitionKeyInternal.components.size() < partitionKeyDefinition.paths().size()) {
+        if (partitionKeyInternal.components.size() < partitionKeyDefinition.getPaths().size()) {
             throw new IllegalArgumentException(RMResources.TooFewPartitionKeyComponents);
         }
 
-        if (partitionKeyInternal.components.size() > partitionKeyDefinition.paths().size() && strict) {
+        if (partitionKeyInternal.components.size() > partitionKeyDefinition.getPaths().size() && strict) {
             throw new IllegalArgumentException(RMResources.TooManyPartitionKeyComponents);
         }
 
-        PartitionKind kind = partitionKeyDefinition.kind();
+        PartitionKind kind = partitionKeyDefinition.getKind();
         if (kind == null) {
             kind = PartitionKind.HASH;
         }

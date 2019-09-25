@@ -39,8 +39,8 @@ public final class DocumentCollection extends Resource {
      * @param id the name of the resource.
      * @return
      */
-    public DocumentCollection id(String id){
-        super.id(id);
+    public DocumentCollection setId(String id){
+        super.setId(id);
         return this;
     }
 
@@ -213,7 +213,7 @@ public final class DocumentCollection extends Resource {
      */
     public String getDocumentsLink() {
         return String.format("%s/%s",
-                StringUtils.stripEnd(super.selfLink(), "/"),
+                StringUtils.stripEnd(super.getSelfLink(), "/"),
                 super.getString(Constants.Properties.DOCUMENTS_LINK));
     }
 
@@ -224,7 +224,7 @@ public final class DocumentCollection extends Resource {
      */
     public String getStoredProceduresLink() {
         return String.format("%s/%s",
-                StringUtils.stripEnd(super.selfLink(), "/"),
+                StringUtils.stripEnd(super.getSelfLink(), "/"),
                 super.getString(Constants.Properties.STORED_PROCEDURES_LINK));
     }
 
@@ -234,7 +234,7 @@ public final class DocumentCollection extends Resource {
      * @return the trigger link.
      */
     public String getTriggersLink() {
-        return StringUtils.removeEnd(this.selfLink(), "/") +
+        return StringUtils.removeEnd(this.getSelfLink(), "/") +
                 "/" + super.getString(Constants.Properties.TRIGGERS_LINK);
     }
 
@@ -244,7 +244,7 @@ public final class DocumentCollection extends Resource {
      * @return the user defined functions link.
      */
     public String getUserDefinedFunctionsLink() {
-        return StringUtils.removeEnd(this.selfLink(), "/") +
+        return StringUtils.removeEnd(this.getSelfLink(), "/") +
                 "/" + super.getString(Constants.Properties.USER_DEFINED_FUNCTIONS_LINK);
     }
 
@@ -254,7 +254,7 @@ public final class DocumentCollection extends Resource {
      * @return the conflicts link.
      */
     public String getConflictsLink() {
-        return StringUtils.removeEnd(this.selfLink(), "/") +
+        return StringUtils.removeEnd(this.getSelfLink(), "/") +
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
     }
 
@@ -284,12 +284,12 @@ public final class DocumentCollection extends Resource {
         }
 
         DocumentCollection typedObj = (DocumentCollection) obj;
-        return typedObj.resourceId().equals(this.resourceId());
+        return typedObj.getResourceId().equals(this.getResourceId());
     }
 
     @Override
     public int hashCode() {
-        return this.resourceId().hashCode();
+        return this.getResourceId().hashCode();
     }
 
     @Override

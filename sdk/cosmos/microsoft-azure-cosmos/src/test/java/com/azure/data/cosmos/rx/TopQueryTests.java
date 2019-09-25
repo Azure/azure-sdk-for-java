@@ -46,9 +46,9 @@ public class TopQueryTests extends TestSuiteBase {
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         options.maxItemCount(9);
-        options.maxDegreeOfParallelism(2);
+        options.setMaxDegreeOfParallelism(2);
         options.populateQueryMetrics(qmEnabled);
 
         int expectedTotalSize = 20;
@@ -80,7 +80,7 @@ public class TopQueryTests extends TestSuiteBase {
 
             if (i == 0) {
                 options.partitionKey(new PartitionKey(firstPk));
-                options.enableCrossPartitionQuery(false);
+                options.setEnableCrossPartitionQuery(false);
 
                 expectedTotalSize = 10;
                 expectedNumberOfPages = 2;
@@ -125,7 +125,7 @@ public class TopQueryTests extends TestSuiteBase {
             List<CosmosItemProperties> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
             Set<String> actualIds = new HashSet<String>();
             for (CosmosItemProperties document : receivedDocuments) {
-                actualIds.add(document.resourceId());
+                actualIds.add(document.getResourceId());
             }
 
             assertThat(actualIds.size()).describedAs("total number of results").isEqualTo(topCount);
@@ -140,8 +140,8 @@ public class TopQueryTests extends TestSuiteBase {
         do {
             FeedOptions options = new FeedOptions();
             options.maxItemCount(pageSize);
-            options.enableCrossPartitionQuery(true);
-            options.maxDegreeOfParallelism(2);
+            options.setEnableCrossPartitionQuery(true);
+            options.setMaxDegreeOfParallelism(2);
             options.requestContinuation(requestContinuation);
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(query, options);
 
@@ -153,8 +153,8 @@ public class TopQueryTests extends TestSuiteBase {
             testSubscriber.assertComplete();
 
             FeedResponse<CosmosItemProperties> firstPage = (FeedResponse<CosmosItemProperties>) testSubscriber.getEvents().get(0).get(0);
-            requestContinuation = firstPage.continuationToken();
-            receivedDocuments.addAll(firstPage.results());
+            requestContinuation = firstPage.getContinuationToken();
+            receivedDocuments.addAll(firstPage.getResults());
             continuationTokens.add(requestContinuation);
         } while (requestContinuation != null);
 
@@ -173,7 +173,7 @@ public class TopQueryTests extends TestSuiteBase {
 
         for (int i = 0; i < 10; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
-            d.id(Integer.toString(i));
+            d.setId(Integer.toString(i));
             BridgeInternal.setProperty(d, field, i);
             BridgeInternal.setProperty(d, partitionKey, firstPk);
             docs.add(d);
@@ -181,7 +181,7 @@ public class TopQueryTests extends TestSuiteBase {
 
         for (int i = 10; i < 20; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
-            d.id(Integer.toString(i));
+            d.setId(Integer.toString(i));
             BridgeInternal.setProperty(d, field, i);
             BridgeInternal.setProperty(d, partitionKey, secondPk);
             docs.add(d);

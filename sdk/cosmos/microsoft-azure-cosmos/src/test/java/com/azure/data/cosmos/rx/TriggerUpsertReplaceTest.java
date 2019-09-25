@@ -31,33 +31,33 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
         // create a trigger
         CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.id(UUID.randomUUID().toString());
-        trigger.body("function() {var x = 10;}");
-        trigger.triggerOperation(TriggerOperation.CREATE);
-        trigger.triggerType(TriggerType.PRE);
-        CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().properties();
+        trigger.setId(UUID.randomUUID().toString());
+        trigger.setBody("function() {var x = 10;}");
+        trigger.setTriggerOperation(TriggerOperation.CREATE);
+        trigger.setTriggerType(TriggerType.PRE);
+        CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getProperties();
         
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosAsyncTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).read();
+        Mono<CosmosAsyncTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.getId()).read();
 
         // validate trigger creation
         CosmosResponseValidator<CosmosAsyncTriggerResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
-                .withId(readBackTrigger.id())
+                .withId(readBackTrigger.getId())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
                 .notNullEtag()
                 .build();
         validateSuccess(readObservable, validatorForRead);
         
-        //update trigger
-        readBackTrigger.body("function() {var x = 11;}");
+        //update getTrigger
+        readBackTrigger.setBody("function() {var x = 11;}");
 
-        Mono<CosmosAsyncTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).replace(readBackTrigger);
+        Mono<CosmosAsyncTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.getId()).replace(readBackTrigger);
 
-        // validate trigger replace
+        // validate getTrigger replace
         CosmosResponseValidator<CosmosAsyncTriggerResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
-                .withId(readBackTrigger.id())
+                .withId(readBackTrigger.getId())
                 .withTriggerBody("function() {var x = 11;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
                 .notNullEtag()

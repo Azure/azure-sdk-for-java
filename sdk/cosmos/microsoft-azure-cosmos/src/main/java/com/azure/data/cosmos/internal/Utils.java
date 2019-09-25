@@ -310,8 +310,8 @@ public class Utils {
         }
 
         return collection.getPartitionKey() != null
-                && collection.getPartitionKey().paths() != null
-                && collection.getPartitionKey().paths().size() > 0;
+                && collection.getPartitionKey().getPaths() != null
+                && collection.getPartitionKey().getPaths().size() > 0;
     }
 
     public static boolean isCollectionChild(ResourceType type) {

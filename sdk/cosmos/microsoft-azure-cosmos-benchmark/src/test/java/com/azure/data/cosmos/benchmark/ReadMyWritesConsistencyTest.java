@@ -14,7 +14,6 @@ import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.TestConfigurations;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import com.beust.jcommander.JCommander;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
@@ -81,7 +80,7 @@ public class ReadMyWritesConsistencyTest {
         options.setOfferThroughput(initialCollectionThroughput);
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
         database = Utils.createDatabaseForTest(housekeepingClient);
-        collection = housekeepingClient.createCollection("dbs/" + database.id(),
+        collection = housekeepingClient.createCollection("dbs/" + database.getId(),
             getCollectionDefinitionWithRangeRangeIndex(),
             options).single().block().getResource();
         housekeepingClient.close();
@@ -117,8 +116,8 @@ public class ReadMyWritesConsistencyTest {
         String cmd = Strings.lenientFormat(cmdFormat,
             TestConfigurations.HOST,
             TestConfigurations.MASTER_KEY,
-            database.id(),
-            collection.id(),
+            database.getId(),
+            collection.getId(),
             CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, desiredConsistency),
             concurrency,
             numberOfOperationsAsString,
@@ -163,26 +162,26 @@ public class ReadMyWritesConsistencyTest {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
-        partitionKeyDef.paths(paths);
+        partitionKeyDef.setPaths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
-        includedPath.path("/*");
+        includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
         BridgeInternal.setProperty(stringIndex, "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.Range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
+        BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
         indexes.add(numberIndex);
-        includedPath.indexes(indexes);
+        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         return collectionDefinition;
@@ -196,8 +195,8 @@ public class ReadMyWritesConsistencyTest {
             // for bulk insert and later queries.
             return housekeepingClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
-                    collection.resourceId())
-                , null).flatMap(page -> Flux.fromIterable(page.results()))
+                    collection.getResourceId())
+                , null).flatMap(page -> Flux.fromIterable(page.getResults()))
                                      .take(1).flatMap(offer -> {
                     logger.info("going to scale up collection, newThroughput {}", newThroughput);
                     offer.setThroughput(newThroughput);

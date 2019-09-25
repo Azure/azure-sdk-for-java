@@ -36,8 +36,8 @@ public class StoredProcedure extends Resource {
      * @param id the name of the resource.
      * @return the current stored procedure
      */
-    public StoredProcedure id(String id){
-        super.id(id);
+    public StoredProcedure setId(String id){
+        super.setId(id);
         return this;
     }
 

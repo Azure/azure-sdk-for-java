@@ -40,7 +40,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).statusCode()).isEqualTo(statusCode);
+                    assertThat(((CosmosClientException) t).getStatusCode()).isEqualTo(statusCode);
                 }
             });
             return this;
@@ -78,8 +78,8 @@ public interface FailureValidator {
                     assertThat(t).isInstanceOf(CosmosClientException.class);
                     CosmosClientException cosmosClientException = (CosmosClientException) t;
                     long exceptionQuorumAckedLSN = -1;
-                    if (cosmosClientException.responseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN) != null) {
-                        exceptionQuorumAckedLSN = Long.parseLong((String) cosmosClientException.responseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+                    if (cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN) != null) {
+                        exceptionQuorumAckedLSN = Long.parseLong((String) cosmosClientException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
 
                     }
                     assertThat(exceptionQuorumAckedLSN).isNotEqualTo(-1);
@@ -105,7 +105,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).message()).isNotNull();
+                    assertThat(((CosmosClientException) t).getActivityId()).isNotNull();
                 }
             });
             return this;
@@ -117,7 +117,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).error().toJson()).isEqualTo(cosmosError.toJson());
+                    assertThat(((CosmosClientException) t).getError().toJson()).isEqualTo(cosmosError.toJson());
                 }
             });
             return this;
@@ -129,7 +129,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).subStatusCode()).isEqualTo(substatusCode);
+                    assertThat(((CosmosClientException) t).getSubStatusCode()).isEqualTo(substatusCode);
                 }
             });
             return this;
@@ -141,7 +141,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).subStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+                    assertThat(((CosmosClientException) t).getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
                 }
             });
             return this;
@@ -153,7 +153,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).responseHeaders().get(key)).isEqualTo(value);
+                    assertThat(((CosmosClientException) t).getResponseHeaders().get(key)).isEqualTo(value);
                 }
             });
             return this;
@@ -227,7 +227,7 @@ public interface FailureValidator {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
                     CosmosClientException ex = (CosmosClientException) t;
-                    assertThat(ex.statusCode()).isEqualTo(404);
+                    assertThat(ex.getStatusCode()).isEqualTo(404);
 
                 }
             });
@@ -255,7 +255,7 @@ public interface FailureValidator {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
                     CosmosClientException ex = (CosmosClientException) t;
-                    assertThat(ex.statusCode()).isEqualTo(409);
+                    assertThat(ex.getStatusCode()).isEqualTo(409);
 
                 }
             });

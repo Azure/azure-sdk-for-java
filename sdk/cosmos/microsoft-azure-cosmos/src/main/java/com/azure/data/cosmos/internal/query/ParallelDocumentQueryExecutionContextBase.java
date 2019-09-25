@@ -50,7 +50,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         this.partitionKeyRanges = partitionKeyRanges;
 
         if (!Strings.isNullOrEmpty(rewrittenQuery)) {
-            this.querySpec = new SqlQuerySpec(rewrittenQuery, super.query.parameters());
+            this.querySpec = new SqlQuerySpec(rewrittenQuery, super.query.getParameters());
         } else {
             this.querySpec = super.query;
         }

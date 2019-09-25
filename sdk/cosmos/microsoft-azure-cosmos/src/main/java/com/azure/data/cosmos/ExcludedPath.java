@@ -31,7 +31,7 @@ public class ExcludedPath extends JsonSerializable {
      *
      * @return the path.
      */
-    public String path() {
+    public String getPath() {
         return super.getString(Constants.Properties.PATH);
     }
 
@@ -41,7 +41,7 @@ public class ExcludedPath extends JsonSerializable {
      * @param path the path.
      * @return the Exculded path.
      */
-    public ExcludedPath path(String path) {
+    public ExcludedPath setPath(String path) {
         super.set(Constants.Properties.PATH, path);
         return this;
     }

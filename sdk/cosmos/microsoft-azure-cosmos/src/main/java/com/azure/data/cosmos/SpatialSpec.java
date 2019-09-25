@@ -35,7 +35,7 @@ public class SpatialSpec extends JsonSerializable {
      *
      * @return the path.
      */
-    public String path() {
+    public String getPath() {
         return super.getString(Constants.Properties.PATH);
     }
 
@@ -45,7 +45,7 @@ public class SpatialSpec extends JsonSerializable {
      * @param path the path.
      * @return the SpatialSpec.
      */
-    public SpatialSpec path(String path) {
+    public SpatialSpec setPath(String path) {
         super.set(Constants.Properties.PATH, path);
         return this;
     }
@@ -55,7 +55,7 @@ public class SpatialSpec extends JsonSerializable {
      *
      * @return the collection of spatial types.
      */
-    public List<SpatialType> spatialTypes() {
+    public List<SpatialType> getSpatialTypes() {
         if (this.spatialTypes == null) {
             this.spatialTypes = super.getList(Constants.Properties.TYPES, SpatialType.class, true);
 
@@ -73,7 +73,7 @@ public class SpatialSpec extends JsonSerializable {
      * @param spatialTypes the collection of spatial types.
      * @return the SpatialSpec.
      */
-    public SpatialSpec spatialTypes(List<SpatialType> spatialTypes) {
+    public SpatialSpec setSpatialTypes(List<SpatialType> spatialTypes) {
         this.spatialTypes = spatialTypes;
         Collection<String> spatialTypeNames = new ArrayList<String>();
         for (SpatialType spatialType : this.spatialTypes) {

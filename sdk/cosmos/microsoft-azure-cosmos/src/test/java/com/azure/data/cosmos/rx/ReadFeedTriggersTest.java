@@ -45,7 +45,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
                 .exactlyContainsInAnyOrder(
-                        createdTriggers.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                        createdTriggers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -73,10 +73,10 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     public CosmosTriggerProperties createTriggers(CosmosAsyncContainer cosmosContainer) {
         CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.id(UUID.randomUUID().toString());
-        trigger.body("function() {var x = 10;}");
-        trigger.triggerOperation(TriggerOperation.CREATE);
-        trigger.triggerType(TriggerType.PRE);
-        return cosmosContainer.getScripts().createTrigger(trigger).block().properties();
+        trigger.setId(UUID.randomUUID().toString());
+        trigger.setBody("function() {var x = 10;}");
+        trigger.setTriggerOperation(TriggerOperation.CREATE);
+        trigger.setTriggerType(TriggerType.PRE);
+        return cosmosContainer.getScripts().createTrigger(trigger).block().getProperties();
     }
 }

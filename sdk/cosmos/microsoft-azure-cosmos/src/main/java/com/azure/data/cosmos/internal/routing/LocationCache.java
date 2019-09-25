@@ -119,8 +119,8 @@ public class LocationCache {
      */
     public void onDatabaseAccountRead(DatabaseAccount databaseAccount) {
         this.updateLocationCache(
-                databaseAccount.writableLocations(),
-                databaseAccount.readableLocations(),
+                databaseAccount.getWritableLocations(),
+                databaseAccount.getReadableLocations(),
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
     }
@@ -138,15 +138,15 @@ public class LocationCache {
      *            Once the endpoint is marked unavailable, it is moved to the end of available write endpoint. Current request will
      *            be retried on next preferred available write endpoint.
      *        (ii) For all other resources, always resolve to first/second (regardless of preferred locations)
-     *             write endpoint in {@link DatabaseAccount#writableLocations()}.
-     *             Endpoint of first write location in {@link DatabaseAccount#writableLocations()} is the only endpoint that supports
+     *             write getEndpoint in {@link DatabaseAccount#getWritableLocations()}.
+     *             Endpoint of first write location in {@link DatabaseAccount#getWritableLocations()} is the only getEndpoint that supports
      *             write operation on all resource types (except during that region's failover).
-     *             Only during manual failover, client would retry write on second write location in {@link DatabaseAccount#writableLocations()}.
-     *    (b) Else resolve the request to first write endpoint in {@link DatabaseAccount#writableLocations()} OR
-     *        second write endpoint in {@link DatabaseAccount#writableLocations()} in case of manual failover of that location.
-     * 2. Else resolve the request to most preferred available read endpoint (automatic failover for read requests)
-     * @param request Request for which endpoint is to be resolved
-     * @return Resolved endpoint
+     *             Only during manual failover, client would retry write on second write location in {@link DatabaseAccount#getWritableLocations()}.
+     *    (b) Else resolve the request to first write getEndpoint in {@link DatabaseAccount#getWritableLocations()} OR
+     *        second write getEndpoint in {@link DatabaseAccount#getWritableLocations()} in case of manual failover of that location.
+     * 2. Else resolve the request to most preferred available read getEndpoint (getAutomatic failover for read requests)
+     * @param request Request for which getEndpoint is to be resolved
+     * @return Resolved getEndpoint
      */
     public URL resolveServiceEndpoint(RxDocumentServiceRequest request) {
         if(request.requestContext != null && request.requestContext.locationEndpointToRoute != null) {
@@ -440,16 +440,16 @@ public class LocationCache {
         List<String> parsedLocations = new ArrayList<>();
 
         for (DatabaseAccountLocation location: locations) {
-            if (!Strings.isNullOrEmpty(location.name())) {
+            if (!Strings.isNullOrEmpty(location.getName())) {
                 try {
-                    URL endpoint = new URL(location.endpoint().toLowerCase());
-                    endpointsByLocation.put(location.name().toLowerCase(), endpoint);
-                    parsedLocations.add(location.name());
+                    URL endpoint = new URL(location.getEndpoint().toLowerCase());
+                    endpointsByLocation.put(location.getName().toLowerCase(), endpoint);
+                    parsedLocations.add(location.getName());
 
                 } catch (Exception e) {
                     logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as it is location name is either empty or endpoint is malformed [{}]",
-                            location.name(),
-                            location.endpoint());
+                            location.getName(),
+                            location.getEndpoint());
                 }
             }
         }

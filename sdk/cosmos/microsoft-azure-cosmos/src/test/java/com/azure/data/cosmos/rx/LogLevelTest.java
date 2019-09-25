@@ -65,7 +65,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
@@ -95,7 +95,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
@@ -126,7 +126,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
@@ -155,7 +155,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
@@ -181,7 +181,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
@@ -210,7 +210,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();
@@ -239,7 +239,7 @@ public class LogLevelTest extends TestSuiteBase {
             Mono<CosmosAsyncItemResponse> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id()).build();
+                    .withId(docDefinition.getId()).build();
             validateSuccess(createObservable, validator);
 
             assertThat(consoleWriter.toString()).isEmpty();

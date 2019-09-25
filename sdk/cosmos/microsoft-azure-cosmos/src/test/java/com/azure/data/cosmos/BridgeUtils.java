@@ -35,17 +35,17 @@ public class BridgeUtils {
     }
 
     public static ConflictResolutionPolicy setMode(ConflictResolutionPolicy policy, ConflictResolutionMode mode) {
-        policy.mode(mode);
+        policy.setMode(mode);
         return policy;
     }
 
     public static ConflictResolutionPolicy setPath(ConflictResolutionPolicy policy, String path) {
-        policy.conflictResolutionPath(path);
+        policy.setConflictResolutionPath(path);
         return policy;
     }
 
     public static ConflictResolutionPolicy setStoredProc(ConflictResolutionPolicy policy, String storedProcLink) {
-        policy.conflictResolutionProcedure(storedProcLink);
+        policy.setConflictResolutionProcedure(storedProcLink);
         return policy;
     }
 }

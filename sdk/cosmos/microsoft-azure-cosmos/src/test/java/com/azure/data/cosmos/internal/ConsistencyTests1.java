@@ -30,7 +30,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -41,8 +41,8 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.STRONG).build();
         User userDefinition = getUserDefinition();
-        userDefinition.id(userDefinition.id() + "validateStrongConsistencyOnSyncReplication");
-        User user = safeCreateUser(this.initClient, createdDatabase.id(), userDefinition);
+        userDefinition.setId(userDefinition.getId() + "validateStrongConsistencyOnSyncReplication");
+        User user = safeCreateUser(this.initClient, createdDatabase.getId(), userDefinition);
         validateStrongConsistency(user);
     }
 
@@ -52,7 +52,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -68,7 +68,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentLSNForDirectHttpsClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -86,7 +86,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         //TODO Need to test with TCP protocol
         //https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -120,7 +120,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentLSNAndQuorumAckedLSNForDirectHttpsClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -167,7 +167,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -177,7 +177,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS).build();
-        User user = safeCreateUser(this.initClient, createdDatabase.id(), getUserDefinition());
+        User user = safeCreateUser(this.initClient, createdDatabase.getId(), getUserDefinition());
         boolean readLagging = validateConsistentPrefix(user);
         assertThat(readLagging).isFalse();
     }
@@ -191,7 +191,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -204,7 +204,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                 .build();
         Document documentDefinition = getDocumentDefinition();
-        Document document = createDocument(this.initClient, createdDatabase.id(), createdCollection.id(), documentDefinition);
+        Document document = createDocument(this.initClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
         boolean readLagging = validateConsistentPrefix(document);
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
     }
@@ -240,9 +240,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         if (useGateway) {
-            connectionPolicy.connectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         } else {
-            connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
         }
         AsyncDocumentClient client = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
@@ -251,28 +251,28 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .build();
         try {
             DocumentCollection documentCollection = new DocumentCollection();
-            documentCollection.id(UUID.randomUUID().toString());
+            documentCollection.setId(UUID.randomUUID().toString());
             PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-            partitionKeyDefinition.kind(PartitionKind.HASH);
+            partitionKeyDefinition.setKind(PartitionKind.HASH);
             ArrayList<String> paths = new ArrayList<String>();
             paths.add("/id");
-            partitionKeyDefinition.paths(paths);
+            partitionKeyDefinition.setPaths(paths);
             documentCollection.setPartitionKey(partitionKeyDefinition);
 
-            DocumentCollection collection = client.createCollection(createdDatabase.selfLink(), documentCollection
+            DocumentCollection collection = client.createCollection(createdDatabase.getSelfLink(), documentCollection
                     , null).blockFirst().getResource();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey("1"));
 
             Document documentDefinition = new Document();
-            documentDefinition.id("1");
-            Document document = client.createDocument(collection.selfLink(), documentDefinition, requestOptions, false).blockFirst().getResource();
+            documentDefinition.setId("1");
+            Document document = client.createDocument(collection.getSelfLink(), documentDefinition, requestOptions, false).blockFirst().getResource();
 
-            Flux<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.selfLink(), requestOptions);
+            Flux<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), requestOptions);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .nullResource().build();
             validateSuccess(deleteObservable, validator);
-            Flux<ResourceResponse<Document>> readObservable = client.readDocument(document.selfLink(), requestOptions);
+            Flux<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), requestOptions);
             FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().unknownSubStatusCode().build();
             validateFailure(readObservable, notFoundValidator);
 
@@ -283,7 +283,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
 
     private static User getUserDefinition() {
         User user = new User();
-        user.id(USER_NAME);
+        user.setId(USER_NAME);
         return user;
     }
 }

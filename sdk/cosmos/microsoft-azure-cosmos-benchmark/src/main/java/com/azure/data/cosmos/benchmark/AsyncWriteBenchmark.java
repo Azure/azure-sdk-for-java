@@ -62,7 +62,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 
         String idString = uuid + i;
         Document newDoc = new Document();
-        newDoc.id(idString);
+        newDoc.setId(idString);
         BridgeInternal.setProperty(newDoc, partitionKey, idString);
         BridgeInternal.setProperty(newDoc, "dataField1", dataFieldValue);
         BridgeInternal.setProperty(newDoc, "dataField2", dataFieldValue);

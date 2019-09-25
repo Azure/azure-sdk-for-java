@@ -27,7 +27,7 @@ public final class RangeIndex extends Index {
      */
     public RangeIndex(DataType dataType) {
         super(IndexKind.RANGE);
-        this.dataType(dataType);
+        this.setDataType(dataType);
     }
 
     /**
@@ -44,8 +44,8 @@ public final class RangeIndex extends Index {
      */
     public RangeIndex(DataType dataType, int precision) {
         super(IndexKind.RANGE);
-        this.dataType(dataType);
-        this.precision(precision);
+        this.setDataType(dataType);
+        this.setPrecision(precision);
     }
 
     /**
@@ -55,7 +55,7 @@ public final class RangeIndex extends Index {
      */
     RangeIndex(String jsonString) {
         super(jsonString, IndexKind.RANGE);
-        if (this.dataType() == null) {
+        if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
         }
     }
@@ -65,7 +65,7 @@ public final class RangeIndex extends Index {
      *
      * @return the data type.
      */
-    public DataType dataType() {
+    public DataType getDataType() {
         DataType result = null;
         try {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
@@ -81,7 +81,7 @@ public final class RangeIndex extends Index {
      * @param dataType the data type.
      * @return the RangeIndex.
      */
-    public RangeIndex dataType(DataType dataType) {
+    public RangeIndex setDataType(DataType dataType) {
         super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
@@ -91,7 +91,7 @@ public final class RangeIndex extends Index {
      *
      * @return the precision.
      */
-    public int precision() {
+    public int getPrecision() {
         return super.getInt(Constants.Properties.PRECISION);
     }
 
@@ -101,7 +101,7 @@ public final class RangeIndex extends Index {
      * @param precision the precision.
      * @return the RangeIndex.
      */
-    public RangeIndex precision(int precision) {
+    public RangeIndex setPrecision(int precision) {
         super.set(Constants.Properties.PRECISION, precision);
         return this;
     }

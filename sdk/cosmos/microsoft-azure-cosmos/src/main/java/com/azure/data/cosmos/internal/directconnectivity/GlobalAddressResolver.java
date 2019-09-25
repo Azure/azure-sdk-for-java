@@ -65,8 +65,8 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.routingMapProvider = routingMapProvider;
         this.serviceConfigReader = serviceConfigReader;
 
-        int maxBackupReadEndpoints = (connectionPolicy.enableReadRequestsFallback() == null || connectionPolicy.enableReadRequestsFallback()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
-        this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write endpoint (during failover)
+        int maxBackupReadEndpoints = (connectionPolicy.getEnableReadRequestsFallback() == null || connectionPolicy.getEnableReadRequestsFallback()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
+        this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
 
         for (URL endpoint : endpointManager.getWriteEndpoints()) {
@@ -78,11 +78,11 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {
-        Mono<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.id(), null, null);
+        Mono<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.getId(), null, null);
         return routingMap.flatMap(collectionRoutingMap -> {
 
             List<PartitionKeyRangeIdentity> ranges = ((List<PartitionKeyRange>)collectionRoutingMap.getOrderedPartitionKeyRanges()).stream().map(range ->
-                    new PartitionKeyRangeIdentity(collection.resourceId(), range.id())).collect(Collectors.toList());
+                    new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
             List<Mono<Void>> tasks = new ArrayList<>();
             for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 tasks.add(endpointCache.addressCache.openAsync(collection, ranges));

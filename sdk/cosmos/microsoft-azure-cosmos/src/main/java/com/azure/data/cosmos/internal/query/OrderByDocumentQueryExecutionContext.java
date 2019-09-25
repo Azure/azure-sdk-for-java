@@ -132,9 +132,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             super.initialize(collectionRid,
                     partitionKeyRangeToContinuationToken,
                     initialPageSize,
-                    new SqlQuerySpec(querySpec.queryText().replace(FormatPlaceHolder,
+                    new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,
                             True),
-                            querySpec.parameters()));
+                            querySpec.getParameters()));
         } else {
             // Check to see if order by continuation token is a valid JSON.
             OrderByContinuationToken orderByContinuationToken;
@@ -223,9 +223,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         super.initialize(collectionRid,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(querySpec.queryText().replace(FormatPlaceHolder,
+                new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,
                         filter),
-                        querySpec.parameters()));
+                        querySpec.getParameters()));
     }
 
     private ImmutablePair<Integer, FormattedFilterInfo> GetFiltersForPartitions(
@@ -412,10 +412,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         private FeedResponse<OrderByRowResult<T>> addOrderByContinuationToken(
                 FeedResponse<OrderByRowResult<T>> page,
                 String orderByContinuationToken) {
-            Map<String, String> headers = new HashMap<>(page.responseHeaders());
+            Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
             headers.put(HttpConstants.HttpHeaders.CONTINUATION,
                     orderByContinuationToken);
-            return BridgeInternal.createFeedResponseWithQueryMetrics(page.results(),
+            return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                     headers,
                     BridgeInternal.queryMetricsFromFeedResponse(page));
         }
@@ -469,7 +469,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         FeedResponse<OrderByRowResult<T>> next = currentNext.right;
 
                         FeedResponse<OrderByRowResult<T>> page;
-                        if (next.results().size() == 0) {
+                        if (next.getResults().size() == 0) {
                             // No more pages no send current page with null continuation token
                             page = current;
                             page = this.addOrderByContinuationToken(page,
@@ -478,7 +478,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                             // Give the first page but use the first value in the next page to generate the
                             // continuation token
                             page = current;
-                            List<OrderByRowResult<T>> results = next.results();
+                            List<OrderByRowResult<T>> results = next.getResults();
                             OrderByRowResult<T> firstElementInNextPage = results.get(0);
                             String orderByContinuationToken = this.orderByContinuationTokenCallback
                                     .apply(firstElementInNextPage);
@@ -490,12 +490,12 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     }).map(feedOfOrderByRowResults -> {
                         // FeedResponse<OrderByRowResult<T>> to FeedResponse<T>
                         List<T> unwrappedResults = new ArrayList<T>();
-                        for (OrderByRowResult<T> orderByRowResult : feedOfOrderByRowResults.results()) {
+                        for (OrderByRowResult<T> orderByRowResult : feedOfOrderByRowResults.getResults()) {
                             unwrappedResults.add(orderByRowResult.getPayload());
                         }
 
                         return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
-                                feedOfOrderByRowResults.responseHeaders(),
+                                feedOfOrderByRowResults.getResponseHeaders(),
                                 BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults));
                     }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
@@ -552,7 +552,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private String getContinuationToken(
             OrderByRowResult<T> orderByRowResult) {
         // rid
-        String rid = orderByRowResult.resourceId();
+        String rid = orderByRowResult.getResourceId();
 
         // CompositeContinuationToken
         String backendContinuationToken = orderByRowResult.getSourceBackendContinuationToken();

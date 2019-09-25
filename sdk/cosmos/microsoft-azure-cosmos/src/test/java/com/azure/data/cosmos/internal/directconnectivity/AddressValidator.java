@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.internal.directconnectivity.Address;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
-import com.azure.data.cosmos.internal.directconnectivity.Address;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import org.assertj.core.api.Condition;
 
 import java.util.ArrayList;
@@ -40,7 +36,7 @@ public interface AddressValidator {
 
                 @Override
                 public void validate(Address address) {
-                    assertThat(address.id()).as("check Resource Id").isEqualTo(resourceId);
+                    assertThat(address.getId()).as("check Resource Id").isEqualTo(resourceId);
                 }
             });
             return this;
@@ -114,7 +110,7 @@ public interface AddressValidator {
 
                 @Override
                 public void validate(Address address) {
-                    assertThat(address.resourceId()).isEqualTo(rid);
+                    assertThat(address.getResourceId()).isEqualTo(rid);
                 }
             });
             return this;

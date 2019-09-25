@@ -46,11 +46,11 @@ public class DatabaseForTest {
     }
 
     private static DatabaseForTest from(Database db) {
-        if (db == null || db.id() == null || db.selfLink() == null) {
+        if (db == null || db.getId() == null || db.getSelfLink() == null) {
             return null;
         }
 
-        String id = db.id();
+        String id = db.getId();
         if (id == null) {
             return null;
         }
@@ -73,7 +73,7 @@ public class DatabaseForTest {
 
     public static DatabaseForTest create(DatabaseManager client) {
         Database dbDef = new Database();
-        dbDef.id(generateId());
+        dbDef.setId(generateId());
 
         Database db = client.createDatabase(dbDef).single().block().getResource();
         DatabaseForTest dbForTest = DatabaseForTest.from(db);
@@ -86,16 +86,16 @@ public class DatabaseForTest {
         List<Database> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
                                  new SqlParameterList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
-                .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
+                .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
 
         for (Database db : dbs) {
-            assert(db.id().startsWith(DatabaseForTest.SHARED_DB_ID_PREFIX));
+            assert(db.getId().startsWith(DatabaseForTest.SHARED_DB_ID_PREFIX));
 
             DatabaseForTest dbForTest = DatabaseForTest.from(db);
 
             if (db != null && dbForTest.isStale()) {
-                logger.info("Deleting database {}", db.id());
-                client.deleteDatabase(db.id()).single().block();
+                logger.info("Deleting database {}", db.getId());
+                client.deleteDatabase(db.getId()).single().block();
             }
         }
     }

@@ -57,7 +57,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -70,9 +70,9 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
     private Database getDatabaseDefinition() {
         Database databaseDefinition = new Database();
-        databaseDefinition.id(Utils.generateDatabaseId());
+        databaseDefinition.setId(Utils.generateDatabaseId());
 
-        databaseIds.add(databaseDefinition.id());
+        databaseIds.add(databaseDefinition.getId());
 
         return databaseDefinition;
     }
@@ -180,7 +180,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
                     .block(); // Blocks to get the result
             assertThat("Should not reach here", false);
         } catch (Exception e) {
-            assertThat("Database already exists.", ((CosmosClientException) e.getCause()).statusCode(),
+            assertThat("Database already exists.", ((CosmosClientException) e.getCause()).getStatusCode(),
                        equalTo(409));
         }
     }
@@ -208,8 +208,8 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
         // CREATE a database
         Database database = client.createDatabase(getDatabaseDefinition(), null).single().block().getResource();
 
-        // READ the created database using async api
-        Flux<ResourceResponse<Database>> readDatabaseObservable = client.readDatabase("dbs/" + database.id(),
+        // READ the created getDatabase using async api
+        Flux<ResourceResponse<Database>> readDatabaseObservable = client.readDatabase("dbs/" + database.getId(),
                                                                                                  null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -238,7 +238,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
         // DELETE the created database using async api
         Flux<ResourceResponse<Database>> deleteDatabaseObservable = client
-                .deleteDatabase("dbs/" + database.id(), null);
+                .deleteDatabase("dbs/" + database.getId(), null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
@@ -267,7 +267,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
         // Query the created database using async api
         Flux<FeedResponse<Database>> queryDatabaseObservable = client
-                .queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseDefinition.id()), null);
+                .queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseDefinition.getId()), null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
@@ -277,13 +277,13 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
             // First element of the list should have only 1 result
             FeedResponse<Database> databaseFeedResponse = databaseFeedResponseList.get(0);
-            assertThat(databaseFeedResponse.results().size(), equalTo(1));
+            assertThat(databaseFeedResponse.getResults().size(), equalTo(1));
 
-            // This database should have the same id as the one we created
-            Database foundDatabase = databaseFeedResponse.results().get(0);
-            assertThat(foundDatabase.id(), equalTo(databaseDefinition.id()));
+            // This getDatabase should have the same getId as the one we created
+            Database foundDatabase = databaseFeedResponse.getResults().get(0);
+            assertThat(foundDatabase.getId(), equalTo(databaseDefinition.getId()));
 
-            System.out.println(databaseFeedResponse.activityId());
+            System.out.println(databaseFeedResponse.getActivityId());
             completionLatch.countDown();
         }, error -> {
             System.err.println("an error occurred while querying the database: actual cause: " + error.getMessage());

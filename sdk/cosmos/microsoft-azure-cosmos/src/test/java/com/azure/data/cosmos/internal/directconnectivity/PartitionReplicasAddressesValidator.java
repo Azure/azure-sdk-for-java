@@ -2,11 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.internal.directconnectivity.Address;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
-import com.azure.data.cosmos.internal.directconnectivity.Address;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -86,7 +81,7 @@ public interface PartitionReplicasAddressesValidator {
 
                     AddressValidator validator = new AddressValidator.Builder()
                             .withPartitionKeyRangeId(partitionKeyRangeId)
-                            .withRid(a.resourceId())
+                            .withRid(a.getResourceId())
                             .build();
 
                     for (Address address : addresses) {
@@ -110,7 +105,7 @@ public interface PartitionReplicasAddressesValidator {
 
                     AddressValidator validator = new AddressValidator.Builder()
                             .withPartitionKeyRangeId(a.getParitionKeyRangeId())
-                            .withRid(a.resourceId())
+                            .withRid(a.getResourceId())
                             .build();
 
                     for (Address address : addresses) {

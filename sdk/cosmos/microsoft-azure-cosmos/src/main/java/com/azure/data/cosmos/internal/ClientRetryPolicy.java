@@ -45,8 +45,8 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                              RetryOptions retryOptions) {
 
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
-                retryOptions.maxRetryAttemptsOnThrottledRequests(),
-                retryOptions.maxRetryWaitTimeInSeconds());
+                retryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+                retryOptions.getMaxRetryWaitTimeInSeconds());
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
@@ -67,8 +67,8 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
         CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
-        if (clientException != null && clientException.cosmosResponseDiagnostics() != null) {
-            this.cosmosResponseDiagnostics = clientException.cosmosResponseDiagnostics();
+        if (clientException != null && clientException.getCosmosResponseDiagnostics() != null) {
+            this.cosmosResponseDiagnostics = clientException.getCosmosResponseDiagnostics();
         }
         if (clientException != null && 
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&

@@ -57,6 +57,6 @@ public class ReadFeedPkrTests extends TestSuiteBase {
     }
 
     private String getCollectionLink() {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 }

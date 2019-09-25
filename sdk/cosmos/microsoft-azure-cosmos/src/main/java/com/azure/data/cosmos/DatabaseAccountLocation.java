@@ -36,7 +36,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @return the name of the database account location.
      */
-    public String name() {
+    public String getName() {
         return super.getString(Constants.Properties.Name);
     }
 
@@ -54,7 +54,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @return the endpoint of the database account location.
      */
-    public String endpoint() {
+    public String getEndpoint() {
         return super.getString(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT);
     }
 

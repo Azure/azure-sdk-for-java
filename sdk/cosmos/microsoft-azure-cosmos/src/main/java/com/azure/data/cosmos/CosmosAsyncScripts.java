@@ -51,8 +51,8 @@ public class CosmosAsyncScripts {
             options = new CosmosStoredProcedureRequestOptions();
         }
         StoredProcedure sProc = new StoredProcedure();
-        sProc.id(properties.id());
-        sProc.setBody(properties.body());
+        sProc.setId(properties.getId());
+        sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
                 .createStoredProcedure(container.getLink(), sProc, options.toRequestOptions())
                 .map(response -> new CosmosAsyncStoredProcedureResponse(response, this.container))
@@ -73,8 +73,8 @@ public class CosmosAsyncScripts {
     public Flux<FeedResponse<CosmosStoredProcedureProperties>> readAllStoredProcedures(FeedOptions options){
         return database.getDocClientWrapper()
                 .readStoredProcedures(container.getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosStoredProcedureProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse(CosmosStoredProcedureProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -110,8 +110,8 @@ public class CosmosAsyncScripts {
                                                                                    FeedOptions options){
         return database.getDocClientWrapper()
                 .queryStoredProcedures(container.getLink(), querySpec,options)
-                .map(response -> BridgeInternal.createFeedResponse( CosmosStoredProcedureProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse( CosmosStoredProcedureProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -138,8 +138,8 @@ public class CosmosAsyncScripts {
      */
     public Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties){
         UserDefinedFunction udf = new UserDefinedFunction();
-        udf.id(properties.id());
-        udf.setBody(properties.body());
+        udf.setId(properties.getId());
+        udf.setBody(properties.getBody());
 
         return database.getDocClientWrapper()
                 .createUserDefinedFunction(container.getLink(), udf, null)
@@ -159,8 +159,8 @@ public class CosmosAsyncScripts {
     public Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> readAllUserDefinedFunctions(FeedOptions options){
         return database.getDocClientWrapper()
                 .readUserDefinedFunctions(container.getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosUserDefinedFunctionProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse(CosmosUserDefinedFunctionProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -194,8 +194,8 @@ public class CosmosAsyncScripts {
                                                                                            FeedOptions options){
         return database.getDocClientWrapper()
                 .queryUserDefinedFunctions(container.getLink(),querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosUserDefinedFunctionProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse(CosmosUserDefinedFunctionProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -240,8 +240,8 @@ public class CosmosAsyncScripts {
     public Flux<FeedResponse<CosmosTriggerProperties>> readAllTriggers(FeedOptions options){
         return database.getDocClientWrapper()
                 .readTriggers(container.getLink(), options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosTriggerProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse(CosmosTriggerProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**
@@ -274,8 +274,8 @@ public class CosmosAsyncScripts {
                                                                    FeedOptions options){
         return database.getDocClientWrapper()
                 .queryTriggers(container.getLink(), querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponse(CosmosTriggerProperties.getFromV2Results(response.results()),
-                        response.responseHeaders()));
+                .map(response -> BridgeInternal.createFeedResponse(CosmosTriggerProperties.getFromV2Results(response.getResults()),
+                        response.getResponseHeaders()));
     }
 
     /**

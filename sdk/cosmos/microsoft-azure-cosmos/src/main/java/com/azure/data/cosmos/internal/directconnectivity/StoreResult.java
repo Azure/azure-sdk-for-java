@@ -63,8 +63,8 @@ public class StoreResult {
         this.currentReplicaSetSize = currentReplicaSetSize;
         this.currentWriteQuorum = currentWriteQuorum;
         this.isValid = isValid;
-        this.isGoneException = this.exception != null && this.exception.statusCode() == HttpConstants.StatusCodes.GONE;
-        this.isNotFoundException = this.exception != null && this.exception.statusCode() == HttpConstants.StatusCodes.NOTFOUND;
+        this.isGoneException = this.exception != null && this.exception.getStatusCode() == HttpConstants.StatusCodes.GONE;
+        this.isNotFoundException = this.exception != null && this.exception.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND;
         this.isInvalidPartitionException = this.exception != null
                 && Exceptions.isNameCacheStale(this.exception);
         this.storePhysicalAddress = storePhysicalAddress;
@@ -112,7 +112,7 @@ public class StoreResult {
 
     private static void setRequestCharge(StoreResponse response, CosmosClientException cosmosClientException, double totalRequestCharge) {
         if (cosmosClientException != null) {
-            cosmosClientException.responseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
+            cosmosClientException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
                     Double.toString(totalRequestCharge));
         }
         // Set total charge as final charge for the response.
@@ -137,8 +137,8 @@ public class StoreResult {
             statusCode = this.storeResponse.getStatus();
             subStatusCode = this.storeResponse.getSubStatusCode();
         } else if (this.exception != null) {
-            statusCode = this.exception.statusCode();
-            subStatusCode = this.exception.subStatusCode();
+            statusCode = this.exception.getStatusCode();
+            subStatusCode = this.exception.getSubStatusCode();
         }
 
         return "storePhysicalAddress: " + this.storePhysicalAddress +

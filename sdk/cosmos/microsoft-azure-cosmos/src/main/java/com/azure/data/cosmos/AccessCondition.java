@@ -16,7 +16,7 @@ public final class AccessCondition {
      *
      * @return the condition type.
      */
-    public AccessConditionType type() {
+    public AccessConditionType getType() {
         return this.type;
     }
 
@@ -26,7 +26,7 @@ public final class AccessCondition {
      * @param type the condition type to use.
      * @return the Access Condition
      */
-    public AccessCondition type(AccessConditionType type) {
+    public AccessCondition setType(AccessConditionType type) {
         this.type = type;
         return this;
     }
@@ -37,7 +37,7 @@ public final class AccessCondition {
      *
      * @return the condition.
      */
-    public String condition() {
+    public String getCondition() {
         return this.condition;
     }
 
@@ -48,7 +48,7 @@ public final class AccessCondition {
      * @param condition the condition to use.
      * @return the Access Condition
      */
-    public AccessCondition condition(String condition) {
+    public AccessCondition setCondition(String condition) {
         this.condition = condition;
         return this;
     }

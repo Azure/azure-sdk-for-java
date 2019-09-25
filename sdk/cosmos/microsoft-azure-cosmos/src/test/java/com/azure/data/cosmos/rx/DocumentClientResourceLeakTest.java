@@ -40,7 +40,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
             CosmosAsyncClient client = this.clientBuilder().buildAsyncClient();
             try {
                 logger.info("creating document");
-                createDocument(client.getDatabase(createdDatabase.id()).getContainer(createdCollection.id()),
+                createDocument(client.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId()),
                     getDocumentDefinition());
             } finally {
                 logger.info("closing client");

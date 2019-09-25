@@ -442,14 +442,14 @@ public class RxDocumentServiceRequest {
         String queryText;
         switch (queryCompatibilityMode) {
         case SqlQuery:
-            if (querySpec.parameters() != null && querySpec.parameters().size() > 0) {
+            if (querySpec.getParameters() != null && querySpec.getParameters().size() > 0) {
                 throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
                                 queryCompatibilityMode.toString()));
             }
 
             operation = OperationType.SqlQuery;
-            queryText = querySpec.queryText();
+            queryText = querySpec.getQueryText();
             break;
 
         case Default:
@@ -1021,7 +1021,7 @@ public class RxDocumentServiceRequest {
         } else if (options instanceof FeedOptions) {
             return ((FeedOptions) options).properties();
         } else if (options instanceof ChangeFeedOptions) {
-            return ((ChangeFeedOptions) options).properties();
+            return ((ChangeFeedOptions) options).getProperties();
         } else {
             return null;
         }

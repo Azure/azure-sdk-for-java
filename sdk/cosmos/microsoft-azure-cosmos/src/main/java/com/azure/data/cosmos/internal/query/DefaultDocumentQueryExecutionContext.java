@@ -98,7 +98,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
             newFeedOptions.requestContinuation(null);
-            newFeedOptions.maxDegreeOfParallelism(Integer.MAX_VALUE);
+            newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 
         int maxPageSize = newFeedOptions.maxItemCount() != null ? newFeedOptions.maxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
@@ -146,20 +146,20 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
             }, finalRetryPolicyInstance).flux()
                     .map(tFeedResponse -> {
                         this.fetchSchedulingMetrics.stop();
-                        this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.activityId(),
-                                tFeedResponse.results().size(),
+                        this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),
+                                tFeedResponse.getResults().size(),
                                 this.retries);
                         ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
                                 new ImmutablePair<>(DEFAULT_PARTITION_KEY_RANGE_ID, this.fetchSchedulingMetrics.getElapsedTime());
-                        if (!StringUtils.isEmpty(tFeedResponse.responseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
+                        if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
                             QueryMetrics qm =
-                                    BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.responseHeaders()
+                                    BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
                                                     .get(HttpConstants.HttpHeaders.QUERY_METRICS),
                                             new ClientSideMetrics(this.retries,
-                                                    tFeedResponse.requestCharge(),
+                                                    tFeedResponse.getRequestCharge(),
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),
                                                     Arrays.asList(schedulingTimeSpanMap)),
-                                            tFeedResponse.activityId());
+                                            tFeedResponse.getActivityId());
                             BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_KEY_RANGE_ID, qm);
                         }
                         return tFeedResponse;

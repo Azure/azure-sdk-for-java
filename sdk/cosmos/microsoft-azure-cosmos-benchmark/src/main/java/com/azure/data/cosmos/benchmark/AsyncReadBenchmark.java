@@ -54,7 +54,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
     protected void performWorkload(BaseSubscriber<ResourceResponse<Document>> baseSubscriber, long i) throws InterruptedException {
         int index = (int) (i % docsToRead.size());
         RequestOptions options = new RequestOptions();
-        options.setPartitionKey(new PartitionKey(docsToRead.get(index).id()));
+        options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
         Flux<ResourceResponse<Document>> obs = client.readDocument(getDocumentLink(docsToRead.get(index)), options);
 

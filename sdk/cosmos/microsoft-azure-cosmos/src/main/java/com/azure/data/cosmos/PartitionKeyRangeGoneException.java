@@ -55,6 +55,6 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
     }
 
     private void setSubstatus() {
-        this.responseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
+        this.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
     }
 }

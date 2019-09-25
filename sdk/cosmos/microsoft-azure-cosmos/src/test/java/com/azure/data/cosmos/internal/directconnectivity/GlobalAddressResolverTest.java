@@ -67,7 +67,7 @@ public class GlobalAddressResolverTest {
         urlforWrite3 = new URL("http://testWrite3.com/");
 
         connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.enableReadRequestsFallback(true);
+        connectionPolicy.setEnableReadRequestsFallback(true);
         httpClient = Mockito.mock(HttpClient.class);
         endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
@@ -89,7 +89,7 @@ public class GlobalAddressResolverTest {
         authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
         collectionCache = Mockito.mock(RxCollectionCache.class);
         Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(collectionDefinition));
         routingMapProvider = Mockito.mock(RxPartitionKeyRangeCache.class);
@@ -140,8 +140,8 @@ public class GlobalAddressResolverTest {
 
 
         DocumentCollection documentCollection = new DocumentCollection();
-        documentCollection.id("TestColl");
-        documentCollection.resourceId("IXYFAOHEBPM=");
+        documentCollection.setId("TestColl");
+        documentCollection.setResourceId("IXYFAOHEBPM=");
         CollectionRoutingMap collectionRoutingMap = Mockito.mock(CollectionRoutingMap.class);
         PartitionKeyRange range = new PartitionKeyRange("0", PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
                 PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
@@ -153,7 +153,7 @@ public class GlobalAddressResolverTest {
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
         for (PartitionKeyRange partitionKeyRange : (List<PartitionKeyRange>) collectionRoutingMap.getOrderedPartitionKeyRanges()) {
-            PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(documentCollection.resourceId(), partitionKeyRange.id());
+            PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId());
             ranges.add(partitionKeyRangeIdentity);
         }
 

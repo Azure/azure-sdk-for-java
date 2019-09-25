@@ -31,8 +31,8 @@ public class User extends Resource {
      * @param id the name of the resource.
      * @return the current instance of User
      */
-    public User id(String id){
-        super.id(id);
+    public User setId(String id){
+        super.setId(id);
         return this;
     }
 
@@ -42,7 +42,7 @@ public class User extends Resource {
      * @return the permissions link.
      */
     public String getPermissionsLink() {
-        String selfLink = this.selfLink();
+        String selfLink = this.getSelfLink();
         if (selfLink.endsWith("/")) {
             return selfLink + super.getString(Constants.Properties.PERMISSIONS_LINK);
         } else {

@@ -193,8 +193,8 @@ public class ServiceItemLease implements Lease {
 
     public static ServiceItemLease fromDocument(Document document) {
         ServiceItemLease lease = new ServiceItemLease()
-            .withId(document.id())
-            .withEtag(document.etag())
+            .withId(document.getId())
+            .withEtag(document.getETag())
             .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
             .withOwner(document.getString("Owner"))
             .withLeaseToken(document.getString("LeaseToken"))
@@ -210,8 +210,8 @@ public class ServiceItemLease implements Lease {
 
     public static ServiceItemLease fromDocument(CosmosItemProperties document) {
         ServiceItemLease lease = new ServiceItemLease()
-            .withId(document.id())
-            .withEtag(document.etag())
+            .withId(document.getId())
+            .withEtag(document.getETag())
             .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
             .withOwner(document.getString("Owner"))
             .withLeaseToken(document.getString("LeaseToken"))

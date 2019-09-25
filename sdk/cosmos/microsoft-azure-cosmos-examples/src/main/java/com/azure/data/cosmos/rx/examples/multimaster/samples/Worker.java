@@ -50,7 +50,7 @@ public class Worker {
                 long startTick = System.currentTimeMillis();
 
                 Document d = new Document();
-                d.id(UUID.randomUUID().toString());
+                d.setId(UUID.randomUUID().toString());
 
                 this.client.createDocument(this.documentCollectionUri, d, null, false)
                         .subscribeOn(schedulerForBlockingWork).single().block();
@@ -85,13 +85,13 @@ public class Worker {
                 do {
 
                     FeedOptions options = new FeedOptions();
-                    options.requestContinuation(response != null ? response.continuationToken() : null);
+                    options.requestContinuation(response != null ? response.getContinuationToken() : null);
 
                     response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                             .subscribeOn(schedulerForBlockingWork).single().block();
 
-                    totalItemRead += response.results().size();
-                } while (response.continuationToken() != null);
+                    totalItemRead += response.getResults().size();
+                } while (response.getContinuationToken() != null);
 
                 if (totalItemRead < expectedNumberOfDocuments) {
                     logger.info("Total item read {} from {} is less than {}, retrying reads",
@@ -122,22 +122,22 @@ public class Worker {
         do {
 
             FeedOptions options = new FeedOptions();
-            options.requestContinuation(response != null ? response.continuationToken() : null);
+            options.requestContinuation(response != null ? response.getContinuationToken() : null);
 
             response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                     .subscribeOn(schedulerForBlockingWork).single().block();
 
-            documents.addAll(response.results());
-        } while (response.continuationToken() != null);
+            documents.addAll(response.getResults());
+        } while (response.getContinuationToken() != null);
 
         for (Document document : documents) {
             try {
-                this.client.deleteDocument(document.selfLink(), null)
+                this.client.deleteDocument(document.getSelfLink(), null)
                         .subscribeOn(schedulerForBlockingWork).single().block();
             } catch (RuntimeException exEx) {
                 CosmosClientException dce = getDocumentClientExceptionCause(exEx);
 
-                if (dce.statusCode() != 404) {
+                if (dce.getStatusCode() != 404) {
                     logger.info("Error occurred while deleting {} from {}", dce, client.getWriteEndpoint());
                 }
             }

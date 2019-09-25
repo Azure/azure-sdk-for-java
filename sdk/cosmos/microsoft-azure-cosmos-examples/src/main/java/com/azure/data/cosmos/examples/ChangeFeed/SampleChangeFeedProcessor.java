@@ -74,11 +74,11 @@ public class SampleChangeFeedProcessor {
 
     public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
         return ChangeFeedProcessor.Builder()
-            .hostName(hostName)
-            .feedContainer(feedContainer)
-            .leaseContainer(leaseContainer)
-            .handleChanges(docs -> {
-                System.out.println("--->handleChanges() START");
+            .setHostName(hostName)
+            .setFeedContainer(feedContainer)
+            .setLeaseContainer(leaseContainer)
+            .setHandleChanges(docs -> {
+                System.out.println("--->setHandleChanges() START");
 
                 for (CosmosItemProperties document : docs) {
                     System.out.println("---->DOCUMENT RECEIVED: " + document.toJson(SerializationFormattingPolicy.INDENTED));
@@ -92,15 +92,15 @@ public class SampleChangeFeedProcessor {
     public static CosmosAsyncClient getCosmosClient() {
 
         return CosmosAsyncClient.builder()
-                .endpoint(SampleConfigurations.HOST)
-                .key(SampleConfigurations.MASTER_KEY)
-                .connectionPolicy(ConnectionPolicy.defaultPolicy())
-                .consistencyLevel(ConsistencyLevel.EVENTUAL)
+                .setEndpoint(SampleConfigurations.HOST)
+                .setKey(SampleConfigurations.MASTER_KEY)
+                .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
                 .buildAsyncClient();
     }
 
     public static CosmosAsyncDatabase createNewDatabase(CosmosAsyncClient client, String databaseName) {
-        return client.createDatabaseIfNotExists(databaseName).block().database();
+        return client.createDatabaseIfNotExists(databaseName).block().getDatabase();
     }
 
     public static void deleteDatabase(CosmosAsyncDatabase cosmosDatabase) {
@@ -122,7 +122,7 @@ public class SampleChangeFeedProcessor {
             if (ex.getCause() instanceof CosmosClientException) {
                 CosmosClientException cosmosClientException = (CosmosClientException) ex.getCause();
 
-                if (cosmosClientException.statusCode() != 404) {
+                if (cosmosClientException.getStatusCode() != 404) {
                     throw ex;
                 }
             } else {
@@ -140,7 +140,7 @@ public class SampleChangeFeedProcessor {
             throw new RuntimeException(String.format("Failed to create collection %s in database %s.", collectionName, databaseName));
         }
 
-        return containerResponse.container();
+        return containerResponse.getContainer();
     }
 
     public static CosmosAsyncContainer createNewLeaseCollection(CosmosAsyncClient client, String databaseName, String leaseCollectionName) {
@@ -164,7 +164,7 @@ public class SampleChangeFeedProcessor {
             if (ex.getCause() instanceof CosmosClientException) {
                 CosmosClientException cosmosClientException = (CosmosClientException) ex.getCause();
 
-                if (cosmosClientException.statusCode() != 404) {
+                if (cosmosClientException.getStatusCode() != 404) {
                     throw ex;
                 }
             } else {
@@ -181,17 +181,17 @@ public class SampleChangeFeedProcessor {
             throw new RuntimeException(String.format("Failed to create collection %s in database %s.", leaseCollectionName, databaseName));
         }
 
-        return leaseContainerResponse.container();
+        return leaseContainerResponse.getContainer();
     }
 
     public static void createNewDocuments(CosmosAsyncContainer containerClient, int count, Duration delay) {
         String suffix = RandomStringUtils.randomAlphabetic(10);
         for (int i = 0; i <= count; i++) {
             CosmosItemProperties document = new CosmosItemProperties();
-            document.id(String.format("0%d-%s", i, suffix));
+            document.setId(String.format("0%d-%s", i, suffix));
 
             containerClient.createItem(document).subscribe(doc -> {
-                System.out.println("---->DOCUMENT WRITE: " + doc.properties().toJson(SerializationFormattingPolicy.INDENTED));
+                System.out.println("---->DOCUMENT WRITE: " + doc.getProperties().toJson(SerializationFormattingPolicy.INDENTED));
             });
 
             long remainingWork = delay.toMillis();

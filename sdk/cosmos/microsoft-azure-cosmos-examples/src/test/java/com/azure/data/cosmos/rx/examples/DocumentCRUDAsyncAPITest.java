@@ -82,7 +82,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -93,12 +93,12 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         this.client = this.clientBuilder().build();
 
         DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.id(UUID.randomUUID().toString());
+        collectionDefinition.setId(UUID.randomUUID().toString());
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         ArrayList<String> partitionKeyPaths = new ArrayList<String>();
         partitionKeyPaths.add(PARTITION_KEY_PATH);
-        partitionKeyDefinition.paths(partitionKeyPaths);
+        partitionKeyDefinition.setPaths(partitionKeyPaths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
 
         // CREATE database
@@ -106,7 +106,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
         // CREATE collection
         createdCollection = client
-            .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
+            .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
             .single().block().getResource();
     }
 
@@ -147,7 +147,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDocument_Async_withoutLambda() throws Exception {
-        Document doc = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
+        Document doc = new Document(String.format("{ 'getId': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
         Flux<ResourceResponse<Document>> createDocumentObservable = client
                 .createDocument(getCollectionLink(), doc, null, true);
 
@@ -200,7 +200,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDocumentWithProgrammableDocumentDefinition() throws Exception {
         Document documentDefinition = new Document();
-        documentDefinition.id("test-document");
+        documentDefinition.setId("test-document");
         BridgeInternal.setProperty(documentDefinition, "counter", 1);
 
         // CREATE a document
@@ -220,7 +220,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
             Document readDocument = documentResourceResponse.getResource();
 
             // The read document must be the same as the written document
-            assertThat(readDocument.id(), equalTo("test-document"));
+            assertThat(readDocument.getId(), equalTo("test-document"));
             assertThat(readDocument.getInt("counter"), equalTo(1));
             System.out.println(documentResourceResponse.getActivityId());
             completionLatch.countDown();
@@ -292,7 +292,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
                     .block(); // Blocks and gets the result
             Assert.fail("Document Already Exists. Document Creation must fail");
         } catch (Exception e) {
-            assertThat("Document already exists.", ((CosmosClientException) e.getCause()).statusCode(),
+            assertThat("Document already exists.", ((CosmosClientException) e.getCause()).getStatusCode(),
                        equalTo(409));
         }
     }
@@ -324,7 +324,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         Thread.sleep(2000);
         assertThat(errorList, hasSize(1));
         assertThat(errorList.get(0), is(instanceOf(CosmosClientException.class)));
-        assertThat(((CosmosClientException) errorList.get(0)).statusCode(), equalTo(409));
+        assertThat(((CosmosClientException) errorList.get(0)).getStatusCode(), equalTo(409));
     }
 
     /**
@@ -339,7 +339,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
         // Try to replace the existing document
         Document replacingDocument = new Document(
-                String.format("{ 'id': 'doc%s', 'counter': '%d', 'new-prop' : '2'}", createdDocument.id(), 1));
+                String.format("{ 'id': 'doc%s', 'counter': '%d', 'new-prop' : '2'}", createdDocument.getId(), 1));
         Flux<ResourceResponse<Document>> replaceDocumentObservable = client
                 .replaceDocument(getDocumentLink(createdDocument), replacingDocument, null);
 
@@ -367,7 +367,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
         // Upsert the existing document
         Document upsertingDocument = new Document(
-                String.format("{ 'id': 'doc%s', 'counter': '%d', 'new-prop' : '2'}", doc.id(), 1));
+                String.format("{ 'id': 'doc%s', 'counter': '%d', 'new-prop' : '2'}", doc.getId(), 1));
         Flux<ResourceResponse<Document>> upsertDocumentObservable = client
                 .upsertDocument(getCollectionLink(), upsertingDocument, null, false);
 
@@ -414,10 +414,10 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
         // Assert document is deleted
         FeedOptions queryOptions = new FeedOptions();
-        queryOptions.enableCrossPartitionQuery(true);
+        queryOptions.setEnableCrossPartitionQuery(true);
         List<Document> listOfDocuments = client
-                .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.id()), queryOptions)
-                .map(FeedResponse::results) // Map page to its list of documents
+                .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.getId()), queryOptions)
+                .map(FeedResponse::getResults) // Map page to its list of documents
                 .concatMap(Flux::fromIterable) // Flatten the observable
                 .collectList() // Transform to a observable
                 .single() // Gets the Mono<List<Document>>
@@ -490,7 +490,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         options.setPartitionKey(new PartitionKey(testObject.mypk));
 
         Document readDocument = client
-                .readDocument(createdDocument.selfLink(), options)
+                .readDocument(createdDocument.getSelfLink(), options)
                 .single()
                 .block()
                 .getResource();
@@ -516,10 +516,10 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     }
 
     private String getCollectionLink() {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 
     private String getDocumentLink(Document createdDocument) {
-        return "dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id() + "/docs/" + createdDocument.id();
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + createdDocument.getId();
     }
 }

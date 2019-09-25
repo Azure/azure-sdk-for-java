@@ -68,16 +68,16 @@ public class ProxyHostTest extends TestSuiteBase {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.proxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = CosmosAsyncClient.builder().endpoint(TestConfigurations.HOST)
-                    .key(TestConfigurations.MASTER_KEY)
-                    .connectionPolicy(connectionPolicy)
-                    .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            clientWithRightProxy = CosmosAsyncClient.builder().setEndpoint(TestConfigurations.HOST)
+                    .setKey(TestConfigurations.MASTER_KEY)
+                    .setConnectionPolicy(connectionPolicy)
+                    .setConsistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
             CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosAsyncItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.id()).getContainer(createdCollection.id())
+            Mono<CosmosAsyncItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
                     .createItem(docDefinition, new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id())
+                    .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
         } finally {
@@ -103,16 +103,16 @@ public class ProxyHostTest extends TestSuiteBase {
             Logger.getLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.proxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = CosmosAsyncClient.builder().endpoint(TestConfigurations.HOST)
-                    .key(TestConfigurations.MASTER_KEY)
-                    .connectionPolicy(connectionPolicy)
-                    .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            clientWithRightProxy = CosmosAsyncClient.builder().setEndpoint(TestConfigurations.HOST)
+                    .setKey(TestConfigurations.MASTER_KEY)
+                    .setConnectionPolicy(connectionPolicy)
+                    .setConsistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
             CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosAsyncItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.id()).getContainer(createdCollection.id())
+            Mono<CosmosAsyncItemResponse> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
                     .createItem(docDefinition, new CosmosItemRequestOptions());
             CosmosResponseValidator<CosmosAsyncItemResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncItemResponse>()
-                    .withId(docDefinition.id())
+                    .withId(docDefinition.getId())
                     .build();
             validateSuccess(createObservable, validator);
 
@@ -128,7 +128,7 @@ public class ProxyHostTest extends TestSuiteBase {
     public void afterClass() throws Exception {
         safeClose(client);
         httpProxyServer.shutDown();
-        // wait for proxy server to be shutdown
+        // wait for getProxy server to be shutdown
         TimeUnit.SECONDS.sleep(1);
 
         LogManager.resetConfiguration();

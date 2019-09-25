@@ -16,40 +16,40 @@ public class HelloWorldDemo {
         // Create a new CosmosAsyncClient via the builder
         // It only requires endpoint and key, but other useful settings are available
         CosmosAsyncClient client = CosmosAsyncClient.builder()
-            .endpoint("<YOUR ENDPOINT HERE>")
-            .key("<YOUR KEY HERE>")
+            .setEndpoint("<YOUR ENDPOINT HERE>")
+            .setKey("<YOUR KEY HERE>")
             .buildAsyncClient();
 
         // Get a reference to the container
         // This will create (or read) a database and its container.
         CosmosAsyncContainer container = client.createDatabaseIfNotExists("contoso-travel")
             // TIP: Our APIs are Reactor Core based, so try to chain your calls
-            .flatMap(response -> response.database()
+            .flatMap(response -> response.getDatabase()
                     .createContainerIfNotExists("passengers", "/id"))
-            .flatMap(response -> Mono.just(response.container()))
+            .flatMap(response -> Mono.just(response.getContainer()))
             .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 
-        // Create an item
+        // Create an getItem
         container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
             .flatMap(response -> {
-                System.out.println("Created item: " + response.properties().toJson());
+                System.out.println("Created item: " + response.getProperties().toJson());
                 // Read that item 👓
-                return response.item().read();
+                return response.getItem().read();
             })
             .flatMap(response -> {
-                System.out.println("Read item: " + response.properties().toJson());
-                // Replace that item 🔁
+                System.out.println("Read getItem: " + response.getProperties().toJson());
+                // Replace that getItem 🔁
                 try {
-                    Passenger p = response.properties().getObject(Passenger.class);
+                    Passenger p = response.getProperties().getObject(Passenger.class);
                     p.setDestination("SFO");
-                    return response.item().replace(p);
+                    return response.getItem().replace(p);
                 } catch (IOException e) {
                     System.err.println(e);
                     return Mono.error(e);
                 }
             })
             // delete that item 💣
-            .flatMap(response -> response.item().delete())
+            .flatMap(response -> response.getItem().delete())
             .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
     }
 

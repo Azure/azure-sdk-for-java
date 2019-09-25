@@ -95,14 +95,14 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
             CosmosClientException dce = (CosmosClientException) t;
 
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = new
-                    PartitionedQueryExecutionInfo(dce.error().getPartitionedQueryExecutionInfo());
+                    PartitionedQueryExecutionInfo(dce.getError().getPartitionedQueryExecutionInfo());
 
             logger.debug("Query Plan from gateway {}", partitionedQueryExecutionInfo);
 
             DefaultDocumentQueryExecutionContext<T> queryExecutionContext =
                     (DefaultDocumentQueryExecutionContext<T>) this.innerExecutionContext;
 
-            Mono<List<PartitionKeyRange>> partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.resourceId(),
+            Mono<List<PartitionKeyRange>> partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.getResourceId(),
                     partitionedQueryExecutionInfo.getQueryRanges());
 
             Flux<IDocumentQueryExecutionContext<T>> exContext = partitionKeyRanges.flux()
@@ -116,7 +116,7 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                             isContinuationExpected,
                             partitionedQueryExecutionInfo,
                             pkranges,
-                            this.collection.resourceId(),
+                            this.collection.getResourceId(),
                             this.correlatedActivityId));
 
             return exContext.flatMap(IDocumentQueryExecutionContext::executeAsync);

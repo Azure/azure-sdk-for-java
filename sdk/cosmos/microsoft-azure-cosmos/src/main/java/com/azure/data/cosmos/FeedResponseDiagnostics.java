@@ -16,11 +16,11 @@ public class FeedResponseDiagnostics {
         this.queryMetricsMap = queryMetricsMap;
     }
 
-    Map<String, QueryMetrics> queryMetricsMap() {
+    Map<String, QueryMetrics> getQueryMetricsMap() {
         return queryMetricsMap;
     }
 
-    FeedResponseDiagnostics queryMetricsMap(Map<String, QueryMetrics> queryMetricsMap) {
+    FeedResponseDiagnostics setQueryMetricsMap(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
         return this;
     }

@@ -33,8 +33,8 @@ public class Document extends Resource {
      * @param id the name of the resource.
      * @return the current instance of the Document
      */
-    public Document id(String id){
-        super.id(id);
+    public Document setId(String id){
+        super.setId(id);
         return this;
     }
 

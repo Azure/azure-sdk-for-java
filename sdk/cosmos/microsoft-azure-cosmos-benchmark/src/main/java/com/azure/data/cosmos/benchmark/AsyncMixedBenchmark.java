@@ -37,7 +37,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 
             String idString = uuid + i;
             Document newDoc = new Document();
-            newDoc.id(idString);
+            newDoc.setId(idString);
             BridgeInternal.setProperty(newDoc, partitionKey, idString);
             BridgeInternal.setProperty(newDoc, "dataField1", dataFieldValue);
             BridgeInternal.setProperty(newDoc, "dataField2", dataFieldValue);
@@ -50,17 +50,17 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 
             FeedOptions options = new FeedOptions();
             options.maxItemCount(10);
-            options.enableCrossPartitionQuery(true);
+            options.setEnableCrossPartitionQuery(true);
 
             String sqlQuery = "Select top 100 * from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options)
-                    .map(frp -> frp.results().get(0));
+                    .map(frp -> frp.getResults().get(0));
         } else {
 
             int index = r.nextInt(1000);
 
             RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(docsToRead.get(index).id()));
+            options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
             obs = client.readDocument(getDocumentLink(docsToRead.get(index)), options).map(ResourceResponse::getResource);
         }

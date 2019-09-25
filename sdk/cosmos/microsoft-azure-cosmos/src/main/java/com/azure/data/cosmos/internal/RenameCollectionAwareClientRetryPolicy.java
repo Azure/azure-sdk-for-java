@@ -64,7 +64,7 @@ public class RenameCollectionAwareClientRetryPolicy implements IDocumentClientRe
                     Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
                     return collectionObs.flatMap(collectionInfo -> {
-                        if (!StringUtils.isEmpty(oldCollectionRid) && !StringUtils.isEmpty(collectionInfo.resourceId())) {
+                        if (!StringUtils.isEmpty(oldCollectionRid) && !StringUtils.isEmpty(collectionInfo.getResourceId())) {
                             return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
                         }
                         return Mono.just(shouldRetryResult);

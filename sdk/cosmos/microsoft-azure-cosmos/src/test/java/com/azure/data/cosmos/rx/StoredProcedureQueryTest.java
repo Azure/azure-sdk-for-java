@@ -38,7 +38,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
-        String filterId = createdStoredProcs.get(0).id();
+        String filterId = createdStoredProcs.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
@@ -47,14 +47,14 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                 .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
-                .filter(sp -> filterId.equals(sp.id())).collect(Collectors.toList());
+                .filter(sp -> filterId.equals(sp.getId())).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -68,7 +68,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
                 .queryStoredProcedures(query, options);
 
@@ -86,7 +86,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
                 .queryStoredProcedures(query, options);
 
@@ -95,7 +95,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -108,7 +108,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
+        options.setEnableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
                 .queryStoredProcedures(query, options);
 
@@ -119,7 +119,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
     public CosmosStoredProcedureProperties createStoredProc(CosmosAsyncContainer cosmosContainer) {
         CosmosStoredProcedureProperties storedProcedure = getStoredProcedureDef();
-        return cosmosContainer.getScripts().createStoredProcedure(storedProcedure).block().properties();
+        return cosmosContainer.getScripts().createStoredProcedure(storedProcedure).block().getProperties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
@@ -142,8 +142,8 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
     private static CosmosStoredProcedureProperties getStoredProcedureDef() {
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.id(UUID.randomUUID().toString());
-        storedProcedureDef.body("function() {var x = 10;}");
+        storedProcedureDef.setId(UUID.randomUUID().toString());
+        storedProcedureDef.setBody("function() {var x = 10;}");
         return storedProcedureDef;
     }
 }
