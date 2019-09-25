@@ -3,9 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.BaseSubscriber;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -59,12 +61,15 @@ public class EventHubAsyncConsumer implements Closeable {
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
+    private final MessageSerializer messageSerializer;
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
+    EventHubAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
+                          EventHubConsumerOptions options) {
+        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
 
         // Caching the created link so we don't invoke another link creation.
@@ -100,7 +105,7 @@ public class EventHubAsyncConsumer implements Closeable {
                 });
             }
 
-            return link.receive().map(EventData::new);
+            return link.receive().map(message -> this.messageSerializer.deserialize(message, EventData.class));
         }).subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);

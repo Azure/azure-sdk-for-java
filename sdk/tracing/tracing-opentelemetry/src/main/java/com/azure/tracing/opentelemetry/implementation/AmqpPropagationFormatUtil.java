@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.tracing.opentelemetry.implementation;
 
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+
 import com.azure.core.util.Context;
 import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.SpanId;
 import io.opencensus.trace.TraceId;
 import io.opencensus.trace.TraceOptions;
 import io.opencensus.trace.Tracestate;
-
-import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
 
 public class AmqpPropagationFormatUtil {
 

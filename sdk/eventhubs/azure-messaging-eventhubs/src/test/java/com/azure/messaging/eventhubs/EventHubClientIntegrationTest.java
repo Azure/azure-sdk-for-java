@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -72,7 +72,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         Assert.assertNotNull(properties);
-        Assert.assertEquals(connectionProperties.getEventHubName(), properties.getName());
+        Assert.assertEquals(connectionProperties.getEntityPath(), properties.getName());
         Assert.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
 
         Assert.assertNotNull(properties.getPartitionIds());
@@ -95,7 +95,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         // Assert
         Assert.assertNotNull(partitionProperties);
 
-        Assert.assertEquals(connectionProperties.getEventHubName(), partitionProperties.getEventHubName());
+        Assert.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
         Assert.assertEquals(partitionId, partitionProperties.getId());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.management.AsyncOperationResource;
-import com.azure.core.management.HttpBinJSON;
+import com.azure.core.test.HttpBinJSON;
 import com.azure.core.management.MockResource;
 import com.azure.core.management.OperationState;
 import com.azure.core.management.implementation.AzureAsyncOperationPollStrategy;

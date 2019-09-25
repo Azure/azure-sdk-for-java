@@ -27,7 +27,7 @@ import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
 /**
  * OpenTelemetry span
  */
-public class OpenTelemetryTracer implements com.azure.core.implementation.tracing.Tracer {
+public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
 

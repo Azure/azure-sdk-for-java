@@ -107,12 +107,12 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, Integer, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -123,14 +123,16 @@ public class BlockBlobClientJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
 
         try {
-            client.uploadFromFile(filePath, headers, metadata, AccessTier.HOT, accessConditions, timeout);
+            client.uploadFromFile(filePath, blockSize, headers, metadata,
+                AccessTier.HOT, accessConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
     }
 
     /**

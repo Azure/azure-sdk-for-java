@@ -14,7 +14,8 @@
       <relativePath>../../../pom.data.xml</relativePath>
     </parent>
     <artifactId>azure-cognitiveservices-customvision-prediction</artifactId>
-    <version>1.1.0-preview.2</version>
+    <groupId>com.microsoft.azure.cognitiveservices</groupId>
+    <version>1.1.0-preview.3</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Custom Vision Prediction</name>
     <description>This package contains Microsoft Cognitive Service Custom Vision Prediction SDK.</description>

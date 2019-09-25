@@ -3,16 +3,16 @@
 
 package com.azure.core.http.clients;
 
-import com.azure.core.entities.HttpBinFormDataJSON;
-import com.azure.core.entities.HttpBinFormDataJSON.Form;
-import com.azure.core.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.entities.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.implementation.entities.HttpBinFormDataJSON.Form;
+import com.azure.core.implementation.entities.HttpBinFormDataJSON.PizzaSize;
+import com.azure.core.implementation.entities.HttpBinJSON;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
 import reactor.core.publisher.Mono;
@@ -47,7 +47,7 @@ public class MockHttpClient extends NoOpHttpClient {
         try {
             final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
-            final String contentType = request.getHeaders().value("Content-Type");
+            final String contentType = request.getHeaders().getValue("Content-Type");
             if ("httpbin.org".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();

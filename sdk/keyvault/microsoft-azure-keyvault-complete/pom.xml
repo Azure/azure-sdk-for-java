@@ -13,7 +13,7 @@ the MIT License. See License.txt in the project root for license information. --
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-complete</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Key Vault SDK Complete</name>
@@ -41,27 +41,27 @@ the MIT License. See License.txt in the project root for license information. --
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-core</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-webkey</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-extensions</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3</version>
     </dependency>
   </dependencies>
 

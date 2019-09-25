@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -83,6 +83,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
 public class BlobAsyncClient {
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
@@ -337,15 +338,16 @@ public class BlobAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions) {
+    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId,
+                                                             LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+    Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
         Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
             null, null, copyId, null, null, leaseAccessConditions, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -654,12 +656,12 @@ public class BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions) {
         return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context));
     }
 
-    Mono<VoidResponse> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -667,7 +669,7 @@ public class BlobAsyncClient {
             null, null, snapshot, null, deleteBlobSnapshotOptions,
             null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
             context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -745,19 +747,19 @@ public class BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setHTTPHeadersWithResponse(BlobHTTPHeaders headers,
+    public Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHTTPHeaders headers,
         BlobAccessConditions accessConditions) {
         return withContext(context -> setHTTPHeadersWithResponse(headers, accessConditions, context));
     }
 
-    Mono<VoidResponse> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
+    Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
         Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
             null, null, null, null, headers,
             accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -793,11 +795,11 @@ public class BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions) {
+    public Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions) {
         return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+    Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
         Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
@@ -805,7 +807,7 @@ public class BlobAsyncClient {
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, null, accessConditions.getLeaseAccessConditions(), cpk,
             accessConditions.getModifiedAccessConditions(), context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -895,19 +897,19 @@ public class BlobAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
     }
 
-    Mono<VoidResponse> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         Utility.assertNotNull("tier", tier);
         AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
             null, null, accessTierRequired, null, priority, null, leaseAccessConditions, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -938,261 +940,14 @@ public class BlobAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> undeleteWithResponse() {
+    public Mono<Response<Void>> undeleteWithResponse() {
         return withContext(this::undeleteWithResponse);
     }
 
-    Mono<VoidResponse> undeleteWithResponse(Context context) {
+    Mono<Response<Void>> undeleteWithResponse(Context context) {
         return postProcessResponse(this.azureBlobStorage.blobs().undeleteWithRestResponseAsync(null,
             null, context))
-            .map(VoidResponse::new);
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1).
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param proposedId A {@code String} in any valid GUID format. May be null.
-     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
-     * @return A reactive response containing the lease ID.
-     */
-    public Mono<String> acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1).
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param proposedId A {@code String} in any valid GUID format. May be null.
-     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the lease ID.
-     * @throws IllegalArgumentException If {@code duration} is outside the bounds of 15 to 60 or isn't -1.
-     */
-    public Mono<Response<String>> acquireLeaseWithResponse(String proposedId, int duration,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context ->
-            acquireLeaseWithResponse(proposedId, duration, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> acquireLeaseWithResponse(String proposedId, int duration,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        if (!(duration == -1 || (duration >= 15 && duration <= 60))) {
-            // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("Duration must be -1 or between 15 and 60."));
-        }
-
-        return postProcessResponse(this.azureBlobStorage.blobs().acquireLeaseWithRestResponseAsync(
-            null, null, null, duration, proposedId, null,
-            modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.renewLease#String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @return A reactive response containing the renewed lease ID.
-     */
-    public Mono<String> renewLease(String leaseId) {
-        return renewLeaseWithResponse(leaseId, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.renewLeaseWithResponse#String-ModifiedAccessConditions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the renewed lease ID.
-     */
-    public Mono<Response<String>> renewLeaseWithResponse(String leaseId,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> renewLeaseWithResponse(leaseId, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> renewLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
-        return postProcessResponse(this.azureBlobStorage.blobs().renewLeaseWithRestResponseAsync(null,
-            null, leaseId, null, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.releaseLease#String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @return A reactive response signalling completion.
-     */
-    public Mono<Void> releaseLease(String leaseId) {
-        return releaseLeaseWithResponse(leaseId, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.releaseLeaseWithResponse#String-ModifiedAccessConditions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response signalling completion.
-     */
-    public Mono<VoidResponse> releaseLeaseWithResponse(String leaseId,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> releaseLeaseWithResponse(leaseId, modifiedAccessConditions, context));
-    }
-
-    Mono<VoidResponse> releaseLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
-        return postProcessResponse(this.azureBlobStorage.blobs().releaseLeaseWithRestResponseAsync(null,
-            null, leaseId, null, null, modifiedAccessConditions, context))
-            .map(VoidResponse::new);
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.breakLease}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @return A reactive response containing the remaining time in the broken lease in seconds.
-     */
-    public Mono<Integer> breakLease() {
-        return breakLeaseWithResponse(null, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
-     * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
-     * shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
-     * will not be available before the break period has expired, but the lease may be held for longer than the break
-     * period.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the remaining time in the broken lease in seconds.
-     */
-    public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return postProcessResponse(this.azureBlobStorage.blobs().breakLeaseWithRestResponseAsync(null,
-            null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.changeLease#String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param proposedId A {@code String} in any valid GUID format.
-     * @return A reactive response containing the new lease ID.
-     */
-    public Mono<String> changeLease(String leaseId, String proposedId) {
-        return changeLeaseWithResponse(leaseId, proposedId, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param proposedId A {@code String} in any valid GUID format.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @return A reactive response containing the new lease ID.
-     */
-    public Mono<Response<String>> changeLeaseWithResponse(String leaseId, String proposedId,
-        ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> changeLeaseWithResponse(leaseId, proposedId, modifiedAccessConditions, context));
-    }
-
-    Mono<Response<String>> changeLeaseWithResponse(String leaseId, String proposedId,
-        ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        return postProcessResponse(this.azureBlobStorage.blobs().changeLeaseWithRestResponseAsync(null,
-            null, leaseId, proposedId, null, null, modifiedAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -1442,5 +1197,31 @@ public class BlobAsyncClient {
      */
     public boolean isSnapshot() {
         return this.snapshot != null;
+    }
+
+    /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getContainerName}
+     *
+     * @return The name of the container.
+     */
+    public final String getContainerName() {
+        return URLParser.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getBlobName}
+     *
+     * @return The name of the blob.
+     */
+    public final String getBlobName() {
+        return URLParser.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
     }
 }

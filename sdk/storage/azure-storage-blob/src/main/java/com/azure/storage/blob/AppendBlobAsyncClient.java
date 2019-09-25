@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -25,7 +26,6 @@ import java.nio.ByteBuffer;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
-
 
 /**
  * Client to an append blob. It may only be instantiated through a
@@ -48,6 +48,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -223,7 +224,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
                 destAccessConditions.getLeaseAccessConditions(),
                 destAccessConditions.getAppendPositionAccessConditions(),
                 destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders(),
-                rb.getHeaders().value("x-ms-request-server-encrypted"))));
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
 }

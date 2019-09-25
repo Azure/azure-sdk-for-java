@@ -92,7 +92,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
          duplicates the ByteBuffer object, not the underlying data.
          */
-        context.setHttpRequest(originalRequest.buffer());
+        context.setHttpRequest(originalRequest.copy());
         Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
             ? null
             : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);

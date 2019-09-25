@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -65,6 +65,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class DirectoryAsyncClient {
     private final ClientLogger logger = new ClientLogger(DirectoryAsyncClient.class);
 
@@ -236,14 +237,14 @@ public class DirectoryAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist
      */
-    public Mono<VoidResponse> deleteWithResponse() {
+    public Mono<Response<Void>> deleteWithResponse() {
         return withContext(this::deleteWithResponse);
     }
 
-    Mono<VoidResponse> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(Context context) {
         return postProcessResponse(azureFileStorageClient.directorys()
             .deleteWithRestResponseAsync(shareName, directoryPath, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -533,9 +534,6 @@ public class DirectoryAsyncClient {
 
     PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, boolean recursive, Duration timeout,
         Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
@@ -644,13 +642,13 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory
      * name is an invalid resource name.
      */
-    public Mono<VoidResponse> deleteSubDirectoryWithResponse(String subDirectoryName) {
+    public Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName) {
         return withContext(context -> deleteSubDirectoryWithResponse(subDirectoryName, context));
     }
 
-    Mono<VoidResponse> deleteSubDirectoryWithResponse(String subDirectoryName, Context context) {
+    Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName, Context context) {
         DirectoryAsyncClient deleteSubClient = getSubDirectoryClient(subDirectoryName);
-        return postProcessResponse(deleteSubClient.deleteWithResponse(context)).map(VoidResponse::new);
+        return postProcessResponse(deleteSubClient.deleteWithResponse(context));
     }
 
     /**
@@ -751,14 +749,13 @@ public class DirectoryAsyncClient {
      * @throws StorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      */
-    public Mono<VoidResponse> deleteFileWithResponse(String fileName) {
+    public Mono<Response<Void>> deleteFileWithResponse(String fileName) {
         return withContext(context -> deleteFileWithResponse(fileName, context));
     }
 
-    Mono<VoidResponse> deleteFileWithResponse(String fileName, Context context) {
+    Mono<Response<Void>> deleteFileWithResponse(String fileName, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient.deleteWithResponse(context))
-            .map(VoidResponse::new);
+        return postProcessResponse(fileAsyncClient.deleteWithResponse(context));
     }
 
     /**
@@ -775,6 +772,32 @@ public class DirectoryAsyncClient {
      */
     public String getShareSnapshotId() {
         return this.snapshot;
+    }
+
+    /**
+     * Get the share name of directory client.
+     *
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getShareName}
+     *
+     * @return The share name of the directory.
+     */
+    public String getShareName() {
+        return shareName;
+    }
+
+    /**
+     * Get directory path of the client.
+     *
+     * <p>Get directory path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getDirectoryPath}
+     *
+     * @return The path of the directory.
+     */
+    public String getDirectoryPath() {
+        return directoryPath;
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {

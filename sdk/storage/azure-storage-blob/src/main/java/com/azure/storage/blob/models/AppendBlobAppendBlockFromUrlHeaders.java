@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -92,6 +92,14 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String encryptionKeySha256;
+
+    /*
+     * The value of this header is set to true if the contents of the request
+     * are successfully encrypted using the specified algorithm, and false
+     * otherwise.
+     */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean isServerEncrypted;
 
     /*
      * The errorCode property.
@@ -348,6 +356,30 @@ public final class AppendBlobAppendBlockFromUrlHeaders {
      */
     public AppendBlobAppendBlockFromUrlHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the isServerEncrypted property: The value of this header is set to
+     * true if the contents of the request are successfully encrypted using the
+     * specified algorithm, and false otherwise.
+     *
+     * @return the isServerEncrypted value.
+     */
+    public Boolean isServerEncrypted() {
+        return this.isServerEncrypted;
+    }
+
+    /**
+     * Set the isServerEncrypted property: The value of this header is set to
+     * true if the contents of the request are successfully encrypted using the
+     * specified algorithm, and false otherwise.
+     *
+     * @param isServerEncrypted the isServerEncrypted value to set.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
+     */
+    public AppendBlobAppendBlockFromUrlHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
+        this.isServerEncrypted = isServerEncrypted;
         return this;
     }
 

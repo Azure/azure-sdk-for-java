@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.ListContainersOptions;
@@ -43,6 +43,7 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  */
+@ServiceClient(builder = BlobServiceClientBuilder.class)
 public final class BlobServiceClient {
     private final BlobServiceAsyncClient blobServiceAsyncClient;
 
@@ -143,7 +144,7 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse deleteContainerWithResponse(String containerName, Context context) {
+    public Response<Void> deleteContainerWithResponse(String containerName, Context context) {
         return blobServiceAsyncClient.deleteContainerWithResponse(containerName).block();
     }
 
@@ -252,9 +253,9 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The storage account properties.
      */
-    public VoidResponse setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
+    public Response<Void> setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
+        Mono<Response<Void>> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

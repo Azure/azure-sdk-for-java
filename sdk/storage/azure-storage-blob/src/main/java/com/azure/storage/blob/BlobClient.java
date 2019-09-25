@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
@@ -55,6 +55,7 @@ import java.time.OffsetDateTime;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient {
     private final ClientLogger logger = new ClientLogger(BlobClient.class);
 
@@ -278,9 +279,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+    public Response<Void> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
+        Mono<Response<Void>> response = blobAsyncClient.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -374,9 +375,9 @@ public class BlobClient {
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public VoidResponse downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
+    public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<VoidResponse> download = blobAsyncClient
+        Mono<Response<Void>> download = blobAsyncClient
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
             .flatMapMany(res -> res.getValue()
                 .doOnNext(bf -> {
@@ -387,7 +388,7 @@ public class BlobClient {
                     }
                 }).map(bf -> res))
             .last()
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
 
         return Utility.blockWithOptionalTimeout(download, timeout);
     }
@@ -484,9 +485,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient
+        Mono<Response<Void>> response = blobAsyncClient
             .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -564,9 +565,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
+    public Response<Void> setHTTPHeadersWithResponse(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient
+        Mono<Response<Void>> response = blobAsyncClient
             .setHTTPHeadersWithResponse(headers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -606,9 +607,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+    public Response<Void> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
+        Mono<Response<Void>> response = blobAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -697,9 +698,9 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Response<Void> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions,
+        Mono<Response<Void>> response = blobAsyncClient.setTierWithResponse(tier, priority, leaseAccessConditions,
             context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -733,235 +734,8 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public VoidResponse undeleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.undeleteWithResponse(context);
-
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1).
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.acquireLease#String-int}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param proposedId A {@code String} in any valid GUID format. May be null.
-     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
-     * @return The lease ID.
-     */
-    public String acquireLease(String proposedId, int duration) {
-        return acquireLeaseWithResponse(proposedId, duration, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1).
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.acquireLeaseWithResponse#String-int-ModifiedAccessConditions-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param proposedId A {@code String} in any valid GUID format. May be null.
-     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     * non-infinite lease can be between 15 and 60 seconds.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The lease ID.
-     */
-    public Response<String> acquireLeaseWithResponse(String proposedId, int duration,
-        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<String>> response = blobAsyncClient.acquireLeaseWithResponse(proposedId, duration,
-            modifiedAccessConditions, context);
-
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.renewLease#String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @return The renewed lease ID.
-     */
-    public String renewLease(String leaseId) {
-        return renewLeaseWithResponse(leaseId, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.renewLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The renewed lease ID.
-     */
-    public Response<String> renewLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
-        Duration timeout, Context context) {
-        Mono<Response<String>> response = blobAsyncClient
-            .renewLeaseWithResponse(leaseId, modifiedAccessConditions, context);
-
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.releaseLease#String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     */
-    public void releaseLease(String leaseId) {
-        releaseLeaseWithResponse(leaseId, null, null, Context.NONE);
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.releaseLeaseWithResponse#String-ModifiedAccessConditions-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers.
-     */
-    public VoidResponse releaseLeaseWithResponse(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
-        Duration timeout, Context context) {
-        Mono<VoidResponse> response = blobAsyncClient.releaseLeaseWithResponse(leaseId, modifiedAccessConditions,
-            context);
-
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.breakLease}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @return The remaining time in the broken lease in seconds.
-     */
-    public Integer breakLease() {
-        return breakLeaseWithResponse(null, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
-     * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
-     * shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
-     * will not be available before the break period has expired, but the lease may be held for longer than the break
-     * period.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The remaining time in the broken lease in seconds.
-     */
-    public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<Integer>> response = blobAsyncClient
-            .breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context);
-
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.changeLease#String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param proposedId A {@code String} in any valid GUID format.
-     * @return The new lease ID.
-     */
-    public String changeLease(String leaseId, String proposedId) {
-        return changeLeaseWithResponse(leaseId, proposedId, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobClient.changeLeaseWithResponse#String-String-ModifiedAccessConditions-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
-     *
-     * @param leaseId The leaseId of the active lease on the blob.
-     * @param proposedId A {@code String} in any valid GUID format.
-     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
-     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
-     * request. The request will fail if the specified condition is not satisfied.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The new lease ID.
-     */
-    public Response<String> changeLeaseWithResponse(String leaseId, String proposedId,
-        ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<String>> response = blobAsyncClient.changeLeaseWithResponse(leaseId, proposedId,
-            modifiedAccessConditions, context);
+    public Response<Void> undeleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = blobAsyncClient.undeleteWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -1157,5 +931,31 @@ public class BlobClient {
      */
     public boolean isSnapshot() {
         return this.blobAsyncClient.isSnapshot();
+    }
+
+    /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.getContainerName}
+     *
+     * @return The name of the container.
+     */
+    public final String getContainerName() {
+        return this.blobAsyncClient.getContainerName();
+    }
+
+    /**
+     * Get the blob name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.getBlobName}
+     *
+     * @return The name of the blob.
+     */
+    public final String getBlobName() {
+        return this.blobAsyncClient.getBlobName();
     }
 }

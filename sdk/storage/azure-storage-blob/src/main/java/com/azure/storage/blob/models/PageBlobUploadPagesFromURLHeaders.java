@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -84,6 +84,14 @@ public final class PageBlobUploadPagesFromURLHeaders {
      */
     @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean isServerEncrypted;
+
+    /*
+     * The SHA-256 hash of the encryption key used to encrypt the pages. This
+     * header is only returned when the pages were encrypted with a
+     * customer-provided key.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String encryptionKeySha256;
 
     /*
      * The errorCode property.
@@ -316,6 +324,30 @@ public final class PageBlobUploadPagesFromURLHeaders {
      */
     public PageBlobUploadPagesFromURLHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the pages. This header is only returned when the
+     * pages were encrypted with a customer-provided key.
+     *
+     * @return the encryptionKeySha256 value.
+     */
+    public String getEncryptionKeySha256() {
+        return this.encryptionKeySha256;
+    }
+
+    /**
+     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the pages. This header is only returned when the
+     * pages were encrypted with a customer-provided key.
+     *
+     * @param encryptionKeySha256 the encryptionKeySha256 value to set.
+     * @return the PageBlobUploadPagesFromURLHeaders object itself.
+     */
+    public PageBlobUploadPagesFromURLHeaders setEncryptionKeySha256(String encryptionKeySha256) {
+        this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
 

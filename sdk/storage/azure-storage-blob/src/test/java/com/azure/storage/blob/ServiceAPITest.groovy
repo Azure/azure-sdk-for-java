@@ -231,8 +231,8 @@ class ServiceAPITest extends APISpec {
         StorageServiceProperties receivedProperties = primaryBlobServiceClient.getProperties()
 
         then:
-        headers.value("x-ms-request-id") != null
-        headers.value("x-ms-version") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
         validatePropsSet(sentProperties, receivedProperties)
     }
 
@@ -340,9 +340,9 @@ class ServiceAPITest extends APISpec {
         Response<StorageServiceStats> response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
-        response.getHeaders().value("x-ms-version") != null
-        response.getHeaders().value("x-ms-request-id") != null
-        response.getHeaders().value("Date") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("Date") != null
         response.getValue().getGeoReplication().getStatus() != null
         response.getValue().getGeoReplication().getLastSyncTime() != null
     }
@@ -369,9 +369,9 @@ class ServiceAPITest extends APISpec {
         Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null)
 
         then:
-        response.getHeaders().value("Date") != null
-        response.getHeaders().value("x-ms-version") != null
-        response.getHeaders().value("x-ms-request-id") != null
+        response.getHeaders().getValue("Date") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("x-ms-request-id") != null
         response.getValue().getAccountKind() != null
         response.getValue().getSkuName() != null
     }
