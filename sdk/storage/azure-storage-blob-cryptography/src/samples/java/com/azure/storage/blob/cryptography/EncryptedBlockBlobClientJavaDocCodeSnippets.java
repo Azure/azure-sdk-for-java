@@ -27,8 +27,8 @@ import java.util.Collections;
  */
 @SuppressWarnings({"unused"})
 public class EncryptedBlockBlobClientJavaDocCodeSnippets {
-    private EncryptedBlockBlobClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobClient
-        ("blobName", "containerName");
+    private EncryptedBlockBlobClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobClient(
+        "blobName", "containerName");
     private InputStream data = new ByteArrayInputStream("data".getBytes(StandardCharsets.UTF_8));
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);

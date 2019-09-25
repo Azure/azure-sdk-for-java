@@ -132,6 +132,10 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
+    static boolean liveMode() {
+        return setupTestMode() == TestMode.RECORD
+    }
+
     private SharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey

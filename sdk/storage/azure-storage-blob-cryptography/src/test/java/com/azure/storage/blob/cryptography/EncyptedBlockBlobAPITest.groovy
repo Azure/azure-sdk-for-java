@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.type.CollectionType
 import reactor.core.publisher.Flux
 import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import javax.crypto.KeyGenerator
@@ -61,6 +62,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Key or key resolver must be set
+    @Requires({ APISpec.liveMode() })
     def "Create encryption client fails"() {
         when:
         beac = getEncryptedClientBuilder(null, null, primaryCredential,
@@ -81,7 +83,43 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(NullPointerException)
     }
 
+    @Requires({ APISpec.liveMode() })
+    def "Test BlockBlobClient wrap builder"() {
+        setup:
+        ContainerAsyncClient cac = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .buildAsyncClient()
+            .getContainerAsyncClient(generateContainerName())
+
+        cac.create().block()
+        def blobName = generateBlobName()
+
+        BlockBlobAsyncClient normalClient = cac.getBlockBlobAsyncClient(blobName)
+
+        when:
+        EncryptedBlockBlobAsyncClient client = new EncryptedBlobClientBuilder()
+            .keyAndKeyResolver(symmetricKey, null)
+            .buildEncryptedBlockBlobAsyncClient(normalClient)
+
+        // Check that an encrypted client
+        then:
+        normalClient.blobUrl == client.blobUrl
+        normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
+    }
+
+    @Requires({ APISpec.liveMode() })
+    def "Test EncryptedBlockBlobClient to BlockBlobClient"() {
+        when:
+        BlockBlobAsyncClient normalClient = beac.getBlockBlobAsyncClient()
+
+        then:
+        normalClient.blobUrl == beac.blobUrl
+        normalClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount - 1
+
+    }
+
     // This test checks that encryption is not just a no-op
+    @Requires({ APISpec.liveMode() })
     def "Encryption not a no-op"() {
         setup:
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
@@ -101,6 +139,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // This test uses an encrypted client to encrypt and decrypt data
     // Tests upload and buffered upload with different bytebuffer sizes
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Encryption"() {
         when:
         def byteBufferList = [];
@@ -146,6 +185,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that HTTP headers are successfully set on the encrypted client
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Encryption HTTP headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
@@ -187,6 +227,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that metadata in encryption is successfully set
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Encryption metadata"() {
         setup:
         Metadata metadata = new Metadata()
@@ -222,6 +263,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // TODO: (gapra) Blocked on making LeaseClientBuilder a full fledged builder
     @Ignore
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Encryption AC"() {
         when:
         beac.upload(defaultFlux, defaultDataSize).block()
@@ -257,6 +299,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // TODO: (gapra) Blocked on making LeaseClientBuilder a full fledged builder
     @Ignore
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Encryption AC fail"() {
         setup:
         beac.upload(defaultFlux, defaultDataSize).block()
@@ -298,6 +341,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the download to file method on an encrypted client
+    @Requires({ APISpec.liveMode() })
     def "Encrypted download file"() {
         setup:
         def path = UUID.randomUUID().toString() + ".txt"
@@ -317,6 +361,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // This test checks that encryption is cross platform compatible
     // Encrypted data uploaded from a previous version of the SDK can be downloaded from this SDK successfully
     @Unroll
+    @Requires({ APISpec.liveMode() })
     def "Block blob cross platform decryption tests"() {
         setup:
         // Create an async client
@@ -364,7 +409,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         index << [0, 1, 2, 3, 4]
     }
 
-    def downloadUnencryptedData() {
+    @Requires({ APISpec.liveMode() })
+    def "Download unencrypted data"() {
         setup:
         // Create an async client
         ContainerAsyncClient cac = getServiceClientBuilder(primaryCredential,

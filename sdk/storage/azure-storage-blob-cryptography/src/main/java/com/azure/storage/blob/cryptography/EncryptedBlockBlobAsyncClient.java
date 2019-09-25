@@ -393,7 +393,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
-            null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, cpk, context))
+            null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, null, context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -412,8 +412,8 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tierOp, null,
-            headers, accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(),
-            context))
+            headers, accessConditions.getLeaseAccessConditions(), null /*cpk*/,
+            accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }
