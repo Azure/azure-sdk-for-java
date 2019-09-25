@@ -18,9 +18,12 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
+import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
@@ -165,6 +168,50 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
             appendBlobAccessConditions.getAppendPositionAccessConditions(), cpk,
             appendBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#OutputStream-long}
+     *
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @return {@link Mono} containing the information of the append blob operation.
+     */
+    public Mono<AppendBlobItem> appendBlock(OutputStream data, long length) {
+        return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#OutputStream-long-AppendBlobAccessConditions}
+     *
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @param appendBlobAccessConditions {@link AppendBlobAccessConditions}
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
+     * blob operation.
+     */
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(OutputStream data, long length,
+        AppendBlobAccessConditions appendBlobAccessConditions) {
+        return withContext(context -> appendBlockWithResponse(data, length, appendBlobAccessConditions, context));
+    }
+
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(OutputStream data, long length,
+        AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES);
+        return appendBlockWithResponse(
+            fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions, context);
     }
 
     /**

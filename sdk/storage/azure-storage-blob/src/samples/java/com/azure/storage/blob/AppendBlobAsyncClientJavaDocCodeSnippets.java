@@ -14,6 +14,8 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -27,7 +29,8 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     private AppendBlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName")
         .asAppendBlobAsyncClient();
     private String leaseId = "leaseId";
-    private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes("UTF-8")));
+    private Flux<ByteBuffer> fluxData = Flux.just(ByteBuffer.wrap("data".getBytes("UTF-8")));
+    private InputStream inputStreamData = new ByteArrayInputStream("data".getBytes("UTF-8"));
     private long length = 4L;
     private static final Long POSITION = null;
     private Long maxSize = length;
@@ -76,7 +79,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
      */
     public void appendBlock() {
         // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#Flux-long
-        client.appendBlock(data, length).subscribe(response ->
+        client.appendBlock(fluxData, length).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#Flux-long
     }
@@ -91,9 +94,34 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
                 .setAppendPosition(POSITION)
                 .setMaxSize(maxSize));
 
-        client.appendBlockWithResponse(data, length, accessConditions).subscribe(response ->
+        client.appendBlockWithResponse(fluxData, length, accessConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlock(InputStream, long)}
+     */
+    public void appendBlockInputStream() {
+        // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#InputStream-long
+        client.appendBlock(inputStreamData, length).subscribe(response ->
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getBlobCommittedBlockCount()));
+        // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#InputStream-long
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(InputStream, long, AppendBlobAccessConditions)}
+     */
+    public void appendBlockInputStream2() {
+        // BEGIN: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions
+        AppendBlobAccessConditions accessConditions = new AppendBlobAccessConditions()
+            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
+                .setAppendPosition(POSITION)
+                .setMaxSize(maxSize));
+
+        client.appendBlockWithResponse(inputStreamData, length, accessConditions).subscribe(response ->
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
+        // END: com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions
     }
 
     /**
