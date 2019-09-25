@@ -50,6 +50,9 @@ stages:
         - name: azure-storage-file
           safeName: azurestoragefile
           stagingProfileId: 88192f04117501
+        - name: azure-storage-file-datalake
+          safeName: azurestoragefiledatalake
+          stagingProfileId: 88192f04117501
         - name: azure-storage-queue
           safeName: azurestoragequeue
           stagingProfileId: 88192f04117501
