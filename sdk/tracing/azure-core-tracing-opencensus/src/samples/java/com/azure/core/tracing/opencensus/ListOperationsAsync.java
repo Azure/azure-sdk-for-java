@@ -32,7 +32,7 @@ public class ListOperationsAsync {
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      */
-    public static void main(String[] args) throws IllegalArgumentException {
+    public static void main(String[] args) throws IllegalArgumentException, InterruptedException {
         ZipkinTraceExporter.createAndRegister("http://localhost:9411/api/v2/spans", "tracing-to-zipkin-service");
 
         TraceConfig traceConfig = Tracing.getTraceConfig();
@@ -57,8 +57,10 @@ public class ListOperationsAsync {
             client.setSecret(new Secret("StorageAccountPassword", "password"))
                 .then(client.setSecret(new Secret("BankAccountPassword", "password")))
                 .subscriberContext(traceContext)
-                .block();
+                .subscribe(secretResponse ->
+                    System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
+            Thread.sleep(20000);
             // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
             // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
             client.listSecrets()
@@ -72,8 +74,10 @@ public class ListOperationsAsync {
             // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
             client.setSecret("BankAccountPassword", "new password")
                 .subscriberContext(traceContext)
-                .block();
+                .subscribe(secretResponse ->
+                    System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
+            Thread.sleep(20000);
 
             // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
             client.listSecretVersions("BankAccountPassword")
@@ -82,8 +86,7 @@ public class ListOperationsAsync {
                     secretBase.getName()));
         } finally {
             scope.close();
+            Tracing.getExportComponent().shutdown();
         }
-
-        Tracing.getExportComponent().shutdown();
     }
 }

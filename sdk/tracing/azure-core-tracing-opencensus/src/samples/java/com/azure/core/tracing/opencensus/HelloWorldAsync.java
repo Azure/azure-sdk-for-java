@@ -34,7 +34,7 @@ public class HelloWorldAsync {
      *
      * @param args No args needed for main method.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ZipkinTraceExporter.createAndRegister("http://localhost:9411/api/v2/spans", "tracing-to-zipkin-service");
 
         TraceConfig traceConfig = Tracing.getTraceConfig();
@@ -59,10 +59,12 @@ public class HelloWorldAsync {
                     err -> System.out.printf("Error thrown when enqueue the message. Error message: %s%n",
                         err.getMessage()),
                     () -> System.out.println("The enqueue has been completed."));
+
+            Thread.sleep(20000);
+
         } finally {
             scope.close();
+            Tracing.getExportComponent().shutdown();
         }
-
-        Tracing.getExportComponent().shutdown();
     }
 }

@@ -55,10 +55,10 @@ public class HelloWorld {
             queueClient.enqueueMessageWithResponse("This is message 1", null, null, null, tracingContext);
             queueClient.enqueueMessageWithResponse("This is message 2", null, null, null, tracingContext);
             System.out.println("Enqueuing of messages has completed!");
+
         } finally {
             scope.close();
+            Tracing.getExportComponent().shutdown();
         }
-
-        Tracing.getExportComponent().shutdown();
     }
 }
