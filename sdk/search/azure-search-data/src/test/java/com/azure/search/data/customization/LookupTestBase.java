@@ -121,7 +121,7 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
             .points(new GeoPoint[]{
                 GeoPoint.create(49.0, -67.0),
                 GeoPoint.create(47.0, 21.0)})
-            .strings(new String[]{ "hello", "2019-04-14T14:56:00-07:00"});
+            .strings(new String[]{"hello", "2019-04-14T14:56:00-07:00"});
     }
 
     @Test
@@ -138,6 +138,24 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException;
+
+    @Test
+    public abstract void canGetDynamicDocumentWithNullOrEmptyValues();
+
+    @Test
+    public abstract void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls();
+
+    @Test
+    public abstract void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays();
+
+    @Test
+    public abstract void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected();
+
+    @Test
+    public abstract void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected();
+
+    @Test
+    public abstract void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException;
 
     protected abstract void initializeClient();
 }
