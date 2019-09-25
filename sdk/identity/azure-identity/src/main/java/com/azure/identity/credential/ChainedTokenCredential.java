@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Deque;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -44,7 +45,9 @@ public class ChainedTokenCredential implements TokenCredential {
                 return Mono.empty();
             }))
             .next()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(new ClientAuthenticationException(
-                "No credential can provide a token in the chain", null, cause.get()))));
+            .switchIfEmpty(Mono.defer(() -> Mono.error(new ClientAuthenticationException("Tried "
+                + credentials.stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(", "))
+                + " but failed to acquire a token for any of them. Please verify the environment for either of them"
+                + " and see more details in the causes below.", null, cause.get()))));
     }
 }
