@@ -237,7 +237,7 @@ public class FileClient {
      * @param downloadFilePath The path where store the downloaded file
      */
     public void downloadToFile(String downloadFilePath) {
-        downloadToFile(downloadFilePath, null);
+        downloadToFileWithResponse(downloadFilePath, null);
     }
 
     /**
@@ -250,7 +250,7 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -258,8 +258,8 @@ public class FileClient {
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional byte range which returns file data only from the specified range.
      */
-    public void downloadToFile(String downloadFilePath, FileRange range) {
-        fileAsyncClient.downloadToFile(downloadFilePath, range).block();
+    public void downloadToFileWithResponse(String downloadFilePath, FileRange range) {
+        fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range).block();
     }
 
     /**

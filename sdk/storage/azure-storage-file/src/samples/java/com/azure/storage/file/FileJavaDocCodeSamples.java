@@ -327,16 +327,16 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#downloadToFile(String, FileRange)}
+     * Generates a code sample for using {@link FileClient#downloadToFileWithResponse(String, FileRange)}
      */
     public void downloadFileMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.downloadToFile#string-filerange
-        fileClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L));
+        // BEGIN: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange
+        fileClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L));
         if (Files.exists(Paths.get("somelocalfilepath"))) {
             System.out.println("Complete downloading the file.");
         }
-        // END: com.azure.storage.file.fileClient.downloadToFile#string-filerange
+        // END: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange
     }
 
     /**

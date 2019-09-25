@@ -390,12 +390,13 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadToFile(String, FileRange)}
+     * Generates a code sample for using {@link FileAsyncClient#downloadToFileWithResponse(String, FileRange)}
      */
     public void downloadFileAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
-        fileAsyncClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L)).subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
+        fileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L))
+            .subscribe(
             response -> {
                 if (Files.exists(Paths.get("somelocalfilepath"))) {
                     System.out.println("Successfully downloaded the file.");
@@ -404,7 +405,7 @@ public class FileAsyncJavaDocCodeSamples {
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the file!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
+        // END: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
     }
 
     /**

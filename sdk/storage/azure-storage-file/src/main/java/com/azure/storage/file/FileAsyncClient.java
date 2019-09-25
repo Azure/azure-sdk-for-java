@@ -320,7 +320,7 @@ public class FileAsyncClient {
      * @return An empty response.
      */
     public Mono<Void> downloadToFile(String downloadFilePath) {
-        return downloadToFile(downloadFilePath, null);
+        return downloadToFileWithResponse(downloadFilePath, null);
     }
 
     /**
@@ -333,7 +333,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -342,7 +342,7 @@ public class FileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
-    public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
+    public Mono<Void> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel -> sliceFileRange(range)
                 .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
