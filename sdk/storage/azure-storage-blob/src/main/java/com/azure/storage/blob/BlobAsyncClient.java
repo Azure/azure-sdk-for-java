@@ -530,7 +530,8 @@ public class BlobAsyncClient {
      * @return An empty response
      */
     public Mono<Void> downloadToFile(String filePath) {
-        return downloadToFile(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, null, false);
+        return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
+            null, null, false);
     }
 
     /**
@@ -563,14 +564,15 @@ public class BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize,
+    public Mono<Void> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
         ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
-        return withContext(context -> downloadToFile(filePath, range, blockSize, options, accessConditions,
+        return withContext(context -> downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
             rangeGetContentMD5, context));
     }
 
-    Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
+    Mono<Void> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
+                              ReliableDownloadOptions options, BlobAccessConditions accessConditions,
+                              boolean rangeGetContentMD5, Context context) {
         if (blockSize != null) {
             Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
@@ -582,8 +584,10 @@ public class BlobAsyncClient {
                 .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
                     .subscribeOn(Schedulers.elastic())
                     .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
-                        chunk.getOffset() - (range == null ? 0 : range.getOffset()))))
-                .then(), this::downloadToFileCleanup);
+                            chunk.getOffset() - (range == null ? 0 : range.getOffset()))
+                    ))
+                .then()
+                , this::downloadToFileCleanup);
     }
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {

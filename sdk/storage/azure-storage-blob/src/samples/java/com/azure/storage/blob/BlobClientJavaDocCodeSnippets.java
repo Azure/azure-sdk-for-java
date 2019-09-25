@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -93,8 +94,7 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#downloadToFile(String)} and
-     * {@link BlobClient#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions,
-     * boolean, Duration, Context)}
+     * {@link BlobClient#downloadToFileWithResponse(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration, Context)}
      */
     public void downloadToFile() {
         // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String
@@ -102,13 +102,14 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFile(file, range, 4 * Constants.MB, options, null, false, timeout, new Context(key2, value2));
-        System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        client.downloadToFileWithResponse(file, range, 4 * Constants.MB, options,
+            null, false, timeout, new Context(key2, value2));
+        System.out.println("Completed download to file with status code ");
+        // END: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
     }
 
     /**

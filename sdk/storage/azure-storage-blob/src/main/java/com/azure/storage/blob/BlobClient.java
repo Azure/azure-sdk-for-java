@@ -416,7 +416,8 @@ public class BlobClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadToFile(String filePath) {
-        downloadToFile(filePath, null, null, null, null, false, null, Context.NONE);
+        downloadToFileWithResponse(filePath, null, null, null, null,
+            false, null, Context.NONE);
     }
 
     /**
@@ -433,7 +434,7 @@ public class BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -448,11 +449,10 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
+    public void downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, options, accessConditions,
+        Mono<Void> download = blobAsyncClient.downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
             rangeGetContentMD5, context);
-
         Utility.blockWithOptionalTimeout(download, timeout);
     }
 
