@@ -32,19 +32,23 @@ public class UsernamePasswordCredential implements TokenCredential {
      * Creates a UserCredential with the given identity client options.
      *
      * @param clientId the client ID of the application
+     * @param tenantId the tenant ID of the application
      * @param username the username of the user
      * @param password the password of the user
      * @param identityClientOptions the options for configuring the identity client
      */
-    UsernamePasswordCredential(String clientId, String username, String password,
+    UsernamePasswordCredential(String clientId, String tenantId, String username, String password,
                                IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
         this.username = username;
         this.password = password;
+        if (tenantId == null) {
+            tenantId = "common";
+        }
         identityClient =
             new IdentityClientBuilder()
-                .tenantId("common")
+                .tenantId(tenantId)
                 .clientId(clientId)
                 .identityClientOptions(identityClientOptions)
                 .build();
