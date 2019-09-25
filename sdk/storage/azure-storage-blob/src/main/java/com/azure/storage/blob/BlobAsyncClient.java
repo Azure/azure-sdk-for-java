@@ -3,11 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -15,8 +15,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.AccessTierOptional;
-import com.azure.storage.blob.models.AccessTierRequired;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -288,7 +286,6 @@ public class BlobAsyncClient {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
-        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -298,7 +295,7 @@ public class BlobAsyncClient {
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, tierOp, priority, null, sourceConditions,
+            null, null, sourceURL, null, metadata, tier, priority, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
@@ -400,7 +397,6 @@ public class BlobAsyncClient {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
-        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -410,7 +406,7 @@ public class BlobAsyncClient {
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, copySource, null, metadata, tierOp, null, sourceConditions,
+            null, null, copySource, null, metadata, tier, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
@@ -909,10 +905,9 @@ public class BlobAsyncClient {
     Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         Utility.assertNotNull("tier", tier);
-        AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, accessTierRequired, null, priority, null, leaseAccessConditions, context))
+            null, null, tier, null, priority, null, leaseAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
