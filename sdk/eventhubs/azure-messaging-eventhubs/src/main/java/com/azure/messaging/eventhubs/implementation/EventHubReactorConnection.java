@@ -5,8 +5,13 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
+import com.azure.core.amqp.implementation.ReactorConnection;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
@@ -51,7 +56,7 @@ public class EventHubReactorConnection extends ReactorConnection implements Even
             Mono.fromCallable(() -> {
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEventHubName(), connectionOptions.getTokenCredential(),
+                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
                     this.tokenManagerProvider, this.messageSerializer);
             }))
             .cache();

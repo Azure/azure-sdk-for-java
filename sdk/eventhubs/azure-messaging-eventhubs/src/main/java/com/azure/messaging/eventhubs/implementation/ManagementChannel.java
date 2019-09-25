@@ -3,7 +3,11 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.EndpointStateNotifierBase;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.logging.ClientLogger;

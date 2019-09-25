@@ -23,7 +23,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.certificates.implementation.CertificateBasePage;
 import com.azure.security.keyvault.certificates.implementation.ContactPage;
@@ -172,7 +171,7 @@ interface CertificateService {
     @ExpectedResponses({204})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<VoidResponse> purgeDeletedcertificate(@HostParam("url") String url,
+    Mono<Response<Void>> purgeDeletedcertificate(@HostParam("url") String url,
                                                @PathParam("certificate-name") String certificateName,
                                                @QueryParam("api-version") String apiVersion,
                                                @HeaderParam("accept-language") String acceptLanguage,

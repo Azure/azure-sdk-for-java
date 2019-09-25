@@ -5,7 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
-import com.azure.core.http.rest.VoidResponse
+
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
@@ -211,7 +211,7 @@ class BlobAPITest extends APISpec {
 
     def "Download md5"() {
         when:
-        VoidResponse response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
+        Response<Void> response = bc.downloadWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
         byte[] contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
 
         then:
@@ -385,7 +385,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers null"() {
         setup:
-        VoidResponse response = bc.setHTTPHeadersWithResponse(null, null, null, null)
+        Response<Void> response = bc.setHTTPHeadersWithResponse(null, null, null, null)
 
         expect:
         response.getStatusCode() == 200
@@ -919,7 +919,7 @@ class BlobAPITest extends APISpec {
 
         when:
         String copyID = bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null, null).getValue()
-        VoidResponse response = bu2.abortCopyFromURLWithResponse(copyID, null, null, null)
+        Response<Void> response = bu2.abortCopyFromURLWithResponse(copyID, null, null, null)
         HttpHeaders headers = response.getHeaders()
 
         then:
@@ -1167,7 +1167,7 @@ class BlobAPITest extends APISpec {
 
     def "Delete"() {
         when:
-        VoidResponse response = bc.deleteWithResponse(null, null, null, null)
+        Response<Void> response = bc.deleteWithResponse(null, null, null, null)
         HttpHeaders headers = response.getHeaders()
 
         then:
@@ -1275,7 +1275,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultData.remaining())
 
         when:
-        VoidResponse initialResponse = bc.setTierWithResponse(tier, null, null, null, null)
+        Response<Void> initialResponse = bc.setTierWithResponse(tier, null, null, null, null)
         HttpHeaders headers = initialResponse.getHeaders()
 
         then:

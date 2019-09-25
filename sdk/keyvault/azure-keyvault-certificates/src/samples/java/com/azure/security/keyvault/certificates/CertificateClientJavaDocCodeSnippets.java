@@ -6,7 +6,6 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
@@ -364,14 +363,21 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void purgeDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string
-        certificateClient.purgeDeletedCertificateWithResponse("certificateName");
-        // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string
+        certificateClient.purgeDeletedCertificate("certificateName");
+        // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string
+    }
+
+    /**
+     * Method to insert code snippets for {@link CertificateClient#purgeDeletedCertificateWithResponse(String, Context)}
+     */
+    public void purgeDeletedCertificateWithResponseCodeSnippets() {
+        CertificateClient certificateClient = getCertificateClient();
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context
-        VoidResponse purgeResponse = certificateClient.purgeDeletedCertificateWithResponse("certificateName",
+        Response<Void> purgeResponse = certificateClient.purgeDeletedCertificateWithResponse("certificateName",
             new Context(key1, value1));
-        System.out.printf("Purged Deleted certificate with status %s", purgeResponse.getStatusCode());
+        System.out.printf("Purged Deleted certificate with status %d %n", purgeResponse.getStatusCode());
         // END: com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context
     }
 
