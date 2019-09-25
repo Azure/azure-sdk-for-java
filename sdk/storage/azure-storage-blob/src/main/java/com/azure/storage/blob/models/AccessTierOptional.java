@@ -97,6 +97,6 @@ public final class AccessTierOptional extends ExpandableStringEnum<AccessTierOpt
      * @return known AccessTierOptional values.
      */
     public static Collection<AccessTierOptional> values() {
-        return getValues(AccessTierOptional.class);
+        return values(AccessTierOptional.class);
     }
 }
