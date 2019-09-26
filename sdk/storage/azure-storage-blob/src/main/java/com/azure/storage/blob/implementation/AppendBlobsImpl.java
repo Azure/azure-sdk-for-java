@@ -4,8 +4,6 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -18,11 +16,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AppendBlobsAppendBlockFromUrlResponse;
-import com.azure.storage.blob.models.AppendBlobsAppendBlockResponse;
-import com.azure.storage.blob.models.AppendBlobsCreateResponse;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CpkInfo;
