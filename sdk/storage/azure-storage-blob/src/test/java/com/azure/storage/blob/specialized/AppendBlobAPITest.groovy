@@ -394,8 +394,8 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null       | null
         oldDate  | null       | null         | null        | null            | null       | null
         null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | null         | garbageEtag | null            | null       | null
         null     | null       | receivedEtag | null        | null            | null       | null
+        null     | null       | null         | garbageEtag | null            | null       | null
         null     | null       | null         | null        | receivedLeaseID | null       | null
         null     | null       | null         | null        | null            | 0          | null
         null     | null       | null         | null        | null            | null       | 100
