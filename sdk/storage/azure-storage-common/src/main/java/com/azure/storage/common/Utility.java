@@ -430,13 +430,13 @@ public final class Utility {
     /**
      * Appends a string to the end of the passed URL's path.
      *
-     * @param baseURL URL having a path appended
+     * @param baseUrl URL having a path appended
      * @param name Name of the path
      * @return a URL with the path appended.
      * @throws IllegalArgumentException If {@code name} causes the URL to become malformed.
      */
-    public static URL appendToURLPath(URL baseURL, String name) {
-        UrlBuilder builder = UrlBuilder.parse(baseURL);
+    public static URL appendToUrlPath(URL baseUrl, String name) {
+        UrlBuilder builder = UrlBuilder.parse(baseUrl);
 
         if (builder.getPath() == null) {
             builder.setPath("/");
@@ -456,17 +456,17 @@ public final class Utility {
     /**
      * Strips the last path segment from the passed URL.
      *
-     * @param baseURL URL having its last path segment stripped
+     * @param baseUrl URL having its last path segment stripped
      * @return a URL with the path segment stripped.
      * @throws IllegalArgumentException If stripping the last path segment causes the URL to become malformed or it
      * doesn't contain any path segments.
      */
-    public static URL stripLastPathSegment(URL baseURL) {
-        UrlBuilder builder = UrlBuilder.parse(baseURL);
+    public static URL stripLastPathSegment(URL baseUrl) {
+        UrlBuilder builder = UrlBuilder.parse(baseUrl);
 
         if (builder.getPath() == null || !builder.getPath().contains("/")) {
             throw new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
+                Constants.MessageConstants.NO_PATH_SEGMENTS, baseUrl));
         }
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));

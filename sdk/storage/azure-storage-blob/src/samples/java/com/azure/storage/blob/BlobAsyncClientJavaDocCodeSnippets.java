@@ -15,8 +15,8 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SasProtocol;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -392,22 +392,22 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSas(UserDelegationKey, String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSas(UserDelegationKey, String, BlobSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
-            .getDeletePermission(true)
+            .setDeletePermission(true)
             .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -420,26 +420,26 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateSas(String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link BlobAsyncClient#generateSas(String, BlobSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
-            .getDeletePermission(true)
+            .setDeletePermission(true)
             .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -451,26 +451,26 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
      * Generates a code sample for using {@link BlobAsyncClient#getContainerName()}
      */
     public void getContainerName() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getContainerName
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerName
         String containerName = client.getContainerName();
         System.out.println("The name of the container is " + containerName);
-        // END: com.azure.storage.blob.BlobAsyncClient.getContainerName
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerName
     }
 
     /**
      * Generates a code sample for using {@link BlobAsyncClient#getBlobName()}
      */
     public void getBlobName() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.getBlobName
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName
         String blobName = client.getBlobName();
         System.out.println("The name of the blob is " + blobName);
-        // END: com.azure.storage.blob.BlobAsyncClient.getBlobName
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName
     }
 }

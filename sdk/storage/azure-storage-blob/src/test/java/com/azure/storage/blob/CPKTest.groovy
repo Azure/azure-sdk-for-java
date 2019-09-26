@@ -4,6 +4,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.Constants
 
 import java.time.OffsetDateTime
@@ -15,7 +19,7 @@ class CPKTest extends APISpec {
     BlockBlobClient cpkBlockBlob
     PageBlobClient cpkPageBlob
     AppendBlobClient cpkAppendBlob
-    BlobClient cpkExistingBlob
+    BlobClientBase cpkExistingBlob
 
     def setup() {
         key = new CustomerProvidedKey(getRandomKey())
@@ -29,11 +33,11 @@ class CPKTest extends APISpec {
         addOptionalRecording(builder)
 
         cpkContainer = builder.buildClient()
-        cpkBlockBlob = cpkContainer.getBlockBlobClient(generateBlobName())
-        cpkPageBlob = cpkContainer.getPageBlobClient(generateBlobName())
-        cpkAppendBlob = cpkContainer.getAppendBlobClient(generateBlobName())
+        cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).asBlockBlobClient()
+        cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).asPageBlobClient()
+        cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).asAppendBlobClient()
 
-        def existingBlobSetup = cpkContainer.getBlockBlobClient(generateBlobName())
+        def existingBlobSetup = cpkContainer.getBlobClient(generateBlobName()).asBlockBlobClient()
         existingBlobSetup.upload(defaultInputStream.get(), defaultDataSize)
         cpkExistingBlob = existingBlobSetup
     }
@@ -84,12 +88,12 @@ class CPKTest extends APISpec {
 
     def "Put block from URL with CPK"() {
         setup:
-        def sourceBlob = cc.getBlockBlobClient(generateBlobName())
+        def sourceBlob = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSas(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSas(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -129,7 +133,7 @@ class CPKTest extends APISpec {
 
     def "Put page from URL wih CPK"() {
         setup:
-        def sourceBlob = cc.getPageBlobClient(generateBlobName())
+        def sourceBlob = cc.getBlobClient(generateBlobName()).asPageBlobClient()
         sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
@@ -138,7 +142,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSas(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSas(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -178,12 +182,12 @@ class CPKTest extends APISpec {
     def "Append block from URL with CPK"() {
         setup:
         cpkAppendBlob.create()
-        def sourceBlob = cc.getBlockBlobClient(generateBlobName())
+        def sourceBlob = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSas(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSas(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:

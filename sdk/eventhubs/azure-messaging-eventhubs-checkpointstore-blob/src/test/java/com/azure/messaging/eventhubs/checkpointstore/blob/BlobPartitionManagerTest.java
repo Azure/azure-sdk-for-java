@@ -12,7 +12,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobItem;

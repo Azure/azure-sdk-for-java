@@ -6,6 +6,8 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpClient;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -52,7 +54,7 @@ public class Sample {
 
         // in the last container, create 5 blobs
         for (int i = 0; i < 5; i++) {
-            BlockBlobClient blobClient = containerClient.getBlockBlobClient("testblob-" + i);
+            BlockBlobClient blobClient = containerClient.getBlobClient("testblob-" + i).asBlockBlobClient();
             ByteArrayInputStream testdata = new ByteArrayInputStream(("test data" + i).getBytes(StandardCharsets.UTF_8));
 
             blobClient.upload(testdata, testdata.available());
@@ -78,7 +80,7 @@ public class Sample {
     }
 
     //@Test
-    public void asyncSample() throws IOException {
+    public void asyncSample() {
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
             .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
@@ -113,7 +115,7 @@ public class Sample {
             .then(Mono.defer(() -> {
                 Mono<Void> finished = Mono.empty();
                 for (int i = 0; i < 5; i++) {
-                    BlockBlobAsyncClient blobClient = finalContainerClient.getBlockBlobAsyncClient("testblob-" + i);
+                    BlockBlobAsyncClient blobClient = finalContainerClient.getBlobAsyncClient("testblob-" + i).asBlockBlobAsyncClient();
                     byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
                     Flux<ByteBuffer> testdata = Flux.just(ByteBuffer.wrap(message));
 
@@ -169,7 +171,7 @@ public class Sample {
         containerClient.create();
 
         // upload data
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient("testblob_" + UUID.randomUUID());
+        BlockBlobClient blobClient = containerClient.getBlobClient("testblob_" + UUID.randomUUID()).asBlockBlobClient();
         blobClient.uploadFromFile(startFile.getAbsolutePath());
 
         // download data
@@ -200,7 +202,7 @@ public class Sample {
 
             // upload data
             .then(Mono.defer(() -> {
-                BlockBlobAsyncClient blobClient = containerClient.getBlockBlobAsyncClient("testblob_" + UUID.randomUUID());
+                BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("testblob_" + UUID.randomUUID()).asBlockBlobAsyncClient();
                 return blobClient.uploadFromFile(startFile.getAbsolutePath())
                     .then(Mono.just(blobClient));
             }))

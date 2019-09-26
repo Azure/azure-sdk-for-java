@@ -49,7 +49,7 @@ public final class BlobProperties {
     private final Metadata metadata;
     private final Integer committedBlockCount;
 
-    BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
+    public BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
         this.creationTime = generatedHeaders.getCreationTime();
         this.lastModified = generatedHeaders.getLastModified();
         this.eTag = generatedHeaders.getETag();

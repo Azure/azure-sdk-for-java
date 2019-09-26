@@ -124,7 +124,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Added methods to TransferManager for conveniently downloading a blob to a file.
 - UploadFromFile now takes an AsynchronousFileChannel.
 - UploadByteBuffersToBlockBlob, UploadByteBufferToBlockBlob, and DownloadToBuffer have been removed.
-- IPRange fields are now strings.
+- IpRange fields are now strings.
 - Fixed retry policy.
 - Fixed logging policy.
 

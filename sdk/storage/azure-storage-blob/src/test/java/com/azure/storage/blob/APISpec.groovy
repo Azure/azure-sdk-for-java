@@ -28,11 +28,13 @@ import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListContainersOptions
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
+import com.azure.storage.blob.specialized.BlobAsyncClientBase
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
-import com.azure.storage.common.credentials.SASTokenCredential
+import com.azure.storage.common.credentials.SasTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -112,7 +114,7 @@ class APISpec extends Specification {
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
 
-    static SharedKeyCredential primaryCredential
+    protected static SharedKeyCredential primaryCredential
     static SharedKeyCredential alternateCredential
     static SharedKeyCredential blobCredential
     static SharedKeyCredential premiumCredential
@@ -264,7 +266,7 @@ class APISpec extends Specification {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
-    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
+    BlobServiceClient getServiceClient(SasTokenCredential credential, String endpoint) {
         return getServiceClientBuilder(null, endpoint, null).credential(credential).buildClient()
     }
 
@@ -300,7 +302,7 @@ class APISpec extends Specification {
         return builder
     }
 
-    ContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
+    ContainerClient getContainerClient(SasTokenCredential credential, String endpoint) {
         ContainerClientBuilder builder = new ContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -327,11 +329,11 @@ class APISpec extends Specification {
         builder.credential(credential).buildBlobAsyncClient()
     }
 
-    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName) {
+    BlobClient getBlobClient(SasTokenCredential credential, String endpoint, String blobName) {
         return getBlobClient(credential, endpoint, blobName, null)
     }
 
-    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName, String snapshotId) {
+    BlobClient getBlobClient(SasTokenCredential credential, String endpoint, String blobName, String snapshotId) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
@@ -377,7 +379,7 @@ class APISpec extends Specification {
         return builder.credential(credential).buildBlobClient()
     }
 
-    BlobClient getBlobClient(String endpoint, SASTokenCredential credential) {
+    BlobClient getBlobClient(String endpoint, SasTokenCredential credential) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -409,11 +411,11 @@ class APISpec extends Specification {
         }
     }
 
-    static LeaseClient createLeaseClient(BlobClient blobClient) {
+    static LeaseClient createLeaseClient(BlobClientBase blobClient) {
         return createLeaseClient(blobClient, null)
     }
 
-    static LeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
+    static LeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
         return new LeaseClientBuilder()
             .blobClient(blobClient)
             .leaseId(leaseId)
@@ -483,7 +485,7 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(BlobClient bc, String match) {
+    def setupBlobMatchCondition(BlobClientBase bc, String match) {
         if (match == receivedEtag) {
             return bc.getProperties().getETag()
         } else {
@@ -491,7 +493,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobMatchCondition(BlobAsyncClient bac, String match) {
+    def setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (match == receivedEtag) {
             return bac.getProperties().block().getETag()
         } else {
@@ -513,7 +515,7 @@ class APISpec extends Specification {
      * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
-    def setupBlobLeaseCondition(BlobClient bc, String leaseID) {
+    def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = createLeaseClient(bc).acquireLease(-1)
@@ -525,7 +527,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
+    def setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new LeaseClientBuilder()

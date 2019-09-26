@@ -99,7 +99,7 @@ sequence number and the timestamp of when it was enqueued.
 
 ### Create an instance of Storage container with SAS token
 ```java
-SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString("<SAS_TOKEN_WITH_WRITE_PERMISSION>");
+SasTokenCredential sasTokenCredential = SasTokenCredential.fromSASTokenString("<SAS_TOKEN_WITH_WRITE_PERMISSION>");
 ContainerAsyncClient containerAsyncClient = new ContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")

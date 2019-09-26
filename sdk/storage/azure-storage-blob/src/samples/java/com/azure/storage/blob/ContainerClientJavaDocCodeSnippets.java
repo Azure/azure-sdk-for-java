@@ -19,8 +19,8 @@ import com.azure.storage.blob.models.StorageErrorCode;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SasProtocol;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -39,11 +39,11 @@ public class ContainerClientJavaDocCodeSnippets {
     private Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Code snippet for {@link ContainerClient#generateUserDelegationSas(UserDelegationKey, String, ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link ContainerClient#generateUserDelegationSas(UserDelegationKey, String, ContainerSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        ContainerSASPermission permissions = new ContainerSASPermission()
+        // BEGIN: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        ContainerSasPermission permissions = new ContainerSasPermission()
             .setRead(true)
             .setWrite(true)
             .setCreate(true)
@@ -52,10 +52,10 @@ public class ContainerClientJavaDocCodeSnippets {
             .setList(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -68,15 +68,15 @@ public class ContainerClientJavaDocCodeSnippets {
         String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
-        // END: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.ContainerClient.generateUserDelegationSAS#UserDelegationKey-String-ContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
-     * Code snippet for {@link ContainerClient#generateSas(String, ContainerSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Code snippet for {@link ContainerClient#generateSas(String, ContainerSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        ContainerSASPermission permissions = new ContainerSASPermission()
+        // BEGIN: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        ContainerSasPermission permissions = new ContainerSasPermission()
             .setRead(true)
             .setWrite(true)
             .setCreate(true)
@@ -85,10 +85,10 @@ public class ContainerClientJavaDocCodeSnippets {
             .setList(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -100,7 +100,7 @@ public class ContainerClientJavaDocCodeSnippets {
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.ContainerClient.generateSAS#String-ContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
@@ -119,60 +119,6 @@ public class ContainerClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.ContainerClient.getBlobClient#String-String
         BlobClient blobClient = client.getBlobClient(blobName, snapshot);
         // END: com.azure.storage.blob.ContainerClient.getBlobClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getAppendBlobClient(String)}
-     */
-    public void getAppendBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String
-        AppendBlobClient appendBlobClient = client.getAppendBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getAppendBlobClient(String, String)}
-     */
-    public void getSnapshotAppendBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String
-        AppendBlobClient appendBlobClient = client.getAppendBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getBlockBlobClient(String)}
-     */
-    public void getBlockBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String
-        BlockBlobClient blockBlobClient = client.getBlockBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getBlockBlobClient(String, String)}
-     */
-    public void getSnapshotBlockBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String
-        BlockBlobClient blockBlobClient = client.getBlockBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getPageBlobClient(String)}
-     */
-    public void getPageBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getPageBlobClient#String
-        PageBlobClient pageBlobClient = client.getPageBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getPageBlobClient#String
-    }
-
-    /**
-     * Code snippet for {@link ContainerClient#getPageBlobClient(String, String)}
-     */
-    public void getSnapshotPageBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String
-        PageBlobClient pageBlobClient = client.getPageBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String
     }
 
     /**

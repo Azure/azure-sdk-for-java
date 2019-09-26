@@ -3,21 +3,21 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CopyStatusType;
@@ -32,7 +32,7 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromURLHeaders;
-import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
+import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.FileUploadRangeHeaders;
 import com.azure.storage.file.models.FilesCreateResponse;
 import com.azure.storage.file.models.FilesDownloadResponse;
@@ -90,7 +90,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileClientBuilder
  * @see FileClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
+ * @see SasTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {
@@ -809,10 +809,10 @@ public class FileAsyncClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceURI Specifies the URL of the source file.
-     * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
+     * @return The {@link FileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<FileUploadRangeFromURLInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
+    public Mono<FileUploadRangeFromUrlInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
         URI sourceURI) {
         return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI)
             .flatMap(FluxUtil::toMono);
@@ -833,25 +833,25 @@ public class FileAsyncClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
-     * @param sourceURI Specifies the URL of the source file.
-     * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
+     * @param sourceUrl Specifies the URL of the source file.
+     * @return A response containing the {@link FileUploadRangeFromUrlInfo file upload range from url info} with headers
      * and response status code.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromUrlWithResponse(long length,
-        long destinationOffset, long sourceOffset, URI sourceURI) {
+    public Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
+        long destinationOffset, long sourceOffset, URI sourceUrl) {
         return withContext(context ->
-            uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
+            uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl, context));
     }
 
-    Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-        long sourceOffset, URI sourceURI, Context context) {
+    Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
+        long sourceOffset, URI sourceUrl, Context context) {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
 
         return postProcessResponse(azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
-                sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context))
+                sourceUrl.toString(), 0, null, sourceRange.toString(), null, null, context))
             .map(this::uploadRangeFromURLResponse);
     }
 
@@ -1106,11 +1106,11 @@ public class FileAsyncClient {
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param permissions The {@code FileSASPermission} permission for the SAS
+     * @param permissions The {@code FileSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSas(FileSASPermission permissions, OffsetDateTime expiryTime) {
+    public String generateSas(FileSasPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1132,16 +1132,16 @@ public class FileAsyncClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSASPermission} permission for the SAS
+     * @param permissions The {@code FileSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSas(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+    public String generateSas(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
+        OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
         return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
@@ -1152,18 +1152,18 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSASPermission} permission for the SAS
+     * @param permissions The {@code FileSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
      * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
@@ -1171,11 +1171,11 @@ public class FileAsyncClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSas(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+    public String generateSas(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
+        OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
-        FileServiceSASSignatureValues fileServiceSASSignatureValues = new FileServiceSASSignatureValues(version,
+        FileServiceSasSignatureValues fileServiceSasSignatureValues = new FileServiceSasSignatureValues(version,
             sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
             identifier, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -1184,11 +1184,11 @@ public class FileAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        FileServiceSASSignatureValues values = configureServiceSasSignatureValues(fileServiceSASSignatureValues,
+        FileServiceSasSignatureValues values = configureServiceSasSignatureValues(fileServiceSasSignatureValues,
             sharedKeyCredential.getAccountName());
 
-        FileServiceSASQueryParameters fileServiceSasQueryParameters =
-            values.generateSASQueryParameters(sharedKeyCredential);
+        FileServiceSasQueryParameters fileServiceSasQueryParameters =
+            values.generateSasQueryParameters(sharedKeyCredential);
 
         return fileServiceSasQueryParameters.encode();
     }
@@ -1196,16 +1196,16 @@ public class FileAsyncClient {
     /**
      * Sets fileServiceSASSignatureValues parameters dependent on the current file type
      */
-    FileServiceSASSignatureValues configureServiceSasSignatureValues(
-        FileServiceSASSignatureValues fileServiceSASSignatureValues, String accountName) {
+    FileServiceSasSignatureValues configureServiceSasSignatureValues(
+        FileServiceSasSignatureValues fileServiceSasSignatureValues, String accountName) {
 
         // Set canonical name
-        fileServiceSASSignatureValues.setCanonicalName(this.shareName, this.filePath, accountName);
+        fileServiceSasSignatureValues.setCanonicalName(this.shareName, this.filePath, accountName);
 
         // Set resource
-        fileServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_FILE_CONSTANT);
+        fileServiceSasSignatureValues.setResource(Constants.UrlConstants.SAS_FILE_CONSTANT);
 
-        return fileServiceSASSignatureValues;
+        return fileServiceSasSignatureValues;
     }
 
     /**
@@ -1321,14 +1321,14 @@ public class FileAsyncClient {
         return new SimpleResponse<>(response, fileUploadInfo);
     }
 
-    private Response<FileUploadRangeFromURLInfo> uploadRangeFromURLResponse(
+    private Response<FileUploadRangeFromUrlInfo> uploadRangeFromURLResponse(
         final FilesUploadRangeFromURLResponse response) {
         FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Boolean isServerEncrypted = headers.isServerEncrypted();
-        FileUploadRangeFromURLInfo fileUploadRangeFromURLInfo =
-            new FileUploadRangeFromURLInfo(eTag, lastModified, isServerEncrypted);
+        FileUploadRangeFromUrlInfo fileUploadRangeFromURLInfo =
+            new FileUploadRangeFromUrlInfo(eTag, lastModified, isServerEncrypted);
         return new SimpleResponse<>(response, fileUploadRangeFromURLInfo);
     }
 

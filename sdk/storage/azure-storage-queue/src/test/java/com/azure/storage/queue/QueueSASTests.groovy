@@ -1,11 +1,11 @@
 package com.azure.storage.queue
 
-import com.azure.storage.common.AccountSASPermission
-import com.azure.storage.common.AccountSASResourceType
-import com.azure.storage.common.AccountSASService
-import com.azure.storage.common.IPRange
-import com.azure.storage.common.SASProtocol
-import com.azure.storage.common.credentials.SASTokenCredential
+import com.azure.storage.common.AccountSasPermission
+import com.azure.storage.common.AccountSasResourceType
+import com.azure.storage.common.AccountSasService
+import com.azure.storage.common.IpRange
+import com.azure.storage.common.SasProtocol
+import com.azure.storage.common.credentials.SasTokenCredential
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
 import com.azure.storage.queue.models.SignedIdentifier
@@ -26,9 +26,9 @@ class QueueSASTests extends APISpec {
     }
 
     @Unroll
-    def "QueueSASPermission parse"() {
+    def "QueueSasPermission parse"() {
         when:
-        def perms = QueueSASPermission.parse(permString)
+        def perms = QueueSasPermission.parse(permString)
 
         then:
         perms.getReadPermission() == read
@@ -49,9 +49,9 @@ class QueueSASTests extends APISpec {
     }
 
     @Unroll
-    def "QueueSASPermission toString"() {
+    def "QueueSasPermission toString"() {
         setup:
-        def perms = new QueueSASPermission()
+        def perms = new QueueSasPermission()
             .setReadPermission(read)
             .setAddPermission(add)
             .setUpdatePermission(update)
@@ -70,9 +70,9 @@ class QueueSASTests extends APISpec {
         true  | true  | true   | true    || "raup"
     }
 
-    def "QueueSASPermission parse IA"() {
+    def "QueueSasPermission parse IA"() {
         when:
-        QueueSASPermission.parse("rwaq")
+        QueueSasPermission.parse("rwaq")
 
         then:
         thrown(IllegalArgumentException)
@@ -84,7 +84,7 @@ class QueueSASTests extends APISpec {
         def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = new QueueServiceSASSignatureValues().setCanonicalName(queueName, accountName)
+        def serviceSASSignatureValues = new QueueServiceSasSignatureValues().setCanonicalName(queueName, accountName)
 
         then:
         serviceSASSignatureValues.getCanonicalName() == "/queue/" + accountName + "/" + queueName
@@ -96,16 +96,16 @@ class QueueSASTests extends APISpec {
         queueClient.create()
         EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
-        def permissions = new QueueSASPermission()
+        def permissions = new QueueSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
             .setProcessPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new IPRange()
+        def ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
-        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
         def sasPermissions = queueClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
@@ -113,7 +113,7 @@ class QueueSASTests extends APISpec {
         def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl().toString())
             .queueName(queueClient.client.queueName)
-            .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
+            .credential(SasTokenCredential.fromSasTokenString(sasPermissions))
             .buildClient()
         clientPermissions.enqueueMessage("sastest")
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(2).iterator()
@@ -136,17 +136,17 @@ class QueueSASTests extends APISpec {
         queueClient.create()
         EnqueuedMessage resp = queueClient.enqueueMessage("test")
 
-        def permissions = new QueueSASPermission()
+        def permissions = new QueueSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
             .setProcessPermission(true)
             .setUpdatePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new IPRange()
+        def ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
-        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
         def sasPermissions = queueClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
@@ -154,7 +154,7 @@ class QueueSASTests extends APISpec {
         def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl().toString())
             .queueName(queueClient.client.queueName)
-            .credential(SASTokenCredential.fromSASTokenString(sasPermissions))
+            .credential(SasTokenCredential.fromSasTokenString(sasPermissions))
             .buildClient()
         clientPermissions.updateMessage("testing", resp.getMessageId(), resp.getPopReceipt(), Duration.ZERO)
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
@@ -177,7 +177,7 @@ class QueueSASTests extends APISpec {
         queueClient.create()
         queueClient.enqueueMessage("test")
 
-        def permissions = new QueueSASPermission()
+        def permissions = new QueueSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
             .setUpdatePermission(true)
@@ -198,7 +198,7 @@ class QueueSASTests extends APISpec {
         def clientIdentifier = clientBuilder
             .endpoint(queueClient.getQueueUrl().toString())
             .queueName(queueClient.client.queueName)
-            .credential(SASTokenCredential.fromSASTokenString(sasIdentifier))
+            .credential(SasTokenCredential.fromSasTokenString(sasIdentifier))
             .buildClient()
         clientIdentifier.enqueueMessage("sastest")
         def dequeueMsgIterIdentifier = clientIdentifier.dequeueMessages(2).iterator()
@@ -211,13 +211,13 @@ class QueueSASTests extends APISpec {
 
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
-        def service = new AccountSASService()
+        def service = new AccountSasService()
             .setQueue(true)
-        def resourceType = new AccountSASResourceType()
+        def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
             .setObject(true)
-        def permissions = new AccountSASPermission()
+        def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
@@ -228,7 +228,7 @@ class QueueSASTests extends APISpec {
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl().toString())
-            .credential(SASTokenCredential.fromSASTokenString(sas))
+            .credential(SasTokenCredential.fromSasTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createQueue("queue")
 
@@ -244,13 +244,13 @@ class QueueSASTests extends APISpec {
 
     @Test
     def "Test Account QueueServiceSAS list queues"() {
-        def service = new AccountSASService()
+        def service = new AccountSasService()
             .setQueue(true)
-        def resourceType = new AccountSASResourceType()
+        def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
             .setObject(true)
-        def permissions = new AccountSASPermission()
+        def permissions = new AccountSasPermission()
             .setListPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -259,7 +259,7 @@ class QueueSASTests extends APISpec {
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl().toString())
-            .credential(SASTokenCredential.fromSASTokenString(sas))
+            .credential(SasTokenCredential.fromSasTokenString(sas))
         def sc = scBuilder.buildClient()
 
         sc.listQueues()

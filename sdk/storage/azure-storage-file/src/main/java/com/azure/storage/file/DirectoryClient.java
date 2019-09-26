@@ -3,13 +3,13 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
+ * @see SasTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class DirectoryClient {

@@ -3,10 +3,10 @@
 package com.azure.storage.queue;
 
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
@@ -40,7 +40,7 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueAsyncClient} with {@link SasTokenCredential}
      *
      * @return An instance of {@link QueueAsyncClient}
      */
@@ -54,7 +54,7 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueAsyncClient} with {@link SasTokenCredential}
      *
      * @return An instance of {@link QueueAsyncClient}
      */
@@ -63,7 +63,7 @@ public class QueueAsyncJavaDocCodeSamples {
         QueueAsyncClient queueAsyncClient = new QueueClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net")
             .queueName("myqueue")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
+            .credential(SasTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueAsyncClient.instantiation.credential
         return queueAsyncClient;
@@ -486,27 +486,27 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link QueueAsyncClient#generateSas(String, QueueSASPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange)}
+     * Code snippet for {@link QueueAsyncClient#generateSas(String, QueueSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
-        QueueSASPermission permissions = new QueueSASPermission()
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
+        QueueSasPermission permissions = new QueueSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
             .setUpdatePermission(true)
             .setProcessPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String identifier = "";
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
+        // END: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
     }
 
     /**

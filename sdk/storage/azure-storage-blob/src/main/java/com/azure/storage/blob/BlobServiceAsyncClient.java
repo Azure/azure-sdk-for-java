@@ -3,13 +3,13 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -27,12 +27,12 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.AccountSASSignatureValues;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.AccountSasPermission;
+import com.azure.storage.common.AccountSasResourceType;
+import com.azure.storage.common.AccountSasService;
+import com.azure.storage.common.AccountSasSignatureValues;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Mono;
@@ -44,7 +44,7 @@ import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -70,16 +70,16 @@ public final class BlobServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
-    private final CpkInfo cpk;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk) {
+    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo customerProvidedKey) {
         this.azureBlobStorage = azureBlobStorage;
-        this.cpk = cpk;
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -96,9 +96,9 @@ public final class BlobServiceAsyncClient {
      */
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
+            .url(Utility.appendToUrlPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), cpk);
+            .build(), customerProvidedKey);
     }
 
     /**
@@ -461,15 +461,15 @@ public final class BlobServiceAsyncClient {
     /**
      * Generates an account SAS token with the specified parameters
      *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param accountSasService The {@code AccountSasService} services for the account SAS
+     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
+     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
+        AccountSasPermission accountSasPermission, OffsetDateTime expiryTime) {
+        return this.generateAccountSas(accountSasService, accountSasResourceType, accountSasPermission, expiryTime,
             null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
     }
 
@@ -478,30 +478,30 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     * {@codesnippet com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a></p>
      *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param accountSasService The {@code AccountSasService} services for the account SAS
+     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
+     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        IPRange ipRange, SASProtocol sasProtocol) {
+    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
+        AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        IpRange ipRange, SasProtocol sasProtocol) {
 
         SharedKeyCredential sharedKeyCredential =
             Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
-            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return AccountSasSignatureValues.generateAccountSas(sharedKeyCredential, accountSasService,
+            accountSasResourceType, accountSasPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }
