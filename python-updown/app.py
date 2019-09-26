@@ -37,3 +37,5 @@ for i in range(args.count):
     elapsedSeconds = end - start
     megabytesPerSecond = (args.size / (1024 * 1024)) / elapsedSeconds
     print(f"Downloaded {args.size} bytes in {elapsedSeconds:.2f} seconds ({megabytesPerSecond:.2f} MB/s)")
+
+    print()
