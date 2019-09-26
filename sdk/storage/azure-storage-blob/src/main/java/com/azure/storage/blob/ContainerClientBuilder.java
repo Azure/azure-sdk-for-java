@@ -73,7 +73,7 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline)
-            .build(), cpk);
+            .build(), customerProvidedKey);
     }
 
     /**
@@ -91,7 +91,7 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
     public ContainerClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = URLParser.parse(url);
+            BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getContainerName();
@@ -122,6 +122,11 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
     public ContainerClientBuilder containerName(String containerName) {
         this.containerName = containerName;
         return this;
+    }
+
+    @Override
+    protected Class<ContainerClientBuilder> getClazz() {
+        return ContainerClientBuilder.class;
     }
 
     String endpoint() {

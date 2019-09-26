@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 
@@ -42,7 +43,7 @@ public class AsyncBufferedUploadExample {
         containerClient.create().block();
 
         uploadSourceBlob(endpoint, credential, containerName);
-        BlockBlobAsyncClient blobClient = containerClient.getBlockBlobAsyncClient("HelloWorld.txt");
+        BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("HelloWorld.txt").asBlockBlobAsyncClient();
 
 
         /*
@@ -86,6 +87,6 @@ public class AsyncBufferedUploadExample {
     private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, SharedKeyCredential credential,
         String containerName) {
         return new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildAsyncClient()
-            .getContainerAsyncClient(containerName).getBlockBlobAsyncClient("sourceBlob");
+            .getContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").asBlockBlobAsyncClient();
     }
 }

@@ -33,6 +33,7 @@ abstract class BaseFileClientBuilder<T extends BaseClientBuilder<T>> extends Bas
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public final T credential(TokenCredential credential) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Azure Storage file service does not support token authorization."));
@@ -44,6 +45,7 @@ abstract class BaseFileClientBuilder<T extends BaseClientBuilder<T>> extends Bas
      *
      * @return the updated builder
      */
+    @Override
     public final T setAnonymousCredential() {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Azure Storage file service does not support anonymous access."));

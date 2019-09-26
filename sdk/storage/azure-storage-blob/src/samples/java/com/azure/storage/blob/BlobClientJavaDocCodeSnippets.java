@@ -395,7 +395,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
-            .getDeletePermission(true)
+            .setDeletePermission(true)
             .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
@@ -428,7 +428,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
-            .getDeletePermission(true)
+            .setDeletePermission(true)
             .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
@@ -454,19 +454,19 @@ public class BlobClientJavaDocCodeSnippets {
      * Generates a code sample for using {@link BlobClient#getContainerName()}
      */
     public void getContainerName() {
-        // BEGIN: com.azure.storage.blob.BlobClient.getContainerName
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
         String containerName = client.getContainerName();
         System.out.println("The name of the blob is " + containerName);
-        // END: com.azure.storage.blob.BlobClient.getContainerName
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
     }
 
     /**
      * Generates a code sample for using {@link BlobClient#getBlobName()}
      */
     public void getBlobName() {
-        // BEGIN: com.azure.storage.blob.BlobClient.getBlobName
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getBlobName
         String blobName = client.getBlobName();
         System.out.println("The name of the blob is " + blobName);
-        // END: com.azure.storage.blob.BlobClient.getBlobName
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getBlobName
     }
 }
