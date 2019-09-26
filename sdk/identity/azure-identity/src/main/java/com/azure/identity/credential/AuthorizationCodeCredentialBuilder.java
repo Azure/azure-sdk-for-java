@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @see AuthorizationCodeCredential
  */
 public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase<AuthorizationCodeCredentialBuilder> {
-    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
+    private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
 
     private String authCode;
     private String redirectUri;
@@ -57,9 +57,10 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("redirectUri", redirectUri);
             }});
         try {
-            return new AuthorizationCodeCredential(clientId, tenantId, authCode, new URI(redirectUri), identityClientOptions);
+            return new AuthorizationCodeCredential(clientId, tenantId, authCode,
+                new URI(redirectUri), identityClientOptions);
         } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
