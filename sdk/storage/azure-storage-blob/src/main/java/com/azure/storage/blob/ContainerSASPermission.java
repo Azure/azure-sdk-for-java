@@ -11,9 +11,8 @@ import java.util.Locale;
 /**
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
  * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
- * Once all the values are set, this should be serialized with toString and set as the permissions field on a {@link
- * BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
- * order of the permissions is particular and this class guarantees correctness.
+ * It is possible to construct the permissions string without this class, but the order of the permissions is
+ * particular and this class guarantees correctness.
  */
 public final class ContainerSASPermission {
     private boolean read;
@@ -29,7 +28,7 @@ public final class ContainerSASPermission {
     private boolean list;
 
     /**
-     * Initializes an {@code ContainerSASPermssion} object with all fields set to false.
+     * Initializes an {@code ContainerSASPermission} object with all fields set to false.
      */
     public ContainerSASPermission() {
     }
