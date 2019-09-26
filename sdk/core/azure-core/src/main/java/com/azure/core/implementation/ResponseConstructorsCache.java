@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 final class ResponseConstructorsCache {
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
     private final Map<Class<?>, ResponseConstructor> cache = new ConcurrentHashMap<>();
-    private final static MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 
     /**
      * Identify the suitable constructor for the given response class.

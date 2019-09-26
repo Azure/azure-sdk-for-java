@@ -35,7 +35,7 @@ import java.util.Optional;
 
 class ResponseConstructorsCacheBenchMarkTestData {
     // Model type for Http content
-    final static class Foo {
+    static final class Foo {
         @JsonProperty("name")
         private String name;
 
@@ -50,7 +50,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // Model type for custom Http headers
-    final static class FooHeader {
+    static final class FooHeader {
         @JsonProperty("customHdr")
         private String customHdr;
 
@@ -60,15 +60,15 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // 1. final VoidResponse               (Ctr_args: 3)
-    final static class VoidResponse extends SimpleResponse<Void> {
-        public VoidResponse(HttpRequest request, int statusCode, HttpHeaders headers, Void value) {
+    static final class VoidResponse extends SimpleResponse<Void> {
+        VoidResponse(HttpRequest request, int statusCode, HttpHeaders headers, Void value) {
             super(request, statusCode, headers, value);
         }
     }
 
     // 2. SimpleResponse<Foo> Type         (Ctr_args: 4)
-    final static class FooSimpleResponse extends SimpleResponse<Foo> {
-        public FooSimpleResponse(HttpRequest request,
+    static final class FooSimpleResponse extends SimpleResponse<Foo> {
+        FooSimpleResponse(HttpRequest request,
                                  int statusCode,
                                  HttpHeaders headers,
                                  Foo value) {
@@ -80,8 +80,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
     //    StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value)
 
     // 4. ResponseBase<FooHeader, Foo>     (Ctr_args: 5)
-    final static class FooResponseBase extends ResponseBase<FooHeader, Foo> {
-        public FooResponseBase(HttpRequest request,
+    static final class FooResponseBase extends ResponseBase<FooHeader, Foo> {
+        FooResponseBase(HttpRequest request,
                                int statusCode,
                                HttpHeaders headers,
                                Foo value,
@@ -91,8 +91,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // 5. PagedResponseBase<FooHeader, Foo> (Ctr_args: 5)
-    final static class FooPagedResponseBase extends PagedResponseBase<FooHeader, Foo> {
-        public FooPagedResponseBase(HttpRequest request,
+    static final class FooPagedResponseBase extends PagedResponseBase<FooHeader, Foo> {
+        FooPagedResponseBase(HttpRequest request,
                                     int statusCode,
                                     HttpHeaders headers,
                                     Page<Foo> page,
@@ -111,7 +111,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // Mock Http Response
-    final static class MockResponse extends HttpResponse {
+    static final class MockResponse extends HttpResponse {
         private final int statusCode;
         private final HttpHeaders headers;
         private final Mono<byte[]> bodyBytes;
@@ -213,7 +213,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
             RESPONSE_CUSTOM_HEADERS,
             FOO_BYTE_ARRAY));
     // ARRAY HOLDING TEST DATA
-    public final Input[] inputs;
+    private final Input[] inputs;
 
     ResponseConstructorsCacheBenchMarkTestData() {
         this.inputs = new Input[5];
@@ -244,6 +244,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
                 PAGE_FOO);
     }
 
+    Input[] inputs() {
+        return this.inputs;
+    }
+
     private static URL createUrl() {
         try {
             return new URL("http://localhost");
@@ -262,9 +266,9 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     class Input {
-        public final Type returnType;
-        public final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
-        public final Object bodyAsObject;
+        private final Type returnType;
+        private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
+        private final Object bodyAsObject;
 
         Input(HttpResponseDecoder decoder,
               Class<?> serviceClass,
@@ -276,6 +280,18 @@ class ResponseConstructorsCacheBenchMarkTestData {
             this.bodyAsObject = bodyAsObject;
         }
 
+        Type returnType() {
+            return this.returnType;
+        }
+
+        HttpResponseDecoder.HttpDecodedResponse decodedResponse() {
+            return this.decodedResponse;
+        }
+
+        Object bodyAsObject() {
+            return this.decodedResponse;
+        }
+
         private Method findMethod(Class<?> cls, String methodName) {
             Optional<Method> optMethod = Arrays.stream(cls.getDeclaredMethods())
                     .filter(m -> m.getName().equalsIgnoreCase(methodName))
@@ -283,7 +299,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
             if (optMethod.isPresent()) {
                 return optMethod.get();
             } else {
-                throw new RuntimeException("Method with name '"+ methodName + "' not found.");
+                throw new RuntimeException("Method with name '" + methodName + "' not found.");
             }
         }
     }
