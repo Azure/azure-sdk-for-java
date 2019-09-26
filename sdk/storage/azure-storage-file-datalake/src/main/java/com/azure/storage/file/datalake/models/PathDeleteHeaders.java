@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -49,7 +49,7 @@ public final class PathDeleteHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -60,7 +60,7 @@ public final class PathDeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathDeleteHeaders object itself.
      */
-    public PathDeleteHeaders dateProperty(String dateProperty) {
+    public PathDeleteHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -71,7 +71,7 @@ public final class PathDeleteHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -82,7 +82,7 @@ public final class PathDeleteHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathDeleteHeaders object itself.
      */
-    public PathDeleteHeaders xMsRequestId(String xMsRequestId) {
+    public PathDeleteHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -93,7 +93,7 @@ public final class PathDeleteHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -104,7 +104,7 @@ public final class PathDeleteHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathDeleteHeaders object itself.
      */
-    public PathDeleteHeaders xMsVersion(String xMsVersion) {
+    public PathDeleteHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -119,7 +119,7 @@ public final class PathDeleteHeaders {
      *
      * @return the xMsContinuation value.
      */
-    public String xMsContinuation() {
+    public String getXMsContinuation() {
         return this.xMsContinuation;
     }
 
@@ -134,7 +134,7 @@ public final class PathDeleteHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathDeleteHeaders object itself.
      */
-    public PathDeleteHeaders xMsContinuation(String xMsContinuation) {
+    public PathDeleteHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public final class PathList {
      *
      * @return the paths value.
      */
-    public List<Path> paths() {
+    public List<Path> getPaths() {
         return this.paths;
     }
 
@@ -34,7 +34,7 @@ public final class PathList {
      * @param paths the paths value to set.
      * @return the PathList object itself.
      */
-    public PathList paths(List<Path> paths) {
+    public PathList setPaths(List<Path> paths) {
         this.paths = paths;
         return this;
     }

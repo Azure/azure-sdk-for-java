@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -64,7 +64,7 @@ public final class PathListHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -75,7 +75,7 @@ public final class PathListHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathListHeaders object itself.
      */
-    public PathListHeaders dateProperty(String dateProperty) {
+    public PathListHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -87,7 +87,7 @@ public final class PathListHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -99,7 +99,7 @@ public final class PathListHeaders {
      * @param eTag the eTag value to set.
      * @return the PathListHeaders object itself.
      */
-    public PathListHeaders eTag(String eTag) {
+    public PathListHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -111,7 +111,7 @@ public final class PathListHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -123,7 +123,7 @@ public final class PathListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathListHeaders object itself.
      */
-    public PathListHeaders lastModified(String lastModified) {
+    public PathListHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -134,7 +134,7 @@ public final class PathListHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -145,7 +145,7 @@ public final class PathListHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathListHeaders object itself.
      */
-    public PathListHeaders xMsRequestId(String xMsRequestId) {
+    public PathListHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -156,7 +156,7 @@ public final class PathListHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -167,7 +167,7 @@ public final class PathListHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathListHeaders object itself.
      */
-    public PathListHeaders xMsVersion(String xMsVersion) {
+    public PathListHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -181,7 +181,7 @@ public final class PathListHeaders {
      *
      * @return the xMsContinuation value.
      */
-    public String xMsContinuation() {
+    public String getXMsContinuation() {
         return this.xMsContinuation;
     }
 
@@ -195,7 +195,7 @@ public final class PathListHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathListHeaders object itself.
      */
-    public PathListHeaders xMsContinuation(String xMsContinuation) {
+    public PathListHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
     }

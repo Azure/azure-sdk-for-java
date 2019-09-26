@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -160,7 +160,7 @@ public final class PathReadHeaders {
      *
      * @return the acceptRanges value.
      */
-    public String acceptRanges() {
+    public String getAcceptRanges() {
         return this.acceptRanges;
     }
 
@@ -171,7 +171,7 @@ public final class PathReadHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders acceptRanges(String acceptRanges) {
+    public PathReadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
     }
@@ -183,7 +183,7 @@ public final class PathReadHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -195,7 +195,7 @@ public final class PathReadHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders cacheControl(String cacheControl) {
+    public PathReadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -207,7 +207,7 @@ public final class PathReadHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -219,7 +219,7 @@ public final class PathReadHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentDisposition(String contentDisposition) {
+    public PathReadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -231,7 +231,7 @@ public final class PathReadHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -243,7 +243,7 @@ public final class PathReadHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentEncoding(String contentEncoding) {
+    public PathReadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -255,7 +255,7 @@ public final class PathReadHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -267,7 +267,7 @@ public final class PathReadHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentLanguage(String contentLanguage) {
+    public PathReadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -277,7 +277,7 @@ public final class PathReadHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -287,7 +287,7 @@ public final class PathReadHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentLength(Long contentLength) {
+    public PathReadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -299,7 +299,7 @@ public final class PathReadHeaders {
      *
      * @return the contentRange value.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return this.contentRange;
     }
 
@@ -311,7 +311,7 @@ public final class PathReadHeaders {
      * @param contentRange the contentRange value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentRange(String contentRange) {
+    public PathReadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -323,7 +323,7 @@ public final class PathReadHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -335,7 +335,7 @@ public final class PathReadHeaders {
      * @param contentType the contentType value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentType(String contentType) {
+    public PathReadHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -348,7 +348,7 @@ public final class PathReadHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public String getContentMD5() {
         return this.contentMD5;
     }
 
@@ -361,7 +361,7 @@ public final class PathReadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders contentMD5(String contentMD5) {
+    public PathReadHeaders setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -372,7 +372,7 @@ public final class PathReadHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -383,7 +383,7 @@ public final class PathReadHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders dateProperty(String dateProperty) {
+    public PathReadHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -394,7 +394,7 @@ public final class PathReadHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -405,7 +405,7 @@ public final class PathReadHeaders {
      * @param eTag the eTag value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders eTag(String eTag) {
+    public PathReadHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -417,7 +417,7 @@ public final class PathReadHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -429,7 +429,7 @@ public final class PathReadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders lastModified(String lastModified) {
+    public PathReadHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -440,7 +440,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -451,7 +451,7 @@ public final class PathReadHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsRequestId(String xMsRequestId) {
+    public PathReadHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -462,7 +462,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -473,7 +473,7 @@ public final class PathReadHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsVersion(String xMsVersion) {
+    public PathReadHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -484,7 +484,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsResourceType value.
      */
-    public String xMsResourceType() {
+    public String getXMsResourceType() {
         return this.xMsResourceType;
     }
 
@@ -495,7 +495,7 @@ public final class PathReadHeaders {
      * @param xMsResourceType the xMsResourceType value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsResourceType(String xMsResourceType) {
+    public PathReadHeaders setXMsResourceType(String xMsResourceType) {
         this.xMsResourceType = xMsResourceType;
         return this;
     }
@@ -509,7 +509,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsProperties value.
      */
-    public String xMsProperties() {
+    public String getXMsProperties() {
         return this.xMsProperties;
     }
 
@@ -523,7 +523,7 @@ public final class PathReadHeaders {
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsProperties(String xMsProperties) {
+    public PathReadHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
         return this;
     }
@@ -534,7 +534,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsLeaseDuration value.
      */
-    public String xMsLeaseDuration() {
+    public String getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
 
@@ -545,7 +545,7 @@ public final class PathReadHeaders {
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsLeaseDuration(String xMsLeaseDuration) {
+    public PathReadHeaders setXMsLeaseDuration(String xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
     }
@@ -555,7 +555,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsLeaseState value.
      */
-    public String xMsLeaseState() {
+    public String getXMsLeaseState() {
         return this.xMsLeaseState;
     }
 
@@ -565,7 +565,7 @@ public final class PathReadHeaders {
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsLeaseState(String xMsLeaseState) {
+    public PathReadHeaders setXMsLeaseState(String xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
     }
@@ -575,7 +575,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsLeaseStatus value.
      */
-    public String xMsLeaseStatus() {
+    public String getXMsLeaseStatus() {
         return this.xMsLeaseStatus;
     }
 
@@ -585,7 +585,7 @@ public final class PathReadHeaders {
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsLeaseStatus(String xMsLeaseStatus) {
+    public PathReadHeaders setXMsLeaseStatus(String xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
     }
@@ -600,7 +600,7 @@ public final class PathReadHeaders {
      *
      * @return the xMsContentMd5 value.
      */
-    public String xMsContentMd5() {
+    public String getXMsContentMd5() {
         return this.xMsContentMd5;
     }
 
@@ -615,7 +615,7 @@ public final class PathReadHeaders {
      * @param xMsContentMd5 the xMsContentMd5 value to set.
      * @return the PathReadHeaders object itself.
      */
-    public PathReadHeaders xMsContentMd5(String xMsContentMd5) {
+    public PathReadHeaders setXMsContentMd5(String xMsContentMd5) {
         this.xMsContentMd5 = xMsContentMd5;
         return this;
     }

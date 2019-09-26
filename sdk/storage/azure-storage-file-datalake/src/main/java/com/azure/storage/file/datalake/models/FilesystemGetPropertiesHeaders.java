@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -71,7 +71,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -82,7 +82,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders dateProperty(String dateProperty) {
+    public FilesystemGetPropertiesHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -94,7 +94,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -106,7 +106,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders eTag(String eTag) {
+    public FilesystemGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -118,7 +118,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -130,7 +130,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders lastModified(String lastModified) {
+    public FilesystemGetPropertiesHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -141,7 +141,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -152,7 +152,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders xMsRequestId(String xMsRequestId) {
+    public FilesystemGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -163,7 +163,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -174,7 +174,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders xMsVersion(String xMsVersion) {
+    public FilesystemGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -188,7 +188,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the xMsProperties value.
      */
-    public String xMsProperties() {
+    public String getXMsProperties() {
         return this.xMsProperties;
     }
 
@@ -202,7 +202,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param xMsProperties the xMsProperties value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders xMsProperties(String xMsProperties) {
+    public FilesystemGetPropertiesHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
         return this;
     }
@@ -214,7 +214,7 @@ public final class FilesystemGetPropertiesHeaders {
      *
      * @return the xMsNamespaceEnabled value.
      */
-    public String xMsNamespaceEnabled() {
+    public String getXMsNamespaceEnabled() {
         return this.xMsNamespaceEnabled;
     }
 
@@ -226,7 +226,7 @@ public final class FilesystemGetPropertiesHeaders {
      * @param xMsNamespaceEnabled the xMsNamespaceEnabled value to set.
      * @return the FilesystemGetPropertiesHeaders object itself.
      */
-    public FilesystemGetPropertiesHeaders xMsNamespaceEnabled(String xMsNamespaceEnabled) {
+    public FilesystemGetPropertiesHeaders setXMsNamespaceEnabled(String xMsNamespaceEnabled) {
         this.xMsNamespaceEnabled = xMsNamespaceEnabled;
         return this;
     }

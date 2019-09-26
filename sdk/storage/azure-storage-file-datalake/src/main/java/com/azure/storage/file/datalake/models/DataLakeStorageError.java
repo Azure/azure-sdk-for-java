@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -23,7 +23,7 @@ public final class DataLakeStorageError {
      *
      * @return the error value.
      */
-    public DataLakeStorageErrorError error() {
+    public DataLakeStorageErrorError getError() {
         return this.error;
     }
 
@@ -33,7 +33,7 @@ public final class DataLakeStorageError {
      * @param error the error value to set.
      * @return the DataLakeStorageError object itself.
      */
-    public DataLakeStorageError error(DataLakeStorageErrorError error) {
+    public DataLakeStorageError setError(DataLakeStorageErrorError error) {
         this.error = error;
         return this;
     }

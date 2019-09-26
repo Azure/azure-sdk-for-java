@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -54,7 +54,7 @@ public final class FilesystemSetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -65,7 +65,7 @@ public final class FilesystemSetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FilesystemSetPropertiesHeaders object itself.
      */
-    public FilesystemSetPropertiesHeaders dateProperty(String dateProperty) {
+    public FilesystemSetPropertiesHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -77,7 +77,7 @@ public final class FilesystemSetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -89,7 +89,7 @@ public final class FilesystemSetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesystemSetPropertiesHeaders object itself.
      */
-    public FilesystemSetPropertiesHeaders eTag(String eTag) {
+    public FilesystemSetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -101,7 +101,7 @@ public final class FilesystemSetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -113,7 +113,7 @@ public final class FilesystemSetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesystemSetPropertiesHeaders object itself.
      */
-    public FilesystemSetPropertiesHeaders lastModified(String lastModified) {
+    public FilesystemSetPropertiesHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -124,7 +124,7 @@ public final class FilesystemSetPropertiesHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -135,7 +135,7 @@ public final class FilesystemSetPropertiesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesystemSetPropertiesHeaders object itself.
      */
-    public FilesystemSetPropertiesHeaders xMsRequestId(String xMsRequestId) {
+    public FilesystemSetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -146,7 +146,7 @@ public final class FilesystemSetPropertiesHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -157,7 +157,7 @@ public final class FilesystemSetPropertiesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesystemSetPropertiesHeaders object itself.
      */
-    public FilesystemSetPropertiesHeaders xMsVersion(String xMsVersion) {
+    public FilesystemSetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }

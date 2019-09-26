@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public final class FilesystemList {
      *
      * @return the filesystems value.
      */
-    public List<Filesystem> filesystems() {
+    public List<Filesystem> getFilesystems() {
         return this.filesystems;
     }
 
@@ -34,7 +34,7 @@ public final class FilesystemList {
      * @param filesystems the filesystems value to set.
      * @return the FilesystemList object itself.
      */
-    public FilesystemList filesystems(List<Filesystem> filesystems) {
+    public FilesystemList setFilesystems(List<Filesystem> filesystems) {
         this.filesystems = filesystems;
         return this;
     }

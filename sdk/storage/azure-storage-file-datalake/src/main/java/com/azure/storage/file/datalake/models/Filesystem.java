@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -35,7 +35,7 @@ public final class Filesystem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -45,7 +45,7 @@ public final class Filesystem {
      * @param name the name value to set.
      * @return the Filesystem object itself.
      */
-    public Filesystem name(String name) {
+    public Filesystem setName(String name) {
         this.name = name;
         return this;
     }
@@ -55,7 +55,7 @@ public final class Filesystem {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -65,7 +65,7 @@ public final class Filesystem {
      * @param lastModified the lastModified value to set.
      * @return the Filesystem object itself.
      */
-    public Filesystem lastModified(String lastModified) {
+    public Filesystem setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -75,7 +75,7 @@ public final class Filesystem {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -85,7 +85,7 @@ public final class Filesystem {
      * @param eTag the eTag value to set.
      * @return the Filesystem object itself.
      */
-    public Filesystem eTag(String eTag) {
+    public Filesystem setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

@@ -4,9 +4,9 @@
 
 package com.azure.storage.file.datalake.implementation;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.annotation.ServiceClientBuilder;
 
 /**
  * A builder for creating a new instance of the DataLakeStorageClient type.
@@ -83,9 +83,6 @@ public final class DataLakeStorageClientBuilder {
      * @return an instance of DataLakeStorageClientImpl.
      */
     public DataLakeStorageClientImpl build() {
-        if (dnsSuffix == null) {
-            this.dnsSuffix = "dfs.core.windows.net";
-        }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
@@ -98,6 +95,8 @@ public final class DataLakeStorageClientBuilder {
         }
         if (this.dnsSuffix != null) {
             client.setDnsSuffix(this.dnsSuffix);
+        } else {
+            client.setDnsSuffix("dfs.core.windows.net");
         }
         return client;
     }

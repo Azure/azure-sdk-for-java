@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -38,7 +38,7 @@ public final class FilesystemDeleteHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -49,7 +49,7 @@ public final class FilesystemDeleteHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesystemDeleteHeaders object itself.
      */
-    public FilesystemDeleteHeaders xMsRequestId(String xMsRequestId) {
+    public FilesystemDeleteHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -60,7 +60,7 @@ public final class FilesystemDeleteHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -71,7 +71,7 @@ public final class FilesystemDeleteHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesystemDeleteHeaders object itself.
      */
-    public FilesystemDeleteHeaders xMsVersion(String xMsVersion) {
+    public FilesystemDeleteHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -82,7 +82,7 @@ public final class FilesystemDeleteHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -93,7 +93,7 @@ public final class FilesystemDeleteHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FilesystemDeleteHeaders object itself.
      */
-    public FilesystemDeleteHeaders dateProperty(String dateProperty) {
+    public FilesystemDeleteHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }

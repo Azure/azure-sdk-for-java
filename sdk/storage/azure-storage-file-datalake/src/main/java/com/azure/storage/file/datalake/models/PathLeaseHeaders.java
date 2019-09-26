@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -63,7 +63,7 @@ public final class PathLeaseHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -74,7 +74,7 @@ public final class PathLeaseHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders dateProperty(String dateProperty) {
+    public PathLeaseHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -85,7 +85,7 @@ public final class PathLeaseHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -96,7 +96,7 @@ public final class PathLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders eTag(String eTag) {
+    public PathLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -108,7 +108,7 @@ public final class PathLeaseHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -120,7 +120,7 @@ public final class PathLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders lastModified(String lastModified) {
+    public PathLeaseHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -131,7 +131,7 @@ public final class PathLeaseHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -142,7 +142,7 @@ public final class PathLeaseHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders xMsRequestId(String xMsRequestId) {
+    public PathLeaseHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -153,7 +153,7 @@ public final class PathLeaseHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -164,7 +164,7 @@ public final class PathLeaseHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders xMsVersion(String xMsVersion) {
+    public PathLeaseHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -175,7 +175,7 @@ public final class PathLeaseHeaders {
      *
      * @return the xMsLeaseId value.
      */
-    public String xMsLeaseId() {
+    public String getXMsLeaseId() {
         return this.xMsLeaseId;
     }
 
@@ -186,7 +186,7 @@ public final class PathLeaseHeaders {
      * @param xMsLeaseId the xMsLeaseId value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders xMsLeaseId(String xMsLeaseId) {
+    public PathLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
         this.xMsLeaseId = xMsLeaseId;
         return this;
     }
@@ -197,7 +197,7 @@ public final class PathLeaseHeaders {
      *
      * @return the xMsLeaseTime value.
      */
-    public String xMsLeaseTime() {
+    public String getXMsLeaseTime() {
         return this.xMsLeaseTime;
     }
 
@@ -208,7 +208,7 @@ public final class PathLeaseHeaders {
      * @param xMsLeaseTime the xMsLeaseTime value to set.
      * @return the PathLeaseHeaders object itself.
      */
-    public PathLeaseHeaders xMsLeaseTime(String xMsLeaseTime) {
+    public PathLeaseHeaders setXMsLeaseTime(String xMsLeaseTime) {
         this.xMsLeaseTime = xMsLeaseTime;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -58,7 +58,7 @@ public final class FilesystemCreateHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -69,7 +69,7 @@ public final class FilesystemCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FilesystemCreateHeaders object itself.
      */
-    public FilesystemCreateHeaders dateProperty(String dateProperty) {
+    public FilesystemCreateHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -80,7 +80,7 @@ public final class FilesystemCreateHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -91,7 +91,7 @@ public final class FilesystemCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesystemCreateHeaders object itself.
      */
-    public FilesystemCreateHeaders eTag(String eTag) {
+    public FilesystemCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -103,7 +103,7 @@ public final class FilesystemCreateHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -115,7 +115,7 @@ public final class FilesystemCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesystemCreateHeaders object itself.
      */
-    public FilesystemCreateHeaders lastModified(String lastModified) {
+    public FilesystemCreateHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -126,7 +126,7 @@ public final class FilesystemCreateHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -137,7 +137,7 @@ public final class FilesystemCreateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesystemCreateHeaders object itself.
      */
-    public FilesystemCreateHeaders xMsRequestId(String xMsRequestId) {
+    public FilesystemCreateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -148,7 +148,7 @@ public final class FilesystemCreateHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -159,7 +159,7 @@ public final class FilesystemCreateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesystemCreateHeaders object itself.
      */
-    public FilesystemCreateHeaders xMsVersion(String xMsVersion) {
+    public FilesystemCreateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -171,7 +171,7 @@ public final class FilesystemCreateHeaders {
      *
      * @return the xMsNamespaceEnabled value.
      */
-    public String xMsNamespaceEnabled() {
+    public String getXMsNamespaceEnabled() {
         return this.xMsNamespaceEnabled;
     }
 
@@ -183,7 +183,7 @@ public final class FilesystemCreateHeaders {
      * @param xMsNamespaceEnabled the xMsNamespaceEnabled value to set.
      * @return the FilesystemCreateHeaders object itself.
      */
-    public FilesystemCreateHeaders xMsNamespaceEnabled(String xMsNamespaceEnabled) {
+    public FilesystemCreateHeaders setXMsNamespaceEnabled(String xMsNamespaceEnabled) {
         this.xMsNamespaceEnabled = xMsNamespaceEnabled;
         return this;
     }

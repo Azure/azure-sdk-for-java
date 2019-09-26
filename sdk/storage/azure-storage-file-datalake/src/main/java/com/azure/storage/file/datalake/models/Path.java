@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -65,7 +65,7 @@ public final class Path {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -75,7 +75,7 @@ public final class Path {
      * @param name the name value to set.
      * @return the Path object itself.
      */
-    public Path name(String name) {
+    public Path setName(String name) {
         this.name = name;
         return this;
     }
@@ -95,7 +95,7 @@ public final class Path {
      * @param isDirectory the isDirectory value to set.
      * @return the Path object itself.
      */
-    public Path isDirectory(Boolean isDirectory) {
+    public Path setIsDirectory(Boolean isDirectory) {
         this.isDirectory = isDirectory;
         return this;
     }
@@ -105,7 +105,7 @@ public final class Path {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -115,7 +115,7 @@ public final class Path {
      * @param lastModified the lastModified value to set.
      * @return the Path object itself.
      */
-    public Path lastModified(String lastModified) {
+    public Path setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -125,7 +125,7 @@ public final class Path {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -135,7 +135,7 @@ public final class Path {
      * @param eTag the eTag value to set.
      * @return the Path object itself.
      */
-    public Path eTag(String eTag) {
+    public Path setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -145,7 +145,7 @@ public final class Path {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -155,7 +155,7 @@ public final class Path {
      * @param contentLength the contentLength value to set.
      * @return the Path object itself.
      */
-    public Path contentLength(Long contentLength) {
+    public Path setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -165,7 +165,7 @@ public final class Path {
      *
      * @return the owner value.
      */
-    public String owner() {
+    public String getOwner() {
         return this.owner;
     }
 
@@ -175,7 +175,7 @@ public final class Path {
      * @param owner the owner value to set.
      * @return the Path object itself.
      */
-    public Path owner(String owner) {
+    public Path setOwner(String owner) {
         this.owner = owner;
         return this;
     }
@@ -185,7 +185,7 @@ public final class Path {
      *
      * @return the group value.
      */
-    public String group() {
+    public String getGroup() {
         return this.group;
     }
 
@@ -195,7 +195,7 @@ public final class Path {
      * @param group the group value to set.
      * @return the Path object itself.
      */
-    public Path group(String group) {
+    public Path setGroup(String group) {
         this.group = group;
         return this;
     }
@@ -205,7 +205,7 @@ public final class Path {
      *
      * @return the permissions value.
      */
-    public String permissions() {
+    public String getPermissions() {
         return this.permissions;
     }
 
@@ -215,7 +215,7 @@ public final class Path {
      * @param permissions the permissions value to set.
      * @return the Path object itself.
      */
-    public Path permissions(String permissions) {
+    public Path setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }

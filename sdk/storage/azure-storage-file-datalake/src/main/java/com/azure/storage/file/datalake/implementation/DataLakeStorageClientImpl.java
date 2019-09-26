@@ -29,7 +29,6 @@ public final class DataLakeStorageClientImpl {
      * Sets Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
      *
      * @param xMsVersion the xMsVersion value.
-     * @return the service client itself.
      */
     DataLakeStorageClientImpl setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
@@ -54,7 +53,6 @@ public final class DataLakeStorageClientImpl {
      * Sets The Azure Storage account name.
      *
      * @param accountName the accountName value.
-     * @return the service client itself.
      */
     DataLakeStorageClientImpl setAccountName(String accountName) {
         this.accountName = accountName;
@@ -79,7 +77,6 @@ public final class DataLakeStorageClientImpl {
      * Sets The DNS suffix for the Azure Data Lake Storage endpoint.
      *
      * @param dnsSuffix the dnsSuffix value.
-     * @return the service client itself.
      */
     DataLakeStorageClientImpl setDnsSuffix(String dnsSuffix) {
         this.dnsSuffix = dnsSuffix;

@@ -29,7 +29,7 @@ public final class PathsListResponse extends ResponseBase<PathListHeaders, PathL
      * @return the deserialized response body.
      */
     @Override
-    public PathList value() {
-        return super.value();
+    public PathList getValue() {
+        return super.getValue();
     }
 }

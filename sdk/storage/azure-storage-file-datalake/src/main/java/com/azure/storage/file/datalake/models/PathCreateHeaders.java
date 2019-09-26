@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -68,7 +68,7 @@ public final class PathCreateHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -79,7 +79,7 @@ public final class PathCreateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders dateProperty(String dateProperty) {
+    public PathCreateHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -90,7 +90,7 @@ public final class PathCreateHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -101,7 +101,7 @@ public final class PathCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders eTag(String eTag) {
+    public PathCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -113,7 +113,7 @@ public final class PathCreateHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -125,7 +125,7 @@ public final class PathCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders lastModified(String lastModified) {
+    public PathCreateHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -136,7 +136,7 @@ public final class PathCreateHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -147,7 +147,7 @@ public final class PathCreateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders xMsRequestId(String xMsRequestId) {
+    public PathCreateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -158,7 +158,7 @@ public final class PathCreateHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -169,7 +169,7 @@ public final class PathCreateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders xMsVersion(String xMsVersion) {
+    public PathCreateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -184,7 +184,7 @@ public final class PathCreateHeaders {
      *
      * @return the xMsContinuation value.
      */
-    public String xMsContinuation() {
+    public String getXMsContinuation() {
         return this.xMsContinuation;
     }
 
@@ -199,7 +199,7 @@ public final class PathCreateHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders xMsContinuation(String xMsContinuation) {
+    public PathCreateHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
     }
@@ -209,7 +209,7 @@ public final class PathCreateHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -219,7 +219,7 @@ public final class PathCreateHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathCreateHeaders object itself.
      */
-    public PathCreateHeaders contentLength(Long contentLength) {
+    public PathCreateHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }

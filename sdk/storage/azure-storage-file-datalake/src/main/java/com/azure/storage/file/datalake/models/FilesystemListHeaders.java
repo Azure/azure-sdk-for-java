@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -55,7 +55,7 @@ public final class FilesystemListHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -66,7 +66,7 @@ public final class FilesystemListHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FilesystemListHeaders object itself.
      */
-    public FilesystemListHeaders dateProperty(String dateProperty) {
+    public FilesystemListHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -77,7 +77,7 @@ public final class FilesystemListHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -88,7 +88,7 @@ public final class FilesystemListHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesystemListHeaders object itself.
      */
-    public FilesystemListHeaders xMsRequestId(String xMsRequestId) {
+    public FilesystemListHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -99,7 +99,7 @@ public final class FilesystemListHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -110,7 +110,7 @@ public final class FilesystemListHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesystemListHeaders object itself.
      */
-    public FilesystemListHeaders xMsVersion(String xMsVersion) {
+    public FilesystemListHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -124,7 +124,7 @@ public final class FilesystemListHeaders {
      *
      * @return the xMsContinuation value.
      */
-    public String xMsContinuation() {
+    public String getXMsContinuation() {
         return this.xMsContinuation;
     }
 
@@ -138,7 +138,7 @@ public final class FilesystemListHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the FilesystemListHeaders object itself.
      */
-    public FilesystemListHeaders xMsContinuation(String xMsContinuation) {
+    public FilesystemListHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
     }
@@ -149,7 +149,7 @@ public final class FilesystemListHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -160,7 +160,7 @@ public final class FilesystemListHeaders {
      * @param contentType the contentType value to set.
      * @return the FilesystemListHeaders object itself.
      */
-    public FilesystemListHeaders contentType(String contentType) {
+    public FilesystemListHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }

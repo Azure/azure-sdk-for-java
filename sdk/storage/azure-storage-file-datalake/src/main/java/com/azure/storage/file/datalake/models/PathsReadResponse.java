@@ -7,14 +7,14 @@ package com.azure.storage.file.datalake.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import io.netty.buffer.ByteBuf;
 import java.io.Closeable;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
 /**
  * Contains all response data for the read operation.
  */
-public final class PathsReadResponse extends ResponseBase<PathReadHeaders, Flux<ByteBuf>> implements Closeable {
+public final class PathsReadResponse extends ResponseBase<PathReadHeaders, Flux<ByteBuffer>> implements Closeable {
     /**
      * Creates an instance of PathsReadResponse.
      *
@@ -24,7 +24,7 @@ public final class PathsReadResponse extends ResponseBase<PathReadHeaders, Flux<
      * @param value the content stream.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PathsReadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuf> value, PathReadHeaders headers) {
+    public PathsReadResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Flux<ByteBuffer> value, PathReadHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -32,8 +32,8 @@ public final class PathsReadResponse extends ResponseBase<PathReadHeaders, Flux<
      * @return the response content stream.
      */
     @Override
-    public Flux<ByteBuf> value() {
-        return super.value();
+    public Flux<ByteBuffer> getValue() {
+        return super.getValue();
     }
 
     /**
@@ -41,6 +41,6 @@ public final class PathsReadResponse extends ResponseBase<PathReadHeaders, Flux<
      */
     @Override
     public void close() {
-        value().subscribe(bb -> { }, t -> { }).dispose();
+        getValue().subscribe(bb -> { }, t -> { }).dispose();
     }
 }

@@ -4,24 +4,24 @@
 
 package com.azure.storage.file.datalake.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Head;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Patch;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeStorageErrorException;
 import com.azure.storage.file.datalake.models.PathGetPropertiesAction;
@@ -36,7 +36,7 @@ import com.azure.storage.file.datalake.models.PathsListResponse;
 import com.azure.storage.file.datalake.models.PathsReadResponse;
 import com.azure.storage.file.datalake.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.models.PathUpdateAction;
-import io.netty.buffer.ByteBuf;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -85,7 +85,7 @@ public final class PathsImpl {
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        Mono<PathsUpdateResponse> update(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("action") PathUpdateAction action, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("x-ms-cache-control") String xMsCacheControl, @HeaderParam("x-ms-content-type") String xMsContentType, @HeaderParam("x-ms-content-disposition") String xMsContentDisposition, @HeaderParam("x-ms-content-encoding") String xMsContentEncoding, @HeaderParam("x-ms-content-language") String xMsContentLanguage, @HeaderParam("x-ms-content-md5") String xMsContentMd5, @HeaderParam("x-ms-properties") String xMsProperties, @HeaderParam("x-ms-owner") String xMsOwner, @HeaderParam("x-ms-group") String xMsGroup, @HeaderParam("x-ms-permissions") String xMsPermissions, @HeaderParam("x-ms-acl") String xMsAcl, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @BodyParam("application/octet-stream") Flux<ByteBuf> requestBody, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
+        Mono<PathsUpdateResponse> update(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("accountName") String accountName, @HostParam("dnsSuffix") String dnsSuffix, @QueryParam("action") PathUpdateAction action, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-lease-id") String xMsLeaseId, @HeaderParam("x-ms-cache-control") String xMsCacheControl, @HeaderParam("x-ms-content-type") String xMsContentType, @HeaderParam("x-ms-content-disposition") String xMsContentDisposition, @HeaderParam("x-ms-content-encoding") String xMsContentEncoding, @HeaderParam("x-ms-content-language") String xMsContentLanguage, @HeaderParam("x-ms-content-md5") String xMsContentMd5, @HeaderParam("x-ms-properties") String xMsProperties, @HeaderParam("x-ms-owner") String xMsOwner, @HeaderParam("x-ms-group") String xMsGroup, @HeaderParam("x-ms-permissions") String xMsPermissions, @HeaderParam("x-ms-acl") String xMsAcl, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @BodyParam("application/octet-stream") Flux<ByteBuffer> requestBody, @HeaderParam("x-ms-client-request-id") String xMsClientRequestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-date") String xMsDate, @HeaderParam("x-ms-version") String xMsVersion, Context context);
 
         @Post("{filesystem}/{path}")
         @ExpectedResponses({200, 201, 202})
@@ -276,7 +276,7 @@ public final class PathsImpl {
         final String ifNoneMatch = null;
         final String ifModifiedSince = null;
         final String ifUnmodifiedSince = null;
-        final Flux<ByteBuf> requestBody = null;
+        final Flux<ByteBuffer> requestBody = null;
         final String xMsClientRequestId = null;
         final Integer timeout = null;
         final String xMsDate = null;
@@ -320,7 +320,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, String filesystem, String path, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String contentMD5, String xMsLeaseId, String xMsCacheControl, String xMsContentType, String xMsContentDisposition, String xMsContentEncoding, String xMsContentLanguage, String xMsContentMd5, String xMsProperties, String xMsOwner, String xMsGroup, String xMsPermissions, String xMsAcl, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, Flux<ByteBuf> requestBody, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
+    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, String filesystem, String path, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String contentMD5, String xMsLeaseId, String xMsCacheControl, String xMsContentType, String xMsContentDisposition, String xMsContentEncoding, String xMsContentLanguage, String xMsContentMd5, String xMsProperties, String xMsOwner, String xMsGroup, String xMsPermissions, String xMsAcl, String ifMatch, String ifNoneMatch, String ifModifiedSince, String ifUnmodifiedSince, Flux<ByteBuffer> requestBody, String xMsClientRequestId, Integer timeout, String xMsDate, Context context) {
         return service.update(filesystem, path, this.client.getAccountName(), this.client.getDnsSuffix(), action, position, retainUncommittedData, close, contentLength, contentMD5, xMsLeaseId, xMsCacheControl, xMsContentType, xMsContentDisposition, xMsContentEncoding, xMsContentLanguage, xMsContentMd5, xMsProperties, xMsOwner, xMsGroup, xMsPermissions, xMsAcl, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, requestBody, xMsClientRequestId, timeout, xMsDate, this.client.getXMsVersion(), context);
     }
 

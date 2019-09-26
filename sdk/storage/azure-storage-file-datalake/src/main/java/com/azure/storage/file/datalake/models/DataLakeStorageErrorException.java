@@ -33,7 +33,7 @@ public final class DataLakeStorageErrorException extends HttpResponseException {
     }
 
     @Override
-    public DataLakeStorageError value() {
-        return (DataLakeStorageError) super.value();
+    public DataLakeStorageError getValue() {
+        return (DataLakeStorageError) super.getValue();
     }
 }

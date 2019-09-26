@@ -29,7 +29,7 @@ public final class FilesystemsListResponse extends ResponseBase<FilesystemListHe
      * @return the deserialized response body.
      */
     @Override
-    public FilesystemList value() {
-        return super.value();
+    public FilesystemList getValue() {
+        return super.getValue();
     }
 }

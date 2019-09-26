@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -180,7 +180,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the acceptRanges value.
      */
-    public String acceptRanges() {
+    public String getAcceptRanges() {
         return this.acceptRanges;
     }
 
@@ -191,7 +191,7 @@ public final class PathGetPropertiesHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders acceptRanges(String acceptRanges) {
+    public PathGetPropertiesHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
     }
@@ -203,7 +203,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -215,7 +215,7 @@ public final class PathGetPropertiesHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders cacheControl(String cacheControl) {
+    public PathGetPropertiesHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -227,7 +227,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -239,7 +239,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentDisposition(String contentDisposition) {
+    public PathGetPropertiesHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -251,7 +251,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -263,7 +263,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentEncoding(String contentEncoding) {
+    public PathGetPropertiesHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -275,7 +275,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -287,7 +287,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentLanguage(String contentLanguage) {
+    public PathGetPropertiesHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -297,7 +297,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -307,7 +307,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentLength(Long contentLength) {
+    public PathGetPropertiesHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -319,7 +319,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentRange value.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return this.contentRange;
     }
 
@@ -331,7 +331,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentRange the contentRange value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentRange(String contentRange) {
+    public PathGetPropertiesHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -343,7 +343,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -355,7 +355,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentType the contentType value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentType(String contentType) {
+    public PathGetPropertiesHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -369,7 +369,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public String getContentMD5() {
         return this.contentMD5;
     }
 
@@ -383,7 +383,7 @@ public final class PathGetPropertiesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders contentMD5(String contentMD5) {
+    public PathGetPropertiesHeaders setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -394,7 +394,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -405,7 +405,7 @@ public final class PathGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders dateProperty(String dateProperty) {
+    public PathGetPropertiesHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -416,7 +416,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -427,7 +427,7 @@ public final class PathGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders eTag(String eTag) {
+    public PathGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -439,7 +439,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -451,7 +451,7 @@ public final class PathGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders lastModified(String lastModified) {
+    public PathGetPropertiesHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -462,7 +462,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -473,7 +473,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsRequestId(String xMsRequestId) {
+    public PathGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -484,7 +484,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -495,7 +495,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsVersion(String xMsVersion) {
+    public PathGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -506,7 +506,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsResourceType value.
      */
-    public String xMsResourceType() {
+    public String getXMsResourceType() {
         return this.xMsResourceType;
     }
 
@@ -517,7 +517,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsResourceType the xMsResourceType value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsResourceType(String xMsResourceType) {
+    public PathGetPropertiesHeaders setXMsResourceType(String xMsResourceType) {
         this.xMsResourceType = xMsResourceType;
         return this;
     }
@@ -531,7 +531,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsProperties value.
      */
-    public String xMsProperties() {
+    public String getXMsProperties() {
         return this.xMsProperties;
     }
 
@@ -545,7 +545,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsProperties(String xMsProperties) {
+    public PathGetPropertiesHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
         return this;
     }
@@ -556,7 +556,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsOwner value.
      */
-    public String xMsOwner() {
+    public String getXMsOwner() {
         return this.xMsOwner;
     }
 
@@ -567,7 +567,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsOwner the xMsOwner value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsOwner(String xMsOwner) {
+    public PathGetPropertiesHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;
     }
@@ -579,7 +579,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsGroup value.
      */
-    public String xMsGroup() {
+    public String getXMsGroup() {
         return this.xMsGroup;
     }
 
@@ -591,7 +591,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsGroup the xMsGroup value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsGroup(String xMsGroup) {
+    public PathGetPropertiesHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
     }
@@ -603,7 +603,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsPermissions value.
      */
-    public String xMsPermissions() {
+    public String getXMsPermissions() {
         return this.xMsPermissions;
     }
 
@@ -615,7 +615,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsPermissions the xMsPermissions value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsPermissions(String xMsPermissions) {
+    public PathGetPropertiesHeaders setXMsPermissions(String xMsPermissions) {
         this.xMsPermissions = xMsPermissions;
         return this;
     }
@@ -628,7 +628,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsAcl value.
      */
-    public String xMsAcl() {
+    public String getXMsAcl() {
         return this.xMsAcl;
     }
 
@@ -641,7 +641,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsAcl the xMsAcl value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsAcl(String xMsAcl) {
+    public PathGetPropertiesHeaders setXMsAcl(String xMsAcl) {
         this.xMsAcl = xMsAcl;
         return this;
     }
@@ -652,7 +652,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsLeaseDuration value.
      */
-    public String xMsLeaseDuration() {
+    public String getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
 
@@ -663,7 +663,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsLeaseDuration(String xMsLeaseDuration) {
+    public PathGetPropertiesHeaders setXMsLeaseDuration(String xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
     }
@@ -673,7 +673,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsLeaseState value.
      */
-    public String xMsLeaseState() {
+    public String getXMsLeaseState() {
         return this.xMsLeaseState;
     }
 
@@ -683,7 +683,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsLeaseState(String xMsLeaseState) {
+    public PathGetPropertiesHeaders setXMsLeaseState(String xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
     }
@@ -693,7 +693,7 @@ public final class PathGetPropertiesHeaders {
      *
      * @return the xMsLeaseStatus value.
      */
-    public String xMsLeaseStatus() {
+    public String getXMsLeaseStatus() {
         return this.xMsLeaseStatus;
     }
 
@@ -703,7 +703,7 @@ public final class PathGetPropertiesHeaders {
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the PathGetPropertiesHeaders object itself.
      */
-    public PathGetPropertiesHeaders xMsLeaseStatus(String xMsLeaseStatus) {
+    public PathGetPropertiesHeaders setXMsLeaseStatus(String xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -124,7 +124,7 @@ public final class PathUpdateHeaders {
      *
      * @return the dateProperty value.
      */
-    public String dateProperty() {
+    public String getDateProperty() {
         return this.dateProperty;
     }
 
@@ -135,7 +135,7 @@ public final class PathUpdateHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders dateProperty(String dateProperty) {
+    public PathUpdateHeaders setDateProperty(String dateProperty) {
         this.dateProperty = dateProperty;
         return this;
     }
@@ -146,7 +146,7 @@ public final class PathUpdateHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -157,7 +157,7 @@ public final class PathUpdateHeaders {
      * @param eTag the eTag value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders eTag(String eTag) {
+    public PathUpdateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -169,7 +169,7 @@ public final class PathUpdateHeaders {
      *
      * @return the lastModified value.
      */
-    public String lastModified() {
+    public String getLastModified() {
         return this.lastModified;
     }
 
@@ -181,7 +181,7 @@ public final class PathUpdateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders lastModified(String lastModified) {
+    public PathUpdateHeaders setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -192,7 +192,7 @@ public final class PathUpdateHeaders {
      *
      * @return the acceptRanges value.
      */
-    public String acceptRanges() {
+    public String getAcceptRanges() {
         return this.acceptRanges;
     }
 
@@ -203,7 +203,7 @@ public final class PathUpdateHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders acceptRanges(String acceptRanges) {
+    public PathUpdateHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
     }
@@ -215,7 +215,7 @@ public final class PathUpdateHeaders {
      *
      * @return the cacheControl value.
      */
-    public String cacheControl() {
+    public String getCacheControl() {
         return this.cacheControl;
     }
 
@@ -227,7 +227,7 @@ public final class PathUpdateHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders cacheControl(String cacheControl) {
+    public PathUpdateHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -239,7 +239,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentDisposition value.
      */
-    public String contentDisposition() {
+    public String getContentDisposition() {
         return this.contentDisposition;
     }
 
@@ -251,7 +251,7 @@ public final class PathUpdateHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentDisposition(String contentDisposition) {
+    public PathUpdateHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -263,7 +263,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentEncoding value.
      */
-    public String contentEncoding() {
+    public String getContentEncoding() {
         return this.contentEncoding;
     }
 
@@ -275,7 +275,7 @@ public final class PathUpdateHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentEncoding(String contentEncoding) {
+    public PathUpdateHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -287,7 +287,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentLanguage value.
      */
-    public String contentLanguage() {
+    public String getContentLanguage() {
         return this.contentLanguage;
     }
 
@@ -299,7 +299,7 @@ public final class PathUpdateHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentLanguage(String contentLanguage) {
+    public PathUpdateHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -309,7 +309,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentLength value.
      */
-    public Long contentLength() {
+    public Long getContentLength() {
         return this.contentLength;
     }
 
@@ -319,7 +319,7 @@ public final class PathUpdateHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentLength(Long contentLength) {
+    public PathUpdateHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -331,7 +331,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentRange value.
      */
-    public String contentRange() {
+    public String getContentRange() {
         return this.contentRange;
     }
 
@@ -343,7 +343,7 @@ public final class PathUpdateHeaders {
      * @param contentRange the contentRange value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentRange(String contentRange) {
+    public PathUpdateHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -355,7 +355,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentType value.
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -367,7 +367,7 @@ public final class PathUpdateHeaders {
      * @param contentType the contentType value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentType(String contentType) {
+    public PathUpdateHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -381,7 +381,7 @@ public final class PathUpdateHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public String getContentMD5() {
         return this.contentMD5;
     }
 
@@ -395,7 +395,7 @@ public final class PathUpdateHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders contentMD5(String contentMD5) {
+    public PathUpdateHeaders setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -409,7 +409,7 @@ public final class PathUpdateHeaders {
      *
      * @return the xMsProperties value.
      */
-    public String xMsProperties() {
+    public String getXMsProperties() {
         return this.xMsProperties;
     }
 
@@ -423,7 +423,7 @@ public final class PathUpdateHeaders {
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders xMsProperties(String xMsProperties) {
+    public PathUpdateHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
         return this;
     }
@@ -434,7 +434,7 @@ public final class PathUpdateHeaders {
      *
      * @return the xMsRequestId value.
      */
-    public String xMsRequestId() {
+    public String getXMsRequestId() {
         return this.xMsRequestId;
     }
 
@@ -445,7 +445,7 @@ public final class PathUpdateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders xMsRequestId(String xMsRequestId) {
+    public PathUpdateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -456,7 +456,7 @@ public final class PathUpdateHeaders {
      *
      * @return the xMsVersion value.
      */
-    public String xMsVersion() {
+    public String getXMsVersion() {
         return this.xMsVersion;
     }
 
@@ -467,7 +467,7 @@ public final class PathUpdateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathUpdateHeaders object itself.
      */
-    public PathUpdateHeaders xMsVersion(String xMsVersion) {
+    public PathUpdateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
