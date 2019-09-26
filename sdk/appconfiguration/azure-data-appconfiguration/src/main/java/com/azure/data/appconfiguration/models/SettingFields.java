@@ -13,7 +13,7 @@ import java.util.Locale;
  * @see SettingSelector
  * @see ConfigurationAsyncClient
  */
-public class SettingFields extends ExpandableStringEnum<SettingFields> {
+public final class SettingFields extends ExpandableStringEnum<SettingFields> {
     /**
      * Populates the {@link ConfigurationSetting#getKey()} from the service.
      */
