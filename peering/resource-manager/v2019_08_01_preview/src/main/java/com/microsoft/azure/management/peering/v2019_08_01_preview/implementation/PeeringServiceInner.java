@@ -12,13 +12,13 @@ import com.microsoft.azure.management.peering.v2019_08_01_preview.ProvisioningSt
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.ProxyResource;
+import com.microsoft.azure.Resource;
 
 /**
  * Peering Service.
  */
 @JsonFlatten
-public class PeeringServiceInner extends ProxyResource {
+public class PeeringServiceInner extends Resource {
     /**
      * The PeeringServiceLocation of the Customer.
      */
