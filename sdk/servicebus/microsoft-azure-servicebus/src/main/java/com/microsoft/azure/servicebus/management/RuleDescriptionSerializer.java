@@ -211,7 +211,7 @@ class RuleDescriptionSerializer {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {
@@ -234,7 +234,7 @@ class RuleDescriptionSerializer {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {
