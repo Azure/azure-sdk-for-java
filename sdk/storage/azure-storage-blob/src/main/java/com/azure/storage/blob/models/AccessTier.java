@@ -97,6 +97,6 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
      * @return known AccessTier values.
      */
     public static Collection<AccessTier> values() {
-        return getValues(AccessTier.class);
+        return values(AccessTier.class);
     }
 }
