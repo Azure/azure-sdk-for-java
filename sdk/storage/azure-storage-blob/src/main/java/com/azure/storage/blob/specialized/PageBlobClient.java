@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -32,21 +33,16 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobClient#asPageBlobClient()}, or via the method {@link ContainerClient#getPageBlobClient(String)}. This class does
- * not hold any state about a particular blob, but is instead a convenient way of sending appropriate requests to the
- * resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
- * operations on the service are available on {@link BlobServiceClient}.
+ * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobClient#asPageBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
-@ServiceClient(builder = BlobClientBuilder.class)
-public final class PageBlobClient extends BlobClient {
+@ServiceClient(builder = SpecializedBlobClientBuilder.class)
+public final class PageBlobClient extends BlobClientBase {
     private final PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
@@ -60,7 +56,7 @@ public final class PageBlobClient extends BlobClient {
     public static final int MAX_PUT_PAGES_BYTES = PageBlobAsyncClient.MAX_PUT_PAGES_BYTES;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param pageBlobAsyncClient the async page blob client
      */
@@ -122,7 +118,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -152,7 +148,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.uploadPages#PageRange-InputStream}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -174,7 +170,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -206,7 +202,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -231,7 +227,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -264,7 +260,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.clearPages#PageRange}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPages#PageRange}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -281,7 +277,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -305,7 +301,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.getPageRanges#BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange}
      *
      * @param blobRange {@link BlobRange}
      * @return The information of the cleared pages.
@@ -320,7 +316,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobAccessConditions}
@@ -341,7 +337,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.getPageRangesDiff#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -360,7 +356,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -383,7 +379,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.resize#long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resize#long}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -399,7 +395,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.resizeWithResponse#long-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobAccessConditions-Duration-Context}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -420,7 +416,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.updateSequenceNumber#SequenceNumberActionType-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumber#SequenceNumberActionType-Long}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -438,7 +434,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions-Duration-Context}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -465,7 +461,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.copyIncremental#URL-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#URL-String}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -485,7 +481,7 @@ public final class PageBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions-Duration-Context}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.

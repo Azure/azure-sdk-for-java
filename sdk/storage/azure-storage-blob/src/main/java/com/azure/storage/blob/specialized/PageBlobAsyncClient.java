@@ -1,15 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -33,17 +34,12 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobAsyncClient#asPageBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -55,8 +51,8 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
-public final class PageBlobAsyncClient extends BlobAsyncClient {
+@ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
+public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the number of bytes in a page.
      */
@@ -70,7 +66,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     private final ClientLogger logger = new ClientLogger(PageBlobAsyncClient.class);
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
@@ -102,7 +98,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -141,7 +137,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null,
             null, 0, size, null, metadata, sequenceNumber, null, headers, accessConditions.getLeaseAccessConditions(),
-            cpk, accessConditions.getModifiedAccessConditions(), context))
+            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
 
@@ -155,7 +151,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPages#PageRange-Flux}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPages#PageRange-Flux}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -178,7 +174,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -209,7 +205,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null,
             null, body, pageRange.getEnd() - pageRange.getStart() + 1, null, null, null, pageRangeStr, null,
-            pageBlobAccessConditions.getLeaseAccessConditions(), cpk,
+            pageBlobAccessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
@@ -222,7 +218,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -247,7 +243,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -292,8 +288,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
         destAccessConditions = destAccessConditions == null ? new PageBlobAccessConditions() : destAccessConditions;
 
-        return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
-            null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, cpk,
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(null, null,
+            sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, getCustomerProvidedKey(),
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
@@ -305,7 +301,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.clearPages#PageRange}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.clearPages#PageRange}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -322,7 +318,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -350,7 +346,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().clearPagesWithRestResponseAsync(null,
             null, 0, null, pageRangeStr, null,
-            pageBlobAccessConditions.getLeaseAccessConditions(), cpk,
+            pageBlobAccessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
@@ -362,7 +358,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRanges#BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange}
      *
      * @param blobRange {@link BlobRange}
      * @return A reactive response containing the information of the cleared pages.
@@ -377,7 +373,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobAccessConditions}
@@ -394,7 +390,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
-            null, null, snapshot, null, blobRange.toHeaderValue(),
+            null, null, getSnapshotId(), null, blobRange.toHeaderValue(),
             null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
             context)).map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -406,7 +402,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -425,7 +421,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -451,7 +447,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         }
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
-            null, null, snapshot, null, prevSnapshot,
+            null, null, getSnapshotId(), null, prevSnapshot,
             blobRange.toHeaderValue(), null, accessConditions.getLeaseAccessConditions(),
             accessConditions.getModifiedAccessConditions(), context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -463,7 +459,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.resize#long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.resize#long}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -479,7 +475,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.resizeWithResponse#long-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.resizeWithResponse#long-BlobAccessConditions}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -501,7 +497,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null,
-            null, size, null, null, accessConditions.getLeaseAccessConditions(), cpk,
+            null, size, null, null, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
@@ -512,7 +508,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.updateSequenceNumber#SequenceNumberActionType-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.updateSequenceNumber#SequenceNumberActionType-Long}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -529,7 +525,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -572,7 +568,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.copyIncremental#URL-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#URL-String}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -592,7 +588,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -600,7 +596,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response emitting the copy status.
-     * @throws Error If {@code source} and {@code snapshot} form a malformed URL.
+     * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions) {
@@ -615,7 +611,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
             source = builder.toURL();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
-            throw new Error(e);
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
         return postProcessResponse(this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(
             null, null, source, null, null, modifiedAccessConditions, context))

@@ -151,4 +151,9 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
 
         return this;
     }
+
+    @Override
+    protected Class<FileServiceClientBuilder> getClazz() {
+        return FileServiceClientBuilder.class;
+    }
 }

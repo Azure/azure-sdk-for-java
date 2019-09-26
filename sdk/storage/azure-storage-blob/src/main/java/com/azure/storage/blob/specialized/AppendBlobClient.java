@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -27,10 +31,9 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobClient#asAppendBlobClient()}, or via the method {@link ContainerClient#getAppendBlobClient(String)}. This class
- * does not hold any state about a particular blob, but is instead a convenient way of sending appropriate requests to
- * the resource on the service.
+ * Client to an append blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the
+ * method {@link BlobClient#asAppendBlobClient()}. This class does not hold any state about a particular blob, but is
+ * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
@@ -40,8 +43,8 @@ import java.util.Objects;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
-@ServiceClient(builder = BlobClientBuilder.class)
-public final class AppendBlobClient extends BlobClient {
+@ServiceClient(builder = SpecializedBlobClientBuilder.class)
+public final class AppendBlobClient extends BlobClientBase {
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
@@ -93,7 +96,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.create}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.create}
      *
      * @return The information of the created appended blob.
      */
@@ -106,7 +109,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
      *
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
@@ -129,7 +132,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlock#InputStream-long}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
@@ -148,7 +151,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -175,7 +178,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockFromUrl#URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrl#URL-BlobRange}
      *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -193,7 +196,7 @@ public final class AppendBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob

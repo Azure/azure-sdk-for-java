@@ -1,13 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -25,14 +29,13 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to an append blob. It may only be instantiated through a
- * {@link BlobClientBuilder#buildAppendBlobAsyncClient()}, via the method
- * {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
+ * {@link SpecializedBlobClientBuilder#buildAppendBlobAsyncClient()} or via the method
+ * {@link BlobAsyncClient#asAppendBlobAsyncClient()}. This class does not hold any state about a particular blob, but
+ * is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
@@ -48,8 +51,8 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
-public final class AppendBlobAsyncClient extends BlobAsyncClient {
+@ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
+public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -74,7 +77,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.create}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create}
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
@@ -87,7 +90,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions}
      *
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
@@ -106,8 +109,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
-            null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(), cpk,
-            accessConditions.getModifiedAccessConditions(), context))
+            null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(),
+            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
 
@@ -119,7 +122,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlock#Flux-long}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -139,7 +142,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -162,7 +165,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
             null, null, data, length, null, null, null, null,
             appendBlobAccessConditions.getLeaseAccessConditions(),
-            appendBlobAccessConditions.getAppendPositionAccessConditions(), cpk,
+            appendBlobAccessConditions.getAppendPositionAccessConditions(), getCustomerProvidedKey(),
             appendBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
@@ -172,7 +175,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrl#URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#URL-BlobRange}
      *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -190,7 +193,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
      *
      * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -219,8 +222,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
             ? new AppendBlobAccessConditions() : destAccessConditions;
 
         return postProcessResponse(
-            this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
-                sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null, null, null, cpk,
+            this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, sourceURL, 0,
+                sourceRange.toString(), sourceContentMD5, null, null, null, null, getCustomerProvidedKey(),
                 destAccessConditions.getLeaseAccessConditions(),
                 destAccessConditions.getAppendPositionAccessConditions(),
                 destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))

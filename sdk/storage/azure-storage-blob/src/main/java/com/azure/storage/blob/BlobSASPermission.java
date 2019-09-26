@@ -9,10 +9,9 @@ import java.util.Locale;
 
 /**
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a blob. Setting
- * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
- * the values are set, this should be serialized with toString and set as the permissions field on a {@link
- * BlobServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
- * order of the permissions is particular and this class guarantees correctness.
+ * a value to true means that any SAS which uses these permissions will grant permissions for that operation. It is
+ * possible to construct the permissions string without this class, but the order of the permissions is particular and
+ * this class guarantees correctness.
  */
 public final class BlobSASPermission {
 
@@ -155,7 +154,7 @@ public final class BlobSASPermission {
      * @param hasDeletePermission Permission status to set
      * @return the updated BlobSASPermission object.
      */
-    public BlobSASPermission getDeletePermission(boolean hasDeletePermission) {
+    public BlobSASPermission setDeletePermission(boolean hasDeletePermission) {
         this.deletePermission = hasDeletePermission;
         return this;
     }

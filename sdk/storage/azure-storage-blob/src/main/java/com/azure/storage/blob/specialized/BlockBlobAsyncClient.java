@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -45,18 +46,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobAsyncClient#asBlockBlobAsyncClient()}, or via the method
- * {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}. This class does not hold any state about a particular
- * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobAsyncClient#asBlockBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -68,8 +64,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
-@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
-public final class BlockBlobAsyncClient extends BlobAsyncClient {
+@ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
+public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
@@ -91,7 +87,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
@@ -112,7 +108,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.upload#Flux-long}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -138,7 +134,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -162,8 +158,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(), cpk,
-            accessConditions.getModifiedAccessConditions(), context))
+            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
+            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 
@@ -191,7 +187,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.upload#Flux-int-int}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-int-int}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -215,8 +211,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
      * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
      * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information,
-     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and
-     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
+     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
+     * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
+     * Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
      * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
@@ -232,7 +229,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-int-int-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -320,7 +317,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String}
      *
      * @param filePath Path to the upload file
      * @return An empty response
@@ -335,7 +332,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param blockSize Size of the blocks to upload
@@ -349,14 +346,19 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
-        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
+        int sliceBlockSize;
+        if (blockSize == null) {
+            sliceBlockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        } else if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
+        } else {
+            sliceBlockSize = blockSize;
         }
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
             channel -> {
                 final SortedMap<Long, String> blockIds = new TreeMap<>();
-                return Flux.fromIterable(sliceFile(filePath, blockSize))
+                return Flux.fromIterable(sliceFile(filePath, sliceBlockSize))
                     .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.getOffset());
@@ -420,11 +422,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * @code Flux} must produce the same data each time it is subscribed to.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -433,6 +430,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @return A reactive response signalling completion.
+     * @code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      */
     public Mono<Void> stageBlock(String base64BlockID, Flux<ByteBuffer> data, long length) {
         return stageBlockWithResponse(base64BlockID, data, length, null).flatMap(FluxUtil::toMono);
@@ -448,7 +450,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -468,8 +470,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions, Context context) {
-        return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
-            null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, cpk, context))
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
+            base64BlockID, length, data, null, null, null, null, leaseAccessConditions, getCustomerProvidedKey(),
+            context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -480,7 +483,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURL#String-URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-URL-BlobRange}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -503,7 +506,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -534,7 +537,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         return postProcessResponse(
             this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
                 base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null, null,
-                null, cpk, leaseAccessConditions, sourceModifiedAccessConditions, context))
+                null, getCustomerProvidedKey(), leaseAccessConditions, sourceModifiedAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -545,7 +548,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.listBlocks#BlockListType}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType}
      *
      * @param listType Specifies which type of blocks to return.
      * @return A reactive response containing the list of blocks.
@@ -561,7 +564,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions}
      *
      * @param listType Specifies which type of blocks to return.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
@@ -578,7 +581,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         LeaseAccessConditions leaseAccessConditions, Context context) {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(null,
-            null, listType, snapshot, null, null, leaseAccessConditions, context))
+            null, listType, getSnapshotId(), null, null, leaseAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -592,7 +595,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.commitBlockList#List}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return A reactive response containing the information of the block blob.
@@ -611,7 +614,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}
@@ -634,8 +637,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
-            headers, accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(),
-            context))
+            headers, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
+            accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }

@@ -1,19 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob
+package com.azure.storage.blob.specialized
 
 
 import com.azure.core.implementation.util.FluxUtil
+import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.HTTPGetterInfo
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageErrorException
+import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.blob.specialized.DownloadAsyncResponse
+import com.azure.storage.blob.specialized.DownloadResponseMockFlux
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cc.getBlockBlobClient(generateBlobName())
+        bu = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
         bu.upload(defaultInputStream.get(), defaultText.length())
     }
 
@@ -98,9 +103,9 @@ class DownloadResponseTest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        info                                      | _
-        null                                      | _
-        new HTTPGetterInfo().setETag(null)        | _
+        info                               | _
+        null                               | _
+        new HTTPGetterInfo().setETag(null) | _
     }
 
     def "Options IA"() {

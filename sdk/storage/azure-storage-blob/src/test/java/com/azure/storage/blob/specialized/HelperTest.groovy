@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob
+package com.azure.storage.blob.specialized
 
+import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobSASPermission
+import com.azure.storage.blob.BlobURLParts
+import com.azure.storage.blob.ContainerSASPermission
 
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
@@ -296,7 +300,7 @@ class HelperTest extends APISpec {
         BlobSASPermission perms = new BlobSASPermission()
             .setReadPermission(read)
             .setWritePermission(write)
-            .getDeletePermission(delete)
+            .setDeletePermission(delete)
             .setCreatePermission(create)
             .setAddPermission(add)
 
@@ -627,7 +631,7 @@ class HelperTest extends APISpec {
             .setHost("host")
             .setContainerName("container")
             .setBlobName("blob")
-            .setSnapshot("snapshot")
+            .setSnapshot "snapshot"
 
         BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
@@ -651,7 +655,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        BlobURLParts parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        BlobURLParts parts = BlobURLParts.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
         parts.getScheme() == "http"

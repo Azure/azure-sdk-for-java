@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -33,21 +35,18 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via the method {@link
- * BlobClient#asBlockBlobClient()}, or via the method {@link ContainerClient#getBlockBlobClient(String)}. This class
- * does not hold any state about a particular blob, but is instead a convenient way of sending appropriate requests to
- * the resource on the service.
- *
- * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
- * operations on the service are available on {@link BlobServiceClient}.
+ * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
+ * {@link BlobClient#asBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
-@ServiceClient(builder = BlobClientBuilder.class)
-public final class BlockBlobClient extends BlobClient {
+@ServiceClient(builder = SpecializedBlobClientBuilder.class)
+public final class BlockBlobClient extends BlobClientBase {
+    private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
+
     private final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**
@@ -66,7 +65,7 @@ public final class BlockBlobClient extends BlobClient {
     public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param blockBlobAsyncClient the async block blob client
      */
@@ -108,7 +107,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.upload#InputStream-long}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
@@ -129,7 +128,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
@@ -143,11 +142,11 @@ public final class BlockBlobClient extends BlobClient {
      * @return The information of the uploaded block blob.
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
         Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
-        Context context) throws IOException {
+        Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
@@ -158,7 +157,7 @@ public final class BlockBlobClient extends BlobClient {
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw e.getCause();
+            throw logger.logExceptionAsError(e);
         }
     }
 
@@ -167,7 +166,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
      * @throws IOException If an I/O error occurs
@@ -181,7 +180,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param blockSize Size of the blocks to upload
@@ -190,17 +189,17 @@ public final class BlockBlobClient extends BlobClient {
      * @param tier {@link AccessTier} for the uploaded blob
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
-        AccessTier tier, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
+        AccessTier tier, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
             filePath, blockSize, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw e.getCause();
+            throw logger.logExceptionAsError(e);
         }
     }
 
@@ -211,7 +210,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlock#String-InputStream-long}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -230,7 +229,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -263,7 +262,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -284,7 +283,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -317,7 +316,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.listBlocks#BlockListType}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocks#BlockListType}
      *
      * @param listType Specifies which type of blocks to return.
      * @return The list of blocks.
@@ -333,7 +332,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context}
      *
      * @param listType Specifies which type of blocks to return.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
@@ -360,7 +359,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.commitBlockList#List}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return The information of the block blob.
@@ -379,7 +378,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}

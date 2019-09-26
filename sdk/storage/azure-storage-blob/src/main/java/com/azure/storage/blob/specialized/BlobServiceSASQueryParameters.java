@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.common.BaseSASQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;

@@ -67,6 +67,7 @@
                 <source>..\..\sdk\core\azure-core-http-netty\src\main\java\com</source>
                 <source>..\..\sdk\core\azure-core-http-netty\src\samples\java\com</source>
                 <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-okhttp\src\samples\java\com</source>
                 <source>..\..\sdk\core\azure-core-management\src\main\java\com</source>
                 <source>..\..\sdk\core\azure-core-test\src\main\java\com</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java\com</source>
@@ -80,6 +81,7 @@
                 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java\com</source>-->
                 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java\com</source>-->
                 <source>..\..\sdk\storage\azure-storage-common\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-common\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
