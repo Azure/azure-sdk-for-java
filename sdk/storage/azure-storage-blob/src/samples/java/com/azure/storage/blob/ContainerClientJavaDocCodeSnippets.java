@@ -434,17 +434,17 @@ public class ContainerClientJavaDocCodeSnippets {
      * Code snippet for {@link ContainerClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
+        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsByHierarchy#String
         client.listBlobsByHierarchy("directoryName").forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.ContainerClient.listBlobsByHierarchy#String
     }
 
     /**
      * Code snippet for {@link ContainerClient#listBlobsByHierarchy(String, ListBlobsOptions, Duration)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
@@ -457,7 +457,7 @@ public class ContainerClientJavaDocCodeSnippets {
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.ContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
     }
 
     /**

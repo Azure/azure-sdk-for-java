@@ -968,7 +968,7 @@ public class ShareAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
+        FileServiceSASSignatureValues values = configureServiceSasSignatureValues(fileServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
         FileServiceSASQueryParameters fileServiceSasQueryParameters =
@@ -993,7 +993,7 @@ public class ShareAsyncClient {
     /**
      * Sets fileServiceSASSignatureValues parameters dependent on the current file type
      */
-    FileServiceSASSignatureValues configureServiceSASSignatureValues(
+    FileServiceSASSignatureValues configureServiceSasSignatureValues(
         FileServiceSASSignatureValues fileServiceSASSignatureValues, String accountName) {
 
         // Set canonical name

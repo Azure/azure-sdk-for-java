@@ -529,7 +529,7 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobs#ListBlobsOptions-Duration}
      *
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -565,7 +565,7 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsByHierarchy#String}
      *
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
@@ -600,7 +600,7 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}

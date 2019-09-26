@@ -659,7 +659,7 @@ public final class ContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat}
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobs}
      *
      * @return A reactive response emitting the flattened blobs.
      */
@@ -687,7 +687,7 @@ public final class ContainerAsyncClient {
      *
      *
      *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat#ListBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobs#ListBlobsOptions}
      *
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the listed blobs, flattened.
@@ -776,7 +776,7 @@ public final class ContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String}
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobsByHierarchy#String}
      *
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
@@ -811,7 +811,7 @@ public final class ContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
@@ -856,8 +856,8 @@ public final class ContainerAsyncClient {
         return new PagedFlux<>(() -> func.apply(null), func);
     }
 
-    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsByHierarchySegment(String marker, String delimiter,
-        ListBlobsOptions options, Duration timeout) {
+    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsByHierarchySegment(String marker,
+        String delimiter, ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
         if (options.getDetails().getSnapshots()) {
             throw logger.logExceptionAsError(

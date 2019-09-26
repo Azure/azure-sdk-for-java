@@ -388,17 +388,17 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link ContainerAsyncClient#listBlobs()}
      */
     public void listBlobsFlat() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobs
         client.listBlobs().subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat
+        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobs
     }
 
     /**
      * Code snippet for {@link ContainerAsyncClient#listBlobs(ListBlobsOptions)}
      */
     public void listBlobsFlat2() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat#ListBlobsOptions
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobs#ListBlobsOptions
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("prefixToMatch")
             .setDetails(new BlobListDetails()
@@ -411,24 +411,24 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsFlat#ListBlobsOptions
+        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobs#ListBlobsOptions
     }
 
     /**
      * Code snippet for {@link ContainerAsyncClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsByHierarchy#String
         client.listBlobsByHierarchy("directoryName").subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isDeleted()));
-        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsByHierarchy#String
     }
 
     /**
      * Code snippet for {@link ContainerAsyncClient#listBlobsByHierarchy(String, ListBlobsOptions)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
@@ -441,7 +441,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
+        // END: com.azure.storage.blob.ContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
     }
 
     /**
