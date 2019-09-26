@@ -22,9 +22,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     private String redirectUri;
 
     /**
-     * Sets the authorization code on the builder. This is required for building an
-     * {@link AuthorizationCodeCredential}, but is not required for constructing the
-     * login URL.
+     * Sets the authorization code on the builder.
      *
      * @param authCode the authorization code acquired from user login
      * @return the AuthorizationCodeCredentialBuilder itself
@@ -35,10 +33,11 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets redirect URL for the Oauth 2.0 login request, which must be
-     * registered as a valid reply URL on the application. the authorization code
-     * will be sent to this URL so it must be listening on this server and is able
+     * Sets redirect URI for the Oauth 2.0 login request, which must be
+     * registered as a valid redirect URI on the application. the authorization code
+     * will be sent to this URI so it must be listening on this server and is able
      * to complete the {@link AuthorizationCodeCredential} construction from there.
+     * This is also called Reply URLs in some contexts.
      *
      * @param redirectUri the redirect URI to send the authorization code
      * @return the AuthorizationCodeCredentialBuilder itself
