@@ -60,7 +60,7 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
         return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(super.endpoint)
             .pipeline(pipeline)
-            .build(), cpk);
+            .build(), customerProvidedKey);
     }
 
     /**

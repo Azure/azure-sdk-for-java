@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
@@ -266,8 +265,9 @@ public final class FileServiceClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse setPropertiesWithResponse(FileServiceProperties properties, Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileServiceAsyncClient.setPropertiesWithResponse(properties, context);
+    public Response<Void> setPropertiesWithResponse(FileServiceProperties properties, Duration timeout,
+                                                    Context context) {
+        Mono<Response<Void>> response = fileServiceAsyncClient.setPropertiesWithResponse(properties, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -363,8 +363,9 @@ public final class FileServiceClient {
      * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteShareWithResponse(String shareName, String snapshot, Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
+    public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,
+                                                  Context context) {
+        Mono<Response<Void>> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

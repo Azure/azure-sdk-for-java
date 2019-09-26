@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
@@ -329,14 +328,14 @@ public final class FileServiceAsyncClient {
      * PUT</li>
      * </ul>
      */
-    public Mono<VoidResponse> setPropertiesWithResponse(FileServiceProperties properties) {
+    public Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties) {
         return withContext(context -> setPropertiesWithResponse(properties, context));
     }
 
-    Mono<VoidResponse> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
+    Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
         return postProcessResponse(azureFileStorageClient.services()
             .setPropertiesWithRestResponseAsync(properties, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -436,18 +435,18 @@ public final class FileServiceAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
      */
-    public Mono<VoidResponse> deleteShareWithResponse(String shareName, String snapshot) {
+    public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
         return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
     }
 
-    Mono<VoidResponse> deleteShareWithResponse(String shareName, String snapshot, Context context) {
+    Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
         if (ImplUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
         }
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

@@ -144,7 +144,7 @@ public final class RequestRetryOptions {
         long delay;
         switch (this.retryPolicyType) {
             case EXPONENTIAL:
-                delay = ((tryCount - 1) * (tryCount - 1) - 1L) * this.retryDelayInMs;
+                delay = (powOfTwo(tryCount - 1) - 1L) * this.retryDelayInMs;
                 break;
 
             case FIXED:
@@ -155,5 +155,14 @@ public final class RequestRetryOptions {
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);
+    }
+
+    private long powOfTwo(int exponent) {
+        long result = 1;
+        for (int i = 0; i < exponent; i++) {
+            result *= 2L;
+        }
+
+        return result;
     }
 }

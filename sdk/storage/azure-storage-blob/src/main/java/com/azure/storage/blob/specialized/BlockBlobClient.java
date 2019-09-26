@@ -6,7 +6,6 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
@@ -245,13 +244,13 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public VoidResponse stageBlockWithResponse(String base64BlockID, InputStream data, long length,
+    public Response<Void> stageBlockWithResponse(String base64BlockID, InputStream data, long length,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
+        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -302,10 +301,10 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
+    public Response<Void> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
         byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL,
+        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

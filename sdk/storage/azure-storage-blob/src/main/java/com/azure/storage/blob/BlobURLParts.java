@@ -310,7 +310,7 @@ public final class BlobURLParts {
             return retVals;
         }
 
-        // split name value pairs by splitting on the 'c&' character
+        // split name value pairs by splitting on the '&' character
         final String[] valuePairs = queryParams.split("&");
 
         // for each field value pair parse into appropriate map entries

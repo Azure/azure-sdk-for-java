@@ -19,7 +19,7 @@ public abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> exte
 
     private static final String BLOB_ENDPOINT_MIDFIX = "blob";
 
-    protected CpkInfo cpk;
+    protected CpkInfo customerProvidedKey;
 
     /**
      * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt blob contents on the server.
@@ -29,9 +29,9 @@ public abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> exte
      */
     public T customerProvidedKey(CustomerProvidedKey key) {
         if (key == null) {
-            cpk = null;
+            customerProvidedKey = null;
         } else {
-            cpk = new CpkInfo()
+            customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(key.getKey())
                 .setEncryptionKeySha256(key.getKeySHA256())
                 .setEncryptionAlgorithm(key.getEncryptionAlgorithm());

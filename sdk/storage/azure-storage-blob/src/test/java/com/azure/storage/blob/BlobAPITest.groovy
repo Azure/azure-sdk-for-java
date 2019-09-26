@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
@@ -224,7 +225,7 @@ class BlobAPITest extends APISpec {
         bc.download(null)
 
         then:
-        thrown(StorageException)
+        thrown(IllegalArgumentException)
     }
 
     def "Download snapshot"() {
@@ -1309,7 +1310,7 @@ class BlobAPITest extends APISpec {
         def cc = premiumBlobServiceClient.createContainer(generateContainerName())
 
         def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        bc.setCreate(512)
+        bc.create(512)
 
         when:
         bc.setTier(tier)
@@ -1456,7 +1457,7 @@ class BlobAPITest extends APISpec {
         def bcCopy = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
 
         when:
-        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))), null, tier2, null, null, null, null)
+        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))), null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2

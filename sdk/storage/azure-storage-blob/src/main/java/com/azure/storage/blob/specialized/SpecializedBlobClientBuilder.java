@@ -68,7 +68,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot, cpk);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot, cpk);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
     }
 
     /**
@@ -121,7 +121,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot, cpk);
+        return new PageBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
     }
 
     private AzureBlobStorageImpl constructImpl() {
@@ -141,7 +141,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
         pipeline(blobClient.getHttpPipeline());
         endpoint(blobClient.getBlobUrl().toString());
         this.snapshot = blobClient.getSnapshotId();
-        this.cpk = blobClient.getCpk();
+        this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
     }
 
@@ -155,7 +155,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
         pipeline(blobAsyncClient.getHttpPipeline());
         endpoint(blobAsyncClient.getBlobUrl().toString());
         this.snapshot = blobAsyncClient.getSnapshotId();
-        this.cpk = blobAsyncClient.getCpk();
+        this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
     }
 
@@ -170,7 +170,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
         pipeline(containerClient.getHttpPipeline());
         endpoint(containerClient.getContainerUrl().toString());
         blobName(blobName);
-        this.cpk = containerClient.getCpk();
+        this.customerProvidedKey = containerClient.getCustomerProvidedKey();
         return this;
     }
 
@@ -187,7 +187,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
         pipeline(containerAsyncClient.getHttpPipeline());
         endpoint(containerAsyncClient.getContainerUrl().toString());
         blobName(blobName);
-        this.cpk = containerAsyncClient.getCpk();
+        this.customerProvidedKey = containerAsyncClient.getCustomerProvidedKey();
         return this;
     }
 

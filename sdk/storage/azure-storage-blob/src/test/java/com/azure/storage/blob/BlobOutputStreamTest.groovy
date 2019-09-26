@@ -2,6 +2,7 @@ package com.azure.storage.blob
 
 
 import com.azure.storage.common.Constants
+import spock.lang.Ignore
 import spock.lang.Requires
 
 class BlobOutputStreamTest extends APISpec {
@@ -28,7 +29,7 @@ class BlobOutputStreamTest extends APISpec {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
         def pageBlobClient = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        pageBlobClient.setCreate(data.length)
+        pageBlobClient.create(data.length)
 
 
         when:
@@ -40,7 +41,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(pageBlobClient.openInputStream()) == data
     }
 
-    @Requires({ liveMode() })
+    @Ignore
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)

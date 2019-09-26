@@ -109,8 +109,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
-            null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(), cpk,
-            accessConditions.getModifiedAccessConditions(), context))
+            null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(),
+            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
 
@@ -165,7 +165,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
             null, null, data, length, null, null, null, null,
             appendBlobAccessConditions.getLeaseAccessConditions(),
-            appendBlobAccessConditions.getAppendPositionAccessConditions(), cpk,
+            appendBlobAccessConditions.getAppendPositionAccessConditions(), getCustomerProvidedKey(),
             appendBlobAccessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
     }
@@ -222,8 +222,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             ? new AppendBlobAccessConditions() : destAccessConditions;
 
         return postProcessResponse(
-            this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
-                sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null, null, null, cpk,
+            this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, sourceURL, 0,
+                sourceRange.toString(), sourceContentMD5, null, null, null, null, getCustomerProvidedKey(),
                 destAccessConditions.getLeaseAccessConditions(),
                 destAccessConditions.getAppendPositionAccessConditions(),
                 destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context))

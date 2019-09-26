@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobListDetails
@@ -74,6 +74,7 @@ class ContainerAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
     }
 
     @Unroll
@@ -560,7 +561,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def name = generateBlobName()
         def bu = cc.getBlobClient(name).asPageBlobClient()
-        bu.setCreate(512)
+        bu.create(512)
 
         when:
         def blobs = cc.listBlobsFlat().iterator()
@@ -614,7 +615,7 @@ class ContainerAPITest extends APISpec {
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
         def normal = cc.getBlobClient(normalName).asPageBlobClient()
-        normal.setCreate(512)
+        normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).asPageBlobClient()
 
@@ -792,7 +793,7 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS ; i++) {
             def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-            bc.setCreate(512)
+            bc.create(512)
         }
 
         when: "list blobs with sync client"
@@ -870,7 +871,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def name = generateBlobName()
         def bu = cc.getBlobClient(name).asPageBlobClient()
-        bu.setCreate(512)
+        bu.create(512)
 
         when:
         def blobs = cc.listBlobsHierarchy(null).iterator()
@@ -1063,7 +1064,7 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS; i++) {
             def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-            bc.setCreate(512)
+            bc.create(512)
         }
 
         def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
@@ -1089,7 +1090,7 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 3
         for (int i = 0; i < NUM_BLOBS; i++) {
             def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-            bc.setCreate(512)
+            bc.create(512)
         }
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"

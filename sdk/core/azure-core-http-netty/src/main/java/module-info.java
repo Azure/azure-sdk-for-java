@@ -3,6 +3,7 @@
 
 module com.azure.http.netty {
     requires transitive com.azure.core;
+    requires com.azure.core.test;
     requires reactor.netty;
     requires io.netty.buffer;
     requires io.netty.common;
@@ -10,9 +11,7 @@ module com.azure.http.netty {
     requires io.netty.handler;
     requires io.netty.codec;
     requires io.netty.codec.http;
-    requires reactor.core;
     requires org.reactivestreams;
-    requires com.azure.test;
 
     exports com.azure.core.http.netty;
     exports com.azure.core.http.netty.implementation;       // FIXME this should not be a long-term solution

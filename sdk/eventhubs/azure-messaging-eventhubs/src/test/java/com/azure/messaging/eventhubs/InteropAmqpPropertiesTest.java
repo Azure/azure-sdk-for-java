@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -43,6 +44,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
 
+    private final MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
     private EventHubAsyncProducer producer;
     private EventHubAsyncConsumer consumer;
@@ -116,7 +118,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         message.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
 
         message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
-        final EventData msgEvent = new EventData(message);
+        final EventData msgEvent = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to

@@ -52,13 +52,13 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#setCreate(long)}
+     * Code snippets for {@link PageBlobAsyncClient#create(long)}
      */
     public void setCreateCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.setCreate#long
-        client.setCreate(size).subscribe(response -> System.out.printf(
+        // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.create#long
+        client.create(size).subscribe(response -> System.out.printf(
             "Created page blob with sequence number %s%n", response.getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.setCreate#long
+        // END: com.azure.storage.blob.PageBlobAsyncClient.create#long
     }
 
     /**

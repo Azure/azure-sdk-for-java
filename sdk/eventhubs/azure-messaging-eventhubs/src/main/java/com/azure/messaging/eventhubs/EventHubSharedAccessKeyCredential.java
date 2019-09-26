@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -92,19 +93,19 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      * Retrieves the token, given the audience/resources requested, for use in authorization against an Event Hubs
      * namespace or a specific Event Hub instance.
      *
-     * @param scopes The name of the resource or token audience to obtain a token for.
+     * @param request The details of a token request
      * @return A Mono that completes and returns the shared access signature.
      * @throws IllegalArgumentException if {@code scopes} does not contain a single value, which is the token
      *     audience.
      */
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
-        if (scopes.length != 1) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
+        if (request.getScopes().size() != 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
-        return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
+        return Mono.fromCallable(() -> generateSharedAccessSignature(request.getScopes().get(0)));
     }
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {

@@ -13,6 +13,7 @@
     </parent>
     <version>1.1.0-preview.1</version>
     <artifactId>azure-cognitiveservices-spellcheck</artifactId>
+    <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Spell Check</name>
     <description>This package contains Microsoft Cognitive Service Spell Check SDK.</description>

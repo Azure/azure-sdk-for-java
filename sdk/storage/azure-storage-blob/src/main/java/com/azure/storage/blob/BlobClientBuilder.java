@@ -75,8 +75,8 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
-        Objects.requireNonNull(containerName);
-        Objects.requireNonNull(blobName);
+        Objects.requireNonNull(containerName, "'containerName' cannot be null.");
+        Objects.requireNonNull(blobName, "'blobName' cannot be null.");
 
         HttpPipeline pipeline = super.getPipeline();
         if (pipeline == null) {
@@ -86,7 +86,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline)
-            .build(), snapshot, cpk);
+            .build(), snapshot, customerProvidedKey);
     }
 
     /**
@@ -135,7 +135,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code containerName} is {@code null}
      */
     public BlobClientBuilder containerName(String containerName) {
-        this.containerName = Objects.requireNonNull(containerName);
+        this.containerName = Objects.requireNonNull(containerName, "'containerName' cannot be null.");
         return this;
     }
 
@@ -147,7 +147,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public BlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName);
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 

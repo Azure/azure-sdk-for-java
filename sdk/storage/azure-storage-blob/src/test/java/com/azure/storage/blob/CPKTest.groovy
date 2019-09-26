@@ -93,7 +93,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -119,7 +119,7 @@ class CPKTest extends APISpec {
 
     def "Put page with CPK"() {
         setup:
-        cpkPageBlob.setCreate(PageBlobClient.PAGE_BYTES)
+        cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         when:
         def response = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -134,15 +134,15 @@ class CPKTest extends APISpec {
     def "Put page from URL wih CPK"() {
         setup:
         def sourceBlob = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        sourceBlob.setCreate(PageBlobClient.PAGE_BYTES)
+        sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
 
-        cpkPageBlob.setCreate(PageBlobClient.PAGE_BYTES)
+        cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         when:
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -154,7 +154,7 @@ class CPKTest extends APISpec {
 
     def "Put multiple pages with CPK"() {
         setup:
-        cpkPageBlob.setCreate(PageBlobClient.PAGE_BYTES * 2)
+        cpkPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
         def response = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
@@ -187,7 +187,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
