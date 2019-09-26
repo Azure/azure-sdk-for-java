@@ -1,10 +1,15 @@
 ﻿using Azure.Core.Pipeline;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Common;
 using CommandLine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime;
 using System.Text;
@@ -66,6 +71,10 @@ namespace StoragePerfNet
             var blobClientOptions = new BlobClientOptions();
             blobClientOptions.Transport = new HttpClientTransport(httpClient);
 
+            var blockClient = new BlockBlobClient(connectionString, _containerName, _blobName, blobClientOptions);
+            var blockList = (await blockClient.GetBlockListAsync()).Value;
+            PrintBlockList(blockList);
+
             var client = new BlobClient(connectionString, _containerName, _blobName, blobClientOptions);
 
             var parallelTransferOptions = new ParallelTransferOptions()
@@ -85,7 +94,7 @@ namespace StoragePerfNet
             var sw = new Stopwatch();
             for (var i = 0; i < options.Count; i++)
             {
-                payloadStream.Seek(0, SeekOrigin.Begin);
+                payloadStream.Seek(0, SeekOrigin.Begin);                
 
                 sw.Restart();
                 await client.UploadAsync(payloadStream, parallelTransferOptions: parallelTransferOptions);
@@ -105,6 +114,22 @@ namespace StoragePerfNet
 
                 Console.WriteLine();
             }
+        }
+
+        static void PrintBlockList(BlockList blockList)
+        {
+            PrintBlocks("Committed", blockList.CommittedBlocks);
+            PrintBlocks("Uncommitted", blockList.UncommittedBlocks);
+        }
+
+        static void PrintBlocks(string description, IEnumerable<Block> blocks)
+        {
+            Console.WriteLine($"{description} Blocks: {blocks.Count()}");
+            foreach (var block in blocks)
+            {
+                Console.WriteLine($"  {block.Name}: {block.Size}");
+            }
+            Console.WriteLine();
         }
     }
 }
