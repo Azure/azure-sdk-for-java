@@ -5,6 +5,7 @@ module com.azure.storage.file {
     requires transitive com.azure.core;
     requires com.azure.storage.common;
     requires com.fasterxml.jackson.dataformat.xml;
+    requires com.fasterxml.jackson.databind;
 
     exports com.azure.storage.file;
     exports com.azure.storage.file.models;
