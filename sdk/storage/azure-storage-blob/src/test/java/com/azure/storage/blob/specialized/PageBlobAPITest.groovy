@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob
+package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -18,8 +19,6 @@ import com.azure.storage.blob.models.SequenceNumberAccessConditions
 import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.specialized.PageBlobAsyncClient
-import com.azure.storage.blob.specialized.PageBlobClient
 import spock.lang.Unroll
 
 import java.security.MessageDigest

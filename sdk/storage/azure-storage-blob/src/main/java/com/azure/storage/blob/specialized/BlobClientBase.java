@@ -119,8 +119,8 @@ public class BlobClientBase {
      *
      * @return the customer provided key used for encryption.
      */
-    public CpkInfo getCpk() {
-        return client.getCpk();
+    public CpkInfo getCustomerProvidedKey() {
+        return client.getCustomerProvidedKey();
     }
 
     /**

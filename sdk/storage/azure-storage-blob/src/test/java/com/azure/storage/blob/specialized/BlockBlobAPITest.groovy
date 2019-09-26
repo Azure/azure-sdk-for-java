@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob
+package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.HttpMethod
@@ -11,6 +11,8 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
+import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
@@ -25,8 +27,6 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageErrorException
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient
-import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -82,11 +82,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(exceptionType)
 
         where:
-        getBlockId   | data                 | dataSize            | exceptionType
-        false        | defaultInputStream   | defaultDataSize     | StorageException
-        true         | null                 | defaultDataSize     | NullPointerException
-        true         | defaultInputStream   | defaultDataSize + 1 | UnexpectedLengthException
-        true         | defaultInputStream   | defaultDataSize - 1 | UnexpectedLengthException
+        getBlockId   | data                       | dataSize                    | exceptionType
+        false        | defaultInputStream | defaultDataSize     | StorageException
+        true         | null                       | defaultDataSize     | NullPointerException
+        true         | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
+        true         | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -593,7 +593,7 @@ class BlockBlobAPITest extends APISpec {
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
-    @Requires({ APISpec.liveMode() })
+    @Requires({ liveMode() })
     def "Upload from file"() {
         given:
         URL resource = this.getClass().getResource( '/testfiles/uploadFromFileTestData.txt')
@@ -609,7 +609,7 @@ class BlockBlobAPITest extends APISpec {
         outStream.toByteArray() == content.getBytes(StandardCharsets.UTF_8)
     }
 
-    @Requires({ APISpec.liveMode() })
+    @Requires({ liveMode() })
     def "Upload from file with metadata"() {
         given:
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
@@ -619,12 +619,10 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file, null, metadata, null, null, null);
+        bc.uploadFromFile(file, null, null, metadata, null, null, null)
 
         then:
-        BlobProperties properties = bc.getProperties()
-        Metadata returnedMetadata = properties.metadata;
-        metadata.equals(returnedMetadata);
+        metadata == bc.getProperties().getMetadata()
     }
 
     def "Upload min"() {
@@ -959,8 +957,8 @@ class BlockBlobAPITest extends APISpec {
         where:
         modified | unmodified | match        | noneMatch   | leaseID
         null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
         null     | newDate    | null         | null        | null
+        oldDate  | null       | null         | null        | null
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID

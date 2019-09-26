@@ -121,8 +121,8 @@ public final class ContainerClient {
      *
      * @return the customer provided key used for encryption.
      */
-    public CpkInfo getCpk() {
-        return containerAsyncClient.getCpk();
+    public CpkInfo getCustomerProvidedKey() {
+        return containerAsyncClient.getCustomerProvidedKey();
     }
 
     /**

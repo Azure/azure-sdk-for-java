@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob
+package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.AppendBlobAccessConditions
 import com.azure.storage.blob.models.AppendPositionAccessConditions
 import com.azure.storage.blob.models.BlobAccessConditions
@@ -17,8 +17,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.specialized.AppendBlobClient
-import com.azure.storage.blob.specialized.PageBlobClient
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -396,8 +394,8 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null       | null
         oldDate  | null       | null         | null        | null            | null       | null
         null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | receivedEtag | null        | null            | null       | null
         null     | null       | null         | garbageEtag | null            | null       | null
+        null     | null       | receivedEtag | null        | null            | null       | null
         null     | null       | null         | null        | receivedLeaseID | null       | null
         null     | null       | null         | null        | null            | 0          | null
         null     | null       | null         | null        | null            | null       | 100

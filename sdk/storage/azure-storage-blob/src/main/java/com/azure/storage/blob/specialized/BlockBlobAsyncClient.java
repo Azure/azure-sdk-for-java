@@ -158,8 +158,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(), cpk,
-            accessConditions.getModifiedAccessConditions(), context))
+            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
+            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 
@@ -465,8 +465,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
         LeaseAccessConditions leaseAccessConditions, Context context) {
-        return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
-            null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, cpk, context))
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
+            base64BlockID, length, data, null, null, null, null, leaseAccessConditions, getCustomerProvidedKey(),
+            context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -531,7 +532,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return postProcessResponse(
             this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
                 base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null, null,
-                null, cpk, leaseAccessConditions, sourceModifiedAccessConditions, context))
+                null, getCustomerProvidedKey(), leaseAccessConditions, sourceModifiedAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -575,7 +576,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         LeaseAccessConditions leaseAccessConditions, Context context) {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(null,
-            null, listType, snapshot, null, null, leaseAccessConditions, context))
+            null, listType, getSnapshotId(), null, null, leaseAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -631,8 +632,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
-            headers, accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(),
-            context))
+            headers, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
+            accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }

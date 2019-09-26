@@ -18,8 +18,6 @@ import com.azure.storage.blob.HTTPGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.AccessTierOptional;
-import com.azure.storage.blob.models.AccessTierRequired;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -75,20 +73,21 @@ public class BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 
     protected final AzureBlobStorageImpl azureBlobStorage;
-    protected final String snapshot;
-    protected final CpkInfo cpk;
+    private final String snapshot;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      * @param snapshot Optional. The snapshot identifier for the snapshot blob.
-     * @param cpk Optional. Customer provided key used during encryption of the blob's data on the server.
+     * @param customerProvidedKey Optional. Customer provided key used during encryption of the blob's data on the
+     * server.
      */
-    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
+    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo customerProvidedKey) {
         this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
-        this.cpk = cpk;
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -101,7 +100,7 @@ public class BlobAsyncClientBase {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
+            .build(), snapshot, customerProvidedKey);
     }
 
     /**
@@ -163,8 +162,8 @@ public class BlobAsyncClientBase {
      *
      * @return the customer provided key used for encryption.
      */
-    public CpkInfo getCpk() {
-        return cpk;
+    public CpkInfo getCustomerProvidedKey() {
+        return customerProvidedKey;
     }
 
     /**
@@ -273,7 +272,6 @@ public class BlobAsyncClientBase {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
-        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -283,7 +281,7 @@ public class BlobAsyncClientBase {
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, tierOp, priority, null, sourceConditions,
+            null, null, sourceURL, null, metadata, tier, priority, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
@@ -323,7 +321,8 @@ public class BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions) {
+    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId,
+        LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
     }
 
@@ -384,7 +383,6 @@ public class BlobAsyncClientBase {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
-        AccessTierOptional tierOp = tier == null ? null : AccessTierOptional.fromString(tier.toString());
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -394,7 +392,7 @@ public class BlobAsyncClientBase {
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, copySource, null, metadata, tierOp, null, sourceConditions,
+            null, null, copySource, null, metadata, tier, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
@@ -479,7 +477,8 @@ public class BlobAsyncClientBase {
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
             null, null, snapshot, null, range.toHeaderValue(), getMD5, null, null,
-            accessConditions.getLeaseAccessConditions(), cpk, accessConditions.getModifiedAccessConditions(), context))
+            accessConditions.getLeaseAccessConditions(), customerProvidedKey,
+            accessConditions.getModifiedAccessConditions(), context))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
@@ -692,7 +691,7 @@ public class BlobAsyncClientBase {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, null, accessConditions.getLeaseAccessConditions(), cpk,
+            null, null, snapshot, null, null, accessConditions.getLeaseAccessConditions(), customerProvidedKey,
             accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new BlobProperties(rb.getDeserializedHeaders())));
     }
@@ -788,7 +787,7 @@ public class BlobAsyncClientBase {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, null, accessConditions.getLeaseAccessConditions(), cpk,
+            null, null, null, metadata, null, accessConditions.getLeaseAccessConditions(), customerProvidedKey,
             accessConditions.getModifiedAccessConditions(), context))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -836,7 +835,7 @@ public class BlobAsyncClientBase {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, null, cpk, accessConditions.getModifiedAccessConditions(),
+            null, null, null, metadata, null, customerProvidedKey, accessConditions.getModifiedAccessConditions(),
             accessConditions.getLeaseAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
@@ -888,10 +887,9 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Context context) {
         Utility.assertNotNull("tier", tier);
-        AccessTierRequired accessTierRequired = AccessTierRequired.fromString(tier.toString());
 
         return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, accessTierRequired, null, priority, null, leaseAccessConditions, context))
+            null, null, tier, null, priority, null, leaseAccessConditions, context))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
