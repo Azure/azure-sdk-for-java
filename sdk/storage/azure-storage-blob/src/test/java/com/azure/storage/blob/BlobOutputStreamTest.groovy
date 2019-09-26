@@ -27,7 +27,7 @@ class BlobOutputStreamTest extends APISpec {
         setup:
         byte[] data = getRandomByteArray(1024 * Constants.MB - 512)
         PageBlobClient pageBlobClient = cc.getPageBlobClient(generateBlobName())
-        pageBlobClient.setCreate(data.length)
+        pageBlobClient.create(data.length)
 
 
         when:

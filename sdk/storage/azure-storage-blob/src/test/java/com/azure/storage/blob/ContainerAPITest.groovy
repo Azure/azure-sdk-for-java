@@ -568,7 +568,7 @@ class ContainerAPITest extends APISpec {
         setup:
         String name = generateBlobName()
         PageBlobClient bu = cc.getPageBlobClient(name)
-        bu.setCreate(512)
+        bu.create(512)
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobs().iterator()
@@ -622,7 +622,7 @@ class ContainerAPITest extends APISpec {
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
         def normal = cc.getPageBlobClient(normalName)
-        normal.setCreate(512)
+        normal.create(512)
 
         def copyBlob = cc.getPageBlobClient(copyName)
 
@@ -809,7 +809,7 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS ; i++) {
             PageBlobClient bc = cc.getPageBlobClient(generateBlobName())
-            bc.setCreate(512)
+            bc.create(512)
         }
 
         when: "list blobs with sync client"
@@ -887,7 +887,7 @@ class ContainerAPITest extends APISpec {
         setup:
         String name = generateBlobName()
         PageBlobClient bu = cc.getPageBlobClient(name)
-        bu.setCreate(512)
+        bu.create(512)
 
         when:
         Iterator<BlobItem> blobs = cc.listBlobsByHierarchy(null).iterator()
@@ -1080,7 +1080,7 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS; i++) {
             PageBlobClient bc = cc.getPageBlobClient(generateBlobName())
-            bc.setCreate(512)
+            bc.create(512)
         }
 
         def blobs = cc.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
@@ -1106,7 +1106,7 @@ class ContainerAPITest extends APISpec {
         def PAGE_SIZE = 3
         for (int i = 0; i < NUM_BLOBS; i++) {
             def bc = cc.getPageBlobClient(generateBlobName())
-            bc.setCreate(512)
+            bc.create(512)
         }
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
