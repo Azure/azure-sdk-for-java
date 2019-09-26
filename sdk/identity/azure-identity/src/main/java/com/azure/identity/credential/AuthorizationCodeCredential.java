@@ -6,6 +6,7 @@ package com.azure.identity.credential;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -30,14 +31,18 @@ public class AuthorizationCodeCredential implements TokenCredential {
      * Creates an AuthorizationCodeCredential with the given identity client options.
      *
      * @param clientId the client ID of the application
+     * @param tenantId the tenant ID of the application
      * @param authCode the Oauth 2.0 authorization code grant
      * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
      * @param identityClientOptions the options for configuring the identity client
      */
-    AuthorizationCodeCredential(String clientId, String authCode, URI redirectUri,
+    AuthorizationCodeCredential(String clientId, String tenantId, String authCode, URI redirectUri,
                                 IdentityClientOptions identityClientOptions) {
+        if (tenantId == null) {
+            tenantId = "common";
+        }
         identityClient = new IdentityClientBuilder()
-            .tenantId("common")
+            .tenantId(tenantId)
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
@@ -47,16 +52,16 @@ public class AuthorizationCodeCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
         }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(scopes, authCode, redirectUri)))
+            Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(request, authCode, redirectUri)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

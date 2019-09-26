@@ -91,12 +91,12 @@ public class IdentityClientIntegrationTests {
     @Ignore("Integration tests")
     public void authCodeCanGetToken() throws Exception {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions());
-        MsalToken token = client.authenticateWithAuthorizationCode(scopes, System.getenv("AZURE_AUTH_CODE"), new URI("http://localhost:8000")).block();
+        MsalToken token = client.authenticateWithAuthorizationCode(request, System.getenv("AZURE_AUTH_CODE"), new URI("http://localhost:8000")).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresOn());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new String[] { "https://vault.azure.net/.default" }, token).block();
+        token = client.authenticateWithUserRefreshToken(new TokenRequest().addScopes("https://vault.azure.net/.default"), token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresOn());

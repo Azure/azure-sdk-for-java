@@ -9,7 +9,6 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * Fluent credential builder for instantiating a {@link AuthorizationCodeCredential}.
@@ -59,26 +58,9 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("redirectUri", redirectUri);
             }});
         try {
-            return new AuthorizationCodeCredential(clientId, authCode, new URI(redirectUri), identityClientOptions);
+            return new AuthorizationCodeCredential(clientId, tenantId, authCode, new URI(redirectUri), identityClientOptions);
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-    }
-
-    /**
-     * Builds a login URL for the user to login on the client side.
-     *
-     * @param scopes the scopes the token will be used for
-     * @return a login URL for the user to login
-     */
-    public String buildLoginUrl(String... scopes) {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("redirectUri", redirectUri);
-            }});
-        return String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt"
-                    + "=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
-                identityClientOptions.getAuthorityHost(), clientId, redirectUri, UUID.randomUUID(),
-                String.join(" ", scopes));
     }
 }
