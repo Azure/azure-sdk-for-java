@@ -5,7 +5,6 @@ module com.azure.storage.blob {
     requires transitive com.azure.core;
     requires transitive com.azure.storage.common;
     requires com.fasterxml.jackson.dataformat.xml;
-    requires com.fasterxml.jackson.databind;
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;
@@ -15,6 +14,9 @@ module com.azure.storage.blob {
         com.fasterxml.jackson.databind,
         com.azure.core;
     opens com.azure.storage.blob.implementation to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
+    opens com.azure.storage.blob.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
 }

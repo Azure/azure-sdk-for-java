@@ -4,8 +4,8 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.blob.implementation.BlockBlobCommitBlockListHeaders;
-import com.azure.storage.blob.implementation.BlockBlobUploadHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
 
 import java.time.OffsetDateTime;
 

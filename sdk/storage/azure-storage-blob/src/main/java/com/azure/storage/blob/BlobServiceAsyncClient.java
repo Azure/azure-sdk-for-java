@@ -16,7 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentResponse;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
