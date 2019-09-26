@@ -196,4 +196,7 @@
   <!-- Suppress CRUD operation names as they won't feel fluent -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseAsyncClient.java"/>
+
+  <!-- Checkstyle rules should not check files in generated-test-sources -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
 </suppressions>
