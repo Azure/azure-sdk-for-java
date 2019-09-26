@@ -10,7 +10,7 @@ import com.azure.storage.common.Utility;
 import java.time.Duration;
 
 /**
- * HTTPGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
+ * HttpGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
  * request.
  */
 public final class HttpGetterInfo {
@@ -31,7 +31,7 @@ public final class HttpGetterInfo {
      * Sets the start offset that is used when creating the Range header. If unchanged this will default to 0.
      *
      * @param offset Start offset
-     * @return the updated HTTPGetterInfo object
+     * @return the updated HttpGetterInfo object
      */
     public HttpGetterInfo setOffset(long offset) {
         this.offset = offset;
@@ -51,7 +51,7 @@ public final class HttpGetterInfo {
      * default and indicates that the entire rest of the blob should be retrieved.
      *
      * @param count Count of bytes
-     * @return the updated HTTPGetterInfo object
+     * @return the updated HttpGetterInfo object
      */
     public HttpGetterInfo setCount(Long count) {
         if (count != null) {
@@ -76,7 +76,7 @@ public final class HttpGetterInfo {
      * properties}. Defaults to null.
      *
      * @param eTag Resource's eTag
-     * @return the updated HTTPGetterInfo object
+     * @return the updated HttpGetterInfo object
      */
     public HttpGetterInfo setETag(String eTag) {
         this.eTag = eTag;

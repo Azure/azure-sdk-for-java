@@ -74,7 +74,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - Added uploadPagesFromURL method. Pages may be written to with another blob as their source.
 - Fixed a bug that would set an invalid range header when downloading an empty blob.
 - Modified the LoggingFactory to redact SAS signatures on outgoing requests.
-- HTTPGetterInfo was made an internal type as it is an internal implementation detail.
+- HttpGetterInfo was made an internal type as it is an internal implementation detail.
 - Removed DEFAULT and NONE static variables. Empty constructors should be used instead. DEFAULT static values were error prone and unsafe to use because although the field was final, the objects were mutable, so it was possible the value could be changed accidentally and alter the behavior of the program.
 - Optimized the TransferManager download to file method to skip the initial HEAD request.
 - Added an option to configure that maximum size data that will be uploaded in a single shot via the TransferManager.

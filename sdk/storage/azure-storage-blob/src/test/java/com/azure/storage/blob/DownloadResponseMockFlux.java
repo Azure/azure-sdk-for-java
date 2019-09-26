@@ -28,7 +28,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
 
     private int scenario;
     private int tryNumber;
-    private HTTPGetterInfo info;
+    private HttpGetterInfo info;
     private ByteBuffer scenarioData;
 
     DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
@@ -145,7 +145,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
         }
     }
 
-    Mono<DownloadAsyncResponse> getter(HTTPGetterInfo info) {
+    Mono<DownloadAsyncResponse> getter(HttpGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());
