@@ -3,11 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.*;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -18,18 +14,11 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.DequeuedMessage;
-import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.implementation.MessageIdUpdateHeaders;
-import com.azure.storage.queue.implementation.MessageIdsUpdateResponse;
-import com.azure.storage.queue.models.PeekedMessage;
-import com.azure.storage.queue.implementation.QueueGetPropertiesHeaders;
-import com.azure.storage.queue.models.QueueMessage;
-import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.implementation.QueuesGetPropertiesResponse;
-import com.azure.storage.queue.models.SignedIdentifier;
-import com.azure.storage.queue.models.StorageException;
-import com.azure.storage.queue.models.UpdatedMessage;
+import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
+import com.azure.storage.queue.models.*;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
