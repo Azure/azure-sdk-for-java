@@ -120,18 +120,12 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
-    @Unroll
     def "Create file with args error"() {
         when:
-        primaryFileClient.createWithResponse(maxSize, null, null, null, metadata, null, null)
+        primaryFileClient.createWithResponse(-1, null, null, null, testMetadata, null, null)
         then:
         def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
-
-        where:
-        maxSize | metadata                                      | statusCode | errMsg
-        -1      | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
-        1024    | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
     }
 
     @Unroll

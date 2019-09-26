@@ -90,18 +90,6 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null, testMetadata, null, null), 201)
     }
 
-    def "Create directory error with metadata"() {
-        given:
-        def errorMetadata = Collections.singletonMap("testMeta", "value")
-
-        when:
-        primaryDirectoryClient.createWithResponse(null, null, errorMetadata, null, null)
-
-        then:
-        def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, StorageErrorCode.AUTHENTICATION_FAILED)
-    }
-
     def "Create directory with file permission"() {
         when:
         def resp = primaryDirectoryClient.createWithResponse(null, filePermission, null, null, null)
