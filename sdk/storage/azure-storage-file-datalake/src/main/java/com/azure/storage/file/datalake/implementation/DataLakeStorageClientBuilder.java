@@ -6,7 +6,7 @@ package com.azure.storage.file.datalake.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
 
 /**
  * A builder for creating a new instance of the DataLakeStorageClient type.
