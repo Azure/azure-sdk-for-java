@@ -11,7 +11,6 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.SerializerAdapter;
@@ -60,8 +59,12 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
     }
 
-    // 1. final VoidResponse               (Ctr_args: 3) // Final class cannot be extended
-    //    VoidResponse(HttpRequest request, int statusCode, HttpHeaders headers)
+    // 1. final VoidResponse               (Ctr_args: 3)
+    final static class VoidResponse extends SimpleResponse<Void> {
+        public VoidResponse(HttpRequest request, int statusCode, HttpHeaders headers, Void value) {
+            super(request, statusCode, headers, value);
+        }
+    }
 
     // 2. SimpleResponse<Foo> Type         (Ctr_args: 4)
     final static class FooSimpleResponse extends SimpleResponse<Foo> {
