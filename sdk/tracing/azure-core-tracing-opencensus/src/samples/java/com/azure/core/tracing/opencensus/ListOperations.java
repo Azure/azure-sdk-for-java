@@ -25,10 +25,10 @@ import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 public class ListOperations {
     /**
      * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key
-     * vault with trace spans exported to zipkin.
+     * vault with trace spans exported to Zipkin.
      *
-     * Please refer to the  <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
-     * using a zipkin exporter.
+     * Please refer to the <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
+     * using a Zipkin exporter.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -78,8 +78,7 @@ public class ListOperations {
             }
         } finally {
             scope.close();
+            Tracing.getExportComponent().shutdown();
         }
-
-        Tracing.getExportComponent().shutdown();
     }
 }

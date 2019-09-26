@@ -16,6 +16,8 @@ import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
 import reactor.util.context.Context;
 
+import java.util.concurrent.Semaphore;
+
 import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
 /**
@@ -24,13 +26,14 @@ import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 public class ListOperationsAsync {
     /**
      * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key
-     * vault with trace spans exported to zipkin.
+     * vault with trace spans exported to Zipkin.
      *
-     * Please refer to the  <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
-     * using a zipkin exporter.
+     * Please refer to the <a href=https://zipkin.io/pages/quickstart>Quickstart Zipkin</a> for more documentation on
+     * using a Zipkin exporter.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws IllegalArgumentException, InterruptedException {
         ZipkinTraceExporter.createAndRegister("http://localhost:9411/api/v2/spans", "tracing-to-zipkin-service");
@@ -49,44 +52,63 @@ public class ListOperationsAsync {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
+        Semaphore semaphore = new Semaphore(1);
         Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan();
-        try {
-            Context traceContext = Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
-            // Let's create secrets holding storage and bank accounts credentials. if the secret
-            // already exists in the key vault, then a new version of the secret is created.
-            client.setSecret(new Secret("StorageAccountPassword", "password"))
-                .then(client.setSecret(new Secret("BankAccountPassword", "password")))
-                .subscriberContext(traceContext)
-                .subscribe(secretResponse ->
-                    System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
-            Thread.sleep(20000);
-            // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
-            // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-            client.listSecrets()
-                .subscriberContext(traceContext)
-                .subscribe(secretBase -> client.getSecret(secretBase)
-                    .subscriberContext(traceContext)
-                    .subscribe(secret -> System.out.printf("Received secret with name %s and value %s%n",
-                        secret.getName(), secret.getValue())));
+        semaphore.acquire();
+        Context traceContext = Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
+        // Let's create secrets holding storage and bank accounts credentials. if the secret
+        // already exists in the key vault, then a new version of the secret is created.
+        client.setSecret(new Secret("StorageAccountPassword", "password"))
+            .then(client.setSecret(new Secret("BankAccountPassword", "password")))
+            .subscriberContext(traceContext)
+            .subscribe(secretResponse ->
+                System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()),
+                err -> {
+                    System.out.printf("Error thrown when enqueue the message. Error message: %s%n",
+                        err.getMessage());
+                    scope.close();
+                    semaphore.release();
+                },
+                () -> {
+                    semaphore.release();
+                });
 
-            // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
-            // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
-            client.setSecret("BankAccountPassword", "new password")
+        semaphore.acquire();
+        // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
+        // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
+        client.listSecrets()
+            .subscriberContext(traceContext)
+            .subscribe(secretBase -> client.getSecret(secretBase)
                 .subscriberContext(traceContext)
-                .subscribe(secretResponse ->
-                    System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
+                .subscribe(secret -> System.out.printf("Received secret with name %s and value %s%n",
+                    secret.getName(), secret.getValue())));
 
-            Thread.sleep(20000);
+        // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
+        // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
+        client.setSecret("BankAccountPassword", "new password")
+            .subscriberContext(traceContext)
+            .subscribe(secretResponse ->
+                System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()),
+                err -> {
+                    System.out.printf("Error thrown when enqueue the message. Error message: %s%n",
+                        err.getMessage());
+                    scope.close();
+                    semaphore.release();
+                },
+                () -> {
+                    semaphore.release();
+                });
 
-            // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
-            client.listSecretVersions("BankAccountPassword")
-                .subscriberContext(traceContext)
-                .subscribe(secretBase -> System.out.printf("Received secret's version with name %s%n",
-                    secretBase.getName()));
-        } finally {
-            scope.close();
-            Tracing.getExportComponent().shutdown();
-        }
+        semaphore.acquire();
+
+        // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
+        client.listSecretVersions("BankAccountPassword")
+            .subscriberContext(traceContext)
+            .subscribe(secretBase -> System.out.printf("Received secret's version with name %s%n",
+                secretBase.getName()));
+
+        scope.close();
+        Tracing.getExportComponent().shutdown();
     }
 }

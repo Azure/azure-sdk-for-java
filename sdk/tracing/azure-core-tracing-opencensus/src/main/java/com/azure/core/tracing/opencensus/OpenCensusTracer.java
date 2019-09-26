@@ -19,7 +19,6 @@ import io.opencensus.trace.SpanContext;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 
-import java.util.Locale;
 import java.util.Optional;
 
 import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
@@ -172,13 +171,20 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
         Span parentSpan = null;
         String spanNameKey = null;
 
-        if (optionalSpanKey.get() instanceof Span && optionalSpanNameKey.get() instanceof String) {
-            parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
-            spanNameKey = (String) context.getData(OPENCENSUS_SPAN_NAME_KEY).orElse(spanName);
+        if (!optionalSpanNameKey.isPresent()) {
+            spanNameKey = spanName;
+        } else if (optionalSpanKey.isPresent() && optionalSpanNameKey.get() instanceof String) {
+            spanNameKey = (String) optionalSpanNameKey.get();
         } else {
-            logger.warning(String.format(Locale.US,
-                "Parent span type is not of type Span, but type: %s. Failed to add span links.",
-                optionalSpanKey.get() != null ? optionalSpanKey.get().getClass() : "null"));
+            logger.warning("Span name type is not of type String, but type: {}. Failed to add span links.",
+                optionalSpanNameKey.get() != null ? optionalSpanNameKey.get().getClass() : "null");
+        }
+
+        if (optionalSpanKey.get() instanceof Span) {
+            parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        } else {
+            logger.warning("Parent span type is not of type Span, but type: {}. Failed to add span links.",
+                optionalSpanKey.get() != null ? optionalSpanKey.get().getClass() : "null");
         }
 
         SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(spanNameKey, parentSpan);
