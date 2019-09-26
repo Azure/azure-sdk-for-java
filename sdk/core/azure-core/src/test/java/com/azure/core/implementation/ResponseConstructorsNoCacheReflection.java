@@ -16,17 +16,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-class ResponseConstructorsCacheReflection {
+class ResponseConstructorsNoCacheReflection {
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCacheReflection.class);
-    private final Map<Class<?>, Constructor<? extends Response<?>>> cache = new ConcurrentHashMap<>();
 
     Constructor<? extends Response<?>> get(Class<? extends Response<?>> responseClass) {
-        return this.cache.computeIfAbsent(responseClass, this::locateResponseConstructor);
+        return locateResponseConstructor(responseClass);
     }
 
     @SuppressWarnings("unchecked")
@@ -76,28 +73,28 @@ class ResponseConstructorsCacheReflection {
                 }
             case 5:
                 return decodedResponse.getDecodedHeaders()
-                    .map((Function<Object, Response<?>>) decodedHeaders -> {
-                        try {
-                            return constructor.newInstance(httpRequest,
-                                    responseStatusCode,
-                                    responseHeaders,
-                                    bodyAsObject,
-                                    decodedHeaders);
-                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    })
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                        try {
-                            return Mono.just(constructor.newInstance(httpRequest,
-                                    responseStatusCode,
-                                    responseHeaders,
-                                    bodyAsObject,
-                                    null));
-                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    }));
+                        .map((Function<Object, Response<?>>) decodedHeaders -> {
+                            try {
+                                return constructor.newInstance(httpRequest,
+                                        responseStatusCode,
+                                        responseHeaders,
+                                        bodyAsObject,
+                                        decodedHeaders);
+                            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                                throw Exceptions.propagate(e);
+                            }
+                        })
+                        .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
+                            try {
+                                return Mono.just(constructor.newInstance(httpRequest,
+                                        responseStatusCode,
+                                        responseHeaders,
+                                        bodyAsObject,
+                                        null));
+                            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                                throw Exceptions.propagate(e);
+                            }
+                        }));
             default:
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
         }

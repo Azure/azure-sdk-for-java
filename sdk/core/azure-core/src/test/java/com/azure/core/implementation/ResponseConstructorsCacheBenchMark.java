@@ -25,8 +25,8 @@ import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
 @Fork(3)
-@Warmup(iterations = 5, time = 3)
-@Measurement(iterations = 5, time = 3)
+@Warmup(iterations = 5, time = 2)
+@Measurement(iterations = 5, time = 10)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
@@ -35,15 +35,18 @@ public class ResponseConstructorsCacheBenchMark {
     // Cache Types
     public ResponseConstructorsCache defaultCache;
     public ResponseConstructorsCacheReflection reflectionCache;
+    public ResponseConstructorsNoCacheReflection reflectionNoCache;
 
     @Setup
     public void setup() {
         testData = new ResponseConstructorsCacheBenchMarkTestData();
         defaultCache = new ResponseConstructorsCache();
         reflectionCache = new ResponseConstructorsCacheReflection();
+        reflectionNoCache = new ResponseConstructorsNoCacheReflection();
     }
 
     @Benchmark
+    @SuppressWarnings("unchecked")
     public void lambdaMetaFactoryCache(Blackhole blackhole) {
         for (int i = 0; i < testData.inputs.length; i++) {
             Class<? extends Response<?>> responseClass =
@@ -62,6 +65,7 @@ public class ResponseConstructorsCacheBenchMark {
     }
 
     @Benchmark
+    @SuppressWarnings("unchecked")
     public void reflectionCache(Blackhole blackhole) {
         for (int i = 0; i < testData.inputs.length; i++) {
             Class<? extends Response<?>> responseClass =
@@ -73,6 +77,25 @@ public class ResponseConstructorsCacheBenchMark {
             }
             // Step2: Invoke Constructor using Reflection.
             Mono<Response<?>> response = reflectionCache.invoke(constructor, testData.inputs[i].decodedResponse,
+                    testData.inputs[i].bodyAsObject);
+            // avoid JVM dead code detection
+            blackhole.consume(response.block());
+        }
+    }
+
+    @Benchmark
+    @SuppressWarnings("unchecked")
+    public void reflectionNoCache(Blackhole blackhole) {
+        for (int i = 0; i < testData.inputs.length; i++) {
+            Class<? extends Response<?>> responseClass =
+                    (Class<? extends Response<?>>) TypeUtil.getRawClass(testData.inputs[i].returnType);
+            // Step1: Locate Constructor using Reflection.
+            Constructor<? extends Response<?>> constructor = reflectionNoCache.get(responseClass);
+            if (constructor == null) {
+                throw new IllegalStateException("Response constructor with expected parameters not found.");
+            }
+            // Step2: Invoke Constructor using Reflection.
+            Mono<Response<?>> response = reflectionNoCache.invoke(constructor, testData.inputs[i].decodedResponse,
                     testData.inputs[i].bodyAsObject);
             // avoid JVM dead code detection
             blackhole.consume(response.block());
