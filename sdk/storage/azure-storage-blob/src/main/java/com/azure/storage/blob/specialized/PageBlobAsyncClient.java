@@ -81,13 +81,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.setCreate#long}
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.create#long}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      * @return A reactive response containing the information of the created page blob.
      */
-    public Mono<PageBlobItem> setCreate(long size) {
+    public Mono<PageBlobItem> create(long size) {
         return createWithResponse(size, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 

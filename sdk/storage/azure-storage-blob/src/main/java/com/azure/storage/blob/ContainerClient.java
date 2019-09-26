@@ -134,7 +134,7 @@ public final class ContainerClient {
      *
      * @return true if the container exists, false if it doesn't
      */
-    public Boolean exists() {
+    public boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 

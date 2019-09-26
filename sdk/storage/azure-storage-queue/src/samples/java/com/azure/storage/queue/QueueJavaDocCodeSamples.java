@@ -450,10 +450,10 @@ public class QueueJavaDocCodeSamples {
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.queue.queueClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
         QueueSASPermission permissions = new QueueSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setUpdate(true)
-            .setProcess(true);
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setUpdatePermission(true)
+            .setProcessPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

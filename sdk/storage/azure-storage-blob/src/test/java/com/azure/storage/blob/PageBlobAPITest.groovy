@@ -34,7 +34,7 @@ class PageBlobAPITest extends APISpec {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName).asPageBlobClient()
         bcAsync = ccAsync.getBlobAsyncClient(blobName).asPageBlobAsyncClient()
-        bc.setCreate(PageBlobClient.PAGE_BYTES)
+        bc.create(PageBlobClient.PAGE_BYTES)
     }
 
     def "Create all null"() {
@@ -298,7 +298,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        destURL.setCreate(PageBlobClient.PAGE_BYTES)
+        destURL.create(PageBlobClient.PAGE_BYTES)
         destURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
@@ -318,12 +318,12 @@ class PageBlobAPITest extends APISpec {
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        sourceURL.setCreate(PageBlobClient.PAGE_BYTES * 4)
+        sourceURL.create(PageBlobClient.PAGE_BYTES * 4)
         sourceURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 4 - 1),
             new ByteArrayInputStream(data))
 
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        destURL.setCreate(PageBlobClient.PAGE_BYTES * 2)
+        destURL.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
         destURL.uploadPagesFromURL(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
@@ -347,7 +347,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        destURL.setCreate(PageBlobClient.PAGE_BYTES)
+        destURL.create(PageBlobClient.PAGE_BYTES)
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         bc.uploadPages(pageRange, new ByteArrayInputStream(data))
@@ -364,7 +364,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        destURL.setCreate(PageBlobClient.PAGE_BYTES)
+        destURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
@@ -381,7 +381,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        sourceURL.setCreate(PageBlobClient.PAGE_BYTES)
+        sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
@@ -419,7 +419,7 @@ class PageBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        sourceURL.setCreate(PageBlobClient.PAGE_BYTES)
+        sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
@@ -459,7 +459,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        sourceURL.setCreate(PageBlobClient.PAGE_BYTES)
+        sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
@@ -487,7 +487,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
-        sourceURL.setCreate(PageBlobClient.PAGE_BYTES)
+        sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
@@ -707,7 +707,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff"() {
         setup:
-        bc.setCreate(PageBlobClient.PAGE_BYTES * 2)
+        bc.create(PageBlobClient.PAGE_BYTES * 2)
 
         bc.uploadPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))

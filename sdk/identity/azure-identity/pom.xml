@@ -67,5 +67,10 @@
       <artifactId>jna-platform</artifactId>
       <version>4.1.0</version>
     </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
