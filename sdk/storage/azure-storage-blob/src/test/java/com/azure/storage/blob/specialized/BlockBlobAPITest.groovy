@@ -596,33 +596,31 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Upload from file"() {
         given:
-        URL resource = this.getClass().getResource( '/testfiles/uploadFromFileTestData.txt')
-        String file = resource.path
-        String content = resource.text
+        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file)
+        bc.uploadFromFile(file.getAbsolutePath())
 
         then:
         bc.download(outStream)
-        outStream.toByteArray() == content.getBytes(StandardCharsets.UTF_8)
+        outStream.toByteArray() == new Scanner(file).useDelimiter("\\z").next().getBytes(StandardCharsets.UTF_8)
     }
 
     @Requires({ liveMode() })
     def "Upload from file with metadata"() {
         given:
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-        URL resource = this.getClass().getResource( '/testfiles/uploadFromFileTestData.txt')
-        String file = resource.path
-        String content = resource.text
+        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"))
+        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file, null, null, metadata, null, null, null)
+        bc.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
 
         then:
         metadata == bc.getProperties().getMetadata()
+        bc.download(outStream)
+        outStream.toByteArray() == new Scanner(file).useDelimiter("\\z").next().getBytes(StandardCharsets.UTF_8)
     }
 
     def "Upload min"() {

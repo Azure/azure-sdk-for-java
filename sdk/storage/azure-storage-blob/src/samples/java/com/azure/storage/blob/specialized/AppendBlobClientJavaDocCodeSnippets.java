@@ -49,7 +49,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      * Code snippet for {@link AppendBlobClient#create()}
      */
     public void create() {
-        // BEGIN: com.azure.storage.blob.AppendBlobClient.create
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.create
         System.out.printf("Created AppendBlob at %s%n", client.create().getLastModified());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.create
     }
@@ -59,7 +59,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      * Duration, Context)}
      */
     public void createWithResponse() {
-        // BEGIN: com.azure.storage.blob.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentType("binary")
             .setBlobContentLanguage("en-US");
@@ -118,7 +118,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      * AppendBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
     public void appendBlockFromUrlWithResponse() {
-        // BEGIN: com.azure.storage.blob.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
         AppendBlobAccessConditions appendBlobAccessConditions = new AppendBlobAccessConditions()
             .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
                 .setAppendPosition(POSITION)

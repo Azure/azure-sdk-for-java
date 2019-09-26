@@ -346,14 +346,19 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
-        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
+        int sliceBlockSize;
+        if (blockSize == null) {
+            sliceBlockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        } else if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
+        } else {
+            sliceBlockSize = blockSize;
         }
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
             channel -> {
                 final SortedMap<Long, String> blockIds = new TreeMap<>();
-                return Flux.fromIterable(sliceFile(filePath, blockSize))
+                return Flux.fromIterable(sliceFile(filePath, sliceBlockSize))
                     .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.getOffset());
