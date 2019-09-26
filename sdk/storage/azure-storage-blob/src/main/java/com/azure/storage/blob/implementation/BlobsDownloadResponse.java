@@ -7,9 +7,11 @@ package com.azure.storage.blob.implementation;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
+import reactor.core.publisher.Flux;
+
 import java.io.Closeable;
 import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 
 /**
  * Contains all response data for the download operation.

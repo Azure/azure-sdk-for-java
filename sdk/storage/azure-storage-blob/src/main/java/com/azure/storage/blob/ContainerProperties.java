@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.models.ContainerGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
