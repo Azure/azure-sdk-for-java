@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.APISpec;
 import com.azure.storage.blob.HTTPGetterInfo;
-import com.azure.storage.blob.implementation.BlobsDownloadResponse;
+import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.StorageErrorException;
 import reactor.core.CoreSubscriber;
