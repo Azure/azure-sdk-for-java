@@ -438,7 +438,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryBlobServiceClient.generateAccountSas(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
         def os = new ByteArrayOutputStream()
@@ -466,7 +466,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryBlobServiceClient.generateAccountSas(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
         client.delete()
@@ -489,7 +489,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryBlobServiceClient.generateAccountSas(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = getServiceClient(SASTokenCredential.fromSASTokenString(sas), primaryBlobServiceClient.getAccountUrl().toString())
         sc.createContainer(generateContainerName())
@@ -512,7 +512,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryBlobServiceClient.generateAccountSas(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = getServiceClient(SASTokenCredential.fromSASTokenString(sas), primaryBlobServiceClient.getAccountUrl().toString())
         sc.createContainer(generateContainerName())

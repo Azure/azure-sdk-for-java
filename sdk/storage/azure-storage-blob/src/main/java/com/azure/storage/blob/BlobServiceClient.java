@@ -371,7 +371,7 @@ public final class BlobServiceClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
         return this.blobServiceAsyncClient.generateAccountSas(accountSASService, accountSASResourceType,
             accountSASPermission, expiryTime);
@@ -397,7 +397,7 @@ public final class BlobServiceClient {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         IPRange ipRange, SASProtocol sasProtocol) {
         return this.blobServiceAsyncClient.generateAccountSas(accountSASService, accountSASResourceType,
