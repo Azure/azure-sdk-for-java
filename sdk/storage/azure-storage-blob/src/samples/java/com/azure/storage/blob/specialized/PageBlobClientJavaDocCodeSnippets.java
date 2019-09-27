@@ -19,8 +19,10 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -37,6 +39,7 @@ public class PageBlobClientJavaDocCodeSnippets {
     private String leaseId = "leaseId";
     private Duration timeout = Duration.ofSeconds(30);
     private long size = 1024;
+    private int outputStremSize = 100;
     private long sequenceNumber = 0;
     private long sourceOffset = 0;
     private long offset = 0;
@@ -83,30 +86,30 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPages(PageRange, InputStream)}
+     * Code snippets for {@link PageBlobClient#uploadPages(PageRange, OutputStream)}
      */
     public void uploadPagesCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-OutputStream
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        OutputStream dataStream = new ByteArrayOutputStream(outputStremSize);
 
         PageBlobItem pageBlob = client.uploadPages(pageRange, dataStream);
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-OutputStream
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, InputStream, PageBlobAccessConditions,
+     * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, OutputStream, PageBlobAccessConditions,
      * Duration, Context)}
      */
     public void uploadPagesWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-OutputStream-PageBlobAccessConditions-Duration-Context
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        OutputStream dataStream = new ByteArrayOutputStream(outputStremSize);
         PageBlobAccessConditions pageBlobAccessConditions = new PageBlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
         Context context = new Context(key, value);
@@ -115,7 +118,7 @@ public class PageBlobClientJavaDocCodeSnippets {
             .uploadPagesWithResponse(pageRange, dataStream, pageBlobAccessConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-OutputStream-PageBlobAccessConditions-Duration-Context
     }
 
     /**

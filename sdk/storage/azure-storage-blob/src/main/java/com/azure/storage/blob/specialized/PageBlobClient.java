@@ -22,13 +22,10 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -148,7 +145,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-InputStream}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPages#PageRange-OutputStream}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -156,7 +153,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param body The data to upload.
      * @return The information of the uploaded pages.
      */
-    public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
+    public PageBlobItem uploadPages(PageRange pageRange, OutputStream body) {
         return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).getValue();
     }
 
@@ -170,7 +167,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-OutputStream-PageBlobAccessConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -183,15 +180,12 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
-    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
+    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, OutputStream body,
         PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(body);
-        final long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
-            fbb.subscribeOn(Schedulers.elastic()),
-            pageBlobAccessConditions, context);
+            body, pageBlobAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

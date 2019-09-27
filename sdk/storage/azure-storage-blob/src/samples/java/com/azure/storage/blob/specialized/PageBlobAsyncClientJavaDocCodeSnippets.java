@@ -17,8 +17,10 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -44,6 +46,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     private long sourceOffset = 0;
     private String data = "data";
     private long offset = 0;
+    private int outputStremSize = 100;
 
     /**
      * @throws MalformedURLException ignored
@@ -96,6 +99,21 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link PageBlobAsyncClient#uploadPages(PageRange, OutputStream)}
+     */
+    public void uploadPagesCodeSnippet2() {
+        // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.uploadPages#PageRange-OutputStream
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
+        OutputStream dataStream = new ByteArrayOutputStream(outputStremSize);
+
+        client.uploadPages(pageRange, dataStream).subscribe(response -> System.out.printf(
+            "Uploaded page blob with sequence number %s%n", response.getBlobSequenceNumber()));
+        // END: com.azure.storage.blob.PageBlobAsyncClient.uploadPages#PageRange-OutputStream
+    }
+
+    /**
      * Code snippets for {@link PageBlobAsyncClient#uploadPagesWithResponse(PageRange, Flux, PageBlobAccessConditions)}
      */
     public void uploadPagesWithResponseCodeSnippet() {
@@ -110,6 +128,24 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesWithResponse(PageRange, OutputStream, PageBlobAccessConditions)}
+     */
+    public void uploadPagesWithResponseCodeSnippe2t() {
+        // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-OutputStream-PageBlobAccessConditions
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
+        PageBlobAccessConditions pageBlobAccessConditions = new PageBlobAccessConditions().setLeaseAccessConditions(
+            new LeaseAccessConditions().setLeaseId(leaseId));
+        OutputStream dataStream = new ByteArrayOutputStream(outputStremSize);
+
+        client.uploadPagesWithResponse(pageRange, dataStream, pageBlobAccessConditions)
+            .subscribe(response -> System.out.printf(
+                "Uploaded page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+        // END: com.azure.storage.blob.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-OutputStream-PageBlobAccessConditions
     }
 
     /**

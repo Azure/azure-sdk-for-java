@@ -26,9 +26,12 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
+import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -139,6 +142,55 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             null, 0, size, null, metadata, sequenceNumber, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
+    }
+
+    /**
+     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPages#PageRange-OutputStream}
+     *
+     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
+     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     * are 0-511, 512-1023, etc.
+     * @param body The data to upload.
+     * @return A reactive response containing the information of the uploaded pages.
+     */
+    public Mono<PageBlobItem> uploadPages(PageRange pageRange, OutputStream body) {
+        return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-OutputStream-PageBlobAccessConditions}
+     *
+     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
+     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     * are 0-511, 512-1023, etc.
+     * @param body The data to upload.
+     * @param pageBlobAccessConditions {@link PageBlobAccessConditions}
+     * @return A reactive response containing the information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
+     */
+    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, OutputStream body,
+        PageBlobAccessConditions pageBlobAccessConditions) {
+        return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
+    }
+
+    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, OutputStream body,
+        PageBlobAccessConditions pageBlobAccessConditions, Context context) {
+        final long length = pageRange.getEnd() - pageRange.getStart() + 1;
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
+        return uploadPagesWithResponse(pageRange, fbb.subscribeOn(Schedulers.elastic()), pageBlobAccessConditions,
+            context);
     }
 
     /**
