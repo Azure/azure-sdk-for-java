@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
@@ -33,11 +34,6 @@ import java.util.Map;
 public class SearchIndexClientTestBase extends TestBase {
 
     private final ClientLogger logger = new ClientLogger(SearchIndexClientTestBase.class);
-
-    private static final String AZURE_DOMAIN_ID = "AZURE_DOMAIN_ID";
-    private static final String AZURE_SUBSCRIPTION_ID = "AZURE_SUBSCRIPTION_ID";
-    private static final String AZURE_SERVICE_PRINCIPAL_APP_ID = "AZURE_SERVICE_PRINCIPAL_APP_ID";
-    private static final String AZURE_SERVICE_PRINCIPAL_APP_SECRET = "AZURE_SERVICE_PRINCIPAL_APP_SECRET";
 
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -137,10 +133,10 @@ public class SearchIndexClientTestBase extends TestBase {
     }
 
     private void createAzureTestEnvironment() {
-        String appId = ConfigurationManager.getConfiguration().get(AZURE_SERVICE_PRINCIPAL_APP_ID);
-        String azureDomainId = ConfigurationManager.getConfiguration().get(AZURE_DOMAIN_ID);
-        String secret = ConfigurationManager.getConfiguration().get(AZURE_SERVICE_PRINCIPAL_APP_SECRET);
-        String subscriptionId = ConfigurationManager.getConfiguration().get(AZURE_SUBSCRIPTION_ID);
+        String appId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_CLIENT_ID);
+        String azureDomainId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TENANT_ID);
+        String secret = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_CLIENT_SECRET);
+        String subscriptionId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_SUBSCRIPTION_ID);
 
         ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
             appId,

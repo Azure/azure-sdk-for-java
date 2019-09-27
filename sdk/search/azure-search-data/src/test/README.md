@@ -35,9 +35,10 @@ Before running the tests on PLAYBACK mode, you need to run them on RECORD mode t
 ### Recording http sessions:
 
 1. Add the following environment variables to your development SDK to be used in JUnit runs:
-    * AZURE_SERVICE_PRINCIPAL_APP_ID: *The Service Principal application ID*
-	* AZURE_SERVICE_PRINCIPAL_APP_SECRET: *Service Principal Secret*
-	* AZURE_DOMAIN_ID: *Azure domain ID*
+    * AZURE_CLIENT_ID: *Client ID in Azure Active Directory* 
+    [How to create a Client ID in Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+	* AZURE_CLIENT_SECRET: *Client ID Secret*
+	* AZURE_TENANT_ID: *Tenant ID in Azure Active Directory*
     * AZURE_SUBSCRIPTION_ID: *Azure subscription ID*
 	* AZURE_TEST_MODE: **RECORD** *for recording* (**PLAYBACK** *for playback mode*)
 	
