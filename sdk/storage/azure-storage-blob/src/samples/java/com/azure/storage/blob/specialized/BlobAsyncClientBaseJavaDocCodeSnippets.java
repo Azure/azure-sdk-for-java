@@ -132,7 +132,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
     }
 
     /**
