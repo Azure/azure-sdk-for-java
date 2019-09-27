@@ -136,6 +136,7 @@ public final class InkRecognizerClient {
                     return new Response<>(response.code(), responseString, new InkRecognitionRoot(jsonResponse.get("recognitionUnits"), unit, displayMetrics));
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

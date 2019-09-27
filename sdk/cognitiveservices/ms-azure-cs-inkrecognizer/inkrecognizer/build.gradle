@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 26
         maxSdkVersion 29
     }
