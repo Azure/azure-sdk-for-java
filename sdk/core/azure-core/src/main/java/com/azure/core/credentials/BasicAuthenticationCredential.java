@@ -40,7 +40,7 @@ public class BasicAuthenticationCredential implements TokenCredential {
      * @throws RuntimeException If the UTF-8 encoding isn't supported.
      */
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         String credential = username + ":" + password;
         String encodedCredential;
         try {
