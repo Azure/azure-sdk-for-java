@@ -1,12 +1,16 @@
 ﻿using Azure.Storage.Blobs.PerfStress.Core;
+using CommandLine;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class UploadTest : ParallelTransferTest<ParallelTransferOptionsOptions>
+    public class UploadTest : ParallelTransferTest<UploadTest.UploadOptions>
     {
-        public UploadTest(ParallelTransferOptionsOptions options) : base(options)
+        [Verb(nameof(UploadTest))]
+        public class UploadOptions : ParallelTransferOptionsOptions { }
+
+        public UploadTest(UploadOptions options) : base(options)
         {
         }
 
