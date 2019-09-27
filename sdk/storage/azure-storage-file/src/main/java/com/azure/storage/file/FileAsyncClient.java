@@ -349,14 +349,15 @@ public class FileAsyncClient {
     Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range,
                                                                 Context context) {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-            channel -> downloadResponseInChunk(channel, range, context), this::channelCleanUp);
+            channel -> getPropertiesWithResponse(context).flatMap(response ->
+                downloadResponseInChunk(response, channel, range, context)), this::channelCleanUp);
     }
 
-    private Mono<Response<FileProperties>> downloadResponseInChunk(AsynchronousFileChannel channel,
+    private Mono<Response<FileProperties>> downloadResponseInChunk(Response<FileProperties> response,
+                                                                   AsynchronousFileChannel channel,
                                                                    FileRange range, Context context) {
-        Mono<Response<FileProperties>> asyncGetPropertiesResponse = getPropertiesWithResponse(context);
-        Flux<FileRange> fileRanges = sliceFileRange(range, asyncGetPropertiesResponse);
-        return fileRanges.flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false, context)
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new FileRange(0, response.getValue()
+            .getContentLength()))).flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false, context)
                 .map(dar -> dar.getValue().getBody())
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil
@@ -365,7 +366,7 @@ public class FileAsyncClient {
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retry(3, throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException)))
-            .then(asyncGetPropertiesResponse);
+            .then(Mono.just(response));
     }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
