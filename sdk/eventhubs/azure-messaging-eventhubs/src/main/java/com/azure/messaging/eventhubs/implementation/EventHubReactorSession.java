@@ -95,7 +95,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             properties.put(RECEIVER_IDENTIFIER_NAME, options.getIdentifier());
         }
 
-        final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventInformation()
+        final Symbol[] desiredCapabilities = options.getLastEnqueuedEventProperties()
             ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
             : null;
 

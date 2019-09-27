@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.BaseSubscriber;
@@ -64,6 +64,7 @@ public class EventHubAsyncConsumer implements Closeable {
     private final MessageSerializer messageSerializer;
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
+    private final boolean trackLastEnqueuedEventProperties;
 
     private volatile AmqpReceiveLink receiveLink;
 
@@ -71,6 +72,7 @@ public class EventHubAsyncConsumer implements Closeable {
                           EventHubConsumerOptions options) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
+        this.trackLastEnqueuedEventProperties = options.getLastEnqueuedEventProperties();
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
@@ -105,7 +107,11 @@ public class EventHubAsyncConsumer implements Closeable {
                 });
             }
 
-            return link.receive().map(message -> this.messageSerializer.deserialize(message, EventData.class));
+            return link.receive().map(message -> {
+                final EventData event = this.messageSerializer.deserialize(message, EventData.class);
+
+                return event;
+            });
         }).subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);

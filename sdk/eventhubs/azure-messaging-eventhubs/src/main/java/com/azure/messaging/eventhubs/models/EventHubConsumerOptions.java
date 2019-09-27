@@ -43,7 +43,7 @@ public class EventHubConsumerOptions implements Cloneable {
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
-    private boolean trackLastEnqueuedEventInformation;
+    private boolean trackLastEnqueuedEventProperties;
     private String identifier;
     private Long ownerLevel;
     private RetryOptions retry;
@@ -160,13 +160,13 @@ public class EventHubConsumerOptions implements Cloneable {
      * amount of additional network bandwidth consumption that is generally a favorable trade-off when considered
      * against periodically making requests for partition properties using the Event Hub client.</p>
      *
-     * @param trackLastEnqueuedEventInformation {@code true} if the resulting consumer will keep track of the last
+     * @param trackLastEnqueuedEventProperties {@code true} if the resulting consumer will keep track of the last
      *     enqueued information for that partition; {@code false} otherwise.
      *
      * @return The updated {@link EventHubConsumerOptions} object.
      */
-    public EventHubConsumerOptions setTrackLastEnqueuedEventInformation(boolean trackLastEnqueuedEventInformation) {
-        this.trackLastEnqueuedEventInformation = trackLastEnqueuedEventInformation;
+    public EventHubConsumerOptions setTrackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         return this;
     }
 
@@ -229,8 +229,8 @@ public class EventHubConsumerOptions implements Cloneable {
      * @return {@code true} if the resulting consumer will keep track of the last enqueued information for that
      *     partition; {@code false} otherwise.
      */
-    public boolean getTrackLastEnqueuedEventInformation() {
-        return trackLastEnqueuedEventInformation;
+    public boolean getLastEnqueuedEventProperties() {
+        return trackLastEnqueuedEventProperties;
     }
 
     /**
