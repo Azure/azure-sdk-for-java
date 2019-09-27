@@ -39,7 +39,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 .pipeline(pipeline)
                 .endpoint(getEndpoint())
                 .buildAsyncClient());
-        }
+        } 
     }
 
     /**
