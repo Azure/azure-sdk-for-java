@@ -6,7 +6,6 @@ package com.azure.storage.file.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.storage.file.implementation.models.StorageError;
 
 /**
  * Exception thrown for an invalid response with StorageError information.

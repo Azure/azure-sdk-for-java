@@ -11,10 +11,10 @@ import com.azure.core.util.Context
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
-import com.azure.storage.file.models.FileHTTPHeaders
+
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.NtfsFileAttributes
-import com.azure.storage.file.models.StorageErrorCode
+
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
 import spock.lang.Unroll

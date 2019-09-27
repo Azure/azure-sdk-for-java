@@ -7,8 +7,7 @@ import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.credentials.SASTokenCredential
-import com.azure.storage.file.models.AccessPolicy
-import com.azure.storage.file.models.SignedIdentifier
+
 import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 

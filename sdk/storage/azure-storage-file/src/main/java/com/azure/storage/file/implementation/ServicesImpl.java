@@ -24,8 +24,8 @@ import com.azure.storage.file.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.implementation.models.ServicesGetPropertiesResponse;
 import com.azure.storage.file.implementation.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.implementation.models.ServicesSetPropertiesResponse;
-import com.azure.storage.file.models.StorageErrorException;
 import com.azure.storage.file.models.FileServiceProperties;
+import com.azure.storage.file.models.StorageErrorException;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

@@ -8,10 +8,7 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.models.AccessPolicy;
-import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
-import com.azure.storage.file.models.SignedIdentifier;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
