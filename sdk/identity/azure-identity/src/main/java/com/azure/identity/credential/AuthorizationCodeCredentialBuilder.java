@@ -34,7 +34,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
 
     /**
      * Sets redirect URI for the Oauth 2.0 login request, which must be
-     * registered as a valid redirect URI on the application. the authorization code
+     * registered as a valid redirect URI on the application. The authorization code
      * will be sent to this URI so it must be listening on this server and is able
      * to complete the {@link AuthorizationCodeCredential} construction from there.
      * This is also called Reply URLs in some contexts.
