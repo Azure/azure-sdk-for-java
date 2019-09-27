@@ -525,9 +525,9 @@ public class BlobAsyncClient {
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @return An empty response
      */
-    public Mono<Void> downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
-            null, null, false);
+    public Mono<BlobProperties> downloadToFile(String filePath) {
+         return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
+            null, null, false).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -560,13 +560,14 @@ public class BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Mono<Void> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
-        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        Integer blockSize, ReliableDownloadOptions options, BlobAccessConditions accessConditions,
+        boolean rangeGetContentMD5) {
         return withContext(context -> downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
-            rangeGetContentMD5, context));
+                rangeGetContentMD5, context));
     }
 
-    Mono<Void> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
+    Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
                               ReliableDownloadOptions options, BlobAccessConditions accessConditions,
                               boolean rangeGetContentMD5, Context context) {
         if (blockSize != null) {
@@ -574,16 +575,24 @@ public class BlobAsyncClient {
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
-            channel -> Mono.justOrEmpty(range)
-                .switchIfEmpty(getFullBlobRange(accessConditions))
-                .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
-                .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
-                    .subscribeOn(Schedulers.elastic())
-                    .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
-                            chunk.getOffset() - (range == null ? 0 : range.getOffset()))
-                    ))
-                .then()
-                , this::downloadToFileCleanup);
+            channel -> blobDownloadInChunk(channel, range, blockSize, options, accessConditions, rangeGetContentMD5, context),
+            this::downloadToFileCleanup);
+
+    }
+
+    private Mono<Response<BlobProperties>> blobDownloadInChunk(final AsynchronousFileChannel channel, BlobRange range,
+                              Integer blockSize, ReliableDownloadOptions options, BlobAccessConditions accessConditions,
+                              boolean rangeGetContentMD5, Context context) {
+        Mono<Response<BlobProperties>> asyncGetPropertiesResponse = getPropertiesWithResponse(accessConditions);
+        Mono<BlobRange> fullBlobRange = range == null ? getFullBlobRange(asyncGetPropertiesResponse): Mono.just(range);
+
+        fullBlobRange.flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
+            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
+                    chunk.getOffset() - (range == null ? 0 : range.getOffset()))
+                ));
+        return asyncGetPropertiesResponse;
     }
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
@@ -603,8 +612,8 @@ public class BlobAsyncClient {
         }
     }
 
-    private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions) {
-        return getPropertiesWithResponse(accessConditions).map(rb -> new BlobRange(0, rb.getValue().getBlobSize()));
+    private Mono<BlobRange> getFullBlobRange(Mono<Response<BlobProperties>> response) {
+        return response.map(rb -> new BlobRange(0, rb.getValue().getBlobSize()));
     }
 
     private List<BlobRange> sliceBlobRange(BlobRange blobRange, Integer blockSize) {

@@ -415,9 +415,10 @@ public class BlobClient {
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void downloadToFile(String filePath) {
+    public BlobProperties downloadToFile(String filePath) {
         downloadToFileWithResponse(filePath, null, null, null, null,
             false, null, Context.NONE);
+        return getProperties();
     }
 
     /**
@@ -449,11 +450,12 @@ public class BlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Void> download = blobAsyncClient.downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
-            rangeGetContentMD5, context);
-        Utility.blockWithOptionalTimeout(download, timeout);
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
+                    ReliableDownloadOptions options, BlobAccessConditions accessConditions,
+                    boolean rangeGetContentMD5, Duration timeout, Context context) {
+        Mono<Response<BlobProperties>> download = blobAsyncClient.downloadToFileWithResponse(filePath, range, blockSize,
+            options, accessConditions, rangeGetContentMD5, context);
+        return Utility.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
