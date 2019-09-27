@@ -12,11 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.lang.invoke.LambdaMetafactory;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
@@ -29,8 +26,7 @@ import java.util.function.Supplier;
  */
 final class ResponseConstructorsCache {
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
-    private final Map<Class<?>, ResponseConstructor> cache = new ConcurrentHashMap<>();
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+    private final Map<Class<?>, Constructor<? extends Response<?>>> cache = new ConcurrentHashMap<>();
 
     /**
      * Identify the suitable constructor for the given response class.
@@ -38,7 +34,7 @@ final class ResponseConstructorsCache {
      * @param responseClass the response class
      * @return identified constructor, null if there is no match
      */
-    ResponseConstructor get(Class<? extends Response<?>> responseClass) {
+    Constructor<? extends Response<?>> get(Class<? extends Response<?>> responseClass) {
         return this.cache.computeIfAbsent(responseClass, this::locateResponseConstructor);
     }
 
@@ -58,7 +54,8 @@ final class ResponseConstructorsCache {
      * @param responseClass the response class
      * @return identified constructor, null if there is no match
      */
-    private ResponseConstructor locateResponseConstructor(Class<?> responseClass) {
+    @SuppressWarnings("unchecked")
+    private Constructor<? extends Response<?>> locateResponseConstructor(Class<?> responseClass) {
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
         Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));
@@ -66,33 +63,7 @@ final class ResponseConstructorsCache {
             final int paramCount = constructor.getParameterCount();
             if (paramCount >= 3 && paramCount <= 5) {
                 try {
-                    if (paramCount == 3) {
-                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
-                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(LOOKUP,
-                                "apply",
-                                ResponseFunc3.METHOD_TYPE,
-                                ResponseFunc3.SIGNATURE,
-                                ctrMethodHandle,
-                                ctrMethodHandle.type()).getTarget().invoke());
-                    } else if (paramCount == 4) {
-                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
-                        return new ResponseConstructor(4, LambdaMetafactory.metafactory(LOOKUP,
-                                "apply",
-                                ResponseFunc4.METHOD_TYPE,
-                                ResponseFunc4.SIGNATURE,
-                                ctrMethodHandle,
-                                ctrMethodHandle.type()).getTarget().invoke());
-                    } else {
-                        // paramCount == 5
-                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
-                        return new ResponseConstructor(5, LambdaMetafactory.metafactory(LOOKUP,
-                                "apply",
-                                ResponseFunc5.METHOD_TYPE,
-                                ResponseFunc5.SIGNATURE,
-                                ctrMethodHandle,
-                                ctrMethodHandle.type())
-                                .getTarget().invoke());
-                    }
+                    return (Constructor<? extends Response<?>>) constructor;
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));
                 }
@@ -102,131 +73,67 @@ final class ResponseConstructorsCache {
     }
 
     /**
-     * Type that represent a {@link Response} constructor and can be used to invoke
-     * the same constructor.
+     * Invoke the constructor this type represents.
+     *
+     * @param constructor the constructor type
+     * @param decodedResponse the decoded http response
+     * @param bodyAsObject the http response content
+     * @return an instance of a {@link Response} implementation
      */
-    static final class ResponseConstructor {
-        private final int parameterCount;
-        private final Object responseFunc;
+    Mono<Response<?>> invoke(final Constructor<? extends Response<?>> constructor,
+                             final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+                             final Object bodyAsObject) {
+        final HttpResponse httpResponse = decodedResponse.getSourceResponse();
+        final HttpRequest httpRequest = httpResponse.getRequest();
+        final int responseStatusCode = httpResponse.getStatusCode();
+        final HttpHeaders responseHeaders = httpResponse.getHeaders();
 
-        /**
-         * Creates ResponseConstructor.
-         *
-         * @param parameterCount the constructor parameter count
-         * @param responseFunc the functional interface which delegate its abstract method
-         *                 invocation to the invocation of a {@link Response} constructor
-         */
-        private ResponseConstructor(int parameterCount, Object responseFunc) {
-            this.parameterCount = parameterCount;
-            this.responseFunc = responseFunc;
-        }
-
-        /**
-         * Invoke the {@link Response} constructor this type represents.
-         *
-         * @param decodedResponse the decoded http response
-         * @param bodyAsObject the http response content
-         * @return an instance of a {@link Response} implementation
-         */
-        @SuppressWarnings("unchecked")
-        Mono<Response<?>> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-                                        final Object bodyAsObject) {
-            final HttpResponse httpResponse = decodedResponse.getSourceResponse();
-            final HttpRequest httpRequest = httpResponse.getRequest();
-            final int responseStatusCode = httpResponse.getStatusCode();
-            final HttpHeaders responseHeaders = httpResponse.getHeaders();
-            switch (this.parameterCount) {
-                case 3:
-                    try {
-                        return Mono.just((Response<?>) ((ResponseFunc3) this.responseFunc).apply(httpRequest,
-                                responseStatusCode,
-                                responseHeaders));
-                    } catch (Throwable t) {
-                        throw Exceptions.propagate(t);
-                    }
-                case 4:
-                    try {
-                        return Mono.just((Response<?>) ((ResponseFunc4) this.responseFunc).apply(httpRequest,
+        final int paramCount = constructor.getParameterCount();
+        switch (paramCount) {
+            case 3:
+                try {
+                    return Mono.just(constructor.newInstance(httpRequest,
+                        responseStatusCode,
+                        responseHeaders));
+                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                }
+            case 4:
+                try {
+                    return Mono.just(constructor.newInstance(httpRequest,
+                        responseStatusCode,
+                        responseHeaders,
+                        bodyAsObject));
+                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                }
+            case 5:
+                return decodedResponse.getDecodedHeaders()
+                    .map((Function<Object, Response<?>>) decodedHeaders -> {
+                        try {
+                            return constructor.newInstance(httpRequest,
                                 responseStatusCode,
                                 responseHeaders,
-                                bodyAsObject));
-                    } catch (Throwable t) {
-                        throw Exceptions.propagate(t);
-                    }
-                case 5:
-                    return decodedResponse.getDecodedHeaders()
-                            .map((Function<Object, Response<?>>) decodedHeaders -> {
-                                try {
-                                    return (Response<?>) ((ResponseFunc5) this.responseFunc).apply(httpRequest,
-                                            responseStatusCode,
-                                            responseHeaders,
-                                            bodyAsObject,
-                                            decodedHeaders);
-                                } catch (Throwable t) {
-                                    throw Exceptions.propagate(t);
-                                }
-                            })
-                            .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                                try {
-                                    return Mono.just((Response<?>) ((ResponseFunc5) this.responseFunc)
-                                            .apply(httpRequest,
-                                                responseStatusCode,
-                                                responseHeaders,
-                                                bodyAsObject,
-                                                null));
-                                } catch (Throwable t) {
-                                    throw Exceptions.propagate(t);
-                                }
-                            }));
-                default:
-                    return Mono.error(new IllegalStateException(
-                            "Response constructor with expected parameters not found."));
-            }
+                                bodyAsObject,
+                                decodedHeaders);
+                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                        }
+                    })
+                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
+                        try {
+                            return Mono.just(constructor.newInstance(httpRequest,
+                                responseStatusCode,
+                                responseHeaders,
+                                bodyAsObject,
+                                null));
+                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                        }
+                    }));
+            default:
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Response constructor with expected parameters not found."));
         }
-    }
-
-    @FunctionalInterface
-    private interface ResponseFunc3 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class,
-                HttpRequest.class,
-                int.class,
-                HttpHeaders.class);
-        MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc3.class);
-
-        Object apply(HttpRequest httpRequest,
-                     int responseStatusCode,
-                     HttpHeaders responseHeaders);
-    }
-
-    @FunctionalInterface
-    private interface ResponseFunc4 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class,
-                HttpRequest.class,
-                int.class,
-                HttpHeaders.class,
-                Object.class);
-        MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc4.class);
-
-        Object apply(HttpRequest httpRequest,
-                     int responseStatusCode,
-                     HttpHeaders responseHeaders,
-                     Object body);
-    }
-
-    @FunctionalInterface
-    private interface ResponseFunc5 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class,
-                HttpRequest.class,
-                int.class,
-                HttpHeaders.class,
-                Object.class,
-                Object.class);
-        MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc5.class);
-
-        Object apply(HttpRequest httpRequest,
-                     int responseStatusCode,
-                     HttpHeaders responseHeaders,
-                     Object body,
-                     Object decodedHeaders);
     }
 }
