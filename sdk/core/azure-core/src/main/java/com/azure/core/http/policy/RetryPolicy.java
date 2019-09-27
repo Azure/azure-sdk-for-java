@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
@@ -21,6 +22,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_DELAY = 0;
     private static final ChronoUnit DEFAULT_TIME_UNIT = ChronoUnit.MILLIS;
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
+
+    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+
     private final int maxRetries;
     private final Duration delayDuration;
 
@@ -54,6 +58,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
+                    logger.info("[Retrying] Try count: {}, HTTP response: {}, Original HTTP Request: {}",
+                        tryCount, httpResponse, originalHttpRequest);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(determineDelayDuration(httpResponse));
                 } else {
@@ -62,6 +68,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
             })
             .onErrorResume(err -> {
                 if (tryCount < maxRetries) {
+                    logger.info("[Error Resume] Try count: {}, Error: {}, Original HTTP Request: {}",
+                        tryCount, err, originalHttpRequest);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(this.delayDuration);
                 } else {
