@@ -4,6 +4,9 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
 
 import java.time.OffsetDateTime;
 

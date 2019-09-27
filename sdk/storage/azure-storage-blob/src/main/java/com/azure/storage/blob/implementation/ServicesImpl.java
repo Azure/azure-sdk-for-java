@@ -4,7 +4,6 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -18,16 +17,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetStatisticsResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKeyResponse;
+import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersIncludeType;
-import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
-import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
-import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
-import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import java.nio.ByteBuffer;

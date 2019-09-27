@@ -135,8 +135,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         metadata = metadata == null ? new Metadata() : metadata;
 
-        return postProcessResponse(this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null,
-            null, 0, size, null, metadata, sequenceNumber, null, headers, accessConditions.getLeaseAccessConditions(),
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size,
+            null, null, metadata, sequenceNumber, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
