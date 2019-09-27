@@ -492,6 +492,7 @@ public class BlobAsyncClientBase {
             });
     }
 
+
     /**
      * Downloads the entire blob into a file specified by the path.
      *
@@ -503,7 +504,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadToFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -526,12 +527,11 @@ public class BlobAsyncClientBase {
      * AppendBlobClient}.</p>
      *
      * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call,
-     * provide the {@link BlobRange} parameter.</p>
+     * call, provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>

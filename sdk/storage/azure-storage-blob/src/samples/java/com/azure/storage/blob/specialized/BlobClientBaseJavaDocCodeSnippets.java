@@ -115,10 +115,10 @@ public class BlobClientBaseJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFileWithResponse(file, range, 4 * Constants.MB, options, null,
-            false, timeout, new Context(key2, value2));
+        client.downloadToFileWithResponse(file, range, 4 * Constants.MB, options, null, false,
+            timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
     }
 
     /**

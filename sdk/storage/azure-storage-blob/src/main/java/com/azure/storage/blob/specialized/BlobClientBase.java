@@ -408,7 +408,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -418,9 +418,8 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlobProperties downloadToFile(String filePath) {
-        downloadToFileWithResponse(filePath, null, null, null, null,
-            false, null, Context.NONE);
-        return getProperties();
+        return downloadToFileWithResponse(filePath, null, null, null, null,
+            false, null, Context.NONE).getValue();
     }
 
     /**
@@ -437,7 +436,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
