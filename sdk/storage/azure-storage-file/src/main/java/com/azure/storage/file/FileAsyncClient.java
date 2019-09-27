@@ -319,8 +319,8 @@ public class FileAsyncClient {
      * @param downloadFilePath The path where store the downloaded file
      * @return An empty response.
      */
-    public Mono<Void> downloadToFile(String downloadFilePath) {
-        return downloadToFileWithResponse(downloadFilePath, null);
+    public Mono<FileProperties> downloadToFile(String downloadFilePath) {
+        return downloadToFileWithResponse(downloadFilePath, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -342,19 +342,30 @@ public class FileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
-    public Mono<Void> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
+    public Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
+        return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
+    }
+
+    Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+                                                                Context context) {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-            channel -> sliceFileRange(range)
-                .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-                    .map(dar -> dar.getValue().getBody())
+            channel -> downloadResponseInChunk(channel, range, context), this::channelCleanUp);
+    }
+
+    private Mono<Response<FileProperties>> downloadResponseInChunk(AsynchronousFileChannel channel,
+                                                                   FileRange range, Context context) {
+        Mono<Response<FileProperties>> asyncGetPropertiesResponse = getPropertiesWithResponse(context);
+        Flux<FileRange> fileRanges = sliceFileRange(range, asyncGetPropertiesResponse);
+        return fileRanges.flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false, context)
+                .map(dar -> dar.getValue().getBody())
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(fbb -> FluxUtil
+                    .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(fbb -> FluxUtil
-                        .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                        .subscribeOn(Schedulers.elastic())
-                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3, throwable -> throwable instanceof IOException
-                            || throwable instanceof TimeoutException)))
-                .then(), this::channelCleanUp);
+                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
+                    .retry(3, throwable -> throwable instanceof IOException
+                        || throwable instanceof TimeoutException)))
+            .then(asyncGetPropertiesResponse);
     }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
@@ -373,7 +384,7 @@ public class FileAsyncClient {
         }
     }
 
-    private Flux<FileRange> sliceFileRange(FileRange fileRange) {
+    private Flux<FileRange> sliceFileRange(FileRange fileRange, Mono<Response<FileProperties>> response) {
         long offset = fileRange == null ? 0L : fileRange.getStart();
         Mono<Long> end;
         if (fileRange != null) {
@@ -381,7 +392,9 @@ public class FileAsyncClient {
         } else {
             end = Mono.empty();
         }
-        end = end.switchIfEmpty(getProperties().map(FileProperties::getContentLength));
+        end = end.switchIfEmpty(response.map(filePropertiesResposne ->
+            filePropertiesResposne.getValue().getContentLength()));
+
         return end
             .map(e -> {
                 List<FileRange> chunks = new ArrayList<>();

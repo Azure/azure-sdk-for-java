@@ -371,7 +371,9 @@ class FileAsyncAPITests extends APISpec {
         def downloadFromFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
 
         then:
-        downloadFromFileVerifier.verifyComplete()
+        downloadFromFileVerifier.assertNext{
+            assert it.getContentLength() == data.length()
+        }.verifyComplete()
         def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
         data == scanner.next()
         scanner.close()

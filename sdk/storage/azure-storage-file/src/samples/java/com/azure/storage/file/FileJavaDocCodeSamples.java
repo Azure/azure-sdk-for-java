@@ -327,16 +327,18 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#downloadToFileWithResponse(String, FileRange)}
+     * Generates a code sample for using {@link FileClient#downloadToFileWithResponse(String, FileRange, Duration, Context)}
      */
     public void downloadFileMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange
-        fileClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L));
+        // BEGIN: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context
+        Response<FileProperties> response =
+            fileClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L),
+            Duration.ofSeconds(1), Context.NONE);
         if (Files.exists(Paths.get("somelocalfilepath"))) {
-            System.out.println("Complete downloading the file.");
+            System.out.println("Complete downloading the file with status code " + response.getStatusCode());
         }
-        // END: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange
+        // END: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context
     }
 
     /**

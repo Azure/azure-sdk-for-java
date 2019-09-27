@@ -397,14 +397,15 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
         fileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L))
             .subscribe(
-            response -> {
-                if (Files.exists(Paths.get("somelocalfilepath"))) {
-                    System.out.println("Successfully downloaded the file.");
-                }
-            },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete downloading the file!")
-        );
+                response -> {
+                    if (Files.exists(Paths.get("somelocalfilepath"))) {
+                        System.out.println("Successfully downloaded the file with status code "
+                            + response.getStatusCode());
+                    }
+                },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete downloading the file!")
+            );
         // END: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
     }
 

@@ -526,7 +526,7 @@ public class BlobAsyncClient {
      * @return An empty response
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
-         return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
+        return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
             null, null, false).flatMap(FluxUtil::toMono);
     }
 
@@ -575,7 +575,8 @@ public class BlobAsyncClient {
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
-            channel -> blobDownloadInChunk(channel, range, blockSize, options, accessConditions, rangeGetContentMD5, context),
+            channel -> blobDownloadInChunk(channel, range, blockSize, options, accessConditions, rangeGetContentMD5,
+                context),
             this::downloadToFileCleanup);
 
     }
@@ -584,15 +585,14 @@ public class BlobAsyncClient {
                               Integer blockSize, ReliableDownloadOptions options, BlobAccessConditions accessConditions,
                               boolean rangeGetContentMD5, Context context) {
         Mono<Response<BlobProperties>> asyncGetPropertiesResponse = getPropertiesWithResponse(accessConditions);
-        Mono<BlobRange> fullBlobRange = range == null ? getFullBlobRange(asyncGetPropertiesResponse): Mono.just(range);
-
-        fullBlobRange.flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
+        Mono<BlobRange> fullBlobRange = (range == null) ? getFullBlobRange(asyncGetPropertiesResponse)
+            : Mono.just(range);
+        return fullBlobRange.flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
             .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
                     chunk.getOffset() - (range == null ? 0 : range.getOffset()))
-                ));
-        return asyncGetPropertiesResponse;
+                )).then(asyncGetPropertiesResponse);
     }
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {

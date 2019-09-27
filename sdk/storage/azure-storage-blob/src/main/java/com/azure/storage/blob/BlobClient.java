@@ -413,6 +413,7 @@ public class BlobClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @return The properties of the download blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public BlobProperties downloadToFile(String filePath) {
@@ -448,6 +449,7 @@ public class BlobClient {
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The response of download blob properties.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,

@@ -122,7 +122,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFileWithResponse(file, range,null, options,null, false)
+        client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file with status code "
                 + response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
