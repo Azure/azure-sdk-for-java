@@ -85,6 +85,13 @@ public class StorageAccountUpdateParameters {
     private NetworkRuleSet networkRuleSet;
 
     /**
+     * Allow large file shares if sets to Enabled. It cannot be disabled once
+     * it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     */
+    @JsonProperty(value = "properties.largeFileSharesState")
+    private LargeFileSharesState largeFileSharesState;
+
+    /**
      * Optional. Indicates the type of storage account. Currently only
      * StorageV2 value supported by server. Possible values include: 'Storage',
      * 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'.
@@ -269,6 +276,26 @@ public class StorageAccountUpdateParameters {
      */
     public StorageAccountUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
+        return this;
+    }
+
+    /**
+     * Get allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     *
+     * @return the largeFileSharesState value
+     */
+    public LargeFileSharesState largeFileSharesState() {
+        return this.largeFileSharesState;
+    }
+
+    /**
+     * Set allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     *
+     * @param largeFileSharesState the largeFileSharesState value to set
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+        this.largeFileSharesState = largeFileSharesState;
         return this;
     }
 

@@ -16,4 +16,7 @@ module com.azure.storage.blob {
     opens com.azure.storage.blob.implementation to
         com.fasterxml.jackson.databind,
         com.azure.core;
+    opens com.azure.storage.blob.implementation.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 }
