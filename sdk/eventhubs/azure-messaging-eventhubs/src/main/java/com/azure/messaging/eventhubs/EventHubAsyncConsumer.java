@@ -9,6 +9,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -65,6 +67,7 @@ public class EventHubAsyncConsumer implements Closeable {
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
+    private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
 
     private volatile AmqpReceiveLink receiveLink;
 
@@ -73,6 +76,9 @@ public class EventHubAsyncConsumer implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getLastEnqueuedEventProperties();
+        this.lastEnqueuedEventProperties = options.getLastEnqueuedEventProperties()
+            ? new LastEnqueuedEventProperties(null, null, null, null)
+            : null;
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
@@ -107,11 +113,7 @@ public class EventHubAsyncConsumer implements Closeable {
                 });
             }
 
-            return link.receive().map(message -> {
-                final EventData event = this.messageSerializer.deserialize(message, EventData.class);
-
-                return event;
-            });
+            return link.receive().map(message -> onMessageReceived(message));
         }).subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
@@ -172,5 +174,44 @@ public class EventHubAsyncConsumer implements Closeable {
      */
     public Flux<EventData> receive() {
         return messageFlux;
+    }
+
+    /**
+     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
+     * received from the Event Hubs service.
+     *
+     * @return {@code null} if {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} was not set when
+     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
+     *     partition.
+     */
+    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
+        return lastEnqueuedEventProperties;
+    }
+
+    /**
+     * On each message received from the service, it will try to:
+     * 1. Deserialize the message into an EventData
+     * 2. If {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} is true, then it will try to update
+     *    {@link }
+     *
+     * @param message AMQP message to deserialize.
+     *
+     * @return The deserialized {@link EventData}.
+     */
+    private EventData onMessageReceived(Message message) {
+        final EventData event = messageSerializer.deserialize(message, EventData.class);
+
+        if (trackLastEnqueuedEventProperties) {
+            final LastEnqueuedEventProperties enqueuedEventProperties =
+                messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
+
+            if (enqueuedEventProperties != null) {
+                lastEnqueuedEventProperties.updateProperties(enqueuedEventProperties.getSequenceNumber(),
+                    enqueuedEventProperties.getOffset(), enqueuedEventProperties.getEnqueuedTime(),
+                    enqueuedEventProperties.getRetrievalTime());
+            }
+        }
+
+        return event;
     }
 }

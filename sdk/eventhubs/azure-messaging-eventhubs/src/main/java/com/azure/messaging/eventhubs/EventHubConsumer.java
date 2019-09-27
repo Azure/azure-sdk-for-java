@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -108,6 +109,18 @@ public class EventHubConsumer implements Closeable {
             return Flux.fromIterable(x);
         }).block();
         return new IterableStream<>(map);
+    }
+
+    /**
+     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
+     * received from the Event Hubs service.
+     *
+     * @return {@code null} if {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} was not set when
+     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
+     *     partition.
+     */
+    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
+        return consumer.getLastEnqueuedEventProperties();
     }
 
     /**
