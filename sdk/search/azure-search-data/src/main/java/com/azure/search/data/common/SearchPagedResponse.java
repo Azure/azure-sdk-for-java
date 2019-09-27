@@ -16,37 +16,8 @@ import java.util.stream.Collectors;
 
 public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
 
-    /**
-     * Get facets
-     *
-     * @return {@link Map}{@code <}{@link String}{@code ,}{@link List}{@code <}{@link FacetResult}{@code >}{@code >}
-     */
-    public Map<String, List<FacetResult>> getFacets() {
-        return facets;
-    }
-
     private final Map<String, List<FacetResult>> facets;
-
-    /**
-     * Get count
-     *
-     * @return Long
-     */
-    public Long getCount() {
-        return count;
-    }
-
     private final Long count;
-
-    /**
-     * Get coverage
-     *
-     * @return Double
-     */
-    public Double coverage() {
-        return coverage;
-    }
-
     private final Double coverage;
 
     /**
@@ -67,14 +38,17 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
         this.coverage = documentSearchResponse.value().coverage();
     }
 
-    private static String deserializeHeaders(HttpHeaders headers) {
-        return headers.toMap().entrySet().stream().map((entry) ->
-            entry.getKey() + "," + entry.getValue()
-        ).collect(Collectors.joining(","));
+    /**
+     * Get coverage
+     *
+     * @return Double
+     */
+    public Double coverage() {
+        return coverage;
     }
 
     /**
-     * return facets
+     * Get facets
      * @return {@link Map}{@code <}{@link String}{@code ,}{@link List}{@code <}{@link FacetResult}{@code >}{@code >}
      */
     public Map<String, List<FacetResult>> facets() {
@@ -82,10 +56,16 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
     }
 
     /**
-     * Return documents counts
+     * Get documents count
      * @return long
      */
     public Long count() {
         return count;
+    }
+
+    private static String deserializeHeaders(HttpHeaders headers) {
+        return headers.toMap().entrySet().stream().map((entry) ->
+            entry.getKey() + "," + entry.getValue()
+        ).collect(Collectors.joining(","));
     }
 }

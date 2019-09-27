@@ -21,7 +21,7 @@ public class RangeFacetResult {
     }
 
     /**
-     * Get cont
+     * Get count
      * @return count
      */
     public long count() {

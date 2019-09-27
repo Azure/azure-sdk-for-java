@@ -75,14 +75,6 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
             expectedHotelsList.stream().map(h -> h.description()).collect(Collectors.toList()));
     }
 
-    protected void verifyCanSuggestWithDateTimeInStaticModel(PagedResponse<SuggestResult> suggestResultPagedResponse) {
-        List<SuggestResult> books = suggestResultPagedResponse.value();
-        List<Document> docs = suggestResultPagedResponse.value().stream().map(h -> h.additionalProperties()).collect(Collectors.toList());
-
-        Assert.assertEquals(1, docs.size());
-        Assert.assertEquals("War and Peace", books.get(0).text());
-    }
-
     protected void verifyFuzzyIsOffByDefault(PagedResponse<SuggestResult> suggestResultPagedResponse) {
 
         Assert.assertNotNull(suggestResultPagedResponse);
@@ -155,5 +147,6 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void testCanFilter();
 
+    @Test
     public abstract void testOrderByProgressivelyBreaksTies();
 }

@@ -94,22 +94,22 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             HttpClient httpClient,
             List<HttpPipelinePolicy> policies) {
         if (StringUtils.isBlank(searchServiceName)) {
-            throw new IllegalArgumentException("Invalid searchServiceName");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchServiceName"));
         }
         if (StringUtils.isBlank(searchDnsSuffix)) {
-            throw new IllegalArgumentException("Invalid searchDnsSuffix");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchDnsSuffix"));
         }
         if (StringUtils.isBlank(indexName)) {
-            throw new IllegalArgumentException("Invalid indexName");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid indexName"));
         }
         if (StringUtils.isBlank(apiVersion)) {
-            throw new IllegalArgumentException("Invalid apiVersion");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
         }
         if (httpClient == null) {
-            throw new IllegalArgumentException("Invalid httpClient");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid httpClient"));
         }
         if (policies == null) {
-            throw new IllegalArgumentException("Invalid policies");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid policies"));
         }
 
         this.searchServiceName = searchServiceName;
@@ -322,9 +322,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             autocompleteParameters);
         Mono<PagedResponse<AutocompleteItem>> first = restClient.documents()
                 .autocompletePostWithRestResponseAsync(autocompleteRequest)
-                .map(res -> {
-                    return new AutoCompletePagedResponse(res);
-                });
+                .map(res -> new AutoCompletePagedResponse(res));
         return new PagedFlux<>(() -> first, nextLink -> Mono.empty());
     }
 

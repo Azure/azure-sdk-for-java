@@ -81,28 +81,4 @@ public class SearchIndexDocs {
 
 
     }
-
-    public void addSingleDocData(Map document) throws IOException {
-
-        if (searchIndexAsyncClient == null) {
-            searchIndexAsyncClient = new SearchIndexClientBuilder()
-                .serviceName(searchServiceName)
-                .searchDnsSuffix(dnsSuffix)
-                .indexName(indexName)
-                .apiVersion(apiVersion)
-                .credential(apiAdminKey)
-                .buildAsyncClient();
-        }
-
-        System.out.println("Indexing 1 doc");
-        System.out.println("Indexing Results:");
-        searchIndexAsyncClient.uploadDocument(document)
-            .doOnSuccess(documentIndexResult ->
-                documentIndexResult
-                    .results().forEach(
-                        result ->
-                        System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
-            .doOnError(e -> System.out.println(e.getMessage()))
-            .block();
-    }
 }
