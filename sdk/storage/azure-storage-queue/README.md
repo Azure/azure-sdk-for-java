@@ -23,21 +23,28 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 </dependency>
 ```
 ### Default HTTP Client
-All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+Storage Queue to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml
 
 ```xml
+<!-- Add Storage Queue dependency without Netty HTTP client -->
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-netty</artifactId>
-  <version>1.0.0-preview.4</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-queue</artifactId>
+      <version>12.0.0-preview.3</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
 </dependency>
-```
 
-This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
-
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
-
-```xml
+<!-- Add OkHTTP client to use with Storage Queue -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
