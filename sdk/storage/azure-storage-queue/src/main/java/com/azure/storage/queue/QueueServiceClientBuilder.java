@@ -154,4 +154,9 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
 
         return this;
     }
+
+    @Override
+    protected Class<QueueServiceClientBuilder> getClazz() {
+        return QueueServiceClientBuilder.class;
+    }
 }

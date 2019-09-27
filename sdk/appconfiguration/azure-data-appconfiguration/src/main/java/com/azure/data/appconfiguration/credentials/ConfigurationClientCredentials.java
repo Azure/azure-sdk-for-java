@@ -103,7 +103,7 @@ public class ConfigurationClientCredentials {
 
     private static class AuthorizationHeaderProvider {
         private final String signedHeadersValue = String.join(";", SIGNED_HEADERS);
-        private static final String HMAC_SHA256 = "HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s";
+        private static final String HMAC_SHA256 = "HMAC-SHA256 Credential=%s&SignedHeaders=%s&Signature=%s";
         private final CredentialInformation credentials;
         private final Mac sha256HMAC;
 

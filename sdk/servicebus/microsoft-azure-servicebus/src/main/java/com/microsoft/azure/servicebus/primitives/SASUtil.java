@@ -65,7 +65,7 @@ public class SASUtil {
             // These exceptions shouldn't occur.
             String errorMessage = "UTF-8 encoding or HMACSHA256 algorithm is missing in the java runtime.";
             Marker fatalMarker = MarkerFactory.getMarker(ClientConstants.FATAL_MARKER);
-            TRACE_LOGGER.error(fatalMarker, errorMessage, e);
+            TRACE_LOGGER.info(fatalMarker, errorMessage, e);
             throw new RuntimeException(errorMessage);
         }   
     }    

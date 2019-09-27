@@ -113,9 +113,9 @@
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.28</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
-    <reactor-core.version>3.2.12.RELEASE</reactor-core.version>
-    <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
-    <netty.version>4.1.33.Final</netty.version>
+    <reactor-core.version>3.3.0.RELEASE</reactor-core.version>
+    <reactor-netty.version>0.9.0.RELEASE</reactor-netty.version>
+    <netty.version>4.1.39.Final</netty.version>
     <okhttp.version>4.1.0</okhttp.version>
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>

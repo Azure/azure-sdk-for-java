@@ -32,6 +32,7 @@
     <azure-storage-blob.version>12.0.0-preview.4</azure-storage-blob.version>
     <azure-storage-blob-cryptography.version>12.0.0-preview.4</azure-storage-blob-cryptography.version>
     <azure-storage-file.version>12.0.0-preview.4</azure-storage-file.version>
+    <azure-storage-file-datalake.version>12.0.0-preview.4</azure-storage-file-datalake.version>
     <azure-storage-queue.version>12.0.0-preview.4</azure-storage-queue.version>
     <azure-storage-queue-cryptography.version>12.0.0-preview.4</azure-storage-queue-cryptography.version>
     <project.automatic.module.name>com.azure.eng.spotbugs.reporting</project.automatic.module.name>
@@ -66,6 +67,7 @@
                 <source>..\..\sdk\core\azure-core-http-netty\src\main\java\com</source>
                 <source>..\..\sdk\core\azure-core-http-netty\src\samples\java\com</source>
                 <source>..\..\sdk\core\azure-core-http-okhttp\src\main\java\com</source>
+                <source>..\..\sdk\core\azure-core-http-okhttp\src\samples\java\com</source>
                 <source>..\..\sdk\core\azure-core-management\src\main\java\com</source>
                 <source>..\..\sdk\core\azure-core-test\src\main\java\com</source>
                 <source>..\..\sdk\eventhubs\azure-messaging-eventhubs\src\main\java\com</source>
@@ -79,11 +81,14 @@
                 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\main\java\com</source>-->
                 <!--                <source>..\..\sdk\keyvault\azure-keyvault-secrets\src\samples\java\com</source>-->
                 <source>..\..\sdk\storage\azure-storage-common\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-common\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-file-datalake\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-file-datalake\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue-cryptography\src\main\java\com</source>
@@ -227,6 +232,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-file</artifactId>
           <version>${azure-storage-file.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-file-datalake</artifactId>
+          <version>${azure-storage-file-datalake.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

@@ -194,4 +194,9 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
         this.snapshot = snapshot;
         return this;
     }
+
+    @Override
+    protected Class<ShareClientBuilder> getClazz() {
+        return ShareClientBuilder.class;
+    }
 }

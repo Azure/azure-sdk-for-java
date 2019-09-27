@@ -72,7 +72,7 @@ public final class LeaseClientBuilder {
      * @return the updated LeaseClientBuilder object
      * @throws NullPointerException If {@code blobClient} is {@code null}.
      */
-    public LeaseClientBuilder blobClient(BlobClient blobClient) {
+    public LeaseClientBuilder blobClient(BlobClientBase blobClient) {
         Objects.requireNonNull(blobClient);
         this.pipeline = blobClient.getHttpPipeline();
         this.url = blobClient.getBlobUrl();
@@ -88,7 +88,7 @@ public final class LeaseClientBuilder {
      * @return the updated LeaseClientBuilder object
      * @throws NullPointerException If {@code blobAsyncClient} is {@code null}.
      */
-    public LeaseClientBuilder blobAsyncClient(BlobAsyncClient blobAsyncClient) {
+    public LeaseClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         Objects.requireNonNull(blobAsyncClient);
         this.pipeline = blobAsyncClient.getHttpPipeline();
         this.url = blobAsyncClient.getBlobUrl();
