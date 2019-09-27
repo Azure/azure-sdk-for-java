@@ -547,15 +547,17 @@ public class BlobAsyncClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-                                    Integer blockSize, ReliableDownloadOptions options,
-                                    BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
+                                                                     Integer blockSize, ReliableDownloadOptions options,
+                                                                     BlobAccessConditions accessConditions,
+                                                                     boolean rangeGetContentMD5) {
         return withContext(context -> downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
             rangeGetContentMD5, context));
     }
 
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
-                                    ReliableDownloadOptions options, BlobAccessConditions accessConditions,
-                                    boolean rangeGetContentMD5, Context context) {
+                                                              ReliableDownloadOptions options,
+                                                              BlobAccessConditions accessConditions,
+                                                              boolean rangeGetContentMD5, Context context) {
         if (blockSize != null) {
             Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
@@ -568,9 +570,9 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<Response<BlobProperties>> blobDownloadInChunk(final AsynchronousFileChannel channel, BlobRange range,
-                                    Integer blockSize, ReliableDownloadOptions options,
-                                    BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
-                                    Context context) {
+                                                               Integer blockSize, ReliableDownloadOptions options,
+                                                               BlobAccessConditions accessConditions,
+                                                               boolean rangeGetContentMD5, Context context) {
         Mono<Response<BlobProperties>> asyncGetPropertiesResponse = getPropertiesWithResponse(accessConditions);
         Mono<BlobRange> fullBlobRange = (range == null) ? getFullBlobRange(asyncGetPropertiesResponse)
             : Mono.just(range);
@@ -578,7 +580,7 @@ public class BlobAsyncClientBase {
             .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
-                    chunk.getOffset() - (range == null ? 0 : range.getOffset()))
+                    chunk.getOffset() - ((range == null) ? 0 : range.getOffset()))
                 )).then(asyncGetPropertiesResponse);
     }
 

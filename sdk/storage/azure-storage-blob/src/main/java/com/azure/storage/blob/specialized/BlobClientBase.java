@@ -453,8 +453,10 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
-                                        ReliableDownloadOptions options, BlobAccessConditions accessConditions,
-                                        boolean rangeGetContentMD5, Duration timeout, Context context) {
+                                                               ReliableDownloadOptions options,
+                                                               BlobAccessConditions accessConditions,
+                                                               boolean rangeGetContentMD5, Duration timeout,
+                                                               Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range, blockSize,
             options, accessConditions, rangeGetContentMD5, context);
         return Utility.blockWithOptionalTimeout(download, timeout);

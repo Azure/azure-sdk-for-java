@@ -323,7 +323,7 @@ public class FileClient {
      *
      * <p>Delete the file</p>
      *
-     * {q@codesnippet com.azure.storage.file.fileClient.delete}
+     * {@codesnippet com.azure.storage.file.fileClient.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
