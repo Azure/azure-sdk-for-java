@@ -58,10 +58,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(httpResponse, tryCount)) {
-                    logger.info("[Retrying] Try count: {}, HTTP response: {}, Original HTTP Request: {}",
-                        tryCount, httpResponse, originalHttpRequest);
+                    final Duration delayDuration = determineDelayDuration(httpResponse);
+                    logger.info("[Retrying] Try count: {}, Delay duration in seconds: {}, HTTP response: {},"
+                            + " Original HTTP Request: {}",
+                        tryCount, delayDuration.getSeconds(), httpResponse, originalHttpRequest);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                        .delaySubscription(determineDelayDuration(httpResponse));
+                        .delaySubscription(delayDuration);
                 } else {
                     return Mono.just(httpResponse);
                 }
