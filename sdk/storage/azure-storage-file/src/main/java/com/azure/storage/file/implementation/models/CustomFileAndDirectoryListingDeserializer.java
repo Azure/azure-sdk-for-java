@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.models;
+package com.azure.storage.file.implementation.models;
 
-import com.azure.storage.file.implementation.models.DirectoryItem;
-import com.azure.storage.file.implementation.models.FileItem;
-import com.azure.storage.file.implementation.models.FilesAndDirectoriesListSegment;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
