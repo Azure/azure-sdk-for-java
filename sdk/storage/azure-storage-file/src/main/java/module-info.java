@@ -16,6 +16,9 @@ module com.azure.storage.file {
     opens com.azure.storage.file.implementation to
         com.fasterxml.jackson.databind,
         com.azure.core;
+    opens com.azure.storage.file.implementation.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 
     uses com.azure.core.http.HttpClientProvider;
 }
