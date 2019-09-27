@@ -3,14 +3,15 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.Metadata;
@@ -42,6 +43,7 @@ import java.util.List;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
  * Docs</a> for more information on containers.
  */
+@ServiceClient(builder = ContainerClientBuilder.class)
 public final class ContainerClient {
     private final ContainerAsyncClient containerAsyncClient;
 
@@ -58,117 +60,6 @@ public final class ContainerClient {
      */
     ContainerClient(ContainerAsyncClient containerAsyncClient) {
         this.containerAsyncClient = containerAsyncClient;
-    }
-
-    /**
-     * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of ContainerAsyncClient's
-     * URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlockBlobClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
-     */
-    public BlockBlobClient getBlockBlobClient(String blobName) {
-        return new BlockBlobClient(containerAsyncClient.getBlockBlobAsyncClient(blobName));
-    }
-
-    /**
-     * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of ContainerAsyncClient's
-     * URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's NewBlockBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getBlockBlobClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
-     */
-    public BlockBlobClient getBlockBlobClient(String blobName, String snapshot) {
-        return new BlockBlobClient(containerAsyncClient.getBlockBlobAsyncClient(blobName, snapshot));
-    }
-
-    /**
-     * Creates creates a new PageBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
-     * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
-     * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getPageBlobClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
-     */
-    public PageBlobClient getPageBlobClient(String blobName) {
-        return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName));
-    }
-
-    /**
-     * Creates creates a new PageBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline,
-     * create the PageBlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call
-     * this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getPageBlobClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
-     */
-    public PageBlobClient getPageBlobClient(String blobName, String snapshot) {
-        return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName, snapshot));
-    }
-
-    /**
-     * Creates creates a new AppendBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new AppendBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getAppendBlobClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobClient getAppendBlobClient(String blobName) {
-        return new AppendBlobClient(containerAsyncClient.getAppendBlobAsyncClient(blobName));
-    }
-
-    /**
-     * Creates creates a new AppendBlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL.
-     * The new AppendBlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getAppendBlobClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobClient getAppendBlobClient(String blobName, String snapshot) {
-        return new AppendBlobClient(containerAsyncClient.getAppendBlobAsyncClient(blobName, snapshot));
     }
 
     /**
@@ -207,15 +98,6 @@ public final class ContainerClient {
     }
 
     /**
-     * Initializes a {@link BlobServiceClient} object pointing to the storage account this container is in.
-     *
-     * @return A {@link BlobServiceClient} object pointing to the specified storage account
-     */
-    public BlobServiceClient getBlobServiceClient() {
-        return new BlobServiceClient(containerAsyncClient.getBlobServiceAsyncClient());
-    }
-
-    /**
      * Gets the URL of the container represented by this client.
      *
      * @return the URL.
@@ -234,6 +116,16 @@ public final class ContainerClient {
     }
 
     /**
+     * Gets the {@link CpkInfo} associated with this client that will be passed to {@link BlobClient BlobClients} when
+     * {@link #getBlobClient(String) getBlobClient} is called.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCustomerProvidedKey() {
+        return containerAsyncClient.getCustomerProvidedKey();
+    }
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
@@ -242,7 +134,7 @@ public final class ContainerClient {
      *
      * @return true if the container exists, false if it doesn't
      */
-    public Boolean exists() {
+    public boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
@@ -291,9 +183,9 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout,
+    public Response<Void> createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
+        Mono<Response<Void>> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -325,9 +217,9 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout,
+    public Response<Void> deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout,
         Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.deleteWithResponse(accessConditions, context);
+        Mono<Response<Void>> response = containerAsyncClient.deleteWithResponse(accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -396,9 +288,10 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setMetadataWithResponse(Metadata metadata,
+    public Response<Void> setMetadataWithResponse(Metadata metadata,
         ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions, context);
+        Mono<Response<Void>> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions,
+            context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -484,10 +377,10 @@ public final class ContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public VoidResponse setAccessPolicyWithResponse(PublicAccessType accessType,
+    public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
         Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient
+        Mono<Response<Void>> response = containerAsyncClient
             .setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);

@@ -45,6 +45,6 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
                 put("username", username);
                 put("password", password);
             }});
-        return new UsernamePasswordCredential(clientId, username, password, identityClientOptions);
+        return new UsernamePasswordCredential(clientId, tenantId, username, password, identityClientOptions);
     }
 }

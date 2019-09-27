@@ -33,22 +33,21 @@ public class PageBlobItem {
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
-    public PageBlobItem(PageBlobUploadPagesFromURLHeaders generatedHeaders, String encryptionKeySha256Header) {
+    public PageBlobItem(PageBlobUploadPagesFromURLHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.contentMD5 = generatedHeaders.getContentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = encryptionKeySha256Header;
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 
-    public PageBlobItem(PageBlobClearPagesHeaders generatedHeaders, String isServerEncryptedHeader,
-        String encryptionKeySha256Header) {
+    public PageBlobItem(PageBlobClearPagesHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = Boolean.parseBoolean(isServerEncryptedHeader);
-        this.encryptionKeySha256 = encryptionKeySha256Header;
+        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
+        this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
         this.blobSequenceNumber = generatedHeaders.getBlobSequenceNumber();
     }
 

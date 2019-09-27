@@ -254,4 +254,9 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
         this.resourcePath = resourcePath;
         return this;
     }
+
+    @Override
+    protected Class<FileClientBuilder> getClazz() {
+        return FileClientBuilder.class;
+    }
 }

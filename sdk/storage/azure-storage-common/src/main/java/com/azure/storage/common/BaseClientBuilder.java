@@ -140,13 +140,12 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     public final T credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.tokenCredential = null;
         this.sasTokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -156,13 +155,12 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     public T credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -172,13 +170,12 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     public final T credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -186,13 +183,12 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      *
      * @return the updated buildr
      */
-    @SuppressWarnings("unchecked")
     public T setAnonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -213,7 +209,6 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
-    @SuppressWarnings("unchecked")
     public final T connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
@@ -242,7 +237,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         // Use accountName and accountKey to get the SAS token using the credential class.
         credential(new SharedKeyCredential(accountName, accountKey));
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -258,10 +253,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @param httpClient http client to send requests
      * @return the updated buildr
      */
-    @SuppressWarnings("unchecked")
     public final T httpClient(HttpClient httpClient) {
         this.httpClient = httpClient; // builder implicitly handles default creation if null, so no null check
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -271,10 +265,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
-    @SuppressWarnings("unchecked")
     public final T addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -284,10 +277,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code logLevel} is {@code null}
      */
-    @SuppressWarnings("unchecked")
     public final T httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = Objects.requireNonNull(logLevel);
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -297,10 +289,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @param configuration configuration store
      * @return the updated buildr
      */
-    @SuppressWarnings("unchecked")
     public final T configuration(Configuration configuration) {
         this.configuration = configuration;
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -310,7 +301,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      */
     protected final Configuration getConfiguration() {
         if (this.configuration == null) {
-            this.configuration = Configuration.getGlobalConfiguration();
+            this.configuration = Configuration.getGlobalConfiguration().clone();
         }
 
         return this.configuration;
@@ -323,10 +314,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code retryOptions} is {@code null}
      */
-    @SuppressWarnings("unchecked")
     public final T retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions);
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -338,10 +328,9 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated builder.
      */
-    @SuppressWarnings("unchecked")
     public final T pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -359,4 +348,11 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return The policy.
      */
     protected abstract UserAgentPolicy getUserAgentPolicy();
+
+    /**
+     * Gets the implementing client builder class.
+     *
+     * @return the implementing client builder class.
+     */
+    protected abstract Class<T> getClazz();
 }

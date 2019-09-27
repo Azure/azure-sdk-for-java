@@ -64,9 +64,10 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
 
 ```Powershell
-az group create \
-    --name storage-resource-group \
-    --location westus
+az stoage account create \
+    --resource-group <resource-group-name> \
+    --name <storage-account-name> \
+    --location <location>
 ```
 
 ### Authenticate the client
@@ -86,6 +87,8 @@ az storage blob generate-sas
     --expiry {date/time to expire SAS token}
     --permission {permission to grant}
     --connection-string {connection string of the storage account}
+    --services {storage services the SAS allows}
+    --resource-types {resource types the SAS allows}
 ```
 
 ```Powershell
@@ -199,7 +202,7 @@ or
 
 Create a container using ContainerClient.
 ```java
-containerClient.setCreate();
+containerClient.create();
 ```
 
 ### Uploading a blob from a stream
@@ -220,7 +223,7 @@ Upload a file to a blob using BlockBlobClient generated from ContainerClient.
 
 ```java
 BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("myblockblob");
-blobClient.uploadFromFile("local-file.jpg");
+blockBlobClient.uploadFromFile("local-file.jpg");
 ```
 
 ### Downloading a blob to output stream
@@ -255,7 +258,7 @@ containerClient.listBlobsFlat()
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
 ```java
-BlobServiceClient storageClient = BlobServiceClient.storageClientBuilder()
+BlobServiceClient storageClient = new BlobServiceClientBuilder()
         .endpoint(endpoint)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();

@@ -195,6 +195,10 @@
     "source": "specification/operationsmanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "peering/resource-manager": {
+    "source": "specification/peering/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "policyinsights/resource-manager": {
     "source": "specification/policyinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"

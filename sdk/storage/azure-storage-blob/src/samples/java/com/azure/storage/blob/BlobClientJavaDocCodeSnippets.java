@@ -392,11 +392,11 @@ public class BlobClientJavaDocCodeSnippets {
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         BlobSASPermission permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true);
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
@@ -425,11 +425,11 @@ public class BlobClientJavaDocCodeSnippets {
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         BlobSASPermission permissions = new BlobSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true);
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
@@ -454,19 +454,19 @@ public class BlobClientJavaDocCodeSnippets {
      * Generates a code sample for using {@link BlobClient#getContainerName()}
      */
     public void getContainerName() {
-        // BEGIN: com.azure.storage.blob.BlobClient.getContainerName
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
         String containerName = client.getContainerName();
         System.out.println("The name of the blob is " + containerName);
-        // END: com.azure.storage.blob.BlobClient.getContainerName
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
     }
 
     /**
      * Generates a code sample for using {@link BlobClient#getBlobName()}
      */
     public void getBlobName() {
-        // BEGIN: com.azure.storage.blob.BlobClient.getBlobName
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getBlobName
         String blobName = client.getBlobName();
         System.out.println("The name of the blob is " + blobName);
-        // END: com.azure.storage.blob.BlobClient.getBlobName
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getBlobName
     }
 }

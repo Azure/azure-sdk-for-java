@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -348,7 +348,7 @@
               *.impl*:
               *.implementation*:
               com.azure.tools.checkstyle*:
-              com.azure.core.test*
+              com.azure.core.test
             </excludePackageNames>
             <groups>
               <group>
@@ -408,6 +408,10 @@
               <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Files - Data Lake</title>
+                <packages>com.azure.storage.file.datalake*</packages>
               </group>
               <group>
                 <title>Azure Storage - Queues</title>
@@ -577,6 +581,7 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
@@ -711,8 +716,9 @@
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                <!-- AMQP tests fail without this -->
-                --add-opens com.azure.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
+                <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
+                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
+                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
               </argLine>
@@ -859,6 +865,7 @@
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file</module>
+    <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
     <module>sdk/tracing/tracing-opentelemetry</module>

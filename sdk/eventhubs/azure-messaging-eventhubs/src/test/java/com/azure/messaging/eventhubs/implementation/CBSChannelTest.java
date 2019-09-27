@@ -8,15 +8,26 @@ import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CBSChannel;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -27,7 +38,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-import static com.azure.messaging.eventhubs.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
@@ -39,6 +50,8 @@ public class CBSChannelTest extends IntegrationTestBase {
     private CBSChannel cbsChannel;
     private ConnectionStringProperties connectionString;
     private AzureTokenManagerProvider azureTokenManagerProvider;
+    @Mock
+    private MessageSerializer messageSerializer;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
@@ -66,17 +79,16 @@ public class CBSChannelTest extends IntegrationTestBase {
         }
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
-            connectionString.getEventHubName(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
+            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, TransportType.AMQP,
             RETRY_OPTIONS, ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.elastic());
         final RetryOptions retryOptions = new RetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
-            azureTokenManagerProvider);
+            azureTokenManagerProvider, messageSerializer);
 
-        final Mono<RequestResponseChannel> requestResponseChannel =
-            connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
+        final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
         cbsChannel = new CBSChannel(requestResponseChannel, tokenCredential, connectionOptions.getAuthorizationType(),
             retryOptions);
@@ -96,7 +108,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEventHubName());
+        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience))
@@ -107,7 +119,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void unsuccessfulAuthorize() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEventHubName());
+        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
         final Duration duration = Duration.ofMinutes(10);
 
         TokenCredential tokenProvider = null;
@@ -117,8 +129,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             Assert.fail("Could not create token provider: " + e.toString());
         }
 
-        final Mono<RequestResponseChannel> requestResponseChannel =
-            connection.createRequestResponseChannel("cbs-session", "cbs", "$cbs");
+        final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
         final CBSNode node = new CBSChannel(requestResponseChannel, tokenProvider, SHARED_ACCESS_SIGNATURE,
             new RetryOptions().setTryTimeout(Duration.ofMinutes(5)));
@@ -138,9 +149,14 @@ public class CBSChannelTest extends IntegrationTestBase {
 
     private static final class TestReactorConnection extends ReactorConnection {
         private TestReactorConnection(String connectionId, ConnectionOptions connectionOptions,
-                              ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                              TokenManagerProvider tokenManagerProvider) {
-            super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider);
+                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+                                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+            super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
+                messageSerializer);
+        }
+
+        private Mono<RequestResponseChannel> getCBSChannel() {
+            return createRequestResponseChannel("cbs-session", "cbs", "$cbs");
         }
     }
 }

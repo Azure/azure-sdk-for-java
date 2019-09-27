@@ -159,7 +159,7 @@ public final class SharedKeyCredential {
                 canonicalizedHeaders.append('\n');
             }
 
-            canonicalizedHeaders.append(key)
+            canonicalizedHeaders.append(key.toLowerCase(Locale.ROOT))
                 .append(':')
                 .append(headers.get(key));
         }

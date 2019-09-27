@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -207,19 +206,19 @@ public final class LeaseAsyncClient {
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions) {
         return withContext(context -> releaseLeaseWithResponse(modifiedAccessConditions, context));
     }
 
-    Mono<VoidResponse> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    Mono<Response<Void>> releaseLeaseWithResponse(ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (this.isBlob) {
             return postProcessResponse(this.client.blobs().releaseLeaseWithRestResponseAsync(
                 null, null, this.leaseId, null, null, modifiedAccessConditions, context))
-                .map(VoidResponse::new);
+                .map(response -> new SimpleResponse<>(response, null));
         } else {
             return postProcessResponse(this.client.containers().releaseLeaseWithRestResponseAsync(
                 null, this.leaseId, null, null, modifiedAccessConditions, context))
-                .map(VoidResponse::new);
+                .map(response -> new SimpleResponse<>(response, null));
         }
     }
 

@@ -74,14 +74,13 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version>
+      <version>${google-jsr305.version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.2.10.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -112,6 +111,18 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -152,7 +163,7 @@
       <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>${maven-jar-plugin.version}</version>
         <executions>
           <execution>
             <id>test-jar</id>

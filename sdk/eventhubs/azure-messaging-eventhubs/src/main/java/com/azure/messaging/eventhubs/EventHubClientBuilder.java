@@ -5,7 +5,18 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.StringUtil;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.ProxyAuthenticationType;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -13,20 +24,13 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.implementation.AzureTokenManagerProvider;
-import com.azure.messaging.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorConnection;
-import com.azure.messaging.eventhubs.implementation.ManagementResponseMapper;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
-import com.azure.messaging.eventhubs.implementation.ReactorProvider;
-import com.azure.messaging.eventhubs.implementation.StringUtil;
-import com.azure.messaging.eventhubs.implementation.TokenManagerProvider;
-import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
-import com.azure.messaging.eventhubs.models.ProxyConfiguration;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.security.InvalidKeyException;
@@ -34,9 +38,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubAsyncClient} and {@link
@@ -85,7 +86,7 @@ public class EventHubClientBuilder {
     private RetryOptions retryOptions;
     private Scheduler scheduler;
     private TransportType transport;
-    private String host;
+    private String fullyQualifiedNamespace;
     private String eventHubName;
 
     /**
@@ -130,7 +131,7 @@ public class EventHubClientBuilder {
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        return credential(properties.getEndpoint().getHost(), properties.getEventHubName(), tokenCredential);
+        return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
 
     /**
@@ -171,13 +172,13 @@ public class EventHubClientBuilder {
                 "Could not create the EventHubSharedAccessKeyCredential.", e));
         }
 
-        if (!ImplUtils.isNullOrEmpty(properties.getEventHubName())
-            && !eventHubName.equals(properties.getEventHubName())) {
+        if (!ImplUtils.isNullOrEmpty(properties.getEntityPath())
+            && !eventHubName.equals(properties.getEntityPath())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'connectionString' contains an Event Hub name [%s] and it does not match the given "
                     + "'eventHubName' parameter [%s]. Please use the credentials(String connectionString) overload. "
                     + "Or supply a 'connectionString' without 'EntityPath' in it.",
-                properties.getEventHubName(), eventHubName)));
+                properties.getEntityPath(), eventHubName)));
         }
 
         return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential);
@@ -201,23 +202,26 @@ public class EventHubClientBuilder {
     /**
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
-     * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
-     *     <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      *
-     * @throws IllegalArgumentException if {@code host} or {@code eventHubName} is an empty string.
-     * @throws NullPointerException if {@code host}, {@code eventHubName}, {@code credentials} is null.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
      */
-    public EventHubClientBuilder credential(String host, String eventHubName, TokenCredential credential) {
-        this.host = Objects.requireNonNull(host, "'host' cannot be null.");
+    public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+                                            TokenCredential credential) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
-        if (ImplUtils.isNullOrEmpty(host)) {
+        if (ImplUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
         } else if (ImplUtils.isNullOrEmpty(eventHubName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
@@ -342,19 +346,19 @@ public class EventHubClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final Mono<EventHubConnection> connectionMono = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                connectionOptions.getAuthorizationType(), connectionOptions.getHost(),
+                connectionOptions.getAuthorizationType(), connectionOptions.getHostname(),
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-            final ManagementResponseMapper mapper = new EventHubResponseMapper();
 
             return new EventHubReactorConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, mapper);
+                tokenManagerProvider, messageSerializer);
         });
 
-        return new EventHubAsyncClient(connectionOptions, tracerProvider, connectionMono);
+        return new EventHubAsyncClient(connectionOptions, tracerProvider, messageSerializer, connectionMono);
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -397,7 +401,7 @@ public class EventHubClientBuilder {
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(host, eventHubName, credentials, authorizationType,
+        return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
             transport, retryOptions, proxyConfiguration, scheduler);
     }
 

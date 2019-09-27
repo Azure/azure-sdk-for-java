@@ -3,13 +3,13 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -31,6 +31,8 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters;
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -50,7 +52,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
@@ -72,6 +74,7 @@ import static com.azure.storage.blob.PostProcessor.postProcessResponse;
  * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
  * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
+@ServiceClient(builder = ContainerClientBuilder.class, isAsync = true)
 public final class ContainerAsyncClient {
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -81,7 +84,7 @@ public final class ContainerAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(ContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
-    private final CpkInfo cpk; // only used to pass down to blob clients
+    private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
@@ -90,133 +93,7 @@ public final class ContainerAsyncClient {
      */
     ContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk) {
         this.azureBlobStorage = azureBlobStorage;
-        this.cpk = cpk;
-    }
-
-    /**
-     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the
-     * ContainerAsyncClient. To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline
-     * method passing in the desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling
-     * this object's NewBlockBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getBlobAsyncClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
-        return getBlockBlobAsyncClient(blobName, null);
-    }
-
-    /**
-     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the
-     * ContainerAsyncClient. To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline
-     * method passing in the desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling
-     * this object's NewBlockBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getBlobAsyncClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName, String snapshot) {
-        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
-        return getPageBlobAsyncClient(blobName, null);
-    }
-
-    /**
-     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
-     * pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the desired pipeline
-     * object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient
-     * method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getPageBlobAsyncClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String snapshot) {
-        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change
-     * the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the desired
-     * pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
-        return getAppendBlobAsyncClient(blobName, null);
-    }
-
-    /**
-     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
-     * URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change
-     * the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the desired
-     * pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
-     * NewAppendBlobAsyncClient method.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getAppendBlobAsyncClient#String-String}
-     *
-     * @param blobName A {@code String} representing the name of the blob.
-     * @param snapshot the snapshot identifier for the blob.
-     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this
-     * container.
-     */
-    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName, String snapshot) {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
+        this.customerProvidedKey = cpk;
     }
 
     /**
@@ -254,19 +131,7 @@ public final class ContainerAsyncClient {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, cpk);
-    }
-
-    /**
-     * Initializes a {@link BlobServiceAsyncClient} object pointing to the storage account this container is in.
-     *
-     * @return A {@link BlobServiceAsyncClient} object pointing to the specified storage account
-     */
-    public BlobServiceAsyncClient getBlobServiceAsyncClient() {
-        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), cpk);
+            .build(), snapshot, customerProvidedKey);
     }
 
     /**
@@ -285,12 +150,35 @@ public final class ContainerAsyncClient {
     }
 
     /**
+     * Get the container name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getContainerName}
+     *
+     * @return The name of container.
+     */
+    public String getContainerName() {
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    }
+
+    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
         return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} associated with this client that will be passed to
+     * {@link BlobAsyncClient BlobAsyncClients} when {@link #getBlobAsyncClient(String) getBlobAsyncClient} is called.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCustomerProvidedKey() {
+        return customerProvidedKey;
     }
 
     /**
@@ -363,15 +251,16 @@ public final class ContainerAsyncClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
      */
-    public Mono<VoidResponse> createWithResponse(Metadata metadata, PublicAccessType accessType) {
+    public Mono<Response<Void>> createWithResponse(Metadata metadata, PublicAccessType accessType) {
         return withContext(context -> createWithResponse(metadata, accessType, context));
     }
 
-    Mono<VoidResponse> createWithResponse(Metadata metadata, PublicAccessType accessType, Context context) {
+    Mono<Response<Void>> createWithResponse(Metadata metadata, PublicAccessType accessType, Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
 
         return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, context)).map(VoidResponse::new);
+            null, null, metadata, accessType, null, context))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -403,11 +292,11 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
      * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
-    public Mono<VoidResponse> deleteWithResponse(ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(ContainerAccessConditions accessConditions) {
         return withContext(context -> deleteWithResponse(accessConditions, context));
     }
 
-    Mono<VoidResponse> deleteWithResponse(ContainerAccessConditions accessConditions, Context context) {
+    Mono<Response<Void>> deleteWithResponse(ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
@@ -419,7 +308,7 @@ public final class ContainerAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null, null,
             accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -490,11 +379,11 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
      * anything set other than {@link ModifiedAccessConditions#getIfModifiedSince()}.
      */
-    public Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions) {
         return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<VoidResponse> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions,
+    Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions,
         Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
@@ -508,7 +397,7 @@ public final class ContainerAsyncClient {
 
         return postProcessResponse(this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
             metadata, null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
-            context)).map(VoidResponse::new);
+            context)).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -596,12 +485,12 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
      * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
-    public Mono<VoidResponse> setAccessPolicyWithResponse(PublicAccessType accessType,
+    public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
         return withContext(context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
     }
 
-    Mono<VoidResponse> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers,
+    Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers,
         ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
@@ -634,7 +523,7 @@ public final class ContainerAsyncClient {
         return postProcessResponse(this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(null,
             identifiers, null, accessType, null, accessConditions.getLeaseAccessConditions(),
             accessConditions.getModifiedAccessConditions(), context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -1077,19 +966,6 @@ public final class ContainerAsyncClient {
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return blobServiceSasQueryParameters.encode();
-    }
-
-    /**
-     * Get the container name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.getContainerName}
-     *
-     * @return The name of container.
-     */
-    public String getContainerName() {
-        return URLParser.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
     }
 
     /**
