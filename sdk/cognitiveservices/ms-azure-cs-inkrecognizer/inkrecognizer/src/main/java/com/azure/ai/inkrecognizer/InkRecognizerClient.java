@@ -179,7 +179,7 @@ public final class InkRecognizerClient {
     }
 
     InkRecognizerClient setUnitMultiple(float multiple) {
-        this.unitMultiple = Utils.getValueOrDefault(multiple, 1.0f);
+        this.unitMultiple = multiple > 0 ? multiple : 1.0f;
         return this;
     }
 
