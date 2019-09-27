@@ -7,10 +7,13 @@
 package com.azure.ai.inkrecognizer;
 
 import android.util.DisplayMetrics;
-import com.azure.ai.inkrecognizer.model.*;
+import com.azure.ai.inkrecognizer.model.InkRecognitionRoot;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 import java.util.concurrent.TimeUnit;
 
