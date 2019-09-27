@@ -33,6 +33,10 @@ public class TimeoutTracker {
     public static TimeoutTracker create(Duration timeout) {
         return new TimeoutTracker(timeout, true);
     }
+    
+    public Duration originalTimeout() {
+    	return this.originalTimeout;
+    }
 
     public Duration remaining() {
         return this.originalTimeout.minus(this.elapsed());

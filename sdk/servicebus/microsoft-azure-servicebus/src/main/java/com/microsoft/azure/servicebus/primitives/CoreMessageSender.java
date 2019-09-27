@@ -95,6 +95,12 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
     private String transferSasTokenAudienceURI;
     private boolean isSendVia;
     private int maxMessageSize;
+    
+    // To workaround connection drops resulting in timeouts for long periods of time
+    private volatile boolean isInConsecutiveTimeoutState;
+    private volatile Instant consecutiveTimeoutsStartedAt;
+    private static final Duration MAXIMUM_CONSECUTIVE_TIMEOUT_DURATION = Duration.ofMinutes(2);
+    private static final Duration MINIMUM_SEND_TIMEOUT_TO_CONSIDER_AS_NETWORK_OUTAGE = Duration.ofSeconds(30);
 
     @Deprecated
     public static CompletableFuture<CoreMessageSender> create(
@@ -240,6 +246,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                 CoreMessageSender.this.processSendWork();
             }
         };
+        
+        this.isInConsecutiveTimeoutState = false;
     }
 
     public String getSendPath() {
@@ -269,6 +277,29 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         // Timer to timeout the request
         ScheduledFuture<?> timeoutTask = Timer.schedule(() -> {
             if (!sendWorkItem.getWork().isDone()) {
+            	if (sendWorkItem.getTimeoutTracker().originalTimeout().compareTo(MINIMUM_SEND_TIMEOUT_TO_CONSIDER_AS_NETWORK_OUTAGE) >= 0) {
+            		if (this.isInConsecutiveTimeoutState) {
+                		Duration consecutiveTimeoutsDuration = Duration.between(this.consecutiveTimeoutsStartedAt, Instant.now());
+                		if (consecutiveTimeoutsDuration.compareTo(MAXIMUM_CONSECUTIVE_TIMEOUT_DURATION) > 0) {
+                			// Consecutive timeouts. Reconnect by forcing a connection error
+                			try {
+                                this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+                                    @Override
+                                    public void onEvent() {
+                                        CoreMessageSender.this.underlyingFactory.onConnectionError(new ErrorCondition());
+                                    }
+                                });
+                            } catch (IOException ioEx) {
+                                // Ignore it if it can't scheduled on reactor thread.
+                            	TRACE_LOGGER.warn("IOException in scheduling connection error on reactor thread.");
+                            }
+                		}
+                	} else {
+                		this.isInConsecutiveTimeoutState = true;
+                		this.consecutiveTimeoutsStartedAt = Instant.now();
+                	}
+            	}
+            	
                 TRACE_LOGGER.warn("Delivery '{}' to '{}' did not receive ack from service. Throwing timeout.", sendWorkItem.getDeliveryTag(), CoreMessageSender.this.sendPath);
                 CoreMessageSender.this.pendingSendsData.remove(sendWorkItem.getDeliveryTag());
                 CoreMessageSender.this.throwSenderTimeout(sendWorkItem.getWork(), sendWorkItem.getLastKnownException());
@@ -375,7 +406,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
             this.maxMessageSize = Util.getMaxMessageSizeFromLink(this.sendLink);
             this.lastKnownLinkError = null;
             this.retryPolicy.resetRetryCount(this.getClientId());
-
+            this.isInConsecutiveTimeoutState = false;	
             if (this.sendLinkReopenFuture != null && !this.sendLinkReopenFuture.isDone()) {
                 AsyncUtil.completeFuture(this.sendLinkReopenFuture, null);
             }
@@ -467,6 +498,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
     @Override
     public void onSendComplete(final Delivery delivery) {
+    	this.isInConsecutiveTimeoutState = false;
         DeliveryState outcome = delivery.getRemoteState();
         final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
