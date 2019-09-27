@@ -145,8 +145,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 
         this.timedOutUpdateStateRequestsDaemon = () -> {
             try {
-            	if (CoreMessageReceiver.this.getIsClosed())
-		    	{
+            	if (CoreMessageReceiver.this.getIsClosed())	{
 		    		CoreMessageReceiver.this.updateStateRequestsTimeoutChecker.cancel(true);
 		    		return;
 		    	}
@@ -173,8 +172,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         // CONTRACT: message should be delivered to the caller of MessageReceiver.receive() only from prefetched messages
         this.returnMesagesLoopDaemon = () -> {
             try {
-            	if (CoreMessageReceiver.this.getIsClosed())
-		    	{
+            	if (CoreMessageReceiver.this.getIsClosed()) {
 		    		CoreMessageReceiver.this.returnMessagesLoopRunner.cancel(true);
 		    		return;
 		    	}
