@@ -202,7 +202,7 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         blockList.getCommittedBlocks().size() == 0
-        blockList.getUncommittedBlocks().size() == 3
+        blockList.getUncommittedBlocks().size() == 1
     }
 
     def "Stage block from URL MD5"() {
