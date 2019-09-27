@@ -5,6 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
@@ -16,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,11 +57,17 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * Gets token from shared token cache
      * */
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         // Initialize here so that the constructor doesn't throw
         if (pubClient == null) {
-            PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
-            pubClient = PublicClientApplication.builder(this.clientID).setTokenCacheAccessAspect(accessAspect).build();
+            try {
+                PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
+                pubClient = PublicClientApplication.builder(this.clientID)
+                    .setTokenCacheAccessAspect(accessAspect)
+                    .build();
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
         }
 
         IAccount requestedAccount = null;
@@ -89,7 +95,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
         // if it does, then request the token
         SilentParameters params = SilentParameters.builder(
-            new HashSet<>(Arrays.asList(scopes)), requestedAccount).build();
+            new HashSet<>(request.getScopes()), requestedAccount).build();
 
         CompletableFuture<IAuthenticationResult> future;
         try {

@@ -33,10 +33,10 @@ public class ManagedIdentityTokenProvider extends TokenProvider {
                 Date expiry = SecurityToken.getExpirationDateTimeUtcFromToken(rawToken);
                 tokenGeneratingFuture.complete(new SecurityToken(SecurityTokenType.JWT, audience, rawToken, Instant.now(), expiry.toInstant()));
             } catch (IOException e) {
-                TRACE_LOGGER.error("ManagedIdentity token generation failed.", e);
+                TRACE_LOGGER.info("ManagedIdentity token generation failed.", e);
                 tokenGeneratingFuture.completeExceptionally(e);
             } catch (ParseException e) {
-                TRACE_LOGGER.error("Could not parse the expiry time from the Managed Identity token string.", e);
+                TRACE_LOGGER.info("Could not parse the expiry time from the Managed Identity token string.", e);
                 tokenGeneratingFuture.completeExceptionally(e);
             }
         });

@@ -410,6 +410,10 @@
                 <packages>com.azure.storage.file*</packages>
               </group>
               <group>
+                <title>Azure Storage Files - Data Lake</title>
+                <packages>com.azure.storage.file.datalake*</packages>
+              </group>
+              <group>
                 <title>Azure Storage - Queues</title>
                 <packages>com.azure.storage.queue*</packages>
               </group>
@@ -578,6 +582,7 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
@@ -861,6 +866,7 @@
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file</module>
+    <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
     <module>sdk/tracing/tracing-opentelemetry</module>

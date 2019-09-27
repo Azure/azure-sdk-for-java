@@ -6,12 +6,8 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.FileAsyncClient
-import com.azure.storage.file.FileSASPermission
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import reactor.core.publisher.Flux
@@ -126,20 +122,14 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    @Unroll
     def "Create file with args error"() {
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, null, null, null, metadata))
+        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(-1, null, null, null, testMetadata))
 
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
         }
-
-        where:
-        maxSize | metadata                                      | statusCode | errMsg
-        -1      | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
-        1024    | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
     def "Upload and download data"() {
@@ -393,7 +383,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setRead(true), getUTCNow().plusDays(1))
+        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setReadPermission(true), getUTCNow().plusDays(1))
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")

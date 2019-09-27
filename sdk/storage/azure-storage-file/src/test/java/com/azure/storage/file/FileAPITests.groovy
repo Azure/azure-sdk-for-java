@@ -10,13 +10,9 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileSASPermission
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
@@ -124,18 +120,12 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
-    @Unroll
     def "Create file with args error"() {
         when:
-        primaryFileClient.createWithResponse(maxSize, null, null, null, metadata, null, null)
+        primaryFileClient.createWithResponse(-1, null, null, null, testMetadata, null, null)
         then:
         def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
-
-        where:
-        maxSize | metadata                                      | statusCode | errMsg
-        -1      | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
-        1024    | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
     }
 
     @Unroll
@@ -387,7 +377,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
-        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().setRead(true))
+        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().setReadPermission(true))
 
         when:
         FileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
