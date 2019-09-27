@@ -3,6 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.util.Configuration;
+import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.StorageException;

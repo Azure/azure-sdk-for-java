@@ -3,6 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.util.Configuration;
+import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.StorageException;
 
 import java.util.UUID;
