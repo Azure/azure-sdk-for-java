@@ -43,6 +43,7 @@ public class EventHubConsumerOptions implements Cloneable {
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
+    private boolean trackLastEnqueuedEventInformation;
     private String identifier;
     private Long ownerLevel;
     private RetryOptions retry;
@@ -143,10 +144,29 @@ public class EventHubConsumerOptions implements Cloneable {
      * associated {@link EventHubAsyncClient} is used.
      *
      * @param scheduler The scheduler for receiving events.
-     * @return The updated EventHubClientBuilder object.
+     * @return The updated {@link EventHubConsumerOptions} object.
      */
     public EventHubConsumerOptions setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
+        return this;
+    }
+
+    /**
+     * Sets whether or not the consumer should request information on the last enqueued event on its associated
+     * partition, and track that information as events are received.
+     *
+     * <p>When information about the partition's last enqueued event is being tracked, each event received from the
+     * Event Hubs service will carry metadata about the partition that it otherwise would not. This results in a small
+     * amount of additional network bandwidth consumption that is generally a favorable trade-off when considered
+     * against periodically making requests for partition properties using the Event Hub client.</p>
+     *
+     * @param trackLastEnqueuedEventInformation {@code true} if the resulting consumer will keep track of the last
+     *     enqueued information for that partition; {@code false} otherwise.
+     *
+     * @return The updated {@link EventHubConsumerOptions} object.
+     */
+    public EventHubConsumerOptions setTrackLastEnqueuedEventInformation(boolean trackLastEnqueuedEventInformation) {
+        this.trackLastEnqueuedEventInformation = trackLastEnqueuedEventInformation;
         return this;
     }
 
@@ -200,6 +220,17 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public int getPrefetchCount() {
         return prefetchCount;
+    }
+
+    /**
+     * Gets whether or not the consumer should request information on the last enqueued event on its associated
+     * partition, and track that information as events are received.
+     *
+     * @return {@code true} if the resulting consumer will keep track of the last enqueued information for that
+     *     partition; {@code false} otherwise.
+     */
+    public boolean getTrackLastEnqueuedEventInformation() {
+        return trackLastEnqueuedEventInformation;
     }
 
     /**
