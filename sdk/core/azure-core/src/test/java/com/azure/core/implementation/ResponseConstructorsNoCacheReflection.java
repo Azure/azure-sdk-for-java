@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 class ResponseConstructorsNoCacheReflection {
-    private final ClientLogger logger = new ClientLogger(ResponseConstructorsCacheReflection.class);
+    private final ClientLogger logger = new ClientLogger(ResponseConstructorsCacheLambdaMetaFactory.class);
 
     Constructor<? extends Response<?>> get(Class<? extends Response<?>> responseClass) {
         return locateResponseConstructor(responseClass);
@@ -96,7 +96,8 @@ class ResponseConstructorsNoCacheReflection {
                             }
                         }));
             default:
-                throw new IllegalStateException("Response constructor with expected parameters not found.");
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Response constructor with expected parameters not found."));
         }
     }
 }
