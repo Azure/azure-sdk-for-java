@@ -24,6 +24,12 @@ public class BenchmarkingTool<T, R> {
     }
 
     public BenchmarkResults runJobAsync(Function<T, Mono<R>> function, int parallel, Duration duration) {
+        // warm up
+        System.out.println("Warnming up");
+        Flux.range(1, parallel).repeat().flatMap(i -> function.apply(client), parallel).take(Duration.ofSeconds(20)).count().block();
+
+        // Run Benchmark
+        System.out.printf("Running Benchmark: Duration: %d, parallel %d %n", duration.getSeconds(), parallel);
         Long startTime = System.nanoTime();
         Long blobs = Flux.just(1).repeat().flatMap(i -> function.apply(client), parallel).take(duration).count().block();
         Long endTime = System.nanoTime();
@@ -38,8 +44,8 @@ public class BenchmarkingTool<T, R> {
         for (int i = 0; i < parallel; i++) {
             Callable<Integer> worker = new Task(client, duration.getSeconds(), requests, function);
             callables.add(worker);
-            // executor.execute(worker);
         }
+
         Long startTime = System.nanoTime();
         try {
             executor.invokeAll(callables, 10, TimeUnit.SECONDS);

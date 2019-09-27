@@ -50,7 +50,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.0.0-preview.vinayg.4</version>
+      <version>12.0.0-preview.3</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-core</artifactId>
+        <version>1.19</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-generator-annprocess</artifactId>
+        <version>1.19</version>
     </dependency>
 
 <!--        <dependency>-->

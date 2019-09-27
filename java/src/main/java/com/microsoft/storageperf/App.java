@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BooleanSupplier;
 
@@ -29,6 +31,8 @@ import org.apache.commons.cli.*;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.tcp.ProxyProvider;
 
 public class App {
@@ -72,7 +76,7 @@ public class App {
         boolean upload = true; //cmd.hasOption("upload");
         boolean debug = cmd.hasOption("debug");
 
-        String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=internalcamerastorage;AccountKey=tvlhYWi7X5QnuVDP8Py+BZj4lm2eVPexKiXPuW/DiqYyxz/i+iFDZl+Gk7TWm7JmDGNs1b/nFc6WUbaBBml1vQ==;EndpointSuffix=core.windows.net";
         if (connectionString == null || connectionString.isEmpty()) {
             System.out.println("Environment variable STORAGE_CONNECTION_STRING must be set");
             System.exit(1);
@@ -86,7 +90,7 @@ public class App {
         int numThreads =  Runtime.getRuntime().availableProcessors() * 2;
         NioEventLoopGroup group = new NioEventLoopGroup(parallel*16);
         HttpClient htclient = new NettyAsyncHttpClientBuilder()
-                .nioEventLoopGroup(group)
+                .setNioEventLoopGroup(group)
                 .build();
 
         BlockBlobAsyncClient client = new BlobClientBuilder().connectionString(connectionString)
