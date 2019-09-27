@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.RetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -34,10 +33,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
  * An <strong>asynchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
@@ -282,7 +277,7 @@ public class EventHubAsyncClient implements Closeable {
                 final RetryPolicy retryPolicy = RetryUtil.getRetryPolicy(clonedOptions.getRetry());
 
                 return session.createConsumer(linkName, entityPath, clonedOptions.getRetry().getTryTimeout(),
-                    retryPolicy, getExpression(eventPosition), options.getOwnerLevel(), options.getIdentifier());
+                    retryPolicy, eventPosition, options);
             });
 
         return new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, clonedOptions);
@@ -306,42 +301,5 @@ public class EventHubAsyncClient implements Closeable {
                         new ErrorContext(connectionOptions.getHostname())));
             }
         }
-    }
-
-    private static String getExpression(EventPosition eventPosition) {
-        final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
-
-        // order of preference
-        if (eventPosition.getOffset() != null) {
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                eventPosition.getOffset());
-        }
-
-        if (eventPosition.getSequenceNumber() != null) {
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                eventPosition.getSequenceNumber());
-        }
-
-        if (eventPosition.getEnqueuedDateTime() != null) {
-            String ms;
-            try {
-                ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
-            } catch (ArithmeticException ex) {
-                ms = Long.toString(Long.MAX_VALUE);
-            }
-
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                ms);
-        }
-
-        throw new IllegalArgumentException("No starting position was set.");
     }
 }
