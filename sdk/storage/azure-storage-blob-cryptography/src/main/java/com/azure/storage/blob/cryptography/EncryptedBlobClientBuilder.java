@@ -53,8 +53,8 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     private String blobName;
     private String snapshot;
 
-    private BlobEncryptionPolicy encryptionPolicy;
-    private BlobDecryptionPolicy decryptionPolicy;
+    private IKey keyWrapper;
+    private IKeyResolver keyResolver;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -65,8 +65,8 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     private AzureBlobStorageImpl constructImpl() {
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(blobName);
-        Objects.requireNonNull(encryptionPolicy);
-        Objects.requireNonNull(decryptionPolicy);
+
+        checkValidEncryptionParameters();
 
         HttpPipeline pipeline = super.getPipeline();
         if (pipeline == null) {
@@ -90,14 +90,17 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @return The encrypted client.
      */
     public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient(BlockBlobAsyncClient client) {
-        Objects.requireNonNull(encryptionPolicy);
-        Objects.requireNonNull(decryptionPolicy);
+
+        checkValidEncryptionParameters();
+
         AzureBlobStorageImpl impl = new AzureBlobStorageBuilder()
             .url(client.getBlobUrl().toString())
             .pipeline(addDecryptionPolicy(client.getHttpPipeline(),
                 client.getHttpPipeline().getHttpClient()))
             .build();
-        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), encryptionPolicy);
+
+        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
+            new BlobEncryptionPolicy(this.keyWrapper));
     }
 
     /**
@@ -111,20 +114,23 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @return The encrypted client.
      */
     public EncryptedBlockBlobClient buildEncryptedBlockBlobClient(BlockBlobClient client) {
-        Objects.requireNonNull(encryptionPolicy);
-        Objects.requireNonNull(decryptionPolicy);
+
+        checkValidEncryptionParameters();
+
         AzureBlobStorageImpl impl = new AzureBlobStorageBuilder()
             .url(client.getBlobUrl().toString())
             .pipeline(addDecryptionPolicy(client.getHttpPipeline(),
                 client.getHttpPipeline().getHttpClient()))
             .build();
+
         return new EncryptedBlockBlobClient(
-            new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), encryptionPolicy));
+            new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
+                new BlobEncryptionPolicy(this.keyWrapper)));
     }
 
     private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
         HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() + 1];
-        policies[0] = this.decryptionPolicy;
+        policies[0] = new BlobDecryptionPolicy(keyWrapper, keyResolver);
         for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
             policies[i + 1] = originalPipeline.getPolicy(i);
         }
@@ -133,8 +139,6 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
             .policies(policies)
             .build();
     }
-
-    // TODO (gapra) : Add more information about encrypted block blobs
     /**
      * Creates a {@link EncryptedBlockBlobClient} based on options set in the Builder.
      *
@@ -160,7 +164,8 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient() {
-        return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot, encryptionPolicy);
+        return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot,
+            new BlobEncryptionPolicy(this.keyWrapper));
     }
 
     /**
@@ -194,9 +199,8 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
 
     @Override
     protected void addOptionalEncryptionPolicy(List<HttpPipelinePolicy> policies) {
-        if (decryptionPolicy != null) {
-            policies.add(decryptionPolicy);
-        }
+        BlobDecryptionPolicy decryptionPolicy = new BlobDecryptionPolicy(keyWrapper, keyResolver);
+        policies.add(decryptionPolicy);
     }
 
     /**
@@ -256,10 +260,16 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @return the updated EncryptedBlobClientBuilder object
      */
     public EncryptedBlobClientBuilder keyAndKeyResolver(IKey key, IKeyResolver keyResolver) {
-        // These policies will throw if key or keyResolver is not set properly when being used.
-        this.encryptionPolicy = new BlobEncryptionPolicy(key);
-        this.decryptionPolicy = new BlobDecryptionPolicy(key, keyResolver);
+        this.keyWrapper = key;
+        this.keyResolver = keyResolver;
         return this;
+    }
+
+    private void checkValidEncryptionParameters() {
+        // Check that key and key wrapper are not both null.
+        if (this.keyWrapper == null && this.keyResolver == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
+        }
     }
 
 }

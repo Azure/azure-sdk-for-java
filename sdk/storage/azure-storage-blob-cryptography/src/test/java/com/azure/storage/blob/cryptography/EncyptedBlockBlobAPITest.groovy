@@ -2,6 +2,7 @@ package com.azure.storage.blob.cryptography
 
 
 import com.azure.storage.blob.BlockBlobAsyncClient
+import com.azure.storage.blob.BlockBlobClient
 import com.azure.storage.blob.ContainerAsyncClient
 import com.azure.storage.blob.ContainerClient
 import com.azure.storage.blob.URLParser
@@ -16,8 +17,8 @@ import com.azure.storage.common.Constants
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.type.CollectionType
 import reactor.core.publisher.Flux
-import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.Shared
 import spock.lang.Unroll
 
 import javax.crypto.KeyGenerator
@@ -36,6 +37,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
     ContainerClient cc
 
     String keyId
+
+    @Shared
     def symmetricKey
 
     def setup() {
@@ -61,7 +64,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .buildEncryptedBlockBlobClient()
     }
 
-    // Key or key resolver must be set
+    // Key and key resolver null
     @Requires({ APISpec.liveMode() })
     def "Create encryption client fails"() {
         when:
@@ -83,8 +86,50 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    // Check that all valid ways to specify the key and keyResolver work
+    @Unroll
     @Requires({ APISpec.liveMode() })
-    def "Test BlockBlobClient wrap builder"() {
+    def "Create encryption client succeeds"() {
+        when:
+        def id = "keyId"
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES")
+        keyGen.init(256)
+        SecretKey secretKey = keyGen.generateKey()
+        def key
+        if(passKey) {
+            key = new SymmetricKey(id, secretKey.getEncoded())
+        } else {
+            key = null
+        }
+        def keyResolver
+        if (!passKeyResolver) {
+            keyResolver = null
+        }
+        beac = getEncryptedClientBuilder(key as IKey, keyResolver as IKeyResolver, primaryCredential,
+            cc.getContainerUrl().toString())
+            .blobName(generateBlobName())
+            .buildEncryptedBlockBlobAsyncClient()
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when:
+        bec = getEncryptedClientBuilder(key as IKey, keyResolver as IKeyResolver, primaryCredential,
+            cc.getContainerUrl().toString())
+            .blobName(generateBlobName())
+            .buildEncryptedBlockBlobClient()
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        where:
+        // TODO (gapra) : Add keyResolver true here and both true here
+        passKey | passKeyResolver
+        true    | false
+    }
+
+    @Requires({ APISpec.liveMode() })
+    def "Test BlockBlobAsyncClient wrap builder"() {
         setup:
         ContainerAsyncClient cac = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
@@ -101,20 +146,56 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .keyAndKeyResolver(symmetricKey, null)
             .buildEncryptedBlockBlobAsyncClient(normalClient)
 
-        // Check that an encrypted client
+        // Check that an encrypted client has correct number of policies and important properties are the same
         then:
         normalClient.blobUrl == client.blobUrl
         normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
+        normalClient.getHttpPipeline().httpClient == client.getHttpPipeline().httpClient
     }
 
     @Requires({ APISpec.liveMode() })
-    def "Test EncryptedBlockBlobClient to BlockBlobClient"() {
+    def "Test BlockBlobClient wrap builder"() {
+        setup:
+        ContainerClient cc = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .buildClient()
+            .getContainerClient(generateContainerName())
+
+        cc.create()
+        def blobName = generateBlobName()
+
+        BlockBlobClient normalClient = cc.getBlockBlobClient(blobName)
+
         when:
-        BlockBlobAsyncClient normalClient = beac.getBlockBlobAsyncClient()
+        EncryptedBlockBlobClient client = new EncryptedBlobClientBuilder()
+            .keyAndKeyResolver(symmetricKey, null)
+            .buildEncryptedBlockBlobClient(normalClient)
+
+        // Check that an encrypted client has correct number of policies and important properties are the same
+        then:
+        normalClient.blobUrl == client.blobUrl
+        normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
+        normalClient.getHttpPipeline().httpClient == client.getHttpPipeline().httpClient
+    }
+
+    @Requires({ APISpec.liveMode() })
+    def "Test Async and Sync EncryptedBlockBlobClient to BlockBlobClient"() {
+        when:
+        BlockBlobAsyncClient normalAsyncClient = beac.getBlockBlobAsyncClient()
 
         then:
-        normalClient.blobUrl == beac.blobUrl
-        normalClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount - 1
+        normalAsyncClient.blobUrl == beac.blobUrl
+        normalAsyncClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount - 1
+        normalAsyncClient.getHttpPipeline().httpClient == beac.getHttpPipeline().httpClient
+
+        when:
+        BlockBlobClient normalClient = bec.getBlockBlobClient()
+
+        // Check that an encrypted client has correct number of policies and important properties are the same
+        then:
+        normalClient.blobUrl == bec.blobUrl
+        normalClient.getHttpPipeline().policyCount == bec.getHttpPipeline().policyCount - 1
+        normalClient.getHttpPipeline().httpClient == bec.getHttpPipeline().httpClient
 
     }
 
@@ -196,7 +277,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setBlobContentType(contentType)
 
         /* TODO : (gapra) Find out how exactly to fix this, this fails because the contentMd5 being sent to the service
-            is that of unencrypted data */
+            is that of unencrypted data this could be an issue for customers as well */
 //        when:
 //        beac.uploadWithResponse(defaultFlux, defaultDataSize, headers, null, null, null).block()
 //        def response = beac.getPropertiesWithResponse(null).block()
@@ -259,9 +340,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-    // This test checks that access conditions in encryption clients is successfully set
-    // TODO: (gapra) Blocked on making LeaseClientBuilder a full fledged builder
-    @Ignore
+    // This test checks that access conditions in encryption clients are successfully set
     @Unroll
     @Requires({ APISpec.liveMode() })
     def "Encryption AC"() {
@@ -295,9 +374,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    // This test checks that access conditions in encryption clients is unsuccessful with invalid data
-    // TODO: (gapra) Blocked on making LeaseClientBuilder a full fledged builder
-    @Ignore
+    // This test checks that access conditions in encryption clients are unsuccessful with invalid data
     @Unroll
     @Requires({ APISpec.liveMode() })
     def "Encryption AC fail"() {
@@ -393,7 +470,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         when:
         Metadata metadata = new Metadata()
         ObjectMapper objectMapper = new ObjectMapper()
-        metadata.put(EncryptionConstants.ENCRYPTION_DATA_KEY, objectMapper.writeValueAsString(list.get(index).
+        metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY, objectMapper.writeValueAsString(list.get(index).
             getEncryptionData()))
 
         // Upload encrypted data with regular client
@@ -438,12 +515,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
         normalClient.uploadWithResponse(defaultFlux, defaultDataSize, null,
             null, null, null).block()
 
-        // Download data with encrypted client
+        // Download data with encrypted client - command should fail
         client.download().block()
 
         then:
         thrown(IllegalStateException)
     }
+
+    // TODO : Add tests for KeyResolver, maybe RSAKey, Validate Wrappers
 
     def getTestData(String fileName) {
         Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI())

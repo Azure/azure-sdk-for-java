@@ -32,11 +32,10 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.storage.blob.cryptography.EncryptionConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
@@ -65,9 +64,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
      */
     BlobDecryptionPolicy(IKey key, IKeyResolver keyResolver) {
-        if (key == null && keyResolver == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
-        }
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
     }
@@ -75,15 +71,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // 1. Expand the range of download for decryption
-        String rangeHeader = "x-ms-range";
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
         EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-            requestHeaders.getValue(rangeHeader));
+            requestHeaders.getValue(CryptographyConstants.RANGE_HEADER));
 
         // Assumption: Download is the only API on an encrypted client that sets x-ms-range
         // Only set the x-ms-range header if it already exists
-        if (requestHeaders.getValue(rangeHeader) != null) {
-            requestHeaders.put(rangeHeader, encryptedRange.toBlobRange().toString());
+        if (requestHeaders.getValue(CryptographyConstants.RANGE_HEADER) != null) {
+            requestHeaders.put(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
         }
 
         // 2. Replace the body of the response with a decrypted version of the body
@@ -96,11 +91,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 We will need to know the total size of the data to know when to finalize the decryption. If it was
                 not set originally with the intent of downloading the whole blob, update it here.
                  */
-                encryptedRange.withAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue("Content-Length")));
+                encryptedRange.withAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(
+                    CryptographyConstants.CONTENT_LENGTH)));
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
-                Metadata metadata = extractMetadataFromResponse(responseHeaders);
-                Flux<ByteBuffer> plainTextData = this.decryptBlob(metadata,
+                String encryptedDataString = extractEncryptedDataFromResponse(responseHeaders);
+                Flux<ByteBuffer> plainTextData = this.decryptBlob(encryptedDataString,
                     httpResponse.getBody(), encryptedRange, padding);
 
                 return Mono.just(new BlobDecryptionPolicy.DecryptedResponse(httpResponse, plainTextData));
@@ -113,16 +109,16 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     /**
      * Decrypted all or part of an encrypted Block-, Page- or AppendBlob.
      *
-     * @param metadata The Blob's {@link com.azure.storage.blob.models.Metadata}
+     * @param encryptedDataString The Blob's encrypted data in the {@link com.azure.storage.blob.models.Metadata}
      * @param encryptedFlux The encrypted Flux of ByteBuffer to decrypt
      * @param encryptedBlobRange A {@link EncryptedBlobRange} indicating the range to decrypt
      * @param padding Boolean indicating if the padding mode should be set or not.
      *
      * @return A Flux ByteBuffer that has been decrypted
      */
-    Flux<ByteBuffer> decryptBlob(Map<String, String> metadata, Flux<ByteBuffer> encryptedFlux,
+    Flux<ByteBuffer> decryptBlob(String encryptedDataString, Flux<ByteBuffer> encryptedFlux,
         EncryptedBlobRange encryptedBlobRange, boolean padding) {
-        EncryptionData encryptionData = getAndValidateEncryptionData(metadata);
+        EncryptionData encryptionData = getAndValidateEncryptionData(encryptedDataString);
 
         // The number of bytes we have put into the Cipher so far.
         AtomicLong totalInputBytes = new AtomicLong(0);
@@ -143,7 +139,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 of downloaded data are in position to be used as the IV for the data actually requested and we are
                 in the desired state.
                  */
-                byte[] iv = new byte[ENCRYPTION_BLOCK_SIZE];
+                byte[] iv;
                 /*
                 Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
                 (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the key
@@ -151,6 +147,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  */
                 if (encryptedBlobRange.offsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
                     iv = encryptionData.contentEncryptionIV();
+                } else {
+                    iv = new byte[ENCRYPTION_BLOCK_SIZE];
                 }
 
                 Cipher cipher;
@@ -293,23 +291,21 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     /**
      * Gets and validates {@link EncryptionData} from a Blob's metadata
      *
-     * @param metadata {@code Map} of String -> String
+     * @param encryptedDataString {@code String} of encrypted metadata
      *
      * @return {@link EncryptionData}
      */
-    private EncryptionData getAndValidateEncryptionData(Map<String, String> metadata) {
-        String encryptedDataString = metadata.get(EncryptionConstants.ENCRYPTION_DATA_KEY);
+    private EncryptionData getAndValidateEncryptionData(String encryptedDataString) {
         if (encryptedDataString == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Encryption client is being used but the "
-                + "blob metadata indicates that it is not encrypted."));
+            throw logger.logExceptionAsError(new IllegalStateException(CryptographyConstants.DECRYPT_UNENCRYPTED_BLOB));
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             EncryptionData encryptionData = objectMapper.readValue(encryptedDataString, EncryptionData.class);
 
             if (encryptionData == null) {
-                throw logger.logExceptionAsError(new IllegalStateException("Encryption client is being used but the "
-                    + "blob is not encrypted."));
+                throw logger.logExceptionAsError(new IllegalStateException(CryptographyConstants.DECRYPT_UNENCRYPTED_BLOB
+                ));
             }
 
             Objects.requireNonNull(encryptionData.contentEncryptionIV());
@@ -317,7 +313,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
             // Throw if the encryption protocol on the message doesn't match the version that this client library
             // understands and is able to decrypt.
-            if (!EncryptionConstants.ENCRYPTION_PROTOCOL_V1.equals(encryptionData.encryptionAgent().protocol())) {
+            if (!CryptographyConstants.ENCRYPTION_PROTOCOL_V1.equals(encryptionData.encryptionAgent().protocol())) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
                     "Invalid Encryption Agent. This version of the client library does not understand the "
                         + "Encryption Agent set on the blob message: %s",
@@ -396,13 +392,13 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 case AES_CBC_256:
                     Cipher cipher;
                     if (padding) {
-                        cipher = Cipher.getInstance(EncryptionConstants.AES_CBC_PKCS5PADDING);
+                        cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
                     } else {
-                        cipher = Cipher.getInstance(EncryptionConstants.AES_CBC_NO_PADDING);
+                        cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_NO_PADDING);
                     }
                     IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
                     SecretKey keySpec = new SecretKeySpec(contentEncryptionKey, 0, contentEncryptionKey.length,
-                        EncryptionConstants.AES);
+                        CryptographyConstants.AES);
                     cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
                     return cipher;
                 default:
@@ -417,25 +413,25 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private Long blobSize(HttpHeaders headers) {
         // e.g. 0-5/1024
-        if (headers.getValue("Content-Range") != null) {
-            String range = headers.getValue("Content-Range");
+        if (headers.getValue(CryptographyConstants.CONTENT_RANGE) != null) {
+            String range = headers.getValue(CryptographyConstants.CONTENT_RANGE);
             return Long.valueOf(range.split("/")[1]);
         } else {
             // If there was no content range header, we requested a full blob, so the blobSize = contentLength
-            return Long.valueOf(headers.getValue("Content-Length"));
+            return Long.valueOf(headers.getValue(CryptographyConstants.CONTENT_LENGTH));
         }
     }
 
-    private Metadata extractMetadataFromResponse(HttpHeaders headers) {
+    private String extractEncryptedDataFromResponse(HttpHeaders headers) {
         Metadata metadata = new Metadata();
         for (HttpHeader header : headers) {
             String key = header.getName();
-            String metadataHeader = "x-ms-meta-";
-            if (key.startsWith(metadataHeader)) {
-                metadata.put(key.substring(metadataHeader.length()), header.getValue());
+            if (key.startsWith(CryptographyConstants.METADATA_HEADER)) {
+                metadata.put(key.substring(CryptographyConstants.METADATA_HEADER.length()), header.getValue());
             }
         }
-        return metadata;
+        String encryptedDataString = metadata.get(CryptographyConstants.ENCRYPTION_DATA_KEY);
+        return encryptedDataString;
     }
 
     static class DecryptedResponse extends HttpResponse {

@@ -16,6 +16,7 @@ import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -346,5 +347,16 @@ class APISpec extends Specification {
         } else {
             return leaseID
         }
+    }
+
+    static LeaseClient createLeaseClient(BlobClient blobClient) {
+        return createLeaseClient(blobClient, null)
+    }
+
+    static LeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
+        return new LeaseClientBuilder()
+            .blobClient(blobClient)
+            .leaseId(leaseId)
+            .buildClient()
     }
 }

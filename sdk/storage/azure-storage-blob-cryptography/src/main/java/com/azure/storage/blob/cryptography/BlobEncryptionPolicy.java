@@ -63,17 +63,17 @@ final class BlobEncryptionPolicy {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) throws InvalidKeyException {
         Objects.requireNonNull(this.keyWrapper);
         try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+            KeyGenerator keyGen = KeyGenerator.getInstance(CryptographyConstants.AES);
             keyGen.init(256);
 
-            Cipher cipher = Cipher.getInstance(EncryptionConstants.AES_CBC_PKCS5PADDING);
+            Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
 
             // Generate content encryption key
             SecretKey aesKey = keyGen.generateKey();
             cipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
-            keyWrappingMetadata.put(EncryptionConstants.AGENT_METADATA_KEY, EncryptionConstants.AGENT_METADATA_VALUE);
+            keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY, CryptographyConstants.AGENT_METADATA_VALUE);
 
             return this.keyWrapper.wrapKeyAsync(aesKey.getEncoded(), null /* algorithm */)
                 .map(encryptedKey -> {
@@ -82,9 +82,9 @@ final class BlobEncryptionPolicy {
 
                     // Build EncryptionData
                     EncryptionData encryptionData = new EncryptionData()
-                        .withEncryptionMode(EncryptionConstants.ENCRYPTION_MODE)
+                        .withEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
                         .withEncryptionAgent(
-                            new EncryptionAgent(EncryptionConstants.ENCRYPTION_PROTOCOL_V1,
+                            new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
                                 EncryptionAlgorithm.AES_CBC_256))
                         .withKeyWrappingMetadata(keyWrappingMetadata)
                         .withContentEncryptionIV(cipher.getIV())
@@ -147,7 +147,7 @@ final class BlobEncryptionPolicy {
             return this.encryptBlob(plainText)
                 .flatMap(encryptedBlob -> {
                     try {
-                        metadata.put(EncryptionConstants.ENCRYPTION_DATA_KEY,
+                        metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY,
                             encryptedBlob.getEncryptionData().toJsonString());
                         return Mono.just(encryptedBlob.getCiphertextFlux());
                     } catch (JsonProcessingException e) {

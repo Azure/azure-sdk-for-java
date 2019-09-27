@@ -47,8 +47,8 @@ class DecryptionTests extends APISpec {
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, symmetricKey, this)
-        def metadata = new Metadata()
-        metadata.put(EncryptionConstants.ENCRYPTION_DATA_KEY, new ObjectMapper().writeValueAsString(flow.getEncryptionData()))
+
+        def encryptionDataString = new ObjectMapper().writeValueAsString(flow.getEncryptionData())
         def desiredOutput = flow.getPlainText().position(EncryptedFlux.DATA_OFFSET)
             .limit(EncryptedFlux.DATA_OFFSET + EncryptedFlux.DATA_COUNT)
 
@@ -62,7 +62,8 @@ class DecryptionTests extends APISpec {
 
         when:
         def decryptedData = collectBytesInBuffer(
-            blobDecryptionPolicy.decryptBlob(metadata, flow, new EncryptedBlobRange(blobRange), true)).block()
+            blobDecryptionPolicy.decryptBlob(encryptionDataString, flow, new EncryptedBlobRange(blobRange), true))
+            .block()
 
         then:
         decryptedData == desiredOutput
