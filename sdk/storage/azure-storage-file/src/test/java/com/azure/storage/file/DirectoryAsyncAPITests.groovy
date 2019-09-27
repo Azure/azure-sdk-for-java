@@ -92,17 +92,6 @@ class DirectoryAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    def "Create directory error with metadata"() {
-        given:
-        def errorMetadata = Collections.singletonMap("testMeta", "value")
-        when:
-        def createMetadataErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, null, errorMetadata))
-        then:
-        createMetadataErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 403, StorageErrorCode.AUTHENTICATION_FAILED)
-        }
-    }
-
     def "Create directory with file permission"() {
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, filePermission, testMetadata))

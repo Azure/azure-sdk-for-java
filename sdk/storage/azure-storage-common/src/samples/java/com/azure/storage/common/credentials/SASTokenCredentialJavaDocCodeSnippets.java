@@ -13,16 +13,19 @@ import java.util.Map;
  * Code snippets for {@link SASTokenCredential}.
  */
 public final class SASTokenCredentialJavaDocCodeSnippets {
-    private final String preformattedSASToken = "sasToken";
     private final URL url = new URL("https://www.example.com?queryString");
 
-    private SASTokenCredentialJavaDocCodeSnippets() throws MalformedURLException {
+    /**
+     * @throws MalformedURLException ignored
+     */
+    public SASTokenCredentialJavaDocCodeSnippets() throws MalformedURLException {
     }
 
     /**
      * Code sample for {@link SASTokenCredential#fromSASTokenString(String)}.
      */
     public void fromSASTokenString() {
+        String preformattedSASToken = "sasToken";
         // BEGIN: com.azure.storage.common.credentials.SASTokenCredential.fromSASTokenString#String
         SASTokenCredential credential = SASTokenCredential.fromSASTokenString(preformattedSASToken);
         // END: com.azure.storage.common.credentials.SASTokenCredential.fromSASTokenString#String

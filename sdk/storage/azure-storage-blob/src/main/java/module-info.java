@@ -8,11 +8,15 @@ module com.azure.storage.blob {
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;
+    exports com.azure.storage.blob.specialized;
 
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
     opens com.azure.storage.blob.implementation to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
+    opens com.azure.storage.blob.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
 }

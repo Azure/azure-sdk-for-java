@@ -141,10 +141,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]com[/\\]azure[/\\]core[/\\]util[/\\]logging[/\\]*"/>
 
   <!-- Suppress IO exception for now, which need code owner's attention -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlobInputStream.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlobOutputStream.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.BlockBlobClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.PageBlobAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.BlobInputStream.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
   <!-- Suppress requirement that abstract builder classes require the ServiceClientBuilder annotation -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.storage.common.BaseClientBuilder.java"/>
@@ -198,4 +196,7 @@
   <!-- Suppress CRUD operation names as they won't feel fluent -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseAsyncClient.java"/>
+
+  <!-- Checkstyle rules should not check files in generated-test-sources -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
 </suppressions>
