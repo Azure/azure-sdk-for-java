@@ -18,7 +18,7 @@ public class BasicAuthenticationCredential implements TokenCredential {
     /**
      * Basic auth user name.
      */
-    private final String userName;
+    private final String username;
 
     /**
      * Basic auth password.
@@ -28,11 +28,11 @@ public class BasicAuthenticationCredential implements TokenCredential {
     /**
      * Creates a basic authentication credential.
      *
-     * @param userName basic auth user name
+     * @param username basic auth user name
      * @param password basic auth password
      */
-    public BasicAuthenticationCredential(String userName, String password) {
-        this.userName = userName;
+    public BasicAuthenticationCredential(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -41,7 +41,7 @@ public class BasicAuthenticationCredential implements TokenCredential {
      */
     @Override
     public Mono<AccessToken> getToken(TokenRequest request) {
-        String credential = userName + ":" + password;
+        String credential = username + ":" + password;
         String encodedCredential;
         try {
             encodedCredential = Base64Util.encodeToString(credential.getBytes("UTF8"));
