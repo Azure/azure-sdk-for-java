@@ -97,8 +97,6 @@ public class EventHubAsyncConsumerTest {
     public void teardown() throws IOException {
         Mockito.framework().clearInlineMocks();
         consumer.close();
-        messageProcessor.dispose();
-        shutdownProcessor.dispose();
     }
 
     /**
