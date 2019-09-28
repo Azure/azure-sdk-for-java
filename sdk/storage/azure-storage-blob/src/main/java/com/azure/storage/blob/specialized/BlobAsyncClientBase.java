@@ -602,11 +602,6 @@ public class BlobAsyncClientBase {
         }
     }
 
-    private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions) {
-        return getPropertiesWithResponse(accessConditions).map(rb ->
-            new BlobRange(0, rb.getValue().getBlobSize()));
-    }
-
     private List<BlobRange> sliceBlobRange(BlobRange blobRange, Integer blockSize) {
         if (blockSize == null) {
             blockSize = BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;

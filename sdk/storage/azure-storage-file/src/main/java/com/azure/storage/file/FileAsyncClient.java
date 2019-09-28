@@ -357,7 +357,19 @@ public class FileAsyncClient {
                                                                    AsynchronousFileChannel channel,
                                                                    FileRange range, Context context) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new FileRange(0, response.getValue()
-            .getContentLength()))).flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false, context)
+            .getContentLength())))
+            .map(currentRange -> {
+                List<FileRange> chunks = new ArrayList<>();
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = FILE_DEFAULT_BLOCK_SIZE;
+                    if (pos + count > currentRange.getEnd()) {
+                        count = currentRange.getEnd() - pos;
+                    }
+                    chunks.add(new FileRange(pos, pos + count - 1));
+                }
+                return chunks;
+            }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
+                downloadWithPropertiesWithResponse(chunk, false, context)
                 .map(dar -> dar.getValue().getBody())
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil
