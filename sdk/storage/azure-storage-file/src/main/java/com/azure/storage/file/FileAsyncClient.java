@@ -397,32 +397,6 @@ public class FileAsyncClient {
         }
     }
 
-    private Flux<FileRange> sliceFileRange(FileRange fileRange, Mono<Response<FileProperties>> response) {
-        long offset = fileRange == null ? 0L : fileRange.getStart();
-        Mono<Long> end;
-        if (fileRange != null) {
-            end = Mono.just(fileRange.getEnd());
-        } else {
-            end = Mono.empty();
-        }
-        end = end.switchIfEmpty(response.map(filePropertiesResposne ->
-            filePropertiesResposne.getValue().getContentLength()));
-
-        return end
-            .map(e -> {
-                List<FileRange> chunks = new ArrayList<>();
-                for (long pos = offset; pos < e; pos += FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = FILE_DEFAULT_BLOCK_SIZE;
-                    if (pos + count > e) {
-                        count = e - pos;
-                    }
-                    chunks.add(new FileRange(pos, pos + count - 1));
-                }
-                return chunks;
-            })
-            .flatMapMany(Flux::fromIterable);
-    }
-
     /**
      * Downloads a file from the system, including its metadata and properties
      *
