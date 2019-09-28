@@ -69,28 +69,30 @@ public final class PageBlobClient extends BlobClientBase {
      * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service, it
      * will be overwritten.
      *
-     * @param length A <code>long</code> which represents the length, in bytes, of the stream to create. This value must
-     * be a multiple of 512.
+     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
+     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     * are 0-511, 512-1023, etc.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws StorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(long length) {
-        return getBlobOutputStream(length, null);
+    public BlobOutputStream getBlobOutputStream(PageRange pageRange) {
+        return getBlobOutputStream(pageRange, null);
     }
 
     /**
      * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service, it
      * will be overwritten.
      *
-     * @param length A <code>long</code> which represents the length, in bytes, of the stream to create. This value must
-     * be a multiple of 512.
+     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
+     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     * are 0-511, 512-1023, etc.
      * @param accessConditions A {@link BlobAccessConditions} object that represents the access conditions for the
      * blob.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws StorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
-        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, length, accessConditions);
+    public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobAccessConditions accessConditions) {
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, accessConditions);
     }
 
     /**

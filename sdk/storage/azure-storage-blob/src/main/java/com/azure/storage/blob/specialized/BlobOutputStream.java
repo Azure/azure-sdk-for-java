@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -10,13 +11,12 @@ import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.SR;
+import com.azure.storage.common.StorageOutputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.annotation.NonNull;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -24,138 +24,32 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class BlobOutputStream extends OutputStream {
-    /*
-     * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
-     * block size, for page blob this is the Page commit size.
-     */
-    int writeThreshold;
-
+public abstract class BlobOutputStream extends StorageOutputStream {
     /*
      * Holds the last exception this stream encountered.
      */
     volatile IOException lastError;
 
+    BlobOutputStream(final int writeThreshold) {
+        super(writeThreshold);
+    }
+
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
-        final AppendBlobAccessConditions appendBlobAccessConditions) {
+                                                   final AppendBlobAccessConditions appendBlobAccessConditions) {
         return new AppendBlobOutputStream(client, appendBlobAccessConditions);
     }
 
     static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
-        final BlobAccessConditions accessConditions) {
+                                                  final BlobAccessConditions accessConditions) {
         return new BlockBlobOutputStream(client, accessConditions);
     }
 
-    static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final long length,
-        final BlobAccessConditions accessConditions) {
-        return new PageBlobOutputStream(client, length, accessConditions);
+    static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
+                                                 final BlobAccessConditions accessConditions) {
+        return new PageBlobOutputStream(client, pageRange, accessConditions);
     }
-
-    abstract Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset);
 
     abstract void commit();
-
-    /**
-     * Writes the data to the buffer and triggers writes to the service as needed.
-     *
-     * @param data A <code>byte</code> array which represents the data to write.
-     * @param offset An <code>int</code> which represents the start offset in the data.
-     * @param length An <code>int</code> which represents the number of bytes to write.
-     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
-     * been closed.
-     */
-    private void writeInternal(final byte[] data, int offset, int length) {
-        int chunks = (int) (Math.ceil((double) length / (double) this.writeThreshold));
-        Flux.range(0, chunks).map(c -> offset + c * this.writeThreshold)
-            .concatMap(pos -> processChunk(data, pos, offset, length))
-            .then()
-            .block();
-    }
-
-    private Mono<Void> processChunk(byte[] data, int position, int offset, int length) {
-        int chunkLength = this.writeThreshold;
-
-        if (position + chunkLength > offset + length) {
-            chunkLength = offset + length - position;
-        }
-
-        // Flux<ByteBuffer> chunkData = new ByteBufferStreamFromByteArray(data, writeThreshold, position, chunkLength);
-        return dispatchWrite(data, chunkLength, position - offset)
-            .doOnError(t -> {
-                if (t instanceof IOException) {
-                    lastError = (IOException) t;
-                } else {
-                    lastError = new IOException(t);
-                }
-            });
-    }
-
-    /**
-     * Helper function to check if the stream is faulted, if it is it surfaces the exception.
-     *
-     * @throws IOException If an I/O error occurs. In particular, an IOException may be thrown if the output stream has
-     * been closed.
-     */
-    private void checkStreamState() throws IOException {
-        if (this.lastError != null) {
-            throw this.lastError;
-        }
-    }
-
-    /**
-     * Flushes this output stream and forces any buffered output bytes to be written out. If any data remains in the
-     * buffer it is committed to the service.
-     *
-     * @throws IOException If an I/O error occurs.
-     */
-    @Override
-    public void flush() throws IOException {
-        this.checkStreamState();
-    }
-
-    /**
-     * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
-     * <p>
-     *
-     * @param data A <code>byte</code> array which represents the data to write.
-     */
-    @Override
-    public void write(@NonNull final byte[] data) {
-        this.write(data, 0, data.length);
-    }
-
-    /**
-     * Writes length bytes from the specified byte array starting at offset to this output stream.
-     * <p>
-     *
-     * @param data A <code>byte</code> array which represents the data to write.
-     * @param offset An <code>int</code> which represents the start offset in the data.
-     * @param length An <code>int</code> which represents the number of bytes to write.
-     * @throws IndexOutOfBoundsException If {@code offset} or {@code length} are less than {@code 0} or {@code offset}
-     * plus {@code length} is greater than the {@code data} length.
-     */
-    @Override
-    public void write(@NonNull final byte[] data, final int offset, final int length) {
-        if (offset < 0 || length < 0 || length > data.length - offset) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        this.writeInternal(data, offset, length);
-    }
-
-    /**
-     * Writes the specified byte to this output stream. The general contract for write is that one byte is written to
-     * the output stream. The byte to be written is the eight low-order bits of the argument b. The 24 high-order bits
-     * of b are ignored.
-     * <p>
-     * <code>true</code> is acceptable for you.
-     *
-     * @param byteVal An <code>int</code> which represents the bye value to write.
-     */
-    @Override
-    public void write(final int byteVal) {
-        this.write(new byte[]{(byte) (byteVal & 0xFF)});
-    }
 
     /**
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
@@ -192,9 +86,9 @@ public abstract class BlobOutputStream extends OutputStream {
         private final AppendBlobAsyncClient client;
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
-            final AppendBlobAccessConditions appendBlobAccessConditions) {
+                                       final AppendBlobAccessConditions appendBlobAccessConditions) {
+            super(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
             this.client = client;
-            this.writeThreshold = BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
             this.appendBlobAccessConditions = appendBlobAccessConditions;
 
             if (appendBlobAccessConditions != null) {
@@ -225,7 +119,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
+        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             if (writeLength == 0) {
                 return Mono.empty();
             }
@@ -243,7 +137,7 @@ public abstract class BlobOutputStream extends OutputStream {
             Flux<ByteBuffer> fbb = Flux.range(0, 1)
                 .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
 
-            return this.appendBlock(fbb.subscribeOn(Schedulers.elastic()), offset, writeLength);
+            return this.appendBlock(fbb.subscribeOn(Schedulers.elastic()), this.initialBlobOffset, writeLength);
         }
 
         @Override
@@ -259,11 +153,11 @@ public abstract class BlobOutputStream extends OutputStream {
         private final BlockBlobAsyncClient client;
 
         private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
+            super(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
             this.client = client;
             this.accessConditions = accessConditions;
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
             this.blockList = new ArrayList<>();
-            this.writeThreshold = BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
         /**
@@ -290,7 +184,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
+        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             if (writeLength == 0) {
                 return Mono.empty();
             }
@@ -314,14 +208,16 @@ public abstract class BlobOutputStream extends OutputStream {
     }
 
     private static final class PageBlobOutputStream extends BlobOutputStream {
+        private final ClientLogger logger = new ClientLogger(BlobOutputStream.class);
         private final PageBlobAsyncClient client;
         private final PageBlobAccessConditions pageBlobAccessConditions;
+        private final PageRange pageRange;
 
-        private PageBlobOutputStream(final PageBlobAsyncClient client, final long length,
-            final BlobAccessConditions blobAccessConditions) {
+        private PageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
+                                     final BlobAccessConditions blobAccessConditions) {
+            super(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
             this.client = client;
-            this.writeThreshold = (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
-
+            this.pageRange = pageRange;
             if (blobAccessConditions != null) {
                 this.pageBlobAccessConditions = new PageBlobAccessConditions()
                     .setModifiedAccessConditions(blobAccessConditions.getModifiedAccessConditions())
@@ -331,8 +227,8 @@ public abstract class BlobOutputStream extends OutputStream {
             }
         }
 
-        private Mono<Void> writePages(Flux<ByteBuffer> pageData, long offset, long writeLength) {
-            return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + writeLength - 1),
+        private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
+            return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1),
                 pageData, pageBlobAccessConditions)
                 .then()
                 .onErrorResume(t -> t instanceof StorageException, e -> {
@@ -342,7 +238,7 @@ public abstract class BlobOutputStream extends OutputStream {
         }
 
         @Override
-        Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
+        protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             if (writeLength == 0) {
                 return Mono.empty();
             }
@@ -355,7 +251,13 @@ public abstract class BlobOutputStream extends OutputStream {
             Flux<ByteBuffer> fbb = Flux.range(0, 1)
                 .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
 
-            return this.writePages(fbb.subscribeOn(Schedulers.elastic()), offset, writeLength);
+            long pageOffset = pageRange.getStart();
+            if (pageOffset + writeLength - 1 > pageRange.getEnd()) {
+                throw logger.logExceptionAsError(
+                    new RuntimeException("The input data length is larger than the page range."));
+            }
+            pageRange.setStart(pageRange.getStart() + writeLength);
+            return this.writePages(fbb.subscribeOn(Schedulers.elastic()), writeLength, pageOffset);
         }
 
         @Override
