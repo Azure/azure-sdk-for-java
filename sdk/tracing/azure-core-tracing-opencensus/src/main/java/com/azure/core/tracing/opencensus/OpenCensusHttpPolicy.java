@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tracing.opentelemetry;
+package com.azure.core.tracing.opencensus;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.AfterRetryPolicyProvider;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.tracing.opentelemetry.implementation.HttpTraceUtil;
+import com.azure.core.tracing.opencensus.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
 import io.opencensus.trace.Span.Kind;
@@ -27,22 +27,22 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+
 /**
- * Pipeline policy that creates an OpenTelemetry span which traces the service request.
+ * Pipeline policy that creates an OpenCensus span which traces the service request.
  */
-public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
+public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
 
     /**
-     * @return a OpenTelemetry HTTP policy.
+     * @return a OpenCensus HTTP policy.
      */
     public HttpPipelinePolicy create() {
         return this;
     }
 
-    // Singleton OpenTelemetry tracer capable of starting and exporting spans.
+    // Singleton OpenCensus tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
-    private static final String OPENTELEMETRY_SPAN_KEY =
-        com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -57,7 +57,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Span parentSpan = (Span) context.getData(OPENTELEMETRY_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.
@@ -82,7 +82,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // run the next policy and handle success and error
         return next.process()
-            .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
+            .doOnEach(OpenCensusHttpPolicy::handleResponse)
             .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
@@ -162,7 +162,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private final TextFormat.Setter<HttpRequest> contextSetter = new TextFormat.Setter<HttpRequest>() {
         @Override
         public void put(HttpRequest request, String key, String value) {
-            request.setHeader(key, value);
+            request.getHeaders().put(key, value);
         }
     };
 }
