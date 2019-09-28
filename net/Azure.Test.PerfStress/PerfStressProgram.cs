@@ -1,14 +1,21 @@
 ﻿using CommandLine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Azure.Test.PerfStress
 {
     public static class PerfStressProgram
     {
+        private static int _completedOperations;
+
         public static void Main(Assembly assembly, string[] args)
         {
             var testTypes = assembly.ExportedTypes.Where(t => typeof(IPerfStressTest).IsAssignableFrom(t) && !t.IsAbstract);
@@ -25,13 +32,114 @@ namespace Azure.Test.PerfStress
 
         private static void Run(Type testType, PerfStressOptions options)
         {
-            Console.WriteLine(testType);
-            Console.WriteLine(options);
+            if (!GCSettings.IsServerGC)
+            {
+                throw new InvalidOperationException("Requires server GC");
+            }
 
-            //if (!GCSettings.IsServerGC)
-            //{
-            //    throw new InvalidOperationException("Requires server GC");
-            //}
+            Console.WriteLine("=== Options ===");
+            Console.WriteLine(JsonSerializer.Serialize(options, options.GetType(), new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            }));
+            Console.WriteLine();
+
+            var duration = TimeSpan.FromSeconds(options.Duration);
+
+            using (var test = (IPerfStressTest)Activator.CreateInstance(testType, options))
+            using (var cts = new CancellationTokenSource(duration))
+            {
+                var cancellationToken = cts.Token;
+                var sw = new Stopwatch();
+
+                _ = PrintStatusAsync(cancellationToken);
+
+                if (options.Async)
+                {
+                    var tasks = new Task[options.Parallel];
+
+                    sw.Start();
+                    for (var i = 0; i < options.Parallel; i++)
+                    {
+                        tasks[i] = RunLoopAsync(test, cancellationToken);
+                    }
+                    Task.WhenAll(tasks).Wait();
+                    sw.Stop();
+                }
+                else
+                {
+                    var threads = new Thread[options.Parallel];
+
+                    sw.Start();
+                    for (var i = 0; i < options.Parallel; i++)
+                    {
+                        threads[i] = new Thread(() => RunLoop(test, cancellationToken));
+                        threads[i].Start();
+                    }
+                    for (var i = 0; i < options.Parallel; i++)
+                    {
+                        threads[i].Join();
+                    }
+                    sw.Stop();
+                }
+
+                var elapsedSeconds = sw.Elapsed.TotalSeconds;
+                var operationsPerSecond = _completedOperations / elapsedSeconds;
+                var secondsPerOperation = 1 / operationsPerSecond;
+
+                Console.WriteLine("=== Results ===");
+                Console.WriteLine($"Completed {_completedOperations} operations in {elapsedSeconds:N2}s ({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
+                Console.WriteLine();
+            }
+        }
+
+        private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    test.Run(cancellationToken);
+                    Interlocked.Increment(ref _completedOperations);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
+        }
+
+        private static async Task RunLoopAsync(IPerfStressTest test, CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await test.RunAsync(cancellationToken);
+                    Interlocked.Increment(ref _completedOperations);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
+        }
+
+        static async Task PrintStatusAsync(CancellationToken token)
+        {
+            Console.WriteLine("=== Progresss ===");
+
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1), token);
+                    Console.WriteLine(_completedOperations);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            }
+
+            Console.WriteLine();
         }
 
         // Dynamically create option types with a "Verb" attribute

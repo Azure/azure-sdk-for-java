@@ -1,22 +1,18 @@
 ﻿using Azure.Storage.Blobs.PerfStress.Core;
-using CommandLine;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class UploadTest : ParallelTransferTest<UploadTest.UploadOptions>
+    public class UploadTest : ParallelTransferTest<ParallelTransferOptionsOptions>
     {
-        [Verb(nameof(UploadTest))]
-        public class UploadOptions : ParallelTransferOptionsOptions { }
-
-        public UploadTest(UploadOptions options) : base(options)
+        public UploadTest(ParallelTransferOptionsOptions options) : base(options)
         {
         }
 
-        public override void Run()
+        public override void Run(CancellationToken cancellationToken)
         {
-            BlobClient.Upload(RandomStream, parallelTransferOptions: ParallelTransferOptions);
+            BlobClient.Upload(RandomStream, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
         }
 
         public override Task RunAsync(CancellationToken cancellationToken)

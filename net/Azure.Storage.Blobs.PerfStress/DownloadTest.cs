@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs.PerfStress.Core;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,16 +9,23 @@ namespace Azure.Storage.Blobs.PerfStress
     {
         public DownloadTest(ParallelTransferOptionsOptions options) : base(options)
         {
+            BlobClient.Upload(RandomStream);
         }
 
-        public override void Run()
+        public override void Run(CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            BlobClient.Download(Stream.Null, cancellationToken);
         }
 
         public override Task RunAsync(CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            return BlobClient.DownloadAsync(Stream.Null, cancellationToken);
+        }
+
+        public override void Dispose()
+        {
+            BlobClient.Delete();
+            base.Dispose();
         }
     }
 }

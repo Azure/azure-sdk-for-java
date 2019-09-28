@@ -6,7 +6,7 @@ namespace Azure.Test.PerfStress
 {
     internal interface IPerfStressTest : IDisposable
     {
-        void Run();
+        void Run(CancellationToken cancellationToken);
         Task RunAsync(CancellationToken cancellationToken);
     }
 }

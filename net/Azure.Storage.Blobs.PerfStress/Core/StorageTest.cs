@@ -16,6 +16,11 @@ namespace Azure.Storage.Blobs.PerfStress
             var blobName = this.GetType().Name.ToLowerInvariant();
             var connectionString = Environment.GetEnvironmentVariable("STORAGE_CONNECTION_STRING");
 
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Undefined environment variable STORAGE_CONNECTION_STRING");
+            }
+
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
             var httpClient = new HttpClient(httpClientHandler);

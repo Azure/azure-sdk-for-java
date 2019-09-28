@@ -12,7 +12,7 @@ namespace Azure.Test.PerfStress
             Options = options;
         }
 
-        public abstract void Run();
+        public abstract void Run(CancellationToken cancellationToken);
 
         public abstract Task RunAsync(CancellationToken cancellationToken);
 
