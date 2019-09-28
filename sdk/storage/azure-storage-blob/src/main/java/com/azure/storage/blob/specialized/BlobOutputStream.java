@@ -208,7 +208,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class PageBlobOutputStream extends BlobOutputStream {
-        private final ClientLogger logger = new ClientLogger(BlobOutputStream.class);
+        private final ClientLogger logger = new ClientLogger(PageBlobOutputStream.class);
         private final PageBlobAsyncClient client;
         private final PageBlobAccessConditions pageBlobAccessConditions;
         private final PageRange pageRange;

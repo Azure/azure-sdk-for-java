@@ -68,7 +68,8 @@ public final class BlobInputStream extends StorageInputStream {
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
      * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
-     * @param blobClient A {@link BlobAsyncClientBase} object which represents the blob that this stream is associated with.
+     * @param blobClient A {@link BlobAsyncClientBase} object which represents the blob that this stream is associated
+     * with.
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
      * @param accessCondition An {@link BlobAccessConditions} object which represents the access conditions for the
