@@ -3,9 +3,8 @@
 
 module com.azure.storage.file {
     requires transitive com.azure.core;
-    requires com.azure.storage.common;
+    requires transitive com.azure.storage.common;
     requires com.fasterxml.jackson.dataformat.xml;
-    requires com.fasterxml.jackson.databind;
 
     exports com.azure.storage.file;
     exports com.azure.storage.file.models;
@@ -19,6 +18,4 @@ module com.azure.storage.file {
     opens com.azure.storage.file.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
-
-    uses com.azure.core.http.HttpClientProvider;
 }

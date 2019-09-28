@@ -36,7 +36,7 @@ import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
 import com.azure.storage.file.implementation.models.FilesStartCopyResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
-import com.azure.storage.file.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.StorageErrorException;
 import java.nio.ByteBuffer;

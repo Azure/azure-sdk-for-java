@@ -188,11 +188,11 @@ public final class FileServiceAsyncClient {
 
         if (options != null) {
             if (options.isIncludeMetadata()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
+                include.add(ListSharesIncludeType.METADATA);
             }
 
             if (options.isIncludeSnapshots()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
+                include.add(ListSharesIncludeType.SNAPSHOTS);
             }
         }
 
@@ -442,7 +442,7 @@ public final class FileServiceAsyncClient {
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
         if (ImplUtils.isNullOrEmpty(snapshot)) {
-            deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
+            deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
