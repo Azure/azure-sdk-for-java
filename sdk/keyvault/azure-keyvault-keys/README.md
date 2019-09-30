@@ -24,7 +24,7 @@ KeyVault Keys to use Netty HTTP client.
 
 ### Alternate HTTP client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml
+Netty and include OkHTTP client in your pom.xml.
 
 ```xml
 <!-- Add KeyVault Keys dependency without Netty HTTP client -->
