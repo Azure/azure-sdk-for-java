@@ -6,9 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.IterableStream;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.message.Message;
@@ -83,7 +83,7 @@ public class EventHubConsumerTest {
     }
 
     /**
-     * Verify that by default, lastEnqueuedInformation is null if {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()}
+     * Verify that by default, lastEnqueuedInformation is null if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}
      * is not set.
      */
     @Test

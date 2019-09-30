@@ -229,7 +229,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @return {@code true} if the resulting consumer will keep track of the last enqueued information for that
      *     partition; {@code false} otherwise.
      */
-    public boolean getLastEnqueuedEventProperties() {
+    public boolean getTrackLastEnqueuedEventProperties() {
         return trackLastEnqueuedEventProperties;
     }
 

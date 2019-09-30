@@ -115,7 +115,7 @@ public class EventHubConsumer implements Closeable {
      * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
      * received from the Event Hubs service.
      *
-     * @return {@code null} if {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} was not set when
+     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
      *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
      *     partition.
      */

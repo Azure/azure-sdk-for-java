@@ -6,9 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.message.Message;
@@ -34,8 +34,6 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -101,7 +99,7 @@ public class EventHubAsyncConsumerTest {
 
     /**
      * Verify that by default, lastEnqueuedInformation is null if
-     * {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} is not set.
+     * {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is not set.
      */
     @Test
     public void lastEnqueuedEventInformationIsNull() {

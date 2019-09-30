@@ -76,9 +76,9 @@ public class EventHubAsyncConsumer implements Closeable {
                           EventHubConsumerOptions options) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
-        this.trackLastEnqueuedEventProperties = options.getLastEnqueuedEventProperties();
+        this.trackLastEnqueuedEventProperties = options.getTrackLastEnqueuedEventProperties();
 
-        if (options.getLastEnqueuedEventProperties()) {
+        if (options.getTrackLastEnqueuedEventProperties()) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
         }
 
@@ -182,7 +182,7 @@ public class EventHubAsyncConsumer implements Closeable {
      * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
      * received from the Event Hubs service.
      *
-     * @return {@code null} if {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} was not set when
+     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
      *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
      *     partition.
      */
@@ -193,7 +193,7 @@ public class EventHubAsyncConsumer implements Closeable {
     /**
      * On each message received from the service, it will try to:
      * 1. Deserialize the message into an EventData
-     * 2. If {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} is true, then it will try to update
+     * 2. If {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is true, then it will try to update
      *    {@link LastEnqueuedEventProperties}
      *
      * @param message AMQP message to deserialize.
