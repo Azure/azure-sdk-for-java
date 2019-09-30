@@ -411,10 +411,12 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @return The properties of the download blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void downloadToFile(String filePath) {
-        downloadToFile(filePath, null, null, null, null, false, null, Context.NONE);
+    public BlobProperties downloadToFile(String filePath) {
+        return downloadToFileWithResponse(filePath, null, null, null, null,
+            false, null, Context.NONE).getValue();
     }
 
     /**
@@ -431,7 +433,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -444,14 +446,15 @@ public class BlobClientBase {
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws UncheckedIOException If an I/O error occurs
+     * @return The response of download blob properties.
+     * @throws UncheckedIOException If an I/O error occurs.
      */
-    public void downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Void> download = client.downloadToFile(filePath, range, blockSize, options, accessConditions,
-            rangeGetContentMD5, context);
-
-        Utility.blockWithOptionalTimeout(download, timeout);
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
+            ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
+            Duration timeout, Context context) {
+        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range, blockSize,
+            options, accessConditions, rangeGetContentMD5, context);
+        return Utility.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
