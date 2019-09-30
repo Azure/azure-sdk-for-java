@@ -110,10 +110,6 @@ public final class FluxUtil {
         return Mono.justOrEmpty(response.getValue());
     }
 
-    public static <T> T toValue(Response<T> response) {
-        return response.getValue();
-    }
-
     /**
      * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
