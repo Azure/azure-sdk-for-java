@@ -187,7 +187,7 @@ public class EventHubAsyncConsumer implements Closeable {
      *     partition.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
-        return lastEnqueuedEventProperties.getAcquire();
+        return lastEnqueuedEventProperties.get();
     }
 
     /**
