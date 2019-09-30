@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -102,7 +103,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities);
     }
 
-    private static String getExpression(EventPosition eventPosition) {
+    private String getExpression(EventPosition eventPosition) {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference
@@ -126,16 +127,15 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             try {
                 ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
             } catch (ArithmeticException ex) {
-                ms = Long.toString(Long.MAX_VALUE);
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
+                    "Event position for enqueued DateTime could not be parsed. Value: '%s'",
+                    eventPosition.getEnqueuedDateTime()), ex));
             }
 
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                ms);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
         }
 
-        throw new IllegalArgumentException("No starting position was set.");
+        throw logger.logExceptionAsError(new IllegalArgumentException("No starting position was set."));
     }
 }
