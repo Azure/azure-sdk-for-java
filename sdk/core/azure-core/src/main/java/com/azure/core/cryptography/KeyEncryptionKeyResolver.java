@@ -12,7 +12,7 @@ public interface KeyEncryptionKeyResolver {
      * Retrieves the {@link KeyEncryptionKey} corresponding to the specified {@code keyId}
      *
      * @param keyId The key identifier of the key encryption key to retrieve
-     * @return The encryption key corresponding to the specified {@code keyId}
+     * @return The key encryption key corresponding to the specified {@code keyId}
      */
     KeyEncryptionKey resolveKey(String keyId);
 }

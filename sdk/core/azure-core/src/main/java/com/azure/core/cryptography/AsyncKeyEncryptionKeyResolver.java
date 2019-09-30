@@ -14,7 +14,7 @@ public interface AsyncKeyEncryptionKeyResolver {
      * Retrieves the {@link AsyncKeyEncryptionKey} corresponding to the specified {@code keyId}
      *
      * @param keyId The key identifier of the key encryption key to retrieve
-     * @return The encryption key corresponding to the specified {@code keyId}
+     * @return The key encryption key corresponding to the specified {@code keyId}
      */
     Mono<AsyncKeyEncryptionKey> resolveKey(String keyId);
 }
