@@ -189,7 +189,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     rb -> Mono.just(rb),
                     // Resource cleanup
                     // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                    ResponseBody::close);
+                    ResponseBody::close, /* Change in behavior since reactor-core 3.3.0.RELEASE */ false);
             }
         }
 

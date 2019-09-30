@@ -5,10 +5,6 @@ package com.azure.storage.file
 
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryClient
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileSmbProperties
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
@@ -88,18 +84,6 @@ class DirectoryAPITests extends APISpec {
     def "Create directory with metadata"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null, testMetadata, null, null), 201)
-    }
-
-    def "Create directory error with metadata"() {
-        given:
-        def errorMetadata = Collections.singletonMap("testMeta", "value")
-
-        when:
-        primaryDirectoryClient.createWithResponse(null, null, errorMetadata, null, null)
-
-        then:
-        def e = thrown(StorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, StorageErrorCode.AUTHENTICATION_FAILED)
     }
 
     def "Create directory with file permission"() {

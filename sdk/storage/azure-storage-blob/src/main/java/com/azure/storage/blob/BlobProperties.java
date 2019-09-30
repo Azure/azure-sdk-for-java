@@ -4,9 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
-import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;

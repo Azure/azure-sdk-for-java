@@ -4,8 +4,6 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Head;
@@ -20,14 +18,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
+import com.azure.storage.blob.implementation.models.DirectorysCreateResponse;
+import com.azure.storage.blob.implementation.models.DirectorysDeleteResponse;
+import com.azure.storage.blob.implementation.models.DirectorysGetAccessControlResponse;
+import com.azure.storage.blob.implementation.models.DirectorysRenameResponse;
+import com.azure.storage.blob.implementation.models.DirectorysSetAccessControlResponse;
 import com.azure.storage.blob.models.DataLakeStorageErrorException;
-import com.azure.storage.blob.models.DirectoryHttpHeaders;
-import com.azure.storage.blob.models.DirectorysCreateResponse;
-import com.azure.storage.blob.models.DirectorysDeleteResponse;
-import com.azure.storage.blob.models.DirectorysGetAccessControlResponse;
-import com.azure.storage.blob.models.DirectorysRenameResponse;
-import com.azure.storage.blob.models.DirectorysSetAccessControlResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PathRenameMode;

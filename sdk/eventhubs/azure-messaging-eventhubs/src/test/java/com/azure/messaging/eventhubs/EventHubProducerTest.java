@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
@@ -126,14 +126,14 @@ public class EventHubProducerTest {
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value");
+                return passed.addData(OPENCENSUS_SPAN_KEY, "value");
             }
         );
 
         when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(OPENCENSUS_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
         //Act
@@ -166,7 +166,7 @@ public class EventHubProducerTest {
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENTELEMETRY_SPAN_KEY, "value");
+                return passed.addData(OPENCENSUS_SPAN_KEY, "value");
             }
         );
 

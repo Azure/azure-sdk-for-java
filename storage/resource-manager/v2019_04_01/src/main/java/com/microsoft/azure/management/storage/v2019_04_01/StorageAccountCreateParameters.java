@@ -107,6 +107,13 @@ public class StorageAccountCreateParameters {
     private Boolean isHnsEnabled;
 
     /**
+     * Allow large file shares if sets to Enabled. It cannot be disabled once
+     * it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     */
+    @JsonProperty(value = "properties.largeFileSharesState")
+    private LargeFileSharesState largeFileSharesState;
+
+    /**
      * Get required. Gets or sets the SKU name.
      *
      * @return the sku value
@@ -343,6 +350,26 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withIsHnsEnabled(Boolean isHnsEnabled) {
         this.isHnsEnabled = isHnsEnabled;
+        return this;
+    }
+
+    /**
+     * Get allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     *
+     * @return the largeFileSharesState value
+     */
+    public LargeFileSharesState largeFileSharesState() {
+        return this.largeFileSharesState;
+    }
+
+    /**
+     * Set allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     *
+     * @param largeFileSharesState the largeFileSharesState value to set
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+        this.largeFileSharesState = largeFileSharesState;
         return this;
     }
 

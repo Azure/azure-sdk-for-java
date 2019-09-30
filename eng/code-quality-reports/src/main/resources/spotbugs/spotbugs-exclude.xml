@@ -385,6 +385,7 @@
       <Package name="com.azure.storage.file.models"/>
       <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
+      <Class name="com.azure.storage.file.implementation.models.DirectoryCreateHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>

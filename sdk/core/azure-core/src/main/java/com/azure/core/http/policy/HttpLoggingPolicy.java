@@ -69,7 +69,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-        if (detailLevel.shouldLogURL()) {
+        if (detailLevel.shouldLogUrl()) {
             logger.info("--> {} {}", request.getHttpMethod(), request.getUrl());
         }
 
@@ -129,7 +129,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             //            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
-            if (detailLevel.shouldLogURL()) {
+            if (detailLevel.shouldLogUrl()) {
                 logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
             }
 
