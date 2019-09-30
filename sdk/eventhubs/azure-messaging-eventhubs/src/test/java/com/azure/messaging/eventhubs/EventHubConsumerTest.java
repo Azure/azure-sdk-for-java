@@ -97,8 +97,14 @@ public class EventHubConsumerTest {
      */
     @Test
     public void lastEnqueuedEventInformationCreated() {
+        // Arrange
+        final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+            Mono.just(amqpReceiveLink),
+            serializer,
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+
         // Act
-        final LastEnqueuedEventProperties lastEnqueuedEventProperties = consumer.getLastEnqueuedEventProperties();
+        final LastEnqueuedEventProperties lastEnqueuedEventProperties = runtimeConsumer.getLastEnqueuedEventProperties();
 
         // Assert
         Assert.assertNotNull(lastEnqueuedEventProperties);
