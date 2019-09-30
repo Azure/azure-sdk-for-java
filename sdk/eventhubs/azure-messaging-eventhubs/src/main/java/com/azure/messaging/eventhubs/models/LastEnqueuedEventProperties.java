@@ -3,20 +3,22 @@
 
 package com.azure.messaging.eventhubs.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.Instant;
-import java.util.Objects;
 
 /**
  * A set of information about the enqueued state of a partition, as observed by the consumer.
  */
+@Immutable
 public class LastEnqueuedEventProperties {
-    private Long lastSequenceNumber;
-    private Long lastOffset;
-    private Instant lastEnqueuedTime;
-    private Instant retrievalTime;
+    private final Long lastSequenceNumber;
+    private final Long lastOffset;
+    private final Instant lastEnqueuedTime;
+    private final Instant retrievalTime;
 
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
-                                Instant retrievalTime) {
+                                       Instant retrievalTime) {
         this.lastSequenceNumber = lastSequenceNumber;
         this.lastOffset = lastOffset;
         this.lastEnqueuedTime = lastEnqueuedTime;
@@ -57,23 +59,5 @@ public class LastEnqueuedEventProperties {
      */
     public Instant getRetrievalTime() {
         return retrievalTime;
-    }
-
-    /**
-     * Updates the current set of properties for this partition.
-     *
-     * @param lastSequenceNumber The sequence number observed the last event to be enqueued in the partition.
-     * @param lastOffset The offset of the last event enqueued in the partition.
-     * @param lastEnqueuedTime The date and time, in UTC, that the last event was enqueued in the partition.
-     * @param retrievalTime The date and time, in UTC, that the properties were retrieved.
-     *
-     * @throws NullPointerException if {@code lastEnqueuedTime} or {@code retrievalTime} is null.
-     */
-    public void updateProperties(long lastSequenceNumber, long lastOffset, Instant lastEnqueuedTime,
-                                 Instant retrievalTime) {
-        this.lastSequenceNumber = lastSequenceNumber;
-        this.lastOffset = lastOffset;
-        this.lastEnqueuedTime = Objects.requireNonNull(lastEnqueuedTime, "'lastEnqueuedTime' is required.");
-        this.retrievalTime = Objects.requireNonNull(retrievalTime, "'retrievalTime' is required.");
     }
 }
