@@ -1,15 +1,13 @@
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.http.rest.BatchOperation;
-import com.azure.core.http.rest.BatchResult;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-public class BlobBatchOperation<T> implements BatchOperation<T> {
+public class BlobBatchOperationResponse<T> implements BatchOperation<T> {
     private final Mono<? extends Response> response;
     private int contentId;
 
-    BlobBatchOperation(Mono<? extends Response> response) {
+    BlobBatchOperationResponse(Mono<? extends Response> response) {
         this.response = response;
     }
 

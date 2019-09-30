@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.http.rest.BatchResult;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.storage.blob.models.ServicesSubmitBatchResponse;

@@ -9,7 +9,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.BatchOperation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -44,7 +43,7 @@ public final class BlobBatch {
     private final URL accountUrl;
     private final HttpPipeline batchPipeline;
 
-    private final Deque<BlobBatchOperation> batchOperationQueue;
+    private final Deque<BlobBatchOperationResponse> batchOperationQueue;
     private final List<ByteBuffer> batchRequest;
 
     private final AtomicInteger contentId;
@@ -111,7 +110,7 @@ public final class BlobBatch {
 
     public Flux<ByteBuffer> getBody() {
         while (!batchOperationQueue.isEmpty()) {
-            BlobBatchOperation batchOperation = batchOperationQueue.pop();
+            BlobBatchOperationResponse batchOperation = batchOperationQueue.pop();
             batchOperation.setContentId(contentId.get());
             batchOperation.getResponse().block();
         }
@@ -204,7 +203,7 @@ public final class BlobBatch {
     }
 
     private <T> BatchOperation<T> createAndReturnBatchOperation(Mono<Response<T>> response) {
-        BlobBatchOperation<T> batchOperation = new BlobBatchOperation<>(response);
+        BlobBatchOperationResponse<T> batchOperation = new BlobBatchOperationResponse<>(response);
         this.batchOperationQueue.push(batchOperation);
         return batchOperation;
     }
