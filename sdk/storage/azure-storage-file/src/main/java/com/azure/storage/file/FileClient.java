@@ -264,7 +264,7 @@ public class FileClient {
      * @return The response of the file properties.
      */
     public Response<FileProperties> downloadToFileWithResponse(String downloadFilePath, FileRange range,
-                                                               Duration timeout, Context context) {
+            Duration timeout, Context context) {
         Mono<Response<FileProperties>> response = fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range,
             context);
         return Utility.blockWithOptionalTimeout(response, timeout);
