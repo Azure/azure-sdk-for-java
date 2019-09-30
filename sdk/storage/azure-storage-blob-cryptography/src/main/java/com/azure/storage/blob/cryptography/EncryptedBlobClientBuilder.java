@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.BlockBlobAsyncClient;
 import com.azure.storage.blob.BlockBlobClient;
@@ -100,7 +101,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
             .build();
 
         return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-            new BlobEncryptionPolicy(this.keyWrapper));
+            new BlobEncryptionPolicy(this.keyWrapper), client);
     }
 
     /**
@@ -123,21 +124,10 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
                 client.getHttpPipeline().getHttpClient()))
             .build();
 
+        // TODO (gapra) : How best to get async from sync client
         return new EncryptedBlockBlobClient(
             new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-                new BlobEncryptionPolicy(this.keyWrapper)));
-    }
-
-    private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() + 1];
-        policies[0] = new BlobDecryptionPolicy(keyWrapper, keyResolver);
-        for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
-            policies[i + 1] = originalPipeline.getPolicy(i);
-        }
-        return new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(policies)
-            .build();
+                new BlobEncryptionPolicy(this.keyWrapper), null));
     }
     /**
      * Creates a {@link EncryptedBlockBlobClient} based on options set in the Builder.
@@ -164,8 +154,17 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient() {
+        // TODO (gapra) : review this, am I creating this with everything it needs?
+        // Can I just set the endpoint?
+        BlockBlobAsyncClient client = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName(containerName)
+            .blobName(blobName)
+            .snapshot(snapshot)
+            .buildBlockBlobAsyncClient();
+
         return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot,
-            new BlobEncryptionPolicy(this.keyWrapper));
+            new BlobEncryptionPolicy(this.keyWrapper), client);
     }
 
     /**
@@ -270,6 +269,18 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         if (this.keyWrapper == null && this.keyResolver == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
         }
+    }
+
+    private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
+        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() + 1];
+        policies[0] = new BlobDecryptionPolicy(keyWrapper, keyResolver);
+        for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
+            policies[i + 1] = originalPipeline.getPolicy(i);
+        }
+        return new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(policies)
+            .build();
     }
 
 }
