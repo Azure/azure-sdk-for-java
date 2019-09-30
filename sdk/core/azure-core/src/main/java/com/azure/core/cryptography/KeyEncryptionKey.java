@@ -3,19 +3,17 @@
 
 package com.azure.core.cryptography;
 
-import java.net.URI;
-
 /**
  * A key which is used to synchronously encrypt, or wrap, another key.
  */
-public interface EncryptionKey {
+public interface KeyEncryptionKey {
 
     /**
      * Retrieves the key identifier.
      *
      * @return The key identifier.
      */
-    URI getKeyId();
+    String getKeyId();
     
     /**
      * Encrypts the specified key using the specified algorithm.

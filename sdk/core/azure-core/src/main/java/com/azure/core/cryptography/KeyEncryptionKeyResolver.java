@@ -6,13 +6,13 @@ package com.azure.core.cryptography;
 /**
  * An object capable of synchronously retrieving key encryption keys from a provided key identifier.
  */
-public interface EncryptionKeyResolver {
+public interface KeyEncryptionKeyResolver {
 
     /**
-     * Retrieves the {@link EncryptionKey} corresponding to the specified {@code keyId}
+     * Retrieves the {@link KeyEncryptionKey} corresponding to the specified {@code keyId}
      *
      * @param keyId The key identifier of the key encryption key to retrieve
      * @return The encryption key corresponding to the specified {@code keyId}
      */
-    EncryptionKey resolveKey(String keyId);
+    KeyEncryptionKey resolveKey(String keyId);
 }

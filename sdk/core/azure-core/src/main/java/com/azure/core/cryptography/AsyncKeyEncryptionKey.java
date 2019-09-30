@@ -5,19 +5,17 @@ package com.azure.core.cryptography;
 
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
 /**
  * A key which is used to asynchronously encrypt, or wrap, another key.
  */
-public interface AsyncEncryptionKey {
+public interface AsyncKeyEncryptionKey {
 
     /**
      * Retrieves the key identifier.
      *
      * @return A {@link Mono} containing key identifier.
      */
-    Mono<URI> getKeyId();
+    Mono<String> getKeyId();
     
     /**
      * Encrypts the specified key using the specified algorithm.
