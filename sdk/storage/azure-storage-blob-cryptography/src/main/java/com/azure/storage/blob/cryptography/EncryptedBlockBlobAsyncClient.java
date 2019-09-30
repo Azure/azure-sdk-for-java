@@ -61,7 +61,6 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         this.encryptionPolicy = encryptionPolicy;
     }
 
-    // TODO (gapra) : Test this
     public BlockBlobAsyncClient getBlockBlobAsyncClient() {
         return new BlobClientBuilder()
             .pipeline(removeDecryptionPolicy(getHttpPipeline(),
@@ -324,7 +323,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      * @return An empty response
      */
     public Mono<Void> uploadFromFile(String filePath) {
-        return uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null);
+        return uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, 2, null, null, null, null);
     }
 
     /**
@@ -337,6 +336,9 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @param filePath Path to the upload file
      * @param blockSize Size of the blocks to upload
+     * @param numBuffers The maximum number of buffers this method should allocate. Must be at least two. Typically, the
+     * larger the number of buffers, the more parallel, and thus faster, the upload portion of this operation will be.
+     * The amount of memory consumed by this method may be up to blockSize * numBuffers.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the destination blob.
@@ -345,16 +347,24 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
-        AccessTier tier, BlobAccessConditions accessConditions) {
-        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
+    public Mono<Void> uploadFromFile(String filePath, Integer blockSize, int numBuffers, BlobHTTPHeaders headers,
+        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        int sliceBlockSize;
+        if (blockSize == null) {
+            sliceBlockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        } else if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
+        } else {
+            sliceBlockSize = blockSize;
+        }
+        if (numBuffers < 2) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Number of buffers must be at least 2"));
         }
         Metadata metadataFinal = metadata == null ? new Metadata() : metadata;
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
-            channel -> this.uploadWithResponse(FluxUtil.readFile(channel), blockSize, 2, headers, metadataFinal, tier,
-                accessConditions)
+            channel -> this.uploadWithResponse(FluxUtil.readFile(channel), sliceBlockSize, numBuffers, headers,
+                metadataFinal, tier, accessConditions)
                 .then()
                 .doOnTerminate(() -> {
                     try {

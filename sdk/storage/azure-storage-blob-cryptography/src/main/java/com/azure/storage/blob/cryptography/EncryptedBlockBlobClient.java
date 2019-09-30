@@ -38,7 +38,6 @@ public class EncryptedBlockBlobClient extends BlobClient {
         this.encryptedBlockBlobAsyncClient = encryptedBlockBlobAsyncClient;
     }
 
-    // TODO (gapra) : Test this
     public BlockBlobClient getBlockBlobClient() {
         return new BlobClientBuilder()
             .pipeline(EncryptedBlockBlobAsyncClient.removeDecryptionPolicy(getHttpPipeline(),
@@ -121,8 +120,8 @@ public class EncryptedBlockBlobClient extends BlobClient {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, EncryptedBlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null,
-            null);
+        uploadFromFile(filePath, EncryptedBlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, 2, null, null, null,
+            null, null);
     }
 
     /**
@@ -134,6 +133,9 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * @param filePath Path of the file to upload
      * @param blockSize Size of the blocks to upload
+     * @param numBuffers The maximum number of buffers this method should allocate. Must be at least two. Typically, the
+     * larger the number of buffers, the more parallel, and thus faster, the upload portion of this operation will be.
+     * The amount of memory consumed by this method may be up to blockSize * numBuffers.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the uploaded blob
@@ -141,10 +143,11 @@ public class EncryptedBlockBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws IOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
-        AccessTier tier, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(filePath, blockSize, headers, metadata,
-            tier, accessConditions);
+    public void uploadFromFile(String filePath, Integer blockSize, int numBuffers, BlobHTTPHeaders headers,
+        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout)
+        throws IOException {
+        Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(filePath, blockSize, numBuffers, headers,
+            metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
