@@ -454,7 +454,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
-      <Class name="com.azure.storage.file.specialized.StorageFileInputStream"/>
+      <Class name="com.azure.storage.file.StorageFileInputStream"/>
       <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>

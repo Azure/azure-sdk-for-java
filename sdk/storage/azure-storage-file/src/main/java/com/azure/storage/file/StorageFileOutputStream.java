@@ -51,22 +51,4 @@ public class StorageFileOutputStream extends StorageOutputStream {
 
         return this.uploadData(fbb.subscribeOn(Schedulers.elastic()), writeLength, fileOffset);
     }
-    /**
-     * Closes this output stream and releases any system resources associated with this stream. If any data remains in
-     * the buffer it is committed to the service.
-     */
-    @Override
-    public synchronized void close() {
-        try {
-            // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
-            // if an exception was thrown by any thread in the threadExecutor, realize it now
-            this.checkStreamState();
-
-            // flush any remaining data
-            this.flush();
-        } finally {
-            // if close() is called again, an exception will be thrown
-            this.lastError = new IOException(SR.STREAM_CLOSED);
-        }
-    }
 }
