@@ -638,7 +638,6 @@
   <!-- The field is read by parent class StorageOutputStrem methods. -->
   <Match>
     <Class name="com.azure.storage.file.StorageFileOutputStream"/>
-    <Method name="uploadData"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 </FindBugsFilter>
