@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
@@ -62,12 +63,12 @@ public class EventHubAsyncConsumer implements Closeable {
 
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumer.class);
     private final MessageSerializer messageSerializer;
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
-    private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
 
     private volatile AmqpReceiveLink receiveLink;
 
@@ -76,9 +77,10 @@ public class EventHubAsyncConsumer implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.emitterProcessor = EmitterProcessor.create(options.getPrefetchCount(), false);
         this.trackLastEnqueuedEventProperties = options.getLastEnqueuedEventProperties();
-        this.lastEnqueuedEventProperties = options.getLastEnqueuedEventProperties()
-            ? new LastEnqueuedEventProperties(null, null, null, null)
-            : null;
+
+        if (options.getLastEnqueuedEventProperties()) {
+            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
+        }
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
@@ -185,14 +187,14 @@ public class EventHubAsyncConsumer implements Closeable {
      *     partition.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
-        return lastEnqueuedEventProperties;
+        return lastEnqueuedEventProperties.getAcquire();
     }
 
     /**
      * On each message received from the service, it will try to:
      * 1. Deserialize the message into an EventData
      * 2. If {@link EventHubConsumerOptions#getLastEnqueuedEventProperties()} is true, then it will try to update
-     *    {@link }
+     *    {@link LastEnqueuedEventProperties}
      *
      * @param message AMQP message to deserialize.
      *
@@ -206,9 +208,10 @@ public class EventHubAsyncConsumer implements Closeable {
                 messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
 
             if (enqueuedEventProperties != null) {
-                lastEnqueuedEventProperties.updateProperties(enqueuedEventProperties.getSequenceNumber(),
-                    enqueuedEventProperties.getOffset(), enqueuedEventProperties.getEnqueuedTime(),
-                    enqueuedEventProperties.getRetrievalTime());
+                final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
+                    enqueuedEventProperties.getSequenceNumber(), enqueuedEventProperties.getOffset(),
+                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime());
+                lastEnqueuedEventProperties.set(updated);
             }
         }
 
