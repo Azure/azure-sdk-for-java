@@ -547,17 +547,15 @@ public class BlobAsyncClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-                                                                     Integer blockSize, ReliableDownloadOptions options,
-                                                                     BlobAccessConditions accessConditions,
-                                                                     boolean rangeGetContentMD5) {
+            Integer blockSize, ReliableDownloadOptions options, BlobAccessConditions accessConditions,
+            boolean rangeGetContentMD5) {
         return withContext(context -> downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
             rangeGetContentMD5, context));
     }
 
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
-                                                              ReliableDownloadOptions options,
-                                                              BlobAccessConditions accessConditions,
-                                                              boolean rangeGetContentMD5, Context context) {
+        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
+        Context context) {
         if (blockSize != null) {
             Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
@@ -569,12 +567,10 @@ public class BlobAsyncClientBase {
 
     }
 
-    private Mono<Response<BlobProperties>> processInRange(final AsynchronousFileChannel channel,
-                                                          final Response<BlobProperties> blobPropertiesResponse,
-                                                          BlobRange range, Integer blockSize,
-                                                          ReliableDownloadOptions options,
-                                                          BlobAccessConditions accessConditions,
-                                                          boolean rangeGetContentMD5, Context context) {
+    private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
+                Response<BlobProperties> blobPropertiesResponse, BlobRange range, Integer blockSize,
+                ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
+                Context context) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
             blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->
             Flux.fromIterable(sliceBlobRange(rg, blockSize)))
