@@ -4,7 +4,6 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -18,9 +17,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.MessageIdsDeleteResponse;
-import com.azure.storage.queue.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.MessageIdsDeleteResponse;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.StorageErrorException;
 import reactor.core.publisher.Mono;
