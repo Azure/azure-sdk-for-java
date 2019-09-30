@@ -58,9 +58,14 @@ public interface Tracer {
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a tracing span with provided method name and remote parent span</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context}
+     *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
-     * @return An updated context object.
+     * @return The updated {@link Context} object containing the returned span.
+     * @throws NullPointerException if {@code methodName} or {@code context} is {@code null}.
      */
     Context start(String methodName, Context context);
 
@@ -71,30 +76,56 @@ public interface Tracer {
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
+     * Sets additional request attributes on the created span for the given {@link ProcessKind} SEND.
+     * Returns the diagnostic Id and span context of the returned span for the given {@link ProcessKind} RECEIVE.
+     * Creates a new tracing span with remote parent and returns that scope when the given {@link ProcessKind} PROCESS.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-SEND}
+     *
+     * <p>Starts a tracing span with provided method name and AMQP operation RECEIVE</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-RECEIVE}
+     *
+     * <p>Starts a tracing span with provided method name and AMQP operation PROCESS</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-PROCESS}
+     *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
-     * @param processKind AMQP message process kind.
-     * @return An updated context object.
+     * @param processKind AMQP operation kind.
+     * @return The updated {@link Context} object containing the returned span.
+     * @throws NullPointerException if {@code methodName} or {@code context} or {@code processKind} is {@code null}.
      */
     Context start(String methodName, Context context, ProcessKind processKind);
 
     /**
      * Completes the current tracing span.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Completes the tracing span present in the context, with the corresponding OpenCensus status for the given
+     * response status code</p>
+     * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
+     *
      * @param responseCode Response status code if the span is in a HTTP call context.
      * @param error Potential throwable that happened during the span.
      * @param context Additional metadata that is passed through the call stack.
+     * @throws NullPointerException if {@code context} is {@code null}.
      */
     void end(int responseCode, Throwable error, Context context);
 
     /**
      * Completes the current tracing span.
      *
-     * @param errorCondition the error message that occurred during the call.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Completes the tracing span with the corresponding OpenCensus status for the given status message</p>
+     * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
+     *
+     * @param statusMessage the error or success message that occurred during the call.
      * @param error Potential throwable that happened during the span.
      * @param context Additional metadata that is passed through the call stack.
+     * @throws NullPointerException if {@code context} is {@code null}.
      */
-    void end(String errorCondition, Throwable error, Context context);
+    void end(String statusMessage, Throwable error, Context context);
 
     /**
      * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
@@ -103,62 +134,48 @@ public interface Tracer {
      * @param key Name of the metadata.
      * @param value Value of the metadata.
      * @param context Additional metadata that is passed through the call stack.
+     * @throws NullPointerException if {@code key} or {@code value} or {@code context} is {@code null}.
      */
     void setAttribute(String key, String value, Context context);
-
-    /*
-     * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
-     * information is found in the context no metadata is added.
-     *
-     * @param key Name of the metadata.
-     * @param value Value of the metadata.
-     * @param context Additional metadata that is passed through the call stack.
-     */
-    // void setAttribute(String key, long value, Context context);
-
-    /*
-     * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
-     * information is found in the context no metadata is added.
-     *
-     * @param key Name of the metadata.
-     * @param value Value of the metadata.
-     * @param context Additional metadata that is passed through the call stack.
-     */
-    // void setAttribute(String key, double value, Context context);
-
-    /*
-     * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
-     * information is found in the context no metadata is added.
-     *
-     * @param key Name of the metadata.
-     * @param value Value of the metadata.
-     * @param context Additional metadata that is passed through the call stack.
-     */
-    // void setAttribute(String key, boolean value, Context context);
 
     /**
      * Configures the name for spans that are created.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieve the span name of the returned span</p>
+     * {@codesnippet com.azure.core.util.tracing.setSpanName#string-context}
+     *
      * @param spanName Name to give the next span.
      * @param context Additional metadata that is passed through the call stack.
-     * @return An updated context object.
+     * @return The updated {@link Context} object containing the name of the returned span.
+     * @throws NullPointerException if {@code spanName} or {@code context} is {@code null}.
      */
     Context setSpanName(String spanName, Context context);
 
     /**
-     * Adds a link to the tracing span.
+     * Provides a way to link multiple tracing spans.
      * Used in batching operations to relate multiple requests under a single batch.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Link multiple spans using their span context information</p>
+     * {@codesnippet com.azure.core.util.tracing.addLink#context}
+     *
      * @param context Additional metadata that is passed through the call stack.
+     * @throws NullPointerException if {@code context} is {@code null}.
      */
     void addLink(Context context);
 
     /**
-     * Extracts the span's {@link Context} from the given event's diagnostic id.
+     * Extracts the span's context as {@link Context} from upstream.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Extracts the corresponding span context information from a valid diagnostic id</p>
+     * {@codesnippet com.azure.core.util.tracing.extractContext#string-context}
      *
      * @param diagnosticId Unique identifier for the trace information of the span.
      * @param context Additional metadata that is passed through the call stack.
-     * @return An updated context object.
+     * @return The updated {@link Context} object containing the span context.
+     * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
     Context extractContext(String diagnosticId, Context context);
 }
