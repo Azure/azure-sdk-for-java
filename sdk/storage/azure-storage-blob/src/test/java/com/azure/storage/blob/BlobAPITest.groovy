@@ -225,7 +225,7 @@ class BlobAPITest extends APISpec {
         bc.download(null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     def "Download snapshot"() {
@@ -1415,7 +1415,7 @@ class BlobAPITest extends APISpec {
         bc.setTier(null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     def "Set tier lease"() {

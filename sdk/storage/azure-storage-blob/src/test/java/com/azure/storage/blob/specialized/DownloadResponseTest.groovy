@@ -97,7 +97,7 @@ class DownloadResponseTest extends APISpec {
         new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
 
         where:
         info                               | _
@@ -123,7 +123,7 @@ class DownloadResponseTest extends APISpec {
         response.body(null).blockFirst()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     def "Info"() {

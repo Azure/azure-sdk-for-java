@@ -349,6 +349,7 @@ public class BlobClientBase {
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
      */
     public void download(OutputStream stream) {
         downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
@@ -374,6 +375,7 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
      */
     public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {

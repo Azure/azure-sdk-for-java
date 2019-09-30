@@ -284,7 +284,7 @@ class HelperTest extends APISpec {
         v.generateSASQueryParameters((SharedKeyCredential)creds)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(NullPointerException)
         e.getMessage().contains(parameter)
 
         where:
@@ -499,7 +499,7 @@ class HelperTest extends APISpec {
         v.generateSASQueryParameters(creds)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(NullPointerException)
         e.getMessage().contains(parameter)
 
         where:
