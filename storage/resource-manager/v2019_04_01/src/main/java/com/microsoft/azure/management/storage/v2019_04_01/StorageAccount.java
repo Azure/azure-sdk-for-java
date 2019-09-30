@@ -82,6 +82,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     Kind kind();
 
     /**
+     * @return the largeFileSharesState value.
+     */
+    LargeFileSharesState largeFileSharesState();
+
+    /**
      * @return the lastGeoFailoverTime value.
      */
     DateTime lastGeoFailoverTime();
@@ -262,6 +267,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
+         * The stage of the storageaccount definition allowing to specify LargeFileSharesState.
+         */
+        interface WithLargeFileSharesState {
+            /**
+             * Specifies largeFileSharesState.
+             * @param largeFileSharesState Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+             * @return the next definition stage
+             */
+            WithCreate withLargeFileSharesState(LargeFileSharesState largeFileSharesState);
+        }
+
+        /**
          * The stage of the storageaccount definition allowing to specify NetworkRuleSet.
          */
         interface WithNetworkRuleSet {
@@ -278,13 +295,13 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithAzureFilesIdentityBasedAuthentication, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithNetworkRuleSet {
+        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithAzureFilesIdentityBasedAuthentication, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithLargeFileSharesState, DefinitionStages.WithNetworkRuleSet {
         }
     }
     /**
      * The template for a StorageAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithAzureFilesIdentityBasedAuthentication, UpdateStages.WithCustomDomain, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
+    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithAzureFilesIdentityBasedAuthentication, UpdateStages.WithCustomDomain, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithLargeFileSharesState, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
     }
 
     /**
@@ -373,6 +390,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
              * @return the next update stage
              */
             Update withKind(Kind kind);
+        }
+
+        /**
+         * The stage of the storageaccount update allowing to specify LargeFileSharesState.
+         */
+        interface WithLargeFileSharesState {
+            /**
+             * Specifies largeFileSharesState.
+             * @param largeFileSharesState Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+             * @return the next update stage
+             */
+            Update withLargeFileSharesState(LargeFileSharesState largeFileSharesState);
         }
 
         /**

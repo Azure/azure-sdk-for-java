@@ -345,7 +345,7 @@ public class Util {
 
     // Pass little less than client timeout to the server so client doesn't time out before server times out
     public static Duration adjustServerTimeout(Duration clientTimeout) {
-        return clientTimeout.minusMillis(100);
+        return clientTimeout.minusMillis(200);
     }
 
     // This is not super stable for some reason

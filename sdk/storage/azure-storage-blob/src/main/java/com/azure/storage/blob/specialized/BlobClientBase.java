@@ -16,7 +16,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -257,8 +256,7 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
-     * BlobStartCopyFromURLHeaders} object.
+     * @param copyId The id of the copy operation to abort.
      */
     public void abortCopyFromURL(String copyId) {
         abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
@@ -274,8 +272,7 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
-     * BlobStartCopyFromURLHeaders} object.
+     * @param copyId The id of the copy operation to abort.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

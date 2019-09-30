@@ -488,9 +488,9 @@ public class RestProxy implements InvocationHandler {
                     "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
             }
         }
-        ResponseConstructorsCache.ResponseConstructor ctr = this.responseConstructorsCache.get(cls);
+        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
         if (ctr != null) {
-            return ctr.invoke(response, bodyAsObject);
+            return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
         } else {
             return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
