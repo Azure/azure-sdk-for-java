@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -20,9 +21,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -125,6 +128,127 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             subscriptions.dispose();
             dispose(consumers);
             dispose(producers);
+        }
+    }
+
+    /**
+     * Verify if we don't set {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}, then it is always
+     * null as we are consuming events.
+     */
+    @Test
+    public void lastEnqueuedInformationIsNotUpdated() throws IOException {
+        // Arrange
+        final String secondPartitionId = "1";
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setPrefetchCount(1)
+            .setTrackLastEnqueuedEventProperties(false);
+        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            position, options);
+
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final int expectedNumber = 5;
+        final EventHubAsyncProducer producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event", error));
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receive().take(expectedNumber))
+                .expectNextCount(expectedNumber)
+                .verifyComplete();
+
+            final LastEnqueuedEventProperties lastEnqueuedEventProperties = consumer.getLastEnqueuedEventProperties();
+            Assert.assertNull("'lastEnqueuedEventProperties' should be null.", lastEnqueuedEventProperties);
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
+    }
+
+    /**
+     * Verify that each time we receive an event, the data, {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()},
+     * null as we are consuming events.
+     */
+    @Test
+    public void lastEnqueuedInformationIsUpdated() throws IOException {
+        // Arrange
+        final String secondPartitionId = "1";
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubAsyncProducer producer = client.createProducer(
+            new EventHubProducerOptions().setPartitionId(secondPartitionId));
+        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event", error));
+
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setPrefetchCount(1)
+            .setTrackLastEnqueuedEventProperties(true);
+        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            EventPosition.latest(), options);
+        final List<EventData> consumedEvents = new ArrayList<>();
+        final List<LastEnqueuedEventProperties> properties = new ArrayList<>();
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receive().take(5))
+                .assertNext(event -> {
+                    consumedEvents.add(event);
+                    properties.add(consumer.getLastEnqueuedEventProperties());
+                })
+                .assertNext(event -> {
+                    consumedEvents.add(event);
+                    properties.add(consumer.getLastEnqueuedEventProperties());
+                })
+                .assertNext(event -> {
+                    consumedEvents.add(event);
+                    properties.add(consumer.getLastEnqueuedEventProperties());
+                })
+                .assertNext(event -> {
+                    consumedEvents.add(event);
+                    properties.add(consumer.getLastEnqueuedEventProperties());
+                })
+                .assertNext(event -> {
+                    consumedEvents.add(event);
+                    properties.add(consumer.getLastEnqueuedEventProperties());
+                })
+                .verifyComplete();
+
+            final LastEnqueuedEventProperties lastEnqueuedEventProperties = consumer.getLastEnqueuedEventProperties();
+            Assert.assertNull("'lastEnqueuedEventProperties' should be null.", lastEnqueuedEventProperties);
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
+
+        consumedEvents.sort(Comparator.comparing(EventData::getSequenceNumber));
+
+        properties.sort((first, second) -> {
+            if (first.getEnqueuedTime() != null && second.getEnqueuedTime() != null) {
+                return first.getEnqueuedTime().compareTo(second.getEnqueuedTime());
+            }
+
+            if (first.getEnqueuedTime() == null && second.getEnqueuedTime() != null) {
+                return -1;
+            } else if (second.getEnqueuedTime() == null && first.getEnqueuedTime() != null) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        for (int i = 0; i < properties.size(); i++) {
+            LastEnqueuedEventProperties e = properties.get(i);
+
+            if (e == null) {
+                System.out.printf("Index %s is null.%n", i);
+            } else {
+                System.out.printf("SQ: %s\tTime:%s\tOffset:%s\tRetrievalTime:%s%n",
+                    e.getSequenceNumber(), e.getEnqueuedTime(), e.getOffset(), e.getRetrievalTime());
+            }
         }
     }
 
