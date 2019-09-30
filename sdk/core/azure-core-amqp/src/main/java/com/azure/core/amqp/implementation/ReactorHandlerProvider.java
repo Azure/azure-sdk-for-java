@@ -9,6 +9,8 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
+import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.reactor.Reactor;
 
@@ -40,13 +42,18 @@ public class ReactorHandlerProvider {
      * @param transportType Transport type used for the connection.
      * @return A new {@link ConnectionHandler}.
      */
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
-                                                     TransportType transportType) {
+    public ConnectionHandler createConnectionHandler(String connectionId, String hostname, TransportType transportType,
+                                                     ProxyConfiguration proxyConfiguration) {
         switch (transportType) {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
             case AMQP_WEB_SOCKETS:
-                return new WebSocketsConnectionHandler(connectionId, hostname);
+                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
+                    || WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
+                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyConfiguration);
+                } else {
+                    return new WebSocketsConnectionHandler(connectionId, hostname);
+                }
             default:
                 throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
                     "This transport type '%s' is not supported.", transportType)));
