@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -18,15 +18,15 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.models.MessageIdUpdateHeaders;
-import com.azure.storage.queue.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.models.PeekedMessage;
-import com.azure.storage.queue.models.QueueGetPropertiesHeaders;
 import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
@@ -61,6 +61,7 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueAsyncClient {
     private final ClientLogger logger = new ClientLogger(QueueAsyncClient.class);
     private final AzureQueueStorageImpl client;
@@ -128,14 +129,14 @@ public final class QueueAsyncClient {
      * @throws StorageException If a queue with the same name and different metadata already exists in the queue
      * service.
      */
-    public Mono<VoidResponse> createWithResponse(Map<String, String> metadata) {
+    public Mono<Response<Void>> createWithResponse(Map<String, String> metadata) {
         return withContext(context -> createWithResponse(metadata, context));
     }
 
-    Mono<VoidResponse> createWithResponse(Map<String, String> metadata, Context context) {
+    Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         return postProcessResponse(client.queues()
             .createWithRestResponseAsync(queueName, null, metadata, null, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -172,13 +173,13 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the queue doesn't exist
      */
-    public Mono<VoidResponse> deleteWithResponse() {
+    public Mono<Response<Void>> deleteWithResponse() {
         return withContext(this::deleteWithResponse);
     }
 
-    Mono<VoidResponse> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(Context context) {
         return postProcessResponse(client.queues().deleteWithRestResponseAsync(queueName, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -274,14 +275,14 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the queue doesn't exist
      */
-    public Mono<VoidResponse> setMetadataWithResponse(Map<String, String> metadata) {
+    public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         return withContext(context -> setMetadataWithResponse(metadata, context));
     }
 
-    Mono<VoidResponse> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+    Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         return postProcessResponse(client.queues()
             .setMetadataWithRestResponseAsync(queueName, null, metadata, null, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -351,11 +352,11 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Mono<VoidResponse> setAccessPolicyWithResponse(List<SignedIdentifier> permissions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions) {
         return withContext(context -> setAccessPolicyWithResponse(permissions, context));
     }
 
-    Mono<VoidResponse> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+    Mono<Response<Void>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -377,7 +378,7 @@ public final class QueueAsyncClient {
 
         return postProcessResponse(client.queues()
             .setAccessPolicyWithRestResponseAsync(queueName, permissions, null, null, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -414,13 +415,13 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the queue doesn't exist
      */
-    public Mono<VoidResponse> clearMessagesWithResponse() {
+    public Mono<Response<Void>> clearMessagesWithResponse() {
         return withContext(this::clearMessagesWithResponse);
     }
 
-    Mono<VoidResponse> clearMessagesWithResponse(Context context) {
+    Mono<Response<Void>> clearMessagesWithResponse(Context context) {
         return postProcessResponse(client.messages().clearWithRestResponseAsync(queueName, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -745,14 +746,14 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws StorageException If the queue or messageId don't exist or the popReceipt doesn't match on the message
      */
-    public Mono<VoidResponse> deleteMessageWithResponse(String messageId, String popReceipt) {
+    public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         return withContext(context -> deleteMessageWithResponse(messageId, popReceipt, context));
     }
 
-    Mono<VoidResponse> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
+    Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         return postProcessResponse(client.messageIds()
             .deleteWithRestResponseAsync(queueName, messageId, popReceipt, context))
-            .map(VoidResponse::new);
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

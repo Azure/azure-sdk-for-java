@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
@@ -63,9 +64,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return (appServiceMSICredential != null
-            ? appServiceMSICredential.authenticate(scopes)
-            : virtualMachineMSICredential.authenticate(scopes));
+            ? appServiceMSICredential.authenticate(request)
+            : virtualMachineMSICredential.authenticate(request));
     }
 }

@@ -3,12 +3,11 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
@@ -19,6 +18,7 @@ import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -247,7 +247,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context
-        VoidResponse response = shareClient.deleteDirectoryWithResponse("mydirectory",
+        Response<Void> response = shareClient.deleteDirectoryWithResponse("mydirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the directory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context
@@ -270,7 +270,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context
-        VoidResponse response = shareClient.deleteFileWithResponse("myfile",
+        Response<Void> response = shareClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context
@@ -293,7 +293,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteShareWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteWithResponse#duration-context
-        VoidResponse response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the share with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteWithResponse#duration-context
     }

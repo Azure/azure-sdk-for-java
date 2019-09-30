@@ -3,12 +3,11 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -186,7 +185,7 @@ public class FileJavaDocCodeSamples {
     public void abortCopyWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.abortCopyWithResponse#string-duration-context
-        VoidResponse response = fileClient.abortCopyWithResponse("someCopyId", Duration.ofSeconds(1),
+        Response<Void> response = fileClient.abortCopyWithResponse("someCopyId", Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Abort copying the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileClient.abortCopyWithResponse#string-duration-context
@@ -328,16 +327,18 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#downloadToFile(String, FileRange)}
+     * Generates a code sample for using {@link FileClient#downloadToFileWithResponse(String, FileRange, Duration, Context)}
      */
     public void downloadFileMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.downloadToFile#string-filerange
-        fileClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L));
+        // BEGIN: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context
+        Response<FileProperties> response =
+            fileClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L),
+            Duration.ofSeconds(1), Context.NONE);
         if (Files.exists(Paths.get("somelocalfilepath"))) {
-            System.out.println("Complete downloading the file.");
+            System.out.println("Complete downloading the file with status code " + response.getStatusCode());
         }
-        // END: com.azure.storage.file.fileClient.downloadToFile#string-filerange
+        // END: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context
     }
 
     /**
@@ -382,7 +383,7 @@ public class FileJavaDocCodeSamples {
     public void deleteWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.deleteWithResponse#duration-context
-        VoidResponse response = fileClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = fileClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.fileClient.deleteWithResponse#duration-context
     }
@@ -605,10 +606,10 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.FileClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         String identifier = "identifier";
         FileSASPermission permissions = new FileSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true);
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setWritePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

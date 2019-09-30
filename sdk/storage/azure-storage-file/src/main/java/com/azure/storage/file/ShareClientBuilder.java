@@ -3,15 +3,14 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -194,5 +193,10 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     public ShareClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
+    }
+
+    @Override
+    protected Class<ShareClientBuilder> getClazz() {
+        return ShareClientBuilder.class;
     }
 }

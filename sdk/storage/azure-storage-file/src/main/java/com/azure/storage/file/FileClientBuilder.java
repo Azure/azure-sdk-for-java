@@ -3,15 +3,14 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -254,5 +253,10 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
     public FileClientBuilder resourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
         return this;
+    }
+
+    @Override
+    protected Class<FileClientBuilder> getClazz() {
+        return FileClientBuilder.class;
     }
 }

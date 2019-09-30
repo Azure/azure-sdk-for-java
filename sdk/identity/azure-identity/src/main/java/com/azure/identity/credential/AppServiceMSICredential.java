@@ -4,7 +4,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
@@ -54,10 +55,10 @@ class AppServiceMSICredential {
 
     /**
      * Gets the token for a list of scopes.
-     * @param scopes the scopes to get token for
+     * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, scopes);
+    public Mono<AccessToken> authenticate(TokenRequest request) {
+        return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, request);
     }
 }

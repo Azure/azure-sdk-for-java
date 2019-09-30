@@ -178,7 +178,7 @@ jobs:
           goals: 'clean package exec:java'
 
       # We only copy artifacts into the staging in nightly builds, we don't bother with this for PR validation builds.
-      - powershell: |
+      - pwsh: |
           copy -r target/staging $(Build.ArtifactStagingDirectory)
           copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
           copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")

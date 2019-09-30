@@ -60,7 +60,7 @@ class Controller {
                     postSenderCreationFuture.complete(null);
                 } else {
                     Throwable cause = ExceptionUtil.extractAsyncCompletionCause(coreSenderCreationEx);
-                    TRACE_LOGGER.error("Creating MessageSender to coordinator failed", cause);
+                    TRACE_LOGGER.info("Creating MessageSender to coordinator failed", cause);
                     this.messagingFactory.closeAsync();
                     postSenderCreationFuture.completeExceptionally(cause);
                 }

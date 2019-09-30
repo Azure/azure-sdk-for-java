@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
@@ -11,7 +11,6 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -183,5 +182,10 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
     public QueueClientBuilder queueName(String queueName) {
         this.queueName = Objects.requireNonNull(queueName);
         return this;
+    }
+
+    @Override
+    protected Class<QueueClientBuilder> getClazz() {
+        return QueueClientBuilder.class;
     }
 }

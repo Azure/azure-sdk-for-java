@@ -4,6 +4,9 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
 
 import java.time.OffsetDateTime;
 
@@ -39,11 +42,11 @@ public class AppendBlobItem {
         this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
     }
 
-    public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders, String isServerEncryptedHeader) {
+    public AppendBlobItem(AppendBlobAppendBlockFromUrlHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
         this.lastModified = generatedHeaders.getLastModified();
         this.contentMD5 = generatedHeaders.getContentMD5();
-        this.isServerEncrypted = Boolean.parseBoolean(isServerEncryptedHeader);
+        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
         this.blobAppendOffset = generatedHeaders.getBlobAppendOffset();
         this.blobCommittedBlockCount = generatedHeaders.getBlobCommittedBlockCount();

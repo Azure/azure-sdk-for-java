@@ -3,7 +3,6 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -153,7 +152,7 @@ public class QueueServiceJavaDocCodeSamples {
      */
     public void deleteQueueWithResponse() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context
-        VoidResponse response = client.deleteQueueWithResponse("myqueue", Duration.ofSeconds(1),
+        Response<Void> response = client.deleteQueueWithResponse("myqueue", Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.println("Complete deleting the queue with status code: " + response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context
@@ -203,7 +202,7 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context
         StorageServiceProperties properties = client.getProperties();
         properties.setCors(Collections.emptyList());
-        VoidResponse response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
+        Response<Void> response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context
@@ -218,7 +217,7 @@ public class QueueServiceJavaDocCodeSamples {
         StorageServiceProperties properties = client.getProperties();
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
-        VoidResponse response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
+        Response<Void> response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-duration-context
@@ -277,14 +276,14 @@ public class QueueServiceJavaDocCodeSamples {
             .setObject(true)
             .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setCreate(true)
-            .setWrite(true)
-            .setDelete(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setListPermission(true)
             .setProcessMessages(true)
-            .setUpdate(true);
+            .setUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

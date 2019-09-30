@@ -60,7 +60,7 @@ final class CommonRequestResponseOperations {
             } else {
                 // error response
                 Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-                TRACE_LOGGER.error("Peeking messages from sequence number '{}' in entity '{}', sessionId '{}' failed", fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId, failureException);
+                TRACE_LOGGER.info("Peeking messages from sequence number '{}' in entity '{}', sessionId '{}' failed", fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId, failureException);
                 returningFuture.completeExceptionally(failureException);
             }
             return returningFuture;
@@ -82,7 +82,7 @@ final class CommonRequestResponseOperations {
             } else {
                 // error response
                 Exception failureException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
-                TRACE_LOGGER.error("Sending CBS Token to '{}' failed", securityToken.getTokenAudience());
+                TRACE_LOGGER.info("Sending CBS Token to '{}' failed", securityToken.getTokenAudience());
                 returningFuture.completeExceptionally(failureException);
             }
             return returningFuture;

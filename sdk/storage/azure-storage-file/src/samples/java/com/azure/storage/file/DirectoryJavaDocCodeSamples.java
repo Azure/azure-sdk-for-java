@@ -3,7 +3,6 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -232,7 +231,7 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteFileWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
-        VoidResponse response = directoryClient.deleteFileWithResponse("myfile",
+        Response<Void> response = directoryClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.deleteFileWithResponse#string-duration-context
@@ -256,7 +255,7 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteSubDirectoryWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
-        VoidResponse response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
+        Response<Void> response = directoryClient.deleteSubDirectoryWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the subdirectory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.directoryClient.deleteSubDirectoryWithResponse#string-duration-context
@@ -279,7 +278,7 @@ public class DirectoryJavaDocCodeSamples {
     public void deleteWithResponse() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
-        VoidResponse response = directoryClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = directoryClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.DirectoryClient.deleteWithResponse#duration-context
     }

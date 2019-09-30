@@ -3,12 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -61,7 +60,7 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
         return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(super.endpoint)
             .pipeline(pipeline)
-            .build(), cpk);
+            .build(), customerProvidedKey);
     }
 
     /**
@@ -77,7 +76,7 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
             super.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
             SASTokenCredential sasTokenCredential = SASTokenCredential
-                .fromSASTokenString(URLParser.parse(url).getSasQueryParameters().encode());
+                .fromSASTokenString(BlobURLParts.parse(url).getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }
@@ -87,6 +86,11 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
         }
 
         return this;
+    }
+
+    @Override
+    protected Class<BlobServiceClientBuilder> getClazz() {
+        return BlobServiceClientBuilder.class;
     }
 
     String endpoint() {

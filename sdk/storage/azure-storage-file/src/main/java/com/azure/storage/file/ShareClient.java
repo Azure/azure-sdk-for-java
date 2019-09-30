@@ -3,10 +3,10 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -44,6 +44,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
     private final ShareAsyncClient client;
 
@@ -237,8 +238,8 @@ public class ShareClient {
      * @throws StorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -661,8 +662,8 @@ public class ShareClient {
      * @throws StorageException If the share doesn't exist or the directory isn't empty
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteDirectoryWithResponse(directoryName, context);
+    public Response<Void> deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteDirectoryWithResponse(directoryName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -705,8 +706,8 @@ public class ShareClient {
      * @throws StorageException If the share or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteFileWithResponse(String fileName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteFileWithResponse(fileName, context);
+    public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

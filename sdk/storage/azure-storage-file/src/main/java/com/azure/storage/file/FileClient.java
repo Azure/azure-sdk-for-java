@@ -3,9 +3,9 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -49,6 +49,7 @@ import java.util.Map;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
@@ -213,8 +214,8 @@ public class FileClient {
      * @return A response containing the status of aborting copy the file.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse abortCopyWithResponse(String copyId, Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
+    public Response<Void> abortCopyWithResponse(String copyId, Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -234,9 +235,10 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
+     * @return The properties of the file.
      */
-    public void downloadToFile(String downloadFilePath) {
-        downloadToFile(downloadFilePath, null);
+    public FileProperties downloadToFile(String downloadFilePath) {
+        return downloadToFileWithResponse(downloadFilePath, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -249,16 +251,23 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional byte range which returns file data only from the specified range.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The response of the file properties.
      */
-    public void downloadToFile(String downloadFilePath, FileRange range) {
-        fileAsyncClient.downloadToFile(downloadFilePath, range).block();
+    public Response<FileProperties> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+            Duration timeout, Context context) {
+        Mono<Response<FileProperties>> response = fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range,
+            context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -345,8 +354,8 @@ public class FileClient {
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -832,9 +841,6 @@ public class FileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
-        // TODO: Will change the return type to how many handles have been closed.
-        // Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(fileAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, timeout, context));
     }
 

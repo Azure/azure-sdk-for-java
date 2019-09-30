@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.DownloadAsyncResponse;
+import com.azure.storage.blob.specialized.DownloadAsyncResponse;
 
 import java.util.Locale;
 
