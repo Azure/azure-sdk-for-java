@@ -66,6 +66,7 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
+
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
@@ -408,8 +409,9 @@ public class BlobAsyncClientBase {
      *
      * @return A reactive response containing the blob data.
      */
-    public Mono<Flux<ByteBuffer>> download() {
-        return downloadWithResponse(null, null, null, false).flatMap(FluxUtil::toMono);
+    public Flux<ByteBuffer> download() {
+        return downloadWithResponse(null, null, null, false)
+            .flatMapMany(Response::getValue);
     }
 
     /**

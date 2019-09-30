@@ -88,18 +88,24 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      */
     public void downloadCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.download
-        client.download().subscribe(response -> {
-            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.subscribe(piece -> {
-                try {
-                    downloadData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+        client.download().subscribe(piece -> {
+            try {
+                downloadData.write(piece.array());
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
         });
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.download
+    }
 
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * BlobAccessConditions, boolean)}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
