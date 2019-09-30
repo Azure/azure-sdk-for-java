@@ -17,6 +17,18 @@ public class LastEnqueuedEventProperties {
     private final Instant lastEnqueuedTime;
     private final Instant retrievalTime;
 
+    /**
+     * Creates an instance with the last enqueued event information set.
+     *
+     * @param lastSequenceNumber Sequence number of the last event to be enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param lastOffset Offset of the last observed event enqueued in a partition. {@code null} if the information
+     *     has not been retrieved, yet.
+     * @param lastEnqueuedTime The date and time of the last observed event enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
+     *     has not been retrieved, yet.
+     */
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
                                        Instant retrievalTime) {
         this.lastSequenceNumber = lastSequenceNumber;
@@ -28,7 +40,8 @@ public class LastEnqueuedEventProperties {
     /**
      * Gets the sequence number of the last observed event to be enqueued in the partition.
      *
-     * @return The sequence number of the last observed event to be enqueued in the partition.
+     * @return The sequence number of the last observed event to be enqueued in the partition. {@code null} if the
+     *     information has not been retrieved, yet.
      */
     public Long getSequenceNumber() {
         return lastSequenceNumber;
@@ -37,7 +50,8 @@ public class LastEnqueuedEventProperties {
     /**
      * Gets the offset of the last observed event enqueued in the partition.
      *
-     * @return The offset of the last observed event enqueued in the partition.
+     * @return The offset of the last observed event enqueued in the partition. {@code null} if the information has not
+     *     been retrieved, yet.
      */
     public Long getOffset() {
         return lastOffset;
@@ -46,7 +60,8 @@ public class LastEnqueuedEventProperties {
     /**
      * Gets the date and time, in UTC, that the last observed event was enqueued in the partition.
      *
-     * @return The date and time, in UTC, that the last observed event was enqueued in the partition.
+     * @return The date and time, in UTC, that the last observed event was enqueued in the partition. {@code null} if
+     *     the information has not been retrieved, yet.
      */
     public Instant getEnqueuedTime() {
         return lastEnqueuedTime;
@@ -55,7 +70,8 @@ public class LastEnqueuedEventProperties {
     /**
      * Gets the date and time, in UTC, that the information about the last enqueued event was retrieved.
      *
-     * @return The date and time, in UTC, that the information about the last enqueued event was retrieved.
+     * @return The date and time, in UTC, that the information about the last enqueued event was retrieved. {@code null}
+     *     if the information has not been retrieved, yet.
      */
     public Instant getRetrievalTime() {
         return retrievalTime;
