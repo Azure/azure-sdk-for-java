@@ -278,11 +278,11 @@ public final class Utility {
      *
      * @param param Name of the parameter
      * @param value Value of the parameter
-     * @throws IllegalArgumentException If {@code value} is {@code null}
+     * @throws NullPointerException If {@code value} is {@code null}
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
+            throw new NullPointerException(String.format(Locale.ROOT,
                 Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }

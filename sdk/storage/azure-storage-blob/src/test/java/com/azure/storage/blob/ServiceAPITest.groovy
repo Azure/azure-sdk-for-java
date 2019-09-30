@@ -329,7 +329,7 @@ class ServiceAPITest extends APISpec {
 
         where:
         start                | expiry                            || exception
-        null                 | null                              || IllegalArgumentException
+        null                 | null                              || NullPointerException
         OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
     }
 

@@ -344,6 +344,7 @@ public final class BlobServiceAsyncClient {
      * @param expiry Expiration of the key's validity.
      * @return A {@link Mono} containing the user delegation key.
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
+     * @throws NullPointerException If {@code expiry} is null.
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
@@ -363,6 +364,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
      * delegation key.
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
+     * @throws NullPointerException If {@code expiry} is null.
      */
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
@@ -466,6 +468,7 @@ public final class BlobServiceAsyncClient {
      * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
@@ -492,6 +495,7 @@ public final class BlobServiceAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
