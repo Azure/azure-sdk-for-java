@@ -13,12 +13,16 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlockBlobAsyncClient;
+import com.azure.storage.blob.UploadBufferPool;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.BlockLookupList;
+import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.common.Constants;
 import reactor.core.publisher.Flux;
@@ -30,11 +34,15 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.PostProcessor.postProcessResponse;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
 
@@ -44,20 +52,22 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
 
     private final BlobEncryptionPolicy encryptionPolicy;
 
-    private final BlockBlobAsyncClient regularClient;
-
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      */
     EncryptedBlockBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot,
-        BlobEncryptionPolicy encryptionPolicy, BlockBlobAsyncClient client) {
+        BlobEncryptionPolicy encryptionPolicy) {
         super(constructImpl, snapshot, null);
         this.encryptionPolicy = encryptionPolicy;
-        this.regularClient = client;
     }
 
+    // TODO (gapra) : Test this
     public BlockBlobAsyncClient getBlockBlobAsyncClient() {
-        return regularClient;
+        return new BlobClientBuilder()
+            .pipeline(removeDecryptionPolicy(getHttpPipeline(),
+                getHttpPipeline().getHttpClient()))
+            .endpoint(getBlobUrl().toString())
+            .buildBlockBlobAsyncClient();
     }
 
     static HttpPipeline removeDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
@@ -128,7 +138,6 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    // NOTE: the rest of the APIs funnel into the regular client
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
         Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
@@ -149,8 +158,9 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
                 lengthFinal, null, metadataFinal, tier, null, headers,
                 accessConditionsFinal.getLeaseAccessConditions(), null /*cpk*/,
                 accessConditionsFinal.getModifiedAccessConditions(), context))
-                .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders()))));
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders()))));
     }
+
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
@@ -237,13 +247,69 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, int blockSize, int numBuffers,
         BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        // TODO: Parallelism parameter? Or let Reactor handle it?
+        // TODO: Sample/api reference
         Objects.requireNonNull(data, "data must not be null");
+        final BlobAccessConditions accessConditionsFinal = accessConditions == null
+            ? new BlobAccessConditions() : accessConditions;
         final Metadata metadataFinal = metadata == null ? new Metadata() : metadata;
-        Mono<Flux<ByteBuffer>> dataFinal = encryptionPolicy.prepareToSendEncryptedRequest(data, metadataFinal);
 
-        return dataFinal.flatMap(df ->
-            regularClient.uploadWithResponse(df, blockSize, numBuffers, headers, metadataFinal, tier, accessConditions)
-        );
+        // TODO: Progress reporting.
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        /*AtomicLong totalProgress = new AtomicLong(0);
+        Lock progressLock = new ReentrantLock();*/
+
+
+        Mono<Flux<ByteBuffer>> dataFinal = encryptionPolicy.prepareToSendEncryptedRequest(data, metadataFinal);
+        // Validation done in the constructor.
+        UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
+
+        /*
+        Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
+        as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
+        filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
+        ordering of the buffers, but we don't really care if one is split before another.
+         */
+        Flux<ByteBuffer> chunkedSource = dataFinal.flatMapMany(df -> df.flatMapSequential(buffer -> {
+            if (buffer.remaining() <= blockSize) {
+                return Flux.just(buffer);
+            }
+            int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+            return Flux.range(0, numSplits)
+                .map(i -> {
+                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                    duplicate.position(i * blockSize);
+                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                    return duplicate;
+                });
+        }));
+
+        /*
+         Write to the pool and upload the output.
+         */
+        return chunkedSource.concatMap(pool::write)
+            .concatWith(Flux.defer(pool::flush))
+            .flatMapSequential(buffer -> {
+                // Report progress as necessary.
+                /*Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
+                    optionsReal.progressReceiver(), progressLock, totalProgress);*/
+
+                final String blockId = Base64.getEncoder().encodeToString(
+                    UUID.randomUUID().toString().getBytes(UTF_8));
+
+                return this.stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
+                    accessConditionsFinal.getLeaseAccessConditions())
+                    // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
+                    .map(x -> {
+                        pool.returnBuffer(buffer);
+                        return blockId;
+                    }).flux();
+
+            }) // TODO: parallelism?
+            .collect(Collectors.toList())
+            .flatMap(ids ->
+                this.commitBlockListWithResponse(ids, headers, metadataFinal, tier, accessConditions));
+
     }
 
     /**
@@ -261,67 +327,13 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         return uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null);
     }
 
-//    /**
-//     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
-//     * file.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
-//     *
-//     * @param filePath Path to the upload file
-//     * @param blockSize Size of the blocks to upload
-//     * @param headers {@link BlobHTTPHeaders}
-//     * @param metadata {@link Metadata}
-//     * @param tier {@link AccessTier} for the destination blob.
-//     * @param accessConditions {@link BlobAccessConditions}
-//     * @return An empty response
-//     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
-//     * @throws UncheckedIOException If an I/O error occurs
-//     */
-//    public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
-//        AccessTier tier, BlobAccessConditions accessConditions) {
-//        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
-//            throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
-//        }
-//        Metadata metadataFinal = metadata == null ? new Metadata() : metadata;
-//
-//        return Mono.using(() -> uploadFileResourceSupplier(filePath),
-//            channel -> this.uploadWithResponse(FluxUtil.readFile(channel), blockSize, 2, headers, metadataFinal, tier,
-//                accessConditions)
-//                .then()
-//                .doOnTerminate(() -> {
-//                    try {
-//                        channel.close();
-//                    } catch (IOException e) {
-//                        throw logger.logExceptionAsError(new UncheckedIOException(e));
-//                    }
-//                }), this::uploadFileCleanup);
-//    }
-//
-//    private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
-//        try {
-//            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
-//        } catch (IOException e) {
-//            throw logger.logExceptionAsError(new UncheckedIOException(e));
-//        }
-//    }
-//
-//    private void uploadFileCleanup(AsynchronousFileChannel channel) {
-//        try {
-//            channel.close();
-//        } catch (IOException e) {
-//            throw logger.logExceptionAsError(new UncheckedIOException(e));
-//        }
-//    }
-
     /**
      * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
      * file.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlockBlobAsyncClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param blockSize Size of the blocks to upload
@@ -335,19 +347,14 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
-        int sliceBlockSize;
-        if (blockSize == null) {
-            sliceBlockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
-        } else if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
+        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Block size should not exceed 100MB"));
-        } else {
-            sliceBlockSize = blockSize;
         }
         Metadata metadataFinal = metadata == null ? new Metadata() : metadata;
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
-            channel -> this.uploadWithResponse(FluxUtil.readFile(channel), sliceBlockSize, 2, headers, metadataFinal,
-                tier, accessConditions)
+            channel -> this.uploadWithResponse(FluxUtil.readFile(channel), blockSize, 2, headers, metadataFinal, tier,
+                accessConditions)
                 .then()
                 .doOnTerminate(() -> {
                     try {
@@ -373,5 +380,37 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    private Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
+        LeaseAccessConditions leaseAccessConditions) {
+        return withContext(context -> stageBlockWithResponse(base64BlockID, data, length, leaseAccessConditions,
+            context));
+    }
+
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockID, Flux<ByteBuffer> data, long length,
+        LeaseAccessConditions leaseAccessConditions, Context context) {
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
+            null, base64BlockID, length, data, null, null, null, null, leaseAccessConditions, null, context))
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    private Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
+        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
+            accessConditions, context));
+    }
+
+    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
+        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Context context) {
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
+            null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
+            headers, accessConditions.getLeaseAccessConditions(), null /*cpk*/,
+            accessConditions.getModifiedAccessConditions(), context))
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 }

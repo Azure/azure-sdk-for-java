@@ -38,6 +38,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
         this.encryptedBlockBlobAsyncClient = encryptedBlockBlobAsyncClient;
     }
 
+    // TODO (gapra) : Test this
     public BlockBlobClient getBlockBlobClient() {
         return new BlobClientBuilder()
             .pipeline(EncryptedBlockBlobAsyncClient.removeDecryptionPolicy(getHttpPipeline(),
@@ -151,4 +152,5 @@ public class EncryptedBlockBlobClient extends BlobClient {
             throw e.getCause();
         }
     }
+
 }
