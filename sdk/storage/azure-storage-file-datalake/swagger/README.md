@@ -33,5 +33,8 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+models-subpackage: implementation.models
+custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathAccessConditions, PathInfo, PathItem, PathProperties, ListFileSystemsOptions
+custom-types-subpackage: models
 ```
 

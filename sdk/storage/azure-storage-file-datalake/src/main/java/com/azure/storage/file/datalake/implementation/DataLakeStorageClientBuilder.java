@@ -14,50 +14,178 @@ import com.azure.core.implementation.RestProxy;
 @ServiceClientBuilder(serviceClients = DataLakeStorageClientImpl.class)
 public final class DataLakeStorageClientBuilder {
     /*
-     * Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * The URL of the service account, container, or blob that is the targe of the desired operation.
      */
-    private String xMsVersion;
+    private String url;
 
     /**
-     * Sets Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization.
+     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @param xMsVersion the xMsVersion value.
+     * @param url the url value.
      * @return the DataLakeStorageClientBuilder.
      */
-    public DataLakeStorageClientBuilder xMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public DataLakeStorageClientBuilder url(String url) {
+        this.url = url;
         return this;
     }
 
     /*
-     * The Azure Storage account name.
+     * Specifies the version of the operation to use for this request.
      */
-    private String accountName;
+    private String version;
 
     /**
-     * Sets The Azure Storage account name.
+     * Sets Specifies the version of the operation to use for this request.
      *
-     * @param accountName the accountName value.
+     * @param version the version value.
      * @return the DataLakeStorageClientBuilder.
      */
-    public DataLakeStorageClientBuilder accountName(String accountName) {
-        this.accountName = accountName;
+    public DataLakeStorageClientBuilder version(String version) {
+        this.version = version;
         return this;
     }
 
     /*
-     * The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Filters results to filesystems within the specified prefix.
      */
-    private String dnsSuffix;
+    private String prefix;
 
     /**
-     * Sets The DNS suffix for the Azure Data Lake Storage endpoint.
+     * Sets Filters results to filesystems within the specified prefix.
      *
-     * @param dnsSuffix the dnsSuffix value.
+     * @param prefix the prefix value.
      * @return the DataLakeStorageClientBuilder.
      */
-    public DataLakeStorageClientBuilder dnsSuffix(String dnsSuffix) {
-        this.dnsSuffix = dnsSuffix;
+    public DataLakeStorageClientBuilder prefix(String prefix) {
+        this.prefix = prefix;
+        return this;
+    }
+
+    /*
+     * An optional value that specifies the maximum number of items to return. If omitted or greater than 5,000, the response will include up to 5,000 items.
+     */
+    private Integer maxResults;
+
+    /**
+     * Sets An optional value that specifies the maximum number of items to return. If omitted or greater than 5,000, the response will include up to 5,000 items.
+     *
+     * @param maxResults the maxResults value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder maxResults(Integer maxResults) {
+        this.maxResults = maxResults;
+        return this;
+    }
+
+    /*
+     * Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     */
+    private String properties;
+
+    /**
+     * Sets Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     *
+     * @param properties the properties value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder properties(String properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /*
+     * The filesystem identifier.
+     */
+    private String filesystem;
+
+    /**
+     * Sets The filesystem identifier.
+     *
+     * @param filesystem the filesystem value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder filesystem(String filesystem) {
+        this.filesystem = filesystem;
+        return this;
+    }
+
+    /*
+     * The file or directory path.
+     */
+    private String path1;
+
+    /**
+     * Sets The file or directory path.
+     *
+     * @param path1 the path1 value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder path1(String path1) {
+        this.path1 = path1;
+        return this;
+    }
+
+    /*
+     * Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file or directory to be created.  The resulting permission is given by p bitwise and not u, where p is the permission and u is the umask.  For example, if p is 0777 and u is 0057, then the resulting permission is 0720.  The default permission is 0777 for a directory and 0666 for a file.  The default umask is 0027.  The umask must be specified in 4-digit octal notation (e.g. 0766).
+     */
+    private String umask;
+
+    /**
+     * Sets Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file or directory to be created.  The resulting permission is given by p bitwise and not u, where p is the permission and u is the umask.  For example, if p is 0777 and u is 0057, then the resulting permission is 0720.  The default permission is 0777 for a directory and 0666 for a file.  The default umask is 0027.  The umask must be specified in 4-digit octal notation (e.g. 0766).
+     *
+     * @param umask the umask value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder umask(String umask) {
+        this.umask = umask;
+        return this;
+    }
+
+    /*
+     * Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     */
+    private String permissions;
+
+    /**
+     * Sets Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     *
+     * @param permissions the permissions value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder permissions(String permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    /*
+     * An optional file or directory to be renamed.  The value must have the following format: "/{filesystem}/{path}".  If "x-ms-properties" is specified, the properties will overwrite the existing properties; otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
+     */
+    private String renameSource;
+
+    /**
+     * Sets An optional file or directory to be renamed.  The value must have the following format: "/{filesystem}/{path}".  If "x-ms-properties" is specified, the properties will overwrite the existing properties; otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
+     *
+     * @param renameSource the renameSource value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder renameSource(String renameSource) {
+        this.renameSource = renameSource;
+        return this;
+    }
+
+    /*
+     * Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names.
+     */
+    private Boolean upn;
+
+    /**
+     * Sets Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names.
+     *
+     * @param upn the upn value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder upn(Boolean upn) {
+        this.upn = upn;
         return this;
     }
 
@@ -87,16 +215,40 @@ public final class DataLakeStorageClientBuilder {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
         DataLakeStorageClientImpl client = new DataLakeStorageClientImpl(pipeline);
-        if (this.xMsVersion != null) {
-            client.setXMsVersion(this.xMsVersion);
+        if (this.url != null) {
+            client.setUrl(this.url);
         }
-        if (this.accountName != null) {
-            client.setAccountName(this.accountName);
-        }
-        if (this.dnsSuffix != null) {
-            client.setDnsSuffix(this.dnsSuffix);
+        if (this.version != null) {
+            client.setVersion(this.version);
         } else {
-            client.setDnsSuffix("dfs.core.windows.net");
+            client.setVersion("2019-02-02");
+        }
+        if (this.prefix != null) {
+            client.setPrefix(this.prefix);
+        }
+        if (this.maxResults != null) {
+            client.setMaxResults(this.maxResults);
+        }
+        if (this.properties != null) {
+            client.setProperties(this.properties);
+        }
+        if (this.filesystem != null) {
+            client.setFilesystem(this.filesystem);
+        }
+        if (this.path1 != null) {
+            client.setPath1(this.path1);
+        }
+        if (this.umask != null) {
+            client.setUmask(this.umask);
+        }
+        if (this.permissions != null) {
+            client.setPermissions(this.permissions);
+        }
+        if (this.renameSource != null) {
+            client.setRenameSource(this.renameSource);
+        }
+        if (this.upn != null) {
+            client.setUpn(this.upn);
         }
         return client;
     }
